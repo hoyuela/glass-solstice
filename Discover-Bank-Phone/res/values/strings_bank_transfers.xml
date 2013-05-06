@@ -34,6 +34,20 @@
         <item>annually</item>
     </string-array>
     
+    <string-array name="duration_type_strings">
+        <item>Continue Until Cancelled</item>
+        <item>Continue Until A Set End Date</item>
+        <item>Continue Until A Set Number Of Transfers Have Been Made</item>
+        <item>Continue Until A Set Dollar Amount Has Been Transferred</item>
+    </string-array>
+    
+    <string-array name="duration_type">
+        <item>continue_until_cancelled</item>
+        <item>continue_until_a_set_end_date</item>
+        <item>continue_until_a_set_number_of_transfers_have_been_made</item>
+        <item>continue_until_a_set_dollar_amount_has_been_transferred</item>
+    </string-array>
+    
     <string name="external_accounts">External Accounts</string>
     <string name="internal_accounts">Internal Accounts</string>
     

@@ -31,7 +31,6 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		loadBundleData(getArguments());
-		loadBundleData(savedInstanceState);
 
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
@@ -65,15 +64,6 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 		if(bundle != null) {
 			successDetail = (TransferDetail)bundle.getSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA);
 		}
-	}
-
-	/**
-	 * Save the success data to the bundle for configuration changes.
-	 */
-	@Override
-	public void onSaveInstanceState(final Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putSerializable(BankExtraKeys.TRANSFER_SUCCESS_DATA, successDetail);
 	}
 
 	@Override

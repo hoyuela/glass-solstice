@@ -138,7 +138,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 			final Bundle bundle = new Bundle();
 			final ActivityDetail detailObject = activityItems.activities.get(position);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
-			
+			bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, getArguments().getBoolean(BankExtraKeys.CATEGORY_SELECTED));
 			pageFragment = new ActivityDetailFragment();
 			pageFragment.setArguments(bundle);
 		}else {

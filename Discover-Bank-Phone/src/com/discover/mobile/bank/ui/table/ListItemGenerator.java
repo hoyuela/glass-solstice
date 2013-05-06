@@ -213,7 +213,10 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getFrequencyDurationCell(final String frequencyDuration) {
-		return getTwoItemCell(R.string.duration, frequencyDuration);
+		final ViewPagerListItem item = getTwoItemCell(R.string.duration, frequencyDuration);
+		item.getMiddleLabel().setSingleLine(false);
+		
+		return item;
 	}
 
 	// TEMP this may (and should) be replaced with the server formatting the phone numbers.
@@ -358,29 +361,17 @@ public class ListItemGenerator {
 	 * @return a List of items which can be inserted into a layout at runtine.
 	 */
 	public List<ViewPagerListItem> getTransferConfirmationList(final TransferDetail results) {
-		final String[] frequencyCodes = context.getResources().getStringArray(R.array.transfer_frequency_codes);
-		final String[] formattedFrequency = context.getResources().getStringArray(R.array.transfer_frequency_strings);
-		String frequency = "";
-		
-		for(int i = 0; i < frequencyCodes.length; ++i) {
-			if(frequencyCodes[i].equalsIgnoreCase(results.frequency)){
-				frequency = formattedFrequency[i];
-			}
-		}
-		
-		if(Strings.isNullOrEmpty(frequency)){
-			frequency = results.frequency;
-		}
-		
 		final List<ViewPagerListItem> list = new ArrayList<ViewPagerListItem>();
 
-		list.add(getTransferAccountCell(results.fromAccount, true));
-		list.add(getTransferAccountCell(results.toAccount, false));
-		list.add(getAmountCell(results.amount.value));
-		list.add(getSendOnCell(BankStringFormatter.getFormattedDate(results.sendDate)));
-		list.add(getDeliverByCell(BankStringFormatter.getFormattedDate(results.deliverBy)));
-		list.add(getFrequencyCell(frequency));
-		list.add(getReferenceNumberCell(results.id));
+		if( results != null ) {
+			list.add(getTransferAccountCell(results.fromAccount, true));
+			list.add(getTransferAccountCell(results.toAccount, false));
+			list.add(getAmountCell(results.amount.value));
+			list.add(getSendOnCell(BankStringFormatter.getFormattedDate(results.sendDate)));
+			list.add(getDeliverByCell(BankStringFormatter.getFormattedDate(results.deliverBy)));
+			list.add(getFrequencyCell(results.getFormattedFrequency(context)));
+			list.add(getReferenceNumberCell(results.id));
+		}
 
 		return list;
 	}
@@ -448,12 +439,14 @@ public class ListItemGenerator {
 		
 		items.add(getToCell(item.toAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
-		items.add(getSendOnCell(item.sendDate));
-		items.add(getDeliverByCell(item.deliverByDate));
+		items.add(getSendOnCell(BankStringFormatter.getFormattedDate(item.sendDate)));
+		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverBy)));
+		items.add(getFrequencyCell(TransferDetail.getFormattedFrequency(context, item.frequency)));
+
 		
-		items.add(getFrequencyCell(item.durationType));
-		if(item.durationValue != null){
-			items.add(getFrequencyDurationCell(item.durationValue));
+		if( !Strings.isNullOrEmpty(item.durationType)){
+			items.add(getFrequencyDurationCell(
+				TransferDetail.getFormattedDuration(context, item.durationType)));
 		}
 		
 		hideDivider(items);

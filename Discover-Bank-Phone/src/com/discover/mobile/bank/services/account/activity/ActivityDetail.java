@@ -6,6 +6,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * Object holding the details about the activity of the account
@@ -41,6 +42,9 @@ public class ActivityDetail implements Serializable{
 
 	/**Key to get posted date*/
 	public static final String POSTED = "posted";
+	
+	/**Key to get received date*/
+	public static final String RECEIVED = "received";
 
 	/**Key to signify that the activity is scheduled*/
 	public static final String SCHEDULED = "scheduled";
@@ -122,19 +126,23 @@ public class ActivityDetail implements Serializable{
 	public Account toAccount;
 
 	/**Send date*/
-	@JsonProperty("sendDate")
+	@JsonProperty("sendOn")
 	public String sendDate;
 
 	/**Delivery by date*/
 	@JsonProperty("deliverBy")
 	public String deliverBy;
+	
+	/**Received On Date for Check Deposit*/
+	@JsonProperty("receivedOn")
+	public String receivedOn;
 
 	/**Frequency*/
 	@JsonProperty("frequency")
 	public String frequency;
 
 	/**Duration type*/
-	@JsonProperty("durationType")
+	@JsonProperty("duration")
 	public String durationType;
 
 	/**Duration value*/
@@ -164,18 +172,63 @@ public class ActivityDetail implements Serializable{
 	 */
 	public String getTableDisplayDate() {
 		String date = "";
-		if(null == status){
-			date = postedDate;
-		}else if(type.equalsIgnoreCase(ActivityDetail.TYPE_PAYMENT)){
-			date = activityDate;
+		if( Strings.isNullOrEmpty(status) || 
+			status.equalsIgnoreCase(POSTED) || 
+			status.equalsIgnoreCase(RECEIVED) ) {
+			
+			if( !Strings.isNullOrEmpty(postedDate)) {
+				date = postedDate;
+			} else if( !Strings.isNullOrEmpty(receivedOn)) {
+				date = receivedOn;
+			} else if( !Strings.isNullOrEmpty(deliverByDate)){
+				date = deliverByDate;
+			}  else if ( !Strings.isNullOrEmpty(activityDate) ) {
+				date = activityDate;
+			}
+			else {
+				date = "";
+			}
+		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_PAYMENT)){
+			if( !Strings.isNullOrEmpty(activityDate)) {
+				date = activityDate;
+			} else {
+				date = "";
+			}
 		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_TRANSFER)){
-			date = activityDate;
-		}else if(type.equalsIgnoreCase(ActivityDetail.TYPE_DEPOSIT)){
-			date = activityDate;
-		}else{
-			date = postedDate;
+			if( !Strings.isNullOrEmpty(activityDate) ) {
+				date = activityDate;
+			} else {
+				date = "";
+			}
+		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_DEPOSIT)){
+			if( !Strings.isNullOrEmpty(activityDate)) {
+				date = activityDate;
+			} else {
+				date = "";
+			}
+		} else {
+			if( !Strings.isNullOrEmpty(postedDate)) {
+				date = postedDate;
+			} else {
+				date = "";
+			}
 		}
 		return date;
+	}
+	
+	/**
+	 * Method used to retrieve the value in the balance.
+	 * 
+	 * @return 0 if the balance is not provided, otherwise the value in balance data member.
+	 */
+	public int getBalanceValue() {
+		int value = 0;
+		
+		if( balance != null ) {
+			value = balance.value;
+		}
+		
+		return value;
 	}
 
 }
