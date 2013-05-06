@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -48,9 +49,11 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 
-	
+		//Update the background to prevent a pixelated view
+		CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.table_background));
+
 		loadBundle = this.getArguments();
-		
+
 		createDefaultLists();
 		setupHeader();
 		setupFooter();
