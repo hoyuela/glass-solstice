@@ -32,6 +32,7 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -96,6 +97,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
 			toggleView.toggleVisibility();
 		}
+
+		//Update the background to prevent a pixelated view
+		CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.background_view));
 
 		return view;
 	}

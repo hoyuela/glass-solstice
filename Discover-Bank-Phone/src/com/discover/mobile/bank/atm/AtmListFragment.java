@@ -24,6 +24,7 @@ import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
@@ -59,7 +60,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		final AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		/**Current amount of results being shown*/
 		final int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
-		TableLoadMoreFooter footer = getLoadMoreFooter();
+		final TableLoadMoreFooter footer = getLoadMoreFooter();
 
 		//If the results is empty or null
 		if(null == results || null == results.results || null == results.results.atms || results.results.atms.isEmpty()){
@@ -86,6 +87,9 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		}else{
 			getTable().setMode(Mode.PULL_FROM_END);
 		}
+
+		//Update the background to prevent a pixelated view
+		CommonUtils.fixBackgroundRepeat(this.getView().findViewById(R.id.table_background));
 	}
 
 	/**
@@ -143,7 +147,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void setupFooter() {
-		TableLoadMoreFooter footer = getLoadMoreFooter();
+		final TableLoadMoreFooter footer = getLoadMoreFooter();
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
