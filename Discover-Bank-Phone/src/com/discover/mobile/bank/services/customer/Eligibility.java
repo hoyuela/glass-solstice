@@ -117,7 +117,27 @@ public class Eligibility implements Serializable {
 	 * @return Returns the url string for terms store in the eligibility object.
 	 */
 	public String getTermsUrl() {
-		return BankUrlManager.getBaseUrl() +BankUrlManager.SLASH +BankUrlManager.getUrl(links, TERMS_KEY);
+		final StringBuilder urlBuilder = new StringBuilder();
+		urlBuilder.append(BankUrlManager.getBaseUrl());
+		
+		final String termsLink = BankUrlManager.getUrl(links, TERMS_KEY);
+		
+		if(BankUrlManager.isValidContentLink(termsLink)) {
+			urlBuilder.append(termsLink);
+		}else {
+			urlBuilder.append(getFailSafeTermsUrl());
+		}
+
+		return urlBuilder.toString();
+	}
+	
+	/**
+	 * 
+	 * @return a URL corresponding to the terms and conditions for this eligibility object.
+	 */
+	private String getFailSafeTermsUrl() {
+		final String url = "api/content/%s/terms.html";
+		return String.format(url, service);
 	}
 	
 	/**

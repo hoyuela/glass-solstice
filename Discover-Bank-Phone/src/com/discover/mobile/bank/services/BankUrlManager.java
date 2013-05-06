@@ -24,14 +24,16 @@ public final class BankUrlManager  {
 
 	public static final String EMPTY = "";
 	private static final String BANK_LOGIN_URL = "https://www.discoverbank.com/bankac/loginreg/login";
+	private static final String API_CUSTOMERS_CURRENT = "/api/customers/current";
 	public static final String SLASH = "/";
-	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = "/api/customers/current";
+	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = API_CUSTOMERS_CURRENT;
 	private static final String GET_TOKEN_URL = "/api/auth/token";
 	private static final String GET_SSO_TOKEN_URL = "/api/auth/token/sso";
 	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
-	private static final String CUSTOMER_SERVICE_URL = "/api/customers/current";
+	private static final String CUSTOMER_SERVICE_URL = API_CUSTOMERS_CURRENT;
+	private static final String MANAGE_EXTERNAL_ACCOUNTS_URL = BANK_LOGIN_URL;
 	private static final String STATEMENTS_URL = BANK_LOGIN_URL;
-	private static final String OPEN_ACCOUNT_URL = BANK_LOGIN_URL;
+	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html";
 	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
 	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
@@ -40,6 +42,9 @@ public final class BankUrlManager  {
 	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp ";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
+	
+	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
+	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -124,15 +129,69 @@ public final class BankUrlManager  {
 	/**
 	 * @return The URL link to be used for getting Privacy & Terms from the server
 	 */
-	public static String getPrivacyTermsUrl() {		
-		return getBaseUrl() +getUrl(PRIVACY_POLICY_KEY);
+	public static String getPrivacyTermsUrl() {	
+		return resolveTermsKeyToURL(PRIVACY_POLICY_KEY);
 	}
-
+	
 	/**
 	 * @return The URL link to be used for getting Terms of Use from the server
 	 */
-	public static String getTermsOfUse() {		
-		return getBaseUrl() +getUrl(TERMS_OF_USE);
+	public static String getTermsOfUse() {	
+		return resolveTermsKeyToURL(TERMS_OF_USE);
+	}
+	
+	/**
+	 * 
+	 * @param link a String representation of a URL that should end with HTML or HTM
+	 * @return
+	 */
+	public static boolean isValidContentLink(final String link) {
+		return !Strings.isNullOrEmpty(link) && looksLikeContent(link);
+	}
+	
+	/**
+	 * 
+	 * @param testableLink a URL that should be checked if it could contain terms content.
+	 * @return if the link is html/htm content.
+	 */
+	private static boolean looksLikeContent(final String link) {
+		return link != null && (link.endsWith("html") || link.endsWith("htm"));
+	}
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	private static String resolveTermsKeyToURL(final String key) {
+		final StringBuilder urlBuilder = new StringBuilder();
+		urlBuilder.append(getBaseUrl());
+		
+		final String testableLink = getUrl(key);
+		if(isValidContentLink(testableLink)) {
+			urlBuilder.append(testableLink);
+		}else {
+			urlBuilder.append(getFailSafeUrlForKey(key));
+		}
+		
+		return urlBuilder.toString();
+	}
+	
+	/**
+	 * 
+	 * @param key a key which has a fail safe URL defined.
+	 * @return a fail safe URL. Or empty if none are found.
+	 */
+	private static String getFailSafeUrlForKey(final String key) {
+		String url = "";
+		
+		if(TERMS_OF_USE.equalsIgnoreCase(key)) {
+			url = TERMS_FAIL_SAFE_URL;
+		}else if(PRIVACY_POLICY_KEY.equalsIgnoreCase(key)) {
+			url = PRIVACY_POLICY_FAIL_SAFE_URL;
+		}
+		
+		return url;
 	}
 
 	/**
@@ -241,6 +300,10 @@ public final class BankUrlManager  {
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
 	}
+	
+	public static String getManageExternalAccountsUrl() {
+		return MANAGE_EXTERNAL_ACCOUNTS_URL;
+	}
 
 	/**
 	 * 
@@ -296,7 +359,8 @@ public final class BankUrlManager  {
 	/**
 	 * Method used to construct a query URL string using the Payments URL provided in Customer Download.
 	 * 
-	 * @param query Value can be eitherSCHEDULED, CANCELLED, COMPLETED, or ALL. Static Strings are found in GetPaymentsServiceCall.
+	 * @param query Value can be eitherSCHEDULED, CANCELLED, COMPLETED, or ALL. Static Strings are found 
+	 * in GetPaymentsServiceCall.
 	 * @return Returns a URL to use when using GetPaymentsServiceCall to send a request.
 	 */
 	public static String generateGetPaymentsUrl(final PaymentQueryType query) {

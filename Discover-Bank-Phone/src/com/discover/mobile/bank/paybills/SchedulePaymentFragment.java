@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -883,6 +884,8 @@ public class SchedulePaymentFragment extends BaseFragment
 				handled = true;
 			}
 		}
+		
+		((ScrollView)this.getView().findViewById(R.id.main_view)).smoothScrollTo(0,0);
 		
 		return handled;
 	}
