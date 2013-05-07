@@ -26,11 +26,17 @@ public class AmountValidatedEditField extends ValidatedInputField {
 	 * TAG used to print logs into log cat
 	 */
 	protected static final String TAG = "AmountValidate";
-
+	/**
+	 * Holds the value of the configurable maximum value allowed to be ented in the watched text field.
+	 */
+	private double maxValue = BankAmountTextWatcher.MAX_VALUE;
+	
 	/**
 	 * Reference to TextWatcher which formats the text in amountField.
 	 */
 	private BankAmountTextWatcher textWatcher = null;
+	
+	
 
 	public AmountValidatedEditField(final Context context) {
 		super(context);
@@ -67,6 +73,7 @@ public class AmountValidatedEditField extends ValidatedInputField {
 			if( null == textWatcher ) {
 				/**Associate a text watcher that handles formatting of Amount Field into currency format*/
 				textWatcher = new BankAmountTextWatcher(this.getText().toString());
+				textWatcher.setMaxValue(maxValue);
 				textWatcher.setWatchee(this);
 				this.addTextChangedListener(textWatcher);
 			}
@@ -108,5 +115,21 @@ public class AmountValidatedEditField extends ValidatedInputField {
 			imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
 		}
 	}
+	
+	/**
+	 * Method used to set the maximum valued allowed to be entered into the watched text view.
+	 * 
+	 * @param maxValue Maximum value allowed, must be greater than 0.
+	 * 
+	 */
+	public void setMaximumValue(final double maxValue) {
+		this.maxValue = maxValue;
+	}
 
+	/**
+	 * @return Returns the maximum value allowed to be entered into the watched text view.
+	 */
+	public double getMaximumValue() {
+		return maxValue;
+	}
 }
