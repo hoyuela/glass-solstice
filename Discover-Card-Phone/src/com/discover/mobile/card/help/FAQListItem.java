@@ -3,6 +3,9 @@ package com.discover.mobile.card.help;
 import java.io.Serializable;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +54,11 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 		final TextView bodyLabel = (TextView)findViewById(R.id.faq_section_detail);
 
 		if(bodyLabel != null){ 
-			bodyLabel.setText(bodyText);
+			bodyLabel.setText(Html.fromHtml(bodyText));
+			bodyLabel.setMovementMethod(LinkMovementMethod.getInstance());
+			bodyLabel.setLinksClickable(true);
+			bodyLabel.setLinkTextColor(this.getContext().getResources().getColor(R.color.blue_link));
+			Linkify.addLinks(bodyLabel, Linkify.ALL);
 		}
 	}
 
