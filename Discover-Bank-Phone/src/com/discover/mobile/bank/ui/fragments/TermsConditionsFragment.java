@@ -56,10 +56,10 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	/**TextView that displays the title of the page within the fragment*/
 	private TextView pageTitle;
-	
+
 	/**Relative Layout that show the footer at the bottom of the page with accept button*/
 	private RelativeLayout footer;
-	
+
 	/**Divider between the content and the footer*/
 	private View divider;
 
@@ -86,12 +86,16 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	boolean pageLoadSuccess = true;
 
 	@SuppressLint("NewApi")
-	private void setupWebView() {
+	private void setupWebView(boolean loadUrl) {
 		pageLoadSuccess = true;
 		final WebSettings webSettings = termsWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setRenderPriority(RenderPriority.HIGH);
-		termsWebView.loadUrl(this.getTermsUrl());
+		
+		if (loadUrl) {
+			termsWebView.loadUrl(this.getTermsUrl());
+		}
+		
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
@@ -99,12 +103,13 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 				super.onPageFinished(view, url);
 				loadingSpinner.setVisibility(View.GONE);
 				termsWebView.setVisibility(View.VISIBLE);
+				termsWebView.requestFocus(View.FOCUS_DOWN);
 				loadingSpinner.clearAnimation();
 				if(pageLoadSuccess){
 					acceptButton.setEnabled(true);
 				}
 			}
-			
+
 			@Override
 			public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl);
@@ -119,7 +124,11 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		}
 	}
 
-
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		termsWebView.saveState(outState);
+	}
+	
 	/**
 	 * Inflates the view and loads needed resources from the layout.
 	 * Also sets up the web view and starts loading the content.
@@ -133,17 +142,23 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
 		loadResources(mainView);
-		setupWebView();
+		
+		if (savedInstanceState != null) {
+			termsWebView.restoreState(savedInstanceState);
+			setupWebView(false);
+		} else {
+			setupWebView(true);
+		}
 
 		/***Set the title of the page*/
 		pageTitle.setText(this.getPageTitle());
-		
+
 		/**Set click listener for accept button*/
 		acceptButton.setOnClickListener(this);
-		
+
 		return mainView;
 	}
-	
+
 	/**
 	 * Click Handler for all buttons in this fragment calls the respective callback depending
 	 * on which button was clicked.
@@ -154,7 +169,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			this.onAcceptClicked();
 		}
 	}
-	
+
 	/**
 	 * Method used to show or hide footer at the bottom of the page.
 	 * 
@@ -171,17 +186,17 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the URL to use for Terms and Conditions.
 	 */
 	public abstract String getTermsUrl();
-	
+
 	/**
 	 * Method signature for Accept Button Click Handler to be implemented by sub-classes
 	 */
 	public abstract void onAcceptClicked();
-	
+
 	/**
 	 * Method signature for retrieving the title displayed to the user within the Fragment. 
 	 */

@@ -1,11 +1,18 @@
 package com.discover.mobile.bank.deposit;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
+import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment class for displaying the Terms & Conditions for Check Deposit. It is a sub-class 
@@ -15,6 +22,19 @@ import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
  *
  */
 public class BankDepositTermsFragment extends TermsConditionsFragment {
+
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
+		final View view = super.onCreateView(inflater, container, savedInstanceState);
+
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
+
+		return view;
+	}
+
 	/**
 	 * Returns the URL to be used for downloading the HTML file that displays the terms & conditions for check deposit.
 	 */

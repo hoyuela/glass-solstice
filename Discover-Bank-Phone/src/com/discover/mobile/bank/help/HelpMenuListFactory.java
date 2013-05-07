@@ -60,10 +60,10 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getLoggedOutHelpItems(){
 		/**Default menu item representing the "Bank ALL FAQ" item*/
-		final HelpItemGenerator bankFaq = new HelpItemGenerator(R.string.help_bank_faq, true, false, getAllFaqListener());
-
+		final HelpItemGenerator bankFaq = new HelpItemGenerator(R.string.help_bank_faq, true, true, getAllFaqListener());
+		
 		/**Default menu item representing the "Card ALL FAQ" item*/
-		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
+		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
 
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 
@@ -78,7 +78,7 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCardHelpItems(){	
 		/**Default menu item representing the "Card ALL FAQ" item*/
-		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, false, getCardFaqListener());
+		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
 
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 
