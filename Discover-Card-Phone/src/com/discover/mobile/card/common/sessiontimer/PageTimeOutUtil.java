@@ -39,7 +39,7 @@ public final class PageTimeOutUtil {
         if (null == mPageTimeOut) {
             
            mPageTimeOut = new PageTimeOutUtil(mContext);
-           Log.d("getInstance", "mPageTimeOut object......"+mPageTimeOut);
+           Log.d("getInstance", "mPageTimeOut new instance......"+mPageTimeOut);
             
         }
 
@@ -50,8 +50,10 @@ public final class PageTimeOutUtil {
     }
 
     
-    public static void destroyTimer()
+    public void destroyTimer()
     {
+    	
+       mHandler.removeCallbacks(pageTimeOutAction);
        mPageTimeOut = null;
        Log.d("inside destroyTimer", "mPageTimeOut object......"+mPageTimeOut);
     }

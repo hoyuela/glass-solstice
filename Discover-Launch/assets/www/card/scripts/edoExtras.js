@@ -234,6 +234,7 @@ dfs.crd.edo.plotOffersOnMap=function(){
 
 function viewMapLoad(){
 	try{
+		HybridControl.prototype.enableSlidingMenu(null,false);	
 		var validPriorPagesOfViewMap= new Array("edoDetail");
 		if(jQuery.inArray(fromPageName, validPriorPagesOfViewMap) > -1 ){
 			var geocood=getDataFromCache("edoDetailsMapOffers");
@@ -636,9 +637,21 @@ $("#mapDirections-pg").live("pagebeforeshow",function(){
 
 $("#viewMap-pg").live("pagebeforeshow",function(){
                 //console.log("$(window).height() : " + $(window).height() + " => " + $("#pg-header").outerHeight());
-  var netHeight=$(window).height()-$("#pg-header").outerHeight() - 50;
+  var netHeight=$(window).height()-$("#pg-header").outerHeight() - $(".searchInput").outerHeight();
                                         $("#map_canvas,#map_canvas2").height(netHeight)
-                                        });							
+                                        });	
+$("#mapDirections-pg").live("pageshow", function(){
+                var netHeight=$(window).height()-$("#pg-header").outerHeight() - $(".navigation").outerHeight();
+                $("#map_canvas2").height(netHeight);
+});                                                                                                           
+
+$(window).resize(function(){
+                var netHeight=$(window).height()-$("#pg-header").outerHeight() - $(".searchInput").outerHeight();
+                $("#map_canvas").height(netHeight);
+                
+var netHeight1=$(window).height()-$("#pg-header").outerHeight() - $(".navigation").outerHeight();
+                $("#map_canvas2").height(netHeight1);
+});						
 							
 edoMaps.triggerClick = function(type){
 	try{
@@ -822,23 +835,50 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                       var offerUl = $(".allItemList");
                                                       var liObject = offerUl.children("li").get();
                                                       
-                                                      	$('#sortFeatures').live('blur',function(){
+                                                      	/* $('#sortFeatures').live('blur',function(){
 													$(".navBtns .ui-block-a .ui-select .ui-btn").removeClass("selectedTab");
+													}); 
+													$('#sortFeatures').live('click',function(){	
+													$(".navBtns .ui-block-a .ui-select .ui-btn").toggleClass("selectedTab");
+													});*/
+													/*click handler for SORT option*/
+                                                
+                                                	 /*click handler for SORT option*/
+													var flag = 1;
+													var inside = true;
+													
+													$('#sortFeatures').click(function(){
+														inside = true;
+														flag = 1;
 													});
-													$('#sortFeatures').live('focus',function(){	
-													$(".navBtns .ui-block-a .ui-select .ui-btn").addClass("selectedTab");
-													});
-                                                      
-                                                      /*click handler for SORT option*/
-                                                      
+													
+													 $('#sortFeatures').blur(function(){
+														if(inside){
+														 if(flag==1){
+															 $(".navBtns .ui-block-a .ui-select .ui-btn").addClass("selectedTab");
+														 flag = 2;
+														 }
+													 }
+													}); 
+													
+													 $('#sortFeatures').focus(function(e){
+														
+														 if(flag==2){
+															 inside = false;
+															 $(".navBtns .ui-block-a .ui-select .ui-btn").removeClass("selectedTab");
+															 flag=1;
+														}
+													 }); 
+													 
                                                       $('#sortFeatures').change(function(){
-                                                                                
+                                                                              
                                                                                 var value = $(this).val();
                                                                                 var b = new Array();
                                                                                 if(value=="a-z"){
                                                                                 alphabeticalSort();
                                                                                 dfs.crd.sct.extrasSortFunctionality('Alphabetic');//passing site catalyst variable for All Sort Functionality
-                                                                                }
+                                                                                 
+																				}
                                                                                 if(value=="featured"){
                                                                                 featuredSort();
                                                                                 
@@ -853,7 +893,7 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                                                 dfs.crd.sct.extrasSortFunctionality('MostRecent');//passing site catalyst variable for All Sort Functionality
                                                                                 }
                                                                                 
-                                                                                $(".navBtns .ui-block-a .ui-select .ui-btn").removeClass("selectedTab");
+                                                                                /*$(".navBtns .ui-block-a .ui-select .ui-btn").removeClass("selectedTab"); */
                                                                                 $("#edoLandingPage-pg, #edoLandingWithoutOffer").find(".ui-select .ui-btn-inner span.ui-btn-text").html(value);
                                                                                 $('#edoLandingPage-pg #edoLandingSortOptions .ui-select .ui-btn-text').text('Sort');
                                                                                 });
@@ -1778,8 +1818,8 @@ function eventAdd(startDate, expiryDate, title, description, location, hoursPrec
 		var expDay = parseInt(expiryDate.substring(2,4));
 		var expYear = parseInt(expiryDate.substring(4));
         
-		var startDateComponents = new Array(startYear, startMonth, startDay, 12, 00);
-		var endDateComponents = new Array(expYear, expMonth, expDay, 12, 00);
+		var startDateComponents = new Array(startYear, startMonth - 1, startDay, 12, 00);
+		var endDateComponents = new Array(expYear, expMonth - 1, expDay, 12, 00);
         
         if (deviceType=="Android")
         {

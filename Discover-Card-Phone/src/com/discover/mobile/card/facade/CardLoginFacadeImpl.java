@@ -11,11 +11,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
@@ -39,13 +42,17 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.auth.BankPayload;
 import com.discover.mobile.card.services.auth.SSOAuthenticate;
+import com.discover.mobile.card.services.push.GetPushData;
+import com.discover.mobile.card.services.push.GetPushRegistration;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.CardLoginFacade;
 import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.facade.LoginActivityFacade;
 import com.discover.mobile.common.facade.LoginActivityInterface;
+import com.xtify.sdk.api.XtifySDK;
 
 /**
  * The impl class for the card nav facade
@@ -71,6 +78,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 	private final int SSO_ERROR_FLAG = 1102;
 	private final String NOT_ENROLLED_MSG = "NOTENROLLED";
 	private final String SA_LOCKED_MSG = "LOCKOUT";
+	private String vendorId;
 
 	private  WSRequest request ;
 
@@ -101,17 +109,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			@Override
 			public void onStrongAuthSucess(Object data)
 			{
-				// TODO Auto-generated method stub
-
-				// TODO Auto-generated method stub
-				final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
-				confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-				TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-				context.startActivity(confirmationScreen);
-				// Close current activity
-				if (context instanceof Activity)
-					((Activity) context).finish();
-
+				doCardNormalFlow();				
 			}
 
 			@Override
@@ -151,7 +149,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					public void onButton1Pressed()
 					{
 						// Go to AC Home
-						// getAcHome();
+						 getAcHome();
 					}
 				});
 			}
@@ -240,6 +238,14 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 						Log.i(LOG_TAG, "--NOt Enrolled --");
 						authListener.onStrongAuthNotEnrolled(cardErrorBean);
 				}
+				//If SSN not Matched
+				else if(cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN)
+						&& cardErrorBean.getErrorCode().contains(""+SSN_NOT_MATCHED))
+				{
+					//SSN does not matched. Show SSN not match model
+					getErrorMatchModelForPayload(false, false, false, cardErrorBean);
+				}
+				
 				else if (cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN) && 
 						(cardErrorBean.getErrorCode().contains(""+SSO_ERROR_FLAG)||cardErrorBean.getErrorCode().contains(""+SSO_SSN_MATCHED)))
 				{
@@ -253,13 +259,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 					getErrorMatchModelForPayload(isSSOUser, isSSNMatch, isSSODLinkable, cardErrorBean);
 				}
 				
-				//If SSN not Matched
-				else if(cardErrorBean.getErrorCode().contains("" + HttpURLConnection.HTTP_FORBIDDEN)
-						&& cardErrorBean.getErrorCode().contains(""+SSN_NOT_MATCHED))
-				{
-					//SSN does not matched. Show SSN not match model
-					getErrorMatchModelForPayload(false, false, false, cardErrorBean);
-				}
+				
 				else
 				{
 					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
@@ -371,6 +371,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 
 				if (bankPayloadText == null)
 				{
+					Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
 					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 					CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener()
 					{
@@ -405,6 +406,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 			public void OnError(Object data)
 			{
 				// SSN NOT MATCH HANDLED
+				Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
 				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
 				cardErrorResHandler.handleCardError((CardErrorBean) data);
 
@@ -563,6 +565,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 				cardErrorResHandler.handleCardError(cardErrorBean, errorClickCallback);
 
 			}
+			else
+			{
+				cardErrorResHandler.handleCardError((CardErrorBean) data);
+			}
 		}
 		//CardErrorBean cardErrorBean = (CardErrorBean) data;
 		
@@ -660,14 +666,32 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 		}
 		else
 		// if(!isSSOUserVar)
-		{ // Card normal flow
-			final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
-			confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-			TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-			context.startActivity(confirmationScreen);
-			if (context instanceof Activity)
-				((Activity) context).finish();
+		{
+			doCardNormalFlow();
 		}
+		
+		//Push Notification Registration
+		
+	}
+	
+	private String getVID() {
+		
+        SharedPreferences pushSharedPrefs = context.getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+                Context.MODE_PRIVATE);
+        String vid = XtifySDK.getXidKey(context.getApplicationContext()); //pushSharedPrefs.getString(PushConstant.pref.PUSH_XID,"0");
+        
+        Log.i(LOG_TAG, "give me vid -- ? "+vid);
+        if(vid != null && !vid.equalsIgnoreCase(""))
+        {
+        	if(!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_GCM_MIGRATION, false))
+        	{
+        		Editor editor = pushSharedPrefs.edit();
+        		editor.putBoolean(PushConstant.pref.PUSH_GCM_MIGRATION, true);
+        		editor.commit();
+        		vid = "0";
+        	}
+        }
+       return vid;
 	}
 
 	/**
@@ -916,5 +940,90 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener, 
 
 			}
 		}, "Discover", "Authenticating......");
+	}
+	
+	/**
+	 * This funcaiton will check if vid is present for push or not
+	 * based on that it will re direct to AC Home page.
+	 */
+	public void doCardNormalFlow()
+	{
+		 // Card normal flow
+		SharedPreferences pushSharedPrefs = context.getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+                Context.MODE_PRIVATE);
+		final Editor  editor = pushSharedPrefs.edit();
+		
+		vendorId = getVID();
+		if(vendorId != null && !vendorId.equalsIgnoreCase(""))
+		{
+			//Registration
+			GetPushRegistration pushRegistration = new GetPushRegistration(context, new CardEventListener()
+			{
+				@Override
+				public void onSuccess(Object data)
+				{
+					// TODO Auto-generated method stub
+					GetPushData getPushData = (GetPushData) data;
+					Log.i(LOG_TAG, "---Push status -- "+getPushData.resultCode);
+					
+					final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
+					if(getPushData.resultCode.equalsIgnoreCase("F"))
+					{
+						confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS, true);
+						editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
+					}
+					else if(getPushData.resultCode.equalsIgnoreCase("o"))
+					{
+						//Setting other user flag to true so that JQM can have this flag.
+						String errorMsgForPush = context.getString(R.string.E_Push_Other_Account);
+						confirmationScreen.putExtra(PushConstant.extras.PUSH_ERROR_AC_HOME, errorMsgForPush);
+						confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS, false);
+						editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, true);
+					}
+					else 
+					{
+						confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS, false);
+						editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
+					}
+		        	editor.commit();
+					confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
+					TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+					context.startActivity(confirmationScreen);
+					if (context instanceof Activity)
+						((Activity) context).finish();
+				}
+				
+				@Override
+				public void OnError(Object data)
+				{
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+					cardErrorResHandler.handleCardError((CardErrorBean) data);
+				}
+			});
+			
+			editor.putString(PushConstant.pref.PUSH_XID, XtifySDK.getXidKey(context.getApplicationContext()));
+			Log.i(LOG_TAG, "--1--"+vendorId);
+			Log.i(LOG_TAG, "--2--"+XtifySDK.getXidKey(context.getApplicationContext()));
+			pushRegistration.sendRequest(XtifySDK.getXidKey(context.getApplicationContext()));
+		}
+		else if(vendorId == null || vendorId.equalsIgnoreCase(""))
+		{
+			final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
+			confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
+			TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+			context.startActivity(confirmationScreen);
+			if (context instanceof Activity)
+				((Activity) context).finish();
+		}
+		else
+		{
+			final Intent confirmationScreen = new Intent(context, CardNavigationRootActivity.class);
+			confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
+			TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+			context.startActivity(confirmationScreen);
+			if (context instanceof Activity)
+				((Activity) context).finish();
+		}
+	
 	}
 }

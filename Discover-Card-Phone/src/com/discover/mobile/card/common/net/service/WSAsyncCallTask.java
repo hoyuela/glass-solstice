@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,10 +16,10 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Surface;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
-import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorUtil;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
@@ -97,24 +96,26 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
         super.onPreExecute();
         // ((Activity)context).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         // int prevOrientation = ((Activity)context).getRequestedOrientation();
-        if (((Activity) context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        /*if (((Activity) context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ((Activity) context)
-                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
         } else if (((Activity) context).getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             ((Activity) context)
                     .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            ((Activity) context)
-                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-        }
-
-       /* fetchingProgressDialog = Utils.getProgressDialog((Activity)context,
-                strProgressBarTitle, strProgressBarMsg);*/
-        //In place of getProgressDialog showSpinner has been used 
+        } */
+       
+        
+       
+        ((Activity) context)
+        .setRequestedOrientation(getScreenOrientation((Activity) context));
         
         try
         {
-            Utils.showSpinner(context,strProgressBarTitle , strProgressBarMsg);
+            if(null!=strProgressBarMsg)
+            {
+                Utils.isSpinnerAllowed=true;
+                Utils.showSpinner(context,strProgressBarTitle , strProgressBarMsg);
+            }
         }
         catch (Exception e)
         {
@@ -124,6 +125,27 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
         // );
     }
 
+    
+    public static int getScreenOrientation(Activity activity) {
+        int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+        int orientation = activity.getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+          if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_270) {
+            return ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+          } else {
+            return ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+          }
+        }
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_90) {
+            return ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+          } else {
+            return ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+          }
+        }
+        return ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+      }
+    
     /**
      * This AsyncTask method performs tasks in Background thread. Here we are
      * invoking the service call through WSProxy class and getting the response
@@ -238,15 +260,16 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
        // fetchingProgressDialog.dismiss();
       //In place of dismiss() hideSpinner() has been used 
         
+        
         try
         {
+            if(null!=strProgressBarMsg)
             Utils.hideSpinner();
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
-        
        
 
         ((Activity) context)
@@ -258,6 +281,8 @@ public class WSAsyncCallTask extends AsyncTask<WSRequest, Integer, Object> {
             // Log.d("WSCall", "Caller:" + context.getClass().getName());
             callBackListner.onSuccess(result);
         }
+        
+      
     }
 
     /**

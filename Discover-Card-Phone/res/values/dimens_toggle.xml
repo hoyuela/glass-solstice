@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <dimen name="toggle_cell_height">50dp</dimen>
+    <dimen name="toggle_x_top_pad">10dp</dimen>
+    <dimen name="toggle_x_bottom_pad">10dp</dimen>
+    <dimen name="toggle_x_left_pad">12dp</dimen>
+    <dimen name="toggle_check_right_pad">3dp</dimen>
+    <dimen name="toggle_text_left_pad">7dp</dimen>
+    <dimen name="toggle_bottext_bottom_pad">9dp</dimen>
+    
+    <!-- Portrait -->
+    
+    <dimen name="toggle_title_left_pad_p">21dp</dimen>
+    <dimen name="toggle_x_right_pad_p">25dp</dimen>
+    <dimen name="toggle_divider_side_pad_p">9dp</dimen>
+    
+    <!-- Landscape -->
+    
+    <dimen name="toggle_title_left_pad_l">31dp</dimen>
+    <dimen name="toggle_x_right_pad_l">35dp</dimen>
+    <dimen name="toggle_divider_side_pad_l">18dp</dimen>
+    
+    <!-- Padding between texts -->
+    <dimen name="toggle_between_related_elements_padding">8dp</dimen>
+    
+</resources>

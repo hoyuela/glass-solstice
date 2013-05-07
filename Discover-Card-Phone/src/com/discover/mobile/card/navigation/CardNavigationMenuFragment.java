@@ -2,43 +2,57 @@ package com.discover.mobile.card.navigation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.account.AccountSectionInfo;
+import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.earncashbackbonus.EarnCashbackBonusInfo;
 import com.discover.mobile.card.help.CustomerServiceContactInfo;
 import com.discover.mobile.card.home.HomeSectionInfo;
 import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.card.miles.MilesForESCCards;
 import com.discover.mobile.card.miles.MilesInfo;
 import com.discover.mobile.card.miles.RedeemMilesInfo;
 import com.discover.mobile.card.payments.PaymentsSectionInfo;
 import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.card.redeemcashbackbonus.RedeemCashbackBonusInfo;
 import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.card.services.push.GetPushCount;
+import com.discover.mobile.card.services.push.GetPushCountBean;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
 import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.google.common.collect.ImmutableList;
+import com.xtify.sdk.api.XtifySDK;
 
 public class CardNavigationMenuFragment extends NavigationMenuFragment {
     static final String TAG = "CardNavigationMenuFragment";
 
     CardMenuInterface cardMenuInterface;
     public static ImmutableList<ComponentInfo> CARD_SECTION_LIST = null;
+    
+    //Added For Push notification
+   	private int pushUnReadCount = 0;
+	private long currentTimeStamp;
 
     @Override
     public void onAttach(Activity activity) {
@@ -84,9 +98,12 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         copy.setText("\u00a9" + year + " Discover Bank, Member FDIC");
 
         populateLeftNavigationMenu();
+        prepPushCount();
 
         final CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
         activity.setMenu(this);
+
+        
 
         NavigationItem.initializeAdapterWithSections(navigationItemAdapter,
                 CARD_SECTION_LIST, new HomeSummaryFragment());
@@ -110,41 +127,44 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
         TextView textView = (TextView) clickedView.findViewById(R.id.title);
         final String text = (String) textView.getText();
+        
         try {
 
+        	prepPushCount();
             cardMenuInterface.sendNavigationTextToPhoneGapInterface(text);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!(text.equals("Home") || text.equals("Account")
-                || text.equals("Recent Activity")
-                || text.equals("Search Transactions")
-                || text.equals("Account Summary") || text.equals("Statements")
-                || text.equals("Payments") || text.equals("Make a Payment")
-                || text.equals("Manage Payments")
-                || text.equals("Manage Bank Information")
-                || text.equals("Send Money")
-                || text.equals("Send Money History")
-                || text.equals("Earn Cashback Bonus")
-                || text.equals("Sign up for 2%") || text.equals("Extras")
-                || text.equals("Refer A Friend")
-                || text.equals("Redeem Cashback Bonus")
-                || text.equals("Partner Gift Cards & eCerts")
-                || text.equals("Discover Gift Cards")
-                || text.equals("Statement Credit")
-                || text.equals("Direct Deposit")
-                || text.equals("Pay with Cashback Bonus")
-                || text.equals("Redemption History")
-                || text.equals("Earn Miles")
-                || text.equals("Earn More Miles Rewards")
-                || text.equals("Sign up for Miles")
-                || text.equals("Redeem Miles")
-                || text.equals("Profile & Settings")
-                || text.equals("Manage Text & Alerts")
-                || text.equals("Alerts History")
-                || text.equals("Create Cash PIN")
-                || text.equals("Customer Service") || text.equals("Contact Us") || text
-                    .equals("Frequently Asked Questions"))) {
+        if (!(text.equals(getString(R.string.section_title_home)) || text.equals(getString(R.string.section_title_account))
+                || text.equals(getString(R.string.sub_section_title_recent_activity))
+                || text.equals(getString(R.string.sub_section_title_search_transaction))
+                || text.equals(getString(R.string.sub_section_title_account_summary)) || text.equals(getString(R.string.sub_section_title_statements))
+                || text.equals(getString(R.string.section_title_payments)) || text.equals(getString(R.string.sub_section_title_make_a_payment))
+                || text.equals(getString(R.string.sub_section_title_manage_payments))
+                || text.equals(getString(R.string.sub_section_title_manage_bank_information))
+                || text.equals(getString(R.string.sub_section_title_send_money))
+                || text.equals(getString(R.string.sub_section_title_send_money_history))
+                || text.equals(getString(R.string.section_title_earn_cashback_bonus))
+                || text.equals(getString(R.string.sub_section_title_signup_for_2)) || text.equals(getString(R.string.sub_section_title_extras))
+                || text.equals(getString(R.string.sub_section_title_refer_a_friend))
+                || text.equals(getString(R.string.section_title_redeem_cashback_bonus))
+                || text.equals(getString(R.string.sub_section_title_partner_gift_cards))
+                || text.equals(getString(R.string.sub_section_title_discover_gift_cards))
+                || text.equals(getString(R.string.sub_section_title_statement_credit))
+                || text.equals(getString(R.string.sub_section_title_direct_deposit))
+                || text.equals(getString(R.string.sub_section_title_pay_with_cashback_bonus))
+                || text.equals(getString(R.string.sub_section_title_redemption_history))
+                || text.equals(getString(R.string.section_title_profile_and_settings))
+                || text.equals(getString(R.string.sub_section_title_manage_alerts))
+                || text.equals(getString(R.string.sub_section_title_alert_history))
+                || text.equals(getString(R.string.sub_section_title_create_cash_pin))
+                || text.equals(getString(R.string.section_title_customer_service))
+                || text.equals(getString(R.string.sub_section_title_contact_us))
+                || text.equals(getString(R.string.sub_section_title_faq))
+                || text.equals(getString(R.string.section_title_miles))
+                || text.equals(getString(R.string.sub_section_title_sign_up_for_miles))
+                || text.equals(getString(R.string.sub_section_title_miles_extras))
+                || text.equals(getString(R.string.sub_section_title_miles_refer_a_friend)) || text.equals(getString(R.string.section_title_redeem_miles)) || text.equals(getString(R.string.enhanced_account_security_title)))) {
 
             BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
                     .getActiveActivity();
@@ -153,6 +173,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         }
     }
 
+    
     /**
      * Immutable list showing all the top level sections that are displayed in
      * the sliding nav menu
@@ -169,7 +190,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     private void populateLeftNavigationMenu() {
 
         Context context = this.getActivity().getApplicationContext();
-
+        
         ArrayList<ComponentInfo> tempList = new ArrayList<ComponentInfo>();
 
         CardShareDataStore dataStore = CardShareDataStore.getInstance(context);
@@ -195,11 +216,13 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
             // tempList.add(new AccountSectionInfo());
             // tempList.add(new PaymentsSectionInfo());
 
+            
+           // navigationItemAdapter.clear();
             if (supportedMenuItems.indexOf(context
                     .getString(R.string.card_cashback)) != -1) {
 
                 CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                        .add(new HomeSectionInfo())
+                        .add(new HomeSectionInfo(true,countClickListenre))
                         .add(new AccountSectionInfo())
                         .add(new PaymentsSectionInfo())
                         .add(new EarnCashbackBonusInfo())
@@ -210,13 +233,27 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
             if (supportedMenuItems.indexOf(context
                     .getString(R.string.card_miles)) != -1) {
-                CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                        .add(new HomeSectionInfo())
-                        .add(new AccountSectionInfo())
-                        .add(new PaymentsSectionInfo()).add(new MilesInfo())
-                        .add(new RedeemMilesInfo())
-                        .add(new ProfileAndSettingsSectionInfo())
-                        .add(new CustomerServiceContactInfo()).build();
+                String strEscapeCardCode = context.getString(R.string.card_product_group_code_esc).toLowerCase();
+                if (accData.cardProductGroupCode.toLowerCase().compareToIgnoreCase(strEscapeCardCode)==0)
+                {
+                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
+                            .add(new HomeSectionInfo(true,countClickListenre))
+                            .add(new AccountSectionInfo())
+                            .add(new PaymentsSectionInfo()).add(new MilesForESCCards())
+                            .add(new RedeemMilesInfo())
+                            .add(new ProfileAndSettingsSectionInfo())
+                            .add(new CustomerServiceContactInfo()).build();
+                }
+                else
+                {
+                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
+                            .add(new HomeSectionInfo())
+                            .add(new AccountSectionInfo())
+                            .add(new PaymentsSectionInfo()).add(new MilesInfo())
+                            .add(new RedeemMilesInfo())
+                            .add(new ProfileAndSettingsSectionInfo())
+                            .add(new CustomerServiceContactInfo()).build();
+                }
 
             }
         }
@@ -224,9 +261,14 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         if (null == CARD_SECTION_LIST) {
             // Added for the Other Card Types like Essential etc
             CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                    .add(new HomeSectionInfo()).add(new AccountSectionInfo())
-                    .add(new PaymentsSectionInfo()).build();
+                    .add(new HomeSectionInfo(true,countClickListenre))
+                    .add(new AccountSectionInfo())
+                    .add(new PaymentsSectionInfo())
+                    .add(new ProfileAndSettingsSectionInfo())
+                    .add(new CustomerServiceContactInfo()).build();
         }
+        
+      //  onPushCountUpdate(pushUnReadCount);
     }
 
     /*
@@ -240,6 +282,76 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         super.onDestroy();
         CARD_SECTION_LIST = null;
     }
+        
+    /**
+     * it's onClick listener for push Notification count.
+     * On click of it, user will redirect to alert history
+     */
+    OnClickListener countClickListenre = new OnClickListener()
+	{
+		
+		@Override
+		public void onClick(View v)
+		{
+			SharedPreferences pushSharedPrefs = getActivity().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+	                Context.MODE_PRIVATE); 
+			Editor editor = pushSharedPrefs.edit();
+			pushUnReadCount = 0;
+			editor.putInt(PushConstant.pref.PUSH_COUNT, pushUnReadCount);
+			editor.commit();
+			onPushCountUpdate(pushUnReadCount);
+			cardMenuInterface.sendNavigationTextToPhoneGapInterface(getString(R.string.sub_section_title_alert_history));
+		}
+	};
+	
+	public void prepPushCount()
+	{
+		//Getting data from Server
+        SharedPreferences pushSharedPrefs = getActivity().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+                Context.MODE_PRIVATE); 
+        long countTimeStamp  = pushSharedPrefs.getLong(PushConstant.pref.PUSH_COUNT_TIME_STAMP, 0);
+        final Editor editor = pushSharedPrefs.edit();
+        
+        currentTimeStamp = System.currentTimeMillis();
+        Log.i(TAG, "--Current time Stamp-- "+currentTimeStamp+" --countTimeStamp-- "+countTimeStamp);
+       
+        //If last call was before/more than 30 sec then get count again
+        if(currentTimeStamp - countTimeStamp > 30000)
+        {
+        	// Adding time stamp for request to server.
+        	editor.putLong(PushConstant.pref.PUSH_COUNT_TIME_STAMP, currentTimeStamp);
+			editor.commit();
+			
+        	GetPushCount getPushCount = new GetPushCount(getActivity(), new CardEventListener()
+			{
+				
+				@Override
+				public void onSuccess(Object data)
+				{
+					GetPushCountBean  countBean = (GetPushCountBean) data;
+					Log.i(TAG, "---countBean.newMsgCount--"+countBean.newMsgCount);
+					
+					//Updating pref with the latest count.
+					editor.putInt(PushConstant.pref.PUSH_COUNT, pushUnReadCount);
+					editor.commit();
+					pushUnReadCount = Integer.parseInt(countBean.newMsgCount);
+					onPushCountUpdate(pushUnReadCount);
+				}
+				
+				@Override
+				public void OnError(Object data)
+				{
+					Log.i(TAG, "--Error while getting push count data-- ");
+				}
+			});
+        	getPushCount.sendRequest(XtifySDK.getXidKey(getActivity().getApplicationContext()));
+        }
+        else
+        {
+        	pushUnReadCount = pushSharedPrefs.getInt(PushConstant.pref.PUSH_COUNT, 0);
+        }     
+	}
+	
 }
 
 /*

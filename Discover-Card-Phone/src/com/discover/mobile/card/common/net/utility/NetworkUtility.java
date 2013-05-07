@@ -44,11 +44,9 @@ public final class NetworkUtility {
     public static boolean isConnected(final Context context) {
         ConnectivityManager conMgr = null;
         boolean isConnected = false;
-        final Object obj = context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Object obj = context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (obj != null) {
-            conMgr = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            conMgr = (ConnectivityManager) obj;
         } else {
             return isConnected;
         }

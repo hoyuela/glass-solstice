@@ -102,8 +102,7 @@ $('body').live('pagebeforeshow',function(event){
 		//footnote for after login pages 
 		
 	
-	
-	var footnotesHtml="<p id='footer-links'><a href='#' onclick='provideFeedBack();'>Provide Feedback </a><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/termsUseMore\")'>| Terms of Use</a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";
+	var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/moreLanding\")'> Privacy & Terms </a><a href='#' onclick='provideFeedBack();'>| Provide Feedback </a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";	
     $(".footnotes").html(footnotesHtml);
 	
 	//Footnote for index page
@@ -285,8 +284,8 @@ $(".head-bg-logo").live("click",function(){
 /* Native Spinner Plugin invocation only on Service Calls */
 function showSpinner(){
 	try{
-		//window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
-		HybridControl.prototype.showSpinner();
+		window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
+		
 	}catch(err)
 	{
 		//showSysException(err)
@@ -298,10 +297,9 @@ function showSpinnerPageBeforeChange(){
 		var deviceT="";
         	if (!isEmpty(deviceType)) deviceT=deviceType.toLowerCase();     //Change
 
-		//if (deviceT!="android")
-		{               //Change
-			HybridControl.prototype.showSpinner();
-			//window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
+		if (deviceT!="android"){               //Change
+			
+			window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
 		}
 	}catch(err)
 	{
@@ -311,8 +309,7 @@ function showSpinnerPageBeforeChange(){
 
 function hideSpinner(){
 	try {
-		//window.plugins.LoadingView.spinnerOff(null, null);
-		HybridControl.prototype.dismissProgressBar();
+		window.plugins.LoadingView.spinnerOff(null, null);
 	}catch(err)
 	{
 		//showSysException(err)
@@ -437,8 +434,13 @@ function defaultImage(elem) {
 }
 /* css changes for all landing pages */
 $(document).bind("pageshow", function(event,ui){
-	$('#accountLanding-pg,#paymentsLanding-pg,#paymentsLanding-pg,#cashbackBonusLanding-pg,#sendMoneyLanding-pg, #exploreDiscoverLanding-pg, #customerServiceLanding-pg,#profileLanding-pg, #manageAlertsOverride-pg').bind('click',function(){		
+	$('#accountLanding-pg,#paymentsLanding-pg,#paymentsLanding-pg,#cashbackBonusLanding-pg,#sendMoneyLanding-pg, #exploreDiscoverLanding-pg, #customerServiceLanding-pg,#profileLanding-pg, #manageAlertsOverride-pg, #browse-landing, #browse-all-ecertificates').bind('click',function(){		
 		$(this +" .ui-listview .ui-btn-up-d").addClass('ui-btn-down-d');
+	});
+	
+	$('#browse-landing .suggestions li, #browse-all-ecertificates .partners li').bind('click',function(){		
+		$('#browse-landing .suggestions li, #browse-all-ecertificates .partners li').removeClass('ui-btn-down-d');
+		$(this).addClass('ui-btn-down-d');
 	});
 });
 

@@ -4,20 +4,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="53dp"
-        android:background="@drawable/header_bg" >
+        android:layout_height="48dp"
+        android:background="@drawable/action_bar_background" >
+
+        <TextView
+            android:id="@+id/title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLines="1"
+            android:paddingRight="22dp"
+            android:text="Statements"
+            android:textColor="@color/title"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/logout_button"
+            style="@style/logout_actionbar_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/logout_button_drawable"
+            android:onClick="statementLogout"
+            android:text="@string/log_out" />
 
         <ImageView
-            android:id="@+id/discoverLogo"
-            android:layout_width="0dp"
+            android:id="@+id/gradient_line"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_weight="1"
-            android:contentDescription="@string/discoverLogo_img_desc"
-            android:src="@drawable/discover_logo" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:background="@color/stroke_ruling_line"
+            android:src="@drawable/gradiant_line" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,11 +53,11 @@
             android:id="@+id/statement_btn_next"
             android:layout_width="48dp"
             android:layout_height="45dp"
-            android:layout_marginRight="6dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:contentDescription="@string/statement_btn_next_desc"
+            android:layout_marginRight="6dp"
             android:background="@drawable/statementnavbutton"
+            android:contentDescription="@string/statement_btn_next_desc"
             android:onClick="navigateNext"
             android:src="@drawable/navigation_collapse" />
 
@@ -43,11 +65,11 @@
             android:id="@+id/statement_btn_prev"
             android:layout_width="48dp"
             android:layout_height="45dp"
-            android:layout_marginRight="6dp"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/statement_btn_next"
-            android:contentDescription="@string/statement_btn_prev_desc"
             android:background="@drawable/statementnavbutton"
+            android:contentDescription="@string/statement_btn_prev_desc"
             android:onClick="navigatePrevious"
             android:src="@drawable/navigation_expand" />
 

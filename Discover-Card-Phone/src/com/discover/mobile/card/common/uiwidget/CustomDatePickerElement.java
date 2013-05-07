@@ -24,7 +24,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
 	protected CustomDatePickerDialog attachedDatePickerDialog;
 
-	protected static final int INVALID_VALUE = -1;
+	protected final int INVALID_VALUE = -1;
 
 	private int day = INVALID_VALUE;
 	private int month = INVALID_VALUE;

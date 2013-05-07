@@ -7,6 +7,7 @@
 
 var ssns = namespace('dfs.crd.stmt.shared');
 dfs.crd.stmt.shared.constant = dfs.crd.stmt.shared.constant || {};
+dfs.crd.stmt.shared.firstSelectVal = "";
 
 /**
  * General Statements constants
@@ -416,12 +417,16 @@ ssns.acctactiv = (function () {
 				var part2HTML = "";
 				var part3HTML = "";
 				var firstDate = true;
+				
 				for(var idx in actvSelListData.dates){
 					var desc = actvSelListData.dates[idx].displayDate;
 					var value = actvSelListData.dates[idx].stmtDate;
 					var isDate = DATE_RE.test(value);
 					var selected = option === value;
 					if(value === dfs.crd.stmt.shared.constant.CTD_OPTION){
+						dfs.crd.stmt.shared.firstSelectVal = desc;
+						desc = desc.split(" ");
+						desc = desc[0]+" "+desc[1]; 
 						part1HTML += dfs.crd.stmt.shared.common.createOption(value, desc, selected);
 					}else if(isDate && firstDate){
 						firstDate = false;
@@ -442,7 +447,9 @@ ssns.acctactiv = (function () {
 				if( notEmpty(part3HTML) ){
 					finalHTML +=  (dfs.crd.stmt.shared.constant.DASH_OPTION + part3HTML);
 				}
+				
 				activitySelect.html(finalHTML).selectmenu("refresh");
+				$("#activitySelection .ui-btn-text").text(dfs.crd.stmt.shared.firstSelectVal);
 			}
 		}catch(err){
 			showSysException(err);

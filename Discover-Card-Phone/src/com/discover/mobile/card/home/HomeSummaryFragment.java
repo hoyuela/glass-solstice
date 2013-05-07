@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.opengl.Visibility;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CommonMethods;
 import com.discover.mobile.card.R;
@@ -27,11 +30,14 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardMenuInterface;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.navigation.CordovaWebFrag;
+import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.ui.widgets.AccountToggleView;
+import com.discover.mobile.card.common.uiwidget.CardAccountToggleView;
 
 public class HomeSummaryFragment extends BaseFragment implements
 		OnClickListener {
@@ -51,7 +57,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 	private static final String REFERER = "cardHome-pg";
 	private View view;
 	private TextView ViewOption, payOption, redeemOption, offerOption,
-			provideFeedback, accountName;
+			provideFeedback, accountName,termsOfUse;
 	private LinearLayout currentBalance, lastStatement, bonusBalance;
 	private RelativeLayout bonusOffer;
 	private View statusBarView;
@@ -68,16 +74,26 @@ public class HomeSummaryFragment extends BaseFragment implements
 
 	// Toggle BANK/CARD VIEW
 	private ImageView cardBankToggle = null;
-	private AccountToggleView toggleView = null;
+	private CardAccountToggleView toggleView = null;
 	private boolean showToggleView = false;
 	private ImageView accountToggleArrow = null;
+	 private JQMResourceMapper jqmResourceMapper;
+	//Changes for Push Notification
+	private String pushErrorMsg;
+	private TextView pushErrorTV;
+	
+	 private CardMenuItemLocationIndex mCardMenuLocation;
+	 private CordovaWebFrag cordovaWebFrag = null;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.section_account_summary_landing, null);
 		provideFeedback = (TextView) view
-				.findViewById(R.id.provide_feedback_button1);
+				.findViewById(R.id.provide_feedback_button);
+		
+		termsOfUse = (TextView) view
+				.findViewById(R.id.terms_of_use);
 		statusBarView = view.findViewById(R.id.accounthomestatusbar);
 
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -86,15 +102,30 @@ public class HomeSummaryFragment extends BaseFragment implements
 				.getValueOfAppCache(callingActivity
 						.getString(R.string.account_details));
 		accountName = (TextView) statusBarView.findViewById(R.id.account_name);
+		pushErrorTV = (TextView) view.findViewById(R.id.push_ac_home_errorTV);
 		
+		 mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
+	     cordovaWebFrag = ((CardNavigationRootActivity)getActivity()).getCordovaWebFragInstance();
+
 
 		//Get the boolean flag from extra
         final Bundle extras = getActivity().getIntent().getExtras();
         if (extras != null) {
         	
         	showToggleView = extras.getBoolean("showToggleFlag");
+        	pushErrorMsg = extras.getString(PushConstant.extras.PUSH_ERROR_AC_HOME);
         }
 
+        if(pushErrorMsg != null)
+        {
+        	pushErrorTV.setText(pushErrorMsg);
+        	pushErrorTV.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+        	pushErrorTV.setVisibility(View.GONE);
+        }
+        
 		if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)) {
 			// setupHomeElements();
 			// Statusbarfragment is removed from Account Home View is included
@@ -116,6 +147,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 		}
 
 		provideFeedback.setOnClickListener(this);
+		termsOfUse.setOnClickListener(this);
 		return view;
 	}
 
@@ -336,7 +368,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 			if (amount < 0) {
 				amount *= -1;
 				return NumberFormat.getCurrencyInstance(Locale.US)
-						.format(amount).replace("$", "$-");
+						.format(amount).replace("$", "-$");
 			}
 
 			else {
@@ -474,16 +506,19 @@ public class HomeSummaryFragment extends BaseFragment implements
 		}
 
 		// Redeem button
-		if (!CommonMethods.isEscapeCard(accountDetails)) {
-			redeemOption = (TextView) bonusBalance
-					.findViewById(R.id.blue_button_text);
-			redeemOption.setText(R.string.redeem_blue_button_text);
-		} else {
-			redeemOption = (TextView) bonusBalance
-					.findViewById(R.id.blue_button_text);
-			redeemOption.setVisibility(View.GONE);
-		}
-
+//		if (CommonMethods.isEscapeCard(accountDetails)) {
+//			redeemOption = (TextView) bonusBalance
+//					.findViewById(R.id.blue_button_text);
+//			redeemOption.setText(R.string.redeem_blue_button_text);
+//		} else {
+//			redeemOption = (TextView) bonusBalance
+//					.findViewById(R.id.blue_button_text);
+//			redeemOption.setVisibility(View.GONE);
+//		}
+//
+		redeemOption = (TextView) bonusBalance
+				.findViewById(R.id.blue_button_text);
+		redeemOption.setText(R.string.redeem_blue_button_text);
 		bonusBalance.setOnClickListener(this);
 
 	}
@@ -496,7 +531,13 @@ public class HomeSummaryFragment extends BaseFragment implements
 	 */
 	private void setupBonusOffer(final AccountDetails accountDetails) {
 		bonusOffer = (RelativeLayout) view.findViewById(R.id.home_bonus_offer);
-
+		String strEscapeCardCode = getString(R.string.card_product_group_code_esc).toLowerCase();
+		  //In case of Escape Card SIGN UP option will be removed.
+        if (accountDetails.cardProductGroupCode.toLowerCase().compareToIgnoreCase(strEscapeCardCode)==0)
+        {
+        	bonusOffer.setVisibility(View.GONE);
+        	return;
+        }
 		// main content
 		isCashback = CommonMethods.isCashbackCard(accountDetails);
 		if (isCashback) {
@@ -544,17 +585,55 @@ public class HomeSummaryFragment extends BaseFragment implements
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return -1;
+		String m_title = ((CardNavigationRootActivity)getActivity()).getActionBarTitle();
+		Log.v(TAG, "getActionBarTitle n title is " + m_title);
+        if (null != m_title) {
+            jqmResourceMapper = JQMResourceMapper.getInstance();
+
+            return jqmResourceMapper.getTitleStringId(m_title);
+        } else
+            return -1;
 	}
 
 	@Override
 	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_GROUP;
+//		return CardMenuItemLocationIndex.HOME_GROUP;
+		Log.d(TAG, "inside getGroupMenuLocation ");
+        int tempId = getActionBarTitle();
+        if(tempId == -1)
+        {
+        	if(null != cordovaWebFrag.getM_currentLoadedJavascript()){
+        		
+        	Log.d(TAG,"m_currentLoadedJavascript is "+cordovaWebFrag.getM_currentLoadedJavascript());
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag.getM_currentLoadedJavascript());
+             return mCardMenuLocation.getMenuGroupLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuGroupLocation(tempId);
+        }
+        else
+        	return mCardMenuLocation.getMenuGroupLocation(tempId);
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.HOME_SECTION;
+//		return CardMenuItemLocationIndex.HOME_SECTION;
+		 Log.d(TAG, "inside getSectionMenuLocation");
+	        int tempId = getActionBarTitle();
+	        if(tempId == -1)
+	        {
+	        	if(null != cordovaWebFrag.getM_currentLoadedJavascript()){
+	        	Log.d(TAG,"m_currentLoadedJavascript is "+cordovaWebFrag.getM_currentLoadedJavascript());
+	        	jqmResourceMapper = JQMResourceMapper.getInstance();
+	              
+	             tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag.getM_currentLoadedJavascript());
+	             return mCardMenuLocation.getMenuSectionLocation(tempId);
+	        	}else
+	        		return mCardMenuLocation.getMenuSectionLocation(tempId);
+	        }
+	        else
+	        	return mCardMenuLocation.getMenuSectionLocation(tempId);
 	}
 
 	/*
@@ -583,14 +662,21 @@ public class HomeSummaryFragment extends BaseFragment implements
 		} else if (v.getId() == R.id.home_bonus_offer) {
 			if (isCashback) {
 				((CardMenuInterface) callingActivity)
-						.sendNavigationTextToPhoneGapInterface("Sign up for 2%");
+						.sendNavigationTextToPhoneGapInterface("Cashback Bonus Promos");
 			} else {
 				((CardMenuInterface) callingActivity)
-						.sendNavigationTextToPhoneGapInterface("Sign up for Miles");
+						.sendNavigationTextToPhoneGapInterface("Miles Promotions");
 			}
-		} else if (v.getId() == R.id.provide_feedback_button1) {
+		} else if (v.getId() == R.id.provide_feedback_button) {
+			Log.d("provide_feedback_button", "provide_feedback_button pressed");
 			Utils.createProvideFeedbackDialog(callingActivity, REFERER);
 		}
+		 else if (v.getId() == R.id.terms_of_use) {
+			 Log.d("privacy_terms", "privacy_terms pressed");
+				//Utils.createProvideFeedbackDialog(callingActivity, REFERER);
+			 
+			 ((CardMenuInterface) callingActivity).sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
+			}
 	}
 
 	/**
@@ -603,7 +689,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 		// If user is SSO then only Account Toggle View will be displayed.
 		if (showToggleView) {
 			cardBankToggle = (ImageView) view.findViewById(R.id.cardBankIcon);
-			toggleView = (AccountToggleView) view
+			toggleView = (CardAccountToggleView) view
 					.findViewById(R.id.acct_toggle);
 
 			final ViewTreeObserver vto = cardBankToggle.getViewTreeObserver();
@@ -629,7 +715,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 			
 			// Even Card icon will not be displayed.
 			cardBankToggle = (ImageView) view.findViewById(R.id.cardBankIcon);
-			toggleView = (AccountToggleView) view
+			toggleView = (CardAccountToggleView) view
 					.findViewById(R.id.acct_toggle);
 			accountToggleArrow = (ImageView) view
 					.findViewById(R.id.AC_orange_arrow_down);

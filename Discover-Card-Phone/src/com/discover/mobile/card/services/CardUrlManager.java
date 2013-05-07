@@ -9,7 +9,7 @@ package com.discover.mobile.card.services;
 
 public class CardUrlManager {
 
-	private static final String BASE_URL = "https://asys.mapi.discovercard.com";
+	private static final String BASE_URL = "https://mst0.m.discovercard.com";
 
 	/**
 	 * Pre Auth URL
@@ -36,10 +36,10 @@ public class CardUrlManager {
 	private static final String AUTHENTICATE_CALL = "/cardsvcs/acs/acct/v1/account";
 	private static final String SESSION_URL = "/cardsvcs/acs/session/v1/update";
 	private static final String SSO_AUTHENTICATE_CALL = "/cardsvcs/acs/acct/v1/tokensignin";
-
+	
 	/**URL to get the late payment information*/
 	private static final String LATE_PAYMENT_WARNING_URL = "/cardsvcs/acs/stmt/v1/paymentwarning";
-
+	
 	/**URL to get late payment text information*/
 	private static final String LATE_PAYMENT_WARNING_TEXT_URL = "/json/statements/latePayWarn.json";
 
@@ -50,13 +50,13 @@ public class CardUrlManager {
 	private static final String STRONG_AUTH_CHECK_URL = "/cardsvcs/acs/reg/v1/user/sa/check";
 	private static final String STRONG_AUTH_QUESTION_URL = "/cardsvcs/acs/strongauth/v1/challenge";
 	private static final String STRONG_AUTH_URL = "/cardsvcs/acs/reg/v1/user/sa/check";
-
+	
 	/**
 	 * URL to get the dates ranges to be shown when the users tries to select 
 	 * from a range of dates to show recent transactions.
 	 */
 	private static final String STATEMENT_IDENTIFIERS = "/cardsvcs/acs/stmt/v1/identifiers";
-
+	
 	/**URL to get recent account activity transactions*/
 	private static final String GET_RECENT_ACCOUNT_TRANSACTIONS = "/cardsvcs/acs/stmt/v1/transaction?stmtDate=";
 
@@ -69,7 +69,7 @@ public class CardUrlManager {
 	private static final String PUSH_SET_NOTIFICATION_PREF_URL = "/cardsvcs/acs/contact/v1/preferences/enrollments";
 	private static final String PUSH_REGISTRATION_STATUS_URL = "/cardsvcs/acs/contact/v1/registration/status?vid=";
 	private static final String PUSH_REGISTER_VENDOR_URL = "/cardsvcs/acs/contact/v1/registration/status";
-
+	
 	/**
 	 * Search Transaction URLs
 	 */
@@ -238,14 +238,14 @@ public class CardUrlManager {
 	public static String getGetRecentAccountTransactions(final String category) {
 		return GET_RECENT_ACCOUNT_TRANSACTIONS + category;
 	}
-
+	
 	/**
 	 * @return URL to get categories for searching transactions
 	 */
 	public static String getSearchTransCategoryUrl() {
 		return SEARCH_TRANS_CATEGORY_URL;
 	}
-
+	
 	/**
 	 * @return the ssoAuthenticateCall
 	 */

@@ -31,7 +31,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_security_server_error"
-                android:layout_marginTop="@dimen/form_headname_margin_from_top"
+                android:layout_marginTop="4dp"
                 android:text="@string/account_security_text" />
 
             <TextView
@@ -96,7 +96,7 @@
 
                 <RadioButton
                     android:id="@+id/account_security_choice_one_radio"
-                    style="@style/card_strong_auth_field_copy"
+                    style="@style/strongauth_ans_selection"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:button="@null"
@@ -109,9 +109,7 @@
                 <View
                     android:id="@+id/account_security_separator_line_one"
                     android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="4dp"
                     android:background="@drawable/row_shadow" />
                 <!--
             <View
@@ -138,10 +136,9 @@
 
                 <RadioButton
                     android:id="@+id/account_security_choice_two_radio"
-                    style="@style/card_strong_auth_field_copy_small"
+                    style="@style/strongauth_ans_selection"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:button="@null"
                     android:drawableLeft="@drawable/custom_radio_check"
                     android:drawablePadding="@dimen/forms_inner_padding"

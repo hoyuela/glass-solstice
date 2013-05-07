@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:id="@+id/acct_toggle_bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acct_toggle_indicator"
+        android:layout_marginTop="3dp"
+        android:background="@drawable/account_widget_body" >
+
+        <!-- Title & Cancel(X) -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_title_section"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true" >
+
+            <TextView
+                style="@style/plain_body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:text="@string/toggle_select_account" />
+
+            <!-- Padding assists with click area (X) -->
+
+            <ImageView
+                android:id="@+id/acct_toggle_x"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/toggle_x_bottom_pad"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
+                android:src="@drawable/x_gray" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/acct_toggle_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"
+            android:layout_below="@id/acct_toggle_title_section"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
+            android:background="@drawable/gray_solid_line" />
+
+        <!-- Card -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_card_section"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/toggle_cell_height"
+            android:layout_below="@id/acct_toggle_divider" >
+
+            <ImageView
+                android:id="@+id/acct_toggle_card_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/toggle_check_right_pad"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:src="@drawable/black_check_mark"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/acct_toggle_card_text"
+                style="@style/body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@id/acct_toggle_card_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
+                android:paddingTop="@dimen/between_related_elements_padding"
+                android:text="it Card" />
+
+            <TextView
+                android:id="@+id/acct_toggle_card_subtext"
+                style="@style/light_static_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/acct_toggle_card_check"
+                android:paddingBottom="@dimen/between_related_elements_padding"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
+                android:paddingTop="@dimen/toggle_between_related_elements_padding"
+                android:text="acct ending in 1234" />
+
+            <ImageView
+                android:id="@+id/card_gray_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/toggle_x_bottom_pad"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
+                android:src="@drawable/card_icon" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/acct_toggle_dash_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_below="@id/acct_toggle_card_section"
+            android:layout_marginLeft="@dimen/toggle_divider_side_pad_p"
+            android:layout_marginRight="@dimen/toggle_divider_side_pad_p"
+            android:background="@drawable/gray_solid_line" />
+
+        <!-- Bank -->
+
+        <RelativeLayout
+            android:id="@+id/acct_toggle_bank_section"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/toggle_cell_height"
+            android:layout_below="@id/acct_toggle_dash_divider" >
+
+            <ImageView
+                android:id="@+id/acct_toggle_bank_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/toggle_check_right_pad"
+                android:paddingBottom="@dimen/toggle_bottext_bottom_pad"
+                android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:src="@drawable/black_check_mark" />
+
+            <TextView
+                android:id="@+id/acct_toggle_bank_text"
+                style="@style/body_copy_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/acct_toggle_bank_check"
+                android:paddingBottom="@dimen/account_toggle_outside_padding"
+                android:paddingLeft="@dimen/toggle_text_left_pad"
+                android:paddingTop="@dimen/toggle_bottext_bottom_pad"
+                android:text="Discover Bank"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/bank_gray_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/toggle_x_bottom_pad"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
+                android:src="@drawable/bank_gray_icon" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- Triangle in the widget must be here to be drawn last, on top, in the z-axis -->
+
+    <ImageView
+        android:id="@+id/acct_toggle_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp"
+        android:src="@drawable/account_widget_triangle" />
+
+</RelativeLayout>

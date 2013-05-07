@@ -63,7 +63,7 @@ public class JQMResourceMapper {
         temp.put("Send Money History",
                 R.string.sub_section_title_send_money_history);
 
-        temp.put("Sign up for 2%", R.string.sub_section_title_signup_for_2);
+        temp.put("Cashback Bonus Promos", R.string.sub_section_title_signup_for_2);
         temp.put("Extras", R.string.sub_section_title_extras);
         temp.put("Refer A Friend", R.string.sub_section_title_refer_a_friend);
 
@@ -81,17 +81,19 @@ public class JQMResourceMapper {
 
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
-        temp.put("Alerts History", R.string.sub_section_title_alert_history);
+        temp.put("Push Alerts History", R.string.sub_section_title_alert_history);
         temp.put("Create Cash PIN", R.string.sub_section_title_create_cash_pin);
 
         temp.put("Contact Us", R.string.sub_section_title_contact_us);
         temp.put("Frequently Asked Questions", R.string.sub_section_title_faq);
 
-        temp.put("Sign up for Miles",
+        temp.put("Miles Promotions",
                 R.string.sub_section_title_sign_up_for_miles);
 
         temp.put("Redeem Miles", R.string.section_title_redeem_miles);
         temp.put("Privacy & Terms", R.string.privacy_terms_title);
+        temp.put("Enhanced Account Security", R.string.enhanced_account_security_title);
+        
 
         titleIdMap = Collections.unmodifiableMap(temp);
     }

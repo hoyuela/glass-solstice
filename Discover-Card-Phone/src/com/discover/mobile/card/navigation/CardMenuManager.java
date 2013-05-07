@@ -102,6 +102,12 @@ class CashBackCard extends CardMenu {
 
         ics = new ArrayList<String>();
         ics.add("000001");
+        ics.add("000002");
+        ics.add("000003");
+        ics.add("000004");
+        ics.add("000005");
+        ics.add("000006");
+        ics.add("000007");
         ics.add("000011");
         ics.add("000013");
         ics.add("000014");
@@ -125,6 +131,7 @@ class MilesCard extends CardMenu {
         its.add("MI2");
 
         ics = new ArrayList<String>();
+        ics.add("000001");
         ics.add("000002");
         ics.add("000003");
 
