@@ -13,6 +13,8 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -20,6 +22,8 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * This activity sets up the abstract account information screen to handle user registration.
@@ -146,6 +150,16 @@ public class RegistrationAccountInformationActivity extends ForgotOrRegisterFirs
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        
+        if (v.getId() == R.id.provide_feedback_button) {
+            if(!(accountIdentifierField.isUsernameField()))
+            Utils.createProvideFeedbackDialog(RegistrationAccountInformationActivity.this, FORGOTBOTHREFERER);
+        }else if(v.getId()==R.id.account_info_cancel_label)
+        {
+            finish();
+            final Bundle bundle = new Bundle();
+            bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+            bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+            FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+        }
     }
 }

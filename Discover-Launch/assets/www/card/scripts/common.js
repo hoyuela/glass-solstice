@@ -48,7 +48,9 @@ var achomeData="";
 var isLhnNavigation  = false;
 var currentActivePage="";
 var errorFlag=false;
-var customErrPage="";
+var incentiveTypeSuffix="";
+var incentiveCodeSuffix = "";
+var globalOtherUser="";
 /** **CONSTANTS and Global Variables End ** */
 
 /** Name Space**/
@@ -630,7 +632,7 @@ fnChangeSwitchStyle();
 function errorHandler(errorCode,customErrorMessage,menuHglt){
 	try{
 		var errorMsg;	
-		customErrPage=menuHglt;		
+				
 		if (!isEmpty(customErrorMessage)) {
 			errorMsg=customErrorMessage;
 		}else{
@@ -658,11 +660,15 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 		if(fromPageName == "pageError"){
 
 			var errorPageTitleHtml=$('#pageError-pg #pageError_errorMessage').html();
-			if(isEmpty(errorPageTitleHtml)){
+			if(isEmpty(errorPageTitleHtml) ){
 				navigation("../common/pageError");	
 			}else{
-				$("#pageError_errorMessage").html(errorMsg);
 				 var activePage=$.mobile.activePage.attr('id');
+				if(isLhnNavigation){
+					handleNativeFrame();
+				}
+				$("#pageError_errorMessage").html(errorMsg);
+				
 					 
 					if(isDeviceReady == true)
 					{      
@@ -984,18 +990,19 @@ function showMR()
 
 $(document).bind( 'pagebeforechange', function( e, data ){
 	try{
-
+			
 		if (!(typeof data.toPage === "string" )) {
 			cpEvent=e;
             var pageName=toPage(data);
-            toPageName=pageName;
+            toPageName=pageName; 
+                      
 			if(!jQuery.isEmptyObject(data.options.fromPage)){      
 
 				if(data.options.fromPage.jqmData('url')=== data.toPage.jqmData('url')){ 
-					cpEvent.preventDefault();
+				//	cpEvent.preventDefault();
 					 var activePage=$.mobile.activePage.attr('id');
 					 
-					// handleNativeFrame(activePage);   
+					 handleNativeFrame(activePage);   
 					if(isDeviceReady == true)
 					{      
 						if(activePage != "loadingPage-pg")
@@ -1004,7 +1011,7 @@ $(document).bind( 'pagebeforechange', function( e, data ){
                     unLockUI();
 					hideSpinner();
 					return;
-				}
+				}			
 				fromPageName=fromPage(data);
 				if(!isEmpty(fromPageName) && toPageName == 'login-pg'){
 					cpEvent.preventDefault();
@@ -1035,15 +1042,15 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 			 }catch(err){
 			}		
 
-			if(menuPage(pageName)){
+			/*if(menuPage(pageName)){
 				showBottomMenu(pageName,pageName);
-                 }
+                 }*/
              hideSpinner();
         }else
         {
         if (data.toPage!="../../../index.html") lockUI();    //Change
         $('html, body, .ui-page').animate({ scrollTop: 0 }, 0);
-        showSpinnerPageBeforeChange();
+       // showSpinnerPageBeforeChange();
         }
 		
 	}catch(err){
@@ -1166,15 +1173,10 @@ $('[data-role=page]').live('pageshow', function(e,data){
         		HybridControl.prototype.setTitleView(toPageName);
         }*/
         
-		if(isEmpty(customErrPage)){		
+
         var activePage=$.mobile.activePage.attr('id');
         currentActivePage = activePage;
-        }else{         
-		 activePage=pageTitleForError[customErrPage];
-         currentActivePage = activePage;
-         customErrPage="";
-		}
-		        
+        		        
         switch (activePage){
 		case "login-pg":
 			clearTimeout(timer);
@@ -1203,6 +1205,7 @@ $('[data-role=page]').live('pageshow', function(e,data){
 				{									
 					PageSessionTimer.prototype.keepSessionAlive();
 					HybridControl.prototype.getSecToken(function successToken (arg) {sectoken = arg;}, null);
+					HybridControl.prototype.getOtherUserFlag(function successgetOtherUser (arg) {globalOtherUser = arg;}, null);
 					achomeData=getDataFromCache("ACHOME");					
 					if(jQuery.isEmptyObject(achomeData)){					
 					populateGlobalCache();
@@ -1233,15 +1236,17 @@ $('[data-role=page]').live('pageshow', function(e,data){
 		 break;
         default:
             //dfs.crd.achome.pushNewMessageCountAsync();
-            retreivePushCount();
+            //retreivePushCount();
             break;
     }
 	s.pageName=activePage;  
 
-	console.log("activepage beforing calling handlenativeframe "+activePage);
-	if(pageTitle[activePage] != null || activePage == "pageError-pg")
+	console.log("activepage beforing calling handlenativeframe "+activePage+"  && LHn  NAv value is :- "+isLhnNavigation);
+	
+	if(pageTitle[activePage] != null || activePage == "pageError-pg" || isLhnNavigation)
 	{
 		console.log("condition is true");
+		isLhnNavigation = false;
 		handleNativeFrame(activePage);
 		
 	}else if(isDeviceReady == true)
@@ -1249,7 +1254,11 @@ $('[data-role=page]').live('pageshow', function(e,data){
 			if(activePage != "loadingPage-pg")
         		HybridControl.prototype.dismissProgressBar(null,null);
         }       
-
+        
+     if(activePage == "edoDetail")
+     {
+     	HybridControl.prototype.enableSlidingMenu(null,true);
+     }
 	                
     postSiteCatalyst(toPageName);		//site catalyst                           
 	}catch(err){
@@ -1458,47 +1467,50 @@ function redirectToPageAfterConfirm(eventElement) {
         var IPHONEAPPURL="http://itunes.apple.com/app/discovermobile/id338010821?mt=8";
         var ANDROIDAPPURL="http://market.android.com/search?q=pname:com.discoverfinancial.mobile";
 
-
+		if(isDeviceReady == true)
+		{      
+       		HybridControl.prototype.dismissProgressBar(null,null);
+        }  
 		switch(eventElement){
 		case "Add Bank Account":
-			window.open(BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT);
+			window.open(BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT,'_system','location=yes');	
 			break;
 		case "Register Now":
-			window.open(REGISTERNOWURL);
+			window.open(REGISTERNOWURL,'_system','location=yes');	
 			break;
 		case "Apply Now":
-			window.open(APPLYDISCOVERCARDURL);
+			window.open(APPLYDISCOVERCARDURL,'_system','location=yes');	
 			break;
 		case "Provide Feedback":
-			window.open(PROVIDEFEEDBACKURL,'_self',false);			
+			window.open(PROVIDEFEEDBACKURL,'_system','location=yes');				
 			break;
 		case "mybenefits":
-			window.open(MYBENIFITURL);			
+			window.open(MYBENIFITURL,'_system','location=yes');				
 			break;
 		case "privacyPolicy":
-			window.open(PRIVACYPOLICYURL);
+			window.open(PRIVACYPOLICYURL,'_system','location=yes');	
 			break;
 		case "security":
-			window.open(SECURITYURL);
+			window.open(SECURITYURL,'_system','location=yes');	
 			break;
 		case "faq":
-			window.open(FAQURL);			
+			window.open(FAQURL,'_system','location=yes');	
 			break;
 		case "DISCOVERLINK":
-			window.open(DISCOVERLINK);			
+			window.open(DISCOVERLINK,'_system','location=yes');	
 			break;
 		case "manageBankInfomation":
-			window.open(manageBankInfomation);			
+			window.open(manageBankInfomation,'_system','location=yes');			
 			break;
 		case "manageCurrentDayPayment":
-			window.open(manageCurrentDayPayment);			
+			window.open(manageCurrentDayPayment,'_system','location=yes');				
 			break;
 
 		case "updateAppVersion":
 			if (navigator.userAgent.match(/iPhone/i))
-				window.open(IPHONEAPPURL);
+				window.open(IPHONEAPPURL,'_system','location=yes');	
 			else
-				window.open(ANDROIDAPPURL);
+				window.open(ANDROIDAPPURL,'_system','location=yes');	
 				dfs.crd.sct.trackVersionUpgrade();//function call to pass sitecatalyst variable for update application.
 			break;	
 		}
@@ -1660,7 +1672,8 @@ function getDeviceID () {
 		var did ;
 		if (device.platform == "Android")
 		{
-			did = Custom.getDeviceId();
+			//did = Custom.getDeviceId();
+			HybridControl.prototype.getDID(function successdid (arg) {did = arg;}, null);
 		}
 		else
 		{
@@ -1671,6 +1684,21 @@ function getDeviceID () {
 	}catch(err){
 		//showSysException(err)
 	}
+}
+
+function getVID()
+{
+try
+{
+	var vid;
+	HybridControl.prototype.getVID(function successvid (arg) {vid = arg;}, null);
+	//alert("vid:"+vid);
+	return vid;
+	}
+	catch(err)
+	{
+	
+	}	
 }
 
 // End Push Notification change
@@ -1772,7 +1800,7 @@ $(document).ajaxSend(function(e, jqxhr, settings) {
 
 /* 401 handling */
 
-/*$(document).ajaxError(function(e, jqXhr, settings, exception){
+$(document).ajaxError(function(e, jqXhr, settings, exception){
                       try{
 					  hideSpinner();   
                       var custStatusCode=getResponseStatusCode(jqXhr);
@@ -1781,7 +1809,7 @@ $(document).ajaxSend(function(e, jqxhr, settings) {
                       navigator.notification.alert('As a security measure, we ended your session after extended inactivity. This helps protect your personal Discover card account information.  When you are ready to access your account information, simply log in again.',function dissmissAlert() {
                                                    if ($.mobile.activePage.attr('id')!="login-pg")
                                                    {
-                                                   dfs.crd.lilo.logOutUser();
+                                                   HybridControl.prototype.logOutUser();
                                                    }},'Discover','OK');
                       }
                       if (jqXhr.status=== 503 && (custStatusCode==="1006" || custStatusCode==="1007") && settings.url.indexOf("session/v1/delete")== -1 && settings.url.indexOf("session/preauthcheck")== -1 && !(settings.url.indexOf("acct/v1/account")!= -1 && !isEmpty(settings.headers.Authorization)))
@@ -1798,12 +1826,12 @@ $(document).ajaxSend(function(e, jqxhr, settings) {
                       navigator.notification.alert(maintMsg,function dissmissAlert() {
                                                    if ($.mobile.activePage.attr('id')!="login-pg")
                                                    {
-                                                   dfs.crd.lilo.logOutUser("NETWORK");
+                                                  HybridControl.prototype.logOutUser();
                                                    }},'Discover','OK');
                       }
                     }
                       catch(err){}
-                      });*/
+                      });
 $.ajaxSetup({
              timeout: 30000
 });		
@@ -1870,7 +1898,7 @@ function postSiteCatalyst(pageName)
         try{
             var pgName = pageName.split('-');
             window[pgName[0]+"PostSC"]();
-        }catch(err){}	        
+        }catch(err){}	
         s.t();
         s.manageVars("clearVars");
     }catch(err){
@@ -2102,4 +2130,14 @@ function populateGlobalCache()
 }
 function gotoAchome(){
 HybridControl.prototype.gotoAchome(null,null);
+}
+
+// Function to split negative balance
+function splitNegativeBalance (data){
+try{
+	var dataArray=data.split("-");
+	return dataArray[1];
+	}catch(err){
+        showSysException(err);
+	}
 }

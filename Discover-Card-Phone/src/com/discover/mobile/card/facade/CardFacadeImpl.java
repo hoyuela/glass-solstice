@@ -7,48 +7,58 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
-import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
+import com.discover.mobile.common.facade.CardKeepAliveFacade;
+import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.ui.CardInfoForToggle;
-
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
- * The impl class for the card nav facade 
+ * The impl class for the card nav facade
+ * 
  * @author ekaram
- *
+ * 
  */
-public class CardFacadeImpl implements CardFacade{
-	//private Context context;	
+public class CardFacadeImpl implements CardFacade {
+	// private Context context;
 
 	@Override
-	public void navToRegister(final BaseActivity callingActivity) {		
-		final Intent newVisibleIntent = new Intent(callingActivity, RegistrationAccountInformationActivity.class);
+	public void navToRegister(final BaseActivity callingActivity) {
+		final Intent newVisibleIntent = new Intent(callingActivity,
+				RegistrationAccountInformationActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
 	}
 
 	@Override
 	public void navToForgot(final BaseActivity callingActivity) {
-		final Intent newVisibleIntent = new Intent(callingActivity, ForgotCredentialsActivity.class);
+		final Intent newVisibleIntent = new Intent(callingActivity,
+				ForgotCredentialsActivity.class);
 		callingActivity.startActivity(newVisibleIntent);
 		callingActivity.finish();
 	}
 
 	@Override
 	public void navToHomeFragment(final Activity callingActivity) {
-		final Intent strongAuth = new Intent(callingActivity, CardNavigationRootActivity.class);
+		final Intent strongAuth = new Intent(callingActivity,
+				CardNavigationRootActivity.class);
 
 		callingActivity.startActivityForResult(strongAuth, 0);
 
@@ -66,73 +76,97 @@ public class CardFacadeImpl implements CardFacade{
 
 	@Override
 	public void initPhoneGap() {
-		//TODO add phone gap initialization code here!
+		// TODO add phone gap initialization code here!
 
 	}
+
 	/**
-	 * This method will return card member name and last 4 digit of card in  
+	 * This method will return card member name and last 4 digit of card in
 	 */
 	@Override
 	public CardInfoForToggle getCardInfoForToggle(final Context context) {
-		try
-		{
+		try {
 
 			final CardInfoForToggle cardInfo = new CardInfoForToggle();
 
-			//Go to AC Home
-			Utils.updateAccountDetails(context,new CardEventListener() {
+			final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+					.getInstance(context);
+			AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
+					.getValueOfAppCache(context
+							.getString(R.string.account_details));
 
-				@Override
-				public void onSuccess(final Object data) {
-					// TODO Auto-generated method stub
-					Globals.setLoggedIn(true);
-					final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-							.getInstance(context);
-					final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-							.getCookieManagerInstance();
-					sessionCookieManagerObj.setCookieValues();
+			if (cardHomedata != null && cardHomedata.lastFourAcctNbr != null
+					&& cardHomedata.primaryCardMember.nameOnCard != null) {
+				cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
+				cardInfo.setCardAccountName(Utils.getCardTypeFromGroupCode(context, cardHomedata.cardProductGroupCode));
+			} else {
+				// Go to AC Home
+				Utils.updateAccountDetails(context, new CardEventListener() {
 
-					/* final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
+					@Override
+					public void onSuccess(Object data) {
+						// TODO Auto-generated method stub
+						Globals.setLoggedIn(true);
+						final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+								.getInstance(context);
+						final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+								.getCookieManagerInstance();
+						sessionCookieManagerObj.setCookieValues();
 
-                     callingActivity
-                                  .updateAccountInformation(AccountType.CARD_ACCOUNT);*/
+						final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
 
-					/*CardSessionContext.getCurrentSessionDetails()
-                                  .setNotCurrentUserRegisteredForPush(false);
-                     CardSessionContext.getCurrentSessionDetails()
-                                  .setAccountDetails((AccountDetails) data);
+						callingActivity
+								.updateAccountInformation(AccountType.CARD_ACCOUNT);
 
-                     cardShareDataStoreObj.addToAppCache(
-                                  context.getString(R.string.account_details),
-                                  (AccountDetails) data);*/
-					final AccountDetails cardHomedata = (AccountDetails) data;
-					cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
-					cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
-				}
+						CardSessionContext.getCurrentSessionDetails()
+								.setNotCurrentUserRegisteredForPush(false);
+						CardSessionContext.getCurrentSessionDetails()
+								.setAccountDetails((AccountDetails) data);
 
-				@Override
-				public void OnError(final Object data) {
-					// TODO Auto-generated method stub
+						cardShareDataStoreObj.addToAppCache(
+								context.getString(R.string.account_details),
+								(AccountDetails) data);
+						AccountDetails cardHomedata = (AccountDetails) data;
+						cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
+						//cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
+						cardInfo.setCardAccountName(Utils.getCardTypeFromGroupCode(context, cardHomedata.cardProductGroupCode));
+					}
 
-				}
-			}, "Discover", "Authenticating......");
-			/*final CardShareDataStore cardShareDataStoreObj = CardShareDataStore.getInstance(context);
-			AccountDetails cardHomedata = (AccountDetails)cardShareDataStoreObj.getValueOfAppCache(context.getString(R.string.account_details));
-			cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
-			cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
-			cardHomedata=null;*/
-			return cardInfo;			
+					@Override
+					public void OnError(Object data) {
+						// TODO Auto-generated method stub
+
+					}
+				}, "Discover", "Authenticating......");
+			}
+			/*
+			 * final CardShareDataStore cardShareDataStoreObj =
+			 * CardShareDataStore.getInstance(context); AccountDetails
+			 * cardHomedata =
+			 * (AccountDetails)cardShareDataStoreObj.getValueOfAppCache
+			 * (context.getString(R.string.account_details));
+			 * cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
+			 * cardInfo
+			 * .setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
+			 * cardHomedata=null;
+			 */
+			return cardInfo;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch(final Exception e)
-		{
-			e.printStackTrace();		  	
-		}
-		return null;		
+		return null;
+	}
+
+	
+	public void navToProvideFeedback(Activity callingActivity) {
+		// TODO Auto-generated method stub
+		Utils.createProvideFeedbackDialog(callingActivity, "cardLogin-pg");
 	}
 
 	@Override
 	public String getPreAuthBaseUrl() {
-		return CardUrlManager.getBaseUrl();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

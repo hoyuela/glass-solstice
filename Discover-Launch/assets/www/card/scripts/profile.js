@@ -24,14 +24,14 @@ function profileLandingLoad(){
 
 /********  Begin Profile Custom Functions, Scope dfs.crd.profile *********/
 dfs.crd.profile.addCancelHandler = function() {
-	$("#cancelBtn").click(function(){showMP();});
+	$("#cancelBtn").click(function(){gotoAchome();});
 }
 
 dfs.crd.profile.verifyPriorPageForStep1 = function() {
 	var passVerification = true;
 	var validPriorPagesOfStep1 = new Array("profileLanding", "strongAuthFirstQues");
 	try {
-		if ($.inArray(fromPageName, validPriorPagesOfStep1) < 0) {
+		if ($.inArray(fromPageName, validPriorPagesOfStep1) < 0 && (!isLhnNavigation)) {
 			cpEvent.preventDefault();
 			history.back();
 			passVerification = false;

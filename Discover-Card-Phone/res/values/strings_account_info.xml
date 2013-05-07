@@ -2,6 +2,7 @@
     
     <!-- Account Info Screen 1 -->
     <string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
+    <string name="card_expiration_date_text">Card Expiration Date</string>
 	<string name="account_info_ssn_info_text">Primary Cardmember\'s Social Security Number (Last 4 Digits)</string>
 	<string name="account_info_bad_input_error_text">
 	    You have entered invalid information.

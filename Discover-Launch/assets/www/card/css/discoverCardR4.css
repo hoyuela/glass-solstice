@@ -2609,3 +2609,19 @@ padding-top: 12px;}*/
 .dueDateParCsRed  span, .dueDateParCsRed  a{color:#E12121 !important}
 .dueDateParCs  span, .dueDateParCs  a{color:#2489ce !important}
 .dueDateText, .dueDateTextRed{display:block;font-size:8px;}
+.fontcolor h1{color:#3d484d !important;}
+#howItWorks-pg .faq{ margin-left:25px !important;}
+#howItWorks-pg .bullate01{ margin-left:10px !important;}
+.textalign{ float:left !important;}
+#manageAlerts-pg .ui-field-contain{ margin:0px; padding:0px;}
+#manageAlerts-pg #alertsetting{padding:0px !important;}
+#manageAlerts-pg #changenumber .change-msg-dot-com{ width:100% !important; }
+.at_align{padding-top:16px; float:left;}
+#manageAlerts-pg.pn-page #changenumber .ui-grid-b .ui-block-b .at-rate{float:left; padding-top:0px;}
+#manageAlerts-pg.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com{ width:52%;}
+#manageAlerts-pg .gridwidth{ width:100% !important;}
+#manageAlerts-pg #custom-carrier{ margin-bottom:0px; border:1px solid #bbb;}
+#manageAlerts-pg #changenumber .ui-block-b{ margin-top:0px;}
+#changenumber .ui-block-b input.input_hightlight_error{ border:2px solid #fd0202;}
+#manageAlerts-pg #activitySelection .ui-btn-down-d  {border:1px solid #bbb !important} 
+#manageAlerts-pg.pn-page #addnumber input[type="tel"] { margin-top:5px !important; border:1px solid #bbb;}

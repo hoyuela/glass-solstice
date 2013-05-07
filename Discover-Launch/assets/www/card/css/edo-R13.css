@@ -1161,11 +1161,11 @@ margin-left:5px;
 .edo-page .navigation {
 	width: 100%;
 	max-height: 20%;
-	position: absolute;
+	position: relative;
 	background:#ebebe9;
 	/*background: -webkit-gradient(linear, 0% 0%, 0% 78%, from(#FFFFFF),
 		to(#d5dcdf), color-stop(0, #c1c9cd) );*/
-	z-index:999999;
+	/* z-index:999999; */
 	padding-top: 5px;
 padding-bottom: 5px;
 border-bottom: 2px solid #d0ceca;
@@ -1219,8 +1219,8 @@ border-bottom: 2px solid #d0ceca;
 	background-image: -webkit-radial-gradient(center, ellipse farthest-corner, #F0F0F0 0%, #7D8299 100%);*/
 	padding: 2%;
 	width:97%;
-	position:absolute;
-	z-index:999999;
+	position:relative;
+	/* z-index:999999; */
 }
 
 #searchInput input {
@@ -1234,7 +1234,7 @@ border-bottom: 2px solid #d0ceca;
 
 #searchInput .ui-icon-searchfield::after {
 	background: url(../images/search-icon.png) no-repeat 0 2px !important;
-	-webkit-background-size: 20px 17px !important;
+	-webkit-background-size: 17px 17px !important;
 }
 
 .edo-page .searchInput .ui-input-clear {
@@ -1312,7 +1312,7 @@ border-bottom: 2px solid #d0ceca;
 		), color-stop(0.47, #FFFFFF) );
 	display: inline-block;
 	margin: 2px;
-	float: left;
+	/*float: left;*/
 	margin-left: 3px;
 }
 
@@ -1388,7 +1388,7 @@ border-bottom: 2px solid #d0ceca;
 	margin: auto;
 	text-align: center;
 	margin-top: 20px;
-	width:100%;
+	/*width:100%;*/
 }
 /*.edo-page .showGridview .items:nth-child(2n){margin-left:13px;}*/
 .edo-page #edoLandingSortOptions .ui-select .ui-btn .ui-btn-text {
@@ -1411,9 +1411,9 @@ border-bottom: 2px solid #d0ceca;
 }
 /* landscape css */
 @media all and (orientation:landscape) {
-	.edo-page .showGridview {
+	/*.edo-page .showGridview {
 		width: 434px;
-	}
+	}*/
 	/* #edoLandingPage-pg .navtabs {
 	/*margin-top: 20px;*/
 	/*float:left;
@@ -1463,9 +1463,9 @@ border-bottom: 2px solid #d0ceca;
 }
 /* portrait css */
 @media all and (orientation:portrait) {
-	.edo-page .showGridview {
+	/*.edo-page .showGridview {
 		width: 290px;
-	}
+	}*/
 	#edoLandingPage-pg .overlay_wraper {
 	width:87% !important;
 	background-color: #fff;
@@ -1526,12 +1526,12 @@ margin: 0px;
 
 
 #edoHistory-pg .tooltip {
-top: 89px;
+top: 38px;
 right: 25px;
 }
 
 #edoLandingPage-pg .tooltip {
-top: 91px;
+top: 40px;
 right: 25px;
 }
 

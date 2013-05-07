@@ -52,6 +52,19 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="clearboth"></div>
+                                <div class="ui-grid-b gridwidth">
+                                <div class="ui-block-a otherInputWidth"></div>
+                                <div class="ui-block-b change-msg-dot-com hidden">
+                                        <div>
+                                            <div class="at-rate">
+                                            <span class="at_align">@&nbsp;</span>
+                                            <input id="custom-carrier" type="email" placeholder="" class="dot-com"/><br/>
+                                            <span class="eg-msg">(e.g.,messaging.nextel.com)</span>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
 						</div>
@@ -61,14 +74,14 @@
                         </div>
                         <div id="slider">
                             <div data-role="fieldcontain" style="border:0px">
-                                <select name="alertsetting" id="flip-b" data-role="slider" style="float:right">
+                                <select name="alertsetting" id="alertsetting" data-role="slider" style="float:right">
                                     <option value="off">OFF</option>
                                     <option value="on">ON</option>
                                 </select>
-                                <h2 for="alertsetting" class="boldtext floatleft">Enable Push Alerts</h2>
-								<div>
-                            <div style="clear:both"></div>
-                        </div>
+                                <h2 for="alertsetting" class="boldtext textalign">Enable Push Alerts</h2>
+								</div>
+                           </div>
+                           <div class="clearboth"></div>
                         <div id="registered-tnclinks" style="display: none">
                             <p>
                                 <a href="#" onclick="navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" data-transition="slide">&nbsp;Text Messages Terms and Conditions</a>
@@ -313,8 +326,6 @@
                                     </li>
 									</div>
                                 </ul>
-                  
-                          
                                 <ul class="whitebg-list-view">
 								  <li class="hideLiMain 5CBB"><span class="pn-plus" style="background-position: 0px 0px;"></span><h3 class="bluetext">Maximize Your Rewards</h3></li>
 								  <div class="hidden-element">
@@ -446,7 +457,6 @@
                                             <div class="at-rate">@&nbsp;</div>
                                             <input id="custom-carrier" type="email" placeholder="" class="dot-com"/>
                                             <span class="eg-msg">(e.g.,messaging.nextel.com)</span>
-                                            <div class="clearboth"></div>
                                         </div>
                                 </div>
                             </div>
@@ -466,7 +476,6 @@
                                 <div class="ui-block-a" style="width:100%">
                                     <a href="#" data-role="link" data-inline="false" id="id-notify-cancel" class="notifcancel">Cancel</a>
                                 </div>
-                               
                             </div>
                         </div>
                         </br>
@@ -476,7 +485,8 @@
                             <a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" >Terms of Use</a>
                             </p>
                         </div> 
-                    </div>   
+                    </div>  
+                    </div> 
                         <!-- body text area end -->
                     <div id="footnotes" class="footnotes" ></div>
                 </div>
@@ -493,10 +503,9 @@
                         </div>
 						<div id="cancel_push_overlay" class="ui-block-a" style="width:100%"><a href="javascript:void(0);" class="close-overlay">Cancel</a></div>
                     </div>
-                </div>
             </div>
-            
-            
+            </div>
+            </div>
             <!-- content end -->
             <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
                 <footer id="footer" class="mnu_footer">

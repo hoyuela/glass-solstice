@@ -7,12 +7,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -47,6 +51,12 @@ public class HybridControlPlugin extends CordovaPlugin {
 	public static final String getSID = "getSID";
 	public static final String getDID = "getDID";
 	public static final String getOID = "getOID";
+	public static final String showSpinner = "showSpinner";
+	public static final String getVID = "getVID";	
+	public static final String setOtherUserFlag = "setOtherUserFlag";
+	public static final String getOtherUserFlag = "getOtherUserFlag";
+	public static final String enableSlidingMenu = "enableSlidingMenu";
+	
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
 
@@ -208,7 +218,7 @@ public class HybridControlPlugin extends CordovaPlugin {
 
             final String title = title0;
 
-            if (!title.equalsIgnoreCase("No Title")) {
+//            if (!title.equalsIgnoreCase("No Title")) {
 
                 cnrAct.runOnUiThread(new Runnable() {
 
@@ -222,17 +232,17 @@ public class HybridControlPlugin extends CordovaPlugin {
                     }
 
                 });
-            } else {
-                cnrAct.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Log.d(TAG,
-                                "calling showactionbarlogo from popPhoneGapToFront action");
-                        cnrAct.showActionBarLogo();
-                    }
-                });
-            }
+//            } else {
+//                cnrAct.runOnUiThread(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        Log.d(TAG,
+//                                "calling showactionbarlogo from popPhoneGapToFront action");
+//                        cnrAct.showActionBarLogo();
+//                    }
+//                });
+//            }
 
             if (!fragTag.equalsIgnoreCase(title0)) {
 
@@ -378,14 +388,21 @@ public class HybridControlPlugin extends CordovaPlugin {
         }
 
         else if (action.equals(dismissProgressBar)) {
+            
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d(TAG, "dismissProgressBar");
                     Utils.hideSpinner();
                 }
             });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
         } else if (action.equals(updatedAccountDetails)) {
             Log.d(TAG, "inside updatedAcdountDetails");
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
@@ -494,6 +511,12 @@ public class HybridControlPlugin extends CordovaPlugin {
         	Fragment homeFragment = fragManager
         			.findFragmentByTag("HomeSummaryFragment");
         	cnrAct.makeFragmentVisible(homeFragment, false);
+        	cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                        cnrAct.showActionBarLogo();
+                }
+            });
         	final PluginResult pluginResult = new PluginResult(
         			PluginResult.Status.OK);
         	pluginResult.setKeepCallback(true);
@@ -531,6 +554,81 @@ public class HybridControlPlugin extends CordovaPlugin {
         	callbackContext.sendPluginResult(pluginResult);
         	return true;
         }        
+        else if (action.equals(showSpinner)) {
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            Utils.isSpinnerAllowed=true;
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "inside showSpinner ");
+                    Utils.showSpinner(cnrAct, "", "Loading...");
+                }
+            });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getVID)) {
+        	Log.d(TAG, "inside getVID ");        	
+
+      	  SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+                    Context.MODE_PRIVATE);
+           String vid = pushSharedPrefs.getString(PushConstant.pref.PUSH_XID,"0");        
+          final PluginResult pluginResult = new PluginResult(
+      			PluginResult.Status.OK, vid);
+      	pluginResult.setKeepCallback(true);
+      	callbackContext.sendPluginResult(pluginResult);
+      	return true;
+      }
+      else if (action.equals(setOtherUserFlag)) {
+      	Log.d(TAG, "inside setOtherUserFlag ");
+      	boolean otherUserFlag =  (Boolean) args.get(0);
+      	Log.d(TAG,"SetoTHERuSER: "+otherUserFlag);
+      	SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+		                Context.MODE_PRIVATE);
+      	
+      	Editor  editor = pushSharedPrefs.edit();
+      	editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, otherUserFlag);
+      	editor.commit();
+      	final PluginResult pluginResult = new PluginResult(
+      			PluginResult.Status.OK);
+      	pluginResult.setKeepCallback(true);
+      	callbackContext.sendPluginResult(pluginResult);
+      	return true;
+      } else if (action.equals(getOtherUserFlag)) {
+      	Log.d(TAG, "inside setOtherUserFlag ");
+      	//need to get otherUserFlag from native...
+      	
+      	SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+	                Context.MODE_PRIVATE);	               
+      	boolean isOtherUser = pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
+      	
+      	final PluginResult pluginResult = new PluginResult(
+      			PluginResult.Status.OK,isOtherUser);
+      	pluginResult.setKeepCallback(true);
+      	callbackContext.sendPluginResult(pluginResult);
+      	return true;
+      }else if (action.equals(enableSlidingMenu)) {
+        	
+        	final boolean enableSliding = (Boolean)args.get(0);
+        	Log.d(TAG, "inside enableSlidingMenu n isSlidingEnabled "+enableSliding);
+        	
+        	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                	cnrAct.enableSlidingMenu(enableSliding);
+                }
+            });
+          	final PluginResult pluginResult = new PluginResult(
+          			PluginResult.Status.OK);
+          	pluginResult.setKeepCallback(true);
+          	callbackContext.sendPluginResult(pluginResult);
+          	return true;
+          }
         return false;
     }
 }

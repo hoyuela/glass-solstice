@@ -223,11 +223,13 @@ dfs.crd.achome.pushNewMessageCountAsync = function()
                
                // reset the counter once message count service is called
                lastPushCountTime = new Date().getTime();
+			   retreivePushCount();
                }
                },
                error : function(jqXHR, textStatus, errorThrown) {
                hideSpinner();
                var code=getResponseStatusCode(jqXHR);
+			   retreivePushCount();
                //errorHandler(code,'','cardHome');
                }
                });
@@ -383,8 +385,20 @@ dfs.crd.achome.populateAchomePageDivs = function(responseData, pageId)
         
 		$("#card-info").html("Discover Card Ending "+responseData["lastFourAcctNbr"]);
 		$("#primaryCardmember").html("<h1>"+responseData["primaryCardmember"].nameOnCard+"</h1>");
+
+		if((responseData["statementBalance"]) < 0){
+					$("#cardHome_statementBalance").html("-$"+ splitNegativeBalance(responseData["statementBalance"]));
+					}
+			else{
 		$("#cardHome_statementBalance").html("$"+ numberWithCommas(responseData["statementBalance"]));
+			}
+			
+		if((responseData["currentBalance"]) < 0){
+					$("#cardHome_currentBalance").html("-$"+ splitNegativeBalance(responseData["currentBalance"]));
+					}
+			else{
 		$("#cardHome_currentBalance").html("$"+ numberWithCommas(responseData["currentBalance"]));
+			}	
 
 		if (responseData["paymentDueDate"] != null
 				&& responseData["paymentDueDate"] != '00000000') 
@@ -402,7 +416,12 @@ dfs.crd.achome.populateAchomePageDivs = function(responseData, pageId)
 			$("#cardHome_minimumPaymentDue").html(defaultVal);
 		}
 		if(!isEmpty(responseData["availableCredit"])){
+			if((responseData["availableCredit"]) < 0){
+					$("#cardHome_availableCredit").html("-$"+ splitNegativeBalance(responseData["availableCredit"]));
+					}
+			else{
 			$("#cardHome_availableCredit").html("$"+ numberWithCommas(responseData["availableCredit"]));
+			}	
 		}else{
 			$("#cardHome_availableCredit").html(defaultVal);
 		}
@@ -513,12 +532,22 @@ dfs.crd.achome.populateAccountSummaryPageDivs = function(responseData, pageId)
 	try{
 		var defaultVal = "$0.00";
 		if(!isEmpty(responseData["statementBalance"])){
+			if((responseData["statementBalance"]) < 0){
+					$("#accountSummary_statementBalance").html("-$"+ splitNegativeBalance(responseData["statementBalance"]));
+					}
+			else{
 			$("#accountSummary_statementBalance").html("$"+ numberWithCommas(responseData["statementBalance"]));
+			}
 		}else{
 			$("#accountSummary_statementBalance").html(defaultVal);
 		}
 		if(!isEmpty(responseData["currentBalance"])){
+			if((responseData["currentBalance"]) < 0){
+					$("#accountSummary_currentBalance").html("-$"+ splitNegativeBalance(responseData["currentBalance"]));
+					}
+			else{
 			$("#accountSummary_currentBalance").html("$"+ numberWithCommas(responseData["currentBalance"]));
+			}
 		}else{
 			$("#accountSummary_currentBalance").html(defaultVal);
 		}
@@ -563,7 +592,12 @@ dfs.crd.achome.populateAccountSummaryPageDivs = function(responseData, pageId)
 			$("#lastpaymentLine").css("display", "none");
 		} 
 		if(!isEmpty(responseData["availableCredit"])){
+			if((responseData["availableCredit"]) < 0){
+				$("#accountSummary_availableCredit").html("-$"+ splitNegativeBalance(responseData["availableCredit"]));
+				}
+			else{
 			$("#accountSummary_availableCredit").html( "$"+ numberWithCommas(responseData["availableCredit"]));
+				}	
 		}else{
 			$("#accountSummary_availableCredit").html(defaultVal);			
 		}
