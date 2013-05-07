@@ -18,3 +18,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-libraryjars libs/
+
+-dontwarn org.joda.convert.*
+
+
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}

@@ -19,15 +19,17 @@
 #   public *;
 #}
 
-##-libraryjars lib-compile/jsr305.jar
-#-dontwarn sun.misc.Unsafe
-#
-#-keep public class roboguice.**
-#
-#-keep class com.google.inject.Binder
-#-keepclassmembers class * {
-#    @com.google.inject.Inject <init>(...);
-#}
-#-keepclassmembers class * { 
-#    void *(**On*Event); 
-#}
+-dontwarn org.joda.convert.**
+-dontwarn com.xtremelabs.**
+-dontwarn org.junit.**
+
+-libraryjars <java.home>/lib/rt.jar
+-libraryjars ../ActionBarSherlock/bin/classes
+-libraryjars ../Android-PullToRefresh/bin/classes
+-libraryjars ../Caldroid/bin/classes
+-libraryjars ../Google-Play-Services/bin/classes
+-libraryjars ../SlidingMenuActivity/bin/classes
+
+-libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/effects.jar
+-libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/usb.jar
+-libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/maps.jar
