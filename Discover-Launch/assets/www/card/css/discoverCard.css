@@ -64,12 +64,13 @@ width: 90%;
 
 /* New Header for Push Notification */
 .borderBottomGrey{border-bottom: 1px dashed #a6a6a6 !important;}
-#edoLandingPage-pg .ui-focus {
+/*#edoLandingPage-pg .ui-focus {
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.27, #9BA2A4
  ), color-stop(1, #404649) ) !important;
  
-}
-#edoLandingPage-pg .ui-focus  .ui-btn-text{color:#ffffff !important; text-decoration:none; text-shadow:none;}
+}*/
+.selectedTabSort{color:#ffffff !important; text-decoration:none; text-shadow:none;}
+#edoLandingPage-pg .selectedTab .ui-btn-text{color:#ffffff !important; text-decoration:none; text-shadow:none;}
 #pg-header {
     padding-top: 3px;
     padding-bottom:3px;
@@ -933,10 +934,10 @@ ul.whitebg-list-view li:last-child,ul.transaction-list li:last-child {
 	/* border-radius: 4px !important;
 	 -webkit-border-radius:4px;*/
 	font-size: 14px;
-	font-weight: normal;
+	/*font-weight: normal;*/
 	background: #ffffff !important;
 	padding: 12px !important;
-	 font-weight: Normal !important;
+	font-weight: Normal !important;
 }
 ul.whitebg-list-view li:nth-child(2n+1), ul.transaction-list li:nth-child(2n+1){
  background: #f1f1f1 !important
@@ -1079,7 +1080,7 @@ display: block;
 float:left;
 }
 
-#alertHistory-pg .cls_description{font-weight:bold;}
+/*#alertHistory-pg .cls_description{font-weight:bold;}*/
 #alertHistory-pg ul.whitebg-list-view li .ui-block-c {
 width: 46%;
 font-size: 12px;
@@ -3254,11 +3255,15 @@ margin-right: 4px;}
 #exploreDiscoverLanding-pg .ui-listview .ui-btn-down-d,
 #customerServiceLanding-pg .ui-listview .ui-btn-down-d,
 #profileLanding-pg .ui-listview .ui-btn-down-d,
-#manageAlertsOverride-pg .ui-listview .ui-btn-down-d
+#manageAlertsOverride-pg .ui-listview .ui-btn-down-d,.rd-page .ui-listview .ui-btn-down-d,
+#browse-landing .suggestions .ui-btn-down-d,
+#browse-all-ecertificates  .suggestions .ui-btn-down-d,
+#browse-all-partners .partners .ui-btn-down-d, #browse-all-partners .partners .ui-btn-up-c
  {/*background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56%,#d6d6d6 100%) !important;*/
- box-shadow: inset 1px 0px 13px #d6d6d4;
+ box-shadow: inset 1px 0px 13px #d6d6d4 !important;
  color:#293033 !important;
  }
+
  #paymentStep2-pg #footnotes {margin-top:25px;}
 
 /****************************************** homeandcbb section signup button changes[STARTS HERE]****************************************/
@@ -3406,8 +3411,8 @@ font-weight: bold; display:block !important;padding-top: 7px;}
 
 input[type="tel"]:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus, textarea:focus{
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;    
-    -webkit-user-modify: read-write-plaintext-only !important;
-}
+   /* -webkit-user-modify: read-write-plaintext-only !important;*/
+} 
 .ui-slider-switch .ui-btn-active {
 text-shadow:none;
 font-weight: bold;
@@ -3473,6 +3478,7 @@ padding:0 !important}
 { background:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#dce3e5), color-stop(1%,#ffffff), color-stop(82%,#ffffff), color-stop(96%,#f5f7f8), color-stop(100%,#f5f7f8)) !important;}
 #redemption-landing footer li {background:none !important}
 .amt_bold{font-size:18px; font-weight:bold; color:#3d484d !important; margin-top:2px;}
+.payment_summary_due_date_red{font-size:18px; font-weight:bold; color:red !important; margin-top:2px;}
 .ui-btn-up-e, .ui-btn-hover-e{border:1px solid #c0c8cc !important;}
 /*#contactUs-pg  ul.margin-tb{ margin:10px 0 15px 0 !important;}*/
 #contactUs-pg  h3{margin:17px 0 12px 0;}
@@ -3494,7 +3500,7 @@ border:none !important; }
 #customerServiceFaqs-pg h3{margin-top:10px; color:#293033; font-size:18px;}
 #r4-wrap .transaction-list .fl p{ margin-bottom:3px !important;}
 #raf-status .bluelink{color:#3b4547 !important;}
-#redemption-landing .ui-content .ui-listview-inset  { border:0px}
+/*#redemption-landing .ui-content .ui-listview-inset  { border:0px}*/
 .calenderH3{width: 85%;
 font-size: 23px !important;
 color: #3f484c !important;}
@@ -3555,9 +3561,9 @@ text-transform: uppercase;
 .latePayWarnTbl li.row {border-bottom:1px solid #dce1e4}
 .latePayWarnTbl li ul li {padding;0px;}
 .latePayWarnTbl li.header {background:#e8eced; border-top:1px solid #dce1e4}
-.printico {background: url(../images/printerIcon.png) no-repeat left center; padding-left:20px; 
+.printico {/*background: url(../images/printerIcon.png) no-repeat left center; padding-left:20px; 
 -webkit-background-size: 15px 15px;
-background-size: 15px 15px; color:#3d484d !important; font-size:13px;}
+background-size: 15px 15px; */ color:#3d484d !important; font-size:13px;}
 
 /* retina image changes */
 @media ( -webkit-min-device-pixel-ratio :2) {
@@ -3673,3 +3679,11 @@ file:///D:/project/discover/discover-31.2/discover_13.2_svn/trunk/Discover-13.2-
 
 .ui-body-c .ui-link {color:#0267b1;}
 #personalizeCashPin2-pg .collapsible {border:0px;}
+#ecart-save-pin a#savePhoto{height:32px;float:right !important;line-height:21px;}
+#ecart-save-pin a#cancelSave{border:1px solid #c4c4c8 !important;color:#3c4348;height:32px;line-height:21px;background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dce3e5), color-stop(1%,#ffffff), color-stop(66%,#ffffff), color-stop(96%,#f5f7f8), color-stop(90%,#f5f7f8)) !important;}
+#viewMap-pg .ui-icon,#viewMap-pg .ui-icon-searchfield:after{
+background-image:url(../images/closeBtnSearch.png) !important;
+background-size:9px 8px !important;
+-webkit-background-size:9px 8px !important;
+background-position:5px 5px !important;
+}

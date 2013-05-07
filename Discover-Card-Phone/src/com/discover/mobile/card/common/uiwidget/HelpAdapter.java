@@ -70,10 +70,6 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 			holder = (HelpViewHolder) view.getTag();
 		}
 
-		if(detail == null) {
-			return view;
-		}
-		
 		if(detail.isShowArrow()){
 			final ImageSpan imagespan = 
 					new ImageSpan(this.getContext(), R.drawable.detail_disclosure_white_arrow, ImageSpan.ALIGN_BASELINE); 
@@ -127,7 +123,7 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	 * @author jthornton
 	 *
 	 */
-	private static class HelpViewHolder {
-		private TextView text;
+	private class HelpViewHolder {
+		public TextView text;
 	}
 }

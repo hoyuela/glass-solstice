@@ -308,6 +308,7 @@ function browseLandingLoad() {
 			navigation('../rewards/browse_all_ecert');
 		});
 		$("#browse-all-gcard").click(function() {
+			s.prop1 = 'HANDSET_REDEEM_PGC_ECERT_GIFT_CARD_BTN'; // campaign code
 			navigation('../rewards/browse_all_gcard');
 		});
 		$("#redeem-best-value").click(function() {

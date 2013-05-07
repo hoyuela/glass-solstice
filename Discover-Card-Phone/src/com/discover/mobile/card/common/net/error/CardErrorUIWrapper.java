@@ -86,13 +86,13 @@ public class CardErrorUIWrapper implements CardErrHandler
 
         // Decide on what help number to show
         final int helpResId = R.string.need_help_number_text;
-
+/*
         final Spannable sp = Spannable.Factory.getInstance().newSpannable(errorText);
 
         Linkify.addLinks(sp, Linkify.PHONE_NUMBERS);
-
+*/
         // Create a one button modal with text as per parameters provided
-        final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, sp.toString(), true, helpResId, R.string.ok);
+        final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, titleText, errorText, true, helpResId, R.string.ok);
 
         final ModalDefaultTopView view = (ModalDefaultTopView) modal.getTop();
 

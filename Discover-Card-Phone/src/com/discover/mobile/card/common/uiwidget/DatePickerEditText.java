@@ -12,7 +12,7 @@ import android.util.AttributeSet;
  *
  */
 public class DatePickerEditText extends CustomDatePickerElement {
-	protected final static int DOB_YEAR_OFFSET = 35;
+	protected final int DOB_YEAR_OFFSET = 35;
 
 	public DatePickerEditText(final Context context) {
 		super(context);

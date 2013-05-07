@@ -43,6 +43,9 @@ public class HelpWidget extends RelativeLayout{
 	/**View holding everything that can be expanded*/
 	private final RelativeLayout expandableView;
 
+	/**List containing the help icons*/
+	private final ListView list;
+
 	/**Adapter attached to the list*/
 	private final HelpAdapter adapter;
 
@@ -57,9 +60,7 @@ public class HelpWidget extends RelativeLayout{
 
 		help = (ImageButton) view.findViewById(R.id.help);
 		expandableView = (RelativeLayout) view.findViewById(R.id.help_list);
-		
-		/**List containing the help icons*/
-		final ListView list = (ListView) view.findViewById(R.id.help_list_view);
+		list = (ListView) view.findViewById(R.id.help_list_view);
 
 		adapter = new HelpAdapter(context, R.layout.help_list_item, new ArrayList<HelpItemGenerator>());
 		list.setAdapter(adapter);

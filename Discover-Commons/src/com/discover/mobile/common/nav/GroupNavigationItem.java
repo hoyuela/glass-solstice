@@ -34,7 +34,7 @@ final class GroupNavigationItem extends NavigationItem {
 		if(expanded) {
 			return;
 		}
-		final NavigationItem selectedItem = getAdapter().getSelectedItem();
+		final NavigationItem selectedItem = adapter.getSelectedItem();
 		if(selectedItem != null && selectedItem instanceof GroupNavigationItem) {
 			((GroupNavigationItem)selectedItem).collapse();
 		}
@@ -43,8 +43,8 @@ final class GroupNavigationItem extends NavigationItem {
 			child.show();
 		}
 		expanded = true;
-		NavigationIndex.setIndex(getAbsoluteIndex());
-		getAdapter().setSelectedItem(this);
+		NavigationIndex.setIndex(absoluteIndex);
+		adapter.setSelectedItem(this);
 	}
 
 	public void collapse() {
@@ -55,7 +55,7 @@ final class GroupNavigationItem extends NavigationItem {
 			child.hide();
 		}
 
-		getAdapter().setSelectedItem(null);
+		adapter.setSelectedItem(null);
 		NavigationIndex.setIndex(-1);
 		expanded = false;
 	}

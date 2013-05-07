@@ -21,10 +21,10 @@ import com.google.common.base.Strings;
 public class PushManageEditText extends ValidatedInputField{
 
 	/**Static string to replace the minimum amount*/
-	private static final String MINIMUM_AMT = "MINIMUM_AMT";
+	private static String MINIMUM_AMT = "MINIMUM_AMT";
 
 	/**Static string to replace the maximum amount*/
-	private static final String MAXIMUM_AMT = "MAXIMUM_AMT";
+	private static String MAXIMUM_AMT = "MAXIMUM_AMT";
 
 	/**Amount in the text box*/
 	private int amount;

@@ -1,26 +1,29 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.PLANNED_OUTAGE;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_ALREADY_TAKEN;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.*;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.common.collect.ImmutableMap;
 
 import com.discover.mobile.card.R;
 
@@ -59,444 +62,557 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
- * CreateLoginActivity - this is the final step of a user either going through "Forgot Both" or "Register".
- * This activity takes all of the information submitted from step 1 and adds it to the information gathered on
- * this activity. Then all of that information together is submitted to register (or re-register) the user.
- *  
+ * CreateLoginActivity - this is the final step of a user either going through
+ * "Forgot Both" or "Register". This activity takes all of the information
+ * submitted from step 1 and adds it to the information gathered on this
+ * activity. Then all of that information together is submitted to register (or
+ * re-register) the user.
+ * 
  * @author scottseward
- *
+ * 
  */
-public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements CardErrorHandlerUi , OnClickListener{
-	private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
+public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
+        CardErrorHandlerUi, OnClickListener {
+    private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
 
-	private CreateLoginDetails formDataTwo;
+    private CreateLoginDetails formDataTwo;
 
-	private static final String UPDATE_PASS_CONFIRM_STATE = "a";
-	private static final String UPDATE_ID_CONFIRM_STATE ="b";
-	private static final String UPDATE_EMAIL = "c";
-	private static final String ERROR_1 = "d";
-	private static final String EROR_STRING_1 = "e";
-	private static final String ERROR_2 = "f";
-	private static final String ERROR_STRING_2 = "g";
-	private static final String SERVER_ERROR = "h";
-	private static final String SERVER_ERROR_STRING = "i";
-	private static final String UPDATE_PASSWORD_STATE = "k";
-	private static final String UPDATE_ID_STATE = "l";
-	private static final String REFERER = "forgot-both-step2-pg";
+    private static final String UPDATE_PASS_CONFIRM_STATE = "a";
+    private static final String UPDATE_ID_CONFIRM_STATE = "b";
+    private static final String UPDATE_EMAIL = "c";
+    private static final String ERROR_1 = "d";
+    private static final String EROR_STRING_1 = "e";
+    private static final String ERROR_2 = "f";
+    private static final String ERROR_STRING_2 = "g";
+    private static final String SERVER_ERROR = "h";
+    private static final String SERVER_ERROR_STRING = "i";
+    private static final String UPDATE_PASSWORD_STATE = "k";
+    private static final String UPDATE_ID_STATE = "l";
+    private static final String REFERER = "forgot-both-step2-pg";
+    private static final String ERROR_ICON = "m";
 
-	//TEXT LABELS
-	private TextView provideFeedback ;
-	
-	//ERROR LABELS
-	private TextView mainErrorMessageLabel;
-	private TextView mainErrorMessageLabelTwo;
-	private TextView errorMessageLabel;
-	private TextView idConfirmErrorLabel;
-	private TextView passConfirmErrorLabel;
-	private TextView emailErrorLabel;
+    // TEXT LABELS
+    private TextView provideFeedback;
 
-	//SCROLL VIEW
-	private ScrollView mainScrollView;
+    // ERROR LABELS
+    private TextView mainErrorMessageLabel;
+    private TextView mainErrorMessageLabelTwo;
+    private TextView errorMessageLabel;
+    private TextView idConfirmErrorLabel;
+    private TextView passConfirmErrorLabel;
+    private TextView emailErrorLabel;
+    private ImageView errorIcon ; 
 
-	//INPUT FIELDS
-	private EmailEditText emailField;
-	private CredentialStrengthEditText idField;
-	private ConfirmationEditText idConfirmField;
-	private CredentialStrengthEditText passField;
-	private ConfirmationEditText passConfirmField;
+    // SCROLL VIEW
+    private ScrollView mainScrollView;
 
-	private boolean idIsError = false;
-	private boolean isPassError = false;
-	private boolean isEmailError = false;
-	private boolean isError1 = false;
-	private boolean isError2 = false;
-	private boolean isServerError = false;
+    // INPUT FIELDS
+    private EmailEditText emailField;
+    private CredentialStrengthEditText idField;
+    private ConfirmationEditText idConfirmField;
+    private CredentialStrengthEditText passField;
+    private ConfirmationEditText passConfirmField;
 
-	//HEADER PROGRESS BAR
-	private HeaderProgressIndicator headerProgressIndicator;
+    private boolean idIsError = false;
+    private boolean isPassError = false;
+    private boolean isEmailError = false;
+    private boolean isError1 = false;
+    private boolean isError2 = false;
+    private boolean isServerError = false;
 
-	//BUTTONS
-	private final Activity currentActivity = this;
+    // HEADER PROGRESS BAR
+    private HeaderProgressIndicator headerProgressIndicator;
 
-	@Override
-	public void onCreate(final Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+    // BUTTONS
+    private final Activity currentActivity = this;
 
-		setContentView(R.layout.register_create_credentials);
-		loadAllViews();
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		attachErrorLabelsToFields();
-		mergeAccountDetails();
+        setContentView(R.layout.register_create_credentials);
+        loadAllViews();
 
-		TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
-		setupStrengthBars();
-		setupConfirmationFields();
-		getPreviousScreenType();
+        attachErrorLabelsToFields();
+        mergeAccountDetails();
 
-		setupHeaderProgress();
-		setupHelpNumber();
-		provideFeedback.setOnClickListener(this);
-		restoreState(savedInstanceState);
-	}
+        TrackingHelper.trackPageView(AnalyticsPage.FORGOT_BOTH_STEP2);
+        setupStrengthBars();
+        setupConfirmationFields();
+        getPreviousScreenType();
 
-	protected void getPreviousScreenType() {
-		isForgotFlow = getIntent().getBooleanExtra(IntentExtraKey.SCREEN_FORGOT_BOTH, false);
-	}
+        setupHeaderProgress();
+        setupHelpNumber();
+        provideFeedback.setOnClickListener(this);
+        restoreState(savedInstanceState);
+    }
 
-	/**
-	 * Resume the fragment
-	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-		showErrors();
-	}
+    protected void getPreviousScreenType() {
+        isForgotFlow = getIntent().getBooleanExtra(
+                IntentExtraKey.SCREEN_FORGOT_BOTH, false);
+    }
 
-	private void showErrors() {
-		if(isEmailError){
-			emailField.setErrors();
-		}
-		if(idIsError){
-			idConfirmField.setErrors();
-		} else{
-			idConfirmField.setupDefaultAppearance();
-		}
-		if(isPassError){
-			passConfirmField.setErrors();
-		} else{
-			passConfirmField.setupDefaultAppearance();
-		}
-		if(isError1){
-			mainErrorMessageLabel.setVisibility(View.VISIBLE);
-		}
-		if(isError2){
-			mainErrorMessageLabelTwo.setVisibility(View.VISIBLE);
-		}
-		if(isServerError){
-			errorMessageLabel.setVisibility(View.VISIBLE);
-		}	
-	}
+    /**
+     * Resume the fragment
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        showErrors();
+    }
 
-	/**
-	 * Save the state of the screen.
-	 */
-	@Override
-	public void onSaveInstanceState(final Bundle outState){
-		super.onSaveInstanceState(outState);
+    private void showErrors() {
+        if (isEmailError) {
+            emailField.setErrors();
+        }
+        if (idIsError) {
+            idConfirmField.setErrors();
+        } else {
+            idConfirmField.setupDefaultAppearance();
+        }
+        if (isPassError) {
+            passConfirmField.setErrors();
+        } else {
+            passConfirmField.setupDefaultAppearance();
+        }
+        if (isError1) {
+            mainErrorMessageLabel.setVisibility(View.VISIBLE);
+        }
+        if (isError2) {
+            mainErrorMessageLabelTwo.setVisibility(View.VISIBLE);
+            errorIcon.setVisibility(View.VISIBLE);
+        }
+        if (isServerError) {
+            errorMessageLabel.setVisibility(View.VISIBLE);
+        }
+    }
 
-		outState.putBoolean(UPDATE_ID_STATE, idField.isInDefaultState);
-		outState.putBoolean(UPDATE_EMAIL, emailField.isInErrorState);
-		outState.putBoolean(UPDATE_ID_CONFIRM_STATE, idConfirmField.isInErrorState);
-		outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
-		outState.putBoolean(UPDATE_PASS_CONFIRM_STATE, passConfirmField.isInErrorState);
-		if(mainErrorMessageLabel.getVisibility() == View.VISIBLE){
-			outState.putBoolean(ERROR_1, true);
-			outState.putString(EROR_STRING_1, mainErrorMessageLabel.getText().toString());
-		}
-		if(mainErrorMessageLabelTwo.getVisibility() == View.VISIBLE){
-			outState.putBoolean(ERROR_2, true);
-			outState.putString(ERROR_STRING_2, mainErrorMessageLabelTwo.getText().toString());
-		}
-		if(errorMessageLabel.getVisibility() == View.VISIBLE){
-			outState.putBoolean(SERVER_ERROR, true);
-			outState.putString(SERVER_ERROR_STRING, errorMessageLabel.getText().toString());
-		}
-	}
+    /**
+     * Save the state of the screen.
+     */
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
 
-	/**
-	 * Restore the state of the screen.
-	 * 
-	 * @param savedInstanceState - a Bundle containing saved state information.
-	 */
-	public void restoreState(final Bundle savedInstanceState){
-		if(savedInstanceState != null){
-			idField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_ID_STATE);
-			passField.isInDefaultState = savedInstanceState.getBoolean(UPDATE_PASSWORD_STATE);
+        outState.putBoolean(UPDATE_ID_STATE, idField.isInDefaultState);
+        outState.putBoolean(UPDATE_EMAIL, emailField.isInErrorState);
+        outState.putBoolean(UPDATE_ID_CONFIRM_STATE,
+                idConfirmField.isInErrorState);
+        outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
+        outState.putBoolean(UPDATE_PASS_CONFIRM_STATE,
+                passConfirmField.isInErrorState);
+        if (mainErrorMessageLabel.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(ERROR_1, true);
+            outState.putString(EROR_STRING_1, mainErrorMessageLabel.getText()
+                    .toString());
+        }
+        if (mainErrorMessageLabelTwo.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(ERROR_2, true);
+            outState.putBoolean(ERROR_ICON, true);
+            outState.putString(ERROR_STRING_2, mainErrorMessageLabelTwo
+                    .getText().toString());
+        }
+        if (errorMessageLabel.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(SERVER_ERROR, true);
+            outState.putString(SERVER_ERROR_STRING, errorMessageLabel.getText()
+                    .toString());
+        }
+    }
 
-			idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE, false);
-			isPassError = savedInstanceState.getBoolean(UPDATE_PASS_CONFIRM_STATE, false);
-			isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);
-			isError1 = savedInstanceState.getBoolean(ERROR_1, false);
-			isError2 = savedInstanceState.getBoolean(ERROR_2, false);
-			isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
-			mainErrorMessageLabel.setText(savedInstanceState.getString(EROR_STRING_1));
-			mainErrorMessageLabelTwo.setText(savedInstanceState.getString(ERROR_STRING_2));
-			errorMessageLabel.setText(savedInstanceState.getString(SERVER_ERROR_STRING));
-		}
-	}
+    /**
+     * Restore the state of the screen.
+     * 
+     * @param savedInstanceState
+     *            - a Bundle containing saved state information.
+     */
+    public void restoreState(final Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            idField.isInDefaultState = savedInstanceState
+                    .getBoolean(UPDATE_ID_STATE);
+            passField.isInDefaultState = savedInstanceState
+                    .getBoolean(UPDATE_PASSWORD_STATE);
 
-	/**
-	 * Attach error lables to be hidden/shown for these input fields based on the valididty of their input.
-	 */
-	private void attachErrorLabelsToFields() {
-		emailField.attachErrorLabel(emailErrorLabel);
-		idConfirmField.attachErrorLabel(idConfirmErrorLabel);
-		passConfirmField.attachErrorLabel(passConfirmErrorLabel);
-	}
+            idIsError = savedInstanceState.getBoolean(UPDATE_ID_CONFIRM_STATE,
+                    false);
+            isPassError = savedInstanceState.getBoolean(
+                    UPDATE_PASS_CONFIRM_STATE, false);
+            isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);
+            isError1 = savedInstanceState.getBoolean(ERROR_1, false);
+            isError2 = savedInstanceState.getBoolean(ERROR_2, false);
+            isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
+            mainErrorMessageLabel.setText(savedInstanceState
+                    .getString(EROR_STRING_1));
+            mainErrorMessageLabelTwo.setText(savedInstanceState
+                    .getString(ERROR_STRING_2));
+            errorMessageLabel.setText(savedInstanceState
+                    .getString(SERVER_ERROR_STRING));
+        }
+    }
 
-	/**
-	 * Checks to see if all information on the screen is valid.
-	 * @return Returns true if all information on the screen is valid.
-	 */
-	private boolean isFormCompleteAndValid() {
-		return emailField.isValid() && 
-				idField.isValid() && idConfirmField.isValid() && 
-				passField.isValid() && passConfirmField.isValid();
-	}
+    /**
+     * Attach error lables to be hidden/shown for these input fields based on
+     * the valididty of their input.
+     */
+    private void attachErrorLabelsToFields() {
+        emailField.attachErrorLabel(emailErrorLabel);
+        idConfirmField.attachErrorLabel(idConfirmErrorLabel);
+        passConfirmField.attachErrorLabel(passConfirmErrorLabel);
+    }
 
-	/**
-	 * Assign all local variables to view elements that we will need to access.
-	 */
-	private void loadAllViews() {
-		passConfirmField = (ConfirmationEditText) findViewById(R.id.account_info_two_pass_confirm_field);
-		passField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_pass_field);
-		idConfirmField = (ConfirmationEditText)findViewById(R.id.account_info_two_id_confirm_field);
-		idField = (CredentialStrengthEditText)findViewById(R.id.account_info_two_id_field);
-		emailField = (EmailEditText)findViewById(R.id.account_info_two_email_field);
+    /**
+     * Checks to see if all information on the screen is valid.
+     * 
+     * @return Returns true if all information on the screen is valid.
+     */
+    private boolean isFormCompleteAndValid() {
+        return emailField.isValid() && idField.isValid()
+                && idConfirmField.isValid() && passField.isValid()
+                && passConfirmField.isValid();
+    }
 
-		mainErrorMessageLabelTwo = (TextView)findViewById(R.id.account_info_error_label_two);
-		errorMessageLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
-		mainErrorMessageLabel = (TextView)findViewById(R.id.account_info_main_error_label);
-		idConfirmErrorLabel = (TextView)findViewById(R.id.account_info_id_confirm_error_label);
-		emailErrorLabel = (TextView)findViewById(R.id.account_info_email_error_label);
-		passConfirmErrorLabel = (TextView)findViewById(R.id.account_info_pass_two_confirm_error_label);
+    /**
+     * Assign all local variables to view elements that we will need to access.
+     */
+    private void loadAllViews() {
+        passConfirmField = (ConfirmationEditText) findViewById(R.id.account_info_two_pass_confirm_field);
+        passField = (CredentialStrengthEditText) findViewById(R.id.account_info_two_pass_field);
+        idConfirmField = (ConfirmationEditText) findViewById(R.id.account_info_two_id_confirm_field);
+        idField = (CredentialStrengthEditText) findViewById(R.id.account_info_two_id_field);
+        emailField = (EmailEditText) findViewById(R.id.account_info_two_email_field);
 
-		mainScrollView = (ScrollView)findViewById(R.id.main_scroll);
+        mainErrorMessageLabelTwo = (TextView) findViewById(R.id.account_info_error_label_two);
+        errorIcon = (ImageView)findViewById(R.id.icon);
+        errorMessageLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
+        mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
+        idConfirmErrorLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
+        emailErrorLabel = (TextView) findViewById(R.id.account_info_email_error_label);
+        passConfirmErrorLabel = (TextView) findViewById(R.id.account_info_pass_two_confirm_error_label);
 
-		headerProgressIndicator = (HeaderProgressIndicator)findViewById(R.id.header);
-		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+        mainScrollView = (ScrollView) findViewById(R.id.main_scroll);
 
-	}
+        headerProgressIndicator = (HeaderProgressIndicator) findViewById(R.id.header);
+        provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
 
-	/**
-	 * Attach password and id confirmation fields to their respective primary fields.
-	 */
-	private void setupConfirmationFields() {
-		idConfirmField.attachEditTextToMatch(idField);
-		passConfirmField.attachEditTextToMatch(passField);
-	}
+    }
 
-	/**
-	 * Setup the header progress UI element. With proper text and showing that we are on step 2 of a 3 step process.
-	 */
-	private void setupHeaderProgress() {
-		headerProgressIndicator.initChangePasswordHeader(1);
-		headerProgressIndicator.setTitle(R.string.enter_info, R.string.create_login, R.string.confirm);
-		headerProgressIndicator.setPosition(1);
-	}
+    /**
+     * Attach password and id confirmation fields to their respective primary
+     * fields.
+     */
+    private void setupConfirmationFields() {
+        idConfirmField.attachEditTextToMatch(idField);
+        passConfirmField.attachEditTextToMatch(passField);
+    }
 
-	/**
-	 * Set the type of input that the strength bars should check against.
-	 */
-	private void setupStrengthBars() {
-		idField.setCredentialType(CredentialStrengthEditText.USERID);
-		passField.setCredentialType(CredentialStrengthEditText.PASSWORD);
-	}
+    /**
+     * Setup the header progress UI element. With proper text and showing that
+     * we are on step 2 of a 3 step process.
+     */
+    private void setupHeaderProgress() {
+        headerProgressIndicator.initChangePasswordHeader(1);
+        headerProgressIndicator.setTitle(R.string.enter_info,
+                R.string.create_login, R.string.confirm);
+        headerProgressIndicator.setPosition(1);
+    }
 
-	/**
-	 * Take the account details POJO from step 1 and merge it into a POJO for step 2.
-	 */
-	private void mergeAccountDetails() {
-		final AccountInformationDetails formDataOne = 
-				(AccountInformationDetails)getIntent().getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
+    /**
+     * Set the type of input that the strength bars should check against.
+     */
+    private void setupStrengthBars() {
+        idField.setCredentialType(CredentialStrengthEditText.USERID);
+        passField.setCredentialType(CredentialStrengthEditText.PASSWORD);
+    }
 
-		if(formDataOne != null){
-			formDataTwo = new CreateLoginDetails();
+    /**
+     * Take the account details POJO from step 1 and merge it into a POJO for
+     * step 2.
+     */
+    private void mergeAccountDetails() {
+        final AccountInformationDetails formDataOne = (AccountInformationDetails) getIntent()
+                .getSerializableExtra(IntentExtraKey.REGISTRATION1_DETAILS);
 
-			formDataTwo.acctNbr = formDataOne.acctNbr;
-			formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
-			formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
-			formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
-			formDataTwo.expirationMonth = formDataOne.expirationMonth;
-			formDataTwo.expirationYear = formDataOne.expirationYear;
-			formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
-		}else{
-			Log.e(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
-		}
-	}
+        if (formDataOne != null) {
+            formDataTwo = new CreateLoginDetails();
 
-	/**
-	 * If all of the form information is complete, then save the info in our POJO and submit it to the server
-	 * for server side validation. Otherwise, scroll to the top of the page and display an error.
-	 * @param v
-	 */
-	public void checkInputsThenSubmit(final View v){
-		CommonUtils.setViewGone(mainErrorMessageLabel);
+            formDataTwo.acctNbr = formDataOne.acctNbr;
+            formDataTwo.dateOfBirthDay = formDataOne.dateOfBirthDay;
+            formDataTwo.dateOfBirthMonth = formDataOne.dateOfBirthMonth;
+            formDataTwo.dateOfBirthYear = formDataOne.dateOfBirthYear;
+            formDataTwo.expirationMonth = formDataOne.expirationMonth;
+            formDataTwo.expirationYear = formDataOne.expirationYear;
+            formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
+        } else {
+            Log.e(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
+        }
+    }
 
-		emailField.updateAppearanceForInput();
-		passField.updateAppearanceForInput();
-		idField.updateAppearanceForInput();
-		passConfirmField.updateAppearanceForInput();
-		idConfirmField.updateAppearanceForInput();
+    /**
+     * If all of the form information is complete, then save the info in our
+     * POJO and submit it to the server for server side validation. Otherwise,
+     * scroll to the top of the page and display an error.
+     * 
+     * @param v
+     */
+    public void checkInputsThenSubmit(final View v) {
+        CommonUtils.setViewGone(mainErrorMessageLabel);
 
-		if(isFormCompleteAndValid()){
-			formDataTwo.email = emailField.getText().toString();
-			formDataTwo.password = passField.getText().toString();
-			formDataTwo.passwordConfirm = formDataTwo.password;
-			formDataTwo.userId = idField.getText().toString();
-			formDataTwo.userIdConfirm = formDataTwo.userId;
-			submitFormInfo();
-		}
-		else {
-			mainScrollView.smoothScrollTo(0, 0);
-			CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
-					R.string.account_info_bad_input_error_text, currentActivity);
-		}
+        emailField.updateAppearanceForInput();
+        passField.updateAppearanceForInput();
+        idField.updateAppearanceForInput();
+        passConfirmField.updateAppearanceForInput();
+        idConfirmField.updateAppearanceForInput();
 
-	}
+        if (isFormCompleteAndValid()) {
+            formDataTwo.email = emailField.getText().toString();
+            formDataTwo.password = passField.getText().toString();
+            formDataTwo.passwordConfirm = formDataTwo.password;
+            formDataTwo.userId = idField.getText().toString();
+            formDataTwo.userIdConfirm = formDataTwo.userId;
+            submitFormInfo();
+        } else {
+            mainScrollView.smoothScrollTo(0, 0);
+            CommonUtils
+                    .showLabelWithStringResource(mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+        }
 
-	/**
-	 * Submit all of the information present on this screen along with the information from
-	 * register/forgot both step 1. On success, retrieve the users account information.
-	 */
-	private void submitFormInfo() {
-		/*final ProgressDialog progress = 
-				ProgressDialog.show(this, "Discover", "Loading...", true);
+    }
 
-		//Lock orientation while request is being processed
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+    /**
+     * Submit all of the information present on this screen along with the
+     * information from register/forgot both step 1. On success, retrieve the
+     * users account information.
+     */
+    private void submitFormInfo() {
+     /*   final ProgressDialog progress = ProgressDialog.show(this, "Discover",
+                "Loading...", true);
 
-		final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = 
-				new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
+        // Lock orientation while request is being processed
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
-			@Override
-			public void complete(final NetworkServiceCall<?> sender, final Object result) {
-				//Unlock orientation after request has been processed
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-			}
+        final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
 
-			@Override
-			public void success(final NetworkServiceCall<?> sender, 
-					final RegistrationConfirmationDetails responseData) {
-				progress.dismiss();
-				confirmationDetails = responseData;
-				retrieveAccountDetailsFromServer();
-			}
+            @Override
+            public void complete(final NetworkServiceCall<?> sender,
+                    final Object result) {
+                // Unlock orientation after request has been processed
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+            }
 
-			@Override
-			public boolean handleErrorResponse(final NetworkServiceCall<?> sender, 
-					final ErrorResponse<?> errorResponse) {
-				progress.dismiss();
-				mainScrollView.smoothScrollTo(0, 0);
+            @Override
+            public void success(final NetworkServiceCall<?> sender,
+                    final RegistrationConfirmationDetails responseData) {
+                progress.dismiss();
+                confirmationDetails = responseData;
+                retrieveAccountDetailsFromServer();
+            }
 
-				switch (errorResponse.getHttpStatusCode()) {
-				default:
-					Log.e(TAG, "Create Login submission error : " + errorResponse.toString());
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
-							R.string.unkown_error_text, currentActivity);
-					return true;
-				}
+            @Override
+            public boolean handleErrorResponse(
+                    final NetworkServiceCall<?> sender,
+                    final ErrorResponse<?> errorResponse) {
+                progress.dismiss();
+                mainScrollView.smoothScrollTo(0, 0);
 
-			}
+                switch (errorResponse.getHttpStatusCode()) {
+                default:
+                    Log.e(TAG, "Create Login submission error : "
+                            + errorResponse.toString());
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel, R.string.unkown_error_text,
+                            currentActivity);
+                    return true;
+                }
 
-			@Override
-			public void failure(final NetworkServiceCall<?> sender, final Throwable executionException) {
-				//Catch all exception handler
-				final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-				exceptionHandler.handleFailure(sender, executionException);
-			}
+            }
 
-			@Override
-			public boolean handleMessageErrorResponse(final NetworkServiceCall<?> sender, 
-					final JsonMessageErrorResponse messageErrorResponse) {
-				progress.dismiss();
-				mainScrollView.smoothScrollTo(0, 0);
+            @Override
+            public void failure(final NetworkServiceCall<?> sender,
+                    final Throwable executionException) {
+                // Catch all exception handler
+                final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
+                exceptionHandler.handleFailure(sender, executionException);
+            }
 
-				switch(messageErrorResponse.getMessageStatusCode()){
-				case REG_AUTHENTICATION_PROBLEM: //Provided information was incorrect.
-					CommonUtils.showLabelWithStringResource(errorMessageLabel, 
-							R.string.account_info_bad_input_error_text, currentActivity);
-					return true;
-				case BAD_ACCOUNT_STATUS: //Last attempt with this account number warning.
-					CommonUtils.showLabelWithStringResource(errorMessageLabel, 
-							R.string.login_attempt_warning, currentActivity);
-					return true;
-				case ID_AND_PASS_EQUAL:
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
-							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
-							R.string.account_info_two_id_matches_pass_error_text, currentActivity);
-					return true;
-				case ID_AND_SSN_EQUAL:
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
-							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
-							R.string.id_and_ssn_match_text, currentActivity);
-					return true;
-				case ID_ALREADY_TAKEN:
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabel, 
-							R.string.account_info_bad_input_error_text, currentActivity);
-					CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo, 
-							R.string.account_info_two_username_in_use_error_text, currentActivity);
-					return true;
-				case PLANNED_OUTAGE:
-					showErrorModal(R.string.could_not_complete_request, R.string.unknown_error, false);
-					return true;
+            @Override
+            public boolean handleMessageErrorResponse(
+                    final NetworkServiceCall<?> sender,
+                    final JsonMessageErrorResponse messageErrorResponse) {
+                progress.dismiss();
+                mainScrollView.smoothScrollTo(0, 0);
 
-				default:
-					Log.e(TAG, "UNHANDLED ERROR " + messageErrorResponse.toString());
-					return false;
-				}
-			}
-		};
+                switch (messageErrorResponse.getMessageStatusCode()) {
+                case REG_AUTHENTICATION_PROBLEM: // Provided information was
+                                                 // incorrect.
+                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+                    return true;
+                case BAD_ACCOUNT_STATUS: // Last attempt with this account
+                                         // number warning.
+                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                            R.string.login_attempt_warning, currentActivity);
+                    return true;
+                case ID_AND_PASS_EQUAL:
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+                    CommonUtils
+                            .showLabelWithStringResource(
+                                    mainErrorMessageLabelTwo,
+                                    R.string.account_info_two_id_matches_pass_error_text,
+                                    currentActivity);
+                    return true;
+                case ID_AND_SSN_EQUAL:
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabelTwo,
+                            R.string.id_and_ssn_match_text, currentActivity);
+                    return true;
+                case ID_ALREADY_TAKEN:
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+                    CommonUtils
+                            .showLabelWithStringResource(
+                                    mainErrorMessageLabelTwo,
+                                    R.string.account_info_two_username_in_use_error_text,
+                                    currentActivity);
+                    return true;
+                case PLANNED_OUTAGE:
+                    showErrorModal(R.string.could_not_complete_request,
+                            R.string.unknown_error, false);
+                    return true;
 
-		final CreateLoginCall registrationCall = 
-				new CreateLoginCall(this, callback, formDataTwo);
-		registrationCall.submit();*/
-		   CardEventListener cardEventListener = new CardEventListener() {
-	            
-	            @Override
-	            public void onSuccess(Object data) {
-	                // TODO Auto-generated method stub
-	                RegistrationConfirmationDetails registrationConfirmationDetails =  (RegistrationConfirmationDetails)data;
-	                retrieveAccountDetailsFromServer(registrationConfirmationDetails);
-	            }
-	            
-	            @Override
-	            public void OnError(Object data) {
-	                // TODO Auto-generated method stub
-	                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-	                        (CardErrorHandlerUi) CreateLoginActivity.this);
-	                cardErrorResHandler.handleCardError((CardErrorBean) data);
-	            }
-	        };
-	           WSRequest request = new WSRequest();
+                default:
+                    Log.e(TAG,
+                            "UNHANDLED ERROR "
+                                    + messageErrorResponse.toString());
+                    return false;
+                }
+            }
+        };
 
-	            // Setting the headers available for the service
-	            HashMap<String, String> headers = request.getHeaderValues();
-	            headers.put("X-SEC-Token", "");
-	            String url = NetworkUtility.getWebServiceUrl(this,
-	                    R.string.createlogin_url);
+        final CreateLoginCall registrationCall = new CreateLoginCall(this,
+                callback, formDataTwo);
+        registrationCall.submit();*/
+        CardEventListener cardEventListener = new CardEventListener() {
 
-	            request.setUrl(url);
-	            request.setHeaderValues(headers);
-	            request.setMethodtype("POST");
+            @Override
+            public void onSuccess(Object data) {
+                // TODO Auto-generated method stub
+                RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
+                retrieveAccountDetailsFromServer(registrationConfirmationDetails);
+            }
 
-	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            @Override
+            public void OnError(Object data) {
+                // TODO Auto-generated method stub
 
-	            try {
-	                JacksonObjectMapperHolder.getMapper().writeValue(baos,
-	                        formDataTwo);
-	            } catch (JsonGenerationException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            } catch (JsonMappingException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            } catch (IOException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
+                String errorCode = ((CardErrorBean) data).getErrorCode();
+                String[] errorMsgSplit = errorCode.split("_");
+                final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
+                
+                switch (errorCodeNumber) {
+                case REG_AUTHENTICATION_PROBLEM_SECOND :
+                case REG_AUTHENTICATION_PROBLEM: // Provided information was
+                                                 // incorrect.
+                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);
+                    break;
+                case ID_AND_PASS_EQUAL:
+              /*      CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);*/
+                    CommonUtils
+                            .showLabelWithStringResource(
+                                    mainErrorMessageLabelTwo,
+                                    R.string.account_info_two_id_matches_pass_error_text,
+                                    currentActivity);
+                    CommonUtils.setViewVisible(errorIcon);
+                    break;
+                case ID_AND_SSN_EQUAL:
+                /*    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);*/
+                    CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabelTwo,
+                            R.string.id_and_ssn_match_text, currentActivity);
+                    CommonUtils.setViewVisible(errorIcon);
+                    break;
+                case ID_ALREADY_TAKEN:
+              /*      CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentActivity);*/
+                    CommonUtils
+                            .showLabelWithStringResource(
+                                    mainErrorMessageLabelTwo,
+                                    R.string.account_info_two_username_in_use_error_text,
+                                    currentActivity);
+                    CommonUtils.setViewVisible(errorIcon);
+                    break;
+                    
+                default:
+                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            (CardErrorHandlerUi) CreateLoginActivity.this);
+                    cardErrorResHandler.handleCardError((CardErrorBean) data);
 
-	            request.setInput(baos.toByteArray());
+                }
 
-	            WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, new RegistrationConfirmationDetails(),
-	                    "Discover", "Loading...", cardEventListener);
-	            serviceCall.execute(request);
-	}
+            }
+        };
+        WSRequest request = new WSRequest();
+        final String authString = NetworkUtility.getAuthorizationString(
+                formDataTwo.acctNbr, formDataTwo.password);
+        // Setting the headers available for the service
+        HashMap<String, String> headers = request.getHeaderValues();
+        headers.put("Authorization", authString);
+        headers.put("X-Override-UID", "true");
+        String url = NetworkUtility.getWebServiceUrl(this,
+                R.string.createlogin_url);
 
-    /* (non-Javadoc)
-     * @see com.discover.mobile.card.error.CardErrorHandlerUi#getCardErrorHandler()
+        request.setUrl(url);
+        request.setHeaderValues(headers);
+        request.setMethodtype("POST");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try {
+            JacksonObjectMapperHolder.getMapper().writeValue(baos, formDataTwo);
+        } catch (JsonGenerationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        request.setInput(baos.toByteArray());
+
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
+                new RegistrationConfirmationDetails(), "Discover",
+                "Loading...", cardEventListener);
+        serviceCall.execute(request);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.discover.mobile.card.error.CardErrorHandlerUi#getCardErrorHandler()
      */
     @Override
     public CardErrHandler getCardErrorHandler() {
@@ -510,6 +626,27 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep  implements C
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);
         }
+    }
+
+    @Override
+    public TextView getErrorLabel() {
+        // TODO Auto-generated method stub
+        return mainErrorMessageLabelTwo;
+    }
+
+    @Override
+    public List<EditText> getInputFields() {
+        // TODO Auto-generated method stub
+        final List<EditText> inputFields = new ArrayList<EditText>();
+        inputFields.add(idField);
+        inputFields.add(passField);
+        return inputFields;
+    }
+
+    @Override
+    public Context getContext() {
+        // TODO Auto-generated method stub
+        return this;
     }
 
 }

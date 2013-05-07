@@ -258,7 +258,7 @@ dfs.crd.sa.errors = {};
 dfs.crd.sa.errors.SKIPPED_CAN_NOT_AUTHENTICATE = "1403";
 dfs.crd.sa.errors.SKIPPED_ERROR = "1404";
 dfs.crd.sa.errors.RECHALLENGE = "1405";
-dfs.crd.sa.errors.SKIPPED_ERROR = "1404";
+dfs.crd.sa.errors.LOCK_OUT = "1402";
 
 dfs.crd.sa.isSkipped = function() {
 	return (dfs.crd.sa.errorCode === dfs.crd.sa.errors.SKIPPED_CAN_NOT_AUTHENTICATE || dfs.crd.sa.errorCode === dfs.crd.sa.errors.SKIPPED_ERROR);
@@ -272,8 +272,8 @@ dfs.crd.sa.handleSAError = function() {
 		var SKIPPED_CAN_NOT_AUTHENTICATE = dfs.crd.sa.errors.SKIPPED_CAN_NOT_AUTHENTICATE;
 		var SKIPPED_ERROR = dfs.crd.sa.errors.SKIPPED_ERROR;
 		var RECHALLENGE = dfs.crd.sa.errors.RECHALLENGE;
-		var SKIPPED_ERROR = dfs.crd.sa.errors.SKIPPED_ERROR;
 		var DEFAULT_DENY_MESSAGE = "The answer does  not match your Account information.";
+		var LOCK_OUT = dfs.crd.sa.errors.LOCK_OUT;
 		dfs.crd.sa.clearErrorFromDiv();
 		$("#answer").val("");
 		switch (dfs.crd.sa.errorCode) {

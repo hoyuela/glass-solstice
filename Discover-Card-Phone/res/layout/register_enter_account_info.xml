@@ -20,16 +20,18 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:padding="@dimen/forms_inner_padding" >
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding" >
 
             <TextView
                 android:id="@+id/account_info_label_one_label"
                 style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_error_label"
+                android:layout_below="@+id/account_info_error_label_layout"
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -54,7 +56,6 @@
                 android:layout_below="@+id/account_info_card_account_number_error_label"
                 android:layout_marginTop="2dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
                 android:paddingTop="4dp"
                 android:text="@string/account_info_input_restrictions_label"
                 android:textColor="@color/sub_copy"
@@ -71,12 +72,33 @@
                 android:text="@string/invalid_input" >
             </TextView>
 
-            <TextView
-                android:id="@+id/account_info_error_label"
-                style="@style/error_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false" />
+            <RelativeLayout
+                android:id="@+id/account_info_error_label_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <ImageView
+                    android:id="@+id/icon"
+                    style="@style/modal_error_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="@dimen/forms_inner_padding"
+                    android:contentDescription="@string/discover_copyright_text"
+                    android:paddingTop="4dp"
+                    android:src="@drawable/error_icon_red" 
+                    android:visibility="gone"
+                    />
+
+                <TextView
+                    android:id="@+id/account_info_error_label"
+                    style="@style/error_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/icon"
+                    android:layout_toRightOf="@+id/icon"
+                    android:includeFontPadding="false" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/account_info_card_expiration_date_label"
@@ -85,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_information_input_info_label"
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -99,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_expiration_date_error_label"
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -125,8 +147,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignTop="@id/account_info_ssn_input_field"
                 android:layout_below="@+id/account_info_ssn_info_label"
-                android:paddingTop="8dp"
                 android:paddingRight="4dp"
+                android:paddingTop="8dp"
                 android:text="@string/ssn_prefix"
                 android:textColor="#8a9499"
                 android:textSize="14dp"
@@ -149,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_ssn_error_label"
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
@@ -162,6 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
+                android:layout_marginTop="5dp"
                 android:includeFontPadding="false"
                 android:text="@string/invalid_input" />
 
@@ -173,7 +196,7 @@
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="14dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="40dp"
                 android:onClick="validateInfoAndSubmitOnSuccess"
                 android:text="@string/continue_text" />
 
@@ -217,8 +240,7 @@
                 android:layout_below="@+id/account_info_dob_label"
                 android:textColor="#8a9499"
                 android:textSize="14dp"
-                android:textStyle="bold" 
-                />
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/footer"
@@ -241,7 +263,7 @@
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
                 android:text="@string/feedback_text"
-                 android:textSize="14dp" />
+                android:textSize="14dp" />
         </RelativeLayout>
     </ScrollView>
 

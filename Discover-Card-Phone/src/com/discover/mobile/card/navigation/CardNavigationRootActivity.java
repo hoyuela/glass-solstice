@@ -1,5 +1,6 @@
 package com.discover.mobile.card.navigation;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.cordova.api.CordovaInterface;
@@ -8,7 +9,10 @@ import org.apache.cordova.api.CordovaPlugin;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +23,12 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
@@ -32,6 +40,8 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
 import com.discover.mobile.card.phonegap.plugins.HybridControlPlugin;
+import com.discover.mobile.card.push.register.PushNowAvailableFragment;
+import com.discover.mobile.card.services.push.PushReadMessage;
 import com.discover.mobile.card.statement.StatementActivity;
 import com.discover.mobile.card.ui.modals.ModalConfirmationTop;
 import com.discover.mobile.common.DiscoverModalManager;
@@ -40,6 +50,9 @@ import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Root activity for the application after login. This will transition fragment
@@ -68,9 +81,23 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	private CardShareDataStore mCardStoreData;
 	private PageTimeOutUtil pageTimeOutUtil;
 
+	private CordovaPlugin activityResultCallback;
+	private boolean keepRunning = false;
+
+	private static final int DISPLAY_STATEMENTS = 1;
+	private static final int PICK_CONTACT = 5;
+	private static final int PICK_CREDENTIAL = 6;
+	private Bundle extras;
+	private boolean pushStatus;
+	private final String LOG_TAG = CardNavigationRootActivity.class
+			.getSimpleName();
+	private int redirect;
+
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.status_bar);
 
@@ -79,7 +106,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		mCardStoreData.addToAppCache("isFragmentAdded", false);
 
 		// Add CordovaWebFrag to initialization, if it is not already there
-		CordovaWebFrag frag = (CordovaWebFrag) this.getSupportFragmentManager()
+		cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
 				.findFragmentByTag("CordovaWebFrag");
 		final FragmentTransaction fragmentTransaction = this
 				.getSupportFragmentManager().beginTransaction();
@@ -87,21 +114,21 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		// fragmentTransaction.commit();
 
 		Log.d("CardNavigationRootActivity", "adding frag");
-		if (frag == null) {
-			frag = new CordovaWebFrag();
-			frag.setContext(this.getContext());
+		if (cordovaWebFrag == null) {
+			cordovaWebFrag = new CordovaWebFrag();
+			cordovaWebFrag.setContext(this.getContext());
 
 			boolean isFragmentAdded = (Boolean) mCardStoreData
 					.getValueOfAppCache("isFragmentAdded");
 
 			if (isFragmentAdded) {
 				Log.d("CardNavigationRootActivity", "frag is already added");
-				fragmentTransaction.remove(frag)
-						.add(R.id.navigation_content, frag, "CordovaWebFrag")
+				fragmentTransaction.remove(cordovaWebFrag)
+						.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
 						.addToBackStack("CordovaWebFrag").commit();
 			} else {
 				fragmentTransaction
-						.add(R.id.navigation_content, frag, "CordovaWebFrag")
+						.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
 						.addToBackStack("CordovaWebFrag").commit();
 				// fragmentTransaction.hide(frag);
 				mCardStoreData.addToAppCache("isFragmentAdded", true);
@@ -127,6 +154,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		 * pageTimeOutUtil = new PageTimeOutUtil(this);
 		 * pageTimeOutUtil.startPageTimer();
 		 */
+		 extras = getIntent().getExtras();
+		 pushStatus = extras.getBoolean(PushConstant.extras.PUSH_GET_CALL_STATUS);		 
 	}
 
 	@Override
@@ -141,14 +170,98 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	@Override
 	public void onResume() {
 		super.onResume();
-		// if(!CardSessionContext.getCurrentSessionDetails().isNotCurrentUserRegisteredForPush()
-		// && !wasPaused){
-		// getSupportFragmentManager().popBackStack();
-		// makeFragmentVisible(new PushNowAvailableFragment());
-		// }
-		final Bundle extras = getIntent().getExtras();
+
 		if (null != extras) {
 			handleIntentExtras(extras);
+			
+			SharedPreferences pushSharedPrefs = getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+		                Context.MODE_PRIVATE);
+			redirect = pushSharedPrefs.getInt(PushConstant.pref.PUSH_NAVIGATION, 0);
+			String requestId = pushSharedPrefs.getString(PushConstant.pref.PUSH_REQUEST_ID, "");
+			
+			if(requestId != null && !requestId.equalsIgnoreCase(""))
+			{
+				PushReadMessage pushReadMessage = new PushReadMessage(getActivity(), new CardEventListener()
+				{					
+					@Override
+					public void onSuccess(Object data)
+					{
+						Log.i(LOG_TAG, "On Sucess()");						
+					}
+					
+					@Override
+					public void OnError(Object data)
+					{
+						Log.i(LOG_TAG, "On OnError()");
+					}
+				});
+				try
+				{
+					pushReadMessage.sendRequest(requestId);
+					
+					//Once request id send, make sure it wont call again.
+					//So making it blank.
+					requestId = "";
+				}
+				catch (JsonGenerationException e)
+				{
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					cardErrorResHandler.handleCardError(data);
+					e.printStackTrace();
+				}
+				catch (JsonMappingException e)
+				{
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					cardErrorResHandler.handleCardError(data);
+					e.printStackTrace();
+				}
+				catch (IOException e)
+				{
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					cardErrorResHandler.handleCardError(data);
+					e.printStackTrace();
+				}
+			}
+			if(redirect > 0)
+			{
+				Editor editor = pushSharedPrefs.edit();
+				editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
+				editor.commit();
+				
+				if(!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE, true))
+				{
+					sendNavigationTextToPhoneGapInterface(getString(redirect));
+				}
+				else
+				{
+					Handler handler = new Handler();
+					Utils.isSpinnerForOfflinePush=true;
+					Utils.isSpinnerAllowed=true;
+					
+					Utils.showSpinner(getActivity(), null, null);
+					handler.postDelayed(new Runnable()
+					{						
+						@Override
+						public void run()
+						{
+							sendNavigationTextToPhoneGapInterface(getString(redirect));
+							Utils.isSpinnerForOfflinePush=false;
+							Utils.hideSpinner();
+						}
+					}, 60000);
+				}
+			}
+			else
+			{
+				if(pushStatus)
+				{
+					pushStatus = false;
+					makeFragmentVisible(new PushNowAvailableFragment());
+				}
+			}
 		}
 	}
 
@@ -228,20 +341,24 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	@Override
 	public void sendNavigationTextToPhoneGapInterface(final String text) {
 
-		if (!(text.equals("Account") || text.equals("Payments")
-				|| text.equals("Earn Cashback Bonus")
-				|| text.equals("Redeem Cashback Bonus")
-				|| text.equals("Earn Miles")
-				|| text.equals("Profile & Settings")
-				|| text.equals("Customer Service")
-				|| text.equals("Manage Alerts")
-				|| text.equals("Alerts History")
-				|| text.equals("Enroll in Reminders") || text.equals("Home"))) {
-			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-					.findFragmentByTag("CordovaWebFrag");
+		if (!(text.equals(getString(R.string.section_title_account)) || text.equals(getString(R.string.section_title_payments))
+				|| text.equals(getString(R.string.section_title_earn_cashback_bonus))
+				|| text.equals(getString(R.string.section_title_redeem_cashback_bonus))
+				|| text.equals(getString(R.string.section_title_profile_and_settings))
+				|| text.equals(getString(R.string.section_title_customer_service))
+				|| text.equals(getString(R.string.section_title_miles)) || text.equals(getString(R.string.section_title_home)))) {
+//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//					.findFragmentByTag("CordovaWebFrag");
 			if (cordovaWebFrag != null) {
 				try {
-					Utils.showSpinner(getActivity(), null, null);
+				Utils.isSpinnerAllowed=true;
+            	 Handler handler = new Handler();
+                 handler.postDelayed(new Runnable() {
+                     public void run() {
+                    	
+                    	 Utils.showSpinner(getActivity(),null,null);
+                       
+                     }},500);  
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -279,23 +396,23 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	}
 
 	@Override
-	public void setActivityResultCallback(final CordovaPlugin arg0) {
-		// TODO Auto-generated method stub
-
+	public void setActivityResultCallback(final CordovaPlugin plugin) {
+		this.activityResultCallback = plugin;
 	}
 
 	@Override
-	public void startActivityForResult(final CordovaPlugin arg0,
-			final Intent arg1, final int arg2) {
-		// TODO Auto-generated method stub
+	public void startActivityForResult(final CordovaPlugin plugin,
+			final Intent intent, final int requestCode) {
+		this.activityResultCallback = plugin;
 
+		super.startActivityForResult(intent, requestCode);
 	}
 
 	@Override
 	public void logout() {
 		Log.d("CardNavigationRootActivity", "inside logout...");
 		// super.logout();
-
+		 Utils.isSpinnerAllowed = true;
 		final WSRequest request = new WSRequest();
 		final String url = NetworkUtility.getWebServiceUrl(this,
 				R.string.logOut_url);
@@ -321,7 +438,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		clearNativeCache();
 		clearJQMCache(); // Call this method to clear JQM cache.
 
-		PageTimeOutUtil.destroyTimer();
+		PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 	}
 
 	@Override
@@ -333,7 +450,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		clearNativeCache();
 		clearJQMCache(); // Call this method to clear JQM cache.
 
-		PageTimeOutUtil.destroyTimer();
+		PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 	}
 
 	/*
@@ -346,9 +463,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Log.d("clear cache", "get token before clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken());
 		cardShareDataStore.clearCache(); // Call this method to clear native
-											// cache
+		// cache
 		cardShareDataStore.getCookieManagerInstance().clearSecToken(); // Call
-																		// to
+		// to
 		Log.d("clear cache", "get token after clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken()); // clear
 		// the
@@ -359,8 +476,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 * This method will call the JQM CacheManagement to clear JQM cache
 	 */
 	private void clearJQMCache() {
-		cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-				.findFragmentByTag("CordovaWebFrag");
+//		cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//				.findFragmentByTag("CordovaWebFrag");
 		if (cordovaWebFrag != null) {
 			final CacheManagerUtil cacheMgmt = new CacheManagerUtil(
 					cordovaWebFrag.getCordovaWebviewInstance());
@@ -390,17 +507,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 */
 	@Override
 	public void setActionBarTitle(final String title) {
-		super.setActionBarTitle(title);
+		if(title.equalsIgnoreCase(getString(R.string.error_no_title)))
+			showActionBarLogo();
+		else
+			super.setActionBarTitle(title);
+		
 		if (null != title) {
 			Log.d("CardNavigationRootActivity",
 					"inside setActionbartitle n title is " + title);
-			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-					.findFragmentByTag("CordovaWebFrag");
+//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//					.findFragmentByTag("CordovaWebFrag");
 			cordovaWebFrag.setTitle(title);
 			if (title
 					.equalsIgnoreCase(getString(R.string.sub_section_title_statements)))
 				highlightMenuItems(cordovaWebFrag.getGroupMenuLocation(),
 						cordovaWebFrag.getSectionMenuLocation());
+			mCardStoreData.addToAppCache("currentPageTitle", title);
 		}
 	}
 
@@ -438,16 +560,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 							// stack
 							.addToBackStack(fragment.getClass().getSimpleName())
 							.commit();
-			}			
-		}else{
+				mCardStoreData.addToAppCache("currentPageTitle", "Home");
+			}
+			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);
 
-		getSupportFragmentManager()
-				.beginTransaction()
-				.remove(fragment)
-				.add(R.id.navigation_content, fragment,
-						fragment.getClass().getSimpleName())
-				// Adds the class name and fragment to the back stack
-				.addToBackStack(fragment.getClass().getSimpleName()).commit();
+		} else if(fragment.getClass().getSimpleName().equalsIgnoreCase("RedeemMilesFragment")) { 
+			return;
+		}else {
+
+			getSupportFragmentManager()
+					.beginTransaction()
+					.remove(fragment)
+					.add(R.id.navigation_content, fragment,
+							fragment.getClass().getSimpleName())
+					// Adds the class name and fragment to the back stack
+					.addToBackStack(fragment.getClass().getSimpleName())
+					.commit();
 		}
 
 		hideSlidingMenuIfVisible();
@@ -469,6 +597,11 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				.add(R.id.navigation_content, fragment,
 						fragment.getClass().getSimpleName()).commit();
 		
+		if(fragment.getClass().getSimpleName().equalsIgnoreCase("HomeSummaryFragment")){
+			mCardStoreData.addToAppCache("currentPageTitle", "Home");
+
+		}
+
 		hideSlidingMenuIfVisible();
 	}
 
@@ -481,7 +614,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Log.d("CardNavigationRootActivity", "inside onBackPressed()");
 
 		DiscoverModalManager.clearActiveModal();
-;
+		cordovaWebFrag.setTitle(null);
+		cordovaWebFrag.setM_currentLoadedJavascript(null);
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
 
@@ -516,6 +650,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				sendNavigationTextToPhoneGapInterface(fragTag);
 				super.onBackPressed();
 			}
+		} else {
+			sendNavigationTextToPhoneGapInterface("AcHome");
+			Fragment homeFragment = fragManager
+					.findFragmentByTag("HomeSummaryFragment");
+			makeFragmentVisible(homeFragment, false);
+			
 		}
 		// }
 	}
@@ -566,7 +706,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Fragment frg = HybridControlPlugin.frag123;// fragManager.findFragmentByTag(str);
 		if (frg instanceof CordovaWebFrag
 				&& ((CordovaWebFrag) frg).getCordovaWebviewInstance()
-						.canGoBack()) {
+				.canGoBack()) {
 
 			return ((CordovaWebFrag) frg).getCordovaWebviewInstance().onKeyUp(
 					keyCode, event);
@@ -589,11 +729,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		CordovaPlugin callBack = this.activityResultCallback;
+		if (requestCode == DISPLAY_STATEMENTS) {
 			Log.d("CardNavigationRootActivity",
 					"inside on activity result of stmt plugin n result code is "
 							+ requestCode + " n result code is " + resultCode);
-			if (resultCode == StatementActivity.EXPIRE_SESSION) {
+			if (resultCode == StatementActivity.EXPIRE_SESSION || resultCode == StatementActivity.STATEMENT_LOGOUT) {
 				logout();
 			} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION)
 				Log.d("CardNavigationRootActivity",
@@ -601,7 +744,28 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 			else {
 				sendNavigationTextToPhoneGapInterface(getString(R.string.sub_section_title_statements));
 			}
+		} else if(requestCode == PICK_CONTACT || requestCode == PICK_CREDENTIAL)
+		{
+			if(null != callBack)
+			{
+				callBack.onActivityResult(requestCode, resultCode, data);
+			}
 		}
-		super.onActivityResult(requestCode, resultCode, data);
+		
+	}
+	
+	@Override
+	public String getActionBarTitle() {
+		return (String)mCardStoreData.getValueOfAppCache("currentPageTitle");
+	}
+	
+	public void enableSlidingMenu(boolean enable)
+	{
+		SlidingMenu slidingMenu = getSlidingMenu();
+		slidingMenu.setSlidingEnabled(enable);
+	}
+	
+	public CordovaWebFrag getCordovaWebFragInstance(){
+		return cordovaWebFrag;
 	}
 }

@@ -68,6 +68,8 @@ final public class CardErrorUtil {
         	if (null==cardErrBean.getErrorCode())
         		cardErrBean.setErrorCode(""+response.getResponseCode());
             return cardErrBean;
+        case CardErrorResponseHandler.INVALID_INPUT: //500 http status code
+        case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked           
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
         	CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
         	if (null==cardErrBean1.getErrorCode())
@@ -78,7 +80,6 @@ final public class CardErrorUtil {
         	if (null==cardErrBean2.getErrorCode())
         		cardErrBean2.setErrorCode(""+response.getResponseCode());
             return cardErrBean2;
-
         default: // for other error
         	CardErrorBean cardErrBean3 = getCardErrorBeanwithoutResponseStatus(response);
         	if (null==cardErrBean3.getErrorCode())

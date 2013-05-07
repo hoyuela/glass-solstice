@@ -37,6 +37,18 @@ public final class CardErrorResponseHandler
 
     public static final int USER_ACCOUNT_LOCKED = 403;
     public static final int SERVICE_UNDER_MAINTENANCE = 503;
+    public static final int INLINE_ERROR = 400;
+    public static final int INVALID_INPUT= 500;
+    
+    //Registration module Inline Error Codes
+    public static final int ID_AND_PASS_EQUAL = 1919;
+    public static final int ID_AND_SSN_EQUAL = 1920;
+    public static final int ID_ALREADY_TAKEN = 1921;
+    public static final int ID_IS_EMPTY = 1923;
+    public static final int ID_INVALID = 1924;
+    public static final int PASS_EMPTY = 1925;
+    public static final int PASS_INVALID = 1926;
+    
 
     /**
      * Private constructor to prevent construction without a fragment or

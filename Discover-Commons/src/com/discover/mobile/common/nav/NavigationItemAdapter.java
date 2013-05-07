@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import com.google.inject.Inject;
 
 @ContextSingleton
-class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
+public class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	static final int TYPE_SECTION = 0;
 	static final int TYPE_SUB_SECTION = TYPE_SECTION + 1;
@@ -20,6 +20,7 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	private LayoutInflater layoutInflater;
 	
 	private NavigationItem selectedItem;
+	private int pushCount = 0;
 	
 	
 	@Inject
@@ -34,12 +35,13 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	
 	@Override
 	public int getItemViewType(final int position) {
-		return getItem(position).getItemView().getViewType();
+		return getItem(position).view.getViewType();
 	}
 	
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
-		return getItem(position).getItemView().getView(convertView, layoutInflater, position);
+		getItem(position).view.setPushCount(pushCount);
+		return getItem(position).view.getView(convertView, layoutInflater, position);
 	}
 	
 	NavigationItem getSelectedItem() {
@@ -53,5 +55,8 @@ class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	NavigationRoot getNavigationRoot() {
 		return (NavigationRoot) getContext();
 	}
-	
+	public void setPushCount(final int pushCount)
+	{
+		this.pushCount = pushCount;
+	}
 }

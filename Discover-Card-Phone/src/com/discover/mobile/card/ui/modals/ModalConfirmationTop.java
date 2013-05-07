@@ -154,10 +154,10 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
             dialogTitle.setText("Success!");
             firstParagraph.setVisibility(View.VISIBLE);
             secondParagraph.setVisibility(View.VISIBLE);
-            firstParagraph.setText(res.getString(R.string.account_info_confirm_first_paragraph_text));
+            firstParagraph.setText(res.getString(R.string.account_info_confirm_registration));
             secondParagraph.setText(res.getString(R.string.second_paragraph_information));
             securityLabelAbove.setVisibility(View.GONE);
-            securityLabelAbove.setVisibility(View.VISIBLE);
+            securityLabelBelow.setVisibility(View.VISIBLE);
         }
             
     }
