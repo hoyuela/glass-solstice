@@ -104,9 +104,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		setContentView(R.layout.check_deposit_capture);
 
 		loadViews();
-
-		timerTask = new CameraCountdownTask();
-
 		getWindow().setFormat(PixelFormat.UNKNOWN);
 
 		//This deprecated call is needed to support API 10 devices.
@@ -132,7 +129,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	@Override
 	public void onPause() {
-		isPaused = true;		
+		isPaused = true;	
+		
+		//Reset the capture image if the user pauses the fragment during countdown or before they press confirm
+		//capture.
+		if(retakeButton.getVisibility() == View.VISIBLE) {
+			retakeClickListener.onClick(null);
+		}else if (!captureButton.isClickable()) {
+			setupButtons();
+		}
+			
 		super.onPause();
 	}
 
@@ -142,9 +148,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	@Override
 	public void onStop() {
 		super.onStop();
-		if(timerTask.isRunning()) {
+		
+		if(timerTask != null)
 			timerTask.cancel(true);
-		}
 
 		resetCountdown();
 	}
@@ -223,7 +229,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * @return if both images were deleted.
 	 */
 	public static boolean deleteBothImages(final Context context) {
-		return deleteBackImage(context) & deleteFrontImage(context);
+		boolean bothImagesDeleted = true;
+		bothImagesDeleted &= deleteBackImage(context);
+		bothImagesDeleted &= deleteFrontImage(context);
+		
+		return bothImagesDeleted;
 	}
 
 	/**
@@ -258,7 +268,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 			@Override
 			public void onClick(final View v) {
-				if(!timerTask.isRunning){
+				if(timerTask == null || !(AsyncTask.Status.RUNNING == timerTask.getStatus())){
 					showModal(getHelpModal());
 				}
 			}
@@ -335,7 +345,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		@Override
 		public void onClick(final View v) {
-			if(!timerTask.isRunning()) {
+			if(timerTask == null || !(timerTask.getStatus() == AsyncTask.Status.RUNNING)) {
 				focusCamera();
 			}
 		}
@@ -389,7 +399,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Disable the  click listeners for the touch to auto focus and capture button.
 	 */
 	private void disableClickListeners() {
-		captureButton.setOnTouchListener(null);
+		captureButton.setOnClickListener(null);
 		captureButton.setClickable(false);
 		cameraPreview.setOnClickListener(null);
 	}	            
@@ -398,7 +408,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Starts the count down timer.
 	 */
 	private void startCountdownTimer() {
-		if(!timerTask.isRunning()){
+		if(timerTask == null || !(AsyncTask.Status.RUNNING == timerTask.getStatus())){
+			count = THREE;
 			timerTask = new CameraCountdownTask();
 			timerTask.execute();
 		}
@@ -529,13 +540,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		@Override
 		public void onPictureTaken(final byte[] data, final Camera camera) {
-			playShutterSound();
-			cameraPreview.setOnClickListener(null);
-
 			setPictureConfirmationButtons();
+			lastPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
+			playShutterSound();
 			hideImageBrackets();
 			setNextCheckVisible();
-			lastPicture = BitmapFactory.decodeByteArray(data, 0, data.length);
+			cameraPreview.setOnClickListener(null);
 		}
 	};
 
@@ -645,8 +655,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		@Override
 		public void onAutoFocus(final boolean success, final Camera camera) {
 			//Cancel auto focus is called because if not, the flash may stay on.
-			camera.cancelAutoFocus();
-			camera.takePicture(null, null, mPicture);
+//			camera.cancelAutoFocus();
+			if(success) {
+				camera.takePicture(null, null, mPicture);
+			}else {
+				camera.autoFocus(focusAndCaptureCallback);
+			}
 		}
 	};
 
@@ -890,7 +904,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 *
 	 */
 	public class CameraCountdownTask extends AsyncTask<Void, Void, Void> {
-		private boolean isRunning = false;
 		private static final int ONE_SECOND = 1000;
 
 		/**
@@ -899,7 +912,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 */
 		@Override
 		protected void onPreExecute() {
-			isRunning = true;
 			closeButton.setVisibility(View.INVISIBLE);
 			countdownLogo.setVisibility(View.VISIBLE);
 		}
@@ -930,20 +942,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			if(count < 1){
 				focusThenTakePicture();
 				count = THREE;
-				isRunning = false;
 			}
 			else{
 				timerTask = new CameraCountdownTask();
 				timerTask.execute();
 			}
-		}
-
-		/**
-		 * Returns if the current task is running.
-		 * @return if the current task is running.
-		 */
-		public boolean isRunning() {
-			return isRunning;
 		}
 
 		/**
