@@ -14,9 +14,9 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -61,7 +61,7 @@ public final class HelpMenuListFactory {
 	public List<HelpItemGenerator> getLoggedOutHelpItems(){
 		/**Default menu item representing the "Bank ALL FAQ" item*/
 		final HelpItemGenerator bankFaq = new HelpItemGenerator(R.string.help_bank_faq, true, true, getAllFaqListener());
-		
+
 		/**Default menu item representing the "Card ALL FAQ" item*/
 		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
 
@@ -191,7 +191,7 @@ public final class HelpMenuListFactory {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToFAQLandingPage();
+				FacadeFactory.getBankFaqFacade().launchBankFaq();
 			}
 		};
 	}
