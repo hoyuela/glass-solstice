@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="card_send_money_faq_array">
+        <item>@string/card_send_money_title_one</item>
+        <item>@string/card_send_money_content_one</item>
+        
+        <item>@string/card_send_money_title_two</item>
+        <item>@string/card_send_money_content_two</item>  
+        
+        <item>@string/card_send_money_title_three</item>
+        <item>@string/card_send_money_content_three</item>  
+        
+        <item>@string/card_send_money_title_four</item>
+        <item>@string/card_send_money_content_four</item>  
+        
+        <item>@string/card_send_money_title_five</item>
+        <item>@string/card_send_money_content_five</item>  
+        
+        <item>@string/card_send_money_title_six</item>
+        <item>@string/card_send_money_content_six</item>  
+        
+        <item>@string/card_send_money_title_seven</item>
+        <item>@string/card_send_money_content_seven</item>  
+        
+        <item>@string/card_send_money_title_eight</item>
+        <item>@string/card_send_money_content_eight</item>  
+    </string-array>
+    
+    <string name="card_send_money_title_one">What is Money Messenger?</string>
+    <string name="card_send_money_content_one">
+        Money Messenger is a service powered by PayPal Inc. that lets you send money to just about anyone using your computer or mobile phone if your account is eligible.
+    </string>
+     
+    <string name="card_send_money_title_two">How does Discover Money Messenger work?</string>
+    <string name="card_send_money_content_two">
+        If your account is eligible, you can send money to anyone with an email address or mobile phone number. 
+        PayPal sends a message to the recipient letting them know their money is ready. 
+        The recipient signs into their PayPal account to receive the money. 
+        If they don’t have a PayPal account, all they need to do is sign up for one. 
+        The amount you send is charged to your Discover card account just like a normal purchase.
+    </string>
+    
+    <string name="card_send_money_title_three">Are there any fees to send money through Discover Money Messenger?</string>
+    <string name="card_send_money_content_three">
+        There are no fees for you to send money and the amount will be charged to your Discover card account as a regular 
+        purchase. If you are sending money to friends or family, there are no fees charged to them to accept the money. 
+        If you are sending money to a business for goods or services, PayPal will charge them a fee to accept the money.
+    </string>
+    
+    <string name="card_send_money_title_four">Do I need a PayPal account to send money?</string>
+    <string name="card_send_money_content_four">
+        No, you do not need a PayPal account to send money. 
+    </string>
+    
+    <string name="card_send_money_title_five">Does the person I’m sending money to need to be a Discover Cardmember?</string>
+    <string name="card_send_money_content_five">
+        No, the person receiving the money doesn’t need to be a Discover cardmember. However, they will need to sign up for a 
+        PayPal account, if they don’t already have one, in order to claim their money. When PayPal notifies the recipient you have
+         sent them money, they will receive instructions on how to open up a PayPal account to access it.
+    </string>
+    
+    <string name="card_send_money_title_six">Does the person I’m sending money to need a PayPal account?</string>
+    <string name="card_send_money_content_six">
+        You can send money to anyone even if they don’t yet have a PayPal account. 
+        But, the recipient must sign up for an account at PayPal.com in order to claim their money. 
+        When PayPal notifies the recipient that you have sent them money, 
+        they will also receive simple instructions on how to open up a PayPal account to access it. 
+    </string>
+    
+    <string name="card_send_money_title_seven">How does the recipient actually get the money?</string>
+    <string name="card_send_money_content_seven">
+       	PayPal sends a message via email or text message to the recipient letting them know their money is ready. 
+       	If they are a registered PayPal account holder, the money is instantly deposited into their account. 
+       	If the recipient is new to PayPal, they simply open an account, link their email address or mobile number 
+       	and they will have immediate access to the money. After they log in to PayPal, 
+       	they have the option to spend the money online at any merchant that accepts PayPal, 
+       	transfer it to a bank account, or request a check.
+    </string>
+    
+    <string name="card_send_money_title_eight">Can anyone use Money Messenger?</string>
+    <string name="card_send_money_content_eight">
+        You must be a Discover cardmember with an eligible account and be registered for the Account Center on Discover.com to 
+        use this service. Business and Titanium cards are currently not eligible to use Money Messenger.
+    </string>
+  
+</resources>

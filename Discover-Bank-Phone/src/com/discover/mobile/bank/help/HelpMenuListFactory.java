@@ -8,7 +8,6 @@ import java.util.List;
 
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmMapFragment;
@@ -174,11 +173,7 @@ public final class HelpMenuListFactory {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				final CharSequence text = "Card FAQ Under Development";
-				final int duration = Toast.LENGTH_SHORT;
-
-				final Toast toast = Toast.makeText(DiscoverActivityManager.getActiveActivity(), text, duration);
-				toast.show();
+				FacadeFactory.getCardFaqFacade().launchCardFaq();
 			}
 		};
 	}

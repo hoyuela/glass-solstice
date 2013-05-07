@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="card_refer_friend_faq_array">
+        <item>@string/card_refer_friend_title_one</item>
+        <item>@string/card_refer_friend_content_one</item>
+        
+        <item>@string/card_refer_friend_title_two</item>
+        <item>@string/card_refer_friend_content_two</item>  
+        
+        <item>@string/card_refer_friend_title_three</item>
+        <item>@string/card_refer_friend_content_three</item>  
+        
+        <item>@string/card_refer_friend_title_four</item>
+        <item>@string/card_refer_friend_content_four</item>  
+        
+        <item>@string/card_refer_friend_title_five</item>
+        <item>@string/card_refer_friend_content_five</item>  
+        
+        <item>@string/card_refer_friend_title_six</item>
+        <item>@string/card_refer_friend_content_six</item>  
+        
+        <item>@string/card_refer_friend_title_seven</item>
+        <item>@string/card_refer_friend_content_seven</item>  
+    </string-array>
+    
+    <string name="card_refer_friend_title_one">What\'s the Refer a Friend Program?</string>
+    <string name="card_refer_friend_content_one">
+        It\'s an easy way to get an extra $50 in <i>Cashback Bonus</i> or 5,000 Miles. For each friend you refer who is approved for a 
+        Discover card, you\'ll receive $50 in <i>Cashback Bonus</i> or 5,000 Miles. Once your friend makes their first purchase within the 
+        first three months, they will also get $50 in <i>Cashback Bonus</i> or 5,000 Miles.
+		
+		\n\nIn order to participate, your account must be in good standing. To receive the $50 <i>Cashback Bonus</i> or 5,000 Miles 
+		referral reward, your friend must apply for the specific offer you send and be approved. You will receive $50 Cashback 
+		Bonus or 5,000 Miles for each approved friend, up to 10 new cardmembers per calendar year. Offer not available for 
+		referrals that are existing Discover cardmembers. This offer is available online only. Individuals must apply for a 
+		Discover card by December 31, 2013. You will not be notified whether a specific referral was approved or declined. 
+		For email offers, your referral may not receive an email offer if they have previously opted out of receiving email 
+		marketing communications from Discover or are an existing cardmember. Your friend who becomes a new cardmember will 
+		also receive a $50 <i>Cashback Bonus</i> once they make a purchase within their first three months of account opening. 
+		Please allow up to 5 weeks for <i>Cashback Bonus</i> or Miles to post to your account after each referral is approved for 
+		their Discover card. The <i>Cashback Bonus</i> you receive may be taxable to you. Please contact your tax advisor.
+    </string>
+     
+    <string name="card_refer_friend_title_two">How can I refer a friend?</string>
+    <string name="card_refer_friend_content_two">
+        From the left hand navigation, under Earn <i>Cashback Bonus</i> or Earn Miles, select “Refer a Friend”. 
+        You can refer friends via email, Facebook, Twitter, and LinkedIn. 
+        We’ll handle everything, starting by sending a unique link to your friend so we can track the status of your referral.
+    </string>
+    
+    <string name="card_refer_friend_title_three">What should I include in my referral?</string>
+    <string name="card_refer_friend_content_three">
+        You know your friends best. Tell them about all the great ways to use your Discover card and rewards that 
+        you\'d think they\'d also enjoy by adding a personal message to your referral.
+    </string>
+    
+    <string name="card_refer_friend_title_four">I\'ve already referred a friend; when will I receive my <i>Cashback Bonus</i> or Miles?</string>
+    <string name="card_refer_friend_content_four">
+        It may take up to 5 weeks for your $50 or 5,000 Miles to post to your account after each referral is approved. 
+    </string>
+    
+    <string name="card_refer_friend_title_five">How many friends can I refer?</string>
+    <string name="card_refer_friend_content_five">
+        You will only earn rewards for the first 10 friends approved for a Discover card per calendar year; however, 
+        there is no limit to how many friends you can refer.
+    </string>
+    
+    <string name="card_refer_friend_title_six">How much can I earn with the Refer a Friend program?</string>
+    <string name="card_refer_friend_content_six">
+        You may earn up to $500 <i>Cashback Bonus</i> or 50,000 Miles per year.
+    </string>
+    
+    <string name="card_refer_friend_title_seven">Where can I check if I\'ve received my $50 <i>Cashback Bonus</i> or 5,000 Miles?</string>
+    <string name="card_refer_friend_content_seven">
+        To view your Refer a Friend status, select “Refer a Friend” from the left-hand navigation under “Earn <i>Cashback Bonus</i>” or “Earn Miles” in the Discover App.
+    </string>
+    
+</resources>

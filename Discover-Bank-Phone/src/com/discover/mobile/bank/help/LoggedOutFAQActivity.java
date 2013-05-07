@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -37,33 +37,33 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this).getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		if(this.getCurrentContentFragment() == null){
 			showFAQDetailIfNeeded();
 		}
 	}
-	
+
 	@Override
 	public void onPause() {
 		overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
 		super.onPause();
 	}
-	
+
 	private void showFAQDetailIfNeeded() {
 		final Bundle bundle = this.getIntent().getExtras();
 		if(bundle != null) {
 			final String faqType = bundle.getString(BankExtraKeys.FAQ_TYPE);
-			BankConductor.navigateToFAQDetail(faqType);
+			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(faqType);
 		}else {
 			final FAQLandingPageFragment landingPage = new FAQLandingPageFragment();
 			makeFragmentVisible(landingPage);
 		}
 	}
-	
+
 	@Override
 	public int getBehindContentView() {
 		return R.layout.faq_not_logged_in_behind;
@@ -87,9 +87,9 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		}else{
 			finish();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Show the action bar with the custom layout
 	 */

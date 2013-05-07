@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="card_extra_faq_array">
+        <item>@string/card_extra_title_one</item>
+        <item>@string/card_extra_content_one</item>
+        
+        <item>@string/card_extra_title_two</item>
+        <item>@string/card_extra_content_two</item>  
+        
+        <item>@string/card_extra_title_three</item>
+        <item>@string/card_extra_content_three</item>  
+        
+        <item>@string/card_extra_title_four</item>
+        <item>@string/card_extra_content_four</item>  
+        
+        <item>@string/card_extra_title_five</item>
+        <item>@string/card_extra_content_five</item>  
+        
+        <item>@string/card_extra_title_six</item>
+        <item>@string/card_extra_content_six</item>  
+        
+        <item>@string/card_extra_title_seven</item>
+        <item>@string/card_extra_content_seven</item>  
+        
+        <item>@string/card_extra_title_eight</item>
+        <item>@string/card_extra_content_eight</item>  
+        
+        <item>@string/card_extra_title_nine</item>
+        <item>@string/card_extra_content_nine</item>  
+        
+        <item>@string/card_extra_title_ten</item>
+        <item>@string/card_extra_content_ten</item>  
+    </string-array>
+    
+    <string name="card_extra_title_one">What is Discover Extras?</string>
+    <string name="card_extra_content_one">
+        Discover Extras is another way you can save money on purchases at your favorite merchants. 
+        When you take advantage of an Extras offer, many of these will result in a statement credit on your 
+        Discover account while some offers may be instant savings. If you are offered instant savings, 
+        you will simply show the offer when making your purchase to receive your savings.  
+        Please be sure to read your offer details to see how to get your savings.
+    </string>
+     
+    <string name="card_extra_title_two">How do I receive Discover Extras?</string>
+    <string name="card_extra_content_two">
+        If you are already receiving marketing emails from us, you will be eligible to receive the offers. 
+        If you don’t have a valid email address on file or have opted out of marketing emails, 
+        you will need to update your settings via your Account Profile on Discover.com. Once you are logged in, 
+        click on “Account Profile” at the top of the page and scroll down until you see the option for “Offers” 
+        and click to sign up for “Offers by E-mail/Text.”  If you do not have a valid email address on file, 
+        you will need to edit your contact information on this same page.
+    </string>
+    
+    <string name="card_extra_title_three">How do Discover Extras work?</string>
+    <string name="card_extra_content_three">
+        Many Discover Extras are offers that may result in statement credits for purchases you make at merchants you frequently shop at.  
+        If you have an offer you’d like to take advantage of, please check the offer details to see how your savings will work. 
+        If your offer is a statement credit, use your Discover Card within the specified dates and your account will be credited within 14 days. 
+        If your offer is a coupon, show the coupon when making your purchase to get your savings.
+    </string>
+    
+    <string name="card_extra_title_four">How do I know if I have received a Discover Extra?</string>
+    <string name="card_extra_content_four">
+        You will receive an email to the email address we have on file. The expiration date is shown on the offer.
+    </string>
+    
+    <string name="card_extra_title_five">Do Discover Extras expire?</string>
+    <string name="card_extra_content_five">
+        Yes. All offers will eventually expire.
+    </string>
+    
+    <string name="card_extra_title_six">What will the statement credit look like on my statement?</string>
+    <string name="card_extra_content_six">
+        On your statement it will say: Discover Extra at (merchant).
+    </string>
+    
+    <string name="card_extra_title_seven">Am I charged a fee if I receive a Discover Extra?</string>
+    <string name="card_extra_content_seven">
+        No. There are no additional or hidden fees associated with receiving or using a Discover Extra.
+    </string>
+    
+    <string name="card_extra_title_eight">What do the different colored indicators signify?</string>
+    <string name="card_extra_content_eight">
+        The Red indicator means that you have three days or less to redeem your Extra offer. 
+        Yellow represents four to 10 days before your order will expire. 
+        Green shows that you have more than 10 days before your Extra offer will expire. 
+    </string>
+    
+    <string name="card_extra_title_nine">What merchant locations does the map show?</string>
+    <string name="card_extra_content_nine">
+       The map will show merchant locations within your 15 mile radius or a 15 mile radius of the city or zip you are searching.  
+       If there are no merchant locations in your search area, your map will not show any results.
+    </string>
+    
+    <string name="card_extra_title_ten">What do I do if I have questions about my offers?</string>
+    <string name="card_extra_content_ten">
+        Please call us at 1-800-DISCOVER (1-800-347-2683).
+    </string>
+    
+    
+    
+</resources>

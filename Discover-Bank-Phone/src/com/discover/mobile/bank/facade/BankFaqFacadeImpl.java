@@ -15,8 +15,6 @@ public class BankFaqFacadeImpl implements BankFaqFacade {
 
 	@Override
 	public void navigateToBankFaqDetail(final String faqType) {
-		// TODO Auto-generated method stub
-
+		BankConductor.navigateToFAQDetail(faqType);
 	}
-
 }
