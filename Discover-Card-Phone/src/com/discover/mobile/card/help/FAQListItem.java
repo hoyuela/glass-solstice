@@ -70,7 +70,7 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 		final TextView titleLabel = (TextView)findViewById(R.id.faq_section_title);
 
 		if(titleLabel != null){
-			titleLabel.setText(title);
+			titleLabel.setText(Html.fromHtml(title));
 		}
 	}
 

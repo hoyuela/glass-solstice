@@ -47,14 +47,14 @@
      
     <string name="card_push_text_title_two">How do I turn on/off Push Alerts?</string>
     <string name="card_push_text_content_two">
-		Below are the ways to manage your Push Alerts:
-		\n-From the left-hand navigation in the Discover App, under Profile &amp; Settings, select “Manage Text &amp; Alerts.” Then select the Push Alerts you would like to activate/deactivate and save your changes.
-		\n-To turn on/off all Push Alerts, slide the "Enable Push Alerts" switch from ON to OFF and vice versa, on the 
+		<![CDATA[Below are the ways to manage your Push Alerts:
+		<br/>-From the left-hand navigation in the Discover App, under Profile &amp; Settings, select “Manage Text &amp; Alerts.” Then select the Push Alerts you would like to activate/deactivate and save your changes.
+		<br/>-To turn on/off all Push Alerts, slide the "Enable Push Alerts" switch from ON to OFF and vice versa, on the 
 		“Manage Text &amp; Alerts” page and save your changes.
-		\n-Push Alerts also can be turned off/on via your mobile device settings. To turn on/off notifications on your device, go to the notification center in the device settings and locate the Discover Mobile App icon. Click the icon and a screen will open. Choose the option to turn off/on Push Alerts.
+		<br/>-Push Alerts also can be turned off/on via your mobile device settings. To turn on/off notifications on your device, go to the notification center in the device settings and locate the Discover Mobile App icon. Click the icon and a screen will open. Choose the option to turn off/on Push Alerts.
    
-		\n\n<b>Note:</b> If you disable Discover Push Alerts from your mobile device settings you will not be able to change your 
-		Push Alerts settings in the Discover Mobile App until you turn the Discover Push Alerts back on in device settings.
+		<br/><br/><b>Note:</b> If you disable Discover Push Alerts from your mobile device settings you will not be able to change your 
+		Push Alerts settings in the Discover Mobile App until you turn the Discover Push Alerts back on in device settings.]]>
 	</string>
     
     <string name="card_push_text_title_three">I activated Push Alerts. Why have I not received any? </string>
@@ -66,19 +66,19 @@
     
     <string name="card_push_text_title_four">What is the difference between Text Alerts and Push Alerts?</string>
     <string name="card_push_text_content_four">
-        Text Messages are available for all devices with text message receiving capabilities while Push Alerts are sent directly through the Discover Mobile App. 
-		\n\nNote: Text charges vary by carrier and plan. Please contact your service provider to find out if your plan has fees for receiving text messages.
+        <![CDATA[Text Messages are available for all devices with text message receiving capabilities while Push Alerts are sent directly through the Discover Mobile App. 
+		<br/><br/><b>Note:</b> Text charges vary by carrier and plan. Please contact your service provider to find out if your plan has fees for receiving text messages.]]>
     </string>
     
     <string name="card_push_text_title_five">How do I enroll in Text Messages?</string>
     <string name="card_push_text_content_five">
-        To enroll in text messages, from the left-hand navigation in the Discover App, under Profile &amp; Settings, 
+        <![CDATA[To enroll in text messages, from the left-hand navigation in the Discover App, under Profile &amp; Settings, 
         select “Manage Text &amp; Alerts” and choose the text message you would like to receive. Once you have chosen your alerts, 
         you will be asked to verify or provide your mobile phone number and carrier information. Enter or verify the information 
         and then save your settings. You will then receive an opt-in text message from “DISCOV (347268).” 
         You must text back “YES” along with the last 4 digits of your account to complete your enrollment.
 
-		\n\nYou can also enroll in text messages on Discover.com under Account Profile and Preferences.
+		<br/><br/>You can also enroll in text messages on Discover.com under Account Profile and Preferences.]]>
     </string>
     
     <string name="card_push_text_title_six">What Text Messages will Discover send me? </string>
@@ -90,20 +90,20 @@
     
     <string name="card_push_text_title_seven">Can I receive fraud alerts via Text Message?</string>
     <string name="card_push_text_content_seven">
-        Yes. You can sign up to receive fraud alerts that will notify you when unusual activity is suspected in your account, 
+        <![CDATA[Yes. You can sign up to receive fraud alerts that will notify you when unusual activity is suspected in your account, 
         a transaction exceeds your charge limit, and if your account is approaching its credit limit. 
         To enroll, select “Manage Text &amp; Alerts,” under Profile &amp; Settings, 
         from the left-hand navigation in the Discover app and select the box next to “Fraud Alert.”
 
-		\n\nYou can also sign up for this alert on discover.com under Account Profile and Preferences.
+		<br/><br/>You can also sign up for this alert on discover.com under Account Profile and Preferences.]]>
     </string>
     
     <string name="card_push_text_title_eight">How do I stop receiving Text Messages from Discover?</string>
     <string name="card_push_text_content_eight">
-        Below are the ways to manage your Text Alerts:
-		\n•On the “Manage Text &amp; Alerts” page in the Discover App, select the text messages you would like to activate/deactivate and save your changes.
-		\n•To unsubscribe from all text messages, text "STOP ALL" to DISCOV (347268).
-		\n•Update your text message enrollments on Discover.com via your Account Profile.
+        <![CDATA[Below are the ways to manage your Text Alerts:
+		<br/><br/>&#8226;On the “Manage Text &amp; Alerts” page in the Discover App, select the text messages you would like to activate/deactivate and save your changes.
+		<br/><br/>&#8226;To unsubscribe from all text messages, text "STOP ALL" to DISCOV (347268).
+		<br/><br/>&#8226;Update your text message enrollments on Discover.com via your Account Profile.]]>
     </string>
     
     <string name="card_push_text_title_nine">I signed up to receive several text alerts. Why have I not received any?</string>

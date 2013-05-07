@@ -30,10 +30,10 @@
     <string name="card_travel_title_two">What benefits are included with 24/7 Travel Assistance? </string>
     <string name="card_travel_content_two">
         <![CDATA[<b>Lost Luggage Tracking:</b> We will help you locate lost luggage by staying in touch with your airline or other carrier, and provide regular status updates until your luggage is found.
-		<br/><b>Emergency Cash Transfer:</b> We will help you find the most easily obtainable funds and can locate ATMs and financial service institutions, or arrange to have cash wired or delivered while traveling.
-		<br/><b>Passport and Travel Document Replacement:</b> If your passport, identity cards or other papers necessary to return home are lost or stolen, our provider will offer assistance to replace them.
-		<br/><b>Flight Rebooking/Ticket Replacement:</b> If your tickets home are lost or stolen, or if illness or other emergency requires changing travel arrangements, our provider offers assistance replacing or rebooking your tickets.\n 
-		<br/><br/>Log into Discover.com to view all your travel benefits.]]>
+		<br/><br/><b>Emergency Cash Transfer:</b> We will help you find the most easily obtainable funds and can locate ATMs and financial service institutions, or arrange to have cash wired or delivered while traveling.
+		<br/><br/><b>Passport and Travel Document Replacement:</b> If your passport, identity cards or other papers necessary to return home are lost or stolen, our provider will offer assistance to replace them.
+		<br/><br/><b>Flight Rebooking/Ticket Replacement:</b> If your tickets home are lost or stolen, or if illness or other emergency requires changing travel arrangements, our provider offers assistance replacing or rebooking your tickets.\n 
+		<br/><br/><br/>Log into Discover.com to view all your travel benefits.]]>
     </string>
     
     <string name="card_travel_title_three">Where is my Discover card accepted outside of the U.S.?</string>
@@ -56,11 +56,11 @@
     
     <string name="card_travel_title_six">How will foreign transactions appear on my statement?</string>
     <string name="card_travel_content_six">
-        Line 1 includes:
-		\n-Name and location of the merchant and amount of transaction in U.S. dollars
+       <![CDATA[Line 1 includes:
+		<br/>-Name and location of the merchant and amount of transaction in U.S. dollars
 
-		\n\nLine 2 includes:
-		\n-The amount of the transaction in the foreign currency
+		<br/><br/>Line 2 includes:
+		<br/>-The amount of the transaction in the foreign currency.]]>
     </string>
     
 </resources>
