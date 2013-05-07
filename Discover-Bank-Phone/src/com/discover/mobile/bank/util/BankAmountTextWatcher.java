@@ -29,9 +29,15 @@ public class BankAmountTextWatcher implements TextWatcher {
 	 */
 	private double value;
 	/**
+	 * Holds the value of the configurable maximum value allowed to be ented in the watched text field.
+	 */
+	private double maxValue = MAX_VALUE;
+
+
+	/**
 	 * Holds the maximum value that can be entered by the user in watchee.
 	 */
-	protected final static double MAX_VALUE = 99999.99;
+	public final static double MAX_VALUE = 99999.99;
 	
 	private final static double SHIFT_ONE = 10.0;
 	private final static double SHIFT_TWO = 100.0;
@@ -104,8 +110,8 @@ public class BankAmountTextWatcher implements TextWatcher {
 		final int val = Integer.parseInt(Character.toString(c));
 
 		updateValueWithDigit(val);
-
-		if (value > MAX_VALUE) {
+		
+		if (value > maxValue) {
 			chopOffLastDigit();
 		}
 
@@ -175,4 +181,22 @@ public class BankAmountTextWatcher implements TextWatcher {
 
 	}
 
+	/**
+	 * @return Returns the maximum value allowed to be entered into the watched text view.
+	 */
+	public double getMaxValue() {
+		return maxValue;
+	}
+
+	/**
+	 * Method used to set the maximum valued allowed to be entered into the watched text view.
+	 * 
+	 * @param maxValue Maximum value allowed, must be greater than 0.
+	 * 
+	 */
+	public void setMaxValue(final double maxValue) {
+		if( maxValue > 0 ) {
+			this.maxValue = maxValue;
+		}
+	}
 }
