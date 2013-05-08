@@ -322,12 +322,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			if(dateTextView != null){
 				dateTextView.setText(bundle.getString(DATE));
 			}
-			
+		
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
-
-			
 		}
 		
 		resetCalendarEventListener();
@@ -604,6 +602,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		/**Set the maximum amount of digits allowed to be entered into the field*/
 		amountField.setMaximumValue(MAXIMUM_TRANSFER_VALUE);
 		
+		amountField.clearErrors();
 		return amountListItem;
 	}
 
