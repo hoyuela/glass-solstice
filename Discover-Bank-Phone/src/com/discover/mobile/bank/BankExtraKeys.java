@@ -96,7 +96,6 @@ public final class BankExtraKeys {
 	/** A key used for when a user is toggling between sections in posted/scheduled activity*/
 	public static final String IS_TOGGLING_ACTIVITY = "acttog";
 
-
 	public static final String GENERAL_CARD_FAQ = "general";
 
 	public static final String DISCOVER_EXTRAS_CARD_FAQ = "discoverExtras";
@@ -110,6 +109,8 @@ public final class BankExtraKeys {
 	public static final String REFER_FRIEND_CARD_FAQ  = "referFriend";
 
 	public static final String SEND_MONEY_CARD_FAQ  = "sendMoney";
+
+	public static final String CARD_MODE_KEY = "cmk";
 
 	/**
 	 * String used to send data back from the frequency widget

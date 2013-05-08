@@ -1278,6 +1278,7 @@ public final class BankConductor  extends Conductor {
 					/** Check if Google Terms of Use is being displayed */
 					bundle.putSerializable(BankTextViewFragment.KEY_TEXT,
 							GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(activity));
+					bundle.putSerializable(BankTextViewFragment.KEY_TITLE,navActivity.getString(R.string.bank_terms_google));
 					fragment = new BankTextViewFragment();
 					fragment.setArguments(bundle);
 					break;
@@ -1303,8 +1304,9 @@ public final class BankConductor  extends Conductor {
 	 * to specify what information is shown.
 	 * 
 	 * @param type Used to specify what contact us information is displayed.
+	 * @param isCard Used to specifiy if coming from the card login page.
 	 */
-	public static void navigateToContactUs(final ContactUsType type ) {
+	public static void navigateToContactUs(final ContactUsType type, final boolean isCard) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final Bundle bundle = new Bundle();
@@ -1317,6 +1319,7 @@ public final class BankConductor  extends Conductor {
 
 				/**This key is used to notify the activity where to navigate on back-press**/
 				bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN,true);
+				bundle.putBoolean(BankInfoNavigationActivity.IS_CARD, isCard);
 
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
@@ -1368,7 +1371,7 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Navigate to a specific Card FAQ Page
-	 * @param faqType - type of page to displat
+	 * @param faqType - type of page to display
 	 */
 	public static void navigateToCardFaqDetail(final String faqType) {
 		final Bundle extras = new Bundle();
@@ -1378,5 +1381,59 @@ public final class BankConductor  extends Conductor {
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(faqDetail);
 	}
 
+	/**
+	 * Navigate to the card privacy and terms screen
+	 */
+	public static void navigateToCardPrivacyAndTermsLanding(){
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+		final Bundle bundle = new Bundle();
+		bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
+				activity instanceof LoginActivity ? true : false);
+		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
+		intent.putExtras(bundle);
+		activity.startActivity(intent);
+
+		if (activity instanceof LoginActivity) {
+			activity.finish();
+		}
+	}
+
+	/**
+	 * Navigate to the card mobile privacy screen
+	 */
+	public static void navigateToCardMobilePrivacy(){
+		final NavigationRootActivity navActivity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final Bundle bundle = new Bundle();
+		final String content = navActivity.getString(R.string.card_privacy_statement);
+		bundle.putSerializable(BankTextViewFragment.KEY_TEXT, content);
+		bundle.putSerializable(BankTextViewFragment.KEY_TITLE, navActivity.getString(R.string.card_privacy_title));
+		bundle.putSerializable(BankTextViewFragment.KEY_USE_HTML, true);
+		final Fragment fragment = new BankTextViewFragment();
+		fragment.setArguments(bundle);
+		navActivity.makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Navigate to card mobile terms of use screen
+	 */
+	public static void navigateToCardMobileTermsOfUse(){
+		final NavigationRootActivity navActivity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final Bundle bundle = new Bundle();
+		final String content = navActivity.getString(R.string.card_terms_of_use_html);
+		bundle.putSerializable(BankTextViewFragment.KEY_TEXT, content);
+		bundle.putSerializable(BankTextViewFragment.KEY_TITLE, navActivity.getString(R.string.card_terms_of_use_title));
+		bundle.putSerializable(BankTextViewFragment.KEY_USE_HTML, true);
+		final Fragment fragment = new BankTextViewFragment();
+		fragment.setArguments(bundle);
+		navActivity.makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Navigate to the google terms of use.
+	 */
+	public static void navigateToCardGoogleTermsOfUse(){
+		BankConductor.navigateToPrivacyTerms(PrivacyTermsType.GoogleTermsOfUse);
+	}
 }
 
