@@ -30,6 +30,3 @@
 -libraryjars ../Google-Play-Services/bin/classes
 -libraryjars ../SlidingMenuActivity/bin/classes
 
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/effects.jar
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/usb.jar
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/maps.jar

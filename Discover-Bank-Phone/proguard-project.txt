@@ -26,11 +26,6 @@
 -libraryjars ../SlidingMenuActivity/bin/classes
 -libraryjars ../Discover-Commons/bin/classes
 
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/effects.jar
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/usb.jar
--libraryjars /Users/ekaram/android-sdk-macosx/add-ons/addon-google_apis-google-16/libs/maps.jar
-
-
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
