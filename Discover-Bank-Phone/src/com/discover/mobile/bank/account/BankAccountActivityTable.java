@@ -19,6 +19,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -46,9 +47,6 @@ public class BankAccountActivityTable extends BaseTable{
 
 	/**Boolean set to true when the toggle needs to be adjusted to posted*/
 	private Boolean postedToggle = true;
-
-	/**String key to get the postedToggle out of the bundle*/
-	private static final String POSTED_TOGGLE_KEY = "ptk";
 
 	/**
 	 * Handle the received data from the service call
@@ -110,7 +108,10 @@ public class BankAccountActivityTable extends BaseTable{
 	 * @param current - activities to update the adapter with
 	 */
 	public void updateAdapter(final ListActivityDetail current){
-		adapter.setData(current.activities);
+		if( current.activities != null  ) {
+			adapter.setData(current.activities);
+		}
+		
 		if(null == BankUser.instance().getCurrentAccount().posted && header.isPosted()){
 			BankUser.instance().getCurrentAccount().posted = current;
 		} else if(null == BankUser.instance().getCurrentAccount().scheduled && !header.isPosted()){
@@ -184,7 +185,7 @@ public class BankAccountActivityTable extends BaseTable{
 				} else {
 					// Both posted lists are null -- Generate service call
 					BankServiceCallFactory.createGetActivityServerCall(
-						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY)).submit();
+						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted).submit();
 				}
 			}
 		};
@@ -213,7 +214,7 @@ public class BankAccountActivityTable extends BaseTable{
 				} else {
 					// Both scheduled lists are null -- Generate service call
 					BankServiceCallFactory.createGetActivityServerCall(
-						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY)).submit();
+						BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled).submit();
 				}
 			}
 		};
@@ -248,7 +249,12 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	public void loadMore(final String url){
 		setIsLoadingMore(true);
-		BankServiceCallFactory.createGetActivityServerCall(url).submit();
+		
+		if( header.isPosted() ) {
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted).submit();
+		} else {
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Scheduled).submit();
+		}
 	}
 
 	/**
@@ -294,7 +300,6 @@ public class BankAccountActivityTable extends BaseTable{
 		bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, header.getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, header.getSortOrder());
 		bundle.putBoolean(BankExtraKeys.TITLE_EXPANDED, header.isHeaderExpanded());
-		bundle.putBoolean(POSTED_TOGGLE_KEY, postedToggle);
 
 		return bundle;
 	}
@@ -306,9 +311,16 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
-		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, true));
-		postedToggle = bundle.getBoolean(POSTED_TOGGLE_KEY, true);
-		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
+		
+		/**Read Activity list from bundle*/
+		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);	
+		
+		/**Set flag to true if passed list has Posted Activities*/
+		postedToggle = (current.type == ActivityDetailType.Posted);
+		
+		/**Set Header to Posted or Scheduled depenting on the type of list*/
+		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, postedToggle));
+		
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){
 			posted = current;

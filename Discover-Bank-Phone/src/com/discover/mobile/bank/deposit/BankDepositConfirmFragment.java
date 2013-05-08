@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.help.HelpWidget;
@@ -106,19 +106,18 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	@Override
 	protected void onActionLinkClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
-		activity.popTillFragment(BankAccountSummaryFragment.class);
 
 		final Account account = BankUser.instance().getAccount( Integer.toString(depositDetail.account) );
 
 		//Navigate to Scheduled Transactions Activity Page
 		if( account != null ) {
-			final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
+			final String link = account.getLink(Account.LINKS_SCHEDULED_ACTIVITY);
 
 			//Set Current Account to be accessed by other objects in the application
 			BankUser.instance().setCurrentAccount(account);
 
 			//Send Request to download the current accounts posted activity
-			BankServiceCallFactory.createGetActivityServerCall(link).submit();
+			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled).submit();
 		}
 	}
 
