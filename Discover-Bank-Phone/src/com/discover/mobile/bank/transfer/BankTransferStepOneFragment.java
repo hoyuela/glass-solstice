@@ -657,7 +657,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		amountField.setMaximumValue(MAXIMUM_TRANSFER_VALUE);
 		
 		amountField.addTextChangedListener(dateSelectorWatcher);
-		
+		amountField.clearErrors();
 		return amountListItem;
 	}
 	
