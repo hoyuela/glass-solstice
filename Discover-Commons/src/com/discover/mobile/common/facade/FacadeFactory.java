@@ -120,20 +120,6 @@ public final class FacadeFactory {
 	}	
 
 	/**
-	 * Get FAQ facade for Card
-	 */
-	public static CardFaqFacade getCardFaqFacade(){
-		return (CardFaqFacade) getImplClass("com.discover.mobile.card.facade.CardFaqFacadeImpl");
-	}
-
-	/**
-	 * Get FAQ facade for Bank
-	 */
-	public static BankFaqFacade getBankFaqFacade(){
-		return (BankFaqFacade) getImplClass("com.discover.mobile.bank.facade.BankFaqFacadeImpl");
-	}
-
-	/**
 	 * Returns the conductor facade
 	 * @param accountType
 	 * @return

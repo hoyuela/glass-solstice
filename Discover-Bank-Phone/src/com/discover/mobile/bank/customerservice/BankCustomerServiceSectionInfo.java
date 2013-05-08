@@ -7,7 +7,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.ContactUsType;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
@@ -41,7 +40,7 @@ public final class BankCustomerServiceSectionInfo extends GroupComponentInfo {
 
 			@Override
 			public void onClick(final View v) {
-				FacadeFactory.getBankFaqFacade().launchBankFaq();
+				BankConductor.navigateToFAQLandingPage();
 			}
 		};
 	}

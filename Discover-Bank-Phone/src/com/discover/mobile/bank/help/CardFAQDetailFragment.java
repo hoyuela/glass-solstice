@@ -1,7 +1,7 @@
 /*
  * © Copyright Solstice Mobile 2013
  */
-package com.discover.mobile.card.help;
+package com.discover.mobile.bank.help;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,24 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.R;
+import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.google.common.base.Strings;
 
-public class FAQDetailFragment extends BaseFragment {
+/**
+ * This Fragment displays Card FAQ items for the user to review.
+ * To use, pass a BankExtraKey value in the bundle arguments to this Fragment and then this Fragment will display
+ * the related content.
+ * 
+ * @author jthornton
+ */
+public class CardFAQDetailFragment extends BaseFragment {
 	private final static String SCROLL_Y = "a";
 
 	/** The list of FAQ items that will be shown in this Fragment */
-	private final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
+	private final List<CardFAQListItem>faqItems = new ArrayList<CardFAQListItem>();
 
 	/**
 	 * Setup the Fragment to be shown.
@@ -72,21 +80,34 @@ public class FAQDetailFragment extends BaseFragment {
 
 		//Compare the faqType value with the BankExtraKeys and return the string resource value that matches.
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(FAQExtraKeys.GENERAL)){
-				titleResource = R.string.card_faq_general;
-			}else if(faqType.equals(FAQExtraKeys.DISCOVER_EXTRAS)){
-				titleResource = R.string.card_faq_discover_extras;
-			}else if(faqType.equals(FAQExtraKeys.TRAVEL)){
-				titleResource = R.string.card_faq_travel;
-			}else if(faqType.equals(FAQExtraKeys.PAYMENTS_AND_TRANS)){
-				titleResource = R.string.card_faq_payments_and_trans;
-			}else if(faqType.equals(FAQExtraKeys.PUSH_TEXT_ALERT)){
-				titleResource = R.string.card_faq_push_and_text_alerts;
-			}else if(faqType.equals(FAQExtraKeys.REFER_FRIEND)){
-				titleResource = R.string.card_faq_refer_a_friend;
-			}else if(faqType.equals(FAQExtraKeys.SEND_MONEY)){
-				titleResource = R.string.card_faq_send_money;
-			}
+			titleResource = getTitleResource(faqType);
+		}
+
+		return titleResource;
+	}
+
+	/**
+	 * Returns the string resource integer that should be used as the title for this Fragment.
+	 * @param faqType - string representing the faq type
+	 * @return the string resource integer that should be used as the title for this Fragment.
+	 */
+	private int getTitleResource(final String faqType){
+		int titleResource = 0;
+
+		if(faqType.equals(BankExtraKeys.GENERAL_CARD_FAQ)){
+			titleResource = R.string.card_faq_general;
+		}else if(faqType.equals(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ)){
+			titleResource = R.string.card_faq_discover_extras;
+		}else if(faqType.equals(BankExtraKeys.TRAVEL_CARD_FAQ)){
+			titleResource = R.string.card_faq_travel;
+		}else if(faqType.equals(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ)){
+			titleResource = R.string.card_faq_payments_and_trans;
+		}else if(faqType.equals(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ)){
+			titleResource = R.string.card_faq_push_and_text_alerts;
+		}else if(faqType.equals(BankExtraKeys.REFER_FRIEND_CARD_FAQ)){
+			titleResource = R.string.card_faq_refer_a_friend;
+		}else if(faqType.equals(BankExtraKeys.SEND_MONEY_CARD_FAQ)){
+			titleResource = R.string.card_faq_send_money;
 		}
 
 		return titleResource;
@@ -101,7 +122,7 @@ public class FAQDetailFragment extends BaseFragment {
 		super.onSaveInstanceState(outState);
 
 		if( outState != null && this.getView() != null) {
-			outState.putSerializable(FAQExtraKeys.FAQ_DATA, getSaveStateValues());
+			outState.putSerializable(BankExtraKeys.PRIMARY_LIST, getSaveStateValues());
 			outState.putInt(SCROLL_Y, ((ScrollView)this.getView().findViewById(R.id.scroll_view)).getScrollY());
 		}
 	}
@@ -129,7 +150,7 @@ public class FAQDetailFragment extends BaseFragment {
 	 */
 	protected void restoreState(final Bundle savedInstanceState) {
 		if(savedInstanceState != null) {
-			final boolean[] openStates = savedInstanceState.getBooleanArray(FAQExtraKeys.FAQ_DATA);
+			final boolean[] openStates = savedInstanceState.getBooleanArray(BankExtraKeys.PRIMARY_LIST);
 
 			//Restore the open and close states of the list items
 			for(int i = 0; i < openStates.length; ++i) {
@@ -155,7 +176,7 @@ public class FAQDetailFragment extends BaseFragment {
 
 		//The loop is incremented by 2 each time because we are grabbing data two values at a time.
 		for(int i = 0; i < listItemLength && (i + 1) < listItemLength; i += 2) {
-			final FAQListItem listItem = new FAQListItem(getActivity());
+			final CardFAQListItem listItem = new CardFAQListItem(getActivity());
 
 			//Hide the first divider line.
 			if(i == 0){
@@ -172,7 +193,7 @@ public class FAQDetailFragment extends BaseFragment {
 		//To be sure that the only content in the table is the FAQ items, remove everything else first.
 		contentTable.removeAllViews();
 
-		for(final FAQListItem item : faqItems){
+		for(final CardFAQListItem item : faqItems){
 			if(item != null){
 				contentTable.addView(item);
 			}
@@ -190,19 +211,19 @@ public class FAQDetailFragment extends BaseFragment {
 		final Resources res = getResources();
 
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(FAQExtraKeys.GENERAL)){
+			if(faqType.equals(BankExtraKeys.GENERAL_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_general_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.DISCOVER_EXTRAS)){
+			}else if(faqType.equals(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_extra_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.TRAVEL)){
+			}else if(faqType.equals(BankExtraKeys.TRAVEL_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_travel_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.PAYMENTS_AND_TRANS)){
+			}else if(faqType.equals(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_payments_trans_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.PUSH_TEXT_ALERT)){
+			}else if(faqType.equals(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_push_text_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.REFER_FRIEND)){
+			}else if(faqType.equals(BankExtraKeys.REFER_FRIEND_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_refer_friend_faq_array);
-			}else if(faqType.equals(FAQExtraKeys.SEND_MONEY)){
+			}else if(faqType.equals(BankExtraKeys.SEND_MONEY_CARD_FAQ)){
 				content = res.getStringArray(R.array.card_send_money_faq_array);
 			}
 		}
@@ -219,7 +240,7 @@ public class FAQDetailFragment extends BaseFragment {
 		final Bundle args = getArguments();
 
 		if(args != null){
-			faqType = args.getString(FAQExtraKeys.FAQ_TYPE);
+			faqType = args.getString(BankExtraKeys.FAQ_TYPE);
 		}
 
 		return faqType;
@@ -227,16 +248,17 @@ public class FAQDetailFragment extends BaseFragment {
 
 	@Override
 	public int getActionBarTitle() {
-		return R.string.card_faq_title;
+		return R.string.faq_title;
 	}
+
 
 	@Override
 	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.FAQ_SECTION;
+		return BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS;
 	}
 }

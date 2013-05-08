@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -57,7 +57,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		final Bundle bundle = this.getIntent().getExtras();
 		if(bundle != null) {
 			final String faqType = bundle.getString(BankExtraKeys.FAQ_TYPE);
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(faqType);
+			BankConductor.navigateToFAQDetail(faqType);
 		}else {
 			final FAQLandingPageFragment landingPage = new FAQLandingPageFragment();
 			makeFragmentVisible(landingPage);

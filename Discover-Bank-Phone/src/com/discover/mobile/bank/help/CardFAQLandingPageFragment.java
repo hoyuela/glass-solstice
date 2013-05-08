@@ -1,7 +1,7 @@
 /*
  * © Copyright Solstice Mobile 2013
  */
-package com.discover.mobile.card.help;
+package com.discover.mobile.bank.help;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
@@ -15,13 +15,21 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.R;
+import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
 
-public class FAQLandingPageFragment extends BaseFragment {
+/**
+ * This is the landing page for the Card FAQ section.
+ * This page displays all CArd FAQ categories for a card user.
+ * 
+ * @author jthornton
+ *
+ */
+public class CardFAQLandingPageFragment extends BaseFragment {
 
 	/**
 	 * Setup the view using a default adapter for the list. 
@@ -102,34 +110,35 @@ public class FAQLandingPageFragment extends BaseFragment {
 		final Resources res = getResources();
 
 		if(title.equals(res.getString(R.string.card_faq_general))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.GENERAL);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.GENERAL_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_discover_extras))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.DISCOVER_EXTRAS);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_travel))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.TRAVEL);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.TRAVEL_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_payments_and_trans))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.PAYMENTS_AND_TRANS);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_push_and_text_alerts))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.PUSH_TEXT_ALERT);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_refer_a_friend))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.REFER_FRIEND);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.REFER_FRIEND_CARD_FAQ);
 		}else if(title.equals(res.getString(R.string.card_faq_send_money))){
-			FacadeFactory.getCardFaqFacade().navigateToCardFaqDetail(FAQExtraKeys.SEND_MONEY);
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.SEND_MONEY_CARD_FAQ);
 		}
 	}
 
+
 	@Override
 	public int getActionBarTitle() {
-		return R.string.card_faq_title;
+		return R.string.faq_title;
 	}
 
 	@Override
 	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.FAQ_SECTION;
+		return BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS;
 	}
 }

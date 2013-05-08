@@ -1,7 +1,7 @@
 /*
  * © Copyright Solstice Mobile 2013
  */
-package com.discover.mobile.card.help;
+package com.discover.mobile.bank.help;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +11,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.card.R;
+import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
-public class LoggedOutFAQActivity  extends NavigationRootActivity{
+/**
+ * /**
+ * This activity allows the showing of the Card FAQ content while logged out.
+ * It is an activity of its own that contains the Card FAQ fragments.
+
+ * @author jthornton
+ *
+ */
+public class CardLoggedOutFAQActivity  extends NavigationRootActivity{
 	/**
 	 * Create the activity
 	 */
@@ -47,11 +56,14 @@ public class LoggedOutFAQActivity  extends NavigationRootActivity{
 		super.onPause();
 	}
 
+	/**
+	 * Show a Card Faq Detail if needed
+	 */
 	private void showFAQDetailIfNeeded() {
 		final Bundle bundle = this.getIntent().getExtras();
 		if(bundle != null) {
-			final String faqType = bundle.getString(FAQExtraKeys.FAQ_TYPE);
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(faqType);
+			final String faqType = bundle.getString(BankExtraKeys.FAQ_TYPE);
+			BankConductor.navigateToCardFaqDetail(faqType);
 		}else {
 			final FAQLandingPageFragment landingPage = new FAQLandingPageFragment();
 			makeFragmentVisible(landingPage);

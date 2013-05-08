@@ -13,9 +13,9 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.atm.AtmModalFactory;
 import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -173,7 +173,7 @@ public final class HelpMenuListFactory {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				FacadeFactory.getCardFaqFacade().launchCardFaq();
+				BankConductor.navigateToCardFaq();
 			}
 		};
 	}
@@ -186,7 +186,7 @@ public final class HelpMenuListFactory {
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				FacadeFactory.getBankFaqFacade().launchBankFaq();
+				BankConductor.navigateToFAQLandingPage();
 			}
 		};
 	}

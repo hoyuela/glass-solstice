@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
 /**
  * This is the landing page for the FAQ section.
@@ -74,7 +74,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * Place a divider line at the next available position in the linear layout.
 	 * @param view a linear layout to add a divider line to.
 	 */
-	private void insertDividerLine(final LinearLayout view) {
+	protected void insertDividerLine(final LinearLayout view) {
 		final View divider = new View(getActivity(), null);
 		divider.setBackgroundResource(R.drawable.table_dotted_line);
 		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
@@ -88,7 +88,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * @param listItem a listItem that is used to indicate a FAQ section.
 	 * @return an OnClickListener that will navigate to a FAQ section.
 	 */
-	private OnClickListener getListClickListener(final RelativeLayout listItem) {
+	protected OnClickListener getListClickListener(final RelativeLayout listItem) {
 		return new OnClickListener() {
 
 			@Override
@@ -103,17 +103,17 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * Navigates to a FAQ section based on a title.
 	 * @param title a FAQ section title that corresponds to a FAQ detail page.
 	 */
-	private void decideWhereToNavigateFromSectionTitle(final String title) {
+	protected void decideWhereToNavigateFromSectionTitle(final String title) {
 		final Resources res = getResources();
 
 		if(title.equals(res.getString(R.string.general))){
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(BankExtraKeys.GENERAL_FAQ);
+			BankConductor.navigateToFAQDetail(BankExtraKeys.GENERAL_FAQ);
 		}else if(title.equals(res.getString(R.string.online_bill_pay))){
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(BankExtraKeys.BILL_PAY_FAQ);
+			BankConductor.navigateToFAQDetail(BankExtraKeys.BILL_PAY_FAQ);
 		}else if(title.equals(res.getString(R.string.deposit_a_check))){
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(BankExtraKeys.CHECK_DEPOSIT_FAQ);
+			BankConductor.navigateToFAQDetail(BankExtraKeys.CHECK_DEPOSIT_FAQ);
 		}else if(title.equals(res.getString(R.string.atm_locator_single_line))){
-			FacadeFactory.getBankFaqFacade().navigateToBankFaqDetail(BankExtraKeys.ATM_LOCATOR_FAQ);
+			BankConductor.navigateToFAQDetail(BankExtraKeys.ATM_LOCATOR_FAQ);
 		}
 
 	}
