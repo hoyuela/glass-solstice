@@ -294,7 +294,7 @@ public class ListItemGenerator {
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
 		if(STATUS_SCHEDULED.equalsIgnoreCase(item.status)){
-			items.add(getStatusCell(item.status));
+			items.add(getStatusCell( BankStringFormatter.capitalize(item.status)));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
 

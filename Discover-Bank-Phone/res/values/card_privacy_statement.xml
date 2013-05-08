@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="card_privacy_title">
+        <![CDATA[Discover Financial Services Mobile Privacy Statement]]>
+    </string>
+        
+    <string name="card_privacy_statement">
+    <![CDATA[<h3>This Mobile Privacy Statement applies to our mobile and social media apps and mobile websites.</h3>
+    <p>This Mobile Privacy Statement ("Privacy Statement") describes how Discover Financial Services (including Discover Bank, Discover Products Inc., and their affiliates) treat personal information on our mobile apps and websites, and apps on social media platforms ("Mobile Services").</p>
+    <p>This Privacy Statement only describes Mobile Service practices.  It does not apply to how we generally collect or use your information as a customer of any Discover financial service or product.  It also doesn\'t apply to the practices on our websites not optimized for a mobile browser.</p>
+    
+    <h3>Our Mobile Services collect information from and about you.</h3>
+    <p><strong>Information you submit</strong>.  For example, our Mobile Services may ask you to submit your name and account ID.  They may also ask for your email address or other contact information. We may collect your zip code to help you find an ATM.</p>
+    <p><strong>Financial information</strong>.  For example, our Mobile Services may ask for bank account information for funds transfers to complete a service.  They may also ask for images of checks as part of a deposit.  How we use financial information is described in the privacy policies available on our
+    <a href="https://www.discover.com/credit-cards/help-center/account/privacy-policies/index.html" target="_blank">website</a>.</p>
+    <p><strong>Other information</strong>.  If you use our Mobile Services, we may collect information about the browser, device or operating system you\'re using. We might look at what site you came from, or what site you visit when you leave us. When you use our Mobile Services, we might collect your location using GPS, a cellular network location, wi-fi networks, browser services, or information you provide.</p>
+    
+    <h3>Our Mobile Services collect information in different ways.</h3>
+    <p><strong>Information is collected directly from you</strong>. For example, we collect information if you request to receive offers and alerts through a Mobile Service.</p>
+    <p><strong>Information is collected passively</strong>. Our Mobile Services may use tracking tools like browser cookies and web beacons. Learn more about these tools, and how you can control them, <a href="#choices">here</a>.</p>
+    <p><strong>We get information about you from third parties</strong>. For example, our business partners and service providers may give us information about you. Social media platforms may also give us information about you.</p>
+    
+    <h3>We use information from our Mobile Services in many ways.</h3>
+    <p><strong>We use information to respond to your requests or questions</strong>. For example, we might use your information to complete a transaction that you requested.  We may also use your information to redeem your rewards or send you an alert you signed up for.</p>
+    <p><strong>We use information to improve our products and services</strong>. We may use your information to make our Mobile Services better. We might use your information to customize your experience with us. We may combine information we get from you with information about you we get from third parties.</p>
+    <p><strong>We use information for security purposes</strong>. We may use information to protect our company, our customers, and our websites.</p>
+    
+    <p><strong>We use information for marketing purposes.</strong>
+    For example, we might send you information about new products and special offers. We might tell you about new features or updates. We may also use push notifications on our mobile apps. To manage this, read the <a href="#choices">choices</a> section below.</p>
+    <p><strong>We use information to communicate with you about your account or our relationship.</strong>
+    We may contact you about your account or feedback. We might also contact you about this Privacy Statement or our Terms and Conditions.</p>
+    <p><strong>We use information as otherwise permitted by law.</strong>
+    We keep personal information as long as it is necessary or relevant for the practices described in this Privacy Statement. We also keep information as otherwise required by law.</p>
+    
+    <h3>We may share information connected with our Mobile Services with third parties.</h3>
+    
+    <p><strong>We will share this information within the Discover Financial Services family of companies.</strong>
+    For example, this includes Discover Bank and Discover Home Loans, Inc.  This also includes future Discover subsidiaries or affiliates. </p>
+    
+    <p><strong>We will share this information with third parties who perform services on our behalf.</strong>
+    For example, we share information with vendors who send texts for us.  We may also share information with companies that operate our websites and apps.</p>
+    
+    <p><strong>We will share this information with our business partners.</strong>
+    For example, we may share information with social media sites.  To control this, read the <a href="#choices">choices</a> section below.</p>
+    
+    <p><strong>We will share this information if we think we have to in order to comply with the law or to protect ourselves.</strong> For example, we will share information to respond to a court order or subpoena. We may share it if a government agency or investigatory body requests. We might share information when we are investigating potential fraud.</p>
+    
+    <p><strong>We may share this information with any successor to all or part of our business.</strong>
+    For example, if part of our business is sold we may give our customer list as part of that transaction.</p>
+    
+    <p><strong>We may share this information for other reasons we may describe to you.</strong></p>
+    
+    <h3 id="choices" name="choices">You have certain choices about our Mobile Service sharing and marketing practices.</h3>
+    <p><strong>You can control cookies and tracking tools.</strong>
+    Your mobile browser may give you the ability to control cookies.  How you do so depends on the type of cookie.  Certain browsers can be set to clear past and reject future cookies.  If you block cookies on your browser, certain features on our mobile website may not work.</p>
+    
+    <p><strong>You can control tools on your mobile devices.</strong>
+    For example, you can turn off the GPS locator or push notifications on your phone.  If your phone allows, you can change app-specific location settings. </p>
+    
+    <p><strong>You can opt out of receiving our marketing texts and emails.</strong>
+    To stop receiving our promotional emails or texts, follow the instructions in any promotional message you get from us.  Even if you opt out of getting marketing messages, we may still send you transactional messages.  These include responses to your questions or information about your account.</p>
+    
+    <h3>These Mobile Services and children.</h3>
+    <p>Our Mobile Service is meant for adults and is not directed to children. We do not knowingly collect personally identifiable information from children under 13 without permission from a parent or guardian. If you are a parent or legal guardian and think your child under 13 has given us information, you can email us at <a href="mailto:mobileprivacy@discover.com">mobileprivacy@discover.com</a>. You can also write to us at the address listed at the end of this Privacy Statement. Please mark your inquiries "COPPA Information Request."</p>
+    
+    <h3>We use standard security measures on our Mobile Services.</h3>
+    <p>To protect your personal information from unauthorized access, we use security measures that comply with federal law, including computer safeguards.  However, the Internet is not 100% secure. We cannot promise that your use of our Mobile Services will be completely safe. We encourage you to use caution when using the Internet. This includes not sharing your passwords.</p>
+    
+    <h3>We store information in the United States.</h3>
+    <p>If you live outside of the United States, you understand and agree that we may transfer your information to the United States. Our Mobile Services and associated practices are subject to applicable U.S. laws.</p>
+    
+    <h3>Our Mobile Services may link to third party services or apps that we don\'t control.</h3>
+    <p>If you click on a link to a third-party site, you will be taken to websites or apps we do not control.  This includes social media sites. This Privacy Statement does not apply to the privacy practices of these websites. Read the privacy policy of other websites and carefully. We are not responsible for these third party practices.</p>
+    
+    <h3>We may update this Mobile Privacy Statement.</h3>
+    <p>From time to time we may change our Privacy Statement. We will notify you of any material changes to our Privacy Statement as required by law. We will also post an updated copy on our website and within the Mobile Services.  Please check periodically for updates.</p>
+    
+    <h3>Feel free to contact us if you have more questions.</h3>
+    <p>If you have any questions about this Mobile Privacy Statement, please email us at <a href="mailto:mobileprivacy@discover.com">mobileprivacy@discover.com</a> or call us at <a href="tel://18003472683">1-800-347-2683</a>. </p>
+    <p>You can also write to us at:</p>
+    <p>Customer Service - Privacy Inquiries<br/>
+    Discover Financial Services<br/>
+    P.O. Box 30943<br/>
+    Salt Lake City, UT  84130-0943</p>
+    
+    <p>Mobile Privacy Statement last updated January 23, 2013</p>
+
+    <div style="text-align:center; font-size:9pt;"><a href="method://provideFeedback" style="color:#0267b1; text-decoration:none">Provide Feedback</a></div><br/><br/>]]>
+    </string>
+    
+</resources>

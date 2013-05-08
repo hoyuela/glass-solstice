@@ -22,6 +22,9 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	private TextView copyRight;
 	private BankNeedHelpFooter helpFooter;
 
+	/**Set to true when the footer needs to send the user to card pages*/
+	private boolean cardMode = false;
+
 	public BankLayoutFooter(final Context context) {
 		super(context);
 
@@ -66,7 +69,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 				break;
 			case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_helpNumber:
 				final String helpNumber = a.getString(attr);
-				this.helpFooter.setToDialNumberOnClick(helpNumber);
+				helpFooter.setToDialNumberOnClick(helpNumber);
 				break;
 			}
 		}
@@ -75,13 +78,13 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	}
 
 	public void setHelpNumber(final String value ) {
-		this.helpFooter.setToDialNumberOnClick(value);
+		helpFooter.setToDialNumberOnClick(value);
 	}
-	
+
 	public void promptForHelp(final boolean value) {
-		this.helpFooter.promptForHelp(value);
+		helpFooter.promptForHelp(value);
 	}
-	
+
 	private void initialize(final Context context) {
 		this.addView(getInflatedLayout(context));
 
@@ -102,7 +105,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 		divider.setOnClickListener(this);
 		provideFeedback.setOnClickListener(this);
 		privacyTerms.setOnClickListener(this);
-		
+
 		/**Default to privacy terms*/
 		setFooterType(FooterType.PRIVACY_TERMS);
 
@@ -129,7 +132,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 		} else {
 			privacyTerms.setVisibility(View.GONE);
 		}
-		
+
 		/** Check if Copyright Should be shown */
 		if (FooterType.COPYRIGHT == (type & FooterType.COPYRIGHT)) {
 			copyRight.setVisibility(View.VISIBLE);
@@ -152,9 +155,31 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	@Override
 	public void onClick(final View sender) {
 		if (provideFeedback.getId() == sender.getId()) {
-			BankConductor.navigateToFeedback();
+			if(!cardMode){
+				BankConductor.navigateToFeedback();
+			}else{
+				BankConductor.navigateToFeedback();
+			}
 		} else if (privacyTerms.getId() == sender.getId()) {
-			BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
+			if(!cardMode){
+				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
+			}else{
+				BankConductor.navigateToCardPrivacyAndTermsLanding();
+			}
 		}
+	}
+
+	/**
+	 * @return the cardMode
+	 */
+	public boolean isCardMode() {
+		return cardMode;
+	}
+
+	/**
+	 * @param cardMode the cardMode to set
+	 */
+	public void setCardMode(final boolean cardMode) {
+		this.cardMode = cardMode;
 	}
 }

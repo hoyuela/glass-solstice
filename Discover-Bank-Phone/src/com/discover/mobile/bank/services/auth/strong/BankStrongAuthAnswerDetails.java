@@ -56,8 +56,6 @@ public class BankStrongAuthAnswerDetails {
 		questionResponse = answer;
 		bindDevice = (bind)?"true":"false";
 		questionId = strongAuthDetails.questionId;
-		sessionId = strongAuthDetails.sessionId;
-		transactionId = strongAuthDetails.transactionId;
 	}
 }
 
