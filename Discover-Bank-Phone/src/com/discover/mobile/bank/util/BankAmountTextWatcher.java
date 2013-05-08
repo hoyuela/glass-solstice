@@ -1,9 +1,10 @@
 package com.discover.mobile.bank.util;
 
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.discover.mobile.common.ui.widgets.ValidatedInputField;
+import com.discover.mobile.common.ui.widgets.ValidatedInputFieldWatcher;
 import com.google.common.base.Strings;
 
 /**
@@ -15,54 +16,41 @@ import com.google.common.base.Strings;
  * @author asheehan, hoyuela
  * 
  */
-public class BankAmountTextWatcher implements TextWatcher {
+public class BankAmountTextWatcher extends ValidatedInputFieldWatcher {
 	/**
 	 * Holds the last string assigned to the watched EditText by this TextWatcher after formatting it.
 	 */
-	private String valueText;
-	/**
-	 * Holds Reference to the EditText which is being watched and whose text is formatted.
-	 */
-	private EditText watchee;
+	private String valueText = "";
 	/**
 	 * Holds the numeric version of what is assigned to valueText
 	 */
 	private double value;
 	/**
-	 * Holds the value of the configurable maximum value allowed to be ented in the watched text field.
+	 * Holds the value of the configurable maximum value allowed to be entered in the watched text field.
 	 */
-	private double maxValue = MAX_VALUE;
-
+	private double maxValue = DEFAULT_MAX_VALUE;
 
 	/**
-	 * Holds the maximum value that can be entered by the user in watchee.
+	 * Holds the maximum value that can be entered by the user in the input field.
 	 */
-	public final static double MAX_VALUE = 99999.99;
+	public final static double DEFAULT_MAX_VALUE = 99999.99;
 	
 	private final static double SHIFT_ONE = 10.0;
 	private final static double SHIFT_TWO = 100.0;
 	private final static double SHIFT_THREE = 1000.0;
 
-	public BankAmountTextWatcher( final String startValue ) {
+	public BankAmountTextWatcher(ValidatedInputField inputField, final String startValue) {
+		super(inputField);
 		if( !Strings.isNullOrEmpty(startValue) ) {
 			valueText = startValue;
 			value = Double.parseDouble(startValue.replace(",", ""));
 		}
 	}
-	
-	public void setWatchee(final EditText watchee) {
-		this.watchee = watchee;
-		valueText = this.watchee.getText().toString();
-	}
-	
-	@Override
-	public void beforeTextChanged(final CharSequence s, final int start,
-			final int count, final int after) {
-	}
 
 	@Override
 	public void afterTextChanged(final Editable s) {
-
+		super.afterTextChanged(s);
+		
 		// The text of this edittext needs to be updated
 		updateValueText();
 
@@ -166,6 +154,7 @@ public class BankAmountTextWatcher implements TextWatcher {
 	 * Uses the current value to set the value text
 	 */
 	private void updateValueText() {
+		EditText watchee = getInputField();
 
 		if (value > 0) {
 

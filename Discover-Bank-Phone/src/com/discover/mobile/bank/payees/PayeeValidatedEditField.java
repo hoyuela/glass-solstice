@@ -4,8 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -69,10 +67,6 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 * Flag used to specify whether to validate text and show inline error.
 	 */
 	private boolean isValidationEnabled = true;
-	/**
-	 * Reference to text watcher that performs validation
-	 */
-	private TextWatcher validator;
 	
 	/**
 	 * Default constructor 
@@ -80,21 +74,14 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	 */ 
 	public PayeeValidatedEditField(final Context context) {
 		super(context);		
-		defaultSetup();
 	}
 
 	public PayeeValidatedEditField(final Context context, final AttributeSet attrs) {
 		super(context, attrs);	
-		defaultSetup();
 	}
 
 	public PayeeValidatedEditField(final Context context, final AttributeSet attrs, final int defStyle) {
 		super(context, attrs, defStyle);
-		defaultSetup();
-	}
-	
-	private void defaultSetup() {
-		setupTextChangedListener();
 	}
 
 	/**
@@ -220,11 +207,9 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 					final Matcher m = pattern.matcher(text);
 					valid &= !m.find();
 				}
-			} else {
-				if( 0 == errorTextResId ) {
-					//Set error string to invalid number of characters 
-					this.errorLabel.setText(R.string.bank_invalid_characters);
-				}
+			} else if( 0 == errorTextResId ) {
+				// Set error string to invalid number of characters
+				this.errorLabel.setText(R.string.bank_invalid_characters);
 			}
 		}
 		
@@ -272,9 +257,9 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		isValidationEnabled = value;
 		
 		if( value ) {
-			this.removeTextChangedListener(validator);
+			removeTextWatcher();
 		} else {
-			this.setupTextChangedListener();
+			setDefaultTextWatcher();
 		}
 	}
 	
@@ -285,30 +270,4 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 		}
 	}
 	
-	/**
-	 * Sets a text changed listener to listen for new input. Validates
-	 * the input in real time, so that if the field has been 
-	 * previously marked as an error, it will turn 'normal' as soon as
-	 * the input reaches a valid state.
-	 */
-	private void setupTextChangedListener(){
-		validator = new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(final Editable s) {
-				if(isValid()){
-					clearErrors();
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count,
-					final int after){/*Intentionally Empty*/}
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before,
-					final int count) {/*Intentionally Empty*/}
-		};
-		
-		this.addTextChangedListener( validator);
-	}
 }

@@ -133,7 +133,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	@Override
 	protected Fragment getDetailItem(final int position) {
 		Fragment pageFragment = null;
-
+		
 		if(position < activityItems.activities.size()) {
 			final Bundle bundle = new Bundle();
 			final ActivityDetail detailObject = activityItems.activities.get(position);
@@ -229,7 +229,8 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	protected void loadMore(final String url) {
 		if(!getIsLoadingMore()) {
 			setIsLoadingMore(true);
-			BankServiceCallFactory.createGetActivityServerCall(url).submit();		
+			
+			BankServiceCallFactory.createGetActivityServerCall(url, activityItems.type).submit();		
 		}
 	}
 

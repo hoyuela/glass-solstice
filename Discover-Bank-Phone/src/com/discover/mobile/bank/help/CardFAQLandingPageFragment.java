@@ -1,3 +1,6 @@
+/*
+ * © Copyright Solstice Mobile 2013
+ */
 package com.discover.mobile.bank.help;
 
 import android.annotation.SuppressLint;
@@ -18,15 +21,15 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
+
 /**
- * This is the landing page for the FAQ section.
- * This page displays all FAQ categories for a Bank user.
+ * This is the landing page for the Card FAQ section.
+ * This page displays all CArd FAQ categories for a card user.
  * 
- * @author scottseward
+ * @author jthornton
  *
  */
-
-public class FAQLandingPageFragment extends BaseFragment {
+public class CardFAQLandingPageFragment extends BaseFragment {
 
 	/**
 	 * Setup the view using a default adapter for the list. 
@@ -37,7 +40,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.faq_landing_page, null);
 
-		final String[] values = getResources().getStringArray(R.array.faq_sections);
+		final String[] values = getResources().getStringArray(R.array.card_faq_sections);
 
 		final LinearLayout faqList = (LinearLayout)view.findViewById(R.id.faq_list);
 
@@ -74,7 +77,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * Place a divider line at the next available position in the linear layout.
 	 * @param view a linear layout to add a divider line to.
 	 */
-	protected void insertDividerLine(final LinearLayout view) {
+	private void insertDividerLine(final LinearLayout view) {
 		final View divider = new View(getActivity(), null);
 		divider.setBackgroundResource(R.drawable.table_dotted_line);
 		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
@@ -88,7 +91,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * @param listItem a listItem that is used to indicate a FAQ section.
 	 * @return an OnClickListener that will navigate to a FAQ section.
 	 */
-	protected OnClickListener getListClickListener(final RelativeLayout listItem) {
+	private OnClickListener getListClickListener(final RelativeLayout listItem) {
 		return new OnClickListener() {
 
 			@Override
@@ -103,20 +106,26 @@ public class FAQLandingPageFragment extends BaseFragment {
 	 * Navigates to a FAQ section based on a title.
 	 * @param title a FAQ section title that corresponds to a FAQ detail page.
 	 */
-	protected void decideWhereToNavigateFromSectionTitle(final String title) {
+	private void decideWhereToNavigateFromSectionTitle(final String title) {
 		final Resources res = getResources();
 
-		if(title.equals(res.getString(R.string.general))){
-			BankConductor.navigateToFAQDetail(BankExtraKeys.GENERAL_FAQ);
-		}else if(title.equals(res.getString(R.string.online_bill_pay))){
-			BankConductor.navigateToFAQDetail(BankExtraKeys.BILL_PAY_FAQ);
-		}else if(title.equals(res.getString(R.string.deposit_a_check))){
-			BankConductor.navigateToFAQDetail(BankExtraKeys.CHECK_DEPOSIT_FAQ);
-		}else if(title.equals(res.getString(R.string.atm_locator_single_line))){
-			BankConductor.navigateToFAQDetail(BankExtraKeys.ATM_LOCATOR_FAQ);
+		if(title.equals(res.getString(R.string.card_faq_general))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.GENERAL_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_discover_extras))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_travel))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.TRAVEL_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_payments_and_trans))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_push_and_text_alerts))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_refer_a_friend))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.REFER_FRIEND_CARD_FAQ);
+		}else if(title.equals(res.getString(R.string.card_faq_send_money))){
+			BankConductor.navigateToCardFaqDetail(BankExtraKeys.SEND_MONEY_CARD_FAQ);
 		}
-
 	}
+
 
 	@Override
 	public int getActionBarTitle() {

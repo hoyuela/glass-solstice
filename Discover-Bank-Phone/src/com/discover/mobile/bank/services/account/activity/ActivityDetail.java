@@ -172,47 +172,10 @@ public class ActivityDetail implements Serializable{
 	 */
 	public String getTableDisplayDate() {
 		String date = "";
-		if( Strings.isNullOrEmpty(status) || 
-			status.equalsIgnoreCase(POSTED) || 
-			status.equalsIgnoreCase(RECEIVED) ) {
-			
-			if( !Strings.isNullOrEmpty(postedDate)) {
-				date = postedDate;
-			} else if( !Strings.isNullOrEmpty(receivedOn)) {
-				date = receivedOn;
-			} else if( !Strings.isNullOrEmpty(deliverByDate)){
-				date = deliverByDate;
-			}  else if ( !Strings.isNullOrEmpty(activityDate) ) {
-				date = activityDate;
-			}
-			else {
-				date = "";
-			}
-		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_PAYMENT)){
-			if( !Strings.isNullOrEmpty(activityDate)) {
-				date = activityDate;
-			} else {
-				date = "";
-			}
-		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_TRANSFER)){
-			if( !Strings.isNullOrEmpty(activityDate) ) {
-				date = activityDate;
-			} else {
-				date = "";
-			}
-		} else if(type.equalsIgnoreCase(ActivityDetail.TYPE_DEPOSIT)){
-			if( !Strings.isNullOrEmpty(activityDate)) {
-				date = activityDate;
-			} else {
-				date = "";
-			}
-		} else {
-			if( !Strings.isNullOrEmpty(postedDate)) {
-				date = postedDate;
-			} else {
-				date = "";
-			}
-		}
+		
+		if( !Strings.isNullOrEmpty(activityDate)) {
+			date = activityDate;
+		} 
 		return date;
 	}
 	

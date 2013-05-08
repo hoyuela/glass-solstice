@@ -1,3 +1,6 @@
+/*
+ * © Copyright Solstice Mobile 2013
+ */
 package com.discover.mobile.bank.help;
 
 import java.util.ArrayList;
@@ -18,19 +21,19 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.google.common.base.Strings;
+
 /**
- * This Fragment displays FAQ items for the user to review.
+ * This Fragment displays Card FAQ items for the user to review.
  * To use, pass a BankExtraKey value in the bundle arguments to this Fragment and then this Fragment will display
  * the related content.
  * 
- * @author scottseward
- *
+ * @author jthornton
  */
-public class FAQDetailFragment extends BaseFragment {
+public class CardFAQDetailFragment extends BaseFragment {
 	private final static String SCROLL_Y = "a";
 
 	/** The list of FAQ items that will be shown in this Fragment */
-	private final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();
+	private final List<CardFAQListItem>faqItems = new ArrayList<CardFAQListItem>();
 
 	/**
 	 * Setup the Fragment to be shown.
@@ -77,15 +80,34 @@ public class FAQDetailFragment extends BaseFragment {
 
 		//Compare the faqType value with the BankExtraKeys and return the string resource value that matches.
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(BankExtraKeys.GENERAL_FAQ)){
-				titleResource = R.string.general;
-			}else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ)){
-				titleResource = R.string.online_bill_pay;
-			}else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ)){
-				titleResource = R.string.deposit_a_check;
-			}else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ)){
-				titleResource = R.string.atm_locator_single_line;
-			}
+			titleResource = getTitleResource(faqType);
+		}
+
+		return titleResource;
+	}
+
+	/**
+	 * Returns the string resource integer that should be used as the title for this Fragment.
+	 * @param faqType - string representing the faq type
+	 * @return the string resource integer that should be used as the title for this Fragment.
+	 */
+	private int getTitleResource(final String faqType){
+		int titleResource = 0;
+
+		if(faqType.equals(BankExtraKeys.GENERAL_CARD_FAQ)){
+			titleResource = R.string.card_faq_general;
+		}else if(faqType.equals(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ)){
+			titleResource = R.string.card_faq_discover_extras;
+		}else if(faqType.equals(BankExtraKeys.TRAVEL_CARD_FAQ)){
+			titleResource = R.string.card_faq_travel;
+		}else if(faqType.equals(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ)){
+			titleResource = R.string.card_faq_payments_and_trans;
+		}else if(faqType.equals(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ)){
+			titleResource = R.string.card_faq_push_and_text_alerts;
+		}else if(faqType.equals(BankExtraKeys.REFER_FRIEND_CARD_FAQ)){
+			titleResource = R.string.card_faq_refer_a_friend;
+		}else if(faqType.equals(BankExtraKeys.SEND_MONEY_CARD_FAQ)){
+			titleResource = R.string.card_faq_send_money;
 		}
 
 		return titleResource;
@@ -143,7 +165,7 @@ public class FAQDetailFragment extends BaseFragment {
 	 * Gets the list of FAQ items to display and then populates the FAQ list with those items.
 	 * @param contentTable a LinearLayout that will hold the FAQ items.
 	 */
-	protected void populateFAQItemsToTable(final LinearLayout contentTable) {
+	private void populateFAQItemsToTable(final LinearLayout contentTable) {
 		//Get the String values for the FAQ items.
 		final String[] listItems = getFAQListItems();
 		//Cache the length value.
@@ -154,7 +176,7 @@ public class FAQDetailFragment extends BaseFragment {
 
 		//The loop is incremented by 2 each time because we are grabbing data two values at a time.
 		for(int i = 0; i < listItemLength && (i + 1) < listItemLength; i += 2) {
-			final FAQListItem listItem = new FAQListItem(getActivity());
+			final CardFAQListItem listItem = new CardFAQListItem(getActivity());
 
 			//Hide the first divider line.
 			if(i == 0){
@@ -171,7 +193,7 @@ public class FAQDetailFragment extends BaseFragment {
 		//To be sure that the only content in the table is the FAQ items, remove everything else first.
 		contentTable.removeAllViews();
 
-		for(final FAQListItem item : faqItems){
+		for(final CardFAQListItem item : faqItems){
 			if(item != null){
 				contentTable.addView(item);
 			}
@@ -189,14 +211,20 @@ public class FAQDetailFragment extends BaseFragment {
 		final Resources res = getResources();
 
 		if(!Strings.isNullOrEmpty(faqType)) {
-			if(faqType.equals(BankExtraKeys.GENERAL_FAQ)){
-				content = res.getStringArray(R.array.general_faq_array);
-			}else if(faqType.equals(BankExtraKeys.BILL_PAY_FAQ)){
-				content = res.getStringArray(R.array.online_bill_pay_array);
-			}else if(faqType.equals(BankExtraKeys.ATM_LOCATOR_FAQ)){
-				content = res.getStringArray(R.array.atm_locator_faq_array);
-			}else if(faqType.equals(BankExtraKeys.CHECK_DEPOSIT_FAQ)){
-				content = res.getStringArray(R.array.check_deposit_faq_array);
+			if(faqType.equals(BankExtraKeys.GENERAL_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_general_faq_array);
+			}else if(faqType.equals(BankExtraKeys.DISCOVER_EXTRAS_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_extra_faq_array);
+			}else if(faqType.equals(BankExtraKeys.TRAVEL_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_travel_faq_array);
+			}else if(faqType.equals(BankExtraKeys.PAYMENTS_AND_TRANS_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_payments_trans_faq_array);
+			}else if(faqType.equals(BankExtraKeys.PUSH_TEXT_ALERT_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_push_text_faq_array);
+			}else if(faqType.equals(BankExtraKeys.REFER_FRIEND_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_refer_friend_faq_array);
+			}else if(faqType.equals(BankExtraKeys.SEND_MONEY_CARD_FAQ)){
+				content = res.getStringArray(R.array.card_send_money_faq_array);
 			}
 		}
 
@@ -233,5 +261,4 @@ public class FAQDetailFragment extends BaseFragment {
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS;
 	}
-
 }
