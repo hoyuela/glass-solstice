@@ -58,6 +58,8 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListActivityDetail> handler;
 
+	private final ActivityDetailType type;
+	
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API
@@ -65,7 +67,7 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	 * @param url to get the activity from
 	 */
 	public GetActivityServerCall(final Context context,
-			final AsyncCallback<ListActivityDetail> callback, final String url) {
+			final AsyncCallback<ListActivityDetail> callback, final String url, final ActivityDetailType type) {
 
 		super(context, new GetCallParams(url) {
 			{
@@ -88,6 +90,8 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 			}
 		}, ListActivityDetail.class, ActivityDetail.class);
 
+		this.type = type;
+		
 		handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}
 
@@ -107,6 +111,7 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 		final ListActivityDetail details = new ListActivityDetail();
 		details.activities = super.parseUnamedList(body);
 		details.links = parseHeaderForLinks(headers);
+		details.type = this.type;
 		return details;
 	}
 

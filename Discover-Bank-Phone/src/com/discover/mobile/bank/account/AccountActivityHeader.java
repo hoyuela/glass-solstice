@@ -191,7 +191,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				if(availableBalance.getVisibility() == View.VISIBLE){
+				if(currentBalance.getVisibility() == View.VISIBLE){
 					setSpan(R.drawable.drk_blue_arrow_down);
 					labels.startAnimation(collapse);
 					setHeaderExpanded(false);
