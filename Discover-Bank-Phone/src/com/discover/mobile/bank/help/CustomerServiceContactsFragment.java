@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -24,6 +25,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 
 	/** Use this variable to setup the appearance of the screen based on card or bank user.*/
 	private ContactUsType type = ContactUsType.CARD;
+	private boolean card = false;
 
 	/**
 	 * Return the modified view that we need to display.
@@ -52,15 +54,19 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 			help.showHelpItems(HelpMenuListFactory.instance().getCardHelpItems());
 			break;
 		} 
-		
+
+		if(card){
+			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
+		}
+
 		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
 			// Must re-establish tiling for older devices.
 			CommonUtils.fixBackgroundRepeat(mainView.findViewById(R.id.customer_service_layout));
 		}
-		
+
 		return mainView;
 	}
-	
+
 	/**
 	 * The title of the screen that will be presented in the action bar.
 	 */
@@ -87,10 +93,10 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void loadLists(final View mainView) {
 		final Bundle bundle = getArguments();
-		
+
 		if( bundle != null ) {
 			type = (ContactUsType) bundle.getSerializable(BankInfoNavigationActivity.CONTACT_US);
-			
+
 			switch( type ) {
 			case ALL:
 				showCardElements(mainView);
@@ -105,13 +111,13 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 				hideBankElements(mainView);
 				break;
 			}
-			
+
 		} else {
 			showCardElements(mainView);
 			hideBankElements(mainView);
 		}
 	}
-		
+
 	/**
 	 * Loads a list of View elements into a LinearLayout
 	 * 
@@ -125,12 +131,12 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 			}
 		}
 	}
-	
+
 	private void showCardElements(final View mainView) {
 		loadListElementsToLayoutFromList(cardPhoneNumberList, CustomerServiceContactLists.getCardPhoneNumberListElements(this.getActivity()));
 		loadListElementsToLayoutFromList(cardMailingAddressList, CustomerServiceContactLists.getCardMailingAddressListElements(this.getActivity()));
 	}
-	
+
 	private void showBankElements(final View mainView) {
 		loadListElementsToLayoutFromList(bankPhoneNumberList, CustomerServiceContactLists.getBankPhoneNumberListElements(this.getActivity()));
 		loadListElementsToLayoutFromList(bankMailingAddressList, CustomerServiceContactLists.getBankMailingAddressListElements(this.getActivity()));
@@ -182,6 +188,10 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.CONTACT_US_SECTION;
+	}
+
+	public void setCardMode(final boolean isCard) {
+		card = isCard;
 	}
 
 }
