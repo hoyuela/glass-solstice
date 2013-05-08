@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/help"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/welcome_to_pay_bills" />
 
          
@@ -79,9 +79,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+    
     <com.discover.mobile.common.help.HelpWidget
             android:id="@+id/help"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/help_bar_height_two_items" />
+            android:layout_height="@dimen/help_bar_height_two_items"/>
 
 </RelativeLayout>

@@ -23,8 +23,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/modal_alert_title"
-            android:paddingTop="@dimen/atm_modal_icon_padding"
-            android:src="@drawable/atm_map_icon_sm" />
+            android:paddingTop="5dp"
+            android:paddingLeft="7dp"
+            android:src="@drawable/atm_pinview_icon_sm" />
 
         <TextView
             android:id="@+id/map_title"

@@ -82,7 +82,7 @@ HybridControl.prototype.logOutUser = function() {
     cordova.exec(null, null, 'HybridControlPlugin', 'logOutUser', []);
 }
 HybridControl.prototype.gotoAchome = function() {
-    cordova.exec(null, null, 'HybridControlPlugin', 'gotoAchome', []);
+    cordova.exec(null, null, 'HybridControlPlugin', 'popCurrentFragment', []);
 }
 HybridControl.prototype.getSID = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getSID', []);
@@ -94,7 +94,18 @@ HybridControl.prototype.getDID = function(successCallback, failureCallback) {
 HybridControl.prototype.getOID = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getOID', []);
 }
-
 HybridControl.prototype.showSpinner = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'showSpinner', []);
+}
+HybridControl.prototype.getVID = function(successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getVID', []);
+}
+HybridControl.prototype.getOtherUserFlag = function(successCallback, failureCallback) {	
+	cordova.exec(successCallback, null, 'HybridControlPlugin', 'getOtherUserFlag', []);	
+}
+HybridControl.prototype.setOtherUserFlag = function(successCallback, OtherUserFlag) {	
+	cordova.exec(successCallback, null, 'HybridControlPlugin', 'setOtherUserFlag', [OtherUserFlag]);	
+}
+HybridControl.prototype.enableSlidingMenu = function(successCallback, enable) {
+	cordova.exec(successCallback, null, 'HybridControlPlugin', 'enableSlidingMenu', [enable]);
 }

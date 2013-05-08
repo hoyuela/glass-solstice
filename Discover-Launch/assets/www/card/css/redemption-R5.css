@@ -1052,10 +1052,10 @@ background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56
 }
 /* JQM UC4 ends */
 
-.rd-page.browse-partners ul.partners li:active{
+/*.rd-page.browse-partners ul.partners li:active{
        background-image: -webkit-gradient(linear,left bottom,left top,      color-stop(1, #d7d4d6)) !important;
        background-image: -moz-gradient(linear,left bottom,left top,  color-stop(1, #d7d4d6)) !important;
-}
+}*/
 
 /* Click Highlight Done */
 /*#dgcard-continue-btn:active,#common-continue-btn:active{background: -webkit-linear-gradient(top, #fb4c0d 0%, #fa9333 41%, #fa9333 57%, #fb4c0d 100%) !important}

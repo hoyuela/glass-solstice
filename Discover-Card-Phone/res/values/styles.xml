@@ -172,7 +172,8 @@
     <style name="need_help_text" parent="body_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textSize">@dimen/alert_footer</item>
-        <item name="android:textStyle">bold</item>
+       <!--  <item name="android:textStyle">bold</item> -->
+       <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/darkgray</item>
     </style>
     
@@ -188,7 +189,8 @@
        <style name="contact_no_hyperlink">
         <item name="android:textColor">@color/footer_link</item>
         <item name="android:textSize">@dimen/alert_footer</item>
-        <item name="android:textStyle">normal</item>
+      <!--   <item name="android:textStyle">normal</item> -->
+           <item name="android:textStyle">bold</item>
     </style>
     
        
@@ -255,4 +257,10 @@
         <item name="android:textStyle">bold</item>
     </style>
     
+      <!-- Strong auth -->
+      <style name="strongauth_ans_selection">
+          <item name="android:textColorHighlight">#3d484d</item>
+          <item name="android:textColor">#8a9499</item>
+          <item name="android:textSize">14sp</item>
+      </style>
 </resources>

@@ -2,10 +2,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" 
-    android:background="@drawable/light_gray_bkgrd">
-
+    android:background="@drawable/light_gray_bkgrd"
+   >
     <RelativeLayout
-        android:padding="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/forms_inner_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -21,24 +23,24 @@
                 style="@style/title_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginRight="50dp"
+                android:includeFontPadding="false"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:text="@string/forgot_credentials_text" />
 
             <ListView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                android:layout_marginTop="@dimen/groups_of_elements_padding"
                 android:background="@drawable/list_bg"
                 android:divider="@drawable/row_shadow"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:cacheColorHint="@android:color/transparent">
             </ListView>
-                
-       <!--      "
-       android:footerDividersEnabled="false" -->
-           
         </LinearLayout>
 
         <RelativeLayout

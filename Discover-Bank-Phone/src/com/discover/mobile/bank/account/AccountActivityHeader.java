@@ -35,6 +35,9 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Value holding the available balance*/
 	private final TextView availableBalance;
+	
+	/**Available balance Label*/
+	private final TextView availableBalanceLabel;
 
 	/**VAlue holding the type of account in header*/
 	private final TextView type;
@@ -89,6 +92,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		view = LayoutInflater.from(context).inflate(R.layout.bank_account_activity_header, null);
 		checking = (TextView)view.findViewById(R.id.value1);
 		availableBalance = (TextView)view.findViewById(R.id.value2);
+		availableBalanceLabel = (TextView)view.findViewById(R.id.lable2);
 		currentBalance = (TextView)view.findViewById(R.id.value3);
 		title = (TextView) view.findViewById(R.id.title_text);
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
@@ -97,6 +101,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
 		help = (HelpWidget) view.findViewById(R.id.help);
+		
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
 		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
@@ -150,22 +155,22 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public final void addAccount(){
 		if(null == account){return;}
-		final String s = account.type.replaceAll("_", " ");
-		final StringBuilder result = new StringBuilder(s.length());
-		final String[] charArray = s.split("\\s");
-		final int l = charArray.length;
-		for(int i = 0; i < l; ++i) {
-			if(i>0){
-				result.append(" ");      
-			}
-			result.append(Character.toUpperCase(charArray[i].charAt(0))).append(charArray[i].substring(1));
-		}
-		type.setText(result.toString());
+		
+		type.setText(account.getFormattedName());
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);
-		availableBalance.setText(account.balance.formatted);
 		currentBalance.setText(account.balance.formatted);
 		setSpan(R.drawable.drk_blue_arrow_down);
+		
+		/**Available Balance Should only be shown for non-personal loan accounts*/
+		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) ) {		
+			availableBalance.setText(account.balance.formatted);
+			availableBalance.setVisibility(View.GONE);
+			availableBalanceLabel.setVisibility(View.VISIBLE);
+		} else {			
+			availableBalance.setVisibility(View.GONE);
+			availableBalanceLabel.setVisibility(View.GONE);
+		}
 	}
 
 	/**
@@ -186,7 +191,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				if(availableBalance.getVisibility() == View.VISIBLE){
+				if(currentBalance.getVisibility() == View.VISIBLE){
 					setSpan(R.drawable.drk_blue_arrow_down);
 					labels.startAnimation(collapse);
 					setHeaderExpanded(false);
@@ -206,11 +211,18 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public void changeVisibility(final int visibility){
 		view.findViewById(R.id.lable1).setVisibility(visibility);
-		view.findViewById(R.id.lable2).setVisibility(visibility);
 		view.findViewById(R.id.lable3).setVisibility(visibility);
-		availableBalance.setVisibility(visibility);
 		currentBalance.setVisibility(visibility);
 		checking.setVisibility(visibility);
+		
+		/**Available Balance Should only be shown for non-personal loan accounts*/
+		if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+			view.findViewById(R.id.lable2).setVisibility(View.GONE);
+			availableBalance.setVisibility(View.GONE);
+		} else {
+			view.findViewById(R.id.lable2).setVisibility(visibility);
+			availableBalance.setVisibility(visibility);
+		}
 	}
 
 	/**

@@ -69,6 +69,7 @@ public class StatementActivity extends DroidGap {
     private static final String LOG_TAG = "StatementActivity";
     public static final int EXPIRE_SESSION = 1;
     public static final int MAINT_EXPIRE_SESSION = 2;
+    public static final int STATEMENT_LOGOUT = 3;
 
     private static long sLastHealthCheck = new Date().getTime();
     private static long sHealthCheckThreshold = 30 * 1000;
@@ -88,10 +89,12 @@ public class StatementActivity extends DroidGap {
 
     // page elements
     private TextView mTextCycleDate;
+    private TextView titleView ; 
     private WebView mWebView;
     private ImageButton mBtnPrev;
     private ImageButton mBtnNext;
     private Button mBtnDownloadPDF;
+    private Button logout;
 
     private CharSequence mErrorMessage;
 
@@ -124,6 +127,8 @@ public class StatementActivity extends DroidGap {
         mBtnDownloadPDF = (Button) findViewById(R.id.statement_btn_downloadPDF);
         mBtnPrev = (ImageButton) findViewById(R.id.statement_btn_prev);
         mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);
+        logout = (Button) findViewById(R.id.logout_button);
+        titleView = (TextView)findViewById(R.id.title_view);
 
         mFadeInAnimation = AnimationUtils.loadAnimation(StatementActivity.this,
                 R.anim.fadein);
@@ -474,6 +479,14 @@ public class StatementActivity extends DroidGap {
             Log.d(LOG_TAG, "Yes network connection");
             new DownloadFile().execute(url);
         }
+    }
+
+    /** Called when the user clicks the Logout button */
+    public void statementLogout(View view) {
+
+        Log.d(LOG_TAG, "Logout From Statement is called");
+        setResult(STATEMENT_LOGOUT);
+        finish();
     }
 
     private boolean isValidIndex(int index) {
@@ -846,12 +859,12 @@ public class StatementActivity extends DroidGap {
                     "Webview is null on KeyCode: " + String.valueOf(keyCode));
         }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            if (mWebView.canGoBack()) {
-//                Log.d("Stmt", "back key detected n can go back.");
-//                mWebView.goBack();
-//            } else {
-                finish();
-//            }
+            // if (mWebView.canGoBack()) {
+            // Log.d("Stmt", "back key detected n can go back.");
+            // mWebView.goBack();
+            // } else {
+            finish();
+            // }
         }
         return true;
     }

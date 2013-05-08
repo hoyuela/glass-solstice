@@ -15,6 +15,7 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.utils.Utils;
 
@@ -34,6 +35,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 	private static final String TAG = StrengthBarHelpActivity.class.getSimpleName();
 	private static final String REFERER = "forgot-password-step2-pg";
 	protected TextView provideFeedback ;
+	protected TextView helpNumber;
 	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
 		setContentView(R.layout.register_help_strength);
 		provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
+		helpNumber = (TextView) findViewById(R.id.help_number_label);
 		provideFeedback.setOnClickListener(new OnClickListener() {
             
             @Override
@@ -48,6 +51,15 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
                 // TODO Auto-generated method stub
                 Utils.createProvideFeedbackDialog(StrengthBarHelpActivity.this,
                         REFERER);
+            }
+        });
+		
+		helpNumber.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                CommonUtils.dialNumber(helpNumber.getText().toString(),
+                        StrengthBarHelpActivity.this);
             }
         });
 

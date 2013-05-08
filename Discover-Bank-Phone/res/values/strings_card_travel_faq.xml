@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="card_travel_faq_array">
+        <item>@string/card_travel_title_one</item>
+        <item>@string/card_travel_content_one</item>
+        
+        <item>@string/card_travel_title_two</item>
+        <item>@string/card_travel_content_two</item>  
+        
+        <item>@string/card_travel_title_three</item>
+        <item>@string/card_travel_content_three</item>  
+        
+        <item>@string/card_travel_title_four</item>
+        <item>@string/card_travel_content_four</item>  
+        
+        <item>@string/card_travel_title_five</item>
+        <item>@string/card_travel_content_five</item>  
+        
+        <item>@string/card_travel_title_six</item>
+        <item>@string/card_travel_content_six</item>  
+    </string-array>
+    
+    <string name="card_travel_title_one">What is 24/7 Travel Assistance?</string>
+    <string name="card_travel_content_one">
+        24/7 Travel Assistance provides you with a wide range of free travel assistance benefits while you are traveling. 
+        You can access the emergency services 24/7 by calling 1-800-DISCOVER (1-800-347-2683) or 1-801-902-3100 if you are outside the U.S.
+    </string>
+     
+    <string name="card_travel_title_two">What benefits are included with 24/7 Travel Assistance? </string>
+    <string name="card_travel_content_two">
+        <![CDATA[<b>Lost Luggage Tracking:</b> We will help you locate lost luggage by staying in touch with your airline or other carrier, and provide regular status updates until your luggage is found.
+		<br/><br/><b>Emergency Cash Transfer:</b> We will help you find the most easily obtainable funds and can locate ATMs and financial service institutions, or arrange to have cash wired or delivered while traveling.
+		<br/><br/><b>Passport and Travel Document Replacement:</b> If your passport, identity cards or other papers necessary to return home are lost or stolen, our provider will offer assistance to replace them.
+		<br/><br/><b>Flight Rebooking/Ticket Replacement:</b> If your tickets home are lost or stolen, or if illness or other emergency requires changing travel arrangements, our provider offers assistance replacing or rebooking your tickets.\n 
+		<br/><br/><br/>Log into Discover.com to view all your travel benefits.]]>
+    </string>
+    
+    <string name="card_travel_title_three">Where is my Discover card accepted outside of the U.S.?</string>
+    <string name="card_travel_content_three">
+        Discover cards are currently accepted in multiple countries around the world through the Discover Network and our Network 
+        Partnerships: China Union Pay, JCB, and Diners Club International. Please visit our Country Acceptance Map on discover.com 
+        to select your travel destination from a full list of countries where Discover is accepted.
+    </string>
+    
+    <string name="card_travel_title_four">How do I contact the card service center when traveling outside of the U.S.?</string>
+    <string name="card_travel_content_four">
+        We are open 24 hours a day, 7 days a week. While outside of the U.S., you can reach us by calling 001 plus 801-902-3100.
+    </string>
+    
+    <string name="card_travel_title_five">What should I do if my card is lost or stolen while traveling abroad?</string>
+    <string name="card_travel_content_five">
+        If your card is lost or stolen while traveling outside of the U.S. 
+        immediately contact the Customer Service Center in the U.S. by dialing 001 plus 801-902-3100.
+    </string>
+    
+    <string name="card_travel_title_six">How will foreign transactions appear on my statement?</string>
+    <string name="card_travel_content_six">
+       <![CDATA[Line 1 includes:
+		<br/>-Name and location of the merchant and amount of transaction in U.S. dollars
+
+		<br/><br/>Line 2 includes:
+		<br/>-The amount of the transaction in the foreign currency.]]>
+    </string>
+    
+</resources>

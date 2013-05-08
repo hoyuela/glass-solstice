@@ -97,7 +97,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	 */
 	public void setContent(final String content) {
 		text.setText(Html.fromHtml(content));
-		Linkify.addLinks(text, Linkify.ALL);
+		Linkify.addLinks(text, Linkify.PHONE_NUMBERS);
 		text.setMovementMethod(LinkMovementMethod.getInstance());
 	}
 	

@@ -10,6 +10,7 @@ dfs.crd.pymt.messageAftrmakePay;
 dfs.crd.pymt.outstandingbalance = false;
 dfs.crd.pymt.selectvar;
 dfs.crd.pymt.globalOpenAmount 		= "" ;
+dfs.crd.pymt.isLinkClicked = false;
 /** *******************Payments Summary******************* */
 function paymentsLandingLoad(){
 	try {
@@ -131,7 +132,10 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 				$("#paymentsSummary_paymentDueDate").text(formatPaymentDueDate(paymentDueDate));
 				$("#paymentsSummary_minimumPaymentDue").text("$" + numberWithCommas(minPaymentDue));
 				if(payDataObj.isAccountOverDue){				
-					$("#paymentDueDate_Li").addClass("redtext boldtext");		
+					$("#paymentDueDate_Li").addClass("redtext boldtext");
+					$("#paymentsSummary_paymentDueDate").removeClass('amt_bold');
+     				$("#paymentsSummary_paymentDueDate").addClass('payment_summary_due_date_red');
+		
 				}
 			}else{
 				$("#minPaymentDue_Li").remove();
@@ -527,22 +531,24 @@ function paymentStep1Load()
 		
 		var validPriorPagesOfpayStep1 = new Array("paymentStep2",
 				"paymentsSummary", "paymentsLanding", "pendingPayments",
-				"paymentsHistory", "accountSummary", "cardHome","pageError","confirmCancelPayment", "paymentInformation");
+				"paymentsHistory", "accountSummary", "cardHome","pageError","paymentStep3","confirmCancelPayment","paymentInformation","lateMinPayWarn1","lateMinPayWarnNoMinPay");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfpayStep1) > -1 || isLhnNavigation) {
 		
-			isLhnNavigation  = false;
+			
 			var minPayStepOne = $("#minpaystepone_other");
 			var radioChoice3 = $("#radio-choice-3");
 			var errorPaymentAmountExceed = $("#errorPaymentAmountExceed");
 			activebtn("bank_info");
 			deactiveBtn("postingDateStepOne");
 			deactiveBtn("makePaymentOneContinue");
+			if(fromPageName != "paymentInformation" && fromPageName != "lateMinPayWarn1" && fromPageName != "lateMinPayWarnNoMinPay"){
+				killDataFromCache("OPTION_SELECTED_LINK_CLICK");
+			}
 			
-			var pagesToSaveDataFor = new Array("paymentStep2",
-                                               "paymentInformation");
-			if(jQuery.inArray(fromPageName, pagesToSaveDataFor) == -1 ){
+			if(fromPageName != "paymentStep2" ){
 				killDataFromCache("OPTION_SELECTED_ON_MAP1");
 			}
+			
 			$(".date-picker").live("click", function()
 					{
 				$(".wraper1").hide();
@@ -729,7 +735,7 @@ function paymentStep1Load()
 
 
 /*				if ($("#date-compare").val() != "") 
-					isDateSelected = true; */				
+					isDateSelected = true; */
 				
 				if((event.which > 47 && event.which < 58) || (event.which > 95 && event.which < 106)){
 					if(isBankSelected /*&& isDateSelected*/){
@@ -764,6 +770,7 @@ function paymentStep1Load()
 						},
 						beforeShowDay : dfs.crd.pymt.enableSpecificDates
 				}); */
+//				isLhnNavigation  = false;
 		}
 		else {
 			killDataFromCache("OPTION_SELECTED_ON_MAP1");
@@ -827,7 +834,7 @@ dfs.crd.pymt.makePaymentStepOneAjaxCall = function(pageId)
 		var newDate = new Date();
 		var MAKEPAYMENTSTEPONEURL = RESTURL+"pymt/v1/makepayment?"+newDate+"" ;
 		var stepOne = getDataFromCache(pageId);
-		showSpinner();
+//		showSpinner();
 		$
 		.ajax(
 				{
@@ -944,41 +951,97 @@ dfs.crd.pymt.makePaymentStepOneAjaxCall = function(pageId)
 	}
 }
 
-$("#paymentStep1-pg").live("pagebeforeshow", function() {	
-	var paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_ON_MAP1");
-	if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
-		var selectedPostingDate=paymentStep1SeletecFields.PAYMENTPOSTINGDATE;
-		var selectedFieldVal=paymentStep1SeletecFields.SELECTFIELDVAL;
-		var selectedBankName=paymentStep1SeletecFields.BANKNAME;
-	    var selectedExistingDate=paymentStep1SeletecFields.SELECTEDEXISTINGDATE; 	
-		var selectedIndex=paymentStep1SeletecFields.SELECTEDINDEX;		
-		$("#DD2.ui-btn-text").text(selectedBankName);
-		dfs.crd.pymt.bankSelected();
-		
-		var selectedFieldVal=paymentStep1SeletecFields.SELECTFIELDVAL;
-		if(!isEmpty(selectedFieldVal)){
-			if(selectedFieldVal.indexOf("$") >= -1 &&  selectedFieldVal.indexOf(".00") >= -1){
-				selectedFieldVal=selectedFieldVal.replace("$","");
+$("#paymentStep1-pg").live("pagebeforeshow", function() {
+	if(dfs.crd.pymt.isLinkClicked){
+				
+		var payOnBackData = getDataFromCache("OPTION_SELECTED_LINK_CLICK");
+		dfs.crd.pymt.isLinkClicked = false;
+		if(!isEmpty(payOnBackData)){
+			console.log("WE are in pagebefore show from Information page");
+			var selectedPostingDate=payOnBackData.PAYMENTPOSTINGDATE;
+			var selectedFieldVal=payOnBackData.SELECTFIELDVAL;
+			var selectedBankName=payOnBackData.BANKNAME;
+		    var selectedExistingDate=payOnBackData.SELECTEDEXISTINGDATE; 	
+			var selectedIndex=payOnBackData.SELECTEDINDEX;
+			console.log("WE are in pagebefore show from Information page with values"+selectedPostingDate+" -- "+selectedFieldVal+"  --  "+selectedBankName);
+			if(!isEmpty(selectedBankName)){
+				console.log("WE are in pagebefore show from Information page SelectedBankName"+selectedBankName);
+				$("#DD2.ui-btn-text").text(selectedBankName);
+				dfs.crd.pymt.bankSelected();
 			}
-		}
-		if(!isEmpty(selectedIndex)){
-			if( selectedIndex == "choice-3"){
-				$("#minpaystepone_other").val(selectedFieldVal);	
-			}else{
-				paymentStep1SeletecFields["SELECTFIELDVAL"]="";
+			if(!isEmpty(selectedPostingDate)){
+				console.log("WE are in pagebefore show from Information page SelectedPostingDate"+selectedPostingDate);
+				$("#datepicker-val").html(selectedPostingDate);
+				$("#datepicker-val").css("display","block");
+				$("#datepicker-value").val(selectedPostingDate);
+				$("#date-compare").val(selectedExistingDate);
+				dfs.crd.pymt.paymentDateSet(selectedPostingDate);
 			}
+			if(!isEmpty(selectedExistingDate)){
+				console.log("WE are in pagebefore show from Information page SelectedExistingDate"+selectedExistingDate);
+				$("#date-compare").val(selectedExistingDate);
+			}
+			
+			
+			if(!isEmpty(selectedFieldVal)){
+				if(selectedFieldVal.indexOf("$") >= -1 &&  selectedFieldVal.indexOf(".00") >= -1){
+					selectedFieldVal=selectedFieldVal.replace("$","");
+				}
+				console.log("WE are in pagebefore show from Information page SelectedFieldVal"+selectedFieldVal);
+			}
+			if(!isEmpty(selectedIndex)){
+				if( selectedIndex == "choice-3"){
+					$("#minpaystepone_other").val(selectedFieldVal);	
+				}else{
+					payOnBackData["SELECTFIELDVAL"]="";
+				}
+				console.log("WE are in pagebefore show from Information page selectedIndex"+selectedIndex
+				);
+			}
+			dfs.crd.pymt.changeDropDownLabel();
 		}
-		$("#datepicker-val").html(selectedPostingDate);
-		$("#datepicker-val").css("display","block");
-		$("#date-compare").val(selectedExistingDate);
-		$("#datepicker-value").val(selectedPostingDate);
-		activebtn("makePaymentOneContinue");
-	}	
+	
+	}else{	
+		console.log("WE are in pagebefore show from Page 2");
+		var paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_ON_MAP1");
+		if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
+			var selectedPostingDate=paymentStep1SeletecFields.PAYMENTPOSTINGDATE;
+			var selectedFieldVal=paymentStep1SeletecFields.SELECTFIELDVAL;
+			var selectedBankName=paymentStep1SeletecFields.BANKNAME;
+		    var selectedExistingDate=paymentStep1SeletecFields.SELECTEDEXISTINGDATE; 	
+			var selectedIndex=paymentStep1SeletecFields.SELECTEDINDEX;		
+			$("#DD2.ui-btn-text").text(selectedBankName);
+			dfs.crd.pymt.bankSelected();
+			
+			var selectedFieldVal=paymentStep1SeletecFields.SELECTFIELDVAL;
+			if(!isEmpty(selectedFieldVal)){
+				if(selectedFieldVal.indexOf("$") >= -1 &&  selectedFieldVal.indexOf(".00") >= -1){
+					selectedFieldVal=selectedFieldVal.replace("$","");
+				}
+			}
+			if(!isEmpty(selectedIndex)){
+				if( selectedIndex == "choice-3"){
+					$("#minpaystepone_other").val(selectedFieldVal);	
+				}else{
+					paymentStep1SeletecFields["SELECTFIELDVAL"]="";
+				}
+			}
+			$("#datepicker-val").html(selectedPostingDate);
+			$("#datepicker-val").css("display","block");
+			$("#date-compare").val(selectedExistingDate);
+			$("#datepicker-value").val(selectedPostingDate);
+			activebtn("makePaymentOneContinue");
+		}	
+	}
 });
 
 $("#paymentStep1-pg").live("pagecreate", function() {
-
-	var paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_ON_MAP1");
+	var paymentStep1SeletecFields = "";
+	if(dfs.crd.pymt.isLinkClicked){
+		paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_LINK_CLICK");
+	}else{
+		paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_ON_MAP1");
+	}
 	if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
 	
 		var selectedIndex=paymentStep1SeletecFields.SELECTEDINDEX;  
@@ -1140,10 +1203,14 @@ dfs.crd.pymt.getBankList = function(stepOne)
 		var isCutOffMakePaymentOne = stepOne.isCutOffAvailable;
 		var selectedBankKey;
 		var paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_ON_MAP1");
+			
+
+		if(dfs.crd.pymt.isLinkClicked){
+				paymentStep1SeletecFields = getDataFromCache("OPTION_SELECTED_LINK_CLICK")
+		}
 		if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
 			selectedBankKey=paymentStep1SeletecFields.BANKVAL;			
-		}		
-
+		}
 		var calendar = $("#calendar");
 		var accountNumber=stepOne.bankInfo[0].maskedBankAcctNbr;
 		var bankName = stepOne.bankInfo[0].bankName;
@@ -1186,7 +1253,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 
 
 
-			if (!(stepOne.isHaMode)/*&& isCutOffMakePaymentOne*/) {
+			if (!(stepOne.isHaMode) /*&& isCutOffMakePaymentOne*/) {
 				if(projectBeyondCard)
 					$("#cuttOff_Note_MakePaymentOne").text(errorCodeMap["Is_cutoffPB"]);
 				else
@@ -1208,7 +1275,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 							"option",
 							"maxDate",
 							dfs.crd.pymt.validDays[dfs.crd.pymt.validDays.length - 1]);
-					  dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
+					dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 				}
 				$("#button-selectdate").removeClass('disabled');
 			}
@@ -1318,16 +1385,12 @@ dfs.crd.pymt.paymentDateSet = function(paymentDate)
 {
 	try {
 		$("a#calendar-cancel").click();
-		/*var stepOne = getDataFromCache("MAKEPAYMENTONE");
-		if( paymentDate == "NaN/NaN/NaN"){
-			paymentDate = stepOne.paymentDueDate;
-		}*/
 		var selectedDate = paymentDate.split("/");
-		var month = selectedDate[0]/*.replace("01", "Jan ").replace("02", "Feb ")*/
+		var month = selectedDate[0];
 		
-
-
-		/*.replace("03", "Mar ").replace("04", "Apr ").replace("05",
+		/*
+		.replace("01", "Jan ").replace("02", "Feb ")
+		.replace("03", "Mar ").replace("04", "Apr ").replace("05",
 		"May ").replace("06", "Jun ").replace("07", "Jul ")
 		.replace("08", "Aug ").replace("09", "Sep ").replace("10",
 		"Oct ").replace("11", "Nov ").replace("12", "Dec ");*/
@@ -1337,20 +1400,19 @@ dfs.crd.pymt.paymentDateSet = function(paymentDate)
 		day = day.toString();
 
 
-
+/**/
 
 		if (day < 10)
 			day = "0" + day;
 
+/*var date = new Date('2010-10-11T00:00:00+05:30');
+alert(date.getMonth().toString() + '/' + date.getDate().toString() + '/' +  date.getFullYear().toString());*/
 
+		/*var date = dateFormat(new Date("Thu Oct 14 2010 00:00:00 GMT 0530 (India Standard Time)"), 'dd/mm/yyyy');*/
 
-
-
-
-		//var formattedDate = month + day + ", " + selectedDate[2];
 		var formattedDate = month+"/"+day+"/" + selectedDate[2];
-
-
+		//paymentDate = formattedDate.replace("Thu Oct 14 2010 00:00:00 GMT 0530 (India Standard Time)", 'dd/mm/yyyy')
+		//alert(paymentDate);
 		/*paymentDate = formattedDate.replace(", ", "/").replace("Jan ", "01/")
 		.replace("Feb ", "02/").replace("Mar ", "03/").replace("Apr ",
 		"04/").replace("May ", "05/").replace("Jun ", "06/")
@@ -1577,6 +1639,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			putDataToCache("OPTION_SELECTED_ON_MAP1",paymentStep1SeletecFields);
 			
 			putDataToCache("MAKEPAYMENTTWO", paymentsarray);
+			killDataFromCache("OPTION_SELECTED_LINK_CLICK");
 			navigation("paymentStep2");
 		}
 	} catch (err) {
@@ -1814,6 +1877,7 @@ dfs.crd.pymt.confirmfromstep2tostep3 = function(isErrorForSubmit,nextAvalDateToP
 					headers : preparePostHeader(),
 					success : function(responseData, status, jqXHR)
 					{
+						
 						hideSpinner();
               if (!validateResponse(responseData,"paymentConfirmationstep3Validation"))      // Pen Test Validation
               {
@@ -1841,7 +1905,6 @@ dfs.crd.pymt.confirmfromstep2tostep3 = function(isErrorForSubmit,nextAvalDateToP
 					error : function(jqXHR, textStatus, errorThrown)
 					{
 						hideSpinner();						
-						
 						var code = getResponseStatusCode(jqXHR);
 						$("#confirmSuccessPay3").css('disabled', 'disable');
 						switch (code)
@@ -2194,7 +2257,9 @@ function confirmCancelPaymentLoad(){
 function paymentInformationLoad(){
  try{
 		var staticContentJson=getStaticContentData(toPageName,false,false);
-		var staticContentText="";
+		var staticContentText="";		
+		dfs.crd.pymt.prepareMAPStep1Data();
+		var cardTypeTerm = "paymentTerm_"+incentiveTypeCode+"_"+incentiveCode;
 		if(projectBeyondCard){
 			staticContentText=staticContentJson["paymentTerm_ITCard"];
 		}
@@ -2203,11 +2268,186 @@ function paymentInformationLoad(){
 				if(!jQuery.isEmptyObject(staticContentJson)){
 				staticContentText = isEmpty(staticContentJson[cardTypeTerm])?(isEmpty(staticContentJson["paymentTerm_"+incentiveTypeCode])?staticContentJson["paymentTerm"]:staticContentJson["paymentTerm_"+incentiveTypeCode]):staticContentJson[cardTypeTerm];			
 			}
-		}		
-		
-		$("#paymentsTermsOfUse").html(staticContentText);
-
+		}
+			$("#paymentsTermsOfUse").html(staticContentText);
 	}catch(err){
 		showSysException(err);
 	}
+}
+
+dfs.crd.pymt.MAPStep1PayWarnClick = function(){
+	var MAPStep1Data = getDataFromCache("MAKEPAYMENTONE");
+	if(!isEmpty(MAPStep1Data)){
+	 dfs.crd.pymt.prepareMAPStep1Data();
+	 var lateMinPayWarn1Data = dfs.crd.pymt.getPaymentWarningData("LatePayWarnMAPStep1");
+   	if(MAPStep1Data.currentBalance > 0){
+		if(!lateMinPayWarn1Data.needPaymentWarning){
+			navigation("lateMinPayWarnNoMinPay");
+		}else{
+			navigation("lateMinPayWarn1");
+		}
+      }
+   	}
+}
+
+function lateMinPayWarnNoMinPayLoad(){
+      try{                         
+		 
+	      var lateMinPayWarn1Data = dfs.crd.pymt.getPaymentWarningData("LatePayWarnMAPStep1");
+		    if(!isEmpty(lateMinPayWarn1Data)){
+				dfs.crd.pymt.populatePayWarningPage(lateMinPayWarn1Data,false);            	
+		    }
+      }catch(err){
+            showSysException(err);
+      }                
+} 
+
+function lateMinPayWarn1Load(){
+      try{                         
+	  
+      var lateMinPayWarn1Data = dfs.crd.pymt.getPaymentWarningData("LatePayWarnMAPStep1");
+            if(!isEmpty(lateMinPayWarn1Data)){
+				dfs.crd.pymt.populatePayWarningPage(lateMinPayWarn1Data,true);            	
+            }
+      }catch(err){
+            showSysException(err);
+      }                
+}
+
+
+
+dfs.crd.pymt.getPaymentWarningData = function(pageId){
+try {
+		var newDate = new Date();
+		var PAYMENTSLATEWARN = RESTURL + "stmt/v1/paymentwarning?" + newDate
+		+ "";
+		 var pmtWarnData = getDataFromCache("LatePayWarnMAPStep1");
+		if(!isEmpty(pmtWarnData)){
+			return pmtWarnData;
+		}
+		console.log("Payment URL  : -  "+PAYMENTSLATEWARN)
+		
+		showSpinner();
+		$.ajax(
+				{
+					type : "GET",
+					url : PAYMENTSLATEWARN,
+					async : false,
+					dataType : "json",
+					headers : prepareGetHeader(),
+					success : function(responseData, status, jqXHR)
+					{
+						hideSpinner();
+               if (!validateResponse(responseData,"paymentSummaryValidation")) // Pen Test Validation
+               {
+                errorHandler("SecurityTestFail","","");
+               return;
+               }
+						pmtWarnData = responseData;
+						putDataToCache(pageId, pmtWarnData);
+					},
+					error : function(jqXHR, textStatus, errorThrown)
+					{
+						hideSpinner();
+						var code = getResponseStatusCode(jqXHR);
+						errorHandler(code, "", "paymentStep1");
+					}
+				});
+		return pmtWarnData;
+	} catch (err) {
+		showSysException(err);
+	}
+}
+
+dfs.crd.pymt.populatePayWarningPage = function(payWarnData,showVariable){
+	try{
+		var MAPStep1Data = getDataFromCache("MAKEPAYMENTONE");
+		if(!isEmpty(payWarnData)){
+			console.log("PayWarning Data aprTitle"+payWarnData.aprTitle);
+			console.log("PayWarning Data penaltyWarningCashAPR"+payWarnData.penaltyWarningCashAPR);
+			console.log("PayWarning Data penaltyWarningAPRCode"+payWarnData.penaltyWarningAPRCode);
+			console.log("PayWarning Data penaltyVariableFixedInd"+payWarnData.penaltyVariableFixedInd);
+			console.log("PayWarning Data lateFeeWarningAmount"+payWarnData.lateFeeWarningAmount);
+			console.log("PayWarning Data defaultTermSavingsAmount"+payWarnData.defaultTermSavingsAmount);
+			if(showVariable){
+			$("#lateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
+			$("#latePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
+				if(payWarnData.isNegativeAmortization){
+					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
+					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					$("#latePayWarnRow2").remove();
+				}else if(payWarnData.needTwoRowWarning){
+					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
+					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
+					$("#defaultTermYears").text(payWarnData.defaultTermYears);
+					$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
+					$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+				}
+			}else{
+				$("#noMinPaylateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount  );
+				$("#noMinPaylatePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
+			}
+		}
+	}catch(err){
+       showSysException(err);
+    }      
+}
+
+dfs.crd.pymt.prepareMAPStep1Data = function(){
+try{
+		var keyValue = $("#paymentStep1-pg").find(
+			"#bankDropDownStepOne option:selected").val();
+		var existingDate = $("#date-compare").val();
+		var payDateValue = $("#datepicker-value").val();
+		var stepone_value_radio = $("input:checked").text();
+		var select_box = document.getElementById("bankDropDownStepOne");
+		if(!isEmpty(select_box)){
+			bankSelectFieldtitle = select_box[select_box.selectedIndex].text;
+		}
+		 var selectIndex;
+	     var selectedRadioButtons = document.getElementsByName("radio-choice-1");
+	     if(!isEmpty(selectedRadioButtons)){
+	    	 var radioLength=selectedRadioButtons.length;
+	    	 for(var i = 0; i < radioLength; i++) {
+	    		 if(selectedRadioButtons[i].checked) {
+	    			 selectIndex= selectedRadioButtons[i].value;
+	
+	    		 }
+	    	 }
+	     }
+	    var  paymentStep1SeletecFields={};
+		var payAmount = $("#minpaystepone_other").val();
+		if ($("#radio-choice-1").attr('checked')) {
+				stepone_value_radio = $("#minpaystepone_minpayment").text();
+			}
+			else if ($("#radio-choice-2").attr('checked')) {
+				stepone_value_radio = $("#minpaystepone_laststatementbalance")
+				.text();
+			}else if ($("#radio-choice-3").attr('checked')) {
+				stepone_value_radio = "$" + payAmount;
+			}
+	    if(!isEmpty(keyValue)){
+	    	paymentStep1SeletecFields["BANKVAL"]=keyValue;
+	    }
+	    if(!isEmpty(bankSelectFieldtitle)){
+			paymentStep1SeletecFields["BANKNAME"]=bankSelectFieldtitle;    
+	    }
+	    if(!isEmpty(stepone_value_radio)){
+	    	paymentStep1SeletecFields["SELECTFIELDVAL"]=stepone_value_radio;
+	    }
+	    if(!isEmpty(payDateValue)){
+	    	paymentStep1SeletecFields["PAYMENTPOSTINGDATE"]=payDateValue;
+	    }
+	    if(!isEmpty(selectIndex)){
+	    	paymentStep1SeletecFields["SELECTEDINDEX"]=selectIndex;   
+	    }
+	    if(!isEmpty(existingDate)){
+	    	paymentStep1SeletecFields["SELECTEDEXISTINGDATE"]=existingDate;
+	    } 
+		putDataToCache("OPTION_SELECTED_LINK_CLICK",paymentStep1SeletecFields);
+		dfs.crd.pymt.isLinkClicked = true;
+	}catch(err){
+       showSysException(err);
+    }         
 }

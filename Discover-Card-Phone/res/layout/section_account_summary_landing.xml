@@ -19,6 +19,11 @@
             <include
                 android:id="@+id/accounthomestatusbar"
                 layout="@layout/status_bar_layout" />
+            <TextView android:id="@+id/push_ac_home_errorTV"
+                android:text="ohooo"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                style="@style/error_label_small"/>
         </LinearLayout>
 
         <LinearLayout
@@ -60,7 +65,13 @@
                 android:id="@+id/home_bonus_offer"
                 layout="@layout/general_list_item_simple" />
 
-            <TextView
+            <View
+            android:id="@id/general_list_item_separator_line"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#c0c8cc" />
+             
+           <!--  <TextView
                 android:id="@+id/provide_feedback_button1"
                 style="@style/blue_hyperlink_smallest"
                 android:layout_width="wrap_content"
@@ -68,10 +79,12 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="40dp"
                 android:text="@string/feedback_text"
-                android:textColor="@color/footer_link" />
+                android:textColor="@color/footer_link" /> -->
+                <include android:id="@+id/home_footer"
+                    layout="@layout/card_fragment_footer" />
         </LinearLayout>
         
-         <com.discover.mobile.common.ui.widgets.AccountToggleView
+         <com.discover.mobile.card.common.uiwidget.CardAccountToggleView             
             android:id="@+id/acct_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

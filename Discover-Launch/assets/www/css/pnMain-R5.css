@@ -857,6 +857,7 @@ font-weight: 200 !important;
     margin-left:2px;
     width:15%;
     text-align:left;
+    font-weight:bold;
 }
 .pn-page #id-main-content .ui-grid-c .ui-block-c {
     text-align:left !important;

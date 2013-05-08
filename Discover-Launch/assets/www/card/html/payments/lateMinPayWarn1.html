@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Step-I</title>
+</head>
+<body>
+<!-- page start  -->
+<div data-role="page" id="lateMinPayWarn1-pg" class="rd-page">
+	<!-- header start  -->
+	<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header"> </header>
+	</div>
+	<!-- header end -->
+	<!-- content start -->
+	<div data-role="content" class="ui-content-internalpages">
+	<div class="wraper">
+		<h1>Late Payment warning </h1>
+			<h2>Late Payment warning </h2>
+			<p>Late payment warning: If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $<span id="lateFeeWarningAmount">35.00</span> and your purchase and balance transfer APRs for new transaction may be increased up to the Penalty APR of <span id="latePayAprRate">14.99</span>% variable. 
+			</p></br>
+			<h2>Minimum Payment Warning</h2>
+			<p>If you make only the minimum payment each period, you will pay more in interest and it will take you longer to pay off your balance. For example:</p></br>
+			
+			<ul class="latePayWarnTbl">
+				<li class="header">
+					<ul>
+						<li class="col1">If you make no additional charges using this card and each month you pay...</li>
+						<li class="col2">You will pay off the balance shown this statement in about...</li>
+						<li class="col3">And you will end up paying an estimated total of...</li>
+					</ul>
+				</li>
+				<li class="row" id="latePayWarnRow1">
+					<ul>
+						<li class="col1">Only the minimum payment</li>
+						<li class="col2" id="totalMonthsOrYears">15 years</li>
+						<li class="col3">$<span id="totalAmountToPay">10,448</span></li>
+					</ul>
+				</li>
+				<li class="row" id="latePayWarnRow2">
+					<ul>
+						<li class="col1">$<span id="defaultTermsPaymentAmount">250</span></li>
+						<li class="col2" id="defaultTermYears">3years</li>
+						<li class="col3">$<span id="defaultTermTotalAmount">9,003 </span>(savings=$<span id="defaultTermSavingsAmount">2,445</span>)</li>
+					</ul>
+				</li>
+			</ul>
+			<div class="clearboth"></div>
+			<br/>
+			<p>If you would like information about credit counseling services, call <a href="tel:18003471121">1-800-347-1121</a>.</p>
+			<br/>
+			
+		<div id="footnotes" class="footnotes"></div>
+	</div>
+	<!-- content end -->
+	<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+		<footer id="footer" class="mnu_footer"> </footer>
+	</div>
+	</div>
+</div>
+<!--page end -->
+</body>
+</html>

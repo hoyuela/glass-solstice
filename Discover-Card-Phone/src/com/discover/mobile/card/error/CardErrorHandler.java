@@ -73,7 +73,7 @@ public class CardErrorHandler extends BaseErrorHandler {
 			}
 
 			// Set Focus to first field in screen
-			errorHandlerUi.getInputFields().get(0).requestFocus();
+			
 		}
 	}
 

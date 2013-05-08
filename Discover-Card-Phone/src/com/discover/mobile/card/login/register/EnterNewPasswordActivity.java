@@ -1,9 +1,6 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.common.StandardErrorCodes.BAD_ACCOUNT_STATUS;
-import static com.discover.mobile.common.StandardErrorCodes.SCHEDULED_MAINTENANCE;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
-import static com.discover.mobile.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +71,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     private TextView errorLabelOne;
     private TextView errorLabelTwo;
     private TextView provideFeedback;
+    private ImageView errorIcon ;
 
     // INPUT FIELDS
     private CredentialStrengthEditText passOneField;
@@ -85,6 +84,8 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
     private static final String MAIN_ERROR_STRING = "b";
     private static final String MAIN_ERROR_VISIBILITY = "c";
+    private static final String MAIN_ICON_VISIBILITY = "d";
+    
     private static final String REFERER = "forgot-password-step2-pg";
 
     @Override
@@ -123,9 +124,15 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             if (!savedInstanceState.getBoolean(UPDATE_PASS_ONE_STATE))
                 passOneField.updateAppearanceForInput();
 
-            mainErrorMessageLabel.setVisibility(savedInstanceState
+          /*  mainErrorMessageLabel.setVisibility(savedInstanceState
                     .getInt(MAIN_ERROR_VISIBILITY));
             mainErrorMessageLabel.setText(savedInstanceState
+                    .getString(MAIN_ERROR_STRING));*/
+            
+            errorMessageLabel.setVisibility(savedInstanceState
+                    .getInt(MAIN_ERROR_VISIBILITY));
+            errorIcon.setVisibility(savedInstanceState.getInt(MAIN_ICON_VISIBILITY));
+            errorMessageLabel.setText(savedInstanceState
                     .getString(MAIN_ERROR_STRING));
 
         }
@@ -137,10 +144,17 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         outState.putBoolean(UPDATE_PASS_ONE_STATE,
                 passOneField.isInDefaultState);
 
-        outState.putString(MAIN_ERROR_STRING, mainErrorMessageLabel.getText()
+     /*   outState.putString(MAIN_ERROR_STRING, mainErrorMessageLabel.getText()
                 .toString());
         outState.putInt(MAIN_ERROR_VISIBILITY,
                 mainErrorMessageLabel.getVisibility());
+        */
+        
+        outState.putString(MAIN_ERROR_STRING, errorMessageLabel.getText()
+                .toString());
+        outState.putInt(MAIN_ERROR_VISIBILITY,
+                errorMessageLabel.getVisibility());
+        outState.putInt(MAIN_ICON_VISIBILITY, errorIcon.getVisibility());
     }
 
     private void setupProgressHeader() {
@@ -160,6 +174,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         errorLabelOne = (TextView) findViewById(R.id.enter_new_pass_error_one_label);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_error_label);
         mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
+        errorIcon = (ImageView)findViewById(R.id.icon);
 
         mainScrollView = (ScrollView) findViewById(R.id.main_scroll_view);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
@@ -291,11 +306,35 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             @Override
             public void OnError(Object data) {
                 // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                        (CardErrorHandlerUi) EnterNewPasswordActivity.this);
-                cardErrorResHandler.handleCardError((CardErrorBean) data);
+                String errorCode = ((CardErrorBean) data).getErrorCode();
+                String[] errorMsgSplit = errorCode.split("_");
+                final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
+                switch (errorCodeNumber) {
 
+                case REG_AUTHENTICATION_PROBLEM_SECOND :
+                case REG_AUTHENTICATION_PROBLEM:
+                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentContext);
+                case ID_AND_PASS_EQUAL:
+              /*      CommonUtils.showLabelWithStringResource(
+                            mainErrorMessageLabel,
+                            R.string.account_info_bad_input_error_text,
+                            currentContext);*/
+                    CommonUtils
+                            .showLabelWithStringResource(
+                                    errorMessageLabel,
+                                    R.string.account_info_two_id_matches_pass_error_text,
+                                    currentContext);
+              /*  case SCHEDULED_MAINTENANCE:*/
+                default:
+                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            (CardErrorHandlerUi) EnterNewPasswordActivity.this);
+                    cardErrorResHandler.handleCardError((CardErrorBean) data);
+
+                }
             }
+
         };
         WSRequest request = new WSRequest();
 
@@ -343,7 +382,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     public void checkInputsThenSubmit(final View v) {
         passOneField.updateAppearanceForInput();
         passTwoField.updateAppearanceForInput();
-        CommonUtils.setViewGone(mainErrorMessageLabel);
+        /*CommonUtils.setViewGone(mainErrorMessageLabel);*/
+        CommonUtils.setViewGone(errorMessageLabel);
+        CommonUtils.setViewGone(errorIcon);
 
         // If the info was all valid - submit it to the service call.
         if (passOneField.isValid() && passTwoField.isValid()) {
@@ -357,8 +398,12 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             if (!passOneField.isValid())
                 passOneField.setStrengthMeterInvalid();
 
-            CommonUtils.showLabelWithStringResource(mainErrorMessageLabel,
+          /*  CommonUtils.showLabelWithStringResource(mainErrorMessageLabel,
+                    R.string.account_info_bad_input_error_text, this);*/
+            
+            CommonUtils.showLabelWithStringResource(errorMessageLabel,
                     R.string.account_info_bad_input_error_text, this);
+            CommonUtils.setViewVisible(errorIcon);
         }
 
     }

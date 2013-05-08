@@ -49,6 +49,9 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 	protected void defaultSetup(final Context context) {
 		super.defaultSetup(context);
 		attachedDatePickerDialog.hideDayPicker();
+		//To set the date picker title for Card Expiration Date
+		final String dobPickerTitle = getResources().getString(R.string.card_expiration_date_text);
+        attachedDatePickerDialog.setTitle(dobPickerTitle);
 	}
 	
 	/**

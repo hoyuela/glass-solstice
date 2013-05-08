@@ -29,6 +29,12 @@ public class PhoneNumberTextWatcher implements TextWatcher {
             sCachedLocale = Locale.getDefault();
             sFormatType = PhoneNumberUtils.getFormatTypeForLocale(sCachedLocale);
         }
+        
+        if (sFormatType == PhoneNumberUtils.FORMAT_UNKNOWN) {
+        		// If the format is unknown, the phone number will not auto-format
+        		// Defaulting to US (NANP) Format DDD-DDD-DDDD
+        		sFormatType = PhoneNumberUtils.FORMAT_NANP;
+        }
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A ActivityDetails List object and passed to the application layer.
@@ -55,6 +56,9 @@ public class ListActivityDetail implements Serializable{
 	/**List of activity details*/
 	public List<ActivityDetail> activities;
 
+	/**Specifies what type of activity are in activities*/
+	@JsonIgnore
+	public ActivityDetailType type;
 
 	/**List of links for for this object*/
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();

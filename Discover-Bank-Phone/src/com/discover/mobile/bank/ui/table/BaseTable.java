@@ -48,9 +48,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 
-	
 		loadBundle = this.getArguments();
-		
+
 		createDefaultLists();
 		setupHeader();
 		setupFooter();

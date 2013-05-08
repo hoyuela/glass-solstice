@@ -16,7 +16,10 @@ import com.discover.mobile.common.net.ServiceCallSessionManager;
  */
 public final class TrackingHelper {
 
-	private static final String TRACKING_RSID = "discovercardmobiledev"; //$NON-NLS-1$
+	private static final String CARD_TRACKING_RSID = "discovercardmobiledev"; //$NON-NLS-1$
+
+	private static final String BANK_TRACKING_RSID = "discoverbankmobiledev"; //$NON-NLS-1$
+
 	private static final String TRACKING_SERVER = "smetrics.discover.com"; //$NON-NLS-1$
 
 	private static ADMS_Measurement measurement;
@@ -39,7 +42,6 @@ public final class TrackingHelper {
 	private static void configureAppMeasurement(final Activity activity) {
 		if (measurement == null){
 			measurement = ADMS_Measurement.sharedInstance(activity);
-			measurement.configureMeasurement(TRACKING_RSID, TRACKING_SERVER);
 			measurement.setSSL(true);  // comment out if using Bloodhound
 			measurement.setDebugLogging(true);
 		}
@@ -82,14 +84,14 @@ public final class TrackingHelper {
 	 * @param pageName - string value of the page that should be represented
 	 */
 	public static void trackBankPage(final String pageName){
-		trackPageView(pageName, BANK_APP_NAME, null);
+		trackPageView(pageName, BANK_APP_NAME, null, BANK_TRACKING_RSID);
 	}
 
 	/**
 	 * Track a page with extra data
 	 */
 	public static void trackBankPage(final String pageName, final Map<String, Object> extras){
-		trackPageView(pageName, BANK_APP_NAME, extras);
+		trackPageView(pageName, BANK_APP_NAME, extras, BANK_TRACKING_RSID);
 	}
 
 	/**
@@ -97,7 +99,7 @@ public final class TrackingHelper {
 	 * @param pageName - string value of the page to track
 	 */
 	public static void trackPageView(final String pageName){
-		trackPageView(pageName, APP_NAME, null);
+		trackPageView(pageName, APP_NAME, null, CARD_TRACKING_RSID);
 	}
 
 	/**
@@ -105,7 +107,8 @@ public final class TrackingHelper {
 	 * 
 	 * @param pageName - supply the page name according to the specification from Discover
 	 */
-	private static void trackPageView(final String pageName, final String appName, final Map<String, Object> extras) {
+	private static void trackPageView(final String pageName, final String appName, 
+			final Map<String, Object> extras, final String rsid) {
 		if(measurement == null){return;}
 		measurement.clearVars();
 		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();
@@ -135,8 +138,10 @@ public final class TrackingHelper {
 		}
 
 		contextData.put(CONTEXT_PAGE_NAME, pageName);
-		contextData.put(CONTEXT_RSID, TRACKING_RSID);
+		contextData.put(CONTEXT_RSID, rsid);
 
+
+		measurement.configureMeasurement(rsid, TRACKING_SERVER);
 		measurement.setAppState(pageName);
 		measurement.track(contextData);
 	}

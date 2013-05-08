@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+     <style name="card_blue_hyperlink">
+        <item name="android:textColor">@color/blue_link</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+    
+     <style name="card_blue_hyperlink_small" parent="card_blue_hyperlink">
+        <item name="android:textSize">@dimen/small_copy_min</item>
+    </style>
+    
+</resources>

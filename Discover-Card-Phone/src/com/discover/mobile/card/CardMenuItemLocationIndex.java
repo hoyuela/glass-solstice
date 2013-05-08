@@ -76,7 +76,7 @@ public final class CardMenuItemLocationIndex {
      * Redeem Miles indexes
      */
     public static final int REDEEM_MILES_GROUP = 4;
-    public static final int REDEEM_MILES_SECTION = 4;
+    public static final int REDEEM_MILES_SECTION = 0;
 
     /**
      * Profile and Setting Indexes

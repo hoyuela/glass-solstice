@@ -6,5 +6,6 @@
     <string name="card_cashback">Cashback</string>
     <string name="card_miles">Miles</string>
     <string name="card_sendmoney">SendMoney</string>
+    <string name="card_product_group_code_esc">ESC</string>
     
 </resources>

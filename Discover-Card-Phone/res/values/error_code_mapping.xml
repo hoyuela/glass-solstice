@@ -221,6 +221,8 @@
    <!--  <string name="E_4031401_UNVERIFIED">Enhanced Account Security</string> -->
      <!--<string name="E_4031401_UNLOCKED">Enhanced Account Security</string>-->
  
+ 	<!-- Error message for push notification -->
+ 	<string name="E_Push_Other_Account">Changes have been made to push alerts. Update your settings to continue receiving alerts</string>
 
     <!-- NEW CODES Titles-->
 	
@@ -277,53 +279,71 @@
     <string name="E_1905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
     <string name="E_1910">You have one more login attempt today.  For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822.</string>
     <string name="E_1906">You have entered invalid information.Carefully review your information and please try again.</string>
-    <string name="E_1102">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time.  Please contact customer service at 18777427822 for more information or assistance.</string>
+    <string name="E_1102">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time.  Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1911">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
-	     Please contact customer service at 18777427822 for more information or assistance.</string>
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1912">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
-	     Please contact customer service at 18777427822 for more information or assistance.</string>
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1913">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
-	     Please contact customer service at 18777427822 for more information or assistance.</string>
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1907">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
-	     Please contact customer service at 18777427822 for more information or assistance.</string>
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1008">We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience. Please try again later, or for immediate assistance call 18777427822</string>
     <string name="E_1916">You have entered invalid information.Carefully review your information and please try again.</string>
     
        <!-- Registration Code title -->
-    <string name="E_T_1905">We\'re Sorry</string>
-    <string name="E_T_1907">Your Request Could Not Be Completed</string>
-    <string name="E_T_1908">Your Request Could Not Be Completed</string>
-    <string name="E_T_1910">Secure Credit Card Log In</string>
-    <string name="E_T_1911">Your Request Could Not Be Completed</string>
-    <string name="E_T_1912">Your Request Could Not Be Completed</string>
-    <string name="E_T_1913">Your Request Could Not Be Completed</string>
-    <string name="E_T_1914">Contact Customer Service</string>
-    <string name="E_T_1915">We\'re Sorry</string>
-    <string name="E_T_1922">Secure Credit Card Log In</string>
+    <string name="E_T_4001905">We\'re Sorry</string>
+    <string name="E_T_5001905">We\'re Sorry</string>
+    <string name="E_T_5031905">We\'re Sorry</string>
+    <string name="E_T_4031905">We\'re Sorry</string>
+    <string name="E_T_4001907">Your Request Could Not Be Completed</string>
+    <string name="E_T_5001908">Your Request Could Not Be Completed</string>
+    <string name="E_T_4001910">Secure Credit Card Log In</string>
+    <string name="E_T_4001911">Your Request Could Not Be Completed</string>
+    <string name="E_T_4001912">Your Request Could Not Be Completed</string>
+    <string name="E_T_4001913">Your Request Could Not Be Completed</string>
+    <string name="E_T_4001914">Contact Customer Service</string>
+    <string name="E_T_4001915">We\'re Sorry</string>
+    <string name="E_T_4001916">We\'re Sorry</string>
+    <string name="E_T_4031922">Secure Credit Card Log In</string>
     
     <!-- Registration code Messages -->
-    <string name="E_1901">Invalid user input</string>
-    <string name="E_1902">User IDs do not match.</string>
-    <string name="E_1903">Passwords do not match.</string>
-    <string name="E_1904">Email is required and must be a valid address.</string>
-    <string name="E_1906">You have entered invalid information.  Carefully review your information and please try again.</string>
-    <string name="E_1907">There was a problem authenticating your registration information.</string>
-    <string name="E_1908">The information you entered was not valid.If you feel that you have received this message in error return to the Forgot Your Password page , and enter your information again.</string>
-    <string name="E_1909">Problem retrieving account information</string>
-    <string name="E_1910">You Have Exceeded the Maximum Number of Unsuccessful Attempts. Please contact Customer Service at 18777427822 for assistance.</string>
-    <string name="E_1914">At this time, only the primary cardholder can register for and access Account Center.  For more assistance, please contact Customer Service at 18777427822.</string>
-    <string name="E_1915">Your request cannot be completed because the rewards application is currently under maintenance.We apologize for the inconvenience. Please try again later or contact Customer Service at 18003472683.</string>
-    <string name="E_1917">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 18777427822.</string>
-    <string name="E_1918">Your Request Could Not Be Completed. The information entered was not valid. If you feel that you have received this message in error, return to the Forgot User ID/Password page and try again.</string>
-    <string name="E_1919">User ID and password must not be the same.</string>
-    <string name="E_1920">User ID must not look like your Social Security number. Please choose another one.</string>
-    <string name="E_1921">User ID is already in use. Please choose another one.</string>
-    <string name="E_1922">Your Discover Card Account Number has changed. In order to access your account through the mobile channel, you must first log in to the Account Center at www.discover.com. For more information, please contact Customer Service at 18777427822.</string>
-    <string name="E_1923">The User ID is empty. Please enter a User ID.</string>
-    <string name="E_1924">The User ID is invalid. Please enter a valid User ID.</string>
-    <string name="E_1925">The password is empty. Please enter a password.</string>
-    <string name="E_1926">The password is invalid. Please enter a valid password.</string>
-    
+    <string name="E_4001901">Invalid user input</string>
+    <string name="E_4001902">User IDs do not match.</string>
+    <string name="E_4001903">Passwords do not match.</string>
+    <string name="E_4001904">Email is required and must be a valid address.</string>
+    <string name="E_4001905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
+    <string name="E_5001905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
+    <string name="E_5031905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
+    <string name="E_4031905">As a Sam\'s Club Discover Cardmember, you cannot register for Account Center access at discover.com. We\'d love to have you, but for now you must register through the Sam\'s Club Website to manage your account.</string>
+    <string name="E_5001906">You have entered invalid information.  Carefully review your information and please try again.</string>
+    <string name="E_5031906">You have entered invalid information.  Carefully review your information and please try again.</string>
+    <string name="E_4001907">There was a problem authenticating your registration information.</string>
+    <string name="E_5001908">The information you entered was not valid.If you feel that you have received this message in error return to the Forgot Your Password page , and enter your information again.</string>
+    <string name="E_5001909">Problem retrieving account information</string>
+    <string name="E_4001910">You Have Exceeded the Maximum Number of Unsuccessful Attempts. Please contact Customer Service at 1-877-742-7822 for assistance.</string>
+    <string name="E_4001911">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
+    <string name="E_4001912">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
+    <string name="E_4001913">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
+	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
+    <string name="E_4001914">At this time, only the primary cardholder can register for and access Account Center.  For more assistance, please contact Customer Service at 1-877-742-7822.</string>
+    <string name="E_4001915">Your request cannot be completed because the rewards application is currently under maintenance.We apologize for the inconvenience. Please try again later or contact Customer Service at 1-800-347-2683.</string>
+    <string name="E_4001916">You have entered invalid information.Carefully review your information and please try again.</string>
+    <string name="E_4001917">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822.</string>
+    <string name="E_4001918">Your Request Could Not Be Completed. The information entered was not valid. If you feel that you have received this message in error, return to the Forgot User ID/Password page and try again.</string>
+    <string name="E_4001919">User ID and password must not be the same.</string>
+    <string name="E_4001920">User ID must not look like your Social Security number. Please choose another one.</string>
+    <string name="E_4001921">User ID is already in use. Please choose another one.</string>
+    <string name="E_4031922">Your Discover Card Account Number has changed. In order to access your account through the mobile channel, you must first log in to the Account Center at www.discover.com. For more information, please contact Customer Service at 1-877-742-7822.</string>
+    <string name="E_4001923">The User ID is empty. Please enter a User ID.</string>
+    <string name="E_4001924">The User ID is invalid. Please enter a valid User ID.</string>
+    <string name="E_4001925">The password is empty. Please enter a password.</string>
+    <string name="E_4001926">The password is invalid. Please enter a valid password.</string>
+    <string name="E_4031928">Due to special conditions related to your account, we can\'t retrieve your User ID at this time.To recover your User ID, you will need to re-register for online account access.</string>
+     <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
+   
     
 <!-- need help footer and feedback -->
 <!-- 0 for hide need help footer and show feedback -->
@@ -345,8 +365,8 @@
      
      <string name="E_H_4011107">3</string>
      <string name="E_H_503">4</string>
-     <string name="E_H_5031006">4</string>
-     <string name="E_H_5031007">4</string>
+     <string name="E_H_5031006">0</string>
+     <string name="E_H_5031007">0</string>
      <string name="E_H_5031108">4</string>
      <string name="E_H_4031104">3</string>
      <string name="E_H_4031401_NOTENROLLED">3</string>
