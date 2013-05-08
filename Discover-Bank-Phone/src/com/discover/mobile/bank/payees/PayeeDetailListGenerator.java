@@ -96,13 +96,11 @@ final public class PayeeDetailListGenerator  {
 	 * @return
 	 */
 	public static BankEditDetail createAccount(final Context context, final String text, final boolean isEditable) {
-		/**Add Account #, Account# Validation 1 char min./32 char max and Invalid characters <>;"[]{} */
+		/**Add Account #, Account# Validation 1 char min./32 char max */
 		final BankEditDetail account = createBankEditDetail(context, R.string.bank_payee_account, text);
 		account.getEditableField().setMinimum(1);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		account.getEditableField().setFilters(inputFilters);
-		account.getEditableField().setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
-		account.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		account.getEditableField().setError(R.string.bank_invalid_acct);
 		account.enableEditing(isEditable);
 		account.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
@@ -122,7 +120,6 @@ final public class PayeeDetailListGenerator  {
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(32) };
 		reenterAccount.getEditableField().setError(R.string.bank_nonmatching_acct);
 		reenterAccount.getEditableField().setFilters(inputFilters);
-		reenterAccount.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		
 		/**If it is last field then show done button in keyboard*/
 		if( isLast ) {

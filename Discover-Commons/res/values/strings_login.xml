@@ -49,7 +49,7 @@
         |
     </string>
     <string name="logout_sucess">
-        You are now logged out. Thank you for using Discover Mobile.
+        You\'ve been logged out. Thank you for using Discover Mobile.
     </string>
     <string name="session_expired">
         We\'ve logged you out to protect your account security.  Please log in again.
