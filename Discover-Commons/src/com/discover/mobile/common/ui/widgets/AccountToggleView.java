@@ -74,12 +74,10 @@ public class AccountToggleView extends RelativeLayout {
 
 		if(KeepAlive.getCardAuthenticated()){
 			CardInfoForToggle cardInfo;
-			if(null == Globals.getCardLastFour()){
+			if(null != Globals.getCardLastFour()){
 				cardInfo = new CardInfoForToggle(Globals.getCardName(), Globals.getCardLastFour());
 			}else{
 				cardInfo = FacadeFactory.getCardFacade().getCardInfoForToggle(this.context);
-				Globals.setCardLastFour(cardInfo.getCardEndingDigits());
-				Globals.setCardName(cardInfo.getCardAccountName());
 			}
 
 			if(null != cardInfo){
