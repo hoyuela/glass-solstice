@@ -370,23 +370,20 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
 		}
 		
-		if(account.equals(getOtherSelectedAccount()) || getTotalAccountSize() > 2 && 
-				account.equals(getOtherSelectedAccount())){ 
+		if((account.equals(getOtherSelectedAccount()) && getTotalAccountSize() > 2) ||
+			(account.equals(getOtherSelectedAccount()) && getTotalAccountSize() == 1)) { 
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
+			item.setOnClickListener(null);
 		}else{
 			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.black));
-		}
 		
-		item.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				if(getTotalAccountSize() <= 2 || !isAccountAlreadyChosen(account) && 
-						!account.equals(getOtherSelectedAccount())) {
-					selectAccount(account);
+			item.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+						selectAccount(account);
 				}
-			}
-		});
+			});
+		}
 		return item;
 	}
 
@@ -396,21 +393,6 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private int getTotalAccountSize() {
 		return getAccountSize(getExternalAccounts()) + getAccountSize(getInternalAccounts());
-	}
-
-	/**
-	 * Check to see if an account has already been selected.
-	 * @param testAccount
-	 * @return
-	 */
-	private boolean isAccountAlreadyChosen(final Account testAccount) {
-		boolean accountAlreadySelected = false;
-
-		if(testAccount != null){
-			accountAlreadySelected = testAccount.equals(getOtherSelectedAccount());
-		}
-
-		return accountAlreadySelected;
 	}
 
 	/**
