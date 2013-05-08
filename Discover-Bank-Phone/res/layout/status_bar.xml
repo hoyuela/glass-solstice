@@ -19,33 +19,44 @@
         android:textStyle="bold"
         android:text="@string/hi_text"/>
 
-    <ImageView
-        android:id="@+id/cardBankIcon"
+    <RelativeLayout 
+        android:id="@+id/account_toggle_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/account_name"
-        android:paddingLeft="@dimen/nav_section_pading"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:src="@drawable/bank_gray_icon"
-        android:visibility="invisible"  />
-
-    <ImageView
-        android:id="@+id/downArrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/cardBankIcon"
-        android:paddingLeft="@dimen/nav_section_pading"
-        android:src="@drawable/orange_down_carrot"
-        android:visibility="invisible" />
+        android:layout_height="match_parent"
+		android:layout_marginLeft="@dimen/nav_section_pading"
+	    android:layout_centerVertical="true"
+	    android:layout_toRightOf="@+id/account_name">	    
+        <ImageView
+	        android:id="@+id/cardBankIcon"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingBottom="10dp"
+	        android:paddingTop="10dp"	        
+	        android:layout_centerVertical="true"
+	        android:src="@drawable/bank_gray_icon"
+	        android:visibility="invisible"  />
+	
+	    <ImageView
+	        android:id="@+id/downArrow"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/cardBankIcon"
+	        android:paddingLeft="@dimen/nav_menu_list_padding"
+	        android:src="@drawable/orange_down_carrot"
+	        android:visibility="invisible" />   
+	        
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/downArrow"
+	        android:layout_marginLeft="@dimen/nav_footer_divider_height"/>
+     </RelativeLayout>
      
-     <ImageView
-        android:id="@+id/bottom_line"
-        android:layout_width="fill_parent"
-        android:layout_height="3dp"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/table_solid_line" />
-
+    <ImageView
+	        android:id="@+id/bottom_line"
+	        android:layout_width="fill_parent"
+	        android:layout_height="3dp"
+	        android:layout_alignParentBottom="true"
+	        android:src="@drawable/table_solid_line" /> 
 </RelativeLayout>

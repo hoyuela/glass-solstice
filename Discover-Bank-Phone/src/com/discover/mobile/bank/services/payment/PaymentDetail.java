@@ -151,5 +151,6 @@ public class PaymentDetail implements Serializable{
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	
 
 }
