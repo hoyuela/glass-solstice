@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -147,6 +149,34 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		if(lastErrorObject != null){
 			handleError(lastErrorObject);
 		}
+		
+		updateDateSelector();
+	}
+	
+	/**
+	 * Updates the selectability of the date picker.
+	 */
+	private void updateDateSelector() {
+		final boolean canSelectDate = hasBothAccountsSelected() && !areBothAccountsInternal() && isAmountNotZero();
+		
+		if(canSelectDate) {
+			enableDateSelection();
+		} else {
+			disableDateSelection();
+		}
+	}
+	
+	/**
+	 * 
+	 * @return if the current amount is greater than zero.
+	 */
+	private boolean isAmountNotZero() {
+		final String amount = amountField.getText().toString();
+		boolean isAmountNotZero = false;
+		if(!Strings.isNullOrEmpty(amount)) {
+			isAmountNotZero =  Double.parseDouble(amountField.getText().toString()) > 0.0d;
+		}
+		return isAmountNotZero;
 	}
 	
 	/**
@@ -178,6 +208,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		}
 	}
 	
+	/**
+	 * 
+	 * @return if both of the accounts are selected and they are internal accounts.
+	 */
 	private boolean areBothAccountsInternal() {
 		boolean areBothAccountsInternal = false;
 		
@@ -205,16 +239,35 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		handleChosenFrequency(bundle);
 	}
 	
+	/**
+	 * Prevent the frequency cell from being tapped.
+	 */
 	private void disableFrequencySelection() {
 		frequencyCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
 		frequencyCell.getCaret().setVisibility(View.INVISIBLE);
 		frequencyCell.getView().setOnClickListener(null);
 	}
 	
+	/**
+	 * Prevent the send on date from being tapped.
+	 */
 	private void disableDateSelection() {
-		sendOnDateCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
-		sendOnDateCell.getCaret().setVisibility(View.INVISIBLE);
-		sendOnDateCell.getView().setOnClickListener(null);
+		if(sendOnDateCell != null) {
+			sendOnDateCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
+			sendOnDateCell.getCaret().setVisibility(View.INVISIBLE);
+			sendOnDateCell.getView().setOnClickListener(null);
+		}
+	}
+	
+	/**
+	 * Allow the send on date cell to be tapped.
+	 */
+	private void enableDateSelection() {
+		if(sendOnDateCell != null) {
+			sendOnDateCell.getMiddleLabel().setTextColor(getResources().getColor(R.color.body_copy));
+			sendOnDateCell.getCaret().setVisibility(View.VISIBLE);
+			sendOnDateCell.getView().setOnClickListener(openCalendarOnClick);
+		}
 	}
 	
 	/**
@@ -440,6 +493,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final Account[] selectedAccounts = (Account[])bundle.getSerializable(BankExtraKeys.DATA_SELECTED_INDEX);
 		setSelectedAccounts(selectedAccounts);
 		updateSelectedAccountLabels();
+		updateDateSelector();
 	}
 
 	/**
@@ -505,7 +559,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	}
 
 	/**
-	 * Used for the to account table cell, when it is clicked, navigate to the select
+	 * Used for the to account table cell, when it is tapped, navigate to the select
 	 * to account screen.
 	 */
 	private final OnClickListener toAccountClickListener = new OnClickListener() {
@@ -518,7 +572,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	};
 
 	/**
-	 * Used for the from account table cell, when it is clicked, navigate to the select
+	 * Used for the from account table cell, when it is tapped, navigate to the select
 	 * from account screen.
 	 */
 	private final OnClickListener fromAccountClickListener = new OnClickListener() {
@@ -602,9 +656,28 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		/**Set the maximum amount of digits allowed to be entered into the field*/
 		amountField.setMaximumValue(MAXIMUM_TRANSFER_VALUE);
 		
-		amountField.clearErrors();
+		amountField.addTextChangedListener(dateSelectorWatcher);
+		
 		return amountListItem;
 	}
+	
+	private final TextWatcher dateSelectorWatcher = new TextWatcher() {
+
+		@Override
+		public void afterTextChanged(final Editable s) {
+			updateDateSelector();
+		}
+		@Override
+		public void beforeTextChanged(final CharSequence s, final int start, final int count,
+				final int after) {
+		}
+
+		@Override
+		public void onTextChanged(final CharSequence s, final int start, final int before,
+				final int count) {
+		}
+		
+	};
 
 	/**
 	 * 
@@ -635,31 +708,30 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * @return a BankSimpleEditDetail object which will be inserted into the content table on screen.
 	 */
 	private BankSimpleEditDetail getSendOnListItem(final Activity currentActivity) {
-		final BankSimpleEditDetail sendOnListItem = new BankSimpleEditDetail(currentActivity);
+	    sendOnDateCell = new BankSimpleEditDetail(currentActivity);
 
-		sendOnListItem.getTopLabel().setText(R.string.send_on);
-		sendOnListItem.getMiddleLabel().setText(R.string.select_a_date);
-		sendOnListItem.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
-		sendOnListItem.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
+		sendOnDateCell.getTopLabel().setText(R.string.send_on);
+		sendOnDateCell.getMiddleLabel().setText(R.string.select_a_date);
+		sendOnDateCell.getTopLabel().setTextAppearance(getActivity(), R.style.field_copy_medium);
+		sendOnDateCell.getMiddleLabel().setTextAppearance(getActivity(), R.style.body_copy_title);
 		
-		sendOnListItem.getView().setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(final View v) {
-				showCalendar();
-			}
-		});
-		dateTextView = sendOnListItem.getMiddleLabel();
+		sendOnDateCell.getView().setOnClickListener(openCalendarOnClick);
+		dateTextView = sendOnDateCell.getMiddleLabel();
 		
-		sendOnDateCell = sendOnListItem;
-		
-		return sendOnListItem;
+		return sendOnDateCell;
 	}
 
 	@Override
 	protected void onActionLinkClick() {
 		showCancelModal();
 	}
+	
+	private final OnClickListener openCalendarOnClick = new OnClickListener() {
+		@Override
+		public void onClick(final View v) {
+			showCalendar();
+		}
+	};
 
 	/**
 	 * Submit the current information on the page to schedule a transfer.
@@ -682,8 +754,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			if(!Strings.isNullOrEmpty(frequencyCode)) {
 				transferObject.frequency = frequencyCode;
 			}
-			
-			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString(),true);
+
+			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString(),false);
 	
 			final String cents = amountField.getText().toString().replaceAll(NON_NUMBER_CHARACTERS, "");
 			if(!Strings.isNullOrEmpty(cents)) {
@@ -727,6 +799,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		return hasEnoughTransfers;
 	}
 	
+	/**
+	 * Update the UI based on if the user has a selected a valid 'continue until' date.
+	 * @return if the user has selected a valid continue until date.
+	 */
 	private boolean validateContinueUntilDate() {
 		boolean hasGoodDate = false;
 		
@@ -747,6 +823,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		return hasGoodDate;
 	}
 	
+	/**
+	 * Validate and update the UI based on the continue until set amount input field. 
+	 * @return if the amount in the field is a valid amount.
+	 */
 	private boolean validateContinueUntilSetAmount() {
 		boolean isValid = false;
 		
@@ -765,8 +845,20 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		return isValid;
 	}
 	
+	/**
+	 * 
+	 * @return if both the from and to account have been selected.
+	 */
+	private boolean hasBothAccountsSelected() {
+		return toAccount != null && fromAccount != null;
+	}
+	
+	/**
+	 * Validates and updates the UI based on if both the to and from account are selected.
+	 * @return if both the from and to account have been selected.
+	 */
 	private boolean validateAccountsAreSelected() {
-		final boolean accountsAreSelected = toAccount != null && fromAccount != null;
+		final boolean accountsAreSelected = hasBothAccountsSelected();
 		
 		if(!accountsAreSelected) {
 			showErrorLabel(getString(R.string.select_accounts_error), 
