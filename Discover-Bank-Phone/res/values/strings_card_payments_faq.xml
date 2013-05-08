@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="card_payments_trans_faq_array">
+        <item>@string/card_payments_trans_title_one</item>
+        <item>@string/card_payments_trans_content_one</item>
+        
+        <item>@string/card_payments_trans_title_two</item>
+        <item>@string/card_payments_trans_content_two</item>  
+        
+        <item>@string/card_payments_trans_title_three</item>
+        <item>@string/card_payments_trans_content_three</item>  
+        
+        <item>@string/card_payments_trans_title_four</item>
+        <item>@string/card_payments_trans_content_four</item>  
+        
+        <item>@string/card_payments_trans_title_five</item>
+        <item>@string/card_payments_trans_content_five</item>  
+        
+        <item>@string/card_payments_trans_title_six</item>
+        <item>@string/card_payments_trans_content_six</item>  
+        
+        <item>@string/card_payments_trans_title_seven</item>
+        <item>@string/card_payments_trans_content_seven</item>  
+    </string-array>
+    
+    <string name="card_payments_trans_title_one">How do I make a payment via the app?</string>
+    <string name="card_payments_trans_content_one">
+        From the left-hand navigation, under Payments, select “Make a Payment.”
+    </string>
+     
+    <string name="card_payments_trans_title_two">What if I want to see more than the last 5 payments?</string>
+    <string name="card_payments_trans_content_two">
+        If you want to see the last 7 months of payments, you will need to login to Discover.com. 
+        Once you are logged in, select the “Manage Account” option from the navigation bar and click on “Payment History” 
+        under the Payments in the drop down menu.
+    </string>
+    
+    <string name="card_payments_trans_title_three">How many transactions can I view on the app?</string>
+    <string name="card_payments_trans_content_three">
+        You can view the last 20 transactions that have posted to your account.
+    </string>
+    
+    <string name="card_payments_trans_title_four">Can I view my pending transactions on the app?</string>
+    <string name="card_payments_trans_content_four">
+        Yes. From the left-hand navigation, under Account, select “Recent Activity.”  
+    </string>
+    
+    <string name="card_payments_trans_title_five">What if I want to see more than the last 20 transactions?</string>
+    <string name="card_payments_trans_content_five">
+        To see up to 24 months of your transactions, you will have to login to Discover.com. 
+        Once you are logged in, select the “Manage Account” option from the navigation bar and click on “Recent Activity” 
+        under “Activity &amp; Statements” in the drop down menu.
+    </string>
+    
+    <string name="card_payments_trans_title_six">How can I access my most recent statement from the mobile app?</string>
+    <string name="card_payments_trans_content_six">
+        From the left hand navigation, under Account, select “Statements” to access your most recent statement. 
+    </string>
+    
+    <string name="card_payments_trans_title_seven">Can I save my statements from my mobile device?</string>
+    <string name="card_payments_trans_content_seven">
+        Yes. When viewing your statement select the “Download” button to save your statement as a PDF.
+    </string>
+  
+</resources>

@@ -27,13 +27,13 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 		super(context, attrs, defStyle);
 		doSetup(context);
 	}
-	
+
 	private void doSetup(final Context context) {
 		final RelativeLayout view = getInflatedLayout(context);
 		view.setOnClickListener(expandClickListener);
 		addView(view);
 	}
-	
+
 	/**
 	 * Returns the inflated layout for this list item.
 	 * @param context the calling context.
@@ -42,43 +42,43 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	private RelativeLayout getInflatedLayout(final Context context) {
 		return (RelativeLayout)LayoutInflater.from(context).inflate(R.layout.faq_list_item, null);
 	}
-	
+
 	/**
 	 * Set the body text of this item.
 	 * @param bodyText a String to use as the body text of this item.
 	 */
 	public void setBody(final String bodyText) {
 		final TextView bodyLabel = (TextView)findViewById(R.id.faq_section_detail);
-		
+
 		if(bodyLabel != null){ 
 			bodyLabel.setText(bodyText);
 		}
 	}
-	
+
 	/**
 	 * Set the text of this list item's body content.
 	 * @param title a String to use as the title content of this item.
 	 */
 	public void setTitle(final String title) {
 		final TextView titleLabel = (TextView)findViewById(R.id.faq_section_title);
-		
+
 		if(titleLabel != null){
 			titleLabel.setText(title);
 		}
 	}
-	
+
 	/**
 	 * This is a click listener that allows the list items to expand and collapse upon clicking.
 	 */
 	private final OnClickListener expandClickListener = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(final View v) {
 			final String currentToggleSymbol = ((TextView)findViewById(R.id.expand_indicator)).getText().toString();
 			toggleRowExpansion(currentToggleSymbol);
 		}
 	};
-	
+
 	private void toggleRowExpansion(final String toggleValue) {
 		if(isOpen()){ 
 			closeItem();
@@ -86,15 +86,15 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 			openItem();
 		}
 	}
-	
+
 	public boolean isOpen() {
 		final TextView indicator = (TextView)findViewById(R.id.expand_indicator);
 		final String openState = getResources().getString(R.string.hypen);
 		final String currentState = indicator.getText().toString();
-		
+
 		return currentState.equals(openState); 
 	}
-	
+
 	/**
 	 * Expand the current faq list item.
 	 * Sets the visibility of the detail item to be visible and changes the expand indicator to a minus sign.
@@ -103,15 +103,15 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 		findViewById(R.id.faq_section_detail).setVisibility(View.VISIBLE);
 		((TextView)findViewById(R.id.expand_indicator)).setText(getResources().getString(R.string.hypen));
 	}
-	
+
 	public void hideDivider() {
 		final View view = findViewById(R.id.divider);
-		
+
 		if(view != null){
 			view.setVisibility(View.GONE);
 		}
 	}
-	
+
 	/**
 	 * Collapses the current faq list item.
 	 * Sets the visibility of the detail item to GONE and changes the expand indicator to a plus sign.

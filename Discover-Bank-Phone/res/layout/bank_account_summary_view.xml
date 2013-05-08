@@ -63,7 +63,8 @@
             android:id="@+id/acct_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/status_bar"/>
+            android:layout_below="@id/status_bar"
+            android:layout_marginTop="@dimen/between_related_elements_padding"/>
              
         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
             android:id="@+id/bank_footer"
