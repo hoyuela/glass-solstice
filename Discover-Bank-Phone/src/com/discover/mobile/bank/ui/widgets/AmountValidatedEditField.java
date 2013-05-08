@@ -26,11 +26,18 @@ public class AmountValidatedEditField extends ValidatedInputField {
 	 * TAG used to print logs into log cat
 	 */
 	protected static final String TAG = "AmountValidate";
-
 	/**
-	 * Reference to TextWatcher which formats the text in amountField.
+	 * Holds the value of the configurable maximum value allowed to be ented in the watched text field.
+	 */
+	private double maxValue = BankAmountTextWatcher.DEFAULT_MAX_VALUE;
+	
+	/** 
+	 * Reference to TextWatcher which formats the text in amountField. 
 	 */
 	private BankAmountTextWatcher textWatcher = null;
+	
+	/** True when Input Field is utilizing a text watcher */
+	private boolean isValidationEnabled = false; // false until the first BankAmountTextWatcher is created.
 
 	public AmountValidatedEditField(final Context context) {
 		super(context);
@@ -63,18 +70,19 @@ public class AmountValidatedEditField extends ValidatedInputField {
 	 * @param value Set to true to enable text watcher, false to disable.
 	 */
 	public void enableBankAmountTextWatcher(final boolean value) {
-		if( value ) {
-			if( null == textWatcher ) {
-				/**Associate a text watcher that handles formatting of Amount Field into currency format*/
-				textWatcher = new BankAmountTextWatcher(this.getText().toString());
-				textWatcher.setWatchee(this);
-				this.addTextChangedListener(textWatcher);
-			}
+		if (isValidationEnabled == value) {
+			return; // Nothing has changed.
+		}
+		
+		isValidationEnabled = value;
+		
+		if(value) {
+			/**Associate a text watcher that handles formatting of Amount Field into currency format*/
+			textWatcher = new BankAmountTextWatcher(this, getText().toString());
+			textWatcher.setMaxValue(maxValue);
+			setTextWatcher(textWatcher);
 		} else {
-			if( null != textWatcher ) {
-				removeTextChangedListener(textWatcher);
-				textWatcher = null;
-			}
+			removeTextWatcher();
 		}
 	}
 
@@ -108,5 +116,25 @@ public class AmountValidatedEditField extends ValidatedInputField {
 			imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
 		}
 	}
+	
+	/**
+	 * Method used to set the maximum valued allowed to be entered into the watched text view.
+	 * 
+	 * @param maxValue Maximum value allowed, must be greater than 0.
+	 * 
+	 */
+	public void setMaximumValue(final double maxValue) {
+		this.maxValue = maxValue;
+		
+		if (textWatcher != null) {
+			textWatcher.setMaxValue(maxValue);
+		}
+	}
 
+	/**
+	 * @return Returns the maximum value allowed to be entered into the watched text view.
+	 */
+	public double getMaximumValue() {
+		return maxValue;
+	}
 }

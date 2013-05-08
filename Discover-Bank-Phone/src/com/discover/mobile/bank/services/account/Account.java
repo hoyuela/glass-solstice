@@ -3,6 +3,7 @@ package com.discover.mobile.bank.services.account;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -126,7 +127,11 @@ public class Account implements Serializable {
 	 * Holds a String used to fetch the URL used to downloaded posted activity
 	 */
 	public static final String LINKS_SCHEDULED_ACTIVITY = "scheduledActivity";
-
+	/**
+	 * Holds the formatted string for the loan type of account.
+	 */
+	public static final String ACCOUNT_LOAN_FORMATTED = "Personal Loan:";
+	
 	/**
 	 * The last four digits of the account number (e.g. 'ending in 1111).
 	 */
@@ -376,6 +381,34 @@ public class Account implements Serializable {
 	 */
 	public boolean isExternalAccount() {
 		return Strings.isNullOrEmpty(type) && !Strings.isNullOrEmpty(id);
+	}
+	
+	/**
+	 * @return Returns the type formatted string for the this account.
+	 */
+	public String getFormattedName() {
+		String formattedName;
+	
+		if( type.equalsIgnoreCase(ACCOUNT_CD) || type.equalsIgnoreCase(ACCOUNT_IRA) ) {			
+			formattedName = type.toUpperCase(Locale.US) +":";
+		} else if( !type.equalsIgnoreCase(Account.ACCOUNT_LOAN) ) {
+			formattedName = type.replaceAll("_", " ");
+			final StringBuilder result = new StringBuilder(formattedName.length());
+			final String[] charArray = formattedName.split("\\s");
+			final int l = charArray.length;
+			for(int i = 0; i < l; ++i) {
+				if(i>0){
+					result.append(" ");      
+				}
+				result.append(Character.toUpperCase(charArray[i].charAt(0))).append(charArray[i].substring(1));
+			}
+			result.append(":");
+			formattedName = result.toString();
+		} else {
+			formattedName = ACCOUNT_LOAN_FORMATTED;
+		}
+		
+		return formattedName;
 	}
 
 

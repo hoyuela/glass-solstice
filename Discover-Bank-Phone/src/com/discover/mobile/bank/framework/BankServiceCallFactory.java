@@ -15,6 +15,7 @@ import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
@@ -336,9 +337,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	/**
 	 * Create the service call to get the account activity.
 	 * @param url - URL to be used to get the activity
+	 * @param type - specfies what type of activity will be downloaded
 	 * @return the service call to get the account activity
 	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url){
+	public static GetActivityServerCall createGetActivityServerCall(final String url, final ActivityDetailType type){
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListActivityDetail>  callback =
@@ -346,7 +348,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetActivityServerCall(activity, callback, url);
+		return new GetActivityServerCall(activity, callback, url, type);
 	}
 
 	/**

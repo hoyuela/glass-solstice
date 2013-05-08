@@ -36,18 +36,18 @@ public class FAQLandingPageFragment extends BaseFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.faq_landing_page, null);
-		
+
 		final String[] values = getResources().getStringArray(R.array.faq_sections);
 
 		final LinearLayout faqList = (LinearLayout)view.findViewById(R.id.faq_list);
-		
+
 		//Build the linear layout table.
 		for(int i = 0; i < values.length; ++i) {
-			
+
 			if(i > 0){ 
 				insertDividerLine(faqList);
 			}
-			
+
 			//Set the text of the section
 			final RelativeLayout item = (RelativeLayout)inflater.inflate(R.layout.single_item_table_cell, null);
 			final TextView label = (TextView)item.findViewById(android.R.id.text1);
@@ -56,39 +56,39 @@ public class FAQLandingPageFragment extends BaseFragment {
 
 			//Add the constructed list item to the table.
 			faqList.addView(item);
-			
+
 		}
-		
+
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        } else {
+			view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		} else {
 			// Tiled background is often broken for older devices
 			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
 		}
-		
+
 		return view;
 	}
-	
+
 	/**
 	 * Place a divider line at the next available position in the linear layout.
 	 * @param view a linear layout to add a divider line to.
 	 */
-	private void insertDividerLine(final LinearLayout view) {
+	protected void insertDividerLine(final LinearLayout view) {
 		final View divider = new View(getActivity(), null);
 		divider.setBackgroundResource(R.drawable.table_dotted_line);
 		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
-		
+
 		view.addView(divider, params);
 	}
-	
+
 	/**
 	 * A click listener that when onClick is called, navigates to a specific FAQ section based
 	 * on the title of the listItem.
 	 * @param listItem a listItem that is used to indicate a FAQ section.
 	 * @return an OnClickListener that will navigate to a FAQ section.
 	 */
-	private OnClickListener getListClickListener(final RelativeLayout listItem) {
+	protected OnClickListener getListClickListener(final RelativeLayout listItem) {
 		return new OnClickListener() {
 
 			@Override
@@ -98,14 +98,14 @@ public class FAQLandingPageFragment extends BaseFragment {
 			}
 		};
 	}
-	
+
 	/**
 	 * Navigates to a FAQ section based on a title.
 	 * @param title a FAQ section title that corresponds to a FAQ detail page.
 	 */
-	private void decideWhereToNavigateFromSectionTitle(final String title) {
+	protected void decideWhereToNavigateFromSectionTitle(final String title) {
 		final Resources res = getResources();
-		
+
 		if(title.equals(res.getString(R.string.general))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.GENERAL_FAQ);
 		}else if(title.equals(res.getString(R.string.online_bill_pay))){
@@ -115,9 +115,9 @@ public class FAQLandingPageFragment extends BaseFragment {
 		}else if(title.equals(res.getString(R.string.atm_locator_single_line))){
 			BankConductor.navigateToFAQDetail(BankExtraKeys.ATM_LOCATOR_FAQ);
 		}
-	
+
 	}
-	
+
 	@Override
 	public int getActionBarTitle() {
 		return R.string.faq_title;

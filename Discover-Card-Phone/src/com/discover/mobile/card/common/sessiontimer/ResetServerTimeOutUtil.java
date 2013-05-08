@@ -55,7 +55,7 @@ public final class ResetServerTimeOutUtil implements CardEventListener {
         Log.d(TAG, "token11:"+token);
         headers.put("X-SEC-Token", token);
        */
-
+        Utils.isSpinnerAllowed = false;
         final String url = NetworkUtility.getWebServiceUrl(mContext,
                 R.string.resettimer_url);
 

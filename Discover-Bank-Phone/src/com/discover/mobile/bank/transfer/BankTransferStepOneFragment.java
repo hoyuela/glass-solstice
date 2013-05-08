@@ -63,6 +63,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private static final String DATE = "date";
 	private static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 	private static final String ERROR_OBJECT = "err";
+	/**
+	 * Static field used to determine maximum value allowed for a transfer
+	 */
+	private static final double MAXIMUM_TRANSFER_VALUE = 999999.99;
 
 	private AmountValidatedEditField amountField;
 	
@@ -318,12 +322,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			if(dateTextView != null){
 				dateTextView.setText(bundle.getString(DATE));
 			}
-			
+		
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
-
-			
 		}
 		
 		resetCalendarEventListener();
@@ -596,6 +598,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		amountListItem.getErrorLabel().setText(R.string.amount_less_than_twenty_five);
 		final TextView amountLabel = (TextView)amountListItem.findViewById(R.id.amount_title);
 		amountLabel.setTextAppearance(getActivity(), R.style.field_copy_medium);
+		
+		/**Set the maximum amount of digits allowed to be entered into the field*/
+		amountField.setMaximumValue(MAXIMUM_TRANSFER_VALUE);
+		
+		amountField.clearErrors();
 		return amountListItem;
 	}
 

@@ -325,7 +325,7 @@ if(x=="disabled")
 	
 	$('.share-send-email').click(function() {
 		showSpinner();
-		s.prop1 = 's.prop1=HANDSET_RAF_SHARE_EMAIL_SEND_BTN';//campaign code
+		s.prop1 = 'HANDSET_RAF_SHARE_EMAIL_SEND_BTN';//campaign code
 		dfs.crd.raf.emailShared = true;
 		var to_emails = new Array();
 		var sEmail = $(document).jqmData('mailtext');
@@ -774,11 +774,11 @@ dfs.crd.raf.navFromMilesLanding = function() {
 }
 
 dfs.crd.raf.navToReferAFriendDollar = function() {
-	navigation("../referAFriend/referAFriendDollar")
+	navigation("../referAFriend/referAFriendDollar");
 }
 
 dfs.crd.raf.navToReferAFriendMiles = function() {
-	navigation("../referAFriend/referAFriendMiles")
+	navigation("../referAFriend/referAFriendMiles");
 }
 dfs.crd.raf.navToNoEmailError = function() {
 	navigation("../referAFriend/rafNoEmailError");

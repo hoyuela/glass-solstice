@@ -31,21 +31,28 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.fragment_slide_in_right , R.anim.fragment_slide_out_left);
 		setContentView(R.layout.faq_logged_out);
 		showActionBar();
 		final SlidingMenu slidingMenu = ((SlidingFragmentActivity)this).getSlidingMenu();
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		if(this.getCurrentContentFragment() == null){
 			showFAQDetailIfNeeded();
 		}
 	}
-	
+
+	@Override
+	public void onPause() {
+		overridePendingTransition(R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right);
+		super.onPause();
+	}
+
 	private void showFAQDetailIfNeeded() {
 		final Bundle bundle = this.getIntent().getExtras();
 		if(bundle != null) {
@@ -56,7 +63,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 			makeFragmentVisible(landingPage);
 		}
 	}
-	
+
 	@Override
 	public int getBehindContentView() {
 		return R.layout.faq_not_logged_in_behind;
@@ -80,9 +87,9 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		}else{
 			finish();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Show the action bar with the custom layout
 	 */

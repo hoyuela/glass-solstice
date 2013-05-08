@@ -43,6 +43,23 @@ public class Utils {
     static ProgressDialog progressBar;
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
+    public static boolean  isSpinnerAllowed=true;
+    public static boolean  isSpinnerForOfflinePush=false;
+    
+    //CARD TYPE DEFINED TO SHOW ON TOGGLE VIEW TOOL TIP
+    public static final String CARDTYPE_MORE = "MOR";
+	public static final String CARDTYPE_OPEN_ROAD = "OPR";
+	public static final String CARDTYPE_MOTIVA = "MTV";
+	public static final String CARDTYPE_DISCOVER_IT = "DIT";
+	public static final String CARDTYPE_MILES = "MLS";
+	public static final String CARDTYPE_ESCAPE = "ESC";
+	public static final String CARDTYPE_ESSENTIALS = "ESN";
+	public static final String CARDTYPE_ESSENTIALS_WITH_FEE = "ESF";
+	public static final String CARDTYPE_CORP = "CRP";
+	public static final String CARDTYPE_DBC = "DBC";
+	public static final String CARDTYPE_DBC_MILES = "DBM";
+	public static final String CARDTYPE_DEFAULT = "Not Supported";
+    
     /**
      * 
      * Simple utility method to check whether the internet connection is
@@ -202,6 +219,8 @@ public class Utils {
      */
     public static void showSpinner(final Context context,
             final String strTitle, final String strMessage) {
+if(isSpinnerAllowed || isSpinnerForOfflinePush)
+{
         if (null == progressBar) {
             progressBar = new ProgressDialog(context);
             progressBar.setCancelable(false);
@@ -223,7 +242,7 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+}
     }
 
     /**
@@ -252,10 +271,17 @@ public class Utils {
     }
 
     public static void hideSpinner() {
-        if (null != progressBar && progressBar.isShowing()) {
-            progressBar.dismiss();
-            progressBar = null;
-        }
+    	if(!isSpinnerForOfflinePush)
+    	{
+	        if (null != progressBar && progressBar.isShowing()) {
+	            progressBar.dismiss();
+	            progressBar = null;
+	        }
+	        else
+	        {
+	        	isSpinnerAllowed=false;
+	        }
+    	}   
     }
 
     /**
@@ -296,7 +322,8 @@ public class Utils {
         main.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout toolbar = new RelativeLayout(context);
-        toolbar.setBackgroundColor(Color.BLACK);
+        //toolbar.setBackgroundColor();
+        toolbar.setBackgroundResource(R.drawable.action_bar_background);
         toolbar.setLayoutParams(new LinearLayout.LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -340,7 +367,8 @@ public class Utils {
         webview.requestFocusFromTouch();
 
         ImageButton close = new ImageButton(context);
-        close.setBackgroundColor(Color.BLACK);
+        //close.setBackgroundColor(Color.BLACK);
+        close.setBackgroundResource(R.drawable.action_bar_background);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -357,7 +385,7 @@ public class Utils {
         ImageView logoView = new ImageView(context);
         logoView.setId(2);
         logoView.setLayoutParams(logoParams);
-        logoView.setImageResource(R.drawable.discover_logo);
+        logoView.setImageResource(R.drawable.discover_blk_logo_login);
 
         toolbar.addView(close);
         toolbar.addView(logoView);
@@ -398,6 +426,7 @@ public class Utils {
                     final Bitmap favicon) {
                 // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
+                Utils.isSpinnerAllowed=true;
                 Utils.showSpinner(context, null, null);
             }
 
@@ -417,5 +446,51 @@ public class Utils {
 
         });
     }
+    
+    
+	/**
+	 * This method returns a CARD TYPE
+	 * @param context
+	 * @param cardGroupCode
+	 * @return card type
+	 */
+	public static String getCardTypeFromGroupCode(Context context,
+			String cardGroupCode) {
+
+		String cardtype = cardGroupCode;
+
+		if (cardtype.equals(CARDTYPE_MORE)) {
+
+			return context.getString(R.string.card_type_more);
+		} else if (cardtype.equals(CARDTYPE_DISCOVER_IT)) {
+
+			return context.getString(R.string.card_type_discover_it);
+		} else if (cardtype.equals(CARDTYPE_MOTIVA)) {
+
+			return context.getString(R.string.card_type_motiva);
+		} else if (cardtype.equals(CARDTYPE_OPEN_ROAD)) {
+
+			return context.getString(R.string.card_type_open_road);
+		} else if (cardtype.equals(CARDTYPE_CORP)) {
+
+			return context.getString(R.string.card_type_corp);
+		} else if (cardtype.equals(CARDTYPE_DBC)) {
+
+			return context.getString(R.string.card_type_dbc);
+		} else if (cardtype.equals(CARDTYPE_DBC_MILES)) {
+
+			return context.getString(R.string.card_type_dbc);
+		} else if (cardtype.equals(CARDTYPE_ESCAPE)) {
+
+			return context.getString(R.string.card_type_escape);
+		} else if (cardtype.equals(CARDTYPE_ESSENTIALS)) {
+
+			return context.getString(R.string.card_type_essential);
+		} else if (cardtype.equals(CARDTYPE_ESSENTIALS_WITH_FEE)) {
+
+			return context.getString(R.string.card_type_essential_with_fee);
+		}
+		return CARDTYPE_DEFAULT;
+	}
 
 }

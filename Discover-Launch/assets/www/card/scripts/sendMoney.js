@@ -46,7 +46,7 @@ $("#sendMoney1-pg").live('click', function() {
 });
 function sendMoney1Load() {
 	try {	
-		if(fromPageName!="sendMoney2"){
+		if(!dfs.crd.p2p.hIWScreenFlag && fromPageName!="sendMoney2"){		
 			killDataFromCache("SM1_DATA");
 		}
 		dfs.crd.p2p.validPriorPagesOfStep1 = new Array("moreLanding",
@@ -115,7 +115,7 @@ dfs.crd.p2p.noCancelTransaction = function() {
 	try {
 		if (!dfs.crd.p2p.sendMoney1Flag){
 			navigation("../p2p/sendMoney2");
-		}else{
+		}else{			
 			dfs.crd.p2p.hIWScreenFlag = true;
 			navigation("../p2p/sendMoney1");
 		}
@@ -406,7 +406,7 @@ dfs.crd.p2p.goToSendMoney1 = function() {
 dfs.crd.p2p.callingAchome = function() {
 	try {
 		killDataFromCache("SM1_DATA");
-		navigation("../achome/cardHome", true);
+		gotoAchome();
 	} catch (err) {
 		showSysException(err);
 	}
@@ -457,7 +457,8 @@ dfs.crd.p2p.getSendMoney1Data = function() {
 		sendmoneyRetrieve[5] = transTypeContent
 		sendmoneyRetrieve[6] = sendMoney.bonusType;
 		putDataToCache("SM1_DATA", sendmoneyRetrieve);
-	} catch (err) {
+		
+		} catch (err) {
 		showSysException(err);
 	}
 }
@@ -961,7 +962,7 @@ function transactionHistoryLoad() {
 			dfs.crd.p2p.counter = 25;
 			dfs.crd.p2p.loadMoreHit = 1;
 			dfs.crd.p2p.loadMoreHitFlag = false;
-			var responseData;
+			var responseData;					
 			if (dfs.crd.p2p.cancelledTransaction) {
 				if ((dfs.crd.p2p.lastStatusSelected.substring(0,
 						dfs.crd.p2p.lastStatusSelected.indexOf("("))) == "Pending ")
@@ -1013,7 +1014,8 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 	try {
 		var entityList = "";
 		var listTransactionHistory = "";
-		dfs.crd.p2p.clearIndexJSONArray();
+		dfs.crd.p2p.clearIndexJSONArray();				
+			
 		if (!jQuery.isEmptyObject(responseData)) {
 			entityList = responseData.sendMoneyHistory;
 			var allCount = responseData.allCount;
@@ -1196,7 +1198,7 @@ dfs.crd.p2p.loadMoreTransactions = function() {
 		dfs.crd.p2p.loadMoreHit += 1;
 		dfs.crd.p2p.counter = (basicCount * dfs.crd.p2p.loadMoreHit);
 		dfs.crd.p2p.loadMoreHitFlag = true;
-		var indexValue = ((basicCount * (dfs.crd.p2p.loadMoreHit - 1)) - 1);
+		var indexValue = (basicCount * (dfs.crd.p2p.loadMoreHit - 1));
 		var selectedStatus = $("#select-choice-1").val();
 		if ((selectedStatus.substring(0, selectedStatus.indexOf("("))) == "All Transactions ") {
 			var responseData = dfs.crd.p2p.getTransactionHistoryData(
@@ -1247,7 +1249,7 @@ dfs.crd.p2p.loadMoreTransactions = function() {
 
 dfs.crd.p2p.displayMoreTransactions = function(statusSelected, indexValue,
 		responseData) {
-	try {
+	try {		
 		var entityList = "";
 		var listTransactionHistory = "";
 		var tempCnt = 0;

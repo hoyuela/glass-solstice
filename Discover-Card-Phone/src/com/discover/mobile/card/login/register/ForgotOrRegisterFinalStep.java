@@ -250,16 +250,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity implement
         finish();
     }
 
-    @Override
-    public TextView getErrorLabel() {
-        return null;
-    }
-
-    @Override
-    public List<EditText> getInputFields() {
-        return null;
-    }
-
+  
     /**
      * Close this activity and start the forgot credentials activity.
      * 
@@ -272,7 +263,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity implement
     @Override
     public void goBack() {
         Intent lastScreen = null;
-        if (isForgotFlow) {
+        if (isForgotFlow || isForgotPassword) {
             lastScreen = new Intent(this, ForgotCredentialsActivity.class);
             startActivity(lastScreen);
         } else {
@@ -305,6 +296,18 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity implement
     public CardErrHandler getCardErrorHandler() {
         // TODO Auto-generated method stub
         return CardErrorUIWrapper.getInstance();
+    }
+
+    @Override
+    public TextView getErrorLabel() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<EditText> getInputFields() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

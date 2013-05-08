@@ -34,6 +34,9 @@ import com.discover.mobile.bank.deposit.DuplicateCheckErrorFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.help.BankInfoNavigationActivity;
 import com.discover.mobile.bank.help.BankPrivacyTermsFragment;
+import com.discover.mobile.bank.help.CardFAQDetailFragment;
+import com.discover.mobile.bank.help.CardFAQLandingPageFragment;
+import com.discover.mobile.bank.help.CardLoggedOutFAQActivity;
 import com.discover.mobile.bank.help.ContactUsType;
 import com.discover.mobile.bank.help.CustomerServiceContactsFragment;
 import com.discover.mobile.bank.help.FAQDetailFragment;
@@ -212,7 +215,7 @@ public final class BankConductor  extends Conductor {
 		} catch (final Exception e) {
 			throw new RuntimeException(
 					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor"
-					 + "\n" + e.toString());
+							+ "\n" + e.toString());
 		}
 		if (bundle != null) {
 			fragment.setArguments(bundle);
@@ -473,10 +476,10 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToAccountActivityPage(final Bundle bundle, final boolean isGoingBack){
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
-		
+
 		if(activity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
-			
+
 			//Handle the case where loading more data
 			if(navActivity.isFragmentLoadingMore() && !isGoingBack){
 				navActivity.addDataToDynamicDataFragment(bundle);
@@ -484,10 +487,10 @@ public final class BankConductor  extends Conductor {
 			//Handle the case where switch between different types of activity posted and scheduled
 			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
 				final BankAccountActivityTable revPmtFrag = 
-												(BankAccountActivityTable)navActivity.getCurrentContentFragment();
+						(BankAccountActivityTable)navActivity.getCurrentContentFragment();
 				bundle.putBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY, true);
 				revPmtFrag.handleReceivedData(bundle);
-				
+
 			}
 			//Handle the first time user opens Account Activity page
 			else {
@@ -1236,7 +1239,7 @@ public final class BankConductor  extends Conductor {
 					activity instanceof LoginActivity ? true : false);
 			intent.putExtras(bundle);
 			activity.startActivity(intent);
-			
+
 			if (activity instanceof LoginActivity) {
 				activity.finish();
 			}
@@ -1311,10 +1314,10 @@ public final class BankConductor  extends Conductor {
 			/**Launch Privacy & Terms Activity if user is not logged in*/
 			if( activity instanceof LoginActivity ) {
 				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
-				
+
 				/**This key is used to notify the activity where to navigate on back-press**/
 				bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN,true);
-				
+
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
 				activity.finish();
@@ -1338,5 +1341,42 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
+
+	/**
+	 * Navigate to the Card FAQ Page
+	 */
+	public static void navigateToCardFaq() {
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof NavigationRootActivity) {
+			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			final BaseFragment current = activity.getCurrentContentFragment();
+
+			/**Check if user is already viewing FAQ*/
+			if(current.getGroupMenuLocation() != BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP && 
+					current.getSectionMenuLocation() != BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS){
+				activity.makeFragmentVisible(new CardFAQLandingPageFragment());
+			} else if(!(current instanceof FAQDetailFragment) && !(current instanceof FAQLandingPageFragment)) {
+				activity.makeFragmentVisible(new CardFAQLandingPageFragment());
+			} else {
+				activity.hideSlidingMenuIfVisible();
+			}
+		} else{
+			final Intent loggedOutFAQ = new Intent(currentActivity, CardLoggedOutFAQActivity.class);
+			currentActivity.startActivity(loggedOutFAQ);
+		}
+	}
+
+	/**
+	 * Navigate to a specific Card FAQ Page
+	 * @param faqType - type of page to displat
+	 */
+	public static void navigateToCardFaqDetail(final String faqType) {
+		final Bundle extras = new Bundle();
+		extras.putString(BankExtraKeys.FAQ_TYPE, faqType);
+		final CardFAQDetailFragment faqDetail = new CardFAQDetailFragment();
+		faqDetail.setArguments(extras);
+		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(faqDetail);
+	}
+
 }
 

@@ -2,13 +2,14 @@ package com.discover.mobile.card.push.receive;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.xtify.sdk.NotificationsUtility;
 import com.xtify.sdk.api.NotificationsPreference;
 import com.xtify.sdk.api.XtifyBroadcastReceiver;
 import com.xtify.sdk.api.XtifySDK;
@@ -25,17 +26,6 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 	/**Tag to identify the class for debugging*/
 	private static final String TAG = XtifyNotifier.class.getName();
 	
-	/**Action type defined by Xtify*/
-	private static final String NOTIF_ACTION_TYPE = "com.xtify.sdk.NOTIF_ACTION_TYPE";
-	
-	/**Name for the Xtify wake lock*/
-	private static final String NAME = "com.xtify.sdk.rn.RN_WL";
-	
-	/**Wake lock*/
-	private static volatile PowerManager.WakeLock lockStatic = null;
-	
-	/**String to get the page that should be displayed in discovers app when it is launched*/
-	private static final String PAGE_CODE = "data.pageCode";
 
 	/**
 	 * When a message is received from Xtify
@@ -53,7 +43,15 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 	 */
 	@Override
 	public void onRegistered(final Context context) {
-		Log.i(TAG, "XID is: " + XtifySDK.getXidKey(context)); //$NON-NLS-1$
+		Log.i(TAG, "XID is: " + XtifySDK.getXidKey(context));
+		Toast.makeText(context,XtifySDK.getXidKey(context) ,Toast.LENGTH_LONG).show();
+		 SharedPreferences pushSharedPrefs = context.getSharedPreferences("PUSH_PREF", //TODO: Push
+	                Context.MODE_PRIVATE);
+		 Editor editor = pushSharedPrefs.edit();
+		 editor.putString(PushConstant.pref.PUSH_XID,  XtifySDK.getXidKey(context));
+		 editor.commit();
+		 
+		 Log.i(TAG, "XID is:Pref " + pushSharedPrefs.getString(PushConstant.pref.PUSH_XID, "0"));
 	}
 
 	/**
@@ -76,37 +74,13 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 	 * @param extras - bundle holding the extras
 	 */
 	public void processNotifExtras(final Context context, final Bundle extras) {
-		getLock(context.getApplicationContext()).acquire();
 		NotificationsPreference.setIcon(context, R.drawable.discove_mobile_icn);
-		NotificationsPreference.setSoundEnabled(context, true);
-		NotificationsPreference.setLightsEnabled(context, true);
-		NotificationsPreference.setVibrateEnabled(context, true);
-		try {
-			final String actionType = extras.getString(NOTIF_ACTION_TYPE);
-			if (actionType != null) {
-				final String pageCode = extras.getString(PAGE_CODE);
-				if (pageCode != null) {
-					extras.putString(PAGE_CODE, pageCode);
-					final int flags = Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS;
-					NotificationsUtility.showNotification(context, extras, flags , FacadeFactory.getLoginFacade().getLoginActivityClass());
-				}
-			}
-		} finally {
-			getLock(context.getApplicationContext()).release();
-		}
 	}
+			
 	
-	/**
-	 * Get the wake lock
-	 * @param context - application context
-	 * @return the wake lock
-	 */
-	private synchronized PowerManager.WakeLock getLock(final Context context) {
-		if (lockStatic == null) {
-			final PowerManager mgr = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			lockStatic = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, NAME);
-			lockStatic.setReferenceCounted(true);
-		}
-		return (lockStatic);
+	@Override
+	public void onReceive(Context context, Intent intent)
+	{
+		NotificationsPreference.setIcon(context, R.drawable.discove_mobile_icn);
 	}
 }

@@ -93,8 +93,14 @@ public final class WSProxy {
      */
     public WSResponse invoke(final Context context,
             final WSRequest requestDetail) {
+    	
+    	
+    	Log.d("WSResponse", "inside invoke : ulr"+requestDetail.getUrl());
         mcontext = context;
-        setLastRestCallTime();
+        if(!requestDetail.isFrequentCaller())
+        {
+        	setLastRestCallTime();
+        }
         final WSResponse response = new WSResponse();
         X_APP_VERSION = Utils.getStringResource(context,
         		R.string.xApplicationVersion);

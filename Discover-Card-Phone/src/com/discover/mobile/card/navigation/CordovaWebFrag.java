@@ -88,6 +88,9 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 
     private CardMenuItemLocationIndex mCardMenuLocation;
 
+    private String m_currentLoadedJavascript = null;
+    
+    private int m_currentTitleId = -1;
     /**
      * Called when fragment gets attached to activity
      */
@@ -184,7 +187,15 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         }
     }
 
-    /**
+    public String getM_currentLoadedJavascript() {
+		return m_currentLoadedJavascript;
+	}
+
+	public void setM_currentLoadedJavascript(String m_currentLoadedJavascript) {
+		this.m_currentLoadedJavascript = m_currentLoadedJavascript;
+	}
+
+	/**
      * Create the fragment
      */
     @Override
@@ -205,8 +216,8 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         super.onResume();
 
         Log.v(TAG, "onResume");
-        cwv.handleResume(true, false);
-
+        if(null !=cwv)
+        	cwv.handleResume(true, false);
     }
 
     @Override
@@ -214,8 +225,8 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         super.onPause();
 
         Log.v(TAG, "onPause");
-        cwv.handlePause(true);
-
+        if(null !=cwv)
+        	cwv.handlePause(true);
     }
 
     @Override
@@ -231,19 +242,21 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
      */
     @Override
     public int getActionBarTitle() {
+    	m_currentTitleId = -1;
         Log.v(TAG, "getActionBarTitle n title is " + m_title);
         if (null != m_title) {
             jqmResourceMapper = JQMResourceMapper.getInstance();
-
-            return jqmResourceMapper.getTitleStringId(m_title);
-        } else
-            return -1;
+            
+            m_currentTitleId = jqmResourceMapper.getTitleStringId(m_title);
+        } 
+         return m_currentTitleId;
     }
 
     // PhoneGap Interface
     @Override
     public void javascriptCall(String javascript) {
         Log.v(TAG, "javascript: " + javascript);
+        m_currentLoadedJavascript = javascript;
         String firstLetter = javascript.substring(0, 1);
         firstLetter = firstLetter.toLowerCase(Locale.ENGLISH);
         String rest = javascript.substring(1);
@@ -253,7 +266,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         // javascript = firstLetter + rest + "();";
         Log.v(TAG, "javascript to send: " + javascript);
         cwv.sendJavascript(javascript);
-
     }
 
     /**
@@ -364,15 +376,40 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
     @Override
     public int getGroupMenuLocation() {
         Log.d(TAG, "inside getGroupMenuLocation ");
-
-        return mCardMenuLocation.getMenuGroupLocation(getActionBarTitle());
+        int tempId = getActionBarTitle();
+        if(tempId == -1)
+        {
+        	if(null != m_currentLoadedJavascript){
+        		
+        	Log.d(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
+             return mCardMenuLocation.getMenuGroupLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuGroupLocation(tempId);
+        }
+        else
+        	return mCardMenuLocation.getMenuGroupLocation(tempId);
     }
 
     @Override
     public int getSectionMenuLocation() {
         Log.d(TAG, "inside getSectionMenuLocation");
-
-        return mCardMenuLocation.getMenuSectionLocation(getActionBarTitle());
+        int tempId = getActionBarTitle();
+        if(tempId == -1)
+        {
+        	if(null != m_currentLoadedJavascript){
+        	Log.d(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
+             return mCardMenuLocation.getMenuSectionLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuSectionLocation(tempId);
+        }
+        else
+        	return mCardMenuLocation.getMenuSectionLocation(tempId);
     }
 
     /*

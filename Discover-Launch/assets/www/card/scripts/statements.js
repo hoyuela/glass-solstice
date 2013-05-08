@@ -48,6 +48,7 @@ dfs.crd.stmt.acctactiv = (function () {
 		// If user selected default option (the dashes) change the option back to the prior selection
 		if(option==="default"){
 			var opt = getDataFromCache(dfs.crd.stmt.shared.constant.cache.AA_LASTOPT);
+			$("#activitySelection .ui-btn-text").text(dfs.crd.stmt.shared.firstSelectVal);
 			if(notEmpty(opt)){
 				$("#activity-selection").val( opt ).selectmenu("refresh");
 			}		
@@ -59,6 +60,7 @@ dfs.crd.stmt.acctactiv = (function () {
 			// If user is viewing Recent Activity (eg CTD) then we check if they can see the pending section
 			var showPending = false;
 			if(option === dfs.crd.stmt.shared.constant.CTD_OPTION){
+				$("#activitySelection .ui-btn-text").text(dfs.crd.stmt.shared.firstSelectVal);
 				showPending = transData.canSeePending;
 				$("#js-transactions-title").html("Posted Transactions");
 			}else{
@@ -564,8 +566,12 @@ dfs.crd.stmt.search = (function () {
 				searchOptions += "&amountType=one";
 				if (notEmpty(fromAmount)){
 					searchOptions += "&fromAmount="+fromAmount;
+					amountOption = " $"+fromAmount;
 				}
-				amountOption = " $"+fromAmount;
+				else {
+					amountOption = "All Amounts";
+				}
+				//amountOption = " $"+fromAmount;
 			}else if(amountOption === "range"){
 				var fromAmount = $("#fromAmount").val();
 				var toAmount = $("#toAmount").val();
@@ -1010,7 +1016,7 @@ function accountLandingLoad() {
 		var dom = {
 			$statementsNav: $("#accountLanding-pg #statementsNav"),
 				//TODO ideally clean this up so btn classes are generated automatically by JQM, prob spent ~2hrs playing around with .listview('refresh') and .trigger('create') but hardcoded like this for sake of time.		
-			noStatements: '<div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#" class="graylink buttonBorderSupress ui-link-inherit">No statements are available</a></div></div>'
+			noStatements: '<h1>No current statements are available</h1><p>A current statement may be unavailable for new Cardmembers who have not completed a billing preiod. If you’re a new Cardmember, or would like to go paperless, check out electronic billing statements.</p>'
 		};
 		console.log("Account landing load calling getStatements");
 		var statements = dfs.crd.stmt.shared.util.getStatements(); 

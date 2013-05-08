@@ -18,6 +18,8 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 	}
 
 	public void setItemSelected(final int group, final int subSection){
+		if(NavigationIndex.getMainIndex()>=0)
+		{
 		if(getListView().getAdapter().getItem(NavigationIndex.getMainIndex()) instanceof GroupNavigationItem){
 			final GroupNavigationItem currentGroup = 
 					(GroupNavigationItem)getListView().getAdapter().getItem(NavigationIndex.getMainIndex());
@@ -29,5 +31,15 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 		}
 		NavigationIndex.setIndex(group);
 		NavigationIndex.setSubIndex(subSection+group);
+		}
+	}
+	
+	public void onPushCountUpdate(final int newCount)
+	{
+		if(navigationItemAdapter != null)
+		{
+			navigationItemAdapter.setPushCount(newCount);
+			navigationItemAdapter.notifyDataSetChanged();
+		}
 	}
 }

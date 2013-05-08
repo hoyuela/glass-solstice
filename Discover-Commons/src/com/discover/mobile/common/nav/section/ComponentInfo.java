@@ -1,6 +1,8 @@
 package com.discover.mobile.common.nav.section;
 
 import javax.annotation.concurrent.Immutable;
+
+import android.view.View.OnClickListener;
 /**
  * Base Component info class. This class is needed so that the other classes can all share the 
  * title resource.
@@ -13,7 +15,9 @@ public abstract class ComponentInfo {
 
 	private final int titleResource;
 	private final boolean isUrl;
-
+	private boolean  showPushCount = false;
+	private OnClickListener clickListener;
+	
 	ComponentInfo(final int titleResource) {
 		this(titleResource, false);
 	}
@@ -23,6 +27,13 @@ public abstract class ComponentInfo {
 		this.isUrl = isUrl;
 	}
 
+	public ComponentInfo(final int titleResource,final boolean showPushCount,final OnClickListener clickListener)
+	{
+		this.titleResource = titleResource;
+		this.showPushCount = showPushCount;
+		this.isUrl = false;
+		this.clickListener = clickListener;
+	}
 
 	public final int getTitleResource() {
 		return titleResource;
@@ -32,4 +43,13 @@ public abstract class ComponentInfo {
 		return isUrl;
 	}
 
+	public final boolean isPushCountAvailable()
+	{
+		return showPushCount;
+	}
+	
+	public final OnClickListener getPushClick()
+	{
+		return clickListener;
+	}
 }

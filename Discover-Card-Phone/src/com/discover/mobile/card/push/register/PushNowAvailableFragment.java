@@ -1,6 +1,9 @@
 package com.discover.mobile.card.push.register;
 
+import java.io.IOException;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,6 +14,11 @@ import android.widget.TextView;
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.card.navigation.CardMenuInterface;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.xtify.sdk.api.XtifySDK;
 
 /**
  * This is the screen that is showed to the user immediately following the login of the activity.
@@ -45,15 +53,62 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		manageAlerts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				registerWithDiscover(DECLINE, true);
+				try
+				{
+					registerWithDiscover(ACCEPT, XtifySDK.getXidKey(getActivity().getApplicationContext()));
+				}
+				catch (JsonGenerationException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (JsonMappingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		
 		accountHome.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				registerWithDiscover(DECLINE, false);
-				changeToDeclineScreen();
+				
+				try
+				{
+					registerWithDiscover(DECLINE,  XtifySDK.getXidKey(getActivity().getApplicationContext()));
+					//changeToDeclineScreen();
+				}
+				catch (JsonGenerationException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (JsonMappingException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (Exception e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 

@@ -17,4 +17,23 @@
 	<string name="deposit_a_check">Deposit a Check</string>
 	<string name="atm_locator_single_line">ATM Locator</string>
 	
+	<string-array name="card_faq_sections">
+        <item>@string/card_faq_general</item>
+        <item>@string/card_faq_discover_extras</item>
+        <item>@string/card_faq_travel</item>
+        <item>@string/card_faq_payments_and_trans</item>
+        <item>@string/card_faq_push_and_text_alerts</item>
+        <item>@string/card_faq_refer_a_friend</item>
+        <item>@string/card_faq_send_money</item>
+    </string-array>
+    
+    <string name="card_faq_title">FAQs</string>
+    <string name="card_faq_general">General</string>
+    <string name="card_faq_discover_extras">Discover Extras</string>
+    <string name="card_faq_travel">Travel</string>
+    <string name="card_faq_payments_and_trans">Payments &amp; Transactions</string>
+    <string name="card_faq_push_and_text_alerts">Push And Text Alerts</string>
+    <string name="card_faq_refer_a_friend">Refer A Friend</string>
+    <string name="card_faq_send_money">Send Money</string>
+	
 </resources>

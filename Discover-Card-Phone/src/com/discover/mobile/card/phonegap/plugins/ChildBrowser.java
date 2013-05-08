@@ -239,8 +239,7 @@ public class ChildBrowser extends CordovaPlugin {
 				RelativeLayout.LayoutParams closeParams = new RelativeLayout.LayoutParams(
 						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 				closeParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-				closeParams.setMargins(0, 10, 20, 30); // left, top, right,
-														// bottom
+				//closeParams.setMargins(0, 10, 20, 30); // left, top, right, bottom
 				LinearLayout.LayoutParams wvParams = new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
@@ -251,7 +250,8 @@ public class ChildBrowser extends CordovaPlugin {
 				RelativeLayout toolbar = new RelativeLayout(
 						ChildBrowser.this.cordova.getActivity()
 								.getApplicationContext());
-				toolbar.setBackgroundColor(Color.BLACK);
+				//toolbar.setBackgroundColor(R.drawable.action_bar_background);
+				toolbar.setBackgroundResource(R.drawable.action_bar_background);
 				toolbar.setLayoutParams(new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
@@ -261,7 +261,7 @@ public class ChildBrowser extends CordovaPlugin {
 				logoView.setLayoutParams(logoParams);
 
 				if (logoDestination == null) {
-					logoView.setImageResource(R.drawable.discover_logo);
+					logoView.setImageResource(R.drawable.discover_blk_logo_login);
 
 				} else {
 					try {
@@ -284,7 +284,7 @@ public class ChildBrowser extends CordovaPlugin {
 				close.setId(4);
 
 				close.setImageResource(R.drawable.btn_close);
-
+				close.setBackgroundResource(R.drawable.action_bar_background);
 				close.setLayoutParams(closeParams);
 
 				/*CookieManager.setAcceptFileSchemeCookies(true);

@@ -16,6 +16,8 @@ public final class WSRequest {
     private String strMethodType;
     private byte[] btInput;
     private HashMap<String, String> hmHeaderValues;
+    private boolean isFrequentCaller;
+    
     public String getUsername() {
 		return username;
 	}
@@ -123,5 +125,13 @@ public final class WSRequest {
 
 	public void setConnectionTimeOut(int connectionTimeOut) {
 		this.connectionTimeOut = connectionTimeOut;
+	}
+
+	public boolean isFrequentCaller() {
+		return isFrequentCaller;
+	}
+
+	public void setFrequentCaller(boolean isFrequentCaller) {
+		this.isFrequentCaller = isFrequentCaller;
 	}
 }

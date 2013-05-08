@@ -17,6 +17,7 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountNumber;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.google.common.base.Strings;
@@ -176,7 +177,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}else{
-			BankServiceCallFactory.createGetActivityServerCall(link).submit();
+			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted).submit();
 		}
 	}
 

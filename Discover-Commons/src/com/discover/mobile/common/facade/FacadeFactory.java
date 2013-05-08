@@ -18,19 +18,19 @@ import com.discover.mobile.common.framework.Conductor;
  *
  */
 public final class FacadeFactory {
-	
+
 	/**
 	 * The private map to store the singleton objects
 	 */
 	private static Map<String, Object> singletons = new HashMap<String, Object>();
-	
+
 	/**
 	 * This is a utility class and should not have a public or default constructor.
 	 */
 	private FacadeFactory() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * The logout facade
 	 * @return
@@ -69,7 +69,7 @@ public final class FacadeFactory {
 	public static CustomerServiceFacade getCustomerServiceFacade(){
 		return (CustomerServiceFacade) getImplClass("com.discover.mobile.bank.facade.CustomerServiceFacadeImpl");
 	}
-	
+
 	/**
 	 * Customer service resides in bank code, but is shared
 	 * @return
@@ -77,8 +77,8 @@ public final class FacadeFactory {
 	public static PushFacade getPushFacade(){
 		return (PushFacade) getImplClass("com.discover.mobile.card.facade.PushFacadeImpl");
 	}
-	
-	
+
+
 	/**
 	 * Common card navigation 
 	 * @return
@@ -86,7 +86,7 @@ public final class FacadeFactory {
 	public static CardFacade getCardFacade(){
 		return (CardFacade) getImplClass("com.discover.mobile.card.facade.CardFacadeImpl");
 	}
-	
+
 	/**
 	 * Common card navigation 
 	 * @return
@@ -94,7 +94,7 @@ public final class FacadeFactory {
 	public static CardLoginFacade getCardLoginFacade(){
 		return (CardLoginFacade) getImplClass("com.discover.mobile.card.facade.CardLoginFacadeImpl");
 	}
-	
+
 	/**
 	 * Common card navigation 
 	 * @return
@@ -102,7 +102,7 @@ public final class FacadeFactory {
 	public static BankLoginFacade getBankLoginFacade(){
 		return (BankLoginFacade) getImplClass("com.discover.mobile.bank.facade.BankLoginFacadeImpl");
 	}
-	
+
 	/**
 	 * Keep Alive facade for Bank
 	 * @return
@@ -110,7 +110,7 @@ public final class FacadeFactory {
 	public static BankKeepAliveFacade getBankKeepAliveFacade() {
 		return (BankKeepAliveFacade) getImplClass("com.discover.mobile.bank.facade.BankKeepAliveFacadeImpl");
 	}
-	
+
 	/**
 	 * Keep Alive facade for Card
 	 * @return
@@ -118,7 +118,7 @@ public final class FacadeFactory {
 	public static CardKeepAliveFacade getCardKeepAliveFacade() {
 		return (CardKeepAliveFacade) getImplClass("com.discover.mobile.card.facade.CardKeepAliveFacadeImpl");
 	}	
-	
+
 	/**
 	 * Returns the conductor facade
 	 * @param accountType
@@ -131,10 +131,10 @@ public final class FacadeFactory {
 			return (Conductor) getImplClass("com.discover.mobile.card.facade.BankConductorFacadeImpl");
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Loads the impl class, expecting to find it in the classloader.
 	 * 
@@ -147,9 +147,9 @@ public final class FacadeFactory {
 		Object facade = singletons.get(fullyQualifiedClassName);
 		if ( facade == null ) { 
 			try {
-				
+
 				facade = Class.forName(fullyQualifiedClassName).getConstructors()[0].newInstance(null);
-				
+
 				singletons.put(fullyQualifiedClassName, facade);
 			} catch (final Exception e) {
 				throw new RuntimeException("FACADE BOOTSTRAP FAILED: Unable to find facade impl class:" 
@@ -158,6 +158,6 @@ public final class FacadeFactory {
 		}
 		return facade;
 	}
-	
-	
+
+
 }

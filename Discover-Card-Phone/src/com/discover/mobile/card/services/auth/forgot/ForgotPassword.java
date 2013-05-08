@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
@@ -72,7 +74,7 @@ public class ForgotPassword {
 
 		JacksonObjectMapperHolder.getMapper().writeValue(baos,
 				accountInformationDetails);
-
+		Log.d("sendRequest","json request body"+ baos.toByteArray().toString());
 		request.setInput(baos.toByteArray());
 
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
