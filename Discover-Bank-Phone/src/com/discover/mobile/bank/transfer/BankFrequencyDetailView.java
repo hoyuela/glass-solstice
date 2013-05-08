@@ -50,6 +50,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private static final int DATE = 1;
 	private static final int TRANSACTION = 2;
 	private static final int AMOUNT = 3;
+	private static final int MAX_TRANSFERS_ALLOWED = 3;
 
 	
 	/**Selected Radio Index*/
@@ -122,11 +123,12 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		dollarAmount.enableBankAmountTextWatcher(true);
 		
 		transactionAmount.setEnabled(false);
+		transactionAmount.setMaxInputLength(MAX_TRANSFERS_ALLOWED);
 		earliestPaymentDate = Calendar.getInstance();
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
 		chosenPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
-
+		
 		addView(view);
 	}
 
