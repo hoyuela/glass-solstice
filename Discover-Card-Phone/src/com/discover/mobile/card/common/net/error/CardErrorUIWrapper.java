@@ -205,6 +205,9 @@ public class CardErrorUIWrapper implements CardErrHandler
 
         switch (footerValue)
         {
+        case 101:
+        	
+        	break;
 
         default:// to hide both need help and feedback footer
             view.hideNeedHelpFooter();

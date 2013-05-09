@@ -11,8 +11,7 @@ import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
-import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
@@ -24,8 +23,12 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.CardFacade;
+import com.discover.mobile.common.facade.CardKeepAliveFacade;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.ui.CardInfoForToggle;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * The impl class for the card nav facade
@@ -88,7 +91,7 @@ public class CardFacadeImpl implements CardFacade {
 
 			final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
 					.getInstance(context);
-			final AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
+			AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
 					.getValueOfAppCache(context
 							.getString(R.string.account_details));
 
@@ -101,7 +104,7 @@ public class CardFacadeImpl implements CardFacade {
 				Utils.updateAccountDetails(context, new CardEventListener() {
 
 					@Override
-					public void onSuccess(final Object data) {
+					public void onSuccess(Object data) {
 						// TODO Auto-generated method stub
 						Globals.setLoggedIn(true);
 						final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -110,27 +113,27 @@ public class CardFacadeImpl implements CardFacade {
 								.getCookieManagerInstance();
 						sessionCookieManagerObj.setCookieValues();
 
-						if(context instanceof LoginActivityInterface){
+					if(context instanceof LoginActivityInterface){
 							final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
 							callingActivity.updateAccountInformation(AccountType.CARD_ACCOUNT);
 						}
 
 						CardSessionContext.getCurrentSessionDetails()
-						.setNotCurrentUserRegisteredForPush(false);
+								.setNotCurrentUserRegisteredForPush(false);
 						CardSessionContext.getCurrentSessionDetails()
-						.setAccountDetails((AccountDetails) data);
+								.setAccountDetails((AccountDetails) data);
 
 						cardShareDataStoreObj.addToAppCache(
 								context.getString(R.string.account_details),
-								data);
-						final AccountDetails cardHomedata = (AccountDetails) data;
+								(AccountDetails) data);
+						AccountDetails cardHomedata = (AccountDetails) data;
 						cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
 						//cardInfo.setCardAccountName(cardHomedata.primaryCardMember.nameOnCard);
 						cardInfo.setCardAccountName(Utils.getCardTypeFromGroupCode(context, cardHomedata.cardProductGroupCode));
 					}
 
 					@Override
-					public void OnError(final Object data) {
+					public void OnError(Object data) {
 						// TODO Auto-generated method stub
 
 					}
@@ -148,14 +151,14 @@ public class CardFacadeImpl implements CardFacade {
 			 * cardHomedata=null;
 			 */
 			return cardInfo;
-		} catch (final Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-
-	public void navToProvideFeedback(final Activity callingActivity) {
+	
+	public void navToProvideFeedback(Activity callingActivity) {
 		// TODO Auto-generated method stub
 		Utils.createProvideFeedbackDialog(callingActivity, "cardLogin-pg");
 	}

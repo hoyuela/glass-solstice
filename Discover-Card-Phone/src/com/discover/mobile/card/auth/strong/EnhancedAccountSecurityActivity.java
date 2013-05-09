@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -106,7 +107,7 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 
 	private String inputErrorText;
 	private int inputErrorVisibility;
-	// private String dropdownSymbol;
+    private String dropdownSymbol;
 
 	// INPUT FIELDS
 	private NonEmptyEditText questionAnswerField;
@@ -287,10 +288,10 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 		outState.putInt(ANSWER_ERROR_VISIBILITY, errorMessage.getVisibility());
 		outState.putString(ANSWER_ERROR_TEXT, errorMessage.getText().toString());
 
-		/*
-		 * outState.putString(WHATS_THIS_STATE, statusIconLabel.getText()
-		 * .toString());
-		 */
+		
+		 outState.putString(WHATS_THIS_STATE, statusIconLabel.getText()
+		 .toString());
+		
 		super.onSaveInstanceState(outState);
 	}
 
@@ -304,7 +305,7 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 			inputErrorVisibility = savedInstanceState.getInt(ANSWER_ERROR_VISIBILITY);
 			inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
 
-			// dropdownSymbol = savedInstanceState.getString(WHATS_THIS_STATE);
+			 dropdownSymbol = savedInstanceState.getString(WHATS_THIS_STATE);
 
 			errorMessage.setText(inputErrorText);
 			errorMessage.setVisibility(inputErrorVisibility);
@@ -320,14 +321,13 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 	{
 		questionAnswerField = (NonEmptyEditText) findViewById(R.id.account_security_question_answer_field);
 		securityRadioGroup = (RadioGroup) findViewById(R.id.account_security_choice_radio_group);
-		// detailHelpLabel = (TextView)
-		// findViewById(R.id.account_security_whats_this_detail_label);
+		 detailHelpLabel = (TextView) findViewById(R.id.account_security_whats_this_detail_label);
+		// detailHelpLabel = (TextView) findViewById(R.id.account_security_whats_this_detail_label);
 		errorMessage = (TextView) findViewById(R.id.error_message_strong_auth);
-		// statusIconLabel = (TextView)
-		// findViewById(R.id.account_security_plus_label);
+		 statusIconLabel = (TextView) findViewById(R.id.account_security_plus_label);
 		questionLabel = (TextView) findViewById(R.id.account_security_question_placeholder_label);
-		// whatsThisLayout = (RelativeLayout)
-		// findViewById(R.id.account_security_whats_this_relative_layout);
+		 whatsThisLayout = (RelativeLayout)
+		findViewById(R.id.account_security_whats_this_relative_layout);
 		radioButtonOne = (RadioButton) securityRadioGroup.findViewById(R.id.account_security_choice_one_radio);
 		radioButtonTwo = (RadioButton) securityRadioGroup.findViewById(R.id.account_security_choice_two_radio);
 		serverErrorLabel = (TextView) findViewById(R.id.account_security_server_error);
@@ -427,13 +427,13 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 	// open and close
 	// * characters. Then we open or close the menu based on that.
 	// */
-	// private void restoreExpandableHelpMenu() {
-	// statusIconLabel.setText(dropdownSymbol);
-	// if("+".equals(statusIconLabel.getText().toString()))
-	// closeHelpMenu();
-	// else
-	// openHelpMenu();
-	// }
+	 private void restoreExpandableHelpMenu() {
+	 statusIconLabel.setText(dropdownSymbol);
+	 if("+".equals(statusIconLabel.getText().toString()))
+	 closeHelpMenu();
+	 else
+	 openHelpMenu();
+	 }
 
 	@Override
 	protected void onNewIntent(final Intent intent)
@@ -444,37 +444,37 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 		setIntent(intent);
 	}
 
-	// /**
-	// * Toggles the help menu based on its current state.
-	// * If the menu is closed and it is clicked, it gets opened.
-	// * If the menu is open and its gets clicked, it closes.
-	// */
-	// public void expandHelpMenu(final View v) {
-	//		if ("+".equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
-	// openHelpMenu();
-	// } else {
-	// closeHelpMenu();
-	// }
-	// }
-	//
-	// /**
-	// * Open the help menu by changing its character from a '+' to a '-'
-	// * and setting its content to be visible by changing its line height.
-	// */
-	// private void openHelpMenu() {
-	// statusIconLabel.setText(getString(R.string.account_security_minus_text));
-	// detailHelpLabel.setMaxLines(HELP_DROPDOWN_LINE_HEIGHT);
-	// }
-	//
-	// /**
-	// * Close the help menu by changing its character from a '-' to a '+'
-	// * and setting its content to be invisible by changing its line height to
-	// zero.
-	// */
-	// private void closeHelpMenu() {
-	// statusIconLabel.setText(getString(R.string.account_security_plus_text));
-	// detailHelpLabel.setMaxLines(0);
-	// }
+	 /**
+	 * Toggles the help menu based on its current state.
+	 * If the menu is closed and it is clicked, it gets opened.
+	 * If the menu is open and its gets clicked, it closes.
+	 */
+	 public void expandHelpMenu(final View v) {
+			if ("+".equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
+	 openHelpMenu();
+	 } else {
+	 closeHelpMenu();
+	 }
+	 }
+	
+	 /**
+	 * Open the help menu by changing its character from a '+' to a '-'
+	 * and setting its content to be visible by changing its line height.
+	 */
+	 private void openHelpMenu() {
+	 statusIconLabel.setText(getString(R.string.account_security_minus_text));
+	 detailHelpLabel.setMaxLines(HELP_DROPDOWN_LINE_HEIGHT);
+	 }
+	
+	 /**
+	 * Close the help menu by changing its character from a '-' to a '+'
+	 * and setting its content to be invisible by changing its line height to
+	 zero.
+	 */
+	 private void closeHelpMenu() {
+	 statusIconLabel.setText(getString(R.string.account_security_plus_text));
+	 detailHelpLabel.setMaxLines(0);
+	 }
 
 	/**
 	 * Check to see if the user provided an answer to the strong auth question.
@@ -721,5 +721,11 @@ public class EnhancedAccountSecurityActivity extends CardNotLoggedInCommonActivi
 	{
 		// TODO Auto-generated method stub
 		return STRONG_AUTH_LOCKED;
+	}
+	
+	@Override
+	public Context getContext() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 }

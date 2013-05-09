@@ -59,6 +59,7 @@ public class HybridControlPlugin extends CordovaPlugin {
 	
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
+    public static String strLastTitleDisplayed = null;
 
     @Override
     public boolean execute(final String action, final JSONArray args,
@@ -278,7 +279,34 @@ public class HybridControlPlugin extends CordovaPlugin {
                                         "CordovaWebFrag").addToBackStack(title)
                                 .commit();
                         fragmentManager.executePendingTransactions();
+                        
+                        
+                        String topfragName = fragmentManager.getBackStackEntryAt(fragCount - 1)
+                                .getName();
+                        Fragment topFragment = fragmentManager
+                                .findFragmentByTag(topfragName);
+                        /********** Hemang **********/
+                        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1)
+                        {
+                            if (null != topFragment)
+                            {
+                                String topFragmentTag = topFragment.getTag();
+                                if (!topFragmentTag.equalsIgnoreCase("CordovaWebFrag") && null!= strLastTitleDisplayed && !strLastTitleDisplayed.equalsIgnoreCase(title))
+                                {
+                                        ((CordovaWebFrag)cordovaFrag).getCordovaWebviewInstance().clearView();
+                                       
+                                        ((CordovaWebFrag)cordovaFrag).getCordovaWebviewInstance().invalidate();
+                                        strLastTitleDisplayed=title;
+                                }
+                                else
+                                    strLastTitleDisplayed=title;
+                            }
+                            else
+                                strLastTitleDisplayed=title;
+                        }
+                        /********** Hemang **********/
                         Utils.hideSpinner();
+                        
                     }
                 });
             } else {
@@ -508,6 +536,7 @@ public class HybridControlPlugin extends CordovaPlugin {
         	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
         			.getActivity();
         	final FragmentManager fragManager = cnrAct.getSupportFragmentManager();
+        	fragManager.popBackStack();
         	Fragment homeFragment = fragManager
         			.findFragmentByTag("HomeSummaryFragment");
         	cnrAct.makeFragmentVisible(homeFragment, false);

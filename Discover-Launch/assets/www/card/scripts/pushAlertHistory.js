@@ -316,6 +316,12 @@ dfs.crd.push.alert.populateAlertHistoryPageDivs = function(responseData, pageId)
          * Cancel Button Event Handler.
          */
         $('#id_can_btn').click(function () {
+										$('.chkbox').each(function (i) {
+                                        if (this.checked) 
+                                            {                                  
+                                                $(this).prop('checked', false);
+                                            }
+										});
                                dfs.crd.push.alert.alertHistoryDefaultView();
                                });
         
@@ -377,10 +383,11 @@ dfs.crd.push.alert.alertHistoryListViewEvents = function()
                                     //alert("mark read row id: " + elementId);
                                                                                                                   
                                     // call mark Read REST with this row id and update the view on success
-                                    var listToBeMarkRead = [];
-                                    listToBeMarkRead.push(elementId);                                                                                        
-                                                                                                                  
-                                    var statusReturned = dfs.crd.push.alert.postAlertHistoryMessage('markRead',listToBeMarkRead);
+                                   if($(this).parents('.ui-grid-c').children('.ui-block-c').css('font-weight')!='normal'){                                                                                                                                                                             
+                                    var listToBeMarkRead = [];                                                                                                                                 
+									listToBeMarkRead.push(elementId);                                                                                                                                  
+									var statusReturned = dfs.crd.push.alert.postAlertHistoryMessage('markRead',listToBeMarkRead);
+                                    }
                                     
                                     $(this).parents('.ui-grid-c').children('.ui-block-c').css({'height': 'auto','font-weight': 'normal'});
                                     $(this).parents('.ui-grid-c').children('.ui-block-b').css('font-weight', 'normal');
