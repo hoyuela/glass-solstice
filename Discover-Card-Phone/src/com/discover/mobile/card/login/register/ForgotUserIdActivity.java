@@ -549,16 +549,16 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
 	@Override
 	public void goBack() {
-		finish();
-		/*
-		 * final Intent forgotCredentialsActivity = new Intent(this,
-		 * ForgotCredentialsActivity.class);
-		 * startActivity(forgotCredentialsActivity);
-		 */
-		final Bundle bundle = new Bundle();
+		
+		
+		  final Intent forgotCredentialsActivity = new Intent(this,
+		   ForgotCredentialsActivity.class);
+		   startActivity(forgotCredentialsActivity);		
+		    finish();
+		/*final Bundle bundle = new Bundle();
 		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-		FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+		FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);*/
 	}
 
 	@Override

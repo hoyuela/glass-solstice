@@ -93,7 +93,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 				.findViewById(R.id.provide_feedback_button);
 		
 		termsOfUse = (TextView) view
-				.findViewById(R.id.terms_of_use);
+				.findViewById(R.id.privacy_terms);
 		statusBarView = view.findViewById(R.id.accounthomestatusbar);
 
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -671,7 +671,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 			Log.d("provide_feedback_button", "provide_feedback_button pressed");
 			Utils.createProvideFeedbackDialog(callingActivity, REFERER);
 		}
-		 else if (v.getId() == R.id.terms_of_use) {
+		 else if (v.getId() == R.id.privacy_terms) {
 			 Log.d("privacy_terms", "privacy_terms pressed");
 				//Utils.createProvideFeedbackDialog(callingActivity, REFERER);
 			 

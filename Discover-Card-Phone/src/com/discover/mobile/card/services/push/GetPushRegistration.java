@@ -48,7 +48,7 @@ public class GetPushRegistration
         /*  String input = "vid="+vendroId;
         request.setInput(input.getBytes());*/
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new GetPushData(), "Discover", "Loading...", listener);
+                new GetPushData(), "Discover", "Authenticating...", listener);
         serviceCall.execute(request);
     }
 }

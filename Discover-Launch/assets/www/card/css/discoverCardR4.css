@@ -2625,3 +2625,10 @@ padding-top: 12px;}*/
 #changenumber .ui-block-b input.input_hightlight_error{ border:2px solid #fd0202;}
 #manageAlerts-pg #activitySelection .ui-btn-down-d  {border:1px solid #bbb !important} 
 #manageAlerts-pg.pn-page #addnumber input[type="tel"] { margin-top:5px !important; border:1px solid #bbb;}
+
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed,
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs{border:1px solid #CED6D7 !important;}
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed span.dueDateTextRed,
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs span.dueDateText{display:none  !important;}
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed span.ui-state-default,
+.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs span.ui-state-default{color:#CED6D7 !important}
