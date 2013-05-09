@@ -27,6 +27,8 @@
         <item>@string/card_faq_send_money</item>
     </string-array>
     
+	<string name="card_more_faq">View More FAQ\'s at</string>
+	<string name="card_discover_link"> Discover.com</string>
     <string name="card_faq_title">FAQs</string>
     <string name="card_faq_general">General</string>
     <string name="card_faq_discover_extras">Discover Extras</string>
