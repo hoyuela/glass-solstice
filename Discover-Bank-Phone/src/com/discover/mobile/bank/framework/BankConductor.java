@@ -425,6 +425,13 @@ public final class BankConductor  extends Conductor {
 	 * to the navigate to pay bills select payee page.
 	 */
 	public static void navigateToSelectPayee(final Bundle extras){
+		NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		
+		/**Terms and Conditions for Bill Pay is Open, then close it*/
+		if( activity.getCurrentContentFragment() instanceof BankPayTerms) {
+			activity.getSupportFragmentManager().popBackStack();
+		}
+		
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		final BankSelectPayee fragment = new BankSelectPayee();
 		fragment.setArguments(extras);
@@ -518,6 +525,11 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity =
 				(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 
+		/**Terms and Conditions for Bill Pay is Open, then close it*/
+		if( activity.getCurrentContentFragment() instanceof BankPayTerms) {
+			activity.getSupportFragmentManager().popBackStack();
+		}
+		
 		((AlertDialogParent)activity).closeDialog();
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
@@ -761,6 +773,11 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 		((AlertDialogParent)activity).closeDialog();
 
+		/**Terms and Conditions for Bill Pay is Open, then close it*/
+		if( activity.getCurrentContentFragment() instanceof BankPayTerms) {
+			activity.getSupportFragmentManager().popBackStack();
+		}
+		
 		//Handle the case where loading more data
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(bundle);
