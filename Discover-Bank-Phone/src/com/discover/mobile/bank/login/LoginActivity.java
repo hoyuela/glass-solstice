@@ -1151,7 +1151,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void showALUStatusModal(final BankLoginDetails credentials) {
 		//Set that an sso user is attempting to login
-		BankUser.instance().setSsoUser(true);
+		BankUser.instance().setSsoUser(false);
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);
