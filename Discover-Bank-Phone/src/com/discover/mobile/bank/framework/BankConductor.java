@@ -1350,7 +1350,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToCardFaq() {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		if(currentActivity instanceof NavigationRootActivity) {
+		if(currentActivity instanceof NavigationRootActivity && !(currentActivity instanceof AtmLocatorActivity)) {
 			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 			final BaseFragment current = activity.getCurrentContentFragment();
 

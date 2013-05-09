@@ -19,6 +19,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -59,6 +60,9 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 
 			//Add the constructed list item to the table.
 			faqList.addView(item);
+
+			//Set the footer to use card
+			((BankLayoutFooter) view.findViewById(R.id.bank_footer)).setCardMode(true);
 
 		}
 

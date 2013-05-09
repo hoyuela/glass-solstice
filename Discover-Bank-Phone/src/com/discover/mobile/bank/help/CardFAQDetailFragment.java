@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.google.common.base.Strings;
 
@@ -67,6 +68,7 @@ public class CardFAQDetailFragment extends BaseFragment {
 			}
 		});
 
+		((BankLayoutFooter) view.findViewById(R.id.bank_footer)).setCardMode(true);
 		return view;
 	}
 
