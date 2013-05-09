@@ -571,11 +571,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 				final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
 
-				if(navToReview && account.limits.isAmountValid(amount)){
+				if(navToReview){
 					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
-				}else{
-					//Navigate to Check Deposit - Select Amount Page
-					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
 				}
 			}
 		}
@@ -629,8 +626,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final String currentTitle = activity.getActionBarTitle();
 		final String payBills = activity.getString(R.string.section_title_pay_bills);
 		final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
-		activity.getSupportFragmentManager().popBackStack();
-
+		
 		if(currentTitle.equals(payBills)) {
 			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 		} else if(currentTitle.equals(managePayees)) {
