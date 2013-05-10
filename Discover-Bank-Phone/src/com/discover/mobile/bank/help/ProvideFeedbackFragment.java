@@ -89,12 +89,12 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP;
+		return BankMenuItemLocationIndex.PROVIDE_FEEDBACK_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.PROVIDE_FEEDBACK;
 	}
 	@Override
 	public void onAcceptClicked() {
