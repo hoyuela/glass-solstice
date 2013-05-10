@@ -9,6 +9,7 @@ import android.widget.EditText;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * 
@@ -26,275 +27,275 @@ import com.discover.mobile.card.error.CardErrorHandlerUi;
 public final class CardErrorResponseHandler
 {
 
-    private CardErrorHandlerUi errorHandlerUi = null;
+	private CardErrorHandlerUi errorHandlerUi = null;
 
-    /**
-     * showing inline error messages
-     */
-    public static final int INCORRECT_USERID_PASSWORD = 401;
+	/**
+	 * showing inline error messages
+	 */
+	public static final int INCORRECT_USERID_PASSWORD = 401;
 
-    public static final int LOCKOUT = 4011103;
+	public static final int LOCKOUT = 4011103;
 
-    public static final int USER_ACCOUNT_LOCKED = 403;
-    public static final int SERVICE_UNDER_MAINTENANCE = 503;
-    public static final int INLINE_ERROR = 400;
-    public static final int INVALID_INPUT= 500;
-    
-    //Registration module Inline Error Codes
-    public static final int ID_AND_PASS_EQUAL = 1919;
-    public static final int ID_AND_SSN_EQUAL = 1920;
-    public static final int ID_ALREADY_TAKEN = 1921;
-    public static final int ID_IS_EMPTY = 1923;
-    public static final int ID_INVALID = 1924;
-    public static final int PASS_EMPTY = 1925;
-    public static final int PASS_INVALID = 1926;
-    
+	public static final int USER_ACCOUNT_LOCKED = 403;
+	public static final int SERVICE_UNDER_MAINTENANCE = 503;
+	public static final int INLINE_ERROR = 400;
+	public static final int INVALID_INPUT= 500;
 
-    /**
-     * Private constructor to prevent construction without a fragment or
-     * activity
-     */
-    public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi)
-    {
-        this.errorHandlerUi = errorHandlerUi;
+	//Registration module Inline Error Codes
+	public static final int ID_AND_PASS_EQUAL = 1919;
+	public static final int ID_AND_SSN_EQUAL = 1920;
+	public static final int ID_ALREADY_TAKEN = 1921;
+	public static final int ID_IS_EMPTY = 1923;
+	public static final int ID_INVALID = 1924;
+	public static final int PASS_EMPTY = 1925;
+	public static final int PASS_INVALID = 1926;
 
-    }
 
-    public CardErrorResponseHandler() {
+	/**
+	 * Private constructor to prevent construction without a fragment or
+	 * activity
+	 */
+	public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi)
+	{
+		this.errorHandlerUi = errorHandlerUi;
+
+	}
+
+	public CardErrorResponseHandler() {
 		// TODO Auto-generated constructor stub
 	}
-    
-    /**
-     * Handle Card error
-     * 
-     * @param cardErrorHold
-     */
-    public void handleCardError(final CardErrorBean cardErrorHold)
-    {
-    	handleCardError(cardErrorHold, null);
-    }
-    /**
-     * Handle Card error
-     * 
-     * @param cardErrorHold
-     */
-    public void handleCardError(final CardErrorBean cardErrorHold, CardErrorCallbackListener errorClickCallback)
-    {
-        if (cardErrorHold.isAppError())
-        {
-            handleAppError("Application Error", cardErrorHold.getErrorMessage());
 
-        }
-        else
-        {
-            String errorCode = cardErrorHold.getErrorCode();
-            String[] errorMsgSplit = errorCode.split("_");
-            final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
-            switch (errorCodeNumber)
-            {
-            case INCORRECT_USERID_PASSWORD:
-            case LOCKOUT:
-                // for inline error messages
-                handleInlineError(cardErrorHold.getErrorMessage());
-                break;
-            	
-            default:
-                handleGenericError(cardErrorHold.getErrorTitle(), cardErrorHold.getErrorMessage(), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
+	/**
+	 * Handle Card error
+	 * 
+	 * @param cardErrorHold
+	 */
+	public void handleCardError(final CardErrorBean cardErrorHold)
+	{
+		handleCardError(cardErrorHold, null);
+	}
+	/**
+	 * Handle Card error
+	 * 
+	 * @param cardErrorHold
+	 */
+	public void handleCardError(final CardErrorBean cardErrorHold, final CardErrorCallbackListener errorClickCallback)
+	{
+		if (cardErrorHold.isAppError())
+		{
+			handleAppError("Application Error", cardErrorHold.getErrorMessage());
 
-                break;
-            }
-        }
+		}
+		else
+		{
+			final String errorCode = cardErrorHold.getErrorCode();
+			final String[] errorMsgSplit = errorCode.split("_");
+			final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
+			switch (errorCodeNumber)
+			{
+			case INCORRECT_USERID_PASSWORD:
+			case LOCKOUT:
+				// for inline error messages
+				handleInlineError(cardErrorHold.getErrorMessage());
+				break;
 
-    }
+			default:
+				handleGenericError(cardErrorHold.getErrorTitle(), cardErrorHold.getErrorMessage(), cardErrorHold.getNeedHelpFooter(), errorClickCallback);
 
-    /**
-     * Handle inline error
-     * 
-     * @param errorMessage
-     */
-    private void handleInlineError(final String errorMessage)
-    {
-        setErrorText(errorMessage);
-        // setInputFieldsDrawableToRed();
-        getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(getErrorFieldUi(), errorMessage);
-        clearInputs();
+				break;
+			}
+		}
 
-    }
+	}
 
-    /**
-     * Handle generic error
-     * 
-     * @param errorTitle
-     * @param errorText
-     */
-    private void handleGenericError(final String errorTitle, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
-    {
+	/**
+	 * Handle inline error
+	 * 
+	 * @param errorMessage
+	 */
+	private void handleInlineError(final String errorMessage)
+	{
+		setErrorText(errorMessage);
+		// setInputFieldsDrawableToRed();
+		getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(getErrorFieldUi(), errorMessage);
+		clearInputs();
 
-        int status = Integer.parseInt(footerStatus);
-        switch (status)
-        {
+	}
 
-        case 101:
-            sendToTwoButtonErrorModal(errorTitle, errorText, footerStatus, errorClickCallback);
-            break;
-        /*case 5:
+	/**
+	 * Handle generic error
+	 * 
+	 * @param errorTitle
+	 * @param errorText
+	 */
+	private void handleGenericError(final String errorTitle, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
+	{
+
+		final int status = Integer.parseInt(footerStatus);
+		switch (status)
+		{
+
+		case 101:
+			sendToTwoButtonErrorModal(errorTitle, errorText, footerStatus, errorClickCallback);
+			break;
+			/*case 5:
         	 sendToTwoButtonErrorModal(errorTitle, errorText, footerStatus, errorClickCallback);
         case 6:
         	sendToErrorPage(errorHandlerUi.getContext().getString(R.string.E_T_1401_LOCKOUT),
         			 errorHandlerUi.getContext().getString(R.string.E_4031102_SSO), footerStatus, errorClickCallback);
         	 break;*/
-        default:
-            sendToErrorPage(errorTitle, errorText, footerStatus, errorClickCallback);
-            break;
+		default:
+			sendToErrorPage(errorTitle, errorText, footerStatus, errorClickCallback);
+			break;
 
-        }
+		}
 
-    }
+	}
 
-    private void sendToTwoButtonErrorModal(final String errorTitle, final String errorText, 
-    		final String footerStatus, final CardErrorCallbackListener errorClickCallback)
-    {
-        final CardErrHandler handler = getErrorFieldUi().getCardErrorHandler();
-        final AlertDialog dialog = handler.createErrorModalWithTwoButton(errorTitle, errorText, 
-        		footerStatus, errorClickCallback);
-        handler.showCustomAlert(dialog);
+	private void sendToTwoButtonErrorModal(final String errorTitle, final String errorText, 
+			final String footerStatus, final CardErrorCallbackListener errorClickCallback)
+	{
+		final CardErrHandler handler = getErrorFieldUi().getCardErrorHandler();
+		final AlertDialog dialog = handler.createErrorModalWithTwoButton(errorTitle, errorText, 
+				footerStatus, errorClickCallback);
+		handler.showCustomAlert(dialog);
 
-    }
+	}
 
-    /**
-     * Handle app error
-     * 
-     * @param errorTitle
-     * @param errorText
-     */
-    public void handleAppError(final String errorTitle, final String errorText)
-    {
+	/**
+	 * Handle app error
+	 * 
+	 * @param errorTitle
+	 * @param errorText
+	 */
+	public void handleAppError(final String errorTitle, final String errorText)
+	{
 
-        showNativeAlert(errorTitle, errorText);
+		showNativeAlert(errorTitle, errorText);
 
-    }
+	}
 
-    /**
-     * Set the input fields to be highlighted in red.
-     */
-    private void setInputFieldsDrawableToRed()
-    {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null)
-        {
-            for (final EditText text : errorHandlerUi.getInputFields())
-            {
-                text.setBackgroundResource(R.drawable.edit_text_red);
-            }
-        }
-    }
+	/**
+	 * Set the input fields to be highlighted in red.
+	 */
+	private void setInputFieldsDrawableToRed()
+	{
+		final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null)
+		{
+			for (final EditText text : errorHandlerUi.getInputFields())
+			{
+				text.setBackgroundResource(R.drawable.edit_text_red);
+			}
+		}
+	}
 
-    /**
-     * Clears the activity edit texts in the getFieldsToClearAfterError()
-     * interface method
-     */
-    private void clearInputs()
-    {
+	/**
+	 * Clears the activity edit texts in the getFieldsToClearAfterError()
+	 * interface method
+	 */
+	private void clearInputs()
+	{
 
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null)
-        {
-            for (final EditText text : errorHandlerUi.getInputFields())
-            {
-                text.setText("");
-            }
-        }
+		final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null)
+		{
+			for (final EditText text : errorHandlerUi.getInputFields())
+			{
+				text.setText("");
+			}
+		}
 
-    }
+	}
 
-    /**
-     * A common method to display an error message on the error field and make
-     * the error label visible.
-     * 
-     * The activity needs to implement ErrorFieldActivity for this functionality
-     * to work.
-     * 
-     * @param text
-     * @param errorText
-     */
-    private void setErrorText(final String errorText)
-    {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null)
-        {
-            errorHandlerUi.getErrorLabel().setText(errorText);
-            errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
-        }
-    }
+	/**
+	 * A common method to display an error message on the error field and make
+	 * the error label visible.
+	 * 
+	 * The activity needs to implement ErrorFieldActivity for this functionality
+	 * to work.
+	 * 
+	 * @param text
+	 * @param errorText
+	 */
+	private void setErrorText(final String errorText)
+	{
+		final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+		if (errorHandlerUi != null)
+		{
+			errorHandlerUi.getErrorLabel().setText(errorText);
+			errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
+		}
+	}
 
-    /**
-     * If an error field activity, we can do more .. like display error text
-     * highlight fields red, etc.
-     * 
-     * Returns the activity, fragment if they implement the ErrorHandlerUI
-     * Otherwise returns null;
-     * 
-     * @return
-     */
-    private CardErrorHandlerUi getErrorFieldUi()
-    {
-        return errorHandlerUi;
-    }
+	/**
+	 * If an error field activity, we can do more .. like display error text
+	 * highlight fields red, etc.
+	 * 
+	 * Returns the activity, fragment if they implement the ErrorHandlerUI
+	 * Otherwise returns null;
+	 * 
+	 * @return
+	 */
+	private CardErrorHandlerUi getErrorFieldUi()
+	{
+		return errorHandlerUi;
+	}
 
-    /**
-     * Show a custom modal alert dialog for the activity
-     * 
-     * @param alert
-     *            - the modal alert to be shown
-     */
-    public void showCustomAlert(final AlertDialog alert)
-    {
-        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        alert.show();
-        alert.getWindow().setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
-    }
+	/**
+	 * Show a custom modal alert dialog for the activity
+	 * 
+	 * @param alert
+	 *            - the modal alert to be shown
+	 */
+	public void showCustomAlert(final AlertDialog alert)
+	{
+		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		alert.show();
+		alert.getWindow().setLayout(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT);
+	}
 
-    /**
-     * A common method used to forward user to error page with a given static
-     * string text message
-     * 
-     * @param errorText
-     */
-    private void sendToErrorPage(final String title, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
-    {
+	/**
+	 * A common method used to forward user to error page with a given static
+	 * string text message
+	 * 
+	 * @param errorText
+	 */
+	private void sendToErrorPage(final String title, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback)
+	{
 
-        final CardErrHandler handler = getErrorFieldUi().getCardErrorHandler();
-        final AlertDialog dialog = handler.createErrorModal(title, errorText, footerStatus, errorClickCallback);
-        handler.showCustomAlert(dialog);
+		final CardErrHandler handler = getErrorFieldUi().getCardErrorHandler();
+		final AlertDialog dialog = handler.createErrorModal(title, errorText, footerStatus, errorClickCallback);
+		handler.showCustomAlert(dialog);
 
-    }
+	}
 
-    private void showNativeAlert(final String title, final String errorText)
-    {
+	private void showNativeAlert(final String title, final String errorText)
+	{
 
-        final AlertDialog.Builder alertDialogBuilder;
+		final AlertDialog.Builder alertDialogBuilder;
 
-        alertDialogBuilder = new AlertDialog.Builder(errorHandlerUi.getContext());
+		alertDialogBuilder = new AlertDialog.Builder(DiscoverActivityManager.getActiveActivity());
 
-        // set title
-        alertDialogBuilder.setTitle(title);
+		// set title
+		alertDialogBuilder.setTitle(title);
 
-        // set dialog message
-        alertDialogBuilder.setMessage(errorText).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(final DialogInterface dialog, final int id)
-            {
-                // if this button is clicked, close
-                // current activity
-                dialog.cancel();
-            }
-        });
+		// set dialog message
+		alertDialogBuilder.setMessage(errorText).setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(final DialogInterface dialog, final int id)
+			{
+				// if this button is clicked, close
+				// current activity
+				dialog.cancel();
+			}
+		});
 
-        // create alert dialog
-        final AlertDialog alertDialog = alertDialogBuilder.create();
+		// create alert dialog
+		final AlertDialog alertDialog = alertDialogBuilder.create();
 
-        // show it
-        alertDialog.show();
-    }
+		// show it
+		alertDialog.show();
+	}
 }
