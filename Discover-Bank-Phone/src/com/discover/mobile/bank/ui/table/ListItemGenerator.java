@@ -32,7 +32,6 @@ public class ListItemGenerator {
 	/** Index where the phone number dash "-" should be inserted. */
 	private static final int PHONE_DASH_INDEX = 3;
 	
-	private static final String STATUS_SCHEDULED = "SCHEDULED";
 	private static final String STATUS_PAID = "PAID";
 	private static final String STATUS_CANCELLED = "CANCELLED";
 	
@@ -293,7 +292,7 @@ public class ListItemGenerator {
 		items.add(getPayFromAccountCell(account.accountNumber.ending, account.nickname));
 		items.add(getAmountCell(item.amount.value));
 		items.add(getPaymentDateCell(item));
-		if(STATUS_SCHEDULED.equalsIgnoreCase(item.status)){
+		if(!Strings.isNullOrEmpty(item.status)){
 			items.add(getStatusCell( BankStringFormatter.capitalize(item.status)));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
@@ -387,10 +386,7 @@ public class ListItemGenerator {
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 
-		if(STATUS_SCHEDULED.equalsIgnoreCase(itemStatus)){
-			dates = item.deliverBy;
-			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
-		}else if(STATUS_PAID.equalsIgnoreCase(itemStatus)){
+		 if(STATUS_PAID.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
@@ -398,6 +394,9 @@ public class ListItemGenerator {
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.schedule_pay_date);
+		}else {
+			dates = item.deliverBy;
+			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 		}
 
 		return paymentDateItem;

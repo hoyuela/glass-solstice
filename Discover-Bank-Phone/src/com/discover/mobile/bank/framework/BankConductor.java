@@ -425,7 +425,7 @@ public final class BankConductor  extends Conductor {
 	 * to the navigate to pay bills select payee page.
 	 */
 	public static void navigateToSelectPayee(final Bundle extras){
-		NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		
 		/**Terms and Conditions for Bill Pay is Open, then close it*/
 		if( activity.getCurrentContentFragment() instanceof BankPayTerms) {

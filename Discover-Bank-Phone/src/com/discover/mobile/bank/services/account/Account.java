@@ -162,6 +162,10 @@ public class Account implements Serializable {
 	 */
 	@JsonProperty("type")
 	public String type;
+	
+	/**Type of activity*/
+	@JsonProperty("typeLabel")
+	public String typeLabel;
 
 	/**
 	 * The monetary value that is available for withdrawl at this instant,
@@ -170,6 +174,10 @@ public class Account implements Serializable {
 	@JsonProperty("balance")
 	public Money balance;
 
+	/**Current Balance of activity*/
+	@JsonProperty("currentBalance")
+	public Money currentBalance;
+	
 	/**
 	 * The current interest rate for the account, if any, specified as a
 	 * composite object of a numerator, denomenator, and a preferred display string.

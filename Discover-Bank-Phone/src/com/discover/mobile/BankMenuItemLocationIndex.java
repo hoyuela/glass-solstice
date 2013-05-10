@@ -67,6 +67,12 @@ public final class BankMenuItemLocationIndex {
 	public static final int MOBILE_TERMS_OF_USE = 2;
 	public static final int BILL_PAY_TERMS_OF_USE = 3;
 	public static final int DEPOSIT_A_CHECK_TERMS_OF_USE = 4;
+	
+	/**
+	 * Provide Feedback Indexes
+	 */
+	public static final int PROVIDE_FEEDBACK_GROUP = 7;
+	public static final int PROVIDE_FEEDBACK = 1;
 
 	/**
 	 * Private constructor so the class cannot be instantiated
