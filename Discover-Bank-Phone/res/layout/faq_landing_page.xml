@@ -27,6 +27,31 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/faq_list" />
+
+        <TextView
+            android:id="@+id/more_faq_text"
+            style="@style/field_copy_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/faq_list"
+            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:text="@string/card_more_faq"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/more_faq_link"
+            style="@style/field_copy_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/faq_list"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/more_faq_text"
+            android:drawablePadding="@dimen/between_related_elements_padding"
+            android:drawableRight="@drawable/external_link_icon_blue"
+            android:text="@string/card_discover_link"
+            android:textColor="@color/blue_link"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </ScrollView>

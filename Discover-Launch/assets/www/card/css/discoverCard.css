@@ -1069,7 +1069,7 @@ text-align: right;
 width: 24%;
 }
 #alertHistory-pg .pn-plus{width:17px !important;float:right !important;}
-#manageAlerts-pg  .ui-slider{float:right; border:0px !important; margin:0px; top:-4px;}
+#manageAlerts-pg  .ui-slider{float:right; border:0px !important; margin:0px; top:-4px; padding:0px !important;}
 #manageAlerts-pg  #slider h2{ margin:0px !important;}
 #manageAlerts-pg label.ui-slider {
 font-size: 16px;
@@ -2469,7 +2469,7 @@ table.ui-datepicker-calendar tbody {
 	border:none;
 }
 table.ui-datepicker-calendar tbody td {
-	border: 1px solid #f0f0f0;
+	border: 1px solid #CED6D7;
 	height: 36px;
 	background:#E9F2F7;
 	font-size: 15px;
@@ -3263,7 +3263,6 @@ margin-right: 4px;}
  box-shadow: inset 1px 0px 13px #d6d6d4 !important;
  color:#293033 !important;
  }
-
  #paymentStep2-pg #footnotes {margin-top:25px;}
 
 /****************************************** homeandcbb section signup button changes[STARTS HERE]****************************************/
@@ -3410,8 +3409,8 @@ font-weight: bold; display:block !important;padding-top: 7px;}
 { /*color:#000 !important; */}
 
 input[type="tel"]:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus, textarea:focus{
-    -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;    
-   /* -webkit-user-modify: read-write-plaintext-only !important;*/
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;
+	/* -webkit-user-modify: read-write-plaintext-only !important;*/
 } 
 .ui-slider-switch .ui-btn-active {
 text-shadow:none;

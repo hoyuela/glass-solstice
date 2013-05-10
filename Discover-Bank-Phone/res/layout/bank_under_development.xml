@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-     android:background="@drawable/home_list_item"
+     android:background="@drawable/common_home_list_item"
      android:paddingLeft="@dimen/forms_inner_padding"
      android:paddingRight="@dimen/forms_inner_padding"
      android:paddingBottom="@dimen/table_inner_padding"  >
