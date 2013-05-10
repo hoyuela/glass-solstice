@@ -159,7 +159,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		type.setText(account.getFormattedName());
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);
-		currentBalance.setText(account.balance.formatted);
+		currentBalance.setText(account.currentBalance.formatted);
 		setSpan(R.drawable.drk_blue_arrow_down);
 		
 		/**Available Balance Should only be shown for non-personal loan accounts*/
