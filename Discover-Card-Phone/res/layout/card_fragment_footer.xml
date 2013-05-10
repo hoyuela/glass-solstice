@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/forms_inner_padding"
+    android:gravity="center_horizontal|bottom" >
+
+    <TextView
+        android:id="@+id/privacy_terms"
+        style="@style/card_blue_hyperlink_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/privacy_terms_title"
+        android:textSize="11sp"
+        android:textStyle="bold" />
   
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/forms_inner_padding" 
- 		android:gravity="center_horizontal|bottom">
 
-        <TextView
-             android:id="@+id/terms_of_use"
-            style="@style/card_blue_hyperlink_small"             
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/privacy_terms_title" />
-        
-          <TextView
-            android:id="@+id/divider"
-            style="@style/card_blue_hyperlink_small"
-            android:layout_toRightOf="@+id/terms_of_use"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/between_related_elements_padding"
-            android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:text="" />
-
-               
-         <TextView
-           
-         
-            android:id="@+id/provide_feedback_button"
-            style="@style/card_blue_hyperlink_small"
-            android:layout_toRightOf="@+id/divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/feedback_text" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/divider"
+        style="@style/card_blue_hyperlink_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/between_related_elements_padding"
+        android:layout_marginRight="@dimen/between_related_elements_padding"
+        android:layout_toRightOf="@+id/privacy_terms"
+        android:text=""
+        android:textSize="11sp"
+        android:textStyle="bold" />
     
+      <TextView
+        android:id="@+id/provide_feedback_button"
+        style="@style/card_blue_hyperlink_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/feedback_text"
+        android:layout_toRightOf="@+id/divider"
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
     
 
+</RelativeLayout>

@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private TextView forgotUserIdOrPassText;
 	private TextView goToBankLabel;
 	private TextView goToCardLabel;
+	private TextView cardPrivacyLink;
 
 	// IMAGES
 	private ImageView cardCheckMark;
@@ -197,6 +198,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
 		goToBankLabel = (TextView) findViewById(R.id.go_to_bank_label);
 		goToCardLabel = (TextView) findViewById(R.id.go_to_card_label);
+		cardPrivacyLink = (TextView) findViewById(R.id.privacy_and_security_button_card);
 
 		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
@@ -539,7 +541,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToContactUs(ContactUsType.ALL);
+				final boolean isCard = (View.VISIBLE == cardCheckMark.getVisibility());
+				BankConductor.navigateToContactUs(ContactUsType.ALL, isCard);
 			}
 		});
 
@@ -580,6 +583,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			public void onClick(final View v) {
 				CommonUtils.setViewGone(errorTextView);
 				forgotIdAndOrPass();
+			}
+		});
+
+		cardPrivacyLink.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				BankConductor.navigateToCardPrivacyAndTermsLanding();
 			}
 		});
 	}
@@ -1140,7 +1151,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void showALUStatusModal(final BankLoginDetails credentials) {
 		//Set that an sso user is attempting to login
-		BankUser.instance().setSsoUser(true);
+		BankUser.instance().setSsoUser(false);
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);

@@ -82,7 +82,7 @@ HybridControl.prototype.logOutUser = function() {
     cordova.exec(null, null, 'HybridControlPlugin', 'logOutUser', []);
 }
 HybridControl.prototype.gotoAchome = function() {
-    cordova.exec(null, null, 'HybridControlPlugin', 'popCurrentFragment', []);
+    cordova.exec(null, null, 'HybridControlPlugin', 'gotoAchome', []);
 }
 HybridControl.prototype.getSID = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getSID', []);

@@ -658,6 +658,12 @@ background:none;font-size:14px;color:#50555a}
 {
 	margin-top: 10px;
 	width:33%;
+	
+}
+
+#edoHistory-pg .wraper .historyList	.listLi .ui-block-c {
+	display: inline-block;
+	width:34%;
 }
 
 

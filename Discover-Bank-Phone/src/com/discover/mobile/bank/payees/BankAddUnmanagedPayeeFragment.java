@@ -237,21 +237,4 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		return PayeeDetailListGenerator.getUnmanagedPayeeDetailList(getActivity(), (AddUnmanagedPayee)detail);
 	}
-	
-	/**
-	 * Method used to validate all input fields to make sure they meet the 
-	 * criteria associated with each at creation. Refer to PayeeDetailListGenerator
-	 * for the criteria associated with each BankEditDetail object.
-	 * 
-	 * @return True if all fields validate correctly, false otherwise.
-	 */
-	@Override
-	protected boolean canProceed() {
-		boolean ret = super.canProceed();
-
-		/**Make sure State is selected*/
-		ret &= !Strings.isNullOrEmpty(getFieldDetail(UnmanagedPayeeFields.State.ordinal()).getText().toString());
-		
-		return ret;
-	}
 }

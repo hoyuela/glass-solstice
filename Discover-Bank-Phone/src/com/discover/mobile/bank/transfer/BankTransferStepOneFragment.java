@@ -174,7 +174,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final String amount = amountField.getText().toString();
 		boolean isAmountNotZero = false;
 		if(!Strings.isNullOrEmpty(amount)) {
-			isAmountNotZero =  Double.parseDouble(amountField.getText().toString()) > 0.0d;
+			final String amountWithoutCommas = amount.replaceAll(",", "");
+			isAmountNotZero =  Double.parseDouble(amountWithoutCommas) > 0.0d;
 		}
 		return isAmountNotZero;
 	}
@@ -657,7 +658,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		amountField.setMaximumValue(MAXIMUM_TRANSFER_VALUE);
 		
 		amountField.addTextChangedListener(dateSelectorWatcher);
-		
+		amountField.clearErrors();
 		return amountListItem;
 	}
 	

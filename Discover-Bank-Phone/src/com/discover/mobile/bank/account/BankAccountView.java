@@ -231,7 +231,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
 		lastView.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.home_list_item));
+				R.drawable.common_home_list_item));
 		lastView.setPadding(
 				(int)context.getResources()
 				.getDimension(R.dimen.forms_inner_padding), 0,

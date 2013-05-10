@@ -130,10 +130,12 @@ public class FAQDetailFragment extends BaseFragment {
 		if(savedInstanceState != null) {
 			final boolean[] openStates = savedInstanceState.getBooleanArray(BankExtraKeys.PRIMARY_LIST);
 
-			//Restore the open and close states of the list items
-			for(int i = 0; i < openStates.length; ++i) {
-				if(openStates[i] && i < faqItems.size()){
-					faqItems.get(i).openItem();
+			if( openStates != null) {
+				//Restore the open and close states of the list items
+				for(int i = 0; i < openStates.length; ++i) {
+					if(openStates[i] && i < faqItems.size()){
+						faqItems.get(i).openItem();
+					}
 				}
 			}
 		}

@@ -1479,7 +1479,7 @@ dfs.crd.edo.populateEdoHistoryPageDivs = function(edoHistory, pageId) {
                       edoHistoryList += edoHistoryData;
                       }
                       });
-					  var edoHistoryListULstart ="<ul><li class='listLi'><div class='ui-grid-a'><div class='ui-block-a'><span>Amount</span></div> <div class='ui-block-b'><span>Merchant</span></div><div class='ui-block-c'><span>Date</span> </div></div></li>";
+					  var edoHistoryListULstart ="<ul><li class='listLi'><div class='ui-grid-a'><div class='ui-block-a'><span>Savings</span></div> <div class='ui-block-b'><span>Merchant</span></div><div class='ui-block-c'><span>Date</span> </div></div></li>";
 				var edoHistoryListULend = "</ul>";
 				
                 if (isEmpty(edoHistoryDataActivity["EDOHISTORYTABLE"])) {

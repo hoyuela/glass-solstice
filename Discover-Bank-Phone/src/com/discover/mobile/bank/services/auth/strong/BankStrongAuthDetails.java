@@ -50,12 +50,6 @@ public class BankStrongAuthDetails implements Serializable {
 	@JsonProperty("challengeQuestion")
 	public String question;
 	
-	@JsonProperty("sessionId")
-	public String sessionId;
-	
-	@JsonProperty("transactionId")
-	public String transactionId;
-	
 	/**
 	 * Default Constructor
 	 */
@@ -71,8 +65,6 @@ public class BankStrongAuthDetails implements Serializable {
 	public BankStrongAuthDetails(final BankErrorResponse msgErrResponse) {
 		question = msgErrResponse.getDataValue("challengeQuestion");
 		questionId = msgErrResponse.getDataValue("challengeQuestionId");
-		sessionId = msgErrResponse.getDataValue("sessionId");
-		transactionId = msgErrResponse.getDataValue("transactionId");
 		bindDevice = msgErrResponse.getDataValue("bindDevice");
 		status = msgErrResponse.getDataValue("status");
 	}

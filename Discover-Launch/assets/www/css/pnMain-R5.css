@@ -406,9 +406,10 @@ background-repeat: no-repeat;
     height:27.5px !important;
     vertical-align:middle !important
 }
-.pn-page #addnumber .ui-grid-b .ui-block-b{
+.pn-page #addnumber .ui-grid-b .add-msg-dot-com{
     width:51% !important;
-    height:100%
+    height:100%;
+	float:left;
 }
 
 .pn-page #changenumber .ui-grid-b .ui-block-a, .pn-page #addnumber .ui-grid-b .ui-block-a{ 
@@ -857,7 +858,7 @@ font-weight: 200 !important;
     margin-left:2px;
     width:15%;
     text-align:left;
-    font-weight:bold;
+	font-weight:bold;
 }
 .pn-page #id-main-content .ui-grid-c .ui-block-c {
     text-align:left !important;
@@ -1543,15 +1544,15 @@ color: #576166;
 
 /*added styles  13.1 Changes */ 
 .hidden{display:none;}
-.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com, .pn-page #addnumber .ui-grid-b .ui-block-b .dot-com{
+.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com, .pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{
     width:79.8%;
     float:left;
 }
-.pn-page #changenumber .ui-grid-b .ui-block-b .at-rate, .pn-page #addnumber .ui-grid-b .ui-block-b .at-rate{
+.pn-page #changenumber .ui-grid-b .ui-block-b .at-rate, .pn-page #addnumber .ui-grid-b .add-msg-dot-com .at-rate{
     float:left;
     padding-top:16px;
 }
-.pn-page #changenumber .ui-grid-b .ui-block-b .eg-msg, .pn-page #addnumber .ui-grid-b .ui-block-b .eg-msg{
+.pn-page #changenumber .ui-grid-b .ui-block-b .eg-msg, .pn-page #addnumber .ui-grid-b .add-msg-dot-com .eg-msg{
     font-size:10px;
     padding-left:21px;
 }
@@ -1574,7 +1575,7 @@ color: #576166;
 .pn-page #changenumber .ui-grid-b .ui-block-b .dot-com{
     width:82.2%;
 }
-.pn-page #addnumber .ui-grid-b .ui-block-b .dot-com{
+.pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{
                 width:82%;
 }
 #overlay_wraper_saveConfirm.overlay_wraper {width:60% !important}

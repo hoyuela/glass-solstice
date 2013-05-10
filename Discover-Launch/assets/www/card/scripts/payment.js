@@ -1056,7 +1056,7 @@ $("#paymentStep1-pg").live("pagecreate", function() {
 dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 {
 	try {
-
+		console.log("We are in the populateMakePaymentPageDivs first place");
 		if (!isEmpty(stepOne)) {
 			var bank_name_info = new Array();
 			var minimumPayment = stepOne.minimumPayment;
@@ -1385,6 +1385,10 @@ dfs.crd.pymt.paymentDateSet = function(paymentDate)
 {
 	try {
 		$("a#calendar-cancel").click();
+		var stepOne = getDataFromCache("MAKEPAYMENTONE");
+		if( paymentDate == "NaN/NaN/NaN"){
+			paymentDate = stepOne.paymentDueDate;
+		}
 		var selectedDate = paymentDate.split("/");
 		var month = selectedDate[0];
 		
@@ -1423,6 +1427,7 @@ alert(date.getMonth().toString() + '/' + date.getDate().toString() + '/' +  date
 		$("#datepicker-value").val(formattedDate);
 		$("#datepicker-val").val(formattedDate);
 		$("#datepicker-val").css("margin","4px 0px");
+		$("#datepicker-val").css("display","block");
 		$("#date-compare").val(formattedDate);
 		
 		if ((jQuery.inArray(($("#date-compare").val()), dfs.crd.pymt.validDays) > -1)){	                                           

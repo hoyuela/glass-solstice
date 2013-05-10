@@ -1,7 +1,6 @@
 package com.discover.mobile.bank.help;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -27,7 +27,8 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public static final String PRIVACY_AND_TERMS = "privacy-terms";
 	public static final String PROVIDE_FEEDBACK = "provide-feedback";
 	public static final String GO_BACK_TO_LOGIN = "goBackToLogin";
-	
+	public static final String IS_CARD = "isCard";
+
 	/**
 	 * Reference to action bar back button.
 	 */
@@ -36,7 +37,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	 * True when "onBackPressed" will navigate to login on back (given no fragments on the stack)
 	 */
 	private boolean goBackToLogin = true;
-	
+
 	/**
 	 * Create the activity
 	 */
@@ -44,7 +45,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bank_privacy_terms_activity_layout);
-		
+
 		/**Check if this is the first time this activity is being launched*/
 		if( savedInstanceState == null ) {
 			launchStartPage();
@@ -52,21 +53,24 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			final Bundle bundle = this.getIntent().getExtras();
 			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
-		
+
 		showActionBar();
-		
+
 		/**Sliding menu is not used for this activity*/
 		enableSlidingMenu(false);
 	}
 
 	private void launchStartPage() {
 		final Bundle bundle = this.getIntent().getExtras();
-		if( bundle == null ) {
-			makeFragmentVisible(new TermsLandingPageFragment());
+		if( bundle == null || bundle.containsKey(BankExtraKeys.CARD_MODE_KEY)) {
+			final TermsLandingPageFragment terms = new TermsLandingPageFragment(); 
+			terms.setArguments(bundle);
+			makeFragmentVisible(terms);
 		} else {
 			if( bundle.containsKey(CONTACT_US)) {
-				final Fragment contactUs = new CustomerServiceContactsFragment();
+				final CustomerServiceContactsFragment contactUs = new CustomerServiceContactsFragment();
 				contactUs.setArguments(bundle);
+				contactUs.setCardMode(bundle.getBoolean(IS_CARD, false));
 				makeFragmentVisible( contactUs );
 			} else if( bundle.containsKey(PRIVACY_AND_TERMS)) {
 				makeFragmentVisible(new TermsLandingPageFragment());
@@ -76,7 +80,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
 	}
-	
+
 	/**
 	 * Show the action bar with the custom layout
 	 */
@@ -92,7 +96,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
-		
+
 		navigationBackButton = (ImageView) findViewById(R.id.navigation_back_button);
 		titleView.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.INVISIBLE);
@@ -136,7 +140,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			this.onBackPressed();
 		}
 	}
-	
+
 	/**
 	 * This method overrides NavigationRootActivity implementation as it is not using 
 	 * the Android default implementation. The implementation for this class is the same
@@ -146,7 +150,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public void onBackPressed() {
 		final FragmentManager fragmentManager = this.getSupportFragmentManager();
 		final int backStackCount = fragmentManager.getBackStackEntryCount();
-		
+
 		if( backStackCount > 1 ) {
 			super.onBackPressed();
 		} else if (goBackToLogin) {
@@ -156,13 +160,13 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			finish();
 		}
 	}
-	
+
 	/**
 	 * Sets variables associated with controlling back navigation.
 	 * @param goToLoginOnBack - True when "onBackPressed" will navigate to login on back 
 	 * (given no fragments on the stack) 
 	 */
 	public void setOnBackNavigation(final boolean goToLoginOnBack) {
-		this.goBackToLogin = goToLoginOnBack;
+		goBackToLogin = goToLoginOnBack;
 	}
 }

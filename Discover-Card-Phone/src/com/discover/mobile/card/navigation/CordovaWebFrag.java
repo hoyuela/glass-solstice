@@ -30,6 +30,7 @@ import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
@@ -182,7 +183,10 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
                 }
 
             });
-
+            /********** Hemang **********/
+            WebSettings webSettings = cwv.getSettings();        
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+            /********** Hemang **********/
             return mView;
         }
     }
@@ -266,6 +270,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         // javascript = firstLetter + rest + "();";
         Log.v(TAG, "javascript to send: " + javascript);
         cwv.sendJavascript(javascript);
+       
     }
 
     /**
@@ -521,6 +526,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
             // TODO Auto-generated method stub
             super.onPageFinished(arg0, arg1);
             Log.d(TAG, "on pagefinished.... " + arg1);
+            
         }
 
         /*

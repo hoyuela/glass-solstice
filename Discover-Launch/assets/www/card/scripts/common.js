@@ -179,6 +179,7 @@ console.log("in back activepage beforing calling back "+currentActivePage);
 //else {
 //navigator.app.backHistory();
 //}
+
 }
 
 
@@ -186,6 +187,7 @@ function provideFeedBack () // Provide Feedback in Child Browser
 {
 	try{
         var referer = $.mobile.activePage.attr('id');       
+
         if (!isEmpty(vOne) && !isEmpty(dfsKey))
         {
             customVar = vOne+"|"+dfsKey+"|DiscoverMobileVersion="+APPVER;
@@ -596,6 +598,7 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 			document.getElementById('pageError_errorMessage').innerHTML=errorMsg;
 			showBottomMenu('pageError-pg',menuHglt);
 		});	
+
 		errorFlag=true;
 		navigation('../common/pageError');
 	}catch(err){
@@ -607,7 +610,7 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 //Ankit's Changes for flip Switch toggle image
 
 var fnChangeSwitchStyle = function(){
-	$("#flip-b").die("change").live("change", function(){
+	$("#alertsetting").die("change").live("change", function(){
 		var switchValue = $(this).val();
 		if(switchValue == 'yes' || switchValue == 'on'){
 			$(this).siblings(".ui-slider").addClass('activeSwitch');
@@ -616,10 +619,19 @@ var fnChangeSwitchStyle = function(){
 			$(this).siblings(".ui-slider").removeClass('activeSwitch');
 	
 			}
-		$("flip-b").slider('refresh');	
+		$("#alertsetting").slider('refresh');	
 	
 	});
 }
+$('#manageAlerts-pg').live("pagebeforeshow",function(){
+
+	var switchValue = $("#alertsetting").val();
+		if(switchValue == 'yes' || switchValue == 'on'){
+			$("#alertsetting").siblings(".ui-slider").addClass('activeSwitch');
+		}else{
+			$("#alertsetting").siblings(".ui-slider").removeClass('activeSwitch');	
+		}
+});
 $('#cardLogin-pg,#manageAlerts-pg').live("pageshow",function(){
 fnChangeSwitchStyle();
 
@@ -890,8 +902,10 @@ function populateBottomNavItems(ui,activeNav)
 		{
 			footerHTML+="<li>"+menuItems["MR"]+"</li>";
 		}
+
 		//$(".mnu_footer").html(footerHTML)
 		$(".mnu_footer").html(footerHTML)
+
 		
 	}catch(err){
 		showSysException(err);
@@ -990,6 +1004,7 @@ function showMR()
 
 $(document).bind( 'pagebeforechange', function( e, data ){
 	try{
+
 			
 		if (!(typeof data.toPage === "string" )) {
 			cpEvent=e;
@@ -999,6 +1014,7 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 			if(!jQuery.isEmptyObject(data.options.fromPage)){      
 
 				if(data.options.fromPage.jqmData('url')=== data.toPage.jqmData('url')){ 
+
 				//	cpEvent.preventDefault();
 					 var activePage=$.mobile.activePage.attr('id');
 					 
@@ -1011,6 +1027,7 @@ $(document).bind( 'pagebeforechange', function( e, data ){
                     unLockUI();
 					hideSpinner();
 					return;
+
 				}			
 				fromPageName=fromPage(data);
 				if(!isEmpty(fromPageName) && toPageName == 'login-pg'){
@@ -1044,8 +1061,12 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 
 			/*if(menuPage(pageName)){
 				showBottomMenu(pageName,pageName);
+
+
+
                  }*/
              hideSpinner();
+
         }else
         {
         if (data.toPage!="../../../index.html") lockUI();    //Change
@@ -1164,6 +1185,11 @@ function timeActionBeforeLogin()
 $('[data-role=page]').live('pageshow', function(e,data){
 	try{
 		globalTime=null;
+
+
+
+
+
 		 
         hideSpinner();               
         
@@ -1239,6 +1265,7 @@ $('[data-role=page]').live('pageshow', function(e,data){
             //retreivePushCount();
             break;
     }
+
 	s.pageName=activePage;  
 
 	console.log("activepage beforing calling handlenativeframe "+activePage+"  && LHn  NAv value is :- "+isLhnNavigation);
@@ -1467,6 +1494,7 @@ function redirectToPageAfterConfirm(eventElement) {
         var IPHONEAPPURL="http://itunes.apple.com/app/discovermobile/id338010821?mt=8";
         var ANDROIDAPPURL="http://market.android.com/search?q=pname:com.discoverfinancial.mobile";
 
+
 		if(isDeviceReady == true)
 		{      
        		HybridControl.prototype.dismissProgressBar(null,null);
@@ -1606,6 +1634,7 @@ function getSID () {
 	try{
 		var sid 
 		if (deviceType == "Android")
+
 		{			
 			HybridControl.prototype.getSID(function successsid (arg) {sid = arg;}, null);			
 			sid = "%&(()!12[" + sid;
@@ -1706,6 +1735,8 @@ try
 //Added below code to make request headers completely accurate 
 function getClientPlat (){
         try{
+
+
              return "Android";
         }catch(err){
 		
@@ -1761,6 +1792,7 @@ function isCardProjectBeyond(incentiveCode,incentiveTypeCode,optionCode,cardType
 	try{
       if(incentiveCode == "000016" && incentiveTypeCode == "CBB" && cardType == "000001" && optionCode == ("31" || "32" || "33"))
             return true;
+
       else 
             return false;
 		}catch(err){
@@ -1780,6 +1812,7 @@ function networkCheck()
                                                             navigator.notification.alert('The Internet connection appears to be offline at this moment. In order to login and access the features of the application, you will need Internet connectivity. Please check your device settings and try again once the connection has been restored',function dissmissAlert() {
                                                                                          if ($.mobile.activePage.attr('id')!="login-pg")
                                                                                          {
+
 																						 dfs.crd.lilo.logOutUser("NETWORK");                                                                                         
                                                                                          globalCache['NoNetworkShown']="No";
                                                                                          }
@@ -1809,6 +1842,7 @@ $(document).ajaxError(function(e, jqXhr, settings, exception){
                       navigator.notification.alert('As a security measure, we ended your session after extended inactivity. This helps protect your personal Discover card account information.  When you are ready to access your account information, simply log in again.',function dissmissAlert() {
                                                    if ($.mobile.activePage.attr('id')!="login-pg")
                                                    {
+
                                                    HybridControl.prototype.logOutUser();
                                                    }},'Discover','OK');
                       }
@@ -1826,6 +1860,7 @@ $(document).ajaxError(function(e, jqXhr, settings, exception){
                       navigator.notification.alert(maintMsg,function dissmissAlert() {
                                                    if ($.mobile.activePage.attr('id')!="login-pg")
                                                    {
+
                                                   HybridControl.prototype.logOutUser();
                                                    }},'Discover','OK');
                       }
@@ -2095,14 +2130,27 @@ function getKeyValueFromJson(obj,path)
 /*** END- PEN TEST CODE ***/
 
 function setPageTrasitionAsNone(pageName){
+
 try{
+
 		var showTrasitionNoneForPages= new Array("edoDetail","viewMap");
 		if(jQuery.inArray(pageName, showTrasitionNoneForPages) > -1 ){	
+
+
+
+
+
+
+
+
+
 			return true;
 		}else{
 			return false;
 		}
+
 	}catch(err){
+
         showSysException(err);
 	}
 }
@@ -2132,9 +2180,17 @@ function gotoAchome(){
 HybridControl.prototype.gotoAchome(null,null);
 }
 
+
+
 // Function to split negative balance
 function splitNegativeBalance (data){
 try{
+
+
+
+
+
+
 	var dataArray=data.split("-");
 	return dataArray[1];
 	}catch(err){
