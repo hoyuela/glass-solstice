@@ -19,7 +19,7 @@
     <string name="E_4031401_UNVERIFIED">Help us keep your account safe by visiting discover.com on your primary PC to establish your set of security questions.</string>
     <string name="E_4031401_LOCKOUT">For security purposes, your online account has been locked.Please call Discover Customer Service at 1-888-251-8003 for information about accessing your account online.</string>
     <string name="E_0">We\'re sorry.Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
-    <string name="E_4031102">Due to special conditions related to your account, we could not	complete your request. Please contact Customer Service at 1-800-347-2683.</string>
+    <string name="E_4031102">Due to special conditions related to your account, we can\'t provide you with the access to your account information at this time. "&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access at DiscoverBank.com</string>
     <string name="E_4031102_SSO_DELINK">Due to special conditions related to your credit card account, we cannot provide you with access to your account information at this time.To recover your User ID, you will need to re-register for online account access at DiscoverBank.com.</string>
     <string name="E_4031102_SSO_DELINK_BUTTON">true.</string>
     <string name="E_4031102_SSO">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time.Because of increased security measures, you will need to log into Discover Bank in order to access your online account.</string>
@@ -356,7 +356,7 @@
      <string name="E_H_4031401_LOCKOUT">0</string>
       <string name="E_H_403">0</string>
      <string name="E_H_4031402_LOCKOUT">0</string>
-     <string name="E_H_4031102">0</string>
+     <string name="E_H_4031102">1</string>
      <string name="E_H_4031102_SSO_DELINK">0</string>
      <string name="E_H_4031102_SSO">0</string>
      <string name="E_H_4031105">0</string>

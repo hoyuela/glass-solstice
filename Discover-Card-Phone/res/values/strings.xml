@@ -100,5 +100,5 @@
     <string name="card_type_dbc">DBC Card </string>
     <string name="card_type_dbc_miles">DBC Miles Card </string>
     <string name="account_card_ending_in">Ending in </string>
-	
+	 <string name="register_btn">Register Now</string>
 </resources>

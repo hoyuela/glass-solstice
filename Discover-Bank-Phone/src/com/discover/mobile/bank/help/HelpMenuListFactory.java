@@ -16,6 +16,7 @@ import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -137,7 +138,14 @@ public final class HelpMenuListFactory {
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
 		final HelpItemGenerator atmHelp = 
 				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener(fragment));
+
+		/**Default menu item representing the "Card ALL FAQ" item*/
+		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
+
 		items.add(atmHelp);
+		if(!Globals.isLoggedIn()){
+			items.add(cardFaq);
+		}
 		items.add(allFaq);
 		return items;
 	}

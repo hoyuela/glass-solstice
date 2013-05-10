@@ -30,6 +30,7 @@ dfs.crd.push.manage.mlrwMinAmt;
 dfs.crd.push.manage.mrrwMaxAmt; 
 dfs.crd.push.manage.mrrwMinAmt; 
 dfs.crd.push.manage.tamtMinAmt;
+
 var changeNumberselect ="";
 var selectedText = "";
 manageAlertsOverrideLoad = function()
@@ -58,6 +59,7 @@ manageAlertsOverrideLoad = function()
     
     // check the Global Variable otherUser and show the Override Settings page as overlay
         //alert("User Override Scenario: " + otherUser);
+
     if (!globalOtherUser)
     {
         // stop navigation to this page and clear cache to remove back functionality
@@ -732,6 +734,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         {
             $("#changenumber #custom-carrier").val(dfs.crd.push.manage.phoneCarrier);
             dfs.crd.push.manage.phoneCarrier = "other";
+
 			$("#changenumber select").val(dfs.crd.push.manage.phoneCarrier);
 			
         }else{
@@ -956,6 +959,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 					}
 					var ind = (dfs.crd.push.manage.pageCachingVal["select_index"]);
 					$('#changenumberSelect').get(0).selectedIndex = ind;
+
 					 changeNumberselect = document.getElementById("changenumberSelect");
 					 selectedText = changeNumberselect.options[changeNumberselect.selectedIndex].text;
 					$("#activitySelection .ui-btn-text").text(selectedText);
@@ -1085,7 +1089,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         
         function setValChangeNumClose(){
 			$("#changenumber").slideUp(300);
-			$(".changenumber a").text("Edit");
+			$(".changenumber a").text("(Edit)");
 			dfs.crd.push.manage.changeTextNumber = false;
 		}
 
@@ -1454,12 +1458,13 @@ dfs.crd.push.manage.postPushPreferenceData = function()
                             if (str.length == 10) {
                             var a = $('#phonenumber').html(str.substring(0, 3) + '-' + str.substring(3, 6) + '-' + str.substring(6, 10));
                             $("#changenumber").slideUp(300);							
-                            $(".changenumber a").text("Edit");
+                            $(".changenumber a").text("(Edit)");
                             }                            
                             // kill the cached preference on successful post and set userOverride to false if user has already overriden
                             killDataFromCache("MANAGEALERTS");
                             if (acctOverrideParam == "T")
                                 {
+
                                     //dfs.crd.lilo.otherUser = false;
 									globalOtherUser = false;
                                     HybridControl.prototype.setOtherUserFlag(null,globalOtherUser);

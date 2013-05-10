@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
@@ -60,6 +61,22 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		}
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**This is required such that the keyboard does not overlap the provided feedback input field*/
+		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		/**Return to the state required by the navigation activity*/
+		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+	}
+	
 	@Override
 	public int getPageTitle() {
 		return R.string.bank_provide_feedback;

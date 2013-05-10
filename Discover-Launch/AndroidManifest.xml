@@ -243,6 +243,11 @@
             android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
             android:launchMode="standard"
             android:windowSoftInputMode="adjustPan" />
+        
+        <activity
+            android:name="com.discover.mobile.bank.help.CardLoggedOutFAQActivity"
+            android:launchMode="standard"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
