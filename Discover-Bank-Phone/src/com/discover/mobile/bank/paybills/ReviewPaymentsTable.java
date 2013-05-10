@@ -90,12 +90,15 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		//The corresponding view list will be updated based on whether this method was called 
 		//to load more data or refresh the list because of a deleted item.
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
+			BankUser.instance().setScheduled(scheduled);
 			scheduled = (null == scheduled || dataDeleted) ? list : handleReceivedData(scheduled, list);
 			updateAdapter(scheduled);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
+			BankUser.instance().setCompleted(completed);
 			completed = (null == completed || dataDeleted) ? list : handleReceivedData(completed, list);
 			updateAdapter(completed);
 		}else{
+			BankUser.instance().setCancelled(canceled);
 			canceled = (null == canceled || dataDeleted) ? list : handleReceivedData(canceled, list);
 			updateAdapter(canceled);
 		}
