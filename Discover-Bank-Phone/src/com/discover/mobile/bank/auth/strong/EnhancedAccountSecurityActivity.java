@@ -23,6 +23,7 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -118,8 +119,9 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		loadAllViews();
 		setupRadioGroupListener();
 
+		CommonUtils.fixBackgroundRepeat(mainScrollView);
+		
 		restoreState(savedInstanceState);
-
 	}
 
 	@Override

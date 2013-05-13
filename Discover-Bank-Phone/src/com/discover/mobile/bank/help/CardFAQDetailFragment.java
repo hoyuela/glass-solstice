@@ -22,6 +22,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 /**
@@ -72,6 +73,8 @@ public class CardFAQDetailFragment extends BaseFragment {
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		footer.setCardMode(true);
 		footer.setFooterType(FooterType.PROVIDE_FEEDBACK | FooterType.PRIVACY_TERMS);
+		
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 

@@ -35,6 +35,7 @@ import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.slidingmenu.lib.SlidingMenu;
@@ -203,6 +204,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		disableMenu();
 		savedState = getArguments();
 
+		CommonUtils.fixBackgroundRepeat(navigationPanel);
 		return view;
 	}
 
