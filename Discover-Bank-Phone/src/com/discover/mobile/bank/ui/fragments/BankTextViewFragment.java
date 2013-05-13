@@ -13,6 +13,7 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Class used to displayed Google's Terms 
@@ -52,6 +53,7 @@ public class BankTextViewFragment extends BaseFragment {
 			pageTitle.setText(this.getArguments().getString(KEY_TITLE));
 		}
 
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 

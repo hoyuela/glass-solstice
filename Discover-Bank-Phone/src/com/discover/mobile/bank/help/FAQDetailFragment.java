@@ -17,6 +17,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 /**
  * This Fragment displays FAQ items for the user to review.
@@ -64,6 +65,7 @@ public class FAQDetailFragment extends BaseFragment {
 			}
 		});
 
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -55,6 +56,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		setupFooter();
 		setupAdapter();
 		setUpTable();
+		
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 
