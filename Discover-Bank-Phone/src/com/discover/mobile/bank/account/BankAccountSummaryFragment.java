@@ -86,7 +86,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
-		setupAccountToggle();
 
 		//If card and bank are authenticated then show the down arrow, since we are here
 		//Bank must be authenticated already so we only need to check to see if the card is 
@@ -94,6 +93,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if(BankUser.instance().isSsoUser()){
 			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
+			setupAccountToggle();
 		}
 
 		if (savedInstanceState != null
@@ -224,12 +224,12 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	private void setupAccountToggle() {
 		final ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
-	
+
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 				if(!toggleView.hasIndicatorBeenDrawn()) {
-					
+
 					toggleView.setIndicatorPosition(accountToggleSection.getLeft() - accountToggleIcon.getWidth() / 2,
 							accountToggleIcon.getTop(),
 							accountToggleIcon.getWidth(),
@@ -237,7 +237,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				}
 			}
 		});
-		
+
 		final ImageView accountToggleArrow = (ImageView) view
 				.findViewById(R.id.downArrow);
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
