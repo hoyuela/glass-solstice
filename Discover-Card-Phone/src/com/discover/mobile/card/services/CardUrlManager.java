@@ -9,7 +9,7 @@ package com.discover.mobile.card.services;
 
 public class CardUrlManager {
 
-	private static final String BASE_URL = "https://mst0.m.discovercard.com";
+	private static final String BASE_URL = "https://www.discovercard.com";
 
 	/**
 	 * Pre Auth URL
