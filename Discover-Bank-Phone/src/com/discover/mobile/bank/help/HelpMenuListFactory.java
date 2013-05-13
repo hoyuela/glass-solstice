@@ -139,14 +139,23 @@ public final class HelpMenuListFactory {
 		final HelpItemGenerator atmHelp = 
 				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener(fragment));
 
-		/**Default menu item representing the "Card ALL FAQ" item*/
-		final HelpItemGenerator cardFaq = new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
-
-		items.add(atmHelp);
 		if(!Globals.isLoggedIn()){
+
+			/**Default menu item representing the "Bank ALL FAQ" item*/
+			final HelpItemGenerator bankFaq = 
+					new HelpItemGenerator(R.string.help_bank_faq, true, true, getAllFaqListener());
+
+			/**Default menu item representing the "Card ALL FAQ" item*/
+			final HelpItemGenerator cardFaq = 
+					new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
+
 			items.add(cardFaq);
+			items.add(bankFaq);
+			items.add(atmHelp);
+		}else{
+			items.add(allFaq);
+			items.add(atmHelp);
 		}
-		items.add(allFaq);
 		return items;
 	}
 
