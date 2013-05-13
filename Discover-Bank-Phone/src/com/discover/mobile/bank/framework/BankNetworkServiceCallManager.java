@@ -573,7 +573,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 				if(navToReview){
 					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
+				} else {
+					//Navigate to Check Deposit - Select Amount Page
+					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
 				}
+					
 			}
 		}
 		//Handler for getting email directions

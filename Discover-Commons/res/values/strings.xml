@@ -110,6 +110,7 @@
 	    match our records, or you are not registered. Please try again.</string>
    	<string name="could_not_complete_request">Your Request Could Not Be Completed</string>
     <string name="unkown_error_text">Unknown error with the server, please try again later.</string>
+    <string name="successful_logout_title_text">You are now logged out</string>
     <string name="successful_logout_subtitle_text">Thank you for using Discover mobile.</string>
     <string name="go_back">Go back</string>
     <string name="logout">Logout</string>
@@ -139,6 +140,6 @@
     <string name="edit_title">EDIT</string>
     <string name="caret_description">Actionable field caret</string>
     <string name="account_ending_in">Ending in </string>
-    
+     <string name="card_divider">|</string>
     <string name="register_btn">Register</string>
 </resources>

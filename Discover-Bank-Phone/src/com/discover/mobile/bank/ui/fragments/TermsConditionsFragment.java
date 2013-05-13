@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * The Generic terms and conditions fragment to be used as a base class for any  of the terms and conditions
@@ -86,7 +87,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	boolean pageLoadSuccess = true;
 
 	@SuppressLint("NewApi")
-	private void setupWebView(boolean loadUrl) {
+	private void setupWebView(final boolean loadUrl) {
 		pageLoadSuccess = true;
 		final WebSettings webSettings = termsWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -125,7 +126,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(final Bundle outState) {
 		termsWebView.saveState(outState);
 	}
 	
@@ -156,6 +157,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		/**Set click listener for accept button*/
 		acceptButton.setOnClickListener(this);
 
+		CommonUtils.fixBackgroundRepeat(mainView);
 		return mainView;
 	}
 

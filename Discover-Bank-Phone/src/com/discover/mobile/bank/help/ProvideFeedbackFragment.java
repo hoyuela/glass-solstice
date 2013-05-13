@@ -13,6 +13,7 @@ import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Class used to display Privacy and Terms based on the type specified via the arguments bundle
@@ -48,6 +49,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		/**Hide footer with accept button*/
 		showFooter(false);
 		
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 	

@@ -42,9 +42,11 @@ public final class BankUrlManager  {
 	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp ";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
-	
+
 	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
 	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
+
+	private static final String CARD_GOOGLE_TERMS_URL = "https://www.google.com/intl/en-US_US/help/terms_maps.html";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -73,14 +75,14 @@ public final class BankUrlManager  {
 	 */
 	public static final String PUT_METHOD = "?_method=PUT";
 
-	
+
 	/**
 	 * This is a utility class and should not have a public or default constructor.
 	 */
 	private BankUrlManager() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Sets the base URL used for all NetworkServiceCall<> objects used for Bank Service API
 	 * 
@@ -132,14 +134,14 @@ public final class BankUrlManager  {
 	public static String getPrivacyTermsUrl() {	
 		return resolveTermsKeyToURL(PRIVACY_POLICY_KEY);
 	}
-	
+
 	/**
 	 * @return The URL link to be used for getting Terms of Use from the server
 	 */
 	public static String getTermsOfUse() {	
 		return resolveTermsKeyToURL(TERMS_OF_USE);
 	}
-	
+
 	/**
 	 * 
 	 * @param link a String representation of a URL that should end with HTML or HTM
@@ -148,7 +150,7 @@ public final class BankUrlManager  {
 	public static boolean isValidContentLink(final String link) {
 		return !Strings.isNullOrEmpty(link) && looksLikeContent(link);
 	}
-	
+
 	/**
 	 * 
 	 * @param testableLink a URL that should be checked if it could contain terms content.
@@ -157,7 +159,7 @@ public final class BankUrlManager  {
 	private static boolean looksLikeContent(final String link) {
 		return link != null && (link.endsWith("html") || link.endsWith("htm"));
 	}
-	
+
 	/**
 	 * 
 	 * @param key
@@ -166,17 +168,17 @@ public final class BankUrlManager  {
 	private static String resolveTermsKeyToURL(final String key) {
 		final StringBuilder urlBuilder = new StringBuilder();
 		urlBuilder.append(getBaseUrl());
-		
+
 		final String testableLink = getUrl(key);
 		if(isValidContentLink(testableLink)) {
 			urlBuilder.append(testableLink);
 		}else {
 			urlBuilder.append(getFailSafeUrlForKey(key));
 		}
-		
+
 		return urlBuilder.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param key a key which has a fail safe URL defined.
@@ -184,13 +186,13 @@ public final class BankUrlManager  {
 	 */
 	private static String getFailSafeUrlForKey(final String key) {
 		String url = "";
-		
+
 		if(TERMS_OF_USE.equalsIgnoreCase(key)) {
 			url = TERMS_FAIL_SAFE_URL;
 		}else if(PRIVACY_POLICY_KEY.equalsIgnoreCase(key)) {
 			url = PRIVACY_POLICY_FAIL_SAFE_URL;
 		}
-		
+
 		return url;
 	}
 
@@ -300,7 +302,7 @@ public final class BankUrlManager  {
 	public static String getStatementsUrl() {
 		return STATEMENTS_URL;
 	}
-	
+
 	public static String getManageExternalAccountsUrl() {
 		return MANAGE_EXTERNAL_ACCOUNTS_URL;
 	}
@@ -393,6 +395,13 @@ public final class BankUrlManager  {
 	 */
 	public static String getAtmAddressToLocationBaseUrl() {
 		return ATM_ADDRESS_TO_LOCATION_BASE_URL;
+	}
+
+	/**
+	 * @return the cardGoogleTermsUrl
+	 */
+	public static String getCardGoogleTermsUrl() {
+		return CARD_GOOGLE_TERMS_URL;
 	}
 
 }
