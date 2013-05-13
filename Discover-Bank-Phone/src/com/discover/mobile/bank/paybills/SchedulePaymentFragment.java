@@ -882,6 +882,11 @@ public class SchedulePaymentFragment extends BaseFragment
 				
 				/**Set to true to avoid a catch all modal being displayed*/
 				handled = true;
+			} else if( !Strings.isNullOrEmpty(error.message) ) { 
+				setErrorString(conflictError,error.message);
+				
+				/**Set to true to avoid a catch all modal being displayed*/
+				handled = true;
 			}
 		}
 		
