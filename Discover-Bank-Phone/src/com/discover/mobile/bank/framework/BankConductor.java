@@ -793,6 +793,13 @@ public final class BankConductor  extends Conductor {
 			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
 				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
+				
+				/**Update arguments bundle in fragment*/
+				Bundle args = revPmtFrag.getArguments();
+				if( args != null) {
+					args.putAll(bundle);
+				}
+				
 				revPmtFrag.handleReceivedData(bundle);
 			}
 		}
