@@ -95,7 +95,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		BankConductor.navigateToHomePage();
+		BankConductor.navigateToHomePage(true);
 	}
 
 	/**
