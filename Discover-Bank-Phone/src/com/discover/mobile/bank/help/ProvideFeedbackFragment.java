@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
@@ -12,6 +13,7 @@ import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Class used to display Privacy and Terms based on the type specified via the arguments bundle
@@ -47,6 +49,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		/**Hide footer with accept button*/
 		showFooter(false);
 		
+		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 	
@@ -61,6 +64,22 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**This is required such that the keyboard does not overlap the provided feedback input field*/
+		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		/**Return to the state required by the navigation activity*/
+		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+	}
+	
+	@Override
 	public int getPageTitle() {
 		return R.string.bank_provide_feedback;
 	}
@@ -72,12 +91,12 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP;
+		return BankMenuItemLocationIndex.PROVIDE_FEEDBACK_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 0;
+		return BankMenuItemLocationIndex.PROVIDE_FEEDBACK;
 	}
 	@Override
 	public void onAcceptClicked() {

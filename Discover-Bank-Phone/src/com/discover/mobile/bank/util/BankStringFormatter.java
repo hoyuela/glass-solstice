@@ -203,9 +203,9 @@ public final class BankStringFormatter {
 			final SimpleDateFormat submissionDateFormat;
 			
 			if( useMilliSecs ) {
-				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ", Locale.getDefault() );
+				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault() );
 			} else {
-				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ssZ", Locale.getDefault() );
+				submissionDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.getDefault() );
 			}
 			
 			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));

@@ -50,11 +50,14 @@
     
     <!-- Network Connection Error Strings  -->
     <string name="bank_network_connection_error_title">Network Connection Error</string>
-    <string name="bank_network_connection_error_body">The Internet connection appears to be offline at this moment. Please check your device setting and try again once the connection has been restored.</string>
+    <string name="bank_network_connection_error_body">The Internet connection appears to be offline at this moment. Please check your device settings and try again once the connection has been restored.</string>
     <string name="bank_network_connection_error_action">Retry</string>
     
     <!-- SSO modal string -->
     <string name="sso_bad_bank_status_title">We\'re Sorry</string>
     <string name="sso_bad_bank_status_content">Due to special conditions related to your bank account, we can\'t provide you with access to your bank account at this time.  To login to Discover Card only please select Continue below.</string>
 	<string name="sso_bad_bank_button">Continue</string>
+	
+	<!--General Strings  -->
+	<string name="ellipsis">...</string>
 </resources>

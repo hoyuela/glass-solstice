@@ -65,7 +65,7 @@ public class CardLoggedOutFAQActivity  extends NavigationRootActivity{
 			final String faqType = bundle.getString(BankExtraKeys.FAQ_TYPE);
 			BankConductor.navigateToCardFaqDetail(faqType);
 		}else {
-			final FAQLandingPageFragment landingPage = new FAQLandingPageFragment();
+			final CardFAQLandingPageFragment landingPage = new CardFAQLandingPageFragment();
 			makeFragmentVisible(landingPage);
 		}
 	}

@@ -10,6 +10,7 @@ import java.util.List;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.atm.LocationObject;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
 /**
  * Main detail object for the get ATM service call.  This class is used
@@ -182,11 +183,33 @@ public class AtmDetail extends LocationObject implements Serializable{
 
 	@Override
 	public int getPinDrawable() {
-		return (isAtmSearchargeFree()) ? R.drawable.atm_locator_orange_pin : R.drawable.atm_locator_gray_pin;	
+		return (isAtmSearchargeFree()) ? R.drawable.atm_pin_orange_map_view : R.drawable.atm_pin_gray_map_view;	
 	}
 
 	@Override
 	public void setDistanceFromUser(final double distance) {
 		distanceFromUser = distance;
+	}
+	
+	/**
+	 * Method used to format the address of this atm detail.
+	 * Address
+     * City, State Zip
+	 * 
+	 * @return Formatted ATM Address
+	 */
+	public String getFormattedAddress() {
+		/**Format address returned by atm*/
+		StringBuilder addressFormatted = new StringBuilder();
+		addressFormatted.append(Strings.nullToEmpty(address1));
+		
+		addressFormatted.append("\n");
+		addressFormatted.append(Strings.nullToEmpty(city));
+		addressFormatted.append(", ");
+		addressFormatted.append(Strings.nullToEmpty(state));
+		addressFormatted.append(" ");
+		addressFormatted.append(Strings.nullToEmpty(postalCode));
+		
+		return addressFormatted.toString();
 	}
 }

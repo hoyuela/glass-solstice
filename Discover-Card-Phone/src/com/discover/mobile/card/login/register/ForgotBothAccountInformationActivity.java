@@ -84,9 +84,10 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
 
 	@Override
 	public void goBack() {
-		finish();
+		
 		final Intent forgotCredentials = new Intent(this, ForgotCredentialsActivity.class);
 		startActivity(forgotCredentials);
+		finish();
 	}
 
 
@@ -117,11 +118,16 @@ public class ForgotBothAccountInformationActivity extends ForgotOrRegisterFirstS
             Utils.createProvideFeedbackDialog(ForgotBothAccountInformationActivity.this, FORGOTBOTHREFERER);
         }else if(v.getId()==R.id.account_info_cancel_label)
         {
-        	finish();
-    		final Bundle bundle = new Bundle();
+        	
+        	 final Intent forgotCredentialsActivity = new Intent(this,
+        			   ForgotCredentialsActivity.class);
+        			   startActivity(forgotCredentialsActivity);		
+        			   
+        	          finish();
+    		/*final Bundle bundle = new Bundle();
             bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
             bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-            FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+            FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);*/
         }
     }
     

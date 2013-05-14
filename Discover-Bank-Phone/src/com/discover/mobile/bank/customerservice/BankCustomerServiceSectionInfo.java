@@ -51,7 +51,7 @@ public final class BankCustomerServiceSectionInfo extends GroupComponentInfo {
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToContactUs(ContactUsType.BANK);
+				BankConductor.navigateToContactUs(ContactUsType.BANK, false);
 			}
 		};
 	}

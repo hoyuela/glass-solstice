@@ -84,19 +84,41 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			list = new ListPaymentDetail();
 			list.payments = new ArrayList<PaymentDetail>();
 			list.links = new HashMap<String, ReceivedUrl>();
-		}
-
+		} 
+		
 		//Check what view the user is currently is in Scheduled, Completed or Cancelled.
 		//The corresponding view list will be updated based on whether this method was called 
 		//to load more data or refresh the list because of a deleted item.
-		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS){
-			scheduled = (null == scheduled || dataDeleted) ? list : handleReceivedData(scheduled, list);
+		if (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) {
+			if (null == scheduled || dataDeleted) {
+				scheduled = list;
+
+				/** Update cached data */
+				BankUser.instance().setScheduled(scheduled);
+			} else {
+				scheduled = handleReceivedData(scheduled, list);
+			}
+
 			updateAdapter(scheduled);
-		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS){
-			completed = (null == completed || dataDeleted) ? list : handleReceivedData(completed, list);
+		} else if (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) {
+			if (null == completed || dataDeleted) {
+				completed = list;
+
+				/** Update cached data */
+				BankUser.instance().setCompleted(completed);
+			} else {
+				completed = handleReceivedData(completed, list);
+			}
 			updateAdapter(completed);
-		}else{
-			canceled = (null == canceled || dataDeleted) ? list : handleReceivedData(canceled, list);
+		} else {
+			if (null == canceled || dataDeleted) {
+				canceled = list;
+
+				/** Update cached data */
+				BankUser.instance().setCancelled(canceled);
+			} else {
+				canceled = handleReceivedData(canceled, list);
+			}
 			updateAdapter(canceled);
 		}
 

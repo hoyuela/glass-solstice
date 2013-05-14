@@ -16,6 +16,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -53,12 +54,14 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	private AccountToggleView toggleView;
 	private View view;
 	private ImageView accountToggleIcon;
+	private RelativeLayout accountToggleSection;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
 
+		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
 
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
 		salutation.setText(setFirstName());
@@ -83,7 +86,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
-		setupAccountToggle();
 
 		//If card and bank are authenticated then show the down arrow, since we are here
 		//Bank must be authenticated already so we only need to check to see if the card is 
@@ -91,6 +93,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if(BankUser.instance().isSsoUser()){
 			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
+			setupAccountToggle();
 		}
 
 		if (savedInstanceState != null
@@ -221,11 +224,13 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	private void setupAccountToggle() {
 		final ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
+
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 				if(!toggleView.hasIndicatorBeenDrawn()) {
-					toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
+
+					toggleView.setIndicatorPosition(accountToggleSection.getLeft() - accountToggleIcon.getWidth() / 2,
 							accountToggleIcon.getTop(),
 							accountToggleIcon.getWidth(),
 							accountToggleIcon.getHeight());
@@ -237,6 +242,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				.findViewById(R.id.downArrow);
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
+		accountToggleSection.setOnClickListener(new AccountToggleListener());
 	}
 
 	/**

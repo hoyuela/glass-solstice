@@ -19,6 +19,8 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -56,10 +58,23 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 			final TextView label = (TextView)item.findViewById(android.R.id.text1);
 			label.setText(values[i]);
 			item.setOnClickListener(getListClickListener(item));
+			((TextView)item.findViewById(android.R.id.text1)).setTextColor(getResources().getColor(R.color.blue_link));
 
 			//Add the constructed list item to the table.
 			faqList.addView(item);
 
+			view.findViewById(R.id.bank_footer).setVisibility(View.GONE);
+
+			view.findViewById(R.id.more_faq_text).setVisibility(View.VISIBLE);
+
+			final TextView link = (TextView)view.findViewById(R.id.more_faq_link);
+			link.setVisibility(View.VISIBLE);
+			link.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+					BankConductor.navigateToBrowser("https://www.discover.com/credit-cards/help-center/faqs");
+				}
+			});
 		}
 
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
@@ -69,6 +84,11 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 			// Tiled background is often broken for older devices
 			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
 		}
+
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setVisibility(View.VISIBLE);
+		footer.setCardMode(true);
+		footer.setFooterType(FooterType.PROVIDE_FEEDBACK | FooterType.PRIVACY_TERMS);
 
 		return view;
 	}

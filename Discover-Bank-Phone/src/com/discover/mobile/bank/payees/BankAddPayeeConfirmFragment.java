@@ -125,10 +125,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		if( getActivity() instanceof BankNavigationRootActivity ) {
-			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-			activity.onBackPressed();
-		}
+		navigateBack();
 	}
 
 	/**

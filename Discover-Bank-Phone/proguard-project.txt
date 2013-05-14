@@ -12,6 +12,21 @@
 
 # Add any project specific keep options here:
 
+
+-dontwarn org.joda.convert.**
+-dontwarn com.xtremelabs.**
+-dontwarn org.junit.**
+
+
+-libraryjars <java.home>/lib/rt.jar
+-libraryjars ../ActionBarSherlock/bin/classes
+-libraryjars ../Android-PullToRefresh/bin/classes
+-libraryjars ../Caldroid/bin/classes
+-libraryjars ../Google-Play-Services/bin/classes
+-libraryjars ../SlidingMenuActivity/bin/classes
+-libraryjars ../Discover-Commons/bin/classes
+
+
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:

@@ -90,7 +90,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private static final String ERROR_MESSAGE_KEY = "g";
 	private static final String ERROR_MESSAGE_VISIBILITY = "h";
 	private static final String ERROR_MESSAGE_COLOR = "i";
-	private static final String TOGGLE_BANK_KEY = "j";
+	private static final String TOGGLE_KEY = "j";
 
 	/** ID that allows control over relative buttons' placement.*/
 	private static final int LOGIN_BUTTON_ID = 1;
@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	private TextView forgotUserIdOrPassText;
 	private TextView goToBankLabel;
 	private TextView goToCardLabel;
+	private TextView cardPrivacyLink;
 
 	// IMAGES
 	private ImageView cardCheckMark;
@@ -135,8 +136,12 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	private boolean saveUserId = false;
 
-	/** {@code true} when we restored the bank toggle on orientation change. */
-	private boolean restoreBankToggle = false;
+	/** The value of variable restoreToggle when we are not restoring based on orientation change */
+	private static final int NO_TOGGLE_TO_RESTORE = -1;
+	
+	/** Equal to an Account Type ordinal when we restored a toggle on orientation change 
+	 * (versus. restoring based on last login). */
+	private int restoreToggle = NO_TOGGLE_TO_RESTORE;
 
 	/** {@code true} when we restored an error on orientation change. */
 	private boolean restoreError = false;
@@ -197,6 +202,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		forgotUserIdOrPassText = (TextView) findViewById(R.id.forgot_uid_or_pass_text);
 		goToBankLabel = (TextView) findViewById(R.id.go_to_bank_label);
 		goToCardLabel = (TextView) findViewById(R.id.go_to_card_label);
+		cardPrivacyLink = (TextView) findViewById(R.id.privacy_and_security_button_card);
 
 		goToBankButton = (RelativeLayout) findViewById(R.id.bank_login_toggle);
 		goToCardButton = (RelativeLayout) findViewById(R.id.card_login_toggle);
@@ -349,9 +355,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		// Proper card|bank Account Type removed on orientation change
 		// (This is due to the BaseActivity onResume reloading prefs only stored on login)
 		// (Must set before setApplicationAccount())
-		if (restoreBankToggle) {
-			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
-			restoreBankToggle = false;
+		if (restoreToggle >= 0) {
+			Globals.setCurrentAccount(AccountType.values()[restoreToggle]);
+			restoreToggle = NO_TOGGLE_TO_RESTORE;
 		}
 
 		//Default to the last path user chose for login Card or Bank
@@ -420,7 +426,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		outState.putString(ERROR_MESSAGE_KEY, errorTextView.getText().toString());
 		outState.putInt(ERROR_MESSAGE_VISIBILITY, errorTextView.getVisibility());
 		outState.putInt(ERROR_MESSAGE_COLOR, errorTextView.getCurrentTextColor());
-		outState.putBoolean(TOGGLE_BANK_KEY, Globals.getCurrentAccount().equals(AccountType.BANK_ACCOUNT));
+		outState.putInt(TOGGLE_KEY, Globals.getCurrentAccount().ordinal());
 
 		super.onSaveInstanceState(outState);
 	}
@@ -443,7 +449,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			restoreErrorTextView(savedInstanceState);
 			resetInputFieldColors();
 
-			restoreBankToggle = savedInstanceState.getBoolean(TOGGLE_BANK_KEY, false);
+			restoreToggle = savedInstanceState.getInt(TOGGLE_KEY, NO_TOGGLE_TO_RESTORE);
 		}
 
 	}
@@ -539,7 +545,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToContactUs(ContactUsType.ALL);
+				final boolean isCard = (View.VISIBLE == cardCheckMark.getVisibility());
+				BankConductor.navigateToContactUs(ContactUsType.ALL, isCard);
 			}
 		});
 
@@ -580,6 +587,14 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 			public void onClick(final View v) {
 				CommonUtils.setViewGone(errorTextView);
 				forgotIdAndOrPass();
+			}
+		});
+
+		cardPrivacyLink.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				BankConductor.navigateToCardPrivacyAndTermsLanding();
 			}
 		});
 	}
@@ -1140,7 +1155,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	 */
 	public void showALUStatusModal(final BankLoginDetails credentials) {
 		//Set that an sso user is attempting to login
-		BankUser.instance().setSsoUser(true);
+		BankUser.instance().setSsoUser(false);
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);

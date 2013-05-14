@@ -286,11 +286,13 @@ public final class CommonUtils {
 	 * @param view a view which contains a tiled background image.
 	 */
 	public final static void fixBackgroundRepeat(final View view) {
-	    final Drawable bg = view.getBackground();
-		if (bg instanceof BitmapDrawable) {
-			final BitmapDrawable bmp = (BitmapDrawable) bg;
-			bmp.mutate(); // make sure that we aren't sharing state anymore
-			bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+		if( view != null ) {
+		    final Drawable bg = view.getBackground();
+			if (bg instanceof BitmapDrawable) {
+				final BitmapDrawable bmp = (BitmapDrawable) bg;
+				bmp.mutate(); // make sure that we aren't sharing state anymore
+				bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
+			}
 		}
 	}
 }

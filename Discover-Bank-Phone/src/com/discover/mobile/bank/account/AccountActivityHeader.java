@@ -19,6 +19,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.common.help.HelpWidget;
+import com.google.common.base.Strings;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -42,6 +43,9 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**VAlue holding the type of account in header*/
 	private final TextView type;
 
+	/**Current Balance Label*/
+	private final TextView currentBalanceLabel;
+	
 	/**Value holding the current balance*/
 	private final TextView currentBalance;
 
@@ -93,6 +97,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		checking = (TextView)view.findViewById(R.id.value1);
 		availableBalance = (TextView)view.findViewById(R.id.value2);
 		availableBalanceLabel = (TextView)view.findViewById(R.id.lable2);
+		currentBalanceLabel = (TextView)view.findViewById(R.id.lable3);
 		currentBalance = (TextView)view.findViewById(R.id.value3);
 		title = (TextView) view.findViewById(R.id.title_text);
 		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
@@ -158,9 +163,16 @@ public class AccountActivityHeader extends RelativeLayout{
 		
 		type.setText(account.getFormattedName());
 		title.setText(account.nickname);
-		checking.setText(account.accountNumber.formatted);
-		currentBalance.setText(account.balance.formatted);
+		checking.setText(account.accountNumber.formatted);	
 		setSpan(R.drawable.drk_blue_arrow_down);
+		
+		/**If current balance is not provided do not show*/
+		if( null != account.currentBalance ) {
+			currentBalance.setText(account.currentBalance.formatted);
+		} else {
+			currentBalance.setVisibility(View.GONE);
+			currentBalanceLabel.setVisibility(View.GONE);
+		}
 		
 		/**Available Balance Should only be shown for non-personal loan accounts*/
 		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) ) {		
@@ -191,7 +203,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				if(currentBalance.getVisibility() == View.VISIBLE){
+				if(checking.getVisibility() == View.VISIBLE){
 					setSpan(R.drawable.drk_blue_arrow_down);
 					labels.startAnimation(collapse);
 					setHeaderExpanded(false);
@@ -212,8 +224,16 @@ public class AccountActivityHeader extends RelativeLayout{
 	public void changeVisibility(final int visibility){
 		view.findViewById(R.id.lable1).setVisibility(visibility);
 		view.findViewById(R.id.lable3).setVisibility(visibility);
-		currentBalance.setVisibility(visibility);
 		checking.setVisibility(visibility);
+		
+		/**If current balance is not provided do not show*/
+		if( null != account.currentBalance ) {
+			currentBalance.setVisibility(visibility);
+			currentBalanceLabel.setVisibility(visibility);
+		} else {
+			currentBalance.setVisibility(View.GONE);
+			currentBalanceLabel.setVisibility(View.GONE);
+		}
 		
 		/**Available Balance Should only be shown for non-personal loan accounts*/
 		if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {

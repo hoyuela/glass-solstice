@@ -46,7 +46,8 @@ $("#sendMoney1-pg").live('click', function() {
 });
 function sendMoney1Load() {
 	try {	
-		if(!dfs.crd.p2p.hIWScreenFlag && fromPageName!="sendMoney2"){		
+		if(fromPageName!="sendMoney2" && fromPageName!="cancelTransaction")
+		{
 			killDataFromCache("SM1_DATA");
 		}
 		dfs.crd.p2p.validPriorPagesOfStep1 = new Array("moreLanding",

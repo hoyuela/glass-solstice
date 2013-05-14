@@ -62,14 +62,13 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 		if(BankUser.instance().isSsoUser()){
 			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
 			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
+			setupAccountToggle();
 		}
 
 		if (savedInstanceState != null
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
 			toggleView.toggleVisibility();
 		}
-
-		setupAccountToggle();
 
 		return view;
 	}

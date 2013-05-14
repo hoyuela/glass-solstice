@@ -140,6 +140,6 @@
     <string name="edit_title">EDIT</string>
     <string name="caret_description">Actionable field caret</string>
     <string name="account_ending_in">Ending in </string>
-    
+     <string name="card_divider">|</string>
     <string name="register_btn">Register</string>
 </resources>

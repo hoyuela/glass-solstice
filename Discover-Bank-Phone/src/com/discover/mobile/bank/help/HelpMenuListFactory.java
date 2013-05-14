@@ -16,6 +16,7 @@ import com.discover.mobile.bank.deposit.BankDepositSelectAccount;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpItemGenerator;
 
 /**
@@ -122,10 +123,10 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, false, true, 
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, true, true, 
 				getHowItWorksModalListener());
-		items.add(howItWorksModal);
 		items.add(allFaq);
+		items.add(howItWorksModal);
 		return items;
 	}
 
@@ -134,11 +135,19 @@ public final class HelpMenuListFactory {
 	 * @return the menu items for ATM locator
 	 */
 	public List<HelpItemGenerator> getAtmHelpItems(final AtmMapFragment fragment){
-		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		List<HelpItemGenerator> items = null;
+		
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener(fragment));
+				new HelpItemGenerator(R.string.help_menu_atm_help, true, true, getAtmHelpListener(fragment));
+
+		if(!Globals.isLoggedIn()){			
+			items = getLoggedOutHelpItems();
+		} else {
+			items = new ArrayList<HelpItemGenerator>();
+			
+			items.add(allFaq);
+		}
 		items.add(atmHelp);
-		items.add(allFaq);
 		return items;
 	}
 

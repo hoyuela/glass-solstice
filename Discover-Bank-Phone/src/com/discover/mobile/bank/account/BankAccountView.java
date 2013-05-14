@@ -59,6 +59,10 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 * Reference to layout used for this view
 	 */
 	private final RelativeLayout layout;
+	/**
+	 * Holds the max length that is allowed to be displayed for an account nickname
+	 */
+	public static final int MAX_ACCOUNT_NAME_SIZE = 22; 
 
 	/**
 	 * 
@@ -143,6 +147,22 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	}
 
 	/**
+	 * Method used to format the nick name of the associated account object. If account nickname
+	 * is greater than MAX_ACCOUNT_NAME_SIZE, then it is truncated and concated with ellipsis.
+	 * 
+	 * @return Formatted Account Nickname
+	 */
+	public String getFormattedNickname() {
+		String formattedName = Strings.nullToEmpty(account.nickname);
+		
+		if( formattedName.length() > MAX_ACCOUNT_NAME_SIZE ) {
+			formattedName = formattedName.substring(0, MAX_ACCOUNT_NAME_SIZE) +getContext().getResources().getString(R.string.ellipsis);
+		} 
+		
+		return formattedName;
+	}
+	
+	/**
 	 * 
 	 * @param account Reference to an Account object that holds all the information to display in this view.
 	 */
@@ -150,7 +170,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 
 		this.setEnding(account.accountNumber);
 		this.setBalance(account.balance);
-		this.setNickName(Strings.nullToEmpty(account.nickname));
+		this.setNickName(getFormattedNickname());
 
 		/**User should only be allowed to navigate to account details if it is non-IRA account*/
 		if( account.type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
@@ -231,7 +251,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
 		lastView.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.home_list_item));
+				R.drawable.common_home_list_item));
 		lastView.setPadding(
 				(int)context.getResources()
 				.getDimension(R.dimen.forms_inner_padding), 0,

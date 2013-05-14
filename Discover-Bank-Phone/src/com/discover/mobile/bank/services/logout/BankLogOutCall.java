@@ -7,13 +7,18 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
+import com.discover.mobile.bank.services.auth.BankSchema;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
+import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.net.StrongReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.google.common.collect.ImmutableMap;
@@ -31,15 +36,22 @@ public class BankLogOutCall extends BankNetworkServiceCall<Object> {
 	private static ServiceCallParams getParams(){
 		ServiceCallParams params;
 		String url;
-		url = BankUrlManager.getGetTokenUrl() +BankUrlManager.DELETE_METHOD;
+		url = BankUrlManager.getGetTokenUrl();
 		params = new PostCallParams(url) {{
 			requiresSessionForRequest = true;
 			clearsSessionAfterRequest = true;
 			
-			//Custom headers for delete
-			headers = ImmutableMap.<String,String>builder()
-					.put(HttpHeaders.XHttpMethodOveride, XHttpMethodOverrideValues.DELETE.toString())
-					.build();
+			if( Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT ) {
+				BankLogoutData logoutData = new BankLogoutData();
+				logoutData.value = SessionTokenManager.getToken().replaceAll(BankSchema.BANKBASIC +" ", "");
+				body = logoutData;
+				
+				
+				//Custom headers for delete
+				headers = ImmutableMap.<String,String>builder()
+						.put(HttpHeaders.XHttpMethodOveride, XHttpMethodOverrideValues.DELETE.toString())
+						.build();
+			}
 		}};
 		return params;
 	}
