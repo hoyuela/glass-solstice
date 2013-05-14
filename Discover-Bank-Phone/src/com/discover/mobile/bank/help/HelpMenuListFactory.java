@@ -123,10 +123,10 @@ public final class HelpMenuListFactory {
 	 */
 	public List<HelpItemGenerator> getCheckDepositHelpItems(){
 		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
-		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, false, true, 
+		final HelpItemGenerator howItWorksModal = new HelpItemGenerator(R.string.check_deposit_help, true, true, 
 				getHowItWorksModalListener());
-		items.add(howItWorksModal);
 		items.add(allFaq);
+		items.add(howItWorksModal);
 		return items;
 	}
 
@@ -135,27 +135,19 @@ public final class HelpMenuListFactory {
 	 * @return the menu items for ATM locator
 	 */
 	public List<HelpItemGenerator> getAtmHelpItems(final AtmMapFragment fragment){
-		final List<HelpItemGenerator> items = new ArrayList<HelpItemGenerator>();
+		List<HelpItemGenerator> items = null;
+		
 		final HelpItemGenerator atmHelp = 
-				new HelpItemGenerator(R.string.help_menu_atm_help, false, true, getAtmHelpListener(fragment));
+				new HelpItemGenerator(R.string.help_menu_atm_help, true, true, getAtmHelpListener(fragment));
 
-		if(!Globals.isLoggedIn()){
-
-			/**Default menu item representing the "Bank ALL FAQ" item*/
-			final HelpItemGenerator bankFaq = 
-					new HelpItemGenerator(R.string.help_bank_faq, true, true, getAllFaqListener());
-
-			/**Default menu item representing the "Card ALL FAQ" item*/
-			final HelpItemGenerator cardFaq = 
-					new HelpItemGenerator(R.string.help_card_faq, true, true, getCardFaqListener());
-
-			items.add(cardFaq);
-			items.add(bankFaq);
-			items.add(atmHelp);
-		}else{
+		if(!Globals.isLoggedIn()){			
+			items = getLoggedOutHelpItems();
+		} else {
+			items = new ArrayList<HelpItemGenerator>();
+			
 			items.add(allFaq);
-			items.add(atmHelp);
 		}
+		items.add(atmHelp);
 		return items;
 	}
 

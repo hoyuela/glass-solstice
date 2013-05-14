@@ -23,6 +23,7 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Simple web view fragment.  The fragment contains a web view and a title.  To get it to load
@@ -48,6 +49,7 @@ public class BankWebViewFragment extends BaseFragment{
 	/**TextView that displays the title of the page within the fragment*/
 	private TextView pageTitle;
 
+	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
@@ -70,6 +72,14 @@ public class BankWebViewFragment extends BaseFragment{
 			setupWebView(false);
 		} else {
 			setupWebView(true);
+		}
+		
+		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+			view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		} else {
+			// Tiled background is often broken for older devices
+			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.webview_layout));
 		}
 
 		return view;
