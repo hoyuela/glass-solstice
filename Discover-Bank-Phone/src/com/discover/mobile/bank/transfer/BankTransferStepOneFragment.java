@@ -790,7 +790,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		boolean hasEnoughTransfers = true;
 		
 		if(TransferDetail.UNTIL_COUNT.equalsIgnoreCase(recurring.getDurationType())) {
-			hasEnoughTransfers = 1 < Integer.parseInt(recurring.getDurationValue());
+			hasEnoughTransfers = !Strings.isNullOrEmpty(recurring.getDurationValue()) && 1 < Integer.parseInt(recurring.getDurationValue());
 			if(!hasEnoughTransfers) {
 				showErrorLabel(getString(R.string.too_few_transfers), 
 										(TextView)recurring.findViewById(R.id.transactions_error_label));
