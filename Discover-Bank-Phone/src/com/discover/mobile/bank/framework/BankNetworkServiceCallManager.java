@@ -26,6 +26,7 @@ import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
@@ -465,8 +466,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();
 
-			args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, result);
-
+			//Cache the external accounts in the BankUser singleton class.
+			final AccountList externalAccounts = (AccountList)result;
+			BankUser.instance().setExternalAccounts(externalAccounts);
+			
+			args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, externalAccounts);
 			BankConductor.navigateToTransferMoneyLandingPage(args);
 		}
 		else if(sender instanceof ScheduleTransferCall) {
