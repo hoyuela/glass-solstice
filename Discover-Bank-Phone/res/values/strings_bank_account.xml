@@ -7,7 +7,13 @@
     <string name="bank_ira_account">Retirement Plans</string>
     <string name="bank_loan_account">Personal Loans</string>
     <string name="bank_unknown_account">Other Accounts</string>
-
+    
+    <!-- Greeting Strings -->
+    <string name="greeting_prefix">Good %s,</string>
+    <string name="greeting_morning_suffix">morning</string>
+	<string name="greeting_afternoon_suffix">afternoon</string>
+	<string name="greeting_evening_suffix">evening</string>
+	
     <!-- Account Activity Strings -->
     <string name="activity_screen_title">Account Activity</string>
     <string name="activity_title">Discover Online Checking</string>
