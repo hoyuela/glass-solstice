@@ -19,6 +19,8 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -82,6 +84,11 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 			// Tiled background is often broken for older devices
 			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
 		}
+
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setVisibility(View.VISIBLE);
+		footer.setCardMode(true);
+		footer.setFooterType(FooterType.PROVIDE_FEEDBACK | FooterType.PRIVACY_TERMS);
 
 		return view;
 	}

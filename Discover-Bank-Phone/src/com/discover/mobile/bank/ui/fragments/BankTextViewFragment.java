@@ -53,7 +53,14 @@ public class BankTextViewFragment extends BaseFragment {
 			pageTitle.setText(this.getArguments().getString(KEY_TITLE));
 		}
 
-		CommonUtils.fixBackgroundRepeat(view);
+		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+			view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		} else {
+			// Tiled background is often broken for older devices
+			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
+		}
+				
 		return view;
 	}
 

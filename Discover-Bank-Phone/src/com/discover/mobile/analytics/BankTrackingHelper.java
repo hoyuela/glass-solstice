@@ -23,6 +23,7 @@ import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -149,7 +150,7 @@ public final class BankTrackingHelper {
 		trackingMap = new HashMap<String, Integer>(); 
 		trackingMap.put(LoginActivity.class.getSimpleName(), R.string.bank_login);
 		trackingMap.put(BankAccountSummaryFragment.class.getSimpleName(), R.string.bank_account_summary);
-		//TODO: Need transfer confirmation
+		trackingMap.put(BankTransferConfirmationFragment.class.getSimpleName(), R.string.bank_transfer_confirmation);
 		trackingMap.put(BankDepositConfirmFragment.class.getSimpleName(), R.string.bank_deposit_confirmation);
 		trackingMap.put(BankPayConfirmFragment.class.getSimpleName(), R.string.bank_pay_bill_confirmation);
 		trackingMap.put(BankTransferStepOneFragment.class.getSimpleName(), R.string.bank_transfer_start);
