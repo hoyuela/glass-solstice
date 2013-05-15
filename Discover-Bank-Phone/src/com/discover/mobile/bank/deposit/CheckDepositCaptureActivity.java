@@ -149,9 +149,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void onStop() {
 		super.onStop();
 		
-		if(timerTask != null)
+		if(timerTask != null) {
 			timerTask.cancel(true);
-
+		}
+		
 		resetCountdown();
 	}
 
@@ -655,12 +656,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		@Override
 		public void onAutoFocus(final boolean success, final Camera camera) {
 			//Cancel auto focus is called because if not, the flash may stay on.
-//			camera.cancelAutoFocus();
-			if(success) {
-				camera.takePicture(null, null, mPicture);
-			}else {
-				camera.autoFocus(focusAndCaptureCallback);
-			}
+			camera.cancelAutoFocus();
+			camera.takePicture(null, null, mPicture);
 		}
 	};
 
