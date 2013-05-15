@@ -249,9 +249,7 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getUnmanagedPayeeMemoCell(final String memo) {
-		final ViewPagerListItem payeeMemo = getMemoItemCell(memo);
-		payeeMemo.getTopLabel().setText(R.string.payee_memo);
-
+		final ViewPagerListItem payeeMemo = getTwoItemCell(R.string.payee_memo, memo);
 		return payeeMemo;
 	}
 
