@@ -23,57 +23,94 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 	private Class<?> popTillFragment = null;
 	private boolean overridePop = false;
 	
+	private int titleText = R.string.are_you_sure_title;
+	private int bodyText = R.string.are_you_sure_cancel_body;
+	private int buttonText = R.string.continue_text;
+	
 	/**
-	 * To create a AreYouSureGoBackModal provide a reference to a BaseFragment and an optional click listener
-	 * for the button in the modal. The button in the modal will perform a fragment stack pop along with this 
-	 * provided click listeners action.
+	 * Create a modal that will pop the back stack once upon dismissal.
 	 * 
-	 * @param baseFragment the base fragment that needs to launch this modal.
+	 * @param baseFragment
 	 */
 	public AreYouSureGoBackModal(final BaseFragment baseFragment) {
 		this.baseFragment = baseFragment;
 	}
 	
+	/**
+	 * Create a modal that will pop the back stack until the specified fragmetn is reached.
+	 * @param baseFragment 
+	 * @param popTillFragment a class that represents a fragment in the backstack.
+	 */
 	public AreYouSureGoBackModal(final BaseFragment baseFragment, final Class<?> popTillFragment) {
 		this.baseFragment = baseFragment;
 		this.popTillFragment = popTillFragment;
 	}
-	
+
 	/**
-	 * To create a AreYouSureGoBackModal provide a reference to a BaseFragment and an optional click listener
-	 * for the button in the modal. The button in the modal will perform a fragment stack pop along with this 
-	 * provided click listeners action.
+	 * Create a modal that will perform the given OnClickListener action then pop the backstack once.
 	 * 
-	 * @param baseFragment the base fragment that needs to launch this modal.
-	 * @param onButtonClick an additional onClick action to be performed when the button in the modal is pressed.
-	 */
-	public AreYouSureGoBackModal(final BaseFragment baseFragment, final Class<?> popTillFragment, final OnClickListener onButtonClick) {
-		this.baseFragment = baseFragment;
-		this.userClickAction = onButtonClick;
-		this.popTillFragment = popTillFragment;
-	}
-	
-	public boolean getOverridePop() {
-		return overridePop;
-	}
-	
-	public void setOverridePop(final boolean overridePop) {
-		this.overridePop = overridePop;
-	}
-	
-	/**
-	 * To create a AreYouSureGoBackModal provide a reference to a BaseFragment and an optional click listener
-	 * for the button in the modal. The button in the modal will perform a fragment stack pop along with this 
-	 * provided click listeners action.
-	 * 
-	 * @param baseFragment the base fragment that needs to launch this modal.
-	 * @param onButtonClick an additional onClick action to be performed when the button in the modal is pressed.
+	 * @param baseFragment
+	 * @param onButtonClick an OnClickListener that will provide additional functionality to be performed on
+	 * click of the button in the modal.
 	 */
 	public AreYouSureGoBackModal(final BaseFragment baseFragment, final OnClickListener onButtonClick) {
 		this.baseFragment = baseFragment;
 		userClickAction = onButtonClick;
 	}
 	
+	/**
+	 * Create a modal that will perform the given OnClickListener action then pop the backstack until the specified
+	 * fragment class is reached.
+	 * 
+	 * @param baseFragment
+	 * @param popTillFragment a class that represents a fragment in the backstack.
+	 * @param onButtonClick an OnClickListener that will provide additional functionality to be performed on
+	 * click of the button in the modal.
+	 */
+	public AreYouSureGoBackModal(final BaseFragment baseFragment, final Class<?> popTillFragment, 
+																final OnClickListener onButtonClick) {
+		this.baseFragment = baseFragment;
+		this.userClickAction = onButtonClick;
+		this.popTillFragment = popTillFragment;
+	}
+	
+	/**
+	 * Will set the modal to not perform a backstack pop. This value is ignored if a popTillFragment was passed
+	 * into the constructor.
+	 * 
+	 * @param overridePop
+	 */
+	public final void setOverridePop(final boolean overridePop) {
+		this.overridePop = overridePop;
+	}
+	
+	/**
+	 * Set the body text to the given String resource.
+	 */
+	@Override
+	public final void setModalBodyText(final int modalTextResource) {
+		this.bodyText = modalTextResource;
+	}
+	
+	/**
+	 * Set the text of the button in the dialog to the specified String resource.
+	 */
+	@Override
+	public final void setButtonText(final int buttonTextResource) {
+		this.buttonText = buttonTextResource;
+	}
+	
+	/**
+	 * Set the text of the title in the Fragment to that of the String resource provided.
+	 */
+	@Override
+	public final void setTitleTextResource(final int titleTextResource) {
+		this.titleText = titleTextResource;
+	}
+	
+	/**
+	 * Display the modal dialog on screen.
+	 */
 	@Override
 	public final void showModal() {
 		Activity currentActivity = null;
@@ -87,11 +124,11 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 			final ModalDefaultOneButtonBottomView bottom = 
 									new ModalDefaultOneButtonBottomView(currentActivity, null);
 			
-			bottom.setButtonText(R.string.continue_text);
+			bottom.setButtonText(buttonText);
 			
 			top.hideNeedHelpFooter();
-			top.setTitle(baseFragment.getResources().getString(R.string.are_you_sure_title));
-			top.setContent(R.string.are_you_sure_cancel_body);
+			top.setTitle(baseFragment.getResources().getString(titleText));
+			top.setContent(bodyText);
 			
 			final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(currentActivity, top, bottom);
 			

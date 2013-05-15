@@ -725,7 +725,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 	@Override
 	protected void onActionLinkClick() {
-		new CancelThisActionModal(this).showModal();
+		final CancelThisActionModal modal = new CancelThisActionModal(this);
+		modal.setModalBodyText(R.string.schedule_pay_cancel_body);
+		
+		modal.showModal();
 	}
 	
 	private final OnClickListener openCalendarOnClick = new OnClickListener() {
@@ -914,7 +917,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 */
 	@Override
 	public void onBackPressed() {
-		new AreYouSureGoBackModal(this).showModal();
+		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this);
+		modal.setModalBodyText(R.string.are_you_sure_cancel_body);
+		
+		modal.showModal();
 	}
 
 	@Override

@@ -30,7 +30,6 @@ import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorCodes;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
-import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
@@ -197,13 +196,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	@Override
 	public void onBackPressed() {
-		new AreYouSureGoBackModal(this, BankDepositSelectAccount.class, new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				CheckDepositCaptureActivity.deleteBothImages(getActivity());
-			}
-			
-		}).showModal();
+		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, BankDepositSelectAccount.class, 
+				new OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						CheckDepositCaptureActivity.deleteBothImages(getActivity());
+					}
+				});
+		
+		modal.setModalBodyText(R.string.cancel_deposit_content);
+		
+		modal.showModal();
 	}
 
 	/**
@@ -349,15 +352,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	
 	@Override
 	protected void onActionLinkClick() {
-		final CancelThisActionModal cancelModal = new CancelThisActionModal(this);
-		cancelModal.setOnConfirmAction(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				CheckDepositCaptureActivity.deleteBothImages(getActivity());
-			}
-			
-		});
+		final AreYouSureGoBackModal cancelModal = new AreYouSureGoBackModal(this, BankDepositSelectAccount.class, 
+				new OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						CheckDepositCaptureActivity.deleteBothImages(getActivity());
+					}
+				}); 
+		
+		cancelModal.setTitleTextResource(R.string.cancel_deposit_title);
+		cancelModal.setModalBodyText(R.string.cancel_deposit_content);
+		cancelModal.setButtonText(R.string.cancel_this_deposit);
 		
 		cancelModal.showModal();
 	}
