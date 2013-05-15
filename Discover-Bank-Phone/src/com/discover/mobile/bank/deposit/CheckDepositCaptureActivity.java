@@ -131,17 +131,21 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void onPause() {
 		isPaused = true;	
 		
-		//Reset the capture image if the user pauses the fragment during countdown or before they press confirm
-		//capture.
-		if(retakeButton.getVisibility() == View.VISIBLE) {
-			retakeClickListener.onClick(null);
-		}else if (!captureButton.isClickable()) {
-			setupButtons();
+		//Check to see if onPause was called because the activity is being finished
+		if( !isFinishing() ) {
+			//Reset the capture image if the user pauses the fragment during countdown or 
+			//before they press confirm capture.
+			if(retakeButton.getVisibility() == View.VISIBLE) {
+				retakeClickListener.onClick(null);
+			}else if (!captureButton.isClickable()) {
+				setupButtons();
+			}
 		}
 			
 		super.onPause();
 	}
 
+	
 	/**
 	 * If the async task is not finished when the activity stops, we need to cancel it.
 	 */
