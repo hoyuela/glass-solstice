@@ -27,6 +27,7 @@ import com.discover.mobile.common.utils.StringUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
+import com.google.common.base.Strings;
 
 /**
  * Info overlay balloon manager.  Creates and populates the view that will
@@ -116,7 +117,8 @@ public class AtmMarkerBalloonManager{
 		}else{
 			name.setText(atm.locationName);
 		}
-		addressField.setText(atm.address1);
+		
+		addressField.setText(atm.getFormattedAddress());
 		if(atm.atmHrs.equalsIgnoreCase(AtmDetail.UNKNOWN)){
 			hours.setVisibility(View.GONE);
 			hoursLabel.setVisibility(View.GONE);
@@ -128,10 +130,12 @@ public class AtmMarkerBalloonManager{
 		}else{
 			hours.setText(atm.atmHrs.replace("Sat", "\nSat"));
 		}
+		
 		final String distance = String.format(Locale.US, "%.2f", atm.distanceFromUser);
 		directionsLabel.setText(String.format(context.getString(R.string.atm_location_get_directions), distance));
 		return view;
 	}
+
 
 	/**
 	 * Add a marker and atm to the map
