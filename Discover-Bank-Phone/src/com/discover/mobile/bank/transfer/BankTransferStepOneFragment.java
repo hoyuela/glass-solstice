@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -724,7 +725,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 	@Override
 	protected void onActionLinkClick() {
-		showCancelModal();
+		showCancelModal(true);
 	}
 	
 	private final OnClickListener openCalendarOnClick = new OnClickListener() {
@@ -911,25 +912,33 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Shows a modal dialog on the page to notify the user that if they cancel their current action
 	 * all information will be lost.
 	 */
-	private void showCancelModal() {
+	private void showCancelModal(final boolean goToAccountSummary) {
 		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
-
+		
 		bottom.setButtonText(R.string.cancel_this_action);
-		bottom.getButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				useMyBackPress = false;
-				((BankNavigationRootActivity)getActivity()).onBackPressed();
-			}
-
-		});
+		
 		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
 		top.hideNeedHelpFooter();
 		top.setTitle(getString(R.string.cancel_this_action) + "?");
 		top.setContent(R.string.cancel_this_action_content);
 		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
 
+		bottom.getButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				useMyBackPress = false;
+				
+				if (goToAccountSummary) {
+					cancelModal.dismiss();
+					((BankNavigationRootActivity)getActivity()).popTillFragment(BankAccountSummaryFragment.class);
+				} else {
+					((BankNavigationRootActivity)getActivity()).onBackPressed();
+				}
+			}
+
+		});		
+		
 		this.showCustomAlertDialog(cancelModal);
 	}
 
@@ -939,7 +948,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 */
 	@Override
 	public void onBackPressed() {
-		showCancelModal();
+		showCancelModal(false);
 	}
 
 	@Override
