@@ -88,6 +88,7 @@ public class BankAddManagedPayeeFragment extends BankAddPayeeFragment {
 			if( item instanceof SearchPayeeResult ) {
 				payeeSearchResult =  (SearchPayeeResult)item;	
 				detail.name = payeeSearchResult.name;
+				detail.nickName = detail.name;
 				detail.verified = true;
 				detail.merchantNumber = payeeSearchResult.merchantNumber;
 				detail.isZipRequired = payeeSearchResult.isZipRequired();
