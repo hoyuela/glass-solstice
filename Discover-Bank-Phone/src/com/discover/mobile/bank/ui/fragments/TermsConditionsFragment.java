@@ -142,10 +142,47 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
-		termsWebView.saveState(outState);
-		outState.putFloat(SCROLL_KEY, WebUtility.calculateProgression(termsWebView));
+		super.onSaveInstanceState(outState);
+		
+		/**Verify webview is not null*/
+		if( null != termsWebView ) {
+			termsWebView.saveState(outState);
+			outState.putFloat(SCROLL_KEY, WebUtility.calculateProgression(termsWebView));
+		}
+		
+		/**
+		 * Retain instance state so that this method is not 
+		 * called again until the fragment is resumed again.
+		 */
+		this.setRetainInstance(true);
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**This is to allow onSaveInstanceState to be called again on rotation*/
+		this.setRetainInstance(false);
+	}
+
+	@Override
+	public int getActionBarTitle() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getGroupMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getSectionMenuLocation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 	/**
 	 * Inflates the view and loads needed resources from the layout.
 	 * Also sets up the web view and starts loading the content.
