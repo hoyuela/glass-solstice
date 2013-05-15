@@ -74,7 +74,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		/**Show "Continue" text in single button on screen*/
 		setButtonText(R.string.continue_text);
 
-		getTable().setBackgroundDrawable(null);
+		getTable().setBackgroundResource(0);
 		
 		/**Listen when user taps on the layout to close the keyboard*/
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
@@ -228,7 +228,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			
 			/**Check if value is greater than 0*/
 			else if( amount > 0 ) {
-				final double doubleAmount = amount/100;
+				final int centsPerDollar = 100;
+				final double doubleAmount = amount/centsPerDollar;
 				
 				String valueText = BankStringFormatter.convertStringFloatToDollars(Double.toString(doubleAmount));
 				valueText = valueText.replace("$", "");
@@ -266,7 +267,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
 		 * the keyboard doesn't open.
 		 */
-		new Handler().postDelayed(new Runnable() {
+		new Handler().post(new Runnable() {
 			@Override
 			public void run() {
 				if( amountItem != null ) {
@@ -275,7 +276,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 					amountItem.getEditableField().setSelection(amountItem.getEditableField().getText().length());
 				}
 			}
-		}, 1000);	
+		});	
 	}
 	
 	@Override

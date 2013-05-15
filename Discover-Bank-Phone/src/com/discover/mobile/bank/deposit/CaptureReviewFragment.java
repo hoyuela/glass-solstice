@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,13 +30,12 @@ import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorCodes;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
+import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.google.common.base.Strings;
 
 /**
@@ -184,9 +182,9 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				account.posted = null;
 
 				//Navigate to Check Deposit Confirmation Page
-				final Bundle bundle = new Bundle();
-				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
-				BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.Confirmation);	
+				final Bundle confirmationBundle = new Bundle();
+				confirmationBundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, submitDepositCall.getResult());
+				BankConductor.navigateToCheckDepositWorkFlow(confirmationBundle, BankDepositWorkFlowStep.Confirmation);	
 			}	
 		}
 	}
@@ -195,44 +193,18 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		return getActivity();
 	}
 
-	private OnClickListener getCancelDepositWorkflowClickListener(final AlertDialog modal) {
-		return new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				cancelCheckDepositWorkflow();
-				modal.dismiss();
-			}
-		};	
-	}
-
 	/**
 	 * Show a modal warning upon back press to alert the user that if they go back, they will be losing all
 	 * of their information.
 	 */
 	@Override
 	public void onBackPressed() {
-		BankNavigationRootActivity currentActivity = null;
-		if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity) {
-			currentActivity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		}
-
-		if(currentActivity != null) {
-			final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
-			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
-
-			bottom.setButtonText(R.string.continue_text);
-
-			modalTopView.setTitle(R.string.are_you_sure_title);
-			modalTopView.setContent(R.string.cancel_deposit_content);
-
-			modalTopView.getHelpFooter().show(false);
-
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(currentActivity, modalTopView, bottom);
-			bottom.getButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-
-			currentActivity.showCustomAlert(modal);
-		}
+		new AreYouSureGoBackModal(this, new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				cancelCheckDepositWorkflow();				
+			}
+		}).showModal();
 	}
 
 	/**
@@ -388,21 +360,17 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	
 	@Override
 	protected void onActionLinkClick() {
-		final Activity currentActivity = getActivity();
-		final ModalDefaultTopView modalTopView = new ModalDefaultTopView(currentActivity, null);
+		final CancelThisActionModal cancelModal = new CancelThisActionModal(this);
+		cancelModal.setOnConfirmAction(new OnClickListener() {
 
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
-		bottom.setButtonText(R.string.do_not_go_back);
-
-		modalTopView.setTitle(R.string.cancel_deposit_title);
-		modalTopView.setContent(R.string.cancel_deposit_content);
-
-		modalTopView.getHelpFooter().show(false);
-
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(currentActivity, modalTopView, bottom);
-		bottom.getButton().setOnClickListener(getCancelDepositWorkflowClickListener(modal));
-
-		this.showCustomAlertDialog(modal);
+			@Override
+			public void onClick(final View v) {
+				CheckDepositCaptureActivity.deleteBothImages(getActivity());
+			}
+			
+		});
+		
+		cancelModal.showModal();
 	}
 
 	@Override
@@ -497,21 +465,37 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			new Handler().post(new Runnable() {
 				@Override
 				public void run() {			
-					/**If has amount in-line error then show it on rotation */
-					if(!Strings.isNullOrEmpty(amountError) ) {
-						showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
-						amountDetail.getEditableField().showErrorLabelNoFocus(amountError);
-					}
-					/**If has an image cell in-line error then show it on rotation*/
-					if(!Strings.isNullOrEmpty(imageError) ) {
-						final Activity activity =  getActivity();
-						if( activity != null && checkImageCell != null) {
-							showGeneralError( activity.getResources().getString(R.string.bank_deposit_error_notify) );
-							checkImageCell.showErrorLabel(imageError);
-						}
-					}
+					showAmountError(amountError);
+					showImageError(imageError);
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Show error text underneth the amount.
+	 * @param amountError a String to display as an error
+	 */
+	private void showAmountError(final String amountError) {
+		/**If has amount in-line error then show it on rotation */
+		if(!Strings.isNullOrEmpty(amountError) ) {
+			showGeneralError( getActivity().getResources().getString(R.string.bank_deposit_error_notify) );
+			amountDetail.getEditableField().showErrorLabelNoFocus(amountError);
+		}
+	}
+	
+	/**
+	 * Show error text beneath the image cells.
+	 * @param imageError a String to display as an error.
+	 */
+	private void showImageError(final String imageError) {
+		/**If has an image cell in-line error then show it on rotation*/
+		if(!Strings.isNullOrEmpty(imageError) ) {
+			final Activity activity =  getActivity();
+			if( activity != null && checkImageCell != null) {
+				showGeneralError( activity.getResources().getString(R.string.bank_deposit_error_notify) );
+				checkImageCell.showErrorLabel(imageError);
+			}
 		}
 	}
 

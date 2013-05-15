@@ -5,34 +5,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 /**
- * This class creates and shows a modal dialog for when a user is canceling a workflow.
+ * This modal is used when a user is pressing the back button during a workflow that has a lot of user inputted data.
+ * It accepts an OnClickListener in the constructor that will be called when the modal's continue button is pressed.
+ * 
  * @author scottseward
  *
  */
-public class CancelThisActionModal implements BaseFragmentModal {
-
+public class AreYouSureGoBackModal implements BaseFragmentModal {
 	private BaseFragment baseFragment = null;
-	private OnClickListener cancelAction = null;
+	private OnClickListener userClickAction = null;
 	
-	public CancelThisActionModal(final BaseFragment baseFragmentThatSupportsShowCustomAlertDialog) {
-		baseFragment = baseFragmentThatSupportsShowCustomAlertDialog;
+	public AreYouSureGoBackModal(final BaseFragment baseFragment, final OnClickListener onButtonClick) {
+		this.baseFragment = baseFragment;
+		userClickAction = onButtonClick;
 	}
 	
-	public final void setOnConfirmAction(final OnClickListener onClick) {
-		cancelAction = onClick;
-	}
-	
-	/**
-	 * Display the cancel this action modal.
-	 */
 	@Override
-	public final void showModal() {			
+	public final void showModal() {
 		Activity currentActivity = null;
 		
 		if(baseFragment != null) {
@@ -44,11 +38,11 @@ public class CancelThisActionModal implements BaseFragmentModal {
 			final ModalDefaultOneButtonBottomView bottom = 
 									new ModalDefaultOneButtonBottomView(currentActivity, null);
 			
-			bottom.setButtonText(R.string.cancel_this_action);
-		
+			bottom.setButtonText(R.string.continue_text);
+			
 			top.hideNeedHelpFooter();
-			top.setTitle(baseFragment.getResources().getString(R.string.cancel_this_action) + "?");
-			top.setContent(R.string.cancel_this_action_content);
+			top.setTitle(baseFragment.getResources().getString(R.string.are_you_sure_title));
+			top.setContent(R.string.are_you_sure_cancel_body);
 			
 			final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(currentActivity, top, bottom);
 			
@@ -56,12 +50,10 @@ public class CancelThisActionModal implements BaseFragmentModal {
 				
 				@Override
 				public void onClick(final View v) {
-					if(cancelAction != null) {
-						cancelAction.onClick(v);
-					}
-					
 					cancelModal.dismiss();
-					BankConductor.navigateToHomePage(true);			
+					if(userClickAction != null) {
+						userClickAction.onClick(v);
+					}
 				}
 			});
 
