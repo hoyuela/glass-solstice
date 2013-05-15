@@ -165,24 +165,6 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		this.setRetainInstance(false);
 	}
 
-	@Override
-	public int getActionBarTitle() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSectionMenuLocation() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	/**
 	 * Inflates the view and loads needed resources from the layout.
 	 * Also sets up the web view and starts loading the content.
