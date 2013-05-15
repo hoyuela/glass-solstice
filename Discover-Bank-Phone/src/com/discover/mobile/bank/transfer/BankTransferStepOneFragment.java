@@ -33,6 +33,7 @@ import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.ui.table.AdjustedAmountListItem;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
@@ -724,7 +725,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 	@Override
 	protected void onActionLinkClick() {
-		this.onBackPressed();
+		new CancelThisActionModal(this).showModal();
 	}
 	
 	private final OnClickListener openCalendarOnClick = new OnClickListener() {
@@ -913,7 +914,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 */
 	@Override
 	public void onBackPressed() {
-		new CancelThisActionModal(this).showModal();
+		new AreYouSureGoBackModal(this).showModal();
 	}
 
 	@Override

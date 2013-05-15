@@ -922,13 +922,16 @@ public class SchedulePaymentFragment extends BaseFragment
 	public void onBackPressed() {
 		/**Show Cancel Modal only if back press has been disabled*/
 		if( isBackPressedDisabled ) {
-			new AreYouSureGoBackModal(this, new OnClickListener() {
+			final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
 					canceledListener.onPaymentCanceled();
 					((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
 				}
-			}).showModal();
+			});
+			
+			modal.setOverridePop(true);
+			modal.showModal();
 		}
 	}
 

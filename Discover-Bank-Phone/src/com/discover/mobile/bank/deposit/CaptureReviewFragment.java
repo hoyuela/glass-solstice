@@ -22,7 +22,6 @@ import com.discover.mobile.bank.error.BankExceptionHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
-import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
@@ -33,7 +32,6 @@ import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.google.common.base.Strings;
@@ -199,22 +197,13 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	 */
 	@Override
 	public void onBackPressed() {
-		new AreYouSureGoBackModal(this, new OnClickListener() {
+		new AreYouSureGoBackModal(this, BankDepositSelectAccount.class, new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				cancelCheckDepositWorkflow();				
+				CheckDepositCaptureActivity.deleteBothImages(getActivity());
 			}
+			
 		}).showModal();
-	}
-
-	/**
-	 * Navigates back to step 1 of the check deposit work flow and deletes any cached images.
-	 */
-	private void cancelCheckDepositWorkflow() {
-		final BankNavigationRootActivity activity = 
-				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		activity.popTillFragment(BankDepositSelectAccount.class);
-		CheckDepositCaptureActivity.deleteBothImages(activity);
 	}
 
 	/**
