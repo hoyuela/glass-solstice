@@ -7,4 +7,10 @@ package com.discover.mobile.bank.ui.modals;
  */
 public interface BaseFragmentModal {	
 	void showModal();
+		
+	void setModalBodyText(final int modalTextResource);
+	
+	void setButtonText(final int buttonTextResource);
+	
+	void setTitleTextResource(final int titleTextResource);
 }
