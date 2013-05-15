@@ -6,7 +6,6 @@ import java.util.Date;
 
 import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.BankHolidays;
-import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
@@ -18,7 +17,7 @@ import com.discover.mobile.common.framework.CacheManager;
 /**
  * Class used to maintain session information for a user logged into a Bank
  * account. This class follows a singleton design pattern allowing only one
- * instance of this class to ever exists. It's data members are set by
+ * instance of this class to ever exist. It's data members are set by
  * NetworkServiceCall<> objects upon receiving a successful response. As an
  * example, the customerInfo object is updated by the CustomerServiceCall class.
  * 
@@ -39,6 +38,13 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * GetCustomerAccountServerCall on a successful download of accounts.
 	 */
 	private AccountList accountList;
+	
+	/**
+	 * Holds a reference to an Account list set from the GetExternalTransferAccountsCall
+	 * on a successful download of external accounts for transfers.
+	 */
+	private AccountList externalTransferAccounts;
+	
 	/**
 	 * Holds a reference to a Customer object set from the CustomerServiceCall
 	 * on a successful download of customer information.
@@ -192,18 +198,10 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	@Override
 	public void clearSession() {
-		accountList = null;
-		customerInfo = null;
-		BankUrlManager.clearLinks();
-		currentAccount = null;
-		scheduled = null;
-		completed = null;
-		cancelled = null;
-		ssoUser = false;
+		super.clearSession();
+		currentBankUser = new BankUser();
 		//Ensure that any cached check images are deleted upon logout or timeout.
 		CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
-		//Clear the cache manager
-		super.clearSession();
 	}
 
 	/**
@@ -315,5 +313,19 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setAccountOutDated(final boolean accountOutDated) {
 		this.accountOutDated = accountOutDated;
+	}
+
+	/**
+	 * @return the externalTransferAccounts
+	 */
+	public AccountList getExternalAccounts() {
+		return externalTransferAccounts;
+	}
+
+	/**
+	 * @param externalTransferAccounts the externalTransferAccounts to set
+	 */
+	public void setExternalAccounts(final AccountList externalAccounts) {
+		this.externalTransferAccounts = externalAccounts;
 	}
 }
