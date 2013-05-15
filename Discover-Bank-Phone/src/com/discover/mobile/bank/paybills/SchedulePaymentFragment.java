@@ -720,7 +720,9 @@ public class SchedulePaymentFragment extends BaseFragment
 			@Override
 			public void onClick(final View v) {
 				setDateError(false);
-				
+				final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+				final InputMethodManager imm = activity.getInputMethodManager();
+				imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
 				showCalendar();
 			}
 		});
