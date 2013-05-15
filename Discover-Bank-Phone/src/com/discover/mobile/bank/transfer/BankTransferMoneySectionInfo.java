@@ -1,17 +1,20 @@
 package com.discover.mobile.bank.transfer;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
@@ -65,23 +68,28 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 
 					final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
 
-					
 					/**Check if user is already in the Transfer Money work-flow*/
-					if( navActivity.getCurrentContentFragment().getGroupMenuLocation()  != BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP) {
-						if( isEligible ) {
+					if( !isUserAlreadyInTransferFunds() ) {
+						final AccountList cachedExternalAccounts = BankUser.instance().getExternalAccounts();
+						if(isEligible && cachedExternalAccounts == null) {
 							BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
+						} else if(isEligible){
+							final Bundle args = new Bundle();
+							args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, cachedExternalAccounts);
+							BankConductor.navigateToTransferMoneyLandingPage(args);
 						} else {
+							//User is not eligible and will be taken to the inelligible landing page.
 							BankConductor.navigateToTransferMoneyLandingPage(null);
 						}
 					} else {
-						final String TAG = BankTransferMoneySectionInfo.class.getSimpleName();
+						final String debugTag = BankTransferMoneySectionInfo.class.getSimpleName();
 
 						//Log.isLoggable will throw an exception if it is given a tag of length > 23, 
 						//so we need to restrict it.
-						final String limitedTAG = TAG.substring(0, Math.min(TAG.length(), 23));
+						final String limitedTag = debugTag.substring(0, Math.min(debugTag.length(), 23));
 
-						if( Log.isLoggable(limitedTAG, Log.WARN)) {
-							Log.w(limitedTAG, "User is already in the check deposit work-flow");
+						if( Log.isLoggable(limitedTag, Log.WARN)) {
+							Log.w(limitedTag, "User is already in the check deposit work-flow");
 						}
 
 						navActivity.hideSlidingMenuIfVisible();
@@ -90,6 +98,27 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 			}
 
 		};
+	}
+	
+	private static boolean isUserAlreadyInTransferFunds() {
+		//Assume we are not in transfer funds.
+		boolean alreadyInTransferFunds = false;
+		
+		if(DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity) {
+			final BankNavigationRootActivity navActivity = 
+									(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+			alreadyInTransferFunds = true;
+			
+			alreadyInTransferFunds &= 
+					navActivity.getCurrentContentFragment().getSectionMenuLocation() == 
+					BankMenuItemLocationIndex.TRANSFER_MONEY_SECTION;
+			
+			alreadyInTransferFunds &= 
+					navActivity.getCurrentContentFragment().getGroupMenuLocation() == 
+					BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
+		}
+		
+		return alreadyInTransferFunds;
 	}
 
 }
