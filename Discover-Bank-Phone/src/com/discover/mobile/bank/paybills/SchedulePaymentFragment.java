@@ -50,15 +50,14 @@ import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
+import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.google.common.base.Strings;
@@ -150,7 +149,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	/** Reference to the Activity's canceled listener */
 	private OnPaymentCanceledListener canceledListener;
 	/**Flag used to control whether back press should show cancel modal*/
-	private boolean isBackPressedDisabled = true;
+	private final boolean isBackPressedDisabled = true;
 	
 
 	/**
@@ -255,7 +254,6 @@ public class SchedulePaymentFragment extends BaseFragment
 		super.onStart();
 	}
 	
-
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -342,19 +340,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					setErrorString(dateError, data.getString(CreatePaymentDetail.DELIVERBY_FIELD));
 					setErrorString(memoError,data.getString(CreatePaymentDetail.MEMO_FIELD));
 					setErrorString(conflictError,data.getString(CONFLICT));
-					
-					/**Restore focus state*/
-					if( data.containsKey(FOCUS) ) {
-						if( data.getString(FOCUS).equals(MEMO)) {
-							/**This seems to required to open the keyboard on rotation for memo field*/
-							memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
-							memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                      
-						} else if(data.getString(FOCUS).equals(AMOUNT)) {
-							amountEdit.requestFocus();
-						}				
-					} else {
-						amountEdit.requestFocus();
-					}
+					restoreCellFocus(data);
 				}
 			}, ERROR_STATE_DELAY);
 
@@ -366,6 +352,23 @@ public class SchedulePaymentFragment extends BaseFragment
 	      calendarFragment = (CalendarFragment) fragment;
 	      calendarFragment.setCalendarListener(createCalendarListener());
 	    }
+	}
+	
+	private void restoreCellFocus(final Bundle data) {
+		/**Restore focus state*/
+		if( data.containsKey(FOCUS) ) {
+			if( data.getString(FOCUS).equals(MEMO)) {
+				/**This seems to required to open the keyboard on rotation for memo field*/
+				memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), 
+						SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
+				memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), 
+						SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                      
+			} else if(data.getString(FOCUS).equals(AMOUNT)) {
+				amountEdit.requestFocus();
+			}				
+		} else {
+			amountEdit.requestFocus();
+		}
 	}
 
 	/**
@@ -384,14 +387,6 @@ public class SchedulePaymentFragment extends BaseFragment
 	@Override
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
-	}
-
-	/**
-	 * Informs the implementing Activity that this fragment's transaction was
-	 * canceled.
-	 */
-	public interface OnPaymentCanceledListener {
-		public void onPaymentCanceled();
 	}
 
 	/**
@@ -429,9 +424,9 @@ public class SchedulePaymentFragment extends BaseFragment
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
 			
-			final PayeeDetail payee = BankUser.instance().getPayees().getPayeeFromId(paymentDetail.payee.id);
-			if( payee != null ) {
-				updateEarliestPaymentDate(payee.paymentDate);
+			final PayeeDetail currentPayee = BankUser.instance().getPayees().getPayeeFromId(paymentDetail.payee.id);
+			if( currentPayee != null ) {
+				updateEarliestPaymentDate(currentPayee.paymentDate);
 			}
 		}
 
@@ -483,41 +478,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * Instantiates the Cancel Button's modal and the modal's button listeners.
 	 */
 	private void setupCancelButton() {
-		final ModalDefaultTopView cancelModalTopView = new ModalDefaultTopView(
-				getActivity(), null);
-		cancelModalTopView.setTitle(R.string.schedule_pay_cancel_title);
-		cancelModalTopView.setContent(R.string.schedule_pay_cancel_body);
-		cancelModalTopView.hideNeedHelpFooter();
-
-		final ModalDefaultOneButtonBottomView cancelModalButtons = new ModalDefaultOneButtonBottomView(
-				getActivity(), null);
-		cancelModalButtons.setButtonText(R.string.schedule_pay_cancel_button_confirm);
-
-		final ModalAlertWithOneButton cancelModal = 
-				new ModalAlertWithOneButton(getActivity(), cancelModalTopView, cancelModalButtons);
-		((BankNavigationRootActivity) getActivity()).showCustomAlert(cancelModal);
-
-		cancelModalButtons.getButton().setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				canceledListener.onPaymentCanceled();
-				cancelModal.dismiss();
-
-				/**
-				 * Checking if the activity is null before navigating. If it is null 
-				 * the app would crash. 
-				 */
-				if ((BankNavigationRootActivity) getActivity() != null){
-					isBackPressedDisabled = false;
-					
-					if( paymentDetail != null ) {
-						((BankNavigationRootActivity) getActivity()).onBackPressed();
-					} else {
-						((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
-					}
-				}
-			}
-		});
+		new CancelThisActionModal(this).showModal();
 	}
 
 	/**
@@ -628,18 +589,19 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	private String getPaymentDate(final String date) {
 		final Matcher m = R8601.matcher(date);
+		final int groupThree = 3;
 		if (m.lookingAt()) {
 			earliestPaymentDate = Calendar.getInstance();
 			// Month - 1 is because Calendar starts Months at 0.
 			earliestPaymentDate.set(Integer.parseInt(m.group(1)),
 					Integer.parseInt(m.group(2)) - 1,
-					Integer.parseInt(m.group(3)));
+					Integer.parseInt(m.group(groupThree)));
 			chosenPaymentDate = Calendar.getInstance();
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					earliestPaymentDate.get(Calendar.MONTH),
 					earliestPaymentDate.get(Calendar.DAY_OF_MONTH));
 
-			return formatPaymentDate(m.group(1), m.group(2), m.group(3));
+			return formatPaymentDate(m.group(1), m.group(2), m.group(groupThree));
 		} else {
 			return formatPaymentDate( Integer.toString(chosenPaymentDate.get(Calendar.YEAR)), 
 									  Integer.toString(chosenPaymentDate.get(Calendar.MONTH) + 1), 
@@ -941,7 +903,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * if the ime option for the editable field has been set to EditorInfo.IME_ACTION_DONE.
 	 * 
 	 * @param v	The view that was clicked.
-	 * @param actionId	Identifier of the action. This will be either the identifier you supplied, or EditorInfo.IME_NULL if being called due to the enter key being pressed.
+	 * @param actionId	Identifier of the action. This will be either the identifier you supplied, 
+	 * or EditorInfo.IME_NULL if being called due to the enter key being pressed.
 	 * @param event	If triggered by an enter key, this is the event; otherwise, this is null.
 	 * 
 	 * @return Return true if you have consumed the action, else false.
@@ -959,7 +922,16 @@ public class SchedulePaymentFragment extends BaseFragment
 	public void onBackPressed() {
 		/**Show Cancel Modal only if back press has been disabled*/
 		if( isBackPressedDisabled ) {
-			setupCancelButton();
+			final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, new OnClickListener() {
+				@Override
+				public void onClick(final View v) {
+					canceledListener.onPaymentCanceled();
+					((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+				}
+			});
+			
+			modal.setOverridePop(true);
+			modal.showModal();
 		}
 	}
 
@@ -969,29 +941,31 @@ public class SchedulePaymentFragment extends BaseFragment
 	}
 
 	private CalendarListener createCalendarListener() {	
+		//A runnable that will dismiss the calendar fragment.
+		final Runnable closeCalendarRunnable = new Runnable() {
+			@Override
+			public void run() {
+				calendarFragment.dismiss();
+			}
+		};
+		
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
 			private static final long serialVersionUID = -5277452816704679940L;
-
+			
 			@Override
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
-				
 				final Calendar cal=Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-			
+				
 				//Delay closing of calendar to be able to see the selection change
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						calendarFragment.dismiss();
-					}
-				}, CALENDAR_DELAY);
+				new Handler().postDelayed(closeCalendarRunnable, CALENDAR_DELAY);
 			}
-			
 		};
-	
+		
+		
 		return calendarListener;
 	}
 
@@ -1015,7 +989,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					  Integer.parseInt(date[1]));
 			
 			displayedDate = chosenPaymentDate;	
-		}catch(final Exception ex){
+		}catch(final NumberFormatException ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
 					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
@@ -1031,5 +1005,13 @@ public class SchedulePaymentFragment extends BaseFragment
 						      earliestPaymentDate,
 							  BankUser.instance().getHolidays(),
 							  createCalendarListener());
+	}
+	
+	/**
+	 * Informs the implementing Activity that this fragment's transaction was
+	 * canceled.
+	 */
+	public interface OnPaymentCanceledListener {
+		void onPaymentCanceled();
 	}
 }
