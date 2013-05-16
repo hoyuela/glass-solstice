@@ -1,33 +1,19 @@
 package com.discover.mobile.card.push.register;
 
-import java.io.IOException;
-
-import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.v4.app.FragmentManager;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
-import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.push.manage.PushManageFragment;
 import com.discover.mobile.card.services.push.GetPushData;
 import com.discover.mobile.card.services.push.PostPushRegistration;
-import com.discover.mobile.card.services.push.PostPushRegistrationBean;
-import com.discover.mobile.card.services.push.registration.DeviceRegistrationDetail;
-import com.discover.mobile.card.services.push.registration.RegisterVenderIdCall;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.xtify.sdk.api.XtifySDK;
+import com.discover.mobile.common.LoggedInRoboActivity;
+import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * The base class for any piece of UI that is going to register the vendor id with Discover's server
@@ -58,7 +44,7 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 			public void onSuccess(Object data)
 			{
 				GetPushData data2 = (GetPushData) data;
-				Log.i(LOG_TAG, "--Response Data -- "+data2.resultCode);
+				Utils.log(LOG_TAG, "--Response Data -- "+data2.resultCode);
 				setStatus(regStatus);
 			}
 			
@@ -78,6 +64,8 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	
 	public void setStatus(String regStatus)
 	{
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		((LoggedInRoboActivity)this.getActivity()).enableMenuButton();
 		if(regStatus.equalsIgnoreCase(ACCEPT))
 		{
 			((CardNavigationRootActivity)getActivity()).sendNavigationTextToPhoneGapInterface(getString(R.string.sub_section_title_manage_alerts));
@@ -90,4 +78,5 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	public void changeToAcceptScreen(final String tag) {
 		this.makeFragmentVisible(new PushManageFragment());
 	}
+	
 }

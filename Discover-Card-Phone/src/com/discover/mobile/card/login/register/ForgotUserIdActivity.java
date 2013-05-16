@@ -2,10 +2,6 @@ package com.discover.mobile.card.login.register;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-
-import org.apache.cordova.api.CordovaInterface;
-import org.apache.cordova.api.CordovaPlugin;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,7 +17,6 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -45,7 +40,6 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.navigation.CordovaWebFrag;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 
 /**
@@ -58,7 +52,7 @@ import com.discover.mobile.card.services.auth.registration.RegistrationConfirmat
  * 
  */
 public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
-        implements CardEventListener, OnClickListener,CordovaInterface {
+        implements CardEventListener, OnClickListener {
 
     private static final String TAG = ForgotUserIdActivity.class
             .getSimpleName();
@@ -277,26 +271,17 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 	 * 
 	 */
     private void checkInputsAndSubmit() {
-        
         cardNumField.updateAppearanceForInput();
-       if(passField.getText().toString().length()<5)
-        {
-           passField.setErrors();
+        passField.updateAppearanceForInput();
+        Utils.setViewGone(mainErrLabel);
+
+        if (cardNumField.isValid() && passField.isValid()) {
+            doForgotUserIdCall();
+        } else {
+            mainScrollView.smoothScrollTo(0, 0);
+            displayOnMainErrorLabel(getString(R.string.login_error));
         }
-       else
-       {
-           passField.updateAppearanceForInput();
-           Utils.setViewGone(mainErrLabel);
 
-           if (cardNumField.isValid() && passField.isValid()) {
-               doForgotUserIdCall();
-           } else {
-               mainScrollView.smoothScrollTo(0, 0);
-               displayOnMainErrorLabel(getString(R.string.login_error));
-           }
-
-       }
-       
     }
 
     /**
@@ -324,13 +309,6 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
              * )globalCache.getData().get(data[0]); if(cachedData!=null) {
              * getDataFromAsync(cachedData); } else
              */
-        
-           
-        CordovaWebFrag mCordovaFrag = CordovaWebFrag.getCordovaWebFragInstance();
-
-                mCordovaFrag.setContext(ForgotUserIdActivity.this);
-                mCordovaFrag.loadWebView((Activity)ForgotUserIdActivity.this);
-           
             {
                 // new ForgotUserIDAsyncTask(this).execute(data);
                 callForgotUserID(data);
@@ -542,42 +520,6 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
             Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this,
                     REFERER);
         }
-    }
-
-    @Override
-    public void cancelLoadUrl() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Activity getActivity() {
-        // TODO Auto-generated method stub
-        return DiscoverActivityManager.getActiveActivity();
-    }
-
-    @Override
-    public ExecutorService getThreadPool() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Object onMessage(String arg0, Object arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setActivityResultCallback(CordovaPlugin arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-        // TODO Auto-generated method stub
-        
     }
 
 }

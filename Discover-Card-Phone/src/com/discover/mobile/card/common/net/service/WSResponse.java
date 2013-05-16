@@ -20,14 +20,12 @@ public final class WSResponse {
     /**
      * variable for holding input stream
      */
-    private InputStream inputStream =null;
+    private InputStream inputStream = null;
 
     /**
      * Variable for holding response headers
      */
     private Map<String, List<String>> mapHeaders;
-    
-    
 
     /**
      * set the response code

@@ -1,8 +1,0 @@
-{
-"notifications.customData":"String", 
-"notifications.msgReadInd":"String", 
-"notifications.notificationText":"String", 
-"notifications.reqId":"Number", 
-"notifications.sentDate":"String", 
-"notifications.subject":"String"
-}

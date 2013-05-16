@@ -1,40 +1,23 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.*;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM_SECOND;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
-import android.app.ProgressDialog;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.error.CardErrHandler;
-import com.discover.mobile.card.error.CardErrorHandlerUi;
-import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoCall;
-import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
-import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
+import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -44,11 +27,18 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
-import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.card.common.utils.Utils;
 
-import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
+import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * EnterNewPasswordActivit - this activity inherits from
@@ -66,12 +56,11 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     private ForgotPasswordTwoDetails passTwoDetails;
 
     // TEXT LABELS
-    private TextView mainErrorMessageLabel;
     private TextView errorMessageLabel;
     private TextView errorLabelOne;
     private TextView errorLabelTwo;
     private TextView provideFeedback;
-    private ImageView errorIcon ;
+    private ImageView errorIcon;
 
     // INPUT FIELDS
     private CredentialStrengthEditText passOneField;
@@ -85,7 +74,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     private static final String MAIN_ERROR_STRING = "b";
     private static final String MAIN_ERROR_VISIBILITY = "c";
     private static final String MAIN_ICON_VISIBILITY = "d";
-    
+
     private static final String REFERER = "forgot-password-step2-pg";
 
     @Override
@@ -98,6 +87,8 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         mergeAccountDetails();
         setupProgressHeader();
         setupHelpNumber();
+        Utils.isSpinnerShow =true;        
+        Utils.hideSpinner();
         provideFeedback.setOnClickListener(this);
         restoreState(savedInstanceState);
     }
@@ -121,17 +112,14 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
      */
     private void restoreState(final Bundle savedInstanceState) {
         if (savedInstanceState != null) {
-            if (!savedInstanceState.getBoolean(UPDATE_PASS_ONE_STATE))
+            if (!savedInstanceState.getBoolean(UPDATE_PASS_ONE_STATE)) {
                 passOneField.updateAppearanceForInput();
+            }
 
-          /*  mainErrorMessageLabel.setVisibility(savedInstanceState
-                    .getInt(MAIN_ERROR_VISIBILITY));
-            mainErrorMessageLabel.setText(savedInstanceState
-                    .getString(MAIN_ERROR_STRING));*/
-            
             errorMessageLabel.setVisibility(savedInstanceState
                     .getInt(MAIN_ERROR_VISIBILITY));
-            errorIcon.setVisibility(savedInstanceState.getInt(MAIN_ICON_VISIBILITY));
+            errorIcon.setVisibility(savedInstanceState
+                    .getInt(MAIN_ICON_VISIBILITY));
             errorMessageLabel.setText(savedInstanceState
                     .getString(MAIN_ERROR_STRING));
 
@@ -144,12 +132,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         outState.putBoolean(UPDATE_PASS_ONE_STATE,
                 passOneField.isInDefaultState);
 
-     /*   outState.putString(MAIN_ERROR_STRING, mainErrorMessageLabel.getText()
-                .toString());
-        outState.putInt(MAIN_ERROR_VISIBILITY,
-                mainErrorMessageLabel.getVisibility());
-        */
-        
         outState.putString(MAIN_ERROR_STRING, errorMessageLabel.getText()
                 .toString());
         outState.putInt(MAIN_ERROR_VISIBILITY,
@@ -173,8 +155,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         errorLabelTwo = (TextView) findViewById(R.id.enter_new_pass_error_two_label);
         errorLabelOne = (TextView) findViewById(R.id.enter_new_pass_error_one_label);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_error_label);
-        mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
-        errorIcon = (ImageView)findViewById(R.id.icon);
+        errorIcon = (ImageView) findViewById(R.id.icon);
 
         mainScrollView = (ScrollView) findViewById(R.id.main_scroll_view);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
@@ -220,153 +201,77 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
      * serverside validation.
      */
     private void submitFormInfo() {
-        /*
-         * final ProgressDialog progress = ProgressDialog.show(this, "Discover",
-         * "Loading...", true);
-         * 
-         * //Lock orientation while request is being processed
-         * setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-         * 
-         * final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback
-         * = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
-         * 
-         * @Override public void complete(final NetworkServiceCall<?> sender,
-         * final Object result) { //Unlock orientation after request has been
-         * processed
-         * setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-         * }
-         * 
-         * @Override public void success(final NetworkServiceCall<?> sender,
-         * final RegistrationConfirmationDetails responseData) {
-         * progress.dismiss(); confirmationDetails = responseData;
-         * retrieveAccountDetailsFromServer(); }
-         * 
-         * @Override public boolean handleErrorResponse(final
-         * NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
-         * progress.dismiss();
-         * 
-         * switch (errorResponse.getHttpStatusCode()) { default: Log.e(TAG,
-         * "RegistrationCallOne.errorResponse(ErrorResponse): " +
-         * errorResponse.toString());
-         * CommonUtils.showLabelWithStringResource(errorMessageLabel
-         * ,R.string.unkown_error_text, currentContext); return true; }
-         * 
-         * }
-         * 
-         * @Override public void failure(final NetworkServiceCall<?> sender,
-         * final Throwable executionException) { //Catch all exception handler
-         * final BaseExceptionFailureHandler exceptionHandler = new
-         * BaseExceptionFailureHandler(); exceptionHandler.handleFailure(sender,
-         * executionException); }
-         * 
-         * @Override public boolean handleMessageErrorResponse(final
-         * NetworkServiceCall<?> sender, final JsonMessageErrorResponse
-         * messageErrorResponse) { progress.dismiss();
-         * switch(messageErrorResponse.getMessageStatusCode()){
-         * 
-         * case REG_AUTHENTICATION_PROBLEM:
-         * CommonUtils.showLabelWithStringResource(errorMessageLabel,
-         * R.string.account_info_bad_input_error_text, currentContext); return
-         * true;
-         * 
-         * case BAD_ACCOUNT_STATUS:
-         * CommonUtils.showLabelWithStringResource(errorMessageLabel
-         * ,R.string.login_attempt_warning, currentContext); return true;
-         * 
-         * case ID_AND_PASS_EQUAL:
-         * CommonUtils.showLabelWithStringResource(mainErrorMessageLabel,
-         * R.string.account_info_bad_input_error_text, currentContext);
-         * CommonUtils.showLabelWithStringResource(errorMessageLabel,
-         * R.string.account_info_two_id_matches_pass_error_text,
-         * currentContext); return true;
-         * 
-         * case SCHEDULED_MAINTENANCE:
-         * showErrorModal(R.string.could_not_complete_request,
-         * R.string.unscheduled_maintenance, false); return true;
-         * 
-         * default: Log.e(TAG, "UNHANDLED ERROR " +
-         * messageErrorResponse.toString()); return false;
-         * 
-         * } } };
-         * 
-         * final ForgotPasswordTwoCall forgotPassTwoCall = new
-         * ForgotPasswordTwoCall(this, callback, passTwoDetails);
-         * forgotPassTwoCall.submit();
-         */
-        CardEventListener cardEventListener = new CardEventListener() {
+
+        final CardEventListener cardEventListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 // TODO Auto-generated method stub
 
-                RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
+                final RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
                 retrieveAccountDetailsFromServer(registrationConfirmationDetails);
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 // TODO Auto-generated method stub
-                String errorCode = ((CardErrorBean) data).getErrorCode();
-                String[] errorMsgSplit = errorCode.split("_");
+                final String errorCode = ((CardErrorBean) data).getErrorCode();
+                final String[] errorMsgSplit = errorCode.split("_");
                 final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
                 switch (errorCodeNumber) {
 
-                case REG_AUTHENTICATION_PROBLEM_SECOND :
+                case REG_AUTHENTICATION_PROBLEM_SECOND:
                 case REG_AUTHENTICATION_PROBLEM:
                     CommonUtils.showLabelWithStringResource(errorMessageLabel,
                             R.string.account_info_bad_input_error_text,
                             currentContext);
                 case ID_AND_PASS_EQUAL:
-              /*      CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentContext);*/
+
                     CommonUtils
                             .showLabelWithStringResource(
                                     errorMessageLabel,
                                     R.string.account_info_two_id_matches_pass_error_text,
                                     currentContext);
-              /*  case SCHEDULED_MAINTENANCE:*/
                 default:
-                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                            (CardErrorHandlerUi) EnterNewPasswordActivity.this);
+                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            EnterNewPasswordActivity.this);
                     cardErrorResHandler.handleCardError((CardErrorBean) data);
 
                 }
             }
 
         };
-        WSRequest request = new WSRequest();
+        final WSRequest request = new WSRequest();
 
         // Setting the headers available for the service
-        HashMap<String, String> headers = request.getHeaderValues();
+        final HashMap<String, String> headers = request.getHeaderValues();
         headers.put("X-SEC-Token", "");
-        String url = NetworkUtility.getWebServiceUrl(this,
+        final String url = NetworkUtility.getWebServiceUrl(this,
                 R.string.createpassword_url);
 
         request.setUrl(url);
         request.setHeaderValues(headers);
         request.setMethodtype("POST");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
             JacksonObjectMapperHolder.getMapper().writeValue(baos,
                     passTwoDetails);
-        } catch (JsonGenerationException e) {
+        } catch (final JsonGenerationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (JsonMappingException e) {
+        } catch (final JsonMappingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         request.setInput(baos.toByteArray());
 
-        WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
                 new RegistrationConfirmationDetails(), "Discover",
                 "Loading...", cardEventListener);
         serviceCall.execute(request);
@@ -382,7 +287,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     public void checkInputsThenSubmit(final View v) {
         passOneField.updateAppearanceForInput();
         passTwoField.updateAppearanceForInput();
-        /*CommonUtils.setViewGone(mainErrorMessageLabel);*/
         CommonUtils.setViewGone(errorMessageLabel);
         CommonUtils.setViewGone(errorIcon);
 
@@ -395,12 +299,10 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             submitFormInfo();
         } else {
             mainScrollView.smoothScrollTo(0, 0);
-            if (!passOneField.isValid())
+            if (!passOneField.isValid()) {
                 passOneField.setStrengthMeterInvalid();
+            }
 
-          /*  CommonUtils.showLabelWithStringResource(mainErrorMessageLabel,
-                    R.string.account_info_bad_input_error_text, this);*/
-            
             CommonUtils.showLabelWithStringResource(errorMessageLabel,
                     R.string.account_info_bad_input_error_text, this);
             CommonUtils.setViewVisible(errorIcon);
@@ -421,7 +323,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(EnterNewPasswordActivity.this,
