@@ -271,7 +271,7 @@ public final class BankConductor  extends Conductor {
 	 *
 	 * @param activity Reference to Activity from where it will navigate to home page
 	 */
-	public static void navigateToHomePage() {
+	public static void navigateToHomePage(final boolean shouldNavigateByPopping) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
@@ -288,6 +288,10 @@ public final class BankConductor  extends Conductor {
 				if( ((BankNavigationRootActivity) activity).getCurrentContentFragment() instanceof BankAccountSummaryFragment) {
 					((BankNavigationRootActivity) activity).hideSlidingMenuIfVisible();
 				}
+				else if(shouldNavigateByPopping) {
+					((BankNavigationRootActivity) activity).closeDialog();
+					((BankNavigationRootActivity) activity).popTillFragment(BankAccountSummaryFragment.class);
+				}
 				/**Add a new instance of Account Summary page to the back stack and place in foreground of application*/
 				else {
 					((BankNavigationRootActivity) activity).closeDialog();
@@ -295,6 +299,10 @@ public final class BankConductor  extends Conductor {
 				}
 			}
 		}
+	}
+	
+	public static void navigateToHomePage() {
+		navigateToHomePage(false);
 	}
 
 	public static void navigateToFAQLandingPage() {

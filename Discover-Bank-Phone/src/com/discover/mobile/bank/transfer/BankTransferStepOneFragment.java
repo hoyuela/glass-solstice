@@ -26,7 +26,6 @@ import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankSimpleEditDetail;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -34,15 +33,14 @@ import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
+import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.ui.table.AdjustedAmountListItem;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.google.common.base.Strings;
@@ -91,9 +89,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	
 	/**Recurring frequency view*/
 	private BankFrequencyDetailView recurring;
-	
-	/** This boolean is used for the back button to determine which onBackPressed method should be used */
-	private boolean useMyBackPress = true;
 	
 	/** The downloaded external accounts */
 	private AccountList externalAccounts = new AccountList();
@@ -339,15 +334,24 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			args.putString(DATE, dateTextView.getText().toString());
 		}
 		
-		if(lastErrorObject != null) {
+		saveLastErrorObjectToArgBundle(args);
+		
+		return args;
+	}
+	
+	/**
+	 * Take the last error object that was returned by the server and save it to the bundle
+	 * so that on rotation the error state can be restored.
+	 * @param args a bundle to save the error object to.
+	 */
+	private void saveLastErrorObjectToArgBundle(final Bundle args) {
+		if(lastErrorObject != null && args != null) {
 			try {
 				args.putSerializable(ERROR_OBJECT, (BankErrorResponse)lastErrorObject.clone());
 			} catch (final CloneNotSupportedException e) {
 				Log.e(TAG, "Could not clone object : " + e);
 			}
 		}
-		
-		return args;
 	}
 
 	/**
@@ -663,20 +667,17 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	}
 	
 	private final TextWatcher dateSelectorWatcher = new TextWatcher() {
-
 		@Override
 		public void afterTextChanged(final Editable s) {
 			updateDateSelector();
 		}
 		@Override
 		public void beforeTextChanged(final CharSequence s, final int start, final int count,
-				final int after) {
-		}
+				final int after) {/**Unused*/}
 
 		@Override
 		public void onTextChanged(final CharSequence s, final int start, final int before,
-				final int count) {
-		}
+				final int count) {/**Unused*/}
 		
 	};
 
@@ -724,7 +725,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 	@Override
 	protected void onActionLinkClick() {
-		showCancelModal();
+		final CancelThisActionModal modal = new CancelThisActionModal(this);
+		modal.setModalBodyText(R.string.schedule_pay_cancel_body);
+		
+		modal.showModal();
 	}
 	
 	private final OnClickListener openCalendarOnClick = new OnClickListener() {
@@ -908,43 +912,20 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	}
 
 	/**
-	 * Shows a modal dialog on the page to notify the user that if they cancel their current action
-	 * all information will be lost.
-	 */
-	private void showCancelModal() {
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
-
-		bottom.setButtonText(R.string.cancel_this_action);
-		bottom.getButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				useMyBackPress = false;
-				((BankNavigationRootActivity)getActivity()).onBackPressed();
-			}
-
-		});
-		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
-		top.hideNeedHelpFooter();
-		top.setTitle(getString(R.string.cancel_this_action) + "?");
-		top.setContent(R.string.cancel_this_action_content);
-		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
-
-		this.showCustomAlertDialog(cancelModal);
-	}
-
-	/**
 	 * If the back button is pressed, we need to show a modal to alert the user that
 	 * going back will delete any entered information.
 	 */
 	@Override
 	public void onBackPressed() {
-		showCancelModal();
+		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this);
+		modal.setModalBodyText(R.string.are_you_sure_cancel_body);
+		
+		modal.showModal();
 	}
 
 	@Override
 	public boolean isBackPressDisabled() {
-		return useMyBackPress;
+		return true;
 	}
 	
 	/**
@@ -1029,7 +1010,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			/**Check if restoring calendar selection date, -1 means it is initializing*/
 			displayedDate = chosenPaymentDate;
 			
-		} catch(final Exception ex){
+		} catch(final NumberFormatException ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
 					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));

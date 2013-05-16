@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.WebUtility;
 
 /**
  * The Generic terms and conditions fragment to be used as a base class for any  of the terms and conditions
@@ -45,6 +46,12 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
 	private static final int API_ELEVEN = 11;
+	
+	/** Key for storing exact amount of WebView scroll on orientation change. */
+	private static final String SCROLL_KEY = "scroll";
+	
+	/** Delay which allows the WebView to finish drawing before manually scrolling. */
+	private static final int SCROLL_DELAY = 100;
 
 	/**The ProgressBar that is shown while the web view loads its content */
 	private ProgressBar loadingSpinner;
@@ -86,8 +93,12 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 */
 	boolean pageLoadSuccess = true;
 
-	@SuppressLint("NewApi")
 	private void setupWebView(final boolean loadUrl) {
+		setupWebView(loadUrl, 0);
+	}
+	
+	@SuppressLint("NewApi")
+	private void setupWebView(final boolean loadUrl, final float scroll) {
 		pageLoadSuccess = true;
 		final WebSettings webSettings = termsWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -109,6 +120,10 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 				if(pageLoadSuccess){
 					acceptButton.setEnabled(true);
 				}
+				if (scroll > 0) {
+					// Scroll to exact previous point on page (lost on orientation change)
+					WebUtility.scrollAfterDelay(termsWebView, scroll, SCROLL_DELAY);
+				}
 			}
 
 			@Override
@@ -127,9 +142,29 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
-		termsWebView.saveState(outState);
+		super.onSaveInstanceState(outState);
+		
+		/**Verify webview is not null*/
+		if( null != termsWebView ) {
+			termsWebView.saveState(outState);
+			outState.putFloat(SCROLL_KEY, WebUtility.calculateProgression(termsWebView));
+		}
+		
+		/**
+		 * Retain instance state so that this method is not 
+		 * called again until the fragment is resumed again.
+		 */
+		this.setRetainInstance(true);
 	}
 	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		/**This is to allow onSaveInstanceState to be called again on rotation*/
+		this.setRetainInstance(false);
+	}
+
 	/**
 	 * Inflates the view and loads needed resources from the layout.
 	 * Also sets up the web view and starts loading the content.
@@ -146,7 +181,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		
 		if (savedInstanceState != null) {
 			termsWebView.restoreState(savedInstanceState);
-			setupWebView(false);
+			setupWebView(false, savedInstanceState.getFloat(SCROLL_KEY, 0));
 		} else {
 			setupWebView(true);
 		}
@@ -203,4 +238,5 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 * Method signature for retrieving the title displayed to the user within the Fragment. 
 	 */
 	public abstract int getPageTitle();
+	
 }

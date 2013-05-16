@@ -249,9 +249,7 @@ public class ListItemGenerator {
 	}
 
 	public ViewPagerListItem getUnmanagedPayeeMemoCell(final String memo) {
-		final ViewPagerListItem payeeMemo = getMemoItemCell(memo);
-		payeeMemo.getTopLabel().setText(R.string.payee_memo);
-
+		final ViewPagerListItem payeeMemo = getTwoItemCell(R.string.payee_memo, memo);
 		return payeeMemo;
 	}
 
@@ -443,7 +441,9 @@ public class ListItemGenerator {
 		items.add(getFrequencyCell(TransferDetail.getFormattedFrequency(context, item.frequency)));
 
 		
-		if( !Strings.isNullOrEmpty(item.durationType)){
+		if( !Strings.isNullOrEmpty(item.durationType) && 
+			!Strings.isNullOrEmpty(item.frequency) &&
+			!item.frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)){
 			items.add(getFrequencyDurationCell(
 				TransferDetail.getFormattedDuration(context, item.durationType)));
 		}
