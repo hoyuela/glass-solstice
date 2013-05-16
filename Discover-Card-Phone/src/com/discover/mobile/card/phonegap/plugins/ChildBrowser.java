@@ -23,14 +23,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
-import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -40,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 public class ChildBrowser extends CordovaPlugin {
@@ -78,14 +76,14 @@ public class ChildBrowser extends CordovaPlugin {
 	public boolean execute(String action, String rawArgs,
 			CallbackContext callbackContext) throws JSONException {
 		this.callbackContext1 = callbackContext;
-		Log.d(LOG_TAG, "---data-- " + rawArgs);
+		Utils.log(LOG_TAG, "---data-- " + rawArgs);
 		jsonArray = new JSONArray(rawArgs);
 
 		if (action.equals("showWebPage")) {
-			Log.d("@@@ ChildWeb", action);
+			Utils.log("@@@ ChildWeb", action);
 			// If the ChildBrowser is already open then throw an error
 			if (dialog != null && dialog.isShowing()) {
-				Log.d("123 dailog", rawArgs);
+				Utils.log("123 dailog", rawArgs);
 				callbackContext.error("ChildBrowser is already open");
 				return false;
 			}
@@ -93,19 +91,19 @@ public class ChildBrowser extends CordovaPlugin {
 			// result = this.showWebPage(args.getString(0),
 			// args.optJSONObject(1));
 			String url = jsonArray.getString(0);
-			Log.d("dailog", url);
+			Utils.log("dailog", url);
 			JSONObject options = null;
 			try {
 				if (jsonArray.getJSONObject(1) != null) {
-					Log.i(LOG_TAG, "--1--");
+					Utils.log(LOG_TAG, "--1--");
 					options = jsonArray.getJSONObject(1);
-					Log.i(LOG_TAG, "--1 --" + options);
+					Utils.log(LOG_TAG, "--1 --" + options);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
-				Log.i(LOG_TAG, e.getMessage(), e);
+				Utils.log(LOG_TAG, e.getMessage(), e);
 			}
-			Log.d(LOG_TAG, "---2---" + url);
+			Utils.log(LOG_TAG, "---2---" + url);
 			this.showWebPage(url, options);
 
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
@@ -113,7 +111,7 @@ public class ChildBrowser extends CordovaPlugin {
 			return true;
 
 		} else {
-			Log.d("%% Else of Child Browser", rawArgs);
+			Utils.log("%% Else of Child Browser", rawArgs);
 			PluginResult pluginResult = new PluginResult(
 					PluginResult.Status.ERROR);
 			callbackContext.sendPluginResult(pluginResult);
@@ -171,7 +169,7 @@ public class ChildBrowser extends CordovaPlugin {
 			this.cordova.getActivity().startActivity(intent);
 			return "";
 		} catch (android.content.ActivityNotFoundException e) {
-			Log.d(LOG_TAG,
+			Utils.log(LOG_TAG,
 					"ChildBrowser: Error loading url " + url + ":"
 							+ e.toString());
 			return e.toString();
@@ -208,7 +206,7 @@ public class ChildBrowser extends CordovaPlugin {
 		if (options != null) {
 			showLocationBar = options.optBoolean("showLocationBar", true);
 		}
-		Log.d("@@@ showWebPage", url);
+		Utils.log("@@@ showWebPage", url);
 		// Create dialog in new thread
 		Runnable runnable = new Runnable() {
 			@SuppressWarnings("deprecation")
@@ -226,7 +224,7 @@ public class ChildBrowser extends CordovaPlugin {
 
 							sendUpdate(obj, false);
 						} catch (JSONException e) {
-							Log.d(LOG_TAG, "Should never happen");
+							Utils.log(LOG_TAG, "Should never happen");
 						}
 					}
 				});

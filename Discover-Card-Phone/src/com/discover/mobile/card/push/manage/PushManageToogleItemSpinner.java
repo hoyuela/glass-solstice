@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.services.push.manage.PostPrefDetail;
 import com.discover.mobile.card.services.push.manage.PostPrefParam;
 import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
@@ -170,7 +170,7 @@ public class PushManageToogleItemSpinner extends BasePushManageToggleItem {
 			try {
 				number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
 			} catch (final ParseException e) {
-				Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
+				Utils.log(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
 			}	
 		}
 		return number;

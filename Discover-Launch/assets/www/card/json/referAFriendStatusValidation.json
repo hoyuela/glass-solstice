@@ -1,6 +1,0 @@
-{
-	"secret_key": "String",	
-	"campaign_uuid": "String",			
-	"client_uuid": "String",		
-	"user_id": "String"	
-}

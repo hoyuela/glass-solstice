@@ -6,13 +6,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true" >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/light_gray_bkgrd"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -83,7 +83,9 @@
                 android:layout_below="@+id/error_message_strong_auth"
                 android:layout_marginTop="@dimen/top_margin_question"
                 android:text="@string/account_security_remember_device_text" />
-
+            
+            <!-- Defect ID: 95466 -->
+            <!--
             <RelativeLayout
                 android:id="@+id/account_security_whats_this_relative_layout"
                 android:layout_width="wrap_content"
@@ -138,12 +140,14 @@
                     android:text="@string/account_security_whats_this_detail_text"
                     android:textColor="@color/black" />
             </RelativeLayout>
+            -->
+            <!-- Defect ID: 95466 -->
 
             <RadioGroup
                 android:id="@+id/account_security_choice_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_whats_this_relative_layout"
+                android:layout_below="@+id/account_security_question_answer_field"
                 android:layout_marginTop="@dimen/top_margin_betwwn_components"
                 android:background="@drawable/rounded_table_corners_no_padding"
                 android:divider="@drawable/modal_divider_line"
@@ -196,8 +200,6 @@
                 android:onClick="submitSecurityInfo"
                 android:text="@string/continue_text" />
         </RelativeLayout>
-
-   
     </RelativeLayout>
 
 </ScrollView>

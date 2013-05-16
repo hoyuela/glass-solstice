@@ -44,6 +44,8 @@ import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.services.push.PushReadMessage;
 import com.discover.mobile.card.statement.StatementActivity;
 import com.discover.mobile.card.ui.modals.ModalConfirmationTop;
+import com.discover.mobile.common.ActivityUtil;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -69,8 +71,8 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 
 public class CardNavigationRootActivity extends NavigationRootActivity
-implements CardMenuInterface, CordovaInterface, CardEventListener,
-CardErrorHandlerUi {
+		implements CardMenuInterface, CordovaInterface, CardEventListener,
+		CardErrorHandlerUi {
 
 	CordovaWebFrag cordovaWebFrag;
 	FrameLayout navigationContent;
@@ -82,7 +84,7 @@ CardErrorHandlerUi {
 	private PageTimeOutUtil pageTimeOutUtil;
 
 	private CordovaPlugin activityResultCallback;
-	private final boolean keepRunning = false;
+	private boolean keepRunning = false;
 
 	private static final int DISPLAY_STATEMENTS = 1;
 	private static final int PICK_CONTACT = 5;
@@ -92,12 +94,16 @@ CardErrorHandlerUi {
 	private final String LOG_TAG = CardNavigationRootActivity.class
 			.getSimpleName();
 	private int redirect;
-
+   private boolean isTimeout = false; 
+   private ActivityUtil activityUtil = null;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		 activityUtil = ActivityUtil.getInstance();
+	        activityUtil.setCurrentActivity(CardNavigationRootActivity.this);
+	        DiscoverActivityManager.setActiveActivity(this);
+		
 		statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.status_bar);
 
@@ -113,23 +119,23 @@ CardErrorHandlerUi {
 		fragmentTransaction.hide(statusBarFragment);
 		// fragmentTransaction.commit();
 
-		Log.d("CardNavigationRootActivity", "adding frag");
+		Utils.log("CardNavigationRootActivity", "adding frag");
 		if (cordovaWebFrag == null) {
-			cordovaWebFrag = new CordovaWebFrag();
+			cordovaWebFrag = CordovaWebFrag.getCordovaWebFragInstance();
 			cordovaWebFrag.setContext(this.getContext());
 
-			final boolean isFragmentAdded = (Boolean) mCardStoreData
+			boolean isFragmentAdded = (Boolean) mCardStoreData
 					.getValueOfAppCache("isFragmentAdded");
 
 			if (isFragmentAdded) {
-				Log.d("CardNavigationRootActivity", "frag is already added");
+				Utils.log("CardNavigationRootActivity", "frag is already added");
 				fragmentTransaction.remove(cordovaWebFrag)
-				.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
-				.addToBackStack("CordovaWebFrag").commit();
+						.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
+						.addToBackStack("CordovaWebFrag").commit();
 			} else {
 				fragmentTransaction
-				.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
-				.addToBackStack("CordovaWebFrag").commit();
+						.add(R.id.navigation_content, cordovaWebFrag, "CordovaWebFrag")
+						.addToBackStack("CordovaWebFrag").commit();
 				// fragmentTransaction.hide(frag);
 				mCardStoreData.addToAppCache("isFragmentAdded", true);
 			}
@@ -140,25 +146,24 @@ CardErrorHandlerUi {
 
 		if (null != action) {
 			if (action.equals(getString(R.string.logout_broadcast_action))) {
-				Log.d("CardNavigationRootActivity", "Logout action is captured");
+				Utils.log("CardNavigationRootActivity", "Logout action is captured");
 				logout();
 				isLogout = true;
 			}
 		}
 
 		// Start inital page timer.
-		if (!isLogout) {
+		if (!isLogout)
 			PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
-		}
 
 		/*
 		 * pageTimeOutUtil = new PageTimeOutUtil(this);
 		 * pageTimeOutUtil.startPageTimer();
 		 */
-		extras = getIntent().getExtras();
-		if(extras != null){
-			pushStatus = extras.getBoolean(PushConstant.extras.PUSH_GET_CALL_STATUS);		 
-		}
+		 extras = getIntent().getExtras();
+		 pushStatus = extras.getBoolean(PushConstant.extras.PUSH_GET_CALL_STATUS);	
+		 Utils.isSpinnerShow = true;
+		 Utils.hideSpinner();
 	}
 
 	@Override
@@ -173,77 +178,79 @@ CardErrorHandlerUi {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		activityUtil.setCurrentActivity(this);
 
 		if (null != extras) {
 			handleIntentExtras(extras);
-
-			final SharedPreferences pushSharedPrefs = getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
-					Context.MODE_PRIVATE);
+			
+			SharedPreferences pushSharedPrefs = getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+		                Context.MODE_PRIVATE);
 			redirect = pushSharedPrefs.getInt(PushConstant.pref.PUSH_NAVIGATION, 0);
 			String requestId = pushSharedPrefs.getString(PushConstant.pref.PUSH_REQUEST_ID, "");
-
+			
 			if(requestId != null && !requestId.equalsIgnoreCase(""))
 			{
-				final PushReadMessage pushReadMessage = new PushReadMessage(getActivity(), new CardEventListener()
+				PushReadMessage pushReadMessage = new PushReadMessage(getActivity(), new CardEventListener()
 				{					
 					@Override
-					public void onSuccess(final Object data)
+					public void onSuccess(Object data)
 					{
-						Log.i(LOG_TAG, "On Sucess()");						
+						Utils.log(LOG_TAG, "On Sucess()");						
 					}
-
+					
 					@Override
-					public void OnError(final Object data)
+					public void OnError(Object data)
 					{
-						Log.i(LOG_TAG, "On OnError()");
+						Utils.log(LOG_TAG, "On OnError()");
 					}
 				});
 				try
 				{
 					pushReadMessage.sendRequest(requestId);
-
+					
 					//Once request id send, make sure it wont call again.
 					//So making it blank.
 					requestId = "";
 				}
-				catch (final JsonGenerationException e)
+				catch (JsonGenerationException e)
 				{
-					final CardErrorBean data = new CardErrorBean("error", true);
-					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
 					cardErrorResHandler.handleCardError(data);
 					e.printStackTrace();
 				}
-				catch (final JsonMappingException e)
+				catch (JsonMappingException e)
 				{
-					final CardErrorBean data = new CardErrorBean("error", true);
-					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
 					cardErrorResHandler.handleCardError(data);
 					e.printStackTrace();
 				}
-				catch (final IOException e)
+				catch (IOException e)
 				{
-					final CardErrorBean data = new CardErrorBean("error", true);
-					final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
+					CardErrorBean data = new CardErrorBean("error", true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(this);
 					cardErrorResHandler.handleCardError(data);
 					e.printStackTrace();
 				}
 			}
 			if(redirect > 0)
 			{
-				final Editor editor = pushSharedPrefs.edit();
+				Editor editor = pushSharedPrefs.edit();
 				editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
 				editor.commit();
-
+				
 				if(!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE, true))
 				{
 					sendNavigationTextToPhoneGapInterface(getString(redirect));
 				}
 				else
 				{
-					final Handler handler = new Handler();
+					Handler handler = new Handler();
 					Utils.isSpinnerForOfflinePush=true;
 					Utils.isSpinnerAllowed=true;
-
+					
 					Utils.showSpinner(getActivity(), null, null);
 					handler.postDelayed(new Runnable()
 					{						
@@ -262,7 +269,7 @@ CardErrorHandlerUi {
 				if(pushStatus)
 				{
 					pushStatus = false;
-					makeFragmentVisible(new PushNowAvailableFragment());
+					makeFragmentVisible(new PushNowAvailableFragment(),false);
 				}
 			}
 		}
@@ -350,20 +357,19 @@ CardErrorHandlerUi {
 				|| text.equals(getString(R.string.section_title_profile_and_settings))
 				|| text.equals(getString(R.string.section_title_customer_service))
 				|| text.equals(getString(R.string.section_title_miles)) || text.equals(getString(R.string.section_title_home)))) {
-			//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-			//					.findFragmentByTag("CordovaWebFrag");
+//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//					.findFragmentByTag("CordovaWebFrag");
 			if (cordovaWebFrag != null) {
 				try {
-					Utils.isSpinnerAllowed=true;
-					final Handler handler = new Handler();
-					handler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-
-							Utils.showSpinner(getActivity(),null,null);
-
-						}},500);  
-				} catch (final Exception e) {
+				Utils.isSpinnerAllowed=true;
+            	 Handler handler = new Handler();
+                 handler.postDelayed(new Runnable() {
+                     public void run() {
+                    	
+                    	 Utils.showSpinner(getActivity(),null,null);
+                       
+                     }},500);  
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				this.showAbove();
@@ -401,22 +407,22 @@ CardErrorHandlerUi {
 
 	@Override
 	public void setActivityResultCallback(final CordovaPlugin plugin) {
-		activityResultCallback = plugin;
+		this.activityResultCallback = plugin;
 	}
 
 	@Override
 	public void startActivityForResult(final CordovaPlugin plugin,
 			final Intent intent, final int requestCode) {
-		activityResultCallback = plugin;
+		this.activityResultCallback = plugin;
 
 		super.startActivityForResult(intent, requestCode);
 	}
 
 	@Override
 	public void logout() {
-		Log.d("CardNavigationRootActivity", "inside logout...");
+		Utils.log("CardNavigationRootActivity", "inside logout...");
 		// super.logout();
-		Utils.isSpinnerAllowed = true;
+		 Utils.isSpinnerAllowed = true;
 		final WSRequest request = new WSRequest();
 		final String url = NetworkUtility.getWebServiceUrl(this,
 				R.string.logOut_url);
@@ -427,6 +433,24 @@ CardErrorHandlerUi {
 		serviceCall.execute(request);
 
 	}
+	
+	
+	public void idealTimeoutLogout() {
+        Utils.log("CardNavigationRootActivity", "inside logout...");
+        // super.logout();
+        isTimeout = true;
+         Utils.isSpinnerAllowed = true;
+        final WSRequest request = new WSRequest();
+        final String url = NetworkUtility.getWebServiceUrl(this,
+                R.string.logOut_url);
+        request.setUrl(url);
+        request.setMethodtype("POST");
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
+                "Discover", "Signing Out...", this);
+        serviceCall.execute(request);
+
+    }
+
 
 	@Override
 	public void OnError(final Object data) {
@@ -437,11 +461,12 @@ CardErrorHandlerUi {
 
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
 		FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
 		clearNativeCache();
 		clearJQMCache(); // Call this method to clear JQM cache.
 
+		isTimeout = false ;
 		PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 	}
 
@@ -449,11 +474,11 @@ CardErrorHandlerUi {
 	public void onSuccess(final Object data) {
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+		bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
 		FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
 		clearNativeCache();
 		clearJQMCache(); // Call this method to clear JQM cache.
-
+		isTimeout = false ;
 		PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 	}
 
@@ -464,13 +489,13 @@ CardErrorHandlerUi {
 
 		final CardShareDataStore cardShareDataStore = CardShareDataStore
 				.getInstance(getActivity());
-		Log.d("clear cache", "get token before clear"
+		Utils.log("clear cache", "get token before clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken());
 		cardShareDataStore.clearCache(); // Call this method to clear native
 		// cache
 		cardShareDataStore.getCookieManagerInstance().clearSecToken(); // Call
 		// to
-		Log.d("clear cache", "get token after clear"
+		Utils.log("clear cache", "get token after clear"
 				+ cardShareDataStore.getCookieManagerInstance().getSecToken()); // clear
 		// the
 		// sectoken
@@ -480,16 +505,15 @@ CardErrorHandlerUi {
 	 * This method will call the JQM CacheManagement to clear JQM cache
 	 */
 	private void clearJQMCache() {
-		//		cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-		//				.findFragmentByTag("CordovaWebFrag");
+//		cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//				.findFragmentByTag("CordovaWebFrag");
 		if (cordovaWebFrag != null) {
 			final CacheManagerUtil cacheMgmt = new CacheManagerUtil(
 					cordovaWebFrag.getCordovaWebviewInstance());
 			cacheMgmt.clearJQMGlobalCache();
 			cacheMgmt.clearJQMHistory();
-		} else {
-			Log.d("logout from cardnavigation", "Codova webview object is null");
-		}
+		} else
+			Utils.log("logout from cardnavigation", "Codova webview object is null");
 	}
 
 	@Override
@@ -512,23 +536,21 @@ CardErrorHandlerUi {
 	 */
 	@Override
 	public void setActionBarTitle(final String title) {
-		if(title.equalsIgnoreCase(getString(R.string.error_no_title))) {
+		if(title.equalsIgnoreCase(getString(R.string.error_no_title)))
 			showActionBarLogo();
-		} else {
+		else
 			super.setActionBarTitle(title);
-		}
-
+		
 		if (null != title) {
-			Log.d("CardNavigationRootActivity",
+			Utils.log("CardNavigationRootActivity",
 					"inside setActionbartitle n title is " + title);
-			//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-			//					.findFragmentByTag("CordovaWebFrag");
+//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+//					.findFragmentByTag("CordovaWebFrag");
 			cordovaWebFrag.setTitle(title);
 			if (title
-					.equalsIgnoreCase(getString(R.string.sub_section_title_statements))) {
+					.equalsIgnoreCase(getString(R.string.sub_section_title_statements)))
 				highlightMenuItems(cordovaWebFrag.getGroupMenuLocation(),
 						cordovaWebFrag.getSectionMenuLocation());
-			}
 			mCardStoreData.addToAppCache("currentPageTitle", title);
 		}
 	}
@@ -554,21 +576,28 @@ CardErrorHandlerUi {
 
 		if (fragment.getClass().getSimpleName()
 				.equalsIgnoreCase("HomeSummaryFragment") && fragCount >= 2) {
-			final String fragTag = fragManager.getBackStackEntryAt(fragCount - 1)
-					.getName();
+				String fragTag = fragManager.getBackStackEntryAt(fragCount - 1)
+						.getName();
 
-			if (!fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
+				if (!fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
+					getSupportFragmentManager()
+							.beginTransaction()
+							.remove(fragment)
+							.add(R.id.navigation_content, fragment,
+									fragment.getClass().getSimpleName())
+							// Adds the class name and fragment to the back
+							// stack
+							.addToBackStack(fragment.getClass().getSimpleName())
+							.commit();
+			}else{
 				getSupportFragmentManager()
 				.beginTransaction()
 				.remove(fragment)
 				.add(R.id.navigation_content, fragment,
-						fragment.getClass().getSimpleName())
-						// Adds the class name and fragment to the back
-						// stack
-						.addToBackStack(fragment.getClass().getSimpleName())
-						.commit();
-				mCardStoreData.addToAppCache("currentPageTitle", "Home");
+						fragment.getClass().getSimpleName()).commit();
 			}
+			mCardStoreData.addToAppCache("currentPageTitle", "Home");
+
 			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);
 
 		} else if(fragment.getClass().getSimpleName().equalsIgnoreCase("RedeemMilesFragment")) { 
@@ -576,13 +605,20 @@ CardErrorHandlerUi {
 		}else {
 
 			getSupportFragmentManager()
-			.beginTransaction()
-			.remove(fragment)
-			.add(R.id.navigation_content, fragment,
-					fragment.getClass().getSimpleName())
+					.beginTransaction()
+					.remove(fragment)
+					.add(R.id.navigation_content, fragment,
+							fragment.getClass().getSimpleName())
 					// Adds the class name and fragment to the back stack
 					.addToBackStack(fragment.getClass().getSimpleName())
 					.commit();
+		}
+		
+		PushNowAvailableFragment pushFrag = (PushNowAvailableFragment) this.getSupportFragmentManager()
+				.findFragmentByTag("PushNowAvailableFragment");
+		if(null != pushFrag)
+		{
+			getSupportFragmentManager().beginTransaction().remove(pushFrag).commit();
 		}
 
 		hideSlidingMenuIfVisible();
@@ -599,15 +635,23 @@ CardErrorHandlerUi {
 		currentFragment = fragment;
 
 		getSupportFragmentManager()
-		.beginTransaction()
-		.remove(fragment)
-		.add(R.id.navigation_content, fragment,
-				fragment.getClass().getSimpleName()).commit();
-
+				.beginTransaction()
+				.remove(fragment)
+				.add(R.id.navigation_content, fragment,
+						fragment.getClass().getSimpleName()).commit();
+		
 		if(fragment.getClass().getSimpleName().equalsIgnoreCase("HomeSummaryFragment")){
 			mCardStoreData.addToAppCache("currentPageTitle", "Home");
 
 		}
+		
+		PushNowAvailableFragment pushFrag = (PushNowAvailableFragment) this.getSupportFragmentManager()
+				.findFragmentByTag("PushNowAvailableFragment");
+		if(null != pushFrag)
+		{
+			getSupportFragmentManager().beginTransaction().remove(pushFrag).commit();
+		}
+
 
 		hideSlidingMenuIfVisible();
 	}
@@ -618,7 +662,7 @@ CardErrorHandlerUi {
 		 * Clear any modal that may have been created during the life of the
 		 * current activity
 		 */
-		Log.d("CardNavigationRootActivity", "inside onBackPressed()");
+		Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
 		DiscoverModalManager.clearActiveModal();
 		cordovaWebFrag.setTitle(null);
@@ -626,10 +670,10 @@ CardErrorHandlerUi {
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
 
-		Log.d("CardNavigationRootActivity", "frag count is " + fragCount);
+		Utils.log("CardNavigationRootActivity", "frag count is " + fragCount);
 
 		if (fragCount > 2) {
-			final String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
+			String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
 					.getName();
 			// Fragment frg = HybridControlPlugin.frag123;//
 			// fragManager.findFragmentByTag(str);
@@ -642,14 +686,14 @@ CardErrorHandlerUi {
 			 * frg).getCordovaWebviewInstance().goBack(); } else {
 			 */
 
-			final boolean isPopped = fragManager.popBackStackImmediate();
-			Log.d("CardNavigationRootActivity", "is fragment popped" + isPopped);
+			boolean isPopped = fragManager.popBackStackImmediate();
+			Utils.log("CardNavigationRootActivity", "is fragment popped" + isPopped);
 
 			printFragmentsInBackStack();
 
 			if (fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
 
-				final Fragment homeFragment = fragManager
+				Fragment homeFragment = fragManager
 						.findFragmentByTag("HomeSummaryFragment");
 				makeFragmentVisible(homeFragment, false);
 
@@ -659,10 +703,10 @@ CardErrorHandlerUi {
 			}
 		} else {
 			sendNavigationTextToPhoneGapInterface("AcHome");
-			final Fragment homeFragment = fragManager
+			Fragment homeFragment = fragManager
 					.findFragmentByTag("HomeSummaryFragment");
 			makeFragmentVisible(homeFragment, false);
-
+			
 		}
 		// }
 	}
@@ -677,10 +721,9 @@ CardErrorHandlerUi {
 		final int fragCount = fragManager.getBackStackEntryCount();
 		if (fragCount > 0) {
 			for (int i = 0; i < fragCount; i++) {
-				if (null != fragManager.getBackStackEntryAt(i).getName()) {
+				if (null != fragManager.getBackStackEntryAt(i).getName())
 					Log.v("CardNavigationRootActivity", fragManager
 							.getBackStackEntryAt(i).getName());
-				}
 			}
 		}
 	}
@@ -693,11 +736,11 @@ CardErrorHandlerUi {
 	 * .v4.app.Fragment)
 	 */
 	@Override
-	public void onAttachFragment(final Fragment fragment) {
+	public void onAttachFragment(Fragment fragment) {
 		// TODO Auto-generated method stub
 		super.onAttachFragment(fragment);
 
-		Log.d("CardNavigationRootActivity",
+		Utils.log("CardNavigationRootActivity",
 				"inside onAttachFragment n attached fragment is "
 						+ fragment.getTag());
 	}
@@ -709,9 +752,9 @@ CardErrorHandlerUi {
 	 * android.view.KeyEvent)
 	 */
 	@Override
-	public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-		Log.d("CardNavigationRootActivity", "inside onKeyUp");
-		final Fragment frg = HybridControlPlugin.frag123;// fragManager.findFragmentByTag(str);
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		Utils.log("CardNavigationRootActivity", "inside onKeyUp");
+		Fragment frg = HybridControlPlugin.frag123;// fragManager.findFragmentByTag(str);
 		if (frg instanceof CordovaWebFrag
 				&& ((CordovaWebFrag) frg).getCordovaWebviewInstance()
 				.canGoBack()) {
@@ -730,26 +773,26 @@ CardErrorHandlerUi {
 	 * android.view.KeyEvent)
 	 */
 	@Override
-	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		Log.d("CardNavigationRootActivity", "inside onKeyDown");
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Utils.log("CardNavigationRootActivity", "inside onKeyDown");
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
-	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-
-		final CordovaPlugin callBack = activityResultCallback;
+		
+		CordovaPlugin callBack = this.activityResultCallback;
 		if (requestCode == DISPLAY_STATEMENTS) {
-			Log.d("CardNavigationRootActivity",
+			Utils.log("CardNavigationRootActivity",
 					"inside on activity result of stmt plugin n result code is "
 							+ requestCode + " n result code is " + resultCode);
 			if (resultCode == StatementActivity.EXPIRE_SESSION || resultCode == StatementActivity.STATEMENT_LOGOUT) {
 				logout();
-			} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION) {
-				Log.d("CardNavigationRootActivity",
+			} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION)
+				Utils.log("CardNavigationRootActivity",
 						"call gethealthcheck from here...");
-			} else {
+			else {
 				sendNavigationTextToPhoneGapInterface(getString(R.string.sub_section_title_statements));
 			}
 		} else if(requestCode == PICK_CONTACT || requestCode == PICK_CREDENTIAL)
@@ -759,20 +802,20 @@ CardErrorHandlerUi {
 				callBack.onActivityResult(requestCode, resultCode, data);
 			}
 		}
-
+		
 	}
-
+	
 	@Override
 	public String getActionBarTitle() {
 		return (String)mCardStoreData.getValueOfAppCache("currentPageTitle");
 	}
-
-	public void enableSlidingMenu(final boolean enable)
+	
+	public void enableSlidingMenu(boolean enable)
 	{
-		final SlidingMenu slidingMenu = getSlidingMenu();
+		SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setSlidingEnabled(enable);
 	}
-
+	
 	public CordovaWebFrag getCordovaWebFragInstance(){
 		return cordovaWebFrag;
 	}
