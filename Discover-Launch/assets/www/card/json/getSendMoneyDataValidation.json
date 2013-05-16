@@ -1,0 +1,12 @@
+{
+"bonusType":"String",
+"dailyLimit":"Decimal",
+"dailyLimitAvailable":"Decimal",
+"emailAddress":"String",
+"monthlyLimit":"Decimal",
+"monthlyLimitAvailable":"Decimal",
+"newUser":"Boolean",
+"transactionAvailable":"Boolean",
+"allTransactionsFailedOrUnknown":"Boolean",
+ "saStatus":"String"   
+}

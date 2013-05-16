@@ -153,8 +153,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			}
 			if (null != mContext)
 				setGeolocationClient();
-
-			cwv.loadUrl("javascript:setDeviceReady(true)");
 		}
 		/********** Hemang **********/
 		WebSettings webSettings = cwv.getSettings();

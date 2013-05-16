@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <title>Redemption History</title>
+        
+</head>
+    
+    
+    <body>
+        <!--page start -->
+        <div data-role="page" id="redeem-history" class="cbb-page rd-page">
+            <!--header start -->
+             <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
+                 <header id="header" class="cmn_header">
+				</header>
+                 <div class="clearboth"></div>
+	    </div>
+            <!-- header end -->
+            <!-- Middle content start from here-->
+<div data-role="content" class="ui-content-internalpages">
+          <div class="gift-card-content" id="rd-history">
+            <!-- div class="ui-grid-a rd-landing-heading-text">
+		<div class="ui-block-a">
+			<div class="margin-8px"><h1>Redemption History</h1></div>
+		</div>
+		<div class="ui-block-b">
+			<div class="rd-faq-main"><img src="../../images/icon_faqs.png" class="icon_faqs"/></div>
+		</div>
+	    </div -->
+		
+		<!-- div class="faqWraper"><div class="rd-faq-main"><img src="../../images/icon_faqs.png" class="icon_faqs"/></div></div -->
+		<div class="rd-landing-heading-text"><h1>Redemption History</h1></div>
+		
+            	<div data-role="navbar" data-inline="true" id="nav">
+				<ul>
+					<li id="rd-history-all"><a href="#" class="ui-btn-active ui-state-persist border-left">All</a></li>
+					<li id="rd-history-ecert"><a href="#" class="border-right">eCertificates</a></li>
+				</ul>
+				</div>
+		<div class="errormsg-all boldtext">There is no available redemption history to view.</div>
+		<div class="errormsg-ecert boldtext">You don't have any eCertificates within your available Redemption History.</div> 
+        
+    	<span id="redeemHist"></span>
+    	<div id="footnotes" class="footnotes"></div>  
+
+      	</div>
+
+            <div class="tooltip"><span class="arrow_head"></span>
+              <div class="bubble_data">
+                <div class="cls_all_parent"></div>
+                <div class="data_in_bubble">
+                  <div class="rd-landing-bubble-h1">Help with Redemption</div>
+                  <div class="rd-landing-bubble-data">
+                <ul>
+                    <li id="open-overview-li"><b><a href="javascript:void(0);" id="open-overview">Redemption Overview</a></b></li>
+                   <li><b><a href="#" id="redeemFaqs">FAQs</a></b></li>
+                </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="overlay"></div>
+            <div id="overlay_wraper" class="overlay_wraper">
+            	<div class="overlay-header">
+                	<div class="hdr-text">	
+                		<p>View your <i>Cashback Bonus</i> redemption options anytime and anywhere</p>
+                    </div>
+                    <img src="../../images/closeOverlay.png" width="35" height="35" alt="close overlay" class="close-overlay" id="closebtn"/>
+                    <div class="clearboth"></div>
+                </div>
+                <div class="overlay-content">
+                	<div class="innerText">
+                        <span>Choose From Partner Gift Cards and eCertificates</span>
+                        <p>Turn your <i>Cashback Bonus</i> into gift cards or eCertificates from over 150 brand-name partners. Use them online or in stores. All add $5 or more.
+                        </p>
+                        
+                        <span>Give yourself cash</span>
+                        <p><i>Statement Credit</i></p>
+                        <p class="indent-p">Credit your Discover card account with <i>Cashback Bonus</i></p>
+                        <p class="top-p"><i>Direct Deposit</i></p>
+                        <p class="indent-p">Turn your <i>Cashback Bonus</i> directly into cash in the bank.</p>
+                        
+                        <span>Shop With Your <i>Cashback Bonus</i></span>
+                        <p>Pay for your purchases with <i>Cashback Bonus</i> at top online partners, in any amount. No minimum. </p>
+                        
+                         <span>Choose a Discover Gift Card</span>
+                         <p>Redeem your <i>Cashback Bonus</i> for customized Discover gift cards.</p>
+                    </div>
+                    <div class="txtcenteraln r3matchbtn">
+                    	<a href="#" data-role="button" class="close-overlay" id="getStarted" onclick="navigation('../rewards/redemptionLanding')";>Get Started</a>
+                         <br/ >
+					   <a href="#" id="closebtn" class="bluelink boldtext ui-link" >Cancel</a>                   
+				   </div>
+                </div>
+                
+            </div>
+
+  </div>
+            <!-- Middle content end here-->
+            <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
+                <footer id="footer" class="mnu_footer">
+       			 </footer>
+            </div>
+      
+      
+ </div>
+        <!--page end -->
+    </body>
+
+</html>
