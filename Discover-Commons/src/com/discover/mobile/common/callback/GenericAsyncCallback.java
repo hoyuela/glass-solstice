@@ -88,9 +88,8 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	 */
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
-		for(final StartListener listener : startListeners){
+		for(final StartListener listener : startListeners)
 			listener.start(sender);
-		}
 	}
 	/**
 	 * Called when the {@link NetworkServiceCall} finishes, no matter what the result was. This will be called before
@@ -103,9 +102,8 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	 */
 	@Override
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
-		for(final CompletionListener listener : completionListeners){
+		for(final CompletionListener listener : completionListeners)
 			listener.complete(sender, result);
-		}
 	}
 	/**
 	 * Callback invoked when a NetworkServiceCall<> receives a 200 OK response
@@ -115,9 +113,8 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	 */
 	@Override
 	public void success(final NetworkServiceCall<?> sender, final V value) {
-		for(final SuccessListener<V> listener : successListeners){
+		for(final SuccessListener<V> listener : successListeners)
 			listener.success(sender, value);
-		}
 	}
 
 	/**
@@ -134,14 +131,12 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		boolean handled = false;
 		for(final ExceptionFailureHandler handler : exceptionFailureHandlers) {
 			handled = handler.handleFailure(sender, executionException);
-			if(handled){
+			if(handled)
 				break;
-			}
 		}
 		
-		if(!handled){
+		if(!handled)
 			throw new UnsupportedOperationException("No handler for throwable", executionException);
-		}
 	}
 	/**
 	 * Callback invoked when a NetworkServiceCall<> receives an HTTP error response. 
@@ -156,9 +151,8 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		boolean handled = false;
 		handled = errorResponseHandler.handleFailure(sender, errorResponse);
 		
-		if(!handled){
+		if(!handled)
 			Log.e(TAG,"No handler for errorResponse: " + errorResponse);
-		}
 	}
 	
 	/**
@@ -193,23 +187,20 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 	
 	
 	private static @Nonnull <L extends GenericCallbackListener> List<L> safeSortedCopy(@Nullable final List<L> list) {
-		if(list == null || list.isEmpty()){
+		if(list == null || list.isEmpty())
 			return Collections.emptyList();
-		}
 		
 		final List<L> returnList = new ArrayList<L>(list);
 		
-		if(list.size() > 1){
+		if(list.size() > 1)
 			Collections.sort(returnList, new GenericCallbackListenerComparator());
-		}
 		
 		return returnList;
 	}
 	
 	public static void safeClear(final List<?> list) {
-		if(!list.isEmpty()){
+		if(!list.isEmpty())
 			list.clear();
-		}
 	}
 	
 	public static <V> Builder<V> builder(final @Nonnull Activity activity) {
@@ -246,36 +237,32 @@ public final class GenericAsyncCallback<V> implements AsyncCallback<V> {
 		}
 		
 		public Builder<V> withStartListener(final StartListener startListener) {
-			if(startListeners == null){
+			if(startListeners == null)
 				startListeners = new LinkedList<StartListener>();
-			}
 			startListeners.add(startListener);
 			
 			return this;
 		}
 		
 		public Builder<V> withCompletionListener(final CompletionListener completionListener) {
-			if(completionListeners == null){
+			if(completionListeners == null)
 				completionListeners = new LinkedList<CompletionListener>();
-			}
 			completionListeners.add(completionListener);
 			
 			return this;
 		}
 		
 		public Builder<V> withSuccessListener(final SuccessListener<V> successListener) {
-			if(successListeners == null){
+			if(successListeners == null)
 				successListeners = new LinkedList<SuccessListener<V>>();
-			}
 			successListeners.add(successListener);
 			
 			return this;
 		}
 		
 		public Builder<V> withExceptionFailureHandler(final ExceptionFailureHandler exceptionFailureHandler) {
-			if(exceptionFailureHandlers == null){
+			if(exceptionFailureHandlers == null)
 				exceptionFailureHandlers = new LinkedList<ExceptionFailureHandler>();
-			}
 			exceptionFailureHandlers.add(exceptionFailureHandler);
 			
 			return this;

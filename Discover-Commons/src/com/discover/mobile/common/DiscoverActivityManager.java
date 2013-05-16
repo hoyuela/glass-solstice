@@ -15,7 +15,7 @@ import android.app.Activity;
  * @author henryoyuela
  *
  */
-public final class DiscoverActivityManager extends Observable {
+public class DiscoverActivityManager extends Observable {
 	/**
 	 * Reference to the application's active activity set via setActiveActivity()
 	 */

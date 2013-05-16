@@ -21,17 +21,14 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 		
 	public CardExpirationDateEditText(final Context context) {
 		super(context);
-		hideDayPicker();
 	}
 	
 	public CardExpirationDateEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		hideDayPicker();
 	}
 	
 	public CardExpirationDateEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
-		hideDayPicker();
 	}
 
 	/**
@@ -48,8 +45,10 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 	 * Hide the day picker from the date picker dialog so we can only choose a month and year.
 	 * @param context
 	 */
-	private void hideDayPicker() {
-		getDialog().hideDayPicker();
+	@Override
+	protected void defaultSetup(final Context context) {
+		super.defaultSetup(context);
+		attachedDatePickerDialog.hideDayPicker();
 	}
 	
 	@Override
@@ -63,9 +62,8 @@ public class CardExpirationDateEditText extends CustomDatePickerElement{
 	 */
 	@Override
 	public void updateLabelWithSavedDate(){
-		if(this.isValid()){
+		if(this.isValid())
 			this.setText(CommonUtils.getFormattedDate(getMonth(), getYear()));
-		}
 	}
 		
 	/**

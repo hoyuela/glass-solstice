@@ -5,7 +5,6 @@ package com.discover.mobile.common.framework;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -36,7 +35,7 @@ public abstract class Conductor   {
 
 	public static final String TAG = Conductor.class.getSimpleName();
 
-	private final CacheManager cacheMgr = CacheManager.instance();
+	protected CacheManager cacheMgr = CacheManager.instance();
 
 	/**
 	 * A map to manage the caller's requested destination and the network
@@ -45,10 +44,10 @@ public abstract class Conductor   {
 	 * the key is the networkServiceCall's hashcode
 	 */
 	@SuppressWarnings("rawtypes")
-	private final Map<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
-	
+	protected HashMap<Integer, DestinationDetails> destinationMap = new HashMap<Integer, DestinationDetails>();
+
 	/** the service call factory used to create the call object */
-	private ServiceCallFactory serviceCallFactory;
+	protected ServiceCallFactory serviceCallFactory;
 
 	/**
 	 * provides the card/bank specific service call factory impl class
@@ -69,13 +68,7 @@ public abstract class Conductor   {
 	private Conductor() {
 	}
 
-	public Map<Integer, DestinationDetails> getDestinationMap() {
-		return destinationMap;
-	}
-	
-	public ServiceCallFactory getServiceCallFactory() {
-		return serviceCallFactory;
-	}
+
 
 	/**
 	 * Navigates to the given fragment. 1. checks to see if fragment requires
@@ -192,8 +185,7 @@ public abstract class Conductor   {
 			fragment = (Fragment) destClass.newInstance();
 		} catch (final Exception e) {
 			throw new RuntimeException(
-					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor"
-					+ "\n" + e.toString());
+					"Unable to instantiate to supplied fragment!  Please ensure public no-arg constructor");
 		}
 		if (bundle != null) {
 			fragment.setArguments(bundle);
@@ -290,9 +282,9 @@ public abstract class Conductor   {
 	 */
 	public class DestinationDetails {
 		@SuppressWarnings("rawtypes")
-		private final Class destFragment;
-		private final DestinationType destType;
-		private final Bundle destBundle;
+		public Class destFragment;
+		public DestinationType destType;
+		public Bundle destBundle;
 
 		/**
 		 * @return the destFragment

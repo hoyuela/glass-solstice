@@ -18,7 +18,7 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	
 	private static final int HTTP_ERROR_STATUS_MINIMUM = 400;
 	
-	private static DelegatingErrorResponseParser sharedInstance;
+	private static DelegatingErrorResponseParser SHARED_INSTANCE;
 	
 	public static DelegatingErrorResponseParser getSharedInstance() {
 		assertNonMainThreadExecution(); // using synchronization, don't want to block on UI thread
@@ -28,11 +28,10 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 	
 	private static DelegatingErrorResponseParser getOrCreateSharedInstance() {
 		synchronized(SHARED_INSTANCE_LOCK) {
-			if(sharedInstance == null){
-				sharedInstance = new DelegatingErrorResponseParser(DEFAULT_PARSER_DELEGATES);
-			}
+			if(SHARED_INSTANCE == null)
+				SHARED_INSTANCE = new DelegatingErrorResponseParser(DEFAULT_PARSER_DELEGATES);
 			
-			return sharedInstance;
+			return SHARED_INSTANCE;
 		}
 	}
 	
@@ -51,12 +50,11 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		checkNotNull(parserDelegates, "parserDelegates cannot be null");
 		checkArgument(!parserDelegates.isEmpty(), "parserDelegates cannot be empty");
 		
-		if(DEFAULT_PARSER_DELEGATES.equals(parserDelegates)){
+		if(DEFAULT_PARSER_DELEGATES == parserDelegates)
 			this.parserDelegates = DEFAULT_PARSER_DELEGATES;  // since its immutable already
-		}else{
+		else
 			this.parserDelegates =
 					ImmutableList.<ErrorResponseParser<?>>copyOf(parserDelegates);
-		}
 	}
 	
 	public static boolean isErrorStatus(final int httpStatusCode) {
@@ -69,9 +67,8 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 		
 		for(final ErrorResponseParser<?> parser : parserDelegates) {
 			final ErrorResponse<?> response = tryDelegateParse(parser, httpStatusCode, in, conn);
-			if(response != null){
+			if(response != null)
 				return response;
-			}
 		}
 		
 		throw new UnsupportedOperationException("Unable to parse error response, no compatible parser found");
@@ -81,9 +78,8 @@ public class DelegatingErrorResponseParser implements ErrorResponseParser<ErrorR
 			final int httpStatusCode, final InputStream in, final HttpURLConnection conn) throws IOException {
 		
 		final ErrorResponse<?> response = parser.parseErrorResponse(httpStatusCode, in, conn);
-		if(response instanceof AbstractErrorResponse){
+		if(response != null && response instanceof AbstractErrorResponse)
 			setProtectedFields((AbstractErrorResponse<?>)response, httpStatusCode, conn);
-		}
 		return response;
 	}
 	

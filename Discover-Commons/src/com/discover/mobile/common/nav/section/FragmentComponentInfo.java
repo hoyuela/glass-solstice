@@ -2,6 +2,7 @@ package com.discover.mobile.common.nav.section;
 
 import javax.annotation.concurrent.Immutable;
 
+import android.util.Log;
 import android.view.View.OnClickListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -27,7 +28,7 @@ public class FragmentComponentInfo extends ComponentInfo {
 		this.fragmentClass = fragmentClass;
 	}
 
-	public FragmentComponentInfo(final int titleResource, final boolean showPushCount, final OnClickListener pushCLickListener, final Class<? extends SherlockFragment> fragmentClass)
+	public FragmentComponentInfo(final int titleResource, boolean showPushCount, OnClickListener pushCLickListener, final Class<? extends SherlockFragment> fragmentClass)
 	{
 		super(titleResource,showPushCount,pushCLickListener);
 		this.fragmentClass = fragmentClass;
