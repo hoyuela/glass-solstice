@@ -535,9 +535,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 				//Clear the last error that occurred
 				setLastError(0);
-				if (idField.getText().length() > 0 || passField.getText().length() > 0){
-					login();
-				}
+				login();
 			}
 		});
 
@@ -630,12 +628,21 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		passField.setCompoundDrawables(null, null, null, null);
 	}
 
-	/**
-	 * Set the input fields to be highlighted in red.
-	 */
+	/** Set the input fields to be highlighted in red. */
 	private void setInputFieldsDrawableToRed() {
+		setInputFieldsDrawableToRed(true);
+	}
+	
+	/** Set the input fields to be highlighted in red. Will hide the right drawable when passing false. */
+	private void setInputFieldsDrawableToRed(boolean showRightDrawable) {
 		idField.setErrors();
 		passField.setErrors();
+		
+		if (!showRightDrawable) {
+			// Hides the right drawables ("x")
+			idField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+			passField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+		}
 	}
 
 	/**
@@ -975,9 +982,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasIdEmpty = Strings.isNullOrEmpty(idField.getText().toString());
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
-		if (wasIdEmpty && wasPassEmpty){
-			return false;
-		}else if(wasIdEmpty || wasPassEmpty) {
+		if (wasIdEmpty && wasPassEmpty) {
+			setInputFieldsDrawableToRed(false);
+			return true;
+		} else if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
 			this.getErrorHandler().showErrorsOnScreen(this, errorText);
 			idField.clearFocus();
