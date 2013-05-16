@@ -1,0 +1,13 @@
+{
+"scheduledPayments":"Decimal",
+"currentBalance":"Decimal",
+"daysDelinquent":"Number",
+"isHaMode":"Boolean",
+"lastStatementBalance":"Decimal",
+"minPaymentDue":"Decimal",
+"openAmount":"Decimal",
+"overLimitAmount":"Decimal",
+"paymentDueDate":"Date",
+"isAccountOverDue":"Boolean"
+}
+

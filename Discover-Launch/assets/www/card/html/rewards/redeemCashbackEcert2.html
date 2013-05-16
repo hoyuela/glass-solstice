@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Redeem CashBack Bonus eCertificate</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="redeemECert2-pg">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed"  data-tap-toggle="false">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+
+				<div>
+					<h1>Redeem Cashback Bonus:</h1>
+				</div>
+				<h2>Step 2 of 4</h2>
+				<div>
+					<p>Cashback Bonus Balance:
+					<span class="orangetxt boldtext"  id="redeemECert2_CashBackBonusBalance"></span>
+					</p>
+				</div>
+
+				<h3 class="fontsize15px">Get an eCertificate.</h3>
+
+				<ul class="collapsible">
+					<li>
+						<a href="#" rel='collaps1' class='collapslink deactive'><b>What will I get?</b></a>
+							<p id="collaps1" style='display: none;'>Upon completing your redemption, a code will
+							appear on your mobile device. You may use it immediately or
+							retrieve it later within your Redemption History. eCertificates
+							are available for use immediately in store or online (depending
+							on the Partner). To use the eCertificate, enter the code online
+							or bring the code to the cashier at checkout. The cashier will
+							enter the code as if it were a gift card.</p>
+					</li>
+					</ul>
+					<p></p>
+				<ul class="collapsible">
+					<li>
+						<a href="#" class='collapslink deactive' rel='redeemECert2_TermAndConditions'>Terms and Conditions</a>
+						<p id="redeemECert2_TermAndConditions" style='display: none;'></p>
+					</li>	
+				</ul>
+				<ul data-role="listview" data-theme="d" data-inset="true"
+					class="white-box-rd-corner"> 
+					<li data-icon="false"><h3>Merchant:</h3>
+						<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD1">Select option</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span>
+							<div id="redeemECert2_MerchantSelectField" ></div> 
+						</div></div> 
+					</li>
+					<li><h3>Amount:</h3> 
+						<div class="clearboth"></div>
+						<div class="floatleft redeemCashbackEcert2_amtselectDD" >
+						<div class="ui-select">
+							<div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d" style="margin-top:0px"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD2" style="width:166px;">Select eCertificate value...</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span>
+								<div id="redeemECert2_MerchantAmountSelectField"></div> 
+							</div>
+						</div>
+							
+						</div>
+						<div class="yellow-bg-value">
+							<span id="redeemECert2_MerchantModeAmount">$</span>
+							<span id="redeemECert2_MerchantDisbAmount">$$</span>
+						</div>
+						</li>
+				</ul>				
+				
+				
+				<div class="txtcenteraln">
+				<span class="small_btn_150px">
+				<input onclick="dfs.crd.cbb.renderRedeemCashBackEcert3();" id="redeemECert2_continue_btn" type='button' value='eCertificate' disabled="disabled" class="small_btn_150px"  />
+				</span>
+				</div>
+			</div>
+
+			<div id="footnotes"  class="footnotes"></div>
+
+
+		</div>
+
+
+		<!-- content end -->
+
+		<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter"  data-tap-toggle="false">
+			<footer id="footer" class="mnu_footer" >
+			</footer>
+		</div>
+	</div>
+	<!--page end -->
+</body>
+</html>

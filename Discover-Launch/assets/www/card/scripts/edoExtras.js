@@ -635,7 +635,7 @@ $("#mapDirections-pg").live("pagebeforeshow",function(){
                             }
                             });
 
-$("#viewMap-pg").live("pageshow",function(){
+$("#viewMap-pg").live("pagebeforeshow",function(){
 	
                 //console.log("$(window).height() : " + $(window).height() + " => " + $("#pg-header").outerHeight());
   var netHeight=$(window).height()-$("#pg-header").outerHeight() - $(".searchInput").outerHeight();
@@ -831,19 +831,8 @@ getOsVersion: function() {
     
 }
 };
-function setGridwpwidth(){
-	var winWidth = $(window).width();
-	var setWidthGridWraper = Math.floor(winWidth/123);
-		
-		setWidthGridWraper = setWidthGridWraper*141;
-		if (winWidth<setWidthGridWraper) {
-			setWidthGridWraper = setWidthGridWraper-141;
-		}
-		$(".edoDetailsDisplay_showGridview").css('width', setWidthGridWraper+'px')
-}
 $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event){
                                                       try{
-													setGridwpwidth();
                                                       var offerUl = $(".allItemList");
                                                       var liObject = offerUl.children("li").get();
                                                       
@@ -1873,8 +1862,6 @@ $("#edoLandingPage-pg").live('pagebeforeshow',function(event){
                                                                         
                                                                         $("#changeViewBtn").removeClass("changeViewBtn_gridImg").addClass("changeViewBtn_listImg");
                                                                         $("ul.allItemList").removeClass("showListview").addClass("showGridview"); /*For Changing from listview to gridview*/
-																		$("#edoDetailsDisplay").removeClass("edoDetailsDisplay_showListview").addClass("edoDetailsDisplay_showGridview");
-																		setGridwpwidth();
                                                                         $(".spellChange").html("Expires:");
                                                                         $(".partnerLogo img").css({"height":"97px","width":"97px"});
                                                                         dfs.crd.sct.extrasGridListSwitch('GridView');//passing sitecatalyst variable for Select Grid View Vs. List View
@@ -1885,8 +1872,6 @@ $("#edoLandingPage-pg").live('pagebeforeshow',function(event){
                                                                         
                                                                         $("#changeViewBtn").removeClass("changeViewBtn_listImg").addClass("changeViewBtn_gridImg");
                                                                         $("ul.allItemList").removeClass("showGridview").addClass("showListview");
-																		$("#edoDetailsDisplay").removeClass("edoDetailsDisplay_showGridview").addClass("edoDetailsDisplay_showListview");
-                                                                        $(".edoDetailsDisplay_showListview").css('width','100%');
                                                                         $(".spellChange").html("Exp: ");
                                                                         $(".partnerLogo img").css({"height":"49px","width":"49px"});
                                                                         
