@@ -49,13 +49,15 @@ public class AsyncCallbackAdapter<V> implements AsyncCallback<V> {
 		boolean handled;
 		if(errorResponse instanceof JsonMessageErrorResponse) {
 			handled = handleMessageErrorResponse(sender, (JsonMessageErrorResponse)errorResponse);
-			if(handled)
+			if(handled){
 				return;
+			}
 		}
 		
 		handled = handleErrorResponse(sender, errorResponse);
-		if(handled)
+		if(handled){
 			return;
+		}
 		
 		throw new UnsupportedOperationException("Unhandled errorResponse: " + errorResponse);
 	}

@@ -55,7 +55,7 @@ public class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 	NavigationRoot getNavigationRoot() {
 		return (NavigationRoot) getContext();
 	}
-	public void setPushCount(int pushCount)
+	public void setPushCount(final int pushCount)
 	{
 		this.pushCount = pushCount;
 	}
