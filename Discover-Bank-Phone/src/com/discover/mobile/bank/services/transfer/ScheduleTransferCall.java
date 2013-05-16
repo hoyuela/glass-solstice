@@ -7,9 +7,12 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
+import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
@@ -19,24 +22,28 @@ public class ScheduleTransferCall extends BankJsonResponseMappingNetworkServiceC
 	/**Reference handler to allow the call to be back on the UI*/
 	private final SimpleReferenceHandler<TransferDetail> handler;
 
+	private TransferDetail detail;
+	
 	public ScheduleTransferCall(final Context context, final AsyncCallback<TransferDetail> callback,
-			final TransferDetail modelClass) {
+			final TransferDetail data) {
 		super(context, new PostCallParams(BankUrlManager.getUrl(BankUrlManager.TRANSFER_URL_KEY)) {{
 			requiresSessionForRequest = true;
 
-			body = modelClass;
+			body = data.getRequestFormat();
 
 			errorResponseParser = BankErrorResponseParser.instance();
 		}},
 		TransferDetail.class);
 		handler = new SimpleReferenceHandler<TransferDetail>(callback);
+		
+		/**Keep reference to the data sent in the request*/
+		detail = data;
 	}
 
+	
+	
 	@Override
 	protected TypedReferenceHandler<TransferDetail> getHandler() {
-		// TODO Auto-generated method stub
-
-
 		return handler;
 	}
 
@@ -45,7 +52,10 @@ public class ScheduleTransferCall extends BankJsonResponseMappingNetworkServiceC
 			throws IOException {
 		final TransferDetail data = super.parseSuccessResponse(status, headers, body);
 
-
+		/**Set to and from accounts with the data used to send the request*/		
+		data.toAccount = detail.toAccount;	
+		data.fromAccount = detail.fromAccount;
+		
 		return data;
 	}
 }
