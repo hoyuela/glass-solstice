@@ -123,6 +123,23 @@ public final class BankUser extends CacheManager implements Serializable {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns the {@code Account} for a given External Account id.
+	 * 
+	 * @param accountId id of the External Account to be returned.
+	 * @return Account or {@code null} if not found.
+	 */
+	public Account getExternalAccount(final String accountId) {
+		if( externalTransferAccounts != null && externalTransferAccounts.accounts != null ) {
+			for (final Account a : externalTransferAccounts.accounts ) {
+				if (a.id.equals(accountId)) {
+					return a;
+				}
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 
