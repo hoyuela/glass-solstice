@@ -83,7 +83,7 @@ abstract class NavigationItemView {
 		{
 			
 			@Override
-			public void onClick(final View v)
+			public void onClick(View v)
 			{
 				if(componentInfo.getPushClick() != null)
 				{
@@ -112,7 +112,7 @@ abstract class NavigationItemView {
 		return pushCount;
 	}
 	
-	public void setPushCount(final int pushCount)
+	public void setPushCount(int pushCount)
 	{
 		this.pushCount = pushCount;
 	}

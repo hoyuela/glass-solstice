@@ -14,19 +14,22 @@ import com.discover.mobile.common.R;
  *
  */
 public class DatePickerEditText extends CustomDatePickerElement {
-	/** Moves the default year to 35 years in the past.*/
 	protected final int DOB_YEAR_OFFSET = 35;
 
 	public DatePickerEditText(final Context context) {
 		super(context);
+		defaultSetup(context);
 	}
 
 	public DatePickerEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
+		defaultSetup(context);
+
 	}
 
 	public DatePickerEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
+		defaultSetup(context);
 	}
 
 	@Override

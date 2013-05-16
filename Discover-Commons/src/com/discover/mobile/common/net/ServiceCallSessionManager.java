@@ -63,9 +63,8 @@ public final class ServiceCallSessionManager {
 	 */
 	static boolean prepareWithSecurityToken(final HttpURLConnection conn) {
 		final String token = getSecurityToken();
-		if(isNullOrEmpty(token)){
+		if(isNullOrEmpty(token))
 			return false;
-		}
 		
 		setTokenHeader(conn, token);
 		return true;
@@ -84,9 +83,8 @@ public final class ServiceCallSessionManager {
 		} else {
 			// CookieManager is assumed to bring its own thread safety
 			for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {			
-				if("sectoken".equalsIgnoreCase(cookie.getName())){
+				if("sectoken".equalsIgnoreCase(cookie.getName()))
 					token = cookie.getValue();
-				}
 			}
 		}
 		
