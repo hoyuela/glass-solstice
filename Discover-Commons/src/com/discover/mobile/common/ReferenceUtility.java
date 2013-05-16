@@ -8,9 +8,8 @@ public final class ReferenceUtility {
 	
 	@SuppressWarnings("hiding")
 	public static @Nullable <R> R safeGetReferenced(final @Nullable Reference<R> ref) {
-		if(ref == null){
+		if(ref == null)
 			return null;
-		}
 		
 		return ref.get();
 	}

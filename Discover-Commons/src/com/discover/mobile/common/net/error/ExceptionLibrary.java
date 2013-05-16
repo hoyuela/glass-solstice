@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author henryoyuela
  *
  */
-public final class ExceptionLibrary {
+public class ExceptionLibrary {
 	private ExceptionLibrary() {
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
 	}

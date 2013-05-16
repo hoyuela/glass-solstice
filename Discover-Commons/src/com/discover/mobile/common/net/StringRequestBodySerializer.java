@@ -12,13 +12,11 @@ public class StringRequestBodySerializer implements RequestBodySerializer {
 	
 	@Override
 	public void serializeBody(final Object body, final OutputStream outputStream) throws IOException {
-		if(body == null){
+		if(body == null)
 			return;
-		}
 		
-		if(!(body instanceof String)){
+		if(!(body instanceof String))
 			throw new AssertionError("body was not a string; it was: " + body.getClass());
-		}
 		
 		// TODO consider specifying a charset
 		final byte[] bodyBytes = ((String)body).getBytes();

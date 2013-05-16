@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/abs__background_holo_light" >
+
+    <TextView
+        android:id="@+id/indicators"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/account_name"
+        android:layout_alignBottom="@+id/account_name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="5dp"
+        android:gravity="center_vertical"
+        android:text="@string/status_bar_indicators" />
+
+    <ImageView
+        android:id="@+id/divider_line"
+        android:layout_width="1dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="75dp"
+        android:src="@drawable/gray_line" />
+
+    <TextView
+        android:id="@+id/help_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/account_name"
+        android:layout_alignBottom="@+id/account_name"
+        android:layout_alignLeft="@+id/divider_line"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:text="@string/status_bar_help" />
+
+    <TextView
+        android:id="@+id/account_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:maxLines="1"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/indicators"
+        android:gravity="center"/>
+    
+    <ImageView
+	    android:id="@+id/end_line"
+	    android:layout_width="fill_parent"
+	    android:layout_height="1dp"
+	    android:src="@drawable/gray_line"
+	    android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:id="@+id/question_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/help_text"
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/question_mark_icon" />
+
+    <ImageView
+        android:id="@+id/cardBankIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:layout_toLeftOf="@+id/divider_line"
+        android:src="@drawable/card_icon" />
+
+</RelativeLayout>
