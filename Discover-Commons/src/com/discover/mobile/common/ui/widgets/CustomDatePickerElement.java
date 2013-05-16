@@ -20,11 +20,9 @@ import com.discover.mobile.common.utils.CommonUtils;
  *
  */
 public abstract class CustomDatePickerElement extends ValidatedInputField {
-	protected Context currentContext;
+	private CustomDatePickerDialog attachedDatePickerDialog;
 
-	protected CustomDatePickerDialog attachedDatePickerDialog;
-
-	protected final int INVALID_VALUE = -1;
+	private final int INVALID_VALUE = -1;
 
 	private int day = INVALID_VALUE;
 	private int month = INVALID_VALUE;
@@ -32,23 +30,22 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
 	public CustomDatePickerElement(final Context context) {
 		super(context);
-		defaultSetup(context);
+		defaultSetup();
 	}
 
 	public CustomDatePickerElement(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		defaultSetup(context);
-
+		defaultSetup();
 	}
 
 	public CustomDatePickerElement(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
-		defaultSetup(context);
+		defaultSetup();
 
 	}
 
-	protected void defaultSetup(final Context context) {
-		currentContext = context;
+	private void defaultSetup() {
+		setupFocusChangedListener();
 		setupDatePickerDialog();
 		setupOnTouchListener();
 		setupOnClickListener();
@@ -81,8 +78,9 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 		this.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_UP)
+				if(event.getAction() == MotionEvent.ACTION_UP){
 					attachedDatePickerDialog.show();
+				}
 				return false;
 			}
 		});
@@ -92,17 +90,17 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	 * If the date is invalid, set the error state.
 	 * If the date is valid, clear the error state.
 	 */
-	@Override
-	protected void setupFocusChangedListener() {
+	private void setupFocusChangedListener() {
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(!hasFocus){
-					if (!isValid())
+					if (!isValid()){
 						setErrors();
-					else
+					}else{
 						clearErrors();
+					}
 				}
 
 			}
@@ -110,17 +108,17 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	}
 
 
-	protected void setupDatePickerDialog() {
+	private void setupDatePickerDialog() {
 		final Calendar currentDate = Calendar.getInstance();
 
 		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - getYearOffset();
 		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH) - getDayOffset();
 		final int currentMonth = currentDate.get(Calendar.MONTH) - getMonthOffset();
 
-		attachedDatePickerDialog = new CustomDatePickerDialog(currentContext, new OnDateSetListener() {
+		attachedDatePickerDialog = new CustomDatePickerDialog(getContext(), new OnDateSetListener() {
 
 			@Override
-			public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
+			public final void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
 				setDay(dayOfMonth);
 				setMonth(monthOfYear);
 				setYear(year);
@@ -200,8 +198,9 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	 * values.
 	 */
 	public void updateLabelWithSavedDate(){
-		if(this.isValid())
+		if(this.isValid()){
 			this.setText( CommonUtils.getFormattedDate(getMonth(), getDay(), getYear()) );
+		}
 	}
 
 
@@ -267,6 +266,10 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 	}
 	protected int getMonthOffset(){
 		return 0;
+	}
+	
+	protected CustomDatePickerDialog getDialog() {
+		return attachedDatePickerDialog;
 	}
 
 }

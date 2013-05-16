@@ -1,6 +1,6 @@
 package com.discover.mobile.common;
 
-public class AccountCodes {
+public final class AccountCodes {
 
 	
 	/** Incentive Type for Miles Bonus */
@@ -17,4 +17,12 @@ public class AccountCodes {
 	
 	/** Card Product Group Code for Escape */
 	public static final String CPGC_ESCAPE = "ESC";
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private AccountCodes() {
+		throw new UnsupportedOperationException();
+	}
+	
 }
