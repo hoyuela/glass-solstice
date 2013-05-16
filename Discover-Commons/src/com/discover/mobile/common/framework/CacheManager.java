@@ -2,7 +2,6 @@ package com.discover.mobile.common.framework;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class used to maintain session information for a user logged in. This class
@@ -24,7 +23,7 @@ public  class CacheManager {
 	 */
 	private final static CacheManager cacheManager = new CacheManager();
 	
-	private final Map<Class,Serializable> cacheData = new HashMap<Class,Serializable>();
+	private HashMap<Class,Serializable> cacheData = new HashMap<Class,Serializable>();
 	
 	/**
 	 * Default constructor made private to allow a single instance
@@ -37,7 +36,7 @@ public  class CacheManager {
 	 * 
 	 * @param o
 	 */
-	public void updateCache(final Serializable o){
+	public void updateCache(Serializable o){
 		cacheData.put(o.getClass(), o);
 	}
 	
@@ -46,7 +45,7 @@ public  class CacheManager {
 	 * @param c
 	 * @return
 	 */
-	public Object getObjectFromCache(final Class c){ 
+	public Object getObjectFromCache(Class c){ 
 		return cacheData.get(c);
 	}
 
@@ -73,7 +72,7 @@ public  class CacheManager {
 	 * @param c
 	 * @return
 	 */
-	public Object removeObjectFromCache(final Class c){ 
+	public Object removeObjectFromCache(Class c){ 
 		return cacheData.remove(c);
 	}
 	

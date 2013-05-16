@@ -23,7 +23,7 @@ public abstract class TypedReferenceHandler<V> extends Handler {
 	/**
 	 * Used to send logs to Android logcat
 	 */
-	private static final String TAG = TypedReferenceHandler.class.getSimpleName();
+	private final String TAG = getClass().getSimpleName();
 	/**
 	 * Reference to NetworkServiceCall<> that is the owner of this class
 	 */

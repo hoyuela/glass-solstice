@@ -203,29 +203,26 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 		final ModalAlertWithOneButton errorModal = 
 				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
 
-		if(finishActivityOnClose){
+		if(finishActivityOnClose)
 			errorModal.finishActivityOnClose(activity);
-		}
 
 		oneButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				modalIsPresent = false;
 				errorModal.dismiss();
-				if(finishActivityOnClose){
+				if(finishActivityOnClose)
 					goBack();
-				}
 			}
 		});
 
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
 			public void onCancel(final DialogInterface dialog) {
-				if(finishActivityOnClose){
+				if(finishActivityOnClose)
 					goBack();
-				}else{
-					errorModal.dismiss();
-				}
+				else
+					errorModal.dismiss();			
 			}
 		});
 
@@ -259,29 +256,26 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 		final ModalAlertWithOneButton errorModal = 
 				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
 
-		if(finishActivityOnClose){
+		if(finishActivityOnClose)
 			errorModal.finishActivityOnClose(activity);
-		}
 
 		oneButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				modalIsPresent = false;
 				errorModal.dismiss();
-				if(finishActivityOnClose){
+				if(finishActivityOnClose)
 					goBack();
-				}
 			}
 		});
 
 		errorModal.setOnCancelListener(new OnCancelListener() {			
 			@Override
 			public void onCancel(final DialogInterface dialog) {
-				if(finishActivityOnClose){
+				if(finishActivityOnClose)
 					goBack();
-				}else{
+				else
 					errorModal.dismiss();
-				}
 			}
 		});
 

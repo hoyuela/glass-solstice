@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <!-- Bank Navigation Titles -->
+    <string name="sub_section_title_statement">View Statements</string>
+    <string name="sub_section_title_open_new_account">Open New Account</string>
+    <string name="section_title_transfer_money">Transfer Money</string>
+    <string name="sub_section_title_scheduled_transfers">Scheduled Transfers</string>
+    <string name="sub_section_title_transfer_history">Transfer History</string>
+    <string name="sub_section_title_manage_external_accounts">Manage External Accounts</string>
+    <string name="section_title_pay_bills">Pay Bills</string>
+    <string name="sub_section_title_review_payments">Review Payments</string>
+    <string name="sub_section_title_manage_payees">Manage Payees</string>
+    <string name="section_title_deposit_checks">Deposit Checks</string>
+    <string name="sub_section_title_deposit_a_check">Deposit a Check</string>
+    <string name="section_title_customer_service">Customer Service</string>
+    <string name="sub_section_title_contact_us">Contact Us</string>
+    <string name="sub_section_title_faq">Frequently Asked Questions</string>
+    <string name="sub_section_title_secure_message">Secure Message Center</string>
+    <string name="sub_section_title_user_profile">User Profile</string>
+    <string name="section_title_atm_locator">ATM Locator</string>
+    <string name="sub_section_title_find_nearby">Find Nearby</string>
+    <string name="sub_section_title_search_location">Search a Location</string>
+    
+</resources>

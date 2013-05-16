@@ -14,9 +14,8 @@ public class JsonMappingRequestBodySerializer implements RequestBodySerializer {
 	
 	@Override
 	public void serializeBody(final Object body, final OutputStream outputStream) throws IOException {
-		if(body == null){
+		if(body == null)
 			throw new AssertionError("cannot handle null bodies");
-		}
 		
 		JacksonObjectMapperHolder.mapper.writeValue(outputStream, body);
 	}
