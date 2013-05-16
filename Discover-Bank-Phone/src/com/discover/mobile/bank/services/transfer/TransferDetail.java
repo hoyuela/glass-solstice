@@ -3,13 +3,15 @@ package com.discover.mobile.bank.services.transfer;
 import java.io.Serializable;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TransferDetail implements Serializable {
+public class TransferDetail implements Serializable, Cloneable {
+
 
 	/**Variable sent to the server if the transfer is to continue until cancelled*/
 	public static final String UNTIL_CANCELLED = "continue_until_cancelled";
@@ -40,6 +42,8 @@ public class TransferDetail implements Serializable {
 	public static final String DURATION_VALUE = "durationValue";
 	
 	private static final long serialVersionUID = 3220773738601798470L;
+
+	private static final String TAG = TransferDetail.class.getSimpleName();
 
 	@JsonProperty(ID)
 	public String id;
@@ -145,5 +149,47 @@ public class TransferDetail implements Serializable {
 		}
 		
 		return value;
+	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		final TransferDetail clone = new TransferDetail();
+		clone.amount = this.amount;
+		clone.deliverBy = this.deliverBy;
+		clone.durationType = this.durationType;
+		clone.durationValue = this.durationValue;
+		clone.frequency = this.frequency;
+		clone.fromAccount = this.fromAccount;
+		clone.id = this.id;
+		clone.sendDate = this.sendDate;
+		clone.toAccount = this.toAccount;
+	
+		return super.clone();
+	}
+	
+	/**
+	 * Method used to clone and format this instance of TransferDetail such it is
+	 * acceptable for submitting transfer request using ScheduleTransferCall.
+	 * 
+	 * @return Reference to TransferDetail object that can be used for a transfer request.
+	 */
+	public TransferDetail getRequestFormat() {
+		TransferDetail transferObject = null;
+		
+		try {
+			transferObject = (TransferDetail) this.clone();
+			
+			transferObject.fromAccount = new Account();
+			transferObject.toAccount = new Account();
+
+			transferObject.fromAccount.id = this.fromAccount.id;
+			transferObject.toAccount.id = this.toAccount.id;
+		} catch (CloneNotSupportedException e) {
+			if( Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Failed to generate requrest format of transfer detail");
+			}
+		}
+		
+		return transferObject;
 	}
 }
