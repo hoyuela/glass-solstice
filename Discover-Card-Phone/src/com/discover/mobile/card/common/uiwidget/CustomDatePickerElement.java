@@ -10,261 +10,288 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.DatePicker;
 
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.common.InputValidator;
 import com.discover.mobile.common.utils.CommonUtils;
 
+import com.discover.mobile.card.common.InputValidator;
+
+import com.discover.mobile.card.R;
+
 /**
- * The parent class for any date picker 
+ * The parent class for any date picker
+ * 
  * @author scottseward
- *
+ * 
  */
 public abstract class CustomDatePickerElement extends ValidatedInputField {
-	protected Context currentContext;
+    protected Context currentContext;
 
-	protected CustomDatePickerDialog attachedDatePickerDialog;
+    protected CustomDatePickerDialog attachedDatePickerDialog;
 
-	protected final int INVALID_VALUE = -1;
+    protected final int INVALID_VALUE = -1;
 
-	private int day = INVALID_VALUE;
-	private int month = INVALID_VALUE;
-	private int year = INVALID_VALUE;
+    private int day = INVALID_VALUE;
+    private int month = INVALID_VALUE;
+    private int year = INVALID_VALUE;
 
-	public CustomDatePickerElement(final Context context) {
-		super(context);
-		defaultSetup(context);
-	}
+    public CustomDatePickerElement(final Context context) {
+        super(context);
+        defaultSetup(context);
+    }
 
-	public CustomDatePickerElement(final Context context, final AttributeSet attrs) {
-		super(context, attrs);
-		defaultSetup(context);
+    public CustomDatePickerElement(final Context context,
+            final AttributeSet attrs) {
+        super(context, attrs);
+        defaultSetup(context);
 
-	}
+    }
 
-	public CustomDatePickerElement(final Context context, final AttributeSet attrs, final int defStyle){
-		super(context, attrs, defStyle);
-		defaultSetup(context);
+    public CustomDatePickerElement(final Context context,
+            final AttributeSet attrs, final int defStyle) {
+        super(context, attrs, defStyle);
+        defaultSetup(context);
 
-	}
+    }
 
-	protected void defaultSetup(final Context context) {
-		currentContext = context;
-		setupDatePickerDialog();
-		setupOnTouchListener();
-		setupOnClickListener();
+    protected void defaultSetup(final Context context) {
+        currentContext = context;
+        setupDatePickerDialog();
+        setupOnTouchListener();
+        setupOnClickListener();
 
-		this.setCursorVisible(false);
-		this.setKeyListener(null);
-	}
+        this.setCursorVisible(false);
+        this.setKeyListener(null);
+    }
 
-	/**
-	 * This allows support for clicking the elemnt rather than touching it.
-	 * So that if the field is focused and a physical button is pressed to 'click'
-	 * the field, the dialog will show up.
-	 */
-	protected void setupOnClickListener() {
-		this.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				attachedDatePickerDialog.show();
-			}
-		});
-	}
+    /**
+     * This allows support for clicking the elemnt rather than touching it. So
+     * that if the field is focused and a physical button is pressed to 'click'
+     * the field, the dialog will show up.
+     */
+    protected void setupOnClickListener() {
+        this.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                attachedDatePickerDialog.show();
+            }
+        });
+    }
 
-	/**
-	 * When the element is tapped, launch the date picker dialog.
-	 */
-	private void setupOnTouchListener() {
+    /**
+     * When the element is tapped, launch the date picker dialog.
+     */
+    private void setupOnTouchListener() {
 
-		this.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(final View v, final MotionEvent event) {
-				if(event.getAction() == MotionEvent.ACTION_UP)
-					attachedDatePickerDialog.show();
-				return false;
-			}
-		});
-	}
-	/**
-	 * If the date picker gets focus and the loses it, validate the field.
-	 * If the date is invalid, set the error state.
-	 * If the date is valid, clear the error state.
-	 */
-	@Override
-	protected void setupFocusChangedListener() {
-		this.setOnFocusChangeListener(new OnFocusChangeListener() {
+        this.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(final View v, final MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    attachedDatePickerDialog.show();
+                }
+                return false;
+            }
+        });
+    }
 
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				if(!hasFocus){
-					if (!isValid())
-						setErrors();
-					else
-						clearErrors();
-				}
+    /**
+     * If the date picker gets focus and the loses it, validate the field. If
+     * the date is invalid, set the error state. If the date is valid, clear the
+     * error state.
+     */
+    @Override
+    protected void setupFocusChangedListener() {
+        this.setOnFocusChangeListener(new OnFocusChangeListener() {
 
-			}
-		});
-	}
+            @Override
+            public void onFocusChange(final View v, final boolean hasFocus) {
+                if (!hasFocus) {
+                    if (!isValid()) {
+                        setErrors();
+                    } else {
+                        clearErrors();
+                    }
+                }
 
+            }
+        });
+    }
 
-	protected void setupDatePickerDialog() {
-		final Calendar currentDate = Calendar.getInstance();
+    protected void setupDatePickerDialog() {
+        final Calendar currentDate = Calendar.getInstance();
 
-		final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR) - getYearOffset();
-		final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH) - getDayOffset();
-		final int currentMonth = currentDate.get(Calendar.MONTH) - getMonthOffset();
+        final int currentYearMinusEighteen = currentDate.get(Calendar.YEAR)
+                - getYearOffset();
+        final int currentDay = currentDate.get(Calendar.DAY_OF_MONTH)
+                - getDayOffset();
+        final int currentMonth = currentDate.get(Calendar.MONTH)
+                - getMonthOffset();
 
-		attachedDatePickerDialog = new CustomDatePickerDialog(currentContext, new OnDateSetListener() {
+        attachedDatePickerDialog = new CustomDatePickerDialog(currentContext,
+                new OnDateSetListener() {
 
-			@Override
-			public void onDateSet(final DatePicker view, final int year, final int monthOfYear, final int dayOfMonth) {
-				setDay(dayOfMonth);
-				setMonth(monthOfYear);
-				setYear(year);
-				updateLabelWithSavedDate();
-				updateAppearanceForInput();
-			}
-		}, currentYearMinusEighteen, currentMonth, currentDay);
+                    @Override
+                    public void onDateSet(final DatePicker view,
+                            final int year, final int monthOfYear,
+                            final int dayOfMonth) {
+                        setDay(dayOfMonth);
+                        setMonth(monthOfYear);
+                        setYear(year);
+                        updateLabelWithSavedDate();
+                        updateAppearanceForInput();
+                    }
+                }, currentYearMinusEighteen, currentMonth, currentDay);
 
-		final String dobPickerTitle = getResources().getString(R.string.account_info_dob_text);
-		attachedDatePickerDialog.setTitle(dobPickerTitle);	
+        final String dobPickerTitle = getResources().getString(
+                R.string.account_info_dob_text);
+        attachedDatePickerDialog.setTitle(dobPickerTitle);
 
-	}
+    }
 
-	/**
-	 * @return the day
-	 */
-	public int getDay() {
-		return day;
-	}
+    /**
+     * @return the day
+     */
+    public int getDay() {
+        return day;
+    }
 
-	/**
-	 * @param day the day to set
-	 */
-	public void setDay(final int day) {
-		this.day = day;
-	}
+    /**
+     * @param day
+     *            the day to set
+     */
+    public void setDay(final int day) {
+        this.day = day;
+    }
 
-	/**
-	 * @return the month
-	 */
-	public int getMonth() {
-		return month;
-	}
+    /**
+     * @return the month
+     */
+    public int getMonth() {
+        return month;
+    }
 
-	/**
-	 * @param month the month to set
-	 */
-	public void setMonth(final int month) {
-		this.month = month;
-	}
+    /**
+     * @param month
+     *            the month to set
+     */
+    public void setMonth(final int month) {
+        this.month = month;
+    }
 
-	/**
-	 * @return the year
-	 */
-	public int getYear() {
-		return year;
-	}
+    /**
+     * @return the year
+     */
+    public int getYear() {
+        return year;
+    }
 
-	/**
-	 * @param year the year to set
-	 */
-	public void setYear(final int year) {
-		this.year = year;
-	}
+    /**
+     * @param year
+     *            the year to set
+     */
+    public void setYear(final int year) {
+        this.year = year;
+    }
 
-	@Override
-	protected Drawable getRedX() {
-		return getGrayX();
-	}
+    @Override
+    protected Drawable getRedX() {
+        return getGrayX();
+    }
 
-	@Override
-	protected Drawable getGrayX() {
-		return getDownArrow();
-	}
+    @Override
+    protected Drawable getGrayX() {
+        return getDownArrow();
+    }
 
-	/**
-	 * Sets all of the member data to invalid values.
-	 */
-	public void clearData() {
-		day = INVALID_VALUE;
-		year = INVALID_VALUE;
-		month = INVALID_VALUE;
-	}
+    /**
+     * Sets all of the member data to invalid values.
+     */
+    public void clearData() {
+        day = INVALID_VALUE;
+        year = INVALID_VALUE;
+        month = INVALID_VALUE;
+    }
 
-	/**
-	 * If the date picker has valid values, update its label to a formatted date with those
-	 * values.
-	 */
-	public void updateLabelWithSavedDate(){
-		if(this.isValid())
-			this.setText( CommonUtils.getFormattedDate(getMonth(), getDay(), getYear()) );
-	}
+    /**
+     * If the date picker has valid values, update its label to a formatted date
+     * with those values.
+     */
+    public void updateLabelWithSavedDate() {
+        if (this.isValid()) {
+            this.setText(CommonUtils.getFormattedDate(getMonth(), getDay(),
+                    getYear()));
+        }
+    }
 
+    /**
+     * Checks to see if the set DOB Year is a valid year value.
+     * 
+     * @return true if the DOB year is valid.
+     */
+    protected boolean isYearValid() {
+        return InputValidator.validateYear(getYear());
+    }
 
-	/**
-	 * Checks to see if the set DOB Year is a valid year value.
-	 * @return true if the DOB year is valid.
-	 */
-	protected boolean isYearValid() {
-		return InputValidator.validateYear(getYear());
-	}
+    /**
+     * Checks to see if the set DOB Month is a valid month value.
+     * 
+     * @return true if the DOB month is valid.
+     */
+    protected boolean isMonthValid() {
+        return InputValidator.validateMonth(getMonth());
+    }
 
-	/**
-	 * Checks to see if the set DOB Month is a valid month value.
-	 * @return true if the DOB month is valid.
-	 */
-	protected boolean isMonthValid() {
-		return InputValidator.validateMonth(getMonth());
-	}
+    /**
+     * Setup the default appearance of this input field to look like a date
+     * picker. Same as default but with hint text and the down arrow in the
+     * right drawable.
+     */
+    @Override
+    public void setupDefaultAppearance() {
+        super.setupDefaultAppearance();
+        this.setHint(getPlaceholderText());
+        this.setEms(DATE_PICKER_EMS_LENGTH);
 
-	/**
-	 * Setup the default appearance of this input field to look like
-	 * a date picker. Same as default but with hint text and the down arrow in the right drawable.
-	 */
-	@Override
-	public void setupDefaultAppearance(){
-		super.setupDefaultAppearance();
-		this.setHint(getPlaceholderText());
-		this.setEms(DATE_PICKER_EMS_LENGTH);
+        this.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                getDownArrow(), null);
+    }
 
-		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getDownArrow(), null);
-	}
+    /**
+     * Checks to see if the set DOB Day is a valid day value.
+     * 
+     * @return true if the DOB day is valid.
+     */
+    protected boolean isDayValid() {
+        return InputValidator.validateDay(getDay());
+    }
 
-	/**
-	 * Checks to see if the set DOB Day is a valid day value.
-	 * @return true if the DOB day is valid.
-	 */
-	protected boolean isDayValid() {
-		return InputValidator.validateDay(getDay());
-	}
+    /**
+     * Return the default placeholder text.
+     * 
+     * @return a string resource representing the default placeholder text.
+     */
+    protected int getPlaceholderText() {
+        return R.string.date_placeholder;
+    }
 
-	/**
-	 * Return the default placeholder text.
-	 * @return a string resource representing the default placeholder text.
-	 */
-	protected int getPlaceholderText(){
-		return R.string.date_placeholder;
-	}
+    /**
+     * Checks to see if the set DOB day, month, and year are valid.
+     * 
+     * @return true if the day, month, and year are all valid.
+     */
+    @Override
+    public boolean isValid() {
+        return isYearValid() && isMonthValid() && isDayValid();
+    }
 
-	/**
-	 * Checks to see if the set DOB day, month, and year are valid.
-	 * @return true if the day, month, and year are all valid.
-	 */
-	@Override
-	public boolean isValid() {
-		return isYearValid() && isMonthValid() && isDayValid();
-	}
+    protected int getYearOffset() {
+        return 0;
+    }
 
-	protected int getYearOffset(){
-		return 0;
-	}
-	protected int getDayOffset() {
-		return 0;
-	}
-	protected int getMonthOffset(){
-		return 0;
-	}
+    protected int getDayOffset() {
+        return 0;
+    }
+
+    protected int getMonthOffset() {
+        return 0;
+    }
 
 }

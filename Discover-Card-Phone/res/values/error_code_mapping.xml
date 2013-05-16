@@ -2,18 +2,18 @@
 <resources>
 
     <string name="E_401">Sorry. The User ID and/or Password does not match our records, or you are not registered. Please try again.</string>
-    <string name="E_503">Your Discover card is no longer accessible through the mobile app. Please sign in at discover.com to review your account information.</string>
-    <string name="E_4031110">Your Discover card is no longer accessible through the mobile app. Please sign in at discover.com to review your account information.</string>
+    <string name="E_503">Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
+    <string name="E_4031110">We are working on making enhancements to our mobile app. During this time, the mobile app will not be available for Discover Business Card, Essential Card and Corporate Card accounts. We expect it to be up and running by July 22, 2013. Please sign in through our mobile site at m.discover.com to access your account information. Thank you.</string>
     <string name="E_4011103">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822</string>
     <string name="E_4011107">Your temporary password has been used or is expired.</string>
     <string name="E_4031101">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact Customer Service at 1-877-742-7822 for assistance</string>
     <string name="E_4031104">Your online access is still being set up. Please try back again	later.</string>
     <string name="E_4031105">We\'re sorry, you may no longer use this Discover card account number to access the app. Instead, please visit www.discover.com to create User ID and password. If you have any questions, please contact Customer Service at 1-877-742-7822</string>
     <string name="E_4031105_WITHUSERID">We\'re Sorry, you may no longer use this Discover Card account number	to access the app. Instead, please log in using	your User ID and Password. !~~! "&lt;br&#47;&gt;""&lt;br&#47;&gt; If you have any questions, please contact Customer Service at 1-877-742-7822</string>
-    <string name="E_4031106">Your Discover Card Account Number has been changed. In order to	access your account through the mobile channel, you must first log in to the Account Center on www.discover.com. For more information,please contact Customer Service at 1-877-742-7822</string>
+    <string name="E_4031106">Your Discover Card Account Number has been changed. In order to	access your account through the mobile channel, you must first log in to the Account Center on www.discover.com. For more information, please contact Customer Service at 1-877-742-7822</string>
     <string name="E_4031401_NOTENROLLED">Help us keep your account safe by visiting discover.com on your primary computer to establish your set of security questions.</string>
     <string name="E_4031402">For security purposes, your online account has been locked.Please call Discover Customer Service at	1-888-251-8003 for information about accessing your account online.</string>
-    <string name="E_4031402_LOCKOUT">For security purposes, your online account has been locked."&lt;br&#47;&gt;""&lt;br&#47;&gt;Please call Discover Customer Service at	1-888-251-8003 for information about accessing your account online.</string>
+    <string name="E_4031402_LOCKOUT">We know you\'re excited to login to app,but you\'ve tried to log in with the wrong user name or password too many times. Contact us by phone or use our enhanced account security to regain access to your account.</string>
     <string name="E_4031401_DENY">LOST CARD.</string>
     <string name="E_4031401_UNLOCKED">Help us keep your account safe by visiting discover.com on your primary PC to establish your set of security questions.</string>
     <string name="E_4031401_UNVERIFIED">Help us keep your account safe by visiting discover.com on your primary PC to establish your set of security questions.</string>
@@ -29,7 +29,7 @@
     <string name="E_4031102_SSO_BUTTON">true.</string>
     <string name="E_1601">Promotion code is required.</string>
     <string name="E_1602">Please enter a valid promotion code.</string>
-    <string name="E_1603">This Promotion is already enrolled.</string> 
+    <string name="E_1603">This Promotion is already enrolled.</string>
     <string name="E_1604">Failed to enroll the promotion.</string>
     <string name="E_1625">We are sorry. You are ineligible to access this rewards service.</string>
     <string name="E_500">Discover.com Mobile Error We\'re sorry. Your request cannot be completed at this time. We sincerely apologize for this inconvenience and are working to resolve this issue soon. For further assistance please call 1-877-742-7822.</string>
@@ -214,32 +214,33 @@
     <string name="E_2007_MI"> $$name$$ Thanks for visiting $$pageError_errorMessage$$ At this time we don\'t have any Extras available. Be sure to check back soon, to find new offers you can take advantage of.</string>
     <string name="E_2008">Please enter a valid latitude.</string>
     <string name="E_2009">Please enter a valid longitude."</string>
-   <!--  <string name="E_5031108">Secure Credit Card Log In.</string>--> 
+    <!-- <string name="E_5031108">Secure Credit Card Log In.</string> -->
     <string name="E_4031401_LOCKOUT">Enhanced Account Security</string>
     <string name="E_4031402">Enhanced Account Security</string>
-    <!--  <string name="E_4031401_NOTENROLLED">Enhanced Account Security</string>-->
-   <!--  <string name="E_4031401_UNVERIFIED">Enhanced Account Security</string> -->
-     <!--<string name="E_4031401_UNLOCKED">Enhanced Account Security</string>-->
- 
- 	<!-- Error message for push notification -->
- 	<string name="E_Push_Other_Account">Changes have been made to push alerts. Update your settings to continue receiving alerts</string>
+    <!-- <string name="E_4031401_NOTENROLLED">Enhanced Account Security</string> -->
+    <!-- <string name="E_4031401_UNVERIFIED">Enhanced Account Security</string> -->
+    <!-- <string name="E_4031401_UNLOCKED">Enhanced Account Security</string> -->
 
-    <!-- NEW CODES Titles-->
-	
-	<string name="E_T_5031108">Cashback Bonus is Currently Unavailable</string>
-	<string name="E_T_1401_LOCKOUT">Secure Credit Card Login</string>
+
+    <!-- Error message for push notification -->
+    <string name="E_Push_Other_Account">Changes have been made to push alerts. Update your settings to continue receiving alerts</string>
+
+    <!-- NEW CODES Titles -->
+
+    <string name="E_T_5031108">Cashback Bonus is Currently Unavailable</string>
+    <string name="E_T_1401_LOCKOUT">Secure Credit Card Login</string>
     <string name="E_T_4031102_SSO_DELINK">We\'re Sorry.</string>
-	<string name="E_T_4031102_SSO">We\'re Sorry.</string>
-	<string name="E_T_4031401_DENY">We\'re Sorry.</string>
-	<string name="E_T_4031106">We\'re Sorry</string>
-	<string name="E_T_4031101"> You\'ve Been Locked Out</string>
-	 <string name="E_T_503">We\'re Sorry</string>
-	 <string name="E_T_4031110">We\'re Sorry</string>
-	 <string name="E_T_100">Network Error</string>
-    <string name="E_100">No Network Available</string>
+    <string name="E_T_4031102_SSO">We\'re Sorry.</string>
+    <string name="E_T_4031401_DENY">We\'re Sorry.</string>
+    <string name="E_T_4031106">We\'re Sorry</string>
+    <string name="E_T_4031101"> You\'ve Been Locked Out</string>
+    <string name="E_T_503">Oops!</string>
+    <string name="E_T_4031110">We\'re Sorry</string>
+    <string name="E_T_100">Network Connection Error</string>
+    <string name="E_100">The network connection appears to be offline at this moment. Please check your device settings and try again once the connection has been restored.</string>
     <string name="E_T_403">You\'ve Been Locked Out</string>
     <string name="E_T_0">Your Request Could Not Be Completed</string>
-	 <string name="E_T_1401"> Enhanced Account Security</string>
+    <string name="E_T_1401"> Enhanced Account Security</string>
     <string name="E_T_1402"> You\'ve Been Locked Out</string>
     <string name="E_T_1910"></string>
     <string name="E_T_1905"> We\'re Sorry</string>
@@ -252,14 +253,12 @@
     <string name="E_T_1913"> Your Request Could Not Be Completed</string>
     <string name="E_T_1907"> Your Request Could Not Be Completed</string>
     <string name="E_T_1008"> Your Request Could Not Be Completed</string>
-    
-	
-	<string name="E_T_4031104"> We\'re Sorry</string>
+    <string name="E_T_4031104"> We\'re Sorry</string>
     <string name="E_T_4031105_WITHUSERID">Card Number Error</string>
     <string name="E_T_4031102"> We\'re Sorry</string>
     <string name="E_T_4031105">Card Number Error</string>
     <string name="E_T_4031402">Enhanced Account Security</string>
-    <string name="E_T_4031402_LOCKOUT">Enhanced Account Security</string>
+    <string name="E_T_4031402_LOCKOUT">You\'ve been locked out</string>
     <string name="E_T_4031401_UNLOCKED">Enhanced Account Security</string>
     <string name="E_T_4031401_NOTENROLLED">Enhanced Account Security</string>
     <string name="E_T_4031401_UNVERIFIED">Enhanced Account Security</string>
@@ -267,11 +266,10 @@
     <string name="E_T_1402_LOCKOUT">Enhanced Account Security</string>
     <string name="E_T_5031006">Performing System Maintenance</string>
     <string name="E_T_5031007">Performing System Maintenance</string>
-     <!-- <string name="E_T_503">Performing System Maintenance</string> -->
+    <!-- <string name="E_T_503">Performing System Maintenance</string> -->
     <string name="E_T_4011107">Password Error</string>
     <string name="E_T_4031102_SSN_NOT_MATCH">Secure Credit Card Log In</string>
-    
-    
+
     <!-- New Codes Message -->
     <string name="E_1401">Help us keep your account safe by visiting discover.com on your primary computer to establish your set of security questions.</string>
     <string name="E_1402">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact us at 1-877-742-7822 or use our enhanced account security to regain access to your account.</string>
@@ -290,8 +288,8 @@
 	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_1008">We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience. Please try again later, or for immediate assistance call 18777427822</string>
     <string name="E_1916">You have entered invalid information.Carefully review your information and please try again.</string>
-    
-       <!-- Registration Code title -->
+
+    <!-- Registration Code title -->
     <string name="E_T_4001905">We\'re Sorry</string>
     <string name="E_T_5001905">We\'re Sorry</string>
     <string name="E_T_5031905">We\'re Sorry</string>
@@ -306,7 +304,7 @@
     <string name="E_T_4001915">We\'re Sorry</string>
     <string name="E_T_4001916">We\'re Sorry</string>
     <string name="E_T_4031922">Secure Credit Card Log In</string>
-    
+
     <!-- Registration code Messages -->
     <string name="E_4001901">Invalid user input</string>
     <string name="E_4001902">User IDs do not match.</string>
@@ -342,43 +340,45 @@
     <string name="E_4001925">The password is empty. Please enter a password.</string>
     <string name="E_4001926">The password is invalid. Please enter a valid password.</string>
     <string name="E_4031928">Due to special conditions related to your account, we can\'t retrieve your User ID at this time.To recover your User ID, you will need to re-register for online account access.</string>
-     <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
-   
+    <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
+
+    <!-- need help footer and feedback -->
+    <!-- 0 for hide need help footer and show feedback -->
+    <!-- 1 for hide feedback link and show need help footer -->
+    <!-- 2 for hide both -->
+    <!-- 3 for show both -->
+    <!-- 4 for show both feedback link and  need help footer and ok button navigate to logout activity -->
+    <string name="E_H_4031101">0</string>
+    <string name="E_H_4031402">0</string>
+    <string name="E_H_4031401_LOCKOUT">0</string>
+    <string name="E_H_403">0</string>
+    <string name="E_H_4031402_LOCKOUT">0</string>
+    <string name="E_H_4031102">1</string>
+    <string name="E_H_4031102_SSO_DELINK">0</string>
+    <string name="E_H_4031102_SSO">0</string>
+    <string name="E_H_4031105">0</string>
+    <string name="E_H_4031105_WITHUSERID">0</string>
+    <string name="E_H_4031106">0</string>
+    <string name="E_H_4011107">3</string>
+    <string name="E_H_503">4</string>
+    <string name="E_H_5031006">0</string>
+    <string name="E_H_5031007">0</string>
+    <string name="E_H_5031108">4</string>
+    <string name="E_H_4031104">3</string>
+    <string name="E_H_4031401_NOTENROLLED">3</string>
+    <string name="E_H_4031401_UNLOCKED">3</string>
+    <string name="E_H_4031401_UNVERIFIED">3</string>
+	
+    <string name="E_T_101">Timeout!</string>
+    <string name="E_101">Getting slow network!</string>
     
-<!-- need help footer and feedback -->
-<!-- 0 for hide need help footer and show feedback -->
-<!-- 1 for hide feedback link and show need help footer -->
-<!-- 2 for hide both -->
-<!-- 3 for show both -->
-<!--4 for show both feedback link and  need help footer and ok button navigate to logout activity  -->
-     <string name="E_H_4031101">0</string>
-     <string name="E_H_4031402">0</string>
-     <string name="E_H_4031401_LOCKOUT">0</string>
-      <string name="E_H_403">0</string>
-     <string name="E_H_4031402_LOCKOUT">0</string>
-     <string name="E_H_4031102">1</string>
-     <string name="E_H_4031102_SSO_DELINK">0</string>
-     <string name="E_H_4031102_SSO">0</string>
-     <string name="E_H_4031105">0</string>
-     <string name="E_H_4031105_WITHUSERID">0</string>
-     <string name="E_H_4031106">0</string>
-     
-     <string name="E_H_4011107">3</string>
-     <string name="E_H_503">4</string>
-     <string name="E_H_5031006">0</string>
-     <string name="E_H_5031007">0</string>
-     <string name="E_H_5031108">4</string>
-     <string name="E_H_4031104">3</string>
-     <string name="E_H_4031401_NOTENROLLED">3</string>
-     <string name="E_H_4031401_UNLOCKED">3</string>
-     <string name="E_H_4031401_UNVERIFIED">3</string>
-     
-   
-  
-      
- 
+    <string name="E_T_102">No Connection!</string>
+    <string name="E_102">Could not connect to the server!</string>
     
+    <string name="E_T_103">Malformed URL</string>
+    <string name="E_103">Bad Request!</string>
     
-           
-       
+    <string name="E_T_104">Connection Problem!</string>
+    <string name="E_104">Could not connect to the server!</string>
+    
 </resources>
