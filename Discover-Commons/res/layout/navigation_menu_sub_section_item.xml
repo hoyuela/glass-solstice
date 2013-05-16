@@ -36,10 +36,6 @@
             android:background="@drawable/push_count_selector"
             android:clickable="true"
             android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
             android:textColor="@color/white"
             android:textSize="11dp"
             android:visibility="gone" />

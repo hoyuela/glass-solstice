@@ -285,7 +285,7 @@
     </style>
     
     <!-- NEED HELP? TEXT / #3d484d / 34pt font-size / centered / bold -->
-    <style name="need_help_text" parent="body_copy">
+    <style name="common_need_help_text" parent="body_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textStyle">bold</item>
     </style>
