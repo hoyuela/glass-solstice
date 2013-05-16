@@ -69,7 +69,8 @@ public class JQMResourceMapper {
 
         temp.put("Partner Gift Cards & eCerts",
                 R.string.sub_section_title_partner_gift_cards);
-        temp.put("Discover Gift Cards",
+        //Change title for defect #96089
+        temp.put("Discover Gift Card",
                 R.string.sub_section_title_discover_gift_cards);
         temp.put("Statement Credit",
                 R.string.sub_section_title_statement_credit);
