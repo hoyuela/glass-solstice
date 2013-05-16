@@ -45,9 +45,6 @@ public class BankAccountActivityTable extends BaseTable{
 	/**Title view of the page*/
 	private AccountActivityHeader header;
 
-	/**Boolean set to true when the toggle needs to be adjusted to posted*/
-	private Boolean postedToggle = true;
-
 	/**
 	 * Handle the received data from the service call
 	 * @param bundle - bundle received from the service call
@@ -58,15 +55,9 @@ public class BankAccountActivityTable extends BaseTable{
 		super.refreshListener();
 		getLoadMoreFooter().showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
-		
-		if(bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY)){
-			postedToggle = !postedToggle;
-		}
-		
-		if(postedToggle){
-			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
-		}else{
-			header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+
+		if (bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY)) {
+			header.setSelectedCategory(!header.isPosted());
 		}
 
 		if(header.isPosted()){
@@ -316,10 +307,10 @@ public class BankAccountActivityTable extends BaseTable{
 		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);	
 		
 		/**Set flag to true if passed list has Posted Activities*/
-		postedToggle = (current.type == ActivityDetailType.Posted);
+		boolean isPostedList = (current.type == ActivityDetailType.Posted);
 		
 		/**Set Header to Posted or Scheduled depenting on the type of list*/
-		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, postedToggle));
+		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, isPostedList));
 		
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){
