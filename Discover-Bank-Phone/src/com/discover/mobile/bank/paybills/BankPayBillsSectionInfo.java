@@ -11,6 +11,7 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationHelper;
+import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -59,6 +60,7 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					} else if(isEligible() && !isEnrolled()){
 						sendToTermsScreen(R.string.section_title_pay_bills);
 					} else{
+						BankAddManagedPayeeFragment.setCameFromPayBills(true);
 						BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
 					}
 				} else {
@@ -94,6 +96,8 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 				} else {
 					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 				}
+				BankAddManagedPayeeFragment.setCameFromPayBills(false);
+				
 			}
 		};
 	}

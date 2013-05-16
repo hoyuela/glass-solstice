@@ -127,7 +127,12 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 			bottom.setButtonText(buttonText);
 			
 			top.hideNeedHelpFooter();
-			top.setTitle(baseFragment.getResources().getString(titleText));
+			String title = baseFragment.getResources().getString(titleText);
+			if(!title.endsWith("?")) {
+				title += "?";
+			}
+			
+			top.setTitle(title);
 			top.setContent(bodyText);
 			
 			final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(currentActivity, top, bottom);
