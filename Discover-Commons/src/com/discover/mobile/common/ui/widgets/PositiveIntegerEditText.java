@@ -41,7 +41,17 @@ public class PositiveIntegerEditText extends ValidatedInputField{
 	 */
 	@Override
 	public void setupInputRestrictions() {
-		filterArray[0] = new InputFilter.LengthFilter(DEFAULT_EMS);
+		setMaxInputLength(DEFAULT_EMS);
+	}
+	
+	public final void setMaxInputLength(final int maxInputLength) {
+		int inputLimit = DEFAULT_EMS;
+		
+		if(maxInputLength > 0) {
+			inputLimit = maxInputLength;
+		}
+		
+		filterArray[0] = new InputFilter.LengthFilter(inputLimit);
 		this.setFilters(filterArray);
 		this.setInputType(InputType.TYPE_CLASS_NUMBER);
 	}

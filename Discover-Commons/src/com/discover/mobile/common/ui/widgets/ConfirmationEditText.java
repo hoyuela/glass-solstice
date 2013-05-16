@@ -18,14 +18,17 @@ public class ConfirmationEditText extends ValidatedInputField {
 
 	public ConfirmationEditText(final Context context) {
 		super(context);
+		doSetup();
 	}
 
 	public ConfirmationEditText(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
+		doSetup();
 	}
 
 	public ConfirmationEditText(final Context context, final AttributeSet attrs, final int defStyle){
 		super(context, attrs, defStyle);
+		doSetup();
 	}
 
 	/**
@@ -43,6 +46,11 @@ public class ConfirmationEditText extends ValidatedInputField {
 
 			editTextToMatch.addTextChangedListener(getMatcherTextWatcher());
 		}
+	}
+	
+	private void doSetup() {
+		setupFocusChangedListener();
+		setupTextChangedListener();
 	}
 
 	/**
@@ -90,8 +98,7 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 * If the field is yet to be matched it will still be gray, but when a user navigates away it will turn red
 	 * to notify them that they need to correct it.
 	 */
-	@Override
-	protected void setupFocusChangedListener() {
+	private void setupFocusChangedListener() {
 
 		this.setOnFocusChangeListener(new OnFocusChangeListener() {
 
@@ -105,8 +112,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 				}
 				else{
 					setRightDrawableGrayX();
-					if(isInErrorState)
+					if(isInErrorState){
 						setRightDrawableRedX();
+					}
 				}
 
 			}
@@ -118,21 +126,21 @@ public class ConfirmationEditText extends ValidatedInputField {
 	 * it will stay gray until it matches, then it will turn green and place a green check mark in the right
 	 * drawable location of the input field.
 	 */
-	@Override
-	protected void setupTextChangedListener() {
+	private void setupTextChangedListener() {
 		final ConfirmationEditText self = this;
 
 		this.addTextChangedListener(new TextWatcher() {
-			String beforeText;
-			String afterText;
+			private String beforeText;
+			private String afterText;
 			@Override
 			public void afterTextChanged(final Editable s) {
 				afterText = s.toString();
 				if(beforeText.equals(afterText)){
-					if(isValid())
+					if(isValid()){
 						setAppearanceMatched();
-					else
+					}else{
 						updateAppearanceForInput();
+					}
 				}
 			}
 
@@ -144,17 +152,18 @@ public class ConfirmationEditText extends ValidatedInputField {
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
 
-				if(isUserId)
+				if(isUserId){
 					CommonUtils.setInputToLowerCase(s, self);
-				if(count > 0)
+				}
+				if(count > 0){
 					isInDefaultState = false;
-
+				}
 				if(!isInDefaultState && isValid()){
 					clearErrors();
 					setAppearanceMatched();
-				}
-				else
+				}else{
 					clearErrors();
+				}
 
 
 			}
@@ -202,9 +211,9 @@ public class ConfirmationEditText extends ValidatedInputField {
 		if(isValid()){
 			clearErrors();
 			setAppearanceMatched();
-		}
-		else
+		}else{
 			setErrors();
+		}
 	}
 
 	/**

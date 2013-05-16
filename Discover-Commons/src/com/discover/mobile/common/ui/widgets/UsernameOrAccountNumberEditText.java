@@ -59,7 +59,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 * Change the input field to accept and validate a username. This is an alphanum input
 	 * with no suggestions and a max length of 32 characters.
 	 */
-	public void setFieldUsername() {
+	public final void setFieldUsername() {
 		isUsernameField = true;
 		setupUsernameInputRestrictions();
 	}
@@ -111,15 +111,17 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 				String currentTextStylized = 
 						CommonUtils.getStringWithSpacesEvery4Characters(CommonUtils.getSpacelessString(currentText));
 				//remove the trailing space at the end of the number
-				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1)
+				if(currentTextStylized.length() == VALID_ACCOUNT_NUMBER_LENGTH + 1){
 					currentTextStylized = currentTextStylized.trim();
+				}
 
 				final int lengthAfter = currentTextStylized.length();
 
 				if(currentTextStylized.length() <= VALID_ACCOUNT_NUMBER_LENGTH && !currentText.equals(currentTextStylized)){
 					saveCursorPosition();
-					if(lengthBefore > lengthAfter)
+					if(lengthBefore > lengthAfter){
 						isDeleting = true;
+					}
 
 					updateInputWithString(currentTextStylized);
 				}
@@ -194,10 +196,11 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField{
 	 */
 	@Override
 	public boolean isValid(){
-		if(isUsernameField)
+		if(isUsernameField){
 			return isUsernameValid();
-		else
+		}else{
 			return isAccountNumberValid();
+		}
 	}
 
 	/**
