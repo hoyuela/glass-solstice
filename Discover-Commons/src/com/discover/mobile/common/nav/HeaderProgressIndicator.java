@@ -20,14 +20,14 @@ import com.discover.mobile.common.R;
  */
 public class HeaderProgressIndicator extends RelativeLayout {
 
-	protected TextView step1;
-	protected TextView step2;
-	protected TextView step3;
-	protected ImageView step1Confirm;
-	protected ImageView step2Confirm;
-	protected ImageView indicator1;
-	protected ImageView indicator2;
-	protected ImageView indicator3;
+	private TextView step1;
+	private TextView step2;
+	private TextView step3;
+	private ImageView step1Confirm;
+	private ImageView step2Confirm;
+	private ImageView indicator1;
+	private ImageView indicator2;
+	private ImageView indicator3;
 
 
 	public HeaderProgressIndicator(final Context context) {

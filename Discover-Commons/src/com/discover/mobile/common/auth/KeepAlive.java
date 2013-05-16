@@ -10,7 +10,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
  * Card and Bank. Users are expected to update whether or not Bank and Card are
  * authenticated or unauthenticated.
  */
-public class KeepAlive {
+public final class KeepAlive {
 
 	/** Minimum amount of time (ms) required before making bank refresh call. */
 	public static final long MIN_TIME_FOR_BANK_REFRESH = 600000; // 10 mins
@@ -35,7 +35,14 @@ public class KeepAlive {
 
 	/** Used to decide if a refresh call is needed for Bank */
 	private static boolean isBankAuthenticated = false;
-
+	
+	/**
+	 * This is a utility class and should not have a public or default constructor.
+	 */
+	private KeepAlive() {
+		throw new UnsupportedOperationException();
+	}
+	
 	/**
 	 * Checks to see if the last bank refresh call period is greater than the
 	 * minimum allowed.
