@@ -14,8 +14,9 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<JsonM
 	public JsonMessageErrorResponse parseErrorResponse(final int httpStatusCode, final InputStream errorStream,
 			final HttpURLConnection conn) throws IOException {
 		
-		if(!isParseableContentType(conn) || doesntHaveDeclaredContent(conn) || !inputStreamHasContent(errorStream))
+		if(!isParseableContentType(conn) || doesntHaveDeclaredContent(conn) || !inputStreamHasContent(errorStream)){
 			return null;
+		}
 		
 		return JacksonObjectMapperHolder.mapper.readValue(errorStream, JsonMessageErrorResponse.class);
 	}
@@ -29,8 +30,9 @@ public class JsonMessageErrorResponseParser implements ErrorResponseParser<JsonM
 	}
 	
 	private static boolean inputStreamHasContent(final InputStream in) throws IOException {
-		if(!in.markSupported())
+		if(!in.markSupported()){
 			throw new UnsupportedOperationException("Not able to handle non-markable InputStreams");
+		}
 		
 		in.mark(2);
 		final int result = in.read();
