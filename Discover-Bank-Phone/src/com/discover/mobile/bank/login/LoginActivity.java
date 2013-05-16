@@ -630,19 +630,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	/** Set the input fields to be highlighted in red. */
 	private void setInputFieldsDrawableToRed() {
-		setInputFieldsDrawableToRed(true);
-	}
-	
-	/** Set the input fields to be highlighted in red. Will hide the right drawable when passing false. */
-	private void setInputFieldsDrawableToRed(boolean showRightDrawable) {
 		idField.setErrors();
 		passField.setErrors();
-		
-		if (!showRightDrawable) {
-			// Hides the right drawables ("x")
-			idField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			passField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-		}
 	}
 
 	/**
@@ -983,7 +972,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
 		if (wasIdEmpty && wasPassEmpty) {
-			setInputFieldsDrawableToRed(false);
+			setInputFieldsDrawableToRed();
 			return true;
 		} else if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
