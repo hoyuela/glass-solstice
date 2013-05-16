@@ -746,16 +746,10 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		if(isFormInfoComplete()) {
 			final TransferDetail transferObject = new TransferDetail();
 	
-			transferObject.fromAccount = new Account();
-			transferObject.toAccount = new Account();
+			transferObject.fromAccount = fromAccount;
+			transferObject.toAccount = toAccount;
 			transferObject.amount = new Money();
 	
-			if(fromAccount != null) {
-				transferObject.fromAccount.id = fromAccount.id;
-			}
-			if(toAccount != null) {
-				transferObject.toAccount.id = toAccount.id;
-			}
 			if(!Strings.isNullOrEmpty(frequencyCode)) {
 				transferObject.frequency = frequencyCode;
 			}
