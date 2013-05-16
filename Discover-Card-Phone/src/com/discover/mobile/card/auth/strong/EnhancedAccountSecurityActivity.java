@@ -239,8 +239,10 @@ public class EnhancedAccountSecurityActivity extends
                     } else {
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
-                        errorMessage.setVisibility(View.VISIBLE);
-                        // questionAnswerField.updateAppearanceForInput();
+                       // errorMessage.setVisibility(View.VISIBLE);
+                        questionAnswerField.setText("");
+                         questionAnswerField.setErrors();
+                        
                     }
                 }
 
@@ -312,7 +314,7 @@ public class EnhancedAccountSecurityActivity extends
             errorMessage.setVisibility(inputErrorVisibility);
             Utils.log(TAG, "inputErrorText " + inputErrorText
                     + " inputErrorVisibility " + inputErrorVisibility);
-            // restoreInputField();
+            restoreInputField();
 
             // restoreExpandableHelpMenu();
         }
