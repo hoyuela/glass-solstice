@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,27 +83,23 @@ public class CalendarFragment extends CaldroidFragment {
 	 * Key for hold the tag used to lookup this fragment in the fragment manager provided via the show method.
 	 */
 	public static final String TAG = "CALDROID_DIALOG_FRAGMENT";
-	/**
-	 * Static variables that holds the number of days in a week
-	 */
-	public static final int NUMBER_OF_DAYS_IN_WEEK = 7;
 	
 	/**
 	 * Reference to the current chosen date on the calendar at start-up
 	 */
-	private Calendar selectedDate;
+	protected Calendar selectedDate;
 	/**
 	 * Reference to first selectable date on the calendar
 	 */
-	private Calendar minDate;
+	protected Calendar minDate;
 	/**
 	 * Reference to the list of non-selectable dates on the calendar
 	 */
-	private ArrayList<Date> holidays;
+	protected ArrayList<Date> holidays;
 	/**
 	 * Reference to text view that displays at the top of the fragment as the title
 	 */
-	private TextView titleTxtVw;
+	protected TextView titleTxtVw;
 	/**
 	 * Integer that holds the month that is currently being displayed on the calendar. Used to handle rotation.
 	 */
@@ -114,7 +111,7 @@ public class CalendarFragment extends CaldroidFragment {
 	/**
 	 * Reference to listener that will receive events when there is a change in month or selected date from the calendar.
 	 */
-	private CalendarListener eventListener;
+	protected CalendarListener eventListener;
 	
 	
 	@Override
@@ -183,6 +180,11 @@ public class CalendarFragment extends CaldroidFragment {
 		/**Set Text for the Header*/
 		titleTxtVw = (TextView)titleHeader.findViewById(R.id.title);
 		titleTxtVw.setText(this.getArguments().getString(CalendarFragment.DIALOG_TITLE));
+	}
+	
+	@Override
+	public void onSaveInstanceState(final Bundle outstate) {
+		super.onSaveInstanceState(outstate);
 	}
 	
 	/**
@@ -266,11 +268,11 @@ public class CalendarFragment extends CaldroidFragment {
 	private ArrayList<Date> getUnavailableDates(final int month, final int year) {
 		final Calendar activeDate = Calendar.getInstance();
 		activeDate.add(Calendar.MONTH, month - activeDate.get(Calendar.MONTH) - 1);
-		activeDate.set(Calendar.YEAR, ((activeDate.get(Calendar.MONTH) == Calendar.DECEMBER)? year - 1 : year));
+		activeDate.set(Calendar.YEAR, ((activeDate.get(Calendar.MONTH) == 11)? year - 1 : year));
 	
 		final Calendar endDate = Calendar.getInstance();
 		endDate.add(Calendar.MONTH, month - endDate.get(Calendar.MONTH) + 1);
-		endDate.add(Calendar.DATE, endDate.get(Calendar.DAY_OF_MONTH) + NUMBER_OF_DAYS_IN_WEEK);
+		endDate.add(Calendar.DATE, endDate.get(Calendar.DAY_OF_MONTH) + 7);
 		endDate.set(Calendar.YEAR, ((endDate.get(Calendar.MONTH) == 0)? year + 1 : year));
 		
 		final ArrayList<Date> dates = (holidays == null) ? new ArrayList<Date>() : holidays;
@@ -278,7 +280,8 @@ public class CalendarFragment extends CaldroidFragment {
 		while( activeDate.compareTo(endDate) <= 0 ) {
 			if( activeDate.compareTo(minDate) >= 0 ) {
 				if( isWeekend(activeDate) ) {
-					dates.add(activeDate.getTime());	
+					dates.add(activeDate.getTime());
+	
 				}
 			} else {
 				dates.add(activeDate.getTime());
@@ -288,6 +291,18 @@ public class CalendarFragment extends CaldroidFragment {
 		}
 		
 		return dates;
+	}
+	
+	/**
+	 * Utility method for debugging purposes only.
+	 * 
+	 * @param cal
+	 */
+	private void printDate(final Calendar cal) {
+		Log.v("Discover", cal.get(Calendar.MONTH) +"/" +
+						  cal.get(Calendar.DATE) +"/" +
+						  cal.get(Calendar.YEAR) +"-" +
+						  cal.get(Calendar.DAY_OF_WEEK) +"\n");
 	}
 	
 	/**

@@ -3,6 +3,8 @@
  */
 package com.discover.mobile.common.facade;
 
+import android.app.Activity;
+
 import com.discover.mobile.common.BaseActivity;
 
 /**
@@ -24,5 +26,5 @@ public interface PushFacade {
 	 * Starts the Xtify SDK using the correct app key and the correct Google Project ID specific to the environment
 	 * @param context - application context
 	 */
-	public void startXtifySDK(BaseActivity callingActivity);
+	public void startXtifySDK(Activity callingActivity);
 }

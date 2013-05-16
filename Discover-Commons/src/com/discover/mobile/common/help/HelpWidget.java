@@ -38,9 +38,7 @@ import com.discover.mobile.common.R;
  *
  */
 public class HelpWidget extends RelativeLayout {
-	private static Animation fadeOutAnimation = null;
-	private static Animation fadeInAnimation = null;
-	
+
 	/**Image of the help button*/
 	private final ImageButton help;
 
@@ -61,7 +59,7 @@ public class HelpWidget extends RelativeLayout {
 	public HelpWidget(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		final View view = LayoutInflater.from(context).inflate(R.layout.common_help_widget, null);
-		loadAnimations();
+
 		help = (ImageButton) view.findViewById(R.id.help);
 		expandableView = (RelativeLayout) view.findViewById(R.id.help_list);
 		list = (ListView) view.findViewById(R.id.help_list_view);
@@ -73,54 +71,23 @@ public class HelpWidget extends RelativeLayout {
 		help.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				Animation fadeAnimation = null;
 				if(expandableView.getVisibility() == View.INVISIBLE){
+					fadeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_animation);
+					
+					expandableView.setVisibility(View.VISIBLE);
 					help.setImageDrawable(context.getResources().getDrawable(R.drawable.help_icon_gray_no_glow));
-					expandableView.post(fadeInAnimationRunnable);
+					expandableView.startAnimation(fadeAnimation);
 				}else{
+					fadeAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out_animation);
+					expandableView.startAnimation(fadeAnimation);
+					expandableView.setVisibility(View.INVISIBLE);
 					help.setImageDrawable(context.getResources().getDrawable(R.drawable.common_question_mark_icon));
-					expandableView.post(fadeOutAnimationRunnable);
 				}
 			}
 		});
 
 		addView(view);
-	}
-	
-	/**
-	 * Animates the HelpWidget to open.
-	 * Fade in Runnable. Should be used with a View.post(Runnable) method, to queue the animation onto the UI thread.
-	 */
-	private final Runnable fadeInAnimationRunnable = new Runnable() {
-		@Override
-		public void run() {
-			expandableView.startAnimation(fadeInAnimation);
-			expandableView.setVisibility(View.VISIBLE);
-		}
-	};
-		
-	/**
-	 * Animates the HelpWidget to close.
-	 * Fade out Runnable. Should be used with a View.post(Runnable) method, to queue the animation onto the UI thread.
-	 */
-	private final Runnable fadeOutAnimationRunnable = new Runnable() {
-		@Override
-		public void run() {
-			expandableView.startAnimation(fadeOutAnimation);
-			expandableView.setVisibility(View.INVISIBLE);
-		}
-	};
-	
-	/**
-	 * Load the animations that are used during opening and closing the menu
-	 */
-	private void loadAnimations() {
-		if(fadeInAnimation == null) {
-			fadeInAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_in_animation);
-		}
-		
-		if(fadeOutAnimation == null) {
-			fadeOutAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out_animation);
-		}
 	}
 
 	/**

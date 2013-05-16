@@ -61,9 +61,8 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	/**Fragment that is currently being shown to the user*/
 	protected Fragment currentFragment;
 
-	private EventManager eventManager;
-	private final Map<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
-
+	protected EventManager eventManager;
+	protected HashMap<Key<?>,Object> scopedObjects = new HashMap<Key<?>, Object>();
 	/**
 	 * Flag used to determine if the activity is in resumed state
 	 */
@@ -228,23 +227,6 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		hideSlidingMenuIfVisible();
 	}
-	
-	/**
-	 * Sets the fragment seen by the user
-	 * @param fragment - fragment to be shown
-	 */
-	protected void setVisibleFragmentNoAnimation(final Fragment fragment) {
-
-		currentFragment = fragment;
-		getSupportFragmentManager()
-		.beginTransaction()
-		.replace(R.id.navigation_content, fragment)
-		//Adds the class name and fragment to the back stack
-		.addToBackStack(fragment.getClass().getSimpleName())
-		.commit();
-
-		hideSlidingMenuIfVisible();
-	}
 
 	/**
 	 * Sets the fragment seen by the user, but does not add it to the history
@@ -277,34 +259,10 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
 
-		final FragmentManager mgr = getSupportFragmentManager();
-		
-		if( mgr.getBackStackEntryCount() > 0 ) {
-			/**If back stack has fragments on it then use animations in transitions*/
-			setVisibleFragment(fragment);
-		} else {
-			/**If back stack has no fragments then use no animations on transition*/
-			setVisibleFragmentNoAnimation(fragment);
-		}
-		
+		setVisibleFragment(fragment);
 		hideSlidingMenuIfVisible();
 	}
 
-	/**
-	 * Make Fragment visible without any transition animation.
-	 * 
-	 * @param fragment Reference to fragment that is being added to the back stack.
-	 */
-	public void makeFragmentVisibleNoAnimation(final Fragment fragment) {
-		
-		/**Clear any modal that may have been created during the life of the current fragment*/
-		DiscoverModalManager.clearActiveModal();
-
-		setVisibleFragmentNoAnimation(fragment);
-		
-		hideSlidingMenuIfVisible();
-	}
-	
 	/**
 	 * Make the fragment visible
 	 * @param fragment - fragment to be made visible

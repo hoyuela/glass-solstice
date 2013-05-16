@@ -11,61 +11,54 @@ package com.discover.mobile.common.nav;
  * @author ajleeds
  *
  */
-public final class NavigationIndex {
+public class NavigationIndex {
 	
-	private static int previousMainIndex = 0;
-	private static int mainIndex = 0;
-	private static int previousSubIndex = 1;
-	private static int subIndex = 1;
-	
-	/**
-	 * This is a utility class and should not have a public or default constructor.
-	 */
-	private NavigationIndex() {
-		throw new UnsupportedOperationException();
-	}
+	private static int PREVIOUS_MAIN_INDEX = 0;
+	private static int MAIN_INDEX = 0;
+	private static int PREVIOUS_SUB_INDEX = 1;
+	private static int SUB_INDEX = 1;
 	
 	public static void setSubIndex(final int index){
-		if (index == -1 && subIndex != -1){
-			previousSubIndex = subIndex;
+		if (index == -1 && SUB_INDEX != -1){
+			PREVIOUS_SUB_INDEX = SUB_INDEX;
 		}
-		subIndex = index;
+		SUB_INDEX = index;
 	}
 	
 	public static int getMainIndex(){
-		return mainIndex;
+		return MAIN_INDEX;
 	}
 
 	public static void setIndex(final int index){
-		if (index == previousMainIndex){
-			subIndex = previousSubIndex;
+		if (index == PREVIOUS_MAIN_INDEX){
+			SUB_INDEX = PREVIOUS_SUB_INDEX;
 		}else {
 			/**
 			 * Only set the previous main index if sub is valid. Otherwise don't set it. 
 			 * This is needed so that when flipping around in the menu and coming back 
 			 * to the original option, the sub gets highlighting correctly.
 			 */
-			if (subIndex != -1){
-				previousMainIndex = mainIndex;
+			if (SUB_INDEX != -1){
+				PREVIOUS_MAIN_INDEX = MAIN_INDEX;
 			}
 			//Set - 1 so that no sub menu is highlighted when a main is expanded. 
 			setSubIndex(-1);
 		}
-		mainIndex = index;
+		MAIN_INDEX = index;
 	}
 	
 	public static int getSubIndex() {
-		return subIndex;
+		return SUB_INDEX;
 	}
 	
 	/**
 	 * Called at login in order to clear the navigation state
 	 */
 	public static void clearAll(){
-		previousMainIndex = 0;
-		previousSubIndex = 0;
-		mainIndex = 0;
-		subIndex = 0;
+		PREVIOUS_MAIN_INDEX = 0;
+		PREVIOUS_SUB_INDEX = 0;
+		MAIN_INDEX = 0;
+		SUB_INDEX = 0;
 	}
 
 }
