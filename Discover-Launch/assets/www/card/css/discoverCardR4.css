@@ -2624,7 +2624,7 @@ padding-top: 12px;}*/
 #manageAlerts-pg #changenumber .ui-block-b{ margin-top:0px;}
 #changenumber .ui-block-b input.input_hightlight_error{ border:2px solid #fd0202;}
 #manageAlerts-pg #activitySelection .ui-btn-down-d  {border:1px solid #bbb !important} 
-#manageAlerts-pg.pn-page #addnumber input[type="tel"] { margin-top:5px !important; border:1px solid #bbb;}
+#manageAlerts-pg.pn-page #addnumber input[type="tel"] { margin-top:7px !important; border:1px solid #bbb;}
 
 .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed,
 .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs{border:1px solid #CED6D7 !important;}

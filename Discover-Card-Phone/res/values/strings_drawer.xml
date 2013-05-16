@@ -48,6 +48,7 @@
      <string name="terms_of_use">Terms of Use</string>    
      
     <string name="payment_history">Payment History</string>
+     <string name="redeem_cashback_bonus_landing">Redemption Options</string>
     <string name="error_no_title">No Title</string>
     <string name="enhanced_account_security_title">Enhanced Account Security</string>
 </resources>

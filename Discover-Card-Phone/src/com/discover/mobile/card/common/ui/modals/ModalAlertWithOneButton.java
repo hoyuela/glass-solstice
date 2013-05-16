@@ -6,9 +6,9 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,375 +16,400 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 
 /**
- * This class is a modal alert with both a top view and a bottom view.  This view will only show a title and
- * some content text and a bottom with only one button.
+ * This class is a modal alert with both a top view and a bottom view. This view
+ * will only show a title and some content text and a bottom with only one
+ * button.
  * 
  * @author jthornton
- *
+ * 
  */
-public class ModalAlertWithOneButton extends AlertDialog{
+public class ModalAlertWithOneButton extends AlertDialog {
 
-    /** Orientation listener*/
+    /** Orientation listener */
     private OrientationEventListener orientationListener;
-	/**Top view too be displayed*/
-	private final ModalTopView top;
+    /** Top view too be displayed */
+    private final ModalTopView top;
 
-	/**Bottom view to be displayed*/
-	private final ModalBottomOneButtonView bottom;
+    /** Bottom view to be displayed */
+    private final ModalBottomOneButtonView bottom;
 
-	/**Application Context*/
-	private final Context context;
+    /** Application Context */
+    private final Context context;
 
-	/**Linear layout that holds the top and bottom views*/
-	private LinearLayout linearLayout;
+    /** Linear layout that holds the top and bottom views */
+    private LinearLayout linearLayout;
 
-	/**Static int for the heights of the top and bottom views*/
-	private static final int VIEW_HEIGHTS = 0;
+    /** Static int for the heights of the top and bottom views */
+    private static final int VIEW_HEIGHTS = 0;
 
-	/**Static weight for the top view in portrait mode*/
-	private static final float NO_BOTTOM_WEIGHT = 10f;
+    /** Static weight for the top view in portrait mode */
+    private static final float NO_BOTTOM_WEIGHT = 10f;
 
-	/**Static weight for the top view in portrait mode*/
-	private static final float PORTRAIT_TOP_WEIGHT = 7f;
+    /** Static weight for the top view in portrait mode */
+    private static final float PORTRAIT_TOP_WEIGHT = 7f;
 
-	/**Static weight for the bottom view in portrait mode*/
-	private static final float PORTRAIT_BOTTOM_WEIGHT = 3f;
+    /** Static weight for the bottom view in portrait mode */
+    private static final float PORTRAIT_BOTTOM_WEIGHT = 3f;
 
-	/**Static weight for the top view in landscape mode*/
-	private static final float LANDSCAPE_TOP_WEIGHT = 5f;
+    /** Static weight for the top view in landscape mode */
+    private static final float LANDSCAPE_TOP_WEIGHT = 5f;
 
-	/**Static weight for the bottom view in landscape mode*/
-	private static final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
+    /** Static weight for the bottom view in landscape mode */
+    private static final float LANDSCAPE_BOTTOM_WEIGHT = 5f;
 
-	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
-	private Activity toClose;
+    /**
+     * An attached activity that will be closed if the dialog is dismissed with
+     * the back button
+     */
+    private Activity toClose;
 
-	/**Static variable for the orientation*/
-	static int orientation = 0;
+    /** Static variable for the orientation */
+    static int orientation = 0;
 
-	
-	
-	/**
-	 * Constructor for the alert
-	 * @param context - activity context
-	 * @param top - top piece to be displayed
-	 * @param bottom - bottom piece to be displayed
-	 */
-	public ModalAlertWithOneButton(final Context context, 
-			final ModalTopView top, 
-			final ModalBottomOneButtonView bottom) {
+    /**
+     * Constructor for the alert
+     * 
+     * @param context
+     *            - activity context
+     * @param top
+     *            - top piece to be displayed
+     * @param bottom
+     *            - bottom piece to be displayed
+     */
+    public ModalAlertWithOneButton(final Context context,
+            final ModalTopView top, final ModalBottomOneButtonView bottom) {
 
-		super(context);
-		this.context = context;
-		this.top = top;
-		this.bottom = bottom;
-	}
+        super(context);
+        this.context = context;
+        this.top = top;
+        this.bottom = bottom;
+    }
 
-	/**
-	 * An alternate way to create a modal alert with one button 
-	 * by supplying content only
-	 * 
-	 * @param context  - application context
-	 * @param title - the title for the alert
-	 * @param content - the body text for the alert
-	 * @param buttonText - the button text for the alert
-	 */
-	public ModalAlertWithOneButton(final Context context, 
-			final int title, final int content, 
-			final int buttonText) {
+    /**
+     * An alternate way to create a modal alert with one button by supplying
+     * content only
+     * 
+     * @param context
+     *            - application context
+     * @param title
+     *            - the title for the alert
+     * @param content
+     *            - the body text for the alert
+     * @param buttonText
+     *            - the button text for the alert
+     */
+    public ModalAlertWithOneButton(final Context context, final int title,
+            final int content, final int buttonText) {
 
-		super(context);
+        super(context);
 
-		this.context = context;
-		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+        this.context = context;
+        final ModalDefaultTopView topView = new ModalDefaultTopView(context,
+                null);
+        final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(
+                context, null);
 
-		topView.setTitle(title);
-		topView.setContent(content);
-		bottomView.setButtonText(buttonText);
-		
-		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+        topView.setTitle(title);
+        topView.setContent(content);
+        bottomView.setButtonText(buttonText);
+
+        topView.getFeedbackTextView().setOnClickListener(
+                new TextView.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        dismiss();
+
+                    }
+                });
+
+        bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
             @Override
             public void onClick(final View v) {
                 dismiss();
-                
             }
+
         });
-		
-		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
-			@Override
-			public void onClick(final View v) {
-				dismiss();
-			}
+        top = topView;
+        bottom = bottomView;
 
-		});
+    }
 
-		top = topView;
-		bottom = bottomView;
+    /**
+     * Constructor for the alert
+     * 
+     * @param context
+     *            - activity context
+     * @param top
+     *            - top piece to be displayed
+     * @param bottom
+     *            - bottom piece to be displayed
+     */
+    public ModalAlertWithOneButton(final Context context, final int title,
+            final String content, final int buttonText) {
 
-	}
+        super(context);
 
-	/**
-	 * Constructor for the alert
-	 * @param context - activity context
-	 * @param top - top piece to be displayed
-	 * @param bottom - bottom piece to be displayed
-	 */
-	public ModalAlertWithOneButton(final Context context, 
-			final int title, final String content, 
-			final int buttonText) {
+        this.context = context;
+        final ModalDefaultTopView topView = new ModalDefaultTopView(context,
+                null);
+        final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(
+                context, null);
 
-		super(context);
+        topView.setTitle(title);
+        topView.setDynamicContent(content);
+        bottomView.setButtonText(buttonText);
 
-		this.context = context;
-		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+        topView.getFeedbackTextView().setOnClickListener(
+                new TextView.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        dismiss();
 
-		topView.setTitle(title);
-		topView.setDynamicContent(content);
-		bottomView.setButtonText(buttonText);
-		
-		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
+                    }
+                });
+
+        bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+
             @Override
             public void onClick(final View v) {
                 dismiss();
-                
             }
+
         });
 
-		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+        top = topView;
+        bottom = bottomView;
 
-			@Override
-			public void onClick(final View v) {
-				dismiss();
-			}
+    }
 
-		});
+    /**
+     * An alternate way to create a modal alert with one button by supplying
+     * content only
+     * 
+     * @param context
+     *            - application context
+     * @param title
+     *            - the title for the alert
+     * @param content
+     *            - the body text for the alert
+     * @param showErrorIcon
+     *            - used to show the error icon on the top view
+     * @param helpNumber
+     *            - help number to be displayed in the modal
+     * @param buttonText
+     *            - the button text for the alert
+     */
+    public ModalAlertWithOneButton(final Context context, final int title,
+            final int content, final boolean showErrorIcon,
+            final int helpNumber, final int buttonText) {
 
-		top = topView;
-		bottom = bottomView;
+        super(context);
 
-	}
+        this.context = context;
+        final ModalDefaultTopView topView = new ModalDefaultTopView(context,
+                null);
+        final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(
+                context, null);
 
-	/**
-	 * An alternate way to create a modal alert with one button 
-	 * by supplying content only
-	 * 
-	 * @param context  - application context
-	 * @param title - the title for the alert
-	 * @param content - the body text for the alert
-	 * @param showErrorIcon - used to show the error icon on the top view
-	 * @param helpNumber - help number to be displayed in the modal
-	 * @param buttonText - the button text for the alert
-	 */
-	public ModalAlertWithOneButton(final Context context, 
-			final int title, final int content, 
-			final boolean showErrorIcon, final int helpNumber, final int buttonText) {
+        topView.showErrorIcon(showErrorIcon);
+        topView.setTitle(title);
+        topView.setContent(content);
+        topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
+        bottomView.setButtonText(buttonText);
 
-		super(context);
+        topView.getFeedbackTextView().setOnClickListener(
+                new TextView.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        dismiss();
 
-		this.context = context;
-		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+                    }
+                });
+        bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
-		topView.showErrorIcon(showErrorIcon);
-		topView.setTitle(title);
-		topView.setContent(content);
-		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
-		bottomView.setButtonText(buttonText);
-		
-		topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 dismiss();
-                
             }
+
         });
-		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
 
-			@Override
-			public void onClick(final View v) {
-				dismiss();
-			}
+        top = topView;
+        bottom = bottomView;
 
-		});
+    }
 
-		top = topView;
-		bottom = bottomView;
+    /**
+     * An alternate way to create a modal alert with one button by supplying
+     * content only
+     * 
+     * @param context
+     *            - application context
+     * @param title
+     *            - the title for the alert
+     * @param content
+     *            - the body text for the alert
+     * @param showErrorIcon
+     *            - used to show the error icon on the top view
+     * @param helpNumber
+     *            - help number to be displayed in the modal
+     * @param buttonText
+     *            - the button text for the alert
+     */
+    public ModalAlertWithOneButton(final Context context, final String title,
+            final String content, final boolean showErrorIcon,
+            final int helpNumber, final int buttonText) {
 
-	}
+        super(context);
 
+        this.context = context;
+        final ModalDefaultTopView topView = new ModalDefaultTopView(context,
+                null);
+        final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(
+                context, null);
 
-	/**
-	 * An alternate way to create a modal alert with one button 
-	 * by supplying content only
-	 * 
-	 * @param context  - application context
-	 * @param title - the title for the alert
-	 * @param content - the body text for the alert
-	 * @param showErrorIcon - used to show the error icon on the top view
-	 * @param helpNumber - help number to be displayed in the modal
-	 * @param buttonText - the button text for the alert
-	 */
-	public ModalAlertWithOneButton(final Context context, 
-			final String title, final String content, 
-			final boolean showErrorIcon, final int helpNumber, final int buttonText) {
+        topView.showErrorIcon(showErrorIcon);
+        topView.setTitle(title);
+        topView.setContent(content);
+        topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
+        bottomView.setButtonText(buttonText);
 
-		super(context);
+        top = topView;
+        bottom = bottomView;
 
-		this.context = context;
-		final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottomView = new ModalDefaultOneButtonBottomView(context, null);
+    }
 
-		topView.showErrorIcon(showErrorIcon);
-		topView.setTitle(title);
-		topView.setContent(content);
-		topView.getHelpFooter().setToDialNumberOnClick(helpNumber);
-		bottomView.setButtonText(buttonText);
-		
-	/*	topView.getFeedbackTextView().setOnClickListener(new TextView.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                dismiss();
-                
-            }
-        });
-		bottomView.getButton().setOnClickListener(new Button.OnClickListener() {
+    /**
+     * Create the modal alert and add the views to be displayed.
+     * 
+     * @param savedInstanceState
+     *            - saved state of the modal
+     */
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-			@Override
-			public void onClick(final View v) {
-				dismiss();
-			}
+        final View mainView = this.getLayoutInflater().inflate(
+                R.layout.modal_alert_layout, null);
+        this.setContentView(mainView);
+        linearLayout = (LinearLayout) mainView
+                .findViewById(R.id.modal_linear_layout);
 
-		});
-*/
-		top = topView;
-		bottom = bottomView;
+        orientationListener = this.createOrientationListener();
+    }
 
-	}
+    /**
+     * Start the modal correctly
+     */
+    @Override
+    public void onStart() {
+        display();
+    }
 
-	/**
-	 * Create the modal alert and add the views to be displayed.
-	 * @param savedInstanceState - saved state of the modal
-	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
+    /**
+     * When the back button is pressed, close an attached activity if needed.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
-		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
-		this.setContentView(mainView);
-		linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);		
+        if (toClose != null) {
+            toClose.finish();
+        }
+    }
 
-		orientationListener = this.createOrientationListener();
-	}
+    /**
+     * Attaches an activity to be closed when the dialog is dismissed.
+     * 
+     * @param toClose
+     */
+    public void finishActivityOnClose(final Activity toClose) {
+        this.toClose = toClose;
+    }
 
-	/**
-	 * Start the modal correctly
-	 */
-	@Override
-	public void onStart(){
-		display();
-	}
+    /**
+     * Get the top piece so that it can be manipulated
+     * 
+     * @return the top piece so that it can be manipulated
+     */
+    public ModalTopView getTop() {
+        return top;
+    }
 
-	/**
-	 * When the back button is pressed, close an attached activity if needed.
-	 */
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
+    /**
+     * Get the bottom piece so that it can be manipulated
+     * 
+     * @return the bottom piece so that it can be manipulated
+     */
+    public ModalBottomOneButtonView getBottom() {
+        return bottom;
+    }
 
-		if(toClose != null) {
-			toClose.finish();
-		}
-	}
-
-	/**
-	 * Attaches an activity to be closed when the dialog is dismissed.
-	 * @param toClose
-	 */
-	public void finishActivityOnClose(final Activity toClose) {
-		this.toClose = toClose;
-	}
-	/**
-	 * Get the top piece so that it can be manipulated
-	 * @return the top piece so that it can be manipulated
-	 */
-	public ModalTopView getTop(){
-		return top;
-	}
-
-	/**
-	 * Get the bottom piece so that it can be manipulated
-	 * @return the bottom piece so that it can be manipulated
-	 */
-	public ModalBottomOneButtonView getBottom(){
-		return bottom;
-	}
-
-/**
- * 	Get the orientation listener instance 
- * @return orientation listener instance
- */
-	public OrientationEventListener getOrientationEventListener()
-    {
+    /**
+     * Get the orientation listener instance
+     * 
+     * @return orientation listener instance
+     */
+    public OrientationEventListener getOrientationEventListener() {
         return orientationListener;
     }
-	
-	/**
-	 * Create the orientation changed listener
-	 * @return the orientation changed listener
-	 */
-	public OrientationEventListener createOrientationListener() {
-		final OrientationEventListener ret = new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
-			@Override
-			public void onOrientationChanged(final int arg0) {
-				if( orientation != context.getResources().getConfiguration().orientation ) {
-					orientation = context.getResources().getConfiguration().orientation;
-					display();
-				}
-			}
-		};
-        
-		ret.enable();
-		return ret;  
-	}
 
-	/**
-	 * Display the layout with the correct layout.
-	 */
-	public void display(){
-		linearLayout.removeAllViews();
-		final int orientation = context.getResources().getConfiguration().orientation; 
-		float topWeight;
-		float bottomWeight;
+    /**
+     * Create the orientation changed listener
+     * 
+     * @return the orientation changed listener
+     */
+    public OrientationEventListener createOrientationListener() {
+        final OrientationEventListener ret = new OrientationEventListener(
+                this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(final int arg0) {
+                if (orientation != context.getResources().getConfiguration().orientation) {
+                    orientation = context.getResources().getConfiguration().orientation;
+                    display();
+                }
+            }
+        };
 
-		if (null == bottom){
-			topWeight = NO_BOTTOM_WEIGHT;
-			bottomWeight = VIEW_HEIGHTS;
-		}else if (Configuration.ORIENTATION_LANDSCAPE == orientation) { 
-			topWeight = LANDSCAPE_TOP_WEIGHT;
-			bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
-		} else { 
-			topWeight = PORTRAIT_TOP_WEIGHT;
-			bottomWeight = PORTRAIT_BOTTOM_WEIGHT;
-		} 
+        ret.enable();
+        return ret;
+    }
 
-		final LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, topWeight);
+    /**
+     * Display the layout with the correct layout.
+     */
+    public void display() {
+        linearLayout.removeAllViews();
+        final int orientation = context.getResources().getConfiguration().orientation;
+        float topWeight;
+        float bottomWeight;
 
-		final LinearLayout.LayoutParams p2 = 
-				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, bottomWeight);
+        if (null == bottom) {
+            topWeight = NO_BOTTOM_WEIGHT;
+            bottomWeight = VIEW_HEIGHTS;
+        } else if (Configuration.ORIENTATION_LANDSCAPE == orientation) {
+            topWeight = LANDSCAPE_TOP_WEIGHT;
+            bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
+        } else {
+            topWeight = PORTRAIT_TOP_WEIGHT;
+            bottomWeight = PORTRAIT_BOTTOM_WEIGHT;
+        }
 
-		linearLayout.removeAllViews();
+        final LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, 0, topWeight);
 
-		if(null != top){
-			linearLayout.addView((View)top, p1);
-		}
-		if(null != bottom){
-			linearLayout.addView((View)bottom, p2);
-		}
-	}
-	
-	
-	
+        final LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, 0, bottomWeight);
+
+        linearLayout.removeAllViews();
+
+        if (null != top) {
+            linearLayout.addView((View) top, p1);
+        }
+        if (null != bottom) {
+            linearLayout.addView((View) bottom, p2);
+        }
+    }
 }

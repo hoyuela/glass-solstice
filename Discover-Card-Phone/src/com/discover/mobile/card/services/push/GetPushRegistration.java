@@ -12,6 +12,7 @@ import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.services.auth.BankPayload;
 
 /**
@@ -47,6 +48,7 @@ public class GetPushRegistration
         request.setUrl(url);
         /*  String input = "vid="+vendroId;
         request.setInput(input.getBytes());*/
+        Utils.isSpinnerShow =false;
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new GetPushData(), "Discover", "Authenticating...", listener);
         serviceCall.execute(request);

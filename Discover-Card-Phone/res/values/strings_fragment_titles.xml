@@ -2,7 +2,7 @@
 <resources>
     
     <string name="enroll_fragment_title">Enroll in Reminders</string>
-    <string name="manage_push_fragment_title">Manage Push &amp; Text Alerts</string>
+    <string name="manage_push_fragment_title">Setup Mobile Alerts</string>
     
     <string name="account_summary_title">Account Summary</string>
     <string name="manage_payments_title">Manage Payments</string>
@@ -12,4 +12,10 @@
     <string name="push_alert_history_title">Alerts History</string>
     <string name="account_activity_title">Account Activity</string>
     <string name="account_statements_title">Statements</string>
+    
+    <!-- All Fragments' tags -->    
+    <string name="cordova_frag">CordovaWebFrag</string>
+    <string name="home_frag">HomeSummaryFragment</string>
+     <string name="manage_bank_accounts_frag">ManageBankAccountsFragment</string>
+    
 </resources>

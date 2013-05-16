@@ -4,9 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * ©2013 Discover Bank
@@ -63,7 +62,8 @@ public class JQMResourceMapper {
         temp.put("Send Money History",
                 R.string.sub_section_title_send_money_history);
 
-        temp.put("Cashback Bonus Promos", R.string.sub_section_title_signup_for_2);
+        temp.put("Cashback Bonus Promos",
+                R.string.sub_section_title_signup_for_2);
         temp.put("Extras", R.string.sub_section_title_extras);
         temp.put("Refer A Friend", R.string.sub_section_title_refer_a_friend);
 
@@ -81,7 +81,8 @@ public class JQMResourceMapper {
 
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
-        temp.put("Push Alerts History", R.string.sub_section_title_alert_history);
+        temp.put("Push Alerts History",
+                R.string.sub_section_title_alert_history);
         temp.put("Create Cash PIN", R.string.sub_section_title_create_cash_pin);
 
         temp.put("Contact Us", R.string.sub_section_title_contact_us);
@@ -92,8 +93,10 @@ public class JQMResourceMapper {
 
         temp.put("Redeem Miles", R.string.section_title_redeem_miles);
         temp.put("Privacy & Terms", R.string.privacy_terms_title);
-        temp.put("Enhanced Account Security", R.string.enhanced_account_security_title);
-        
+        temp.put("Enhanced Account Security",
+                R.string.enhanced_account_security_title);
+
+        temp.put("Redemption Options", R.string.redeem_cashback_bonus_landing);
 
         titleIdMap = Collections.unmodifiableMap(temp);
     }
@@ -107,8 +110,8 @@ public class JQMResourceMapper {
      * @return corresponding integer resource id.
      */
     public int getTitleStringId(String title) {
-        Log.d(TAG, "inside getTitleString n title is " + title + "value is "
-                + titleIdMap.get(title));
+        Utils.log(TAG, "inside getTitleString n title is " + title
+                + "value is " + titleIdMap.get(title));
 
         int titleId = -1;
 

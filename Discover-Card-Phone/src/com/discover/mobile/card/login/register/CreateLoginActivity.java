@@ -1,7 +1,10 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.*;
-
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.ID_ALREADY_TAKEN;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.ID_AND_PASS_EQUAL;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.ID_AND_SSN_EQUAL;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM_SECOND;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,22 +13,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.common.collect.ImmutableMap;
-
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -35,31 +36,19 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.card.common.uiwidget.EmailEditText;
+import com.discover.mobile.card.common.utils.Utils;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.card.services.auth.registration.CreateLoginCall;
 import com.discover.mobile.card.services.auth.registration.CreateLoginDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.callback.AsyncCallbackAdapter;
-import com.discover.mobile.common.error.BaseExceptionFailureHandler;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
-import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * CreateLoginActivity - this is the final step of a user either going through
@@ -101,7 +90,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
     private TextView idConfirmErrorLabel;
     private TextView passConfirmErrorLabel;
     private TextView emailErrorLabel;
-    private ImageView errorIcon ; 
+    private ImageView errorIcon;
 
     // SCROLL VIEW
     private ScrollView mainScrollView;
@@ -132,7 +121,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
         setContentView(R.layout.register_create_credentials);
         loadAllViews();
-
+        Utils.isSpinnerShow =true;        
+        Utils.hideSpinner();
         attachErrorLabelsToFields();
         mergeAccountDetails();
 
@@ -281,7 +271,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         emailField = (EmailEditText) findViewById(R.id.account_info_two_email_field);
 
         mainErrorMessageLabelTwo = (TextView) findViewById(R.id.account_info_error_label_two);
-        errorIcon = (ImageView)findViewById(R.id.icon);
+        errorIcon = (ImageView) findViewById(R.id.icon);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
         mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
         idConfirmErrorLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
@@ -342,7 +332,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
             formDataTwo.expirationYear = formDataOne.expirationYear;
             formDataTwo.socialSecurityNumber = formDataOne.socialSecurityNumber;
         } else {
-            Log.e(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
+            Utils.log(TAG, "UNABLE TO MERGE ACCOUNT DETAILS");
         }
     }
 
@@ -385,142 +375,26 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
      * users account information.
      */
     private void submitFormInfo() {
-     /*   final ProgressDialog progress = ProgressDialog.show(this, "Discover",
-                "Loading...", true);
 
-        // Lock orientation while request is being processed
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-
-        final AsyncCallbackAdapter<RegistrationConfirmationDetails> callback = new AsyncCallbackAdapter<RegistrationConfirmationDetails>() {
+        final CardEventListener cardEventListener = new CardEventListener() {
 
             @Override
-            public void complete(final NetworkServiceCall<?> sender,
-                    final Object result) {
-                // Unlock orientation after request has been processed
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-            }
-
-            @Override
-            public void success(final NetworkServiceCall<?> sender,
-                    final RegistrationConfirmationDetails responseData) {
-                progress.dismiss();
-                confirmationDetails = responseData;
-                retrieveAccountDetailsFromServer();
-            }
-
-            @Override
-            public boolean handleErrorResponse(
-                    final NetworkServiceCall<?> sender,
-                    final ErrorResponse<?> errorResponse) {
-                progress.dismiss();
-                mainScrollView.smoothScrollTo(0, 0);
-
-                switch (errorResponse.getHttpStatusCode()) {
-                default:
-                    Log.e(TAG, "Create Login submission error : "
-                            + errorResponse.toString());
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel, R.string.unkown_error_text,
-                            currentActivity);
-                    return true;
-                }
-
-            }
-
-            @Override
-            public void failure(final NetworkServiceCall<?> sender,
-                    final Throwable executionException) {
-                // Catch all exception handler
-                final BaseExceptionFailureHandler exceptionHandler = new BaseExceptionFailureHandler();
-                exceptionHandler.handleFailure(sender, executionException);
-            }
-
-            @Override
-            public boolean handleMessageErrorResponse(
-                    final NetworkServiceCall<?> sender,
-                    final JsonMessageErrorResponse messageErrorResponse) {
-                progress.dismiss();
-                mainScrollView.smoothScrollTo(0, 0);
-
-                switch (messageErrorResponse.getMessageStatusCode()) {
-                case REG_AUTHENTICATION_PROBLEM: // Provided information was
-                                                 // incorrect.
-                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);
-                    return true;
-                case BAD_ACCOUNT_STATUS: // Last attempt with this account
-                                         // number warning.
-                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
-                            R.string.login_attempt_warning, currentActivity);
-                    return true;
-                case ID_AND_PASS_EQUAL:
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);
-                    CommonUtils
-                            .showLabelWithStringResource(
-                                    mainErrorMessageLabelTwo,
-                                    R.string.account_info_two_id_matches_pass_error_text,
-                                    currentActivity);
-                    return true;
-                case ID_AND_SSN_EQUAL:
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabelTwo,
-                            R.string.id_and_ssn_match_text, currentActivity);
-                    return true;
-                case ID_ALREADY_TAKEN:
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);
-                    CommonUtils
-                            .showLabelWithStringResource(
-                                    mainErrorMessageLabelTwo,
-                                    R.string.account_info_two_username_in_use_error_text,
-                                    currentActivity);
-                    return true;
-                case PLANNED_OUTAGE:
-                    showErrorModal(R.string.could_not_complete_request,
-                            R.string.unknown_error, false);
-                    return true;
-
-                default:
-                    Log.e(TAG,
-                            "UNHANDLED ERROR "
-                                    + messageErrorResponse.toString());
-                    return false;
-                }
-            }
-        };
-
-        final CreateLoginCall registrationCall = new CreateLoginCall(this,
-                callback, formDataTwo);
-        registrationCall.submit();*/
-        CardEventListener cardEventListener = new CardEventListener() {
-
-            @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 // TODO Auto-generated method stub
-                RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
+                final RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
                 retrieveAccountDetailsFromServer(registrationConfirmationDetails);
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 // TODO Auto-generated method stub
 
-                String errorCode = ((CardErrorBean) data).getErrorCode();
-                String[] errorMsgSplit = errorCode.split("_");
+                final String errorCode = ((CardErrorBean) data).getErrorCode();
+                final String[] errorMsgSplit = errorCode.split("_");
                 final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
-                
+
                 switch (errorCodeNumber) {
-                case REG_AUTHENTICATION_PROBLEM_SECOND :
+                case REG_AUTHENTICATION_PROBLEM_SECOND:
                 case REG_AUTHENTICATION_PROBLEM: // Provided information was
                                                  // incorrect.
                     CommonUtils.showLabelWithStringResource(errorMessageLabel,
@@ -528,10 +402,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                             currentActivity);
                     break;
                 case ID_AND_PASS_EQUAL:
-              /*      CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);*/
+
                     CommonUtils
                             .showLabelWithStringResource(
                                     mainErrorMessageLabelTwo,
@@ -540,20 +411,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                     CommonUtils.setViewVisible(errorIcon);
                     break;
                 case ID_AND_SSN_EQUAL:
-                /*    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);*/
+
                     CommonUtils.showLabelWithStringResource(
                             mainErrorMessageLabelTwo,
                             R.string.id_and_ssn_match_text, currentActivity);
                     CommonUtils.setViewVisible(errorIcon);
                     break;
                 case ID_ALREADY_TAKEN:
-              /*      CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabel,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);*/
+
                     CommonUtils
                             .showLabelWithStringResource(
                                     mainErrorMessageLabelTwo,
@@ -561,48 +426,48 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                                     currentActivity);
                     CommonUtils.setViewVisible(errorIcon);
                     break;
-                    
+
                 default:
-                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                            (CardErrorHandlerUi) CreateLoginActivity.this);
+                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            CreateLoginActivity.this);
                     cardErrorResHandler.handleCardError((CardErrorBean) data);
 
                 }
 
             }
         };
-        WSRequest request = new WSRequest();
+        final WSRequest request = new WSRequest();
         final String authString = NetworkUtility.getAuthorizationString(
                 formDataTwo.acctNbr, formDataTwo.password);
         // Setting the headers available for the service
-        HashMap<String, String> headers = request.getHeaderValues();
+        final HashMap<String, String> headers = request.getHeaderValues();
         headers.put("Authorization", authString);
         headers.put("X-Override-UID", "true");
-        String url = NetworkUtility.getWebServiceUrl(this,
+        final String url = NetworkUtility.getWebServiceUrl(this,
                 R.string.createlogin_url);
 
         request.setUrl(url);
         request.setHeaderValues(headers);
         request.setMethodtype("POST");
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
             JacksonObjectMapperHolder.getMapper().writeValue(baos, formDataTwo);
-        } catch (JsonGenerationException e) {
+        } catch (final JsonGenerationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (JsonMappingException e) {
+        } catch (final JsonMappingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
         request.setInput(baos.toByteArray());
 
-        WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
                 new RegistrationConfirmationDetails(), "Discover",
                 "Loading...", cardEventListener);
         serviceCall.execute(request);
@@ -621,7 +486,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);

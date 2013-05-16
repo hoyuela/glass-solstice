@@ -6,8 +6,7 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
-
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 
@@ -36,11 +35,11 @@ public class StrongAuthErrorResponseParser implements ErrorResponseParser<Strong
 		
 		if(values == null || values.isEmpty()) {
 			String message = "No value for WWW-Authenticate header";
-			Log.e(TAG, message);
+			Utils.log(TAG, message);
 			throw new IOException(message);
 		}
 		if(values.size() > 1)
-			Log.e(TAG, "Unexpected number of WWW-Authenticate headers");
+			Utils.log(TAG, "Unexpected number of WWW-Authenticate headers");
 		
 		return values.get(0);
 	}

@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.OrientationEventListener;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.card.R;
@@ -18,8 +19,7 @@ import com.discover.mobile.card.R;
  * @author jthornton
  * 
  */
-public class ModalAlertWithTwoButtons extends AlertDialog
-{
+public class ModalAlertWithTwoButtons extends AlertDialog {
 
     /** Orientation listener */
     private OrientationEventListener orientationListener;
@@ -64,8 +64,8 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * @param bottom
      *            - bottom piece to be displayed
      */
-    public ModalAlertWithTwoButtons(final Context context, final ModalTopView top, final ModalBottomTwoButtonView bottom)
-    {
+    public ModalAlertWithTwoButtons(final Context context,
+            final ModalTopView top, final ModalBottomTwoButtonView bottom) {
 
         super(context);
         this.context = context;
@@ -90,14 +90,17 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * @param buttonText
      *            - the button text for the alert
      */
-    public ModalAlertWithTwoButtons(final Context context, final String title, final String content, final boolean showErrorIcon, final int helpNumber, final int okBtnText, final int cancelBtnText)
-    {
+    public ModalAlertWithTwoButtons(final Context context, final String title,
+            final String content, final boolean showErrorIcon,
+            final int helpNumber, final int okBtnText, final int cancelBtnText) {
 
         super(context);
 
         this.context = context;
-        final ModalDefaultTopView topView = new ModalDefaultTopView(context, null);
-        final ModalDefaultTwoButtonBottomView bottomView = new ModalDefaultTwoButtonBottomView(context, null);
+        final ModalDefaultTopView topView = new ModalDefaultTopView(context,
+                null);
+        final ModalDefaultTwoButtonBottomView bottomView = new ModalDefaultTwoButtonBottomView(
+                context, null);
 
         topView.showErrorIcon(showErrorIcon);
         topView.setTitle(title);
@@ -115,13 +118,14 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * Create the modal alert and add the views to be displayed.
      */
     @Override
-    public void onCreate(final Bundle savedInstanceState)
-    {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
+        final View mainView = this.getLayoutInflater().inflate(
+                R.layout.modal_alert_layout, null);
         this.setContentView(mainView);
-        linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
+        linearLayout = (LinearLayout) mainView
+                .findViewById(R.id.modal_linear_layout);
 
         orientationListener = this.createOrientationListener();
     }
@@ -130,8 +134,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * Start the modal correctly
      */
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         display();
     }
 
@@ -140,8 +143,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * 
      * @return the top piece so that it can be manipulated
      */
-    public ModalTopView getTop()
-    {
+    public ModalTopView getTop() {
         return top;
     }
 
@@ -150,8 +152,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * 
      * @return the bottom piece so that it can be manipulated
      */
-    public ModalBottomTwoButtonView getBottom()
-    {
+    public ModalBottomTwoButtonView getBottom() {
         return bottom;
     }
 
@@ -160,8 +161,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * 
      * @return orientation listener instance
      */
-    public OrientationEventListener getOrientationEventListener()
-    {
+    public OrientationEventListener getOrientationEventListener() {
         return orientationListener;
     }
 
@@ -170,15 +170,12 @@ public class ModalAlertWithTwoButtons extends AlertDialog
      * 
      * @return the orientation changed listener
      */
-    public OrientationEventListener createOrientationListener()
-    {
-        final OrientationEventListener ret = new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL)
-        {
+    public OrientationEventListener createOrientationListener() {
+        final OrientationEventListener ret = new OrientationEventListener(
+                this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
-            public void onOrientationChanged(final int arg0)
-            {
-                if (orientation != context.getResources().getConfiguration().orientation)
-                {
+            public void onOrientationChanged(final int arg0) {
+                if (orientation != context.getResources().getConfiguration().orientation) {
                     orientation = context.getResources().getConfiguration().orientation;
                     display();
                 }
@@ -192,33 +189,29 @@ public class ModalAlertWithTwoButtons extends AlertDialog
     /**
      * Display the layout with the correct layout.
      */
-    public void display()
-    {
+    public void display() {
         final int orientation = context.getResources().getConfiguration().orientation;
         float topWeight;
         float bottomWeight;
-        if (Configuration.ORIENTATION_LANDSCAPE == orientation)
-        {
+        if (Configuration.ORIENTATION_LANDSCAPE == orientation) {
             topWeight = LANDSCAPE_TOP_WEIGHT;
             bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
-        }
-        else
-        {
+        } else {
             topWeight = PORTRAIT_TOP_WEIGHT;
             bottomWeight = PORTRAIT_BOTTOM_WEIGHT;
         }
 
-        final LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, topWeight);
+        final LinearLayout.LayoutParams p1 = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, topWeight);
 
-        final LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, bottomWeight);
+        final LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, bottomWeight);
 
         linearLayout.removeAllViews();
-        if (null != top)
-        {
+        if (null != top) {
             linearLayout.addView((View) top, p1);
         }
-        if (null != bottom)
-        {
+        if (null != bottom) {
             linearLayout.addView((View) bottom, p2);
         }
     }
