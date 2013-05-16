@@ -15,9 +15,8 @@ class ClearTextFieldsCompletionListener implements CompletionListener {
 	
 	ClearTextFieldsCompletionListener(final TextView[] textViews) {
 		textViewRefs = Sets.newHashSet();
-		for(final TextView textView : textViews){
+		for(final TextView textView : textViews)
 			textViewRefs.add(new WeakReference<TextView>(textView));
-		}
 	}
 
 	@Override
@@ -29,9 +28,8 @@ class ClearTextFieldsCompletionListener implements CompletionListener {
 	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		for(final WeakReference<TextView> textViewRef : textViewRefs) {
 			final TextView textView = textViewRef.get();
-			if(textView != null){
+			if(textView != null)
 				textView.setText("");
-			}
 		}
 	}
 	

@@ -2,6 +2,7 @@ package com.discover.mobile.common.nav.section;
 
 import javax.annotation.concurrent.Immutable;
 
+import android.util.Log;
 import android.view.View.OnClickListener;
 /**
  * Base Component info class. This class is needed so that the other classes can all share the 
@@ -27,7 +28,7 @@ public abstract class ComponentInfo {
 		this.isUrl = isUrl;
 	}
 
-	public ComponentInfo(final int titleResource,final boolean showPushCount,final OnClickListener clickListener)
+	public ComponentInfo(int titleResource,boolean showPushCount,OnClickListener clickListener)
 	{
 		this.titleResource = titleResource;
 		this.showPushCount = showPushCount;

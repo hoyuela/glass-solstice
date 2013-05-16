@@ -25,17 +25,16 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 					(GroupNavigationItem)getListView().getAdapter().getItem(NavigationIndex.getMainIndex());
 			currentGroup.collapse();
 		}
-		final int maxIndex = getListView().getAdapter().getCount();
-		if(group < maxIndex && getListView().getAdapter().getItem(group) instanceof GroupNavigationItem){
+		if(getListView().getAdapter().getItem(group) instanceof GroupNavigationItem){
 			final GroupNavigationItem newGroup = (GroupNavigationItem)getListView().getAdapter().getItem(group);
 			newGroup.expand();
-			NavigationIndex.setIndex(group);
 		}
+		NavigationIndex.setIndex(group);
 		NavigationIndex.setSubIndex(subSection+group);
 		}
 	}
 	
-	public void onPushCountUpdate(final int newCount)
+	public void onPushCountUpdate(int newCount)
 	{
 		if(navigationItemAdapter != null)
 		{
