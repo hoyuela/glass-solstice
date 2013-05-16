@@ -15,7 +15,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignTop="@+id/modal_alert_title"
-	        android:layout_marginTop="@dimen/between_related_elements_padding"
+	        android:layout_marginTop="10dp"
 	        android:src="@drawable/error_icon_red" 
 	        android:visibility="gone"
 	        style="@style/modal_error_image"/>
