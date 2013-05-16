@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.ui.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  * @author henryoyuela
  *
  */
+@SuppressLint("NewApi")
 public class BankTextViewFragment extends BaseFragment {
 	public static final String KEY_TEXT = "text-content";
 	public static final String KEY_TITLE = "text-title";
@@ -58,7 +60,7 @@ public class BankTextViewFragment extends BaseFragment {
 			view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		} else {
 			// Tiled background is often broken for older devices
-			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
+			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.textViewLayout));
 		}
 				
 		return view;

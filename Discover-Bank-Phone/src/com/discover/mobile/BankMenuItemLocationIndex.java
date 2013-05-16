@@ -26,8 +26,9 @@ public final class BankMenuItemLocationIndex {
 	 * Transfer Money Indexes
 	 */
 	public static final int TRANSFER_MONEY_GROUP = 1;
-	public static final int REVIEW_TRANSFERS_SECTION = 1;
-	public static final int MANAGE_EXTERNAL_ACCOUNTS_SECTION = 2;
+	public static final int TRANSFER_MONEY_SECTION = 1;
+	public static final int REVIEW_TRANSFERS_SECTION = 2;
+	public static final int MANAGE_EXTERNAL_ACCOUNTS_SECTION = 3;
 
 	/**
 	 * Check Deposit Indexes
