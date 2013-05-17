@@ -320,11 +320,11 @@ function hideSpinner(){
 		//showSysException(err)
 	}
 }
-
 /*** reseat popup blackout area on background as per the oriantation **/
 function doOnOrientationChange()
 {   
 	try{
+		setGridwpwidth() // This function is to set grid view wraper width
 		var winORIN = window.orientation;
 		if(!isEmpty(winORIN)){  
 			
