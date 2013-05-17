@@ -636,6 +636,7 @@ $("#mapDirections-pg").live("pagebeforeshow",function(){
                             });
 
 $("#viewMap-pg").live("pagebeforeshow",function(){
+	
                 //console.log("$(window).height() : " + $(window).height() + " => " + $("#pg-header").outerHeight());
   var netHeight=$(window).height()-$("#pg-header").outerHeight() - $(".searchInput").outerHeight();
                                         $("#map_canvas,#map_canvas2").height(netHeight)

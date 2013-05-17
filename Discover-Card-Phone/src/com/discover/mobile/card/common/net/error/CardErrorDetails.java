@@ -3,7 +3,8 @@ package com.discover.mobile.card.common.net.error;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
-import android.util.Log;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * This class is used to get specific error message from erro xml for respective
@@ -21,7 +22,6 @@ public final class CardErrorDetails {
 
     private static String GENERAL_ERROR_MSG_TAG = "E_0";
     private static String GENERAL_ERROR_TITLE_TAG = "E_T_0";
-    // public static final int GENERAL_ERROR = 0;
 
     private static CardErrorDetails errorHandler = null;
 
@@ -59,7 +59,7 @@ public final class CardErrorDetails {
 
         String ErrorMessage = null;
 
-        Log.d("get msg in", "getMessageforErrorCode");
+        Utils.log("get msg in", "getMessageforErrorCode");
 
         String name = appendErrortag("E_", errorResponseCode);
         try {
@@ -77,7 +77,7 @@ public final class CardErrorDetails {
             ErrorMessage = mResource.getString(resId);
         }
 
-        Log.d("get msg out", "ErrorMessage " + ErrorMessage);
+        Utils.log("get msg out", "ErrorMessage " + ErrorMessage);
 
         return ErrorMessage;
     }
@@ -91,7 +91,7 @@ public final class CardErrorDetails {
     public String getTitleforErrorCode(final int errorResponseCode) {
 
         String ErrorTitle = null;
-        Log.d("get msg in", "getMessageforErrorCode");
+        Utils.log("get msg in", "getMessageforErrorCode");
 
         String name = appendErrortag("E_T_", errorResponseCode);
 
@@ -109,7 +109,7 @@ public final class CardErrorDetails {
             ErrorTitle = mResource.getString(resId);
         }
 
-        Log.d("get msg out", "ErrorTitle " + ErrorTitle);
+        Utils.log("get msg out", "ErrorTitle " + ErrorTitle);
 
         return ErrorTitle;
     }

@@ -2,7 +2,12 @@ package com.discover.mobile.bank.login;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
+import org.apache.cordova.api.CordovaInterface;
+import org.apache.cordova.api.CordovaPlugin;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -42,6 +47,7 @@ import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.ActivityUtil;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
@@ -74,7 +80,8 @@ import com.google.common.base.Strings;
  *
  */
 
-public class LoginActivity extends BaseActivity implements LoginActivityInterface {
+public class LoginActivity extends BaseActivity implements
+		LoginActivityInterface, CordovaInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -150,6 +157,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
+	private ActivityUtil activityUtil = null;
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -166,6 +175,10 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
+
+		activityUtil = ActivityUtil.getInstance();
+		activityUtil.setCurrentActivity(this);
+		DiscoverActivityManager.setActiveActivity(this);
 	}
 
 	/**
@@ -311,6 +324,9 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	@Override
 	public void onResume(){
 		super.onResume();
+		
+		 activityUtil.setCurrentActivity(this);
+		 DiscoverActivityManager.setActiveActivity(this);
 
 
 		//Check if the login activity was launched because of a logout
@@ -402,7 +418,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 	@Override
 	public void onStart() {
 		super.onStart();
-		FacadeFactory.getPushFacade().startXtifySDK(this);
+		FacadeFactory.getPushFacade().startXtifySDK(
+				activityUtil.getCurrentActivity());
 	}
 
 	@Override
@@ -630,19 +647,8 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 
 	/** Set the input fields to be highlighted in red. */
 	private void setInputFieldsDrawableToRed() {
-		setInputFieldsDrawableToRed(true);
-	}
-	
-	/** Set the input fields to be highlighted in red. Will hide the right drawable when passing false. */
-	private void setInputFieldsDrawableToRed(boolean showRightDrawable) {
 		idField.setErrors();
 		passField.setErrors();
-		
-		if (!showRightDrawable) {
-			// Hides the right drawables ("x")
-			idField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-			passField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-		}
 	}
 
 	/**
@@ -983,7 +989,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 		final boolean wasPassEmpty = Strings.isNullOrEmpty(passField.getText().toString());
 
 		if (wasIdEmpty && wasPassEmpty) {
-			setInputFieldsDrawableToRed(false);
+			setInputFieldsDrawableToRed();
 			return true;
 		} else if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
@@ -1188,5 +1194,40 @@ public class LoginActivity extends BaseActivity implements LoginActivityInterfac
 				}
 			}
 		});
+	}
+	@Override
+	public void cancelLoadUrl() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Activity getActivity() {
+		// TODO Auto-generated method stub
+		return DiscoverActivityManager.getActiveActivity();
+	}
+
+	@Override
+	public ExecutorService getThreadPool() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object onMessage(String arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setActivityResultCallback(CordovaPlugin arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+		// TODO Auto-generated method stub
+
 	}
 }

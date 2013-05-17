@@ -6,13 +6,11 @@ import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.statement.*;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 public class StatementPlugin extends CordovaPlugin {
 
@@ -28,7 +26,7 @@ public class StatementPlugin extends CordovaPlugin {
 		final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
 				.getActivity();
 		if (!requestDiscover) {
-			Log.d(TAG, "Bypassing data parse");
+			Utils.log(TAG, "Bypassing data parse");
 			cnrAct.runOnUiThread(new Runnable() {
 
 				@Override
@@ -74,16 +72,16 @@ public class StatementPlugin extends CordovaPlugin {
 						com.discover.mobile.card.statement.StatementActivity.class);
 				Bundle b = new Bundle();
 
-				Log.d(TAG, "JsonData: " + jsonData);
-				Log.d(TAG, "Index: " + selectedIndex);
-				Log.d(TAG, "BaseUrl: " + baseUrl);
+				Utils.log(TAG, "JsonData: " + jsonData);
+				Utils.log(TAG, "Index: " + selectedIndex);
+				Utils.log(TAG, "BaseUrl: " + baseUrl);
 				b.putString("statements", jsonData);
 				b.putInt("index", selectedIndex);
 				b.putString("baseUrl", baseUrl);
 
 				i.putExtras(b);
 
-				Log.d(TAG, "Start activity");
+				Utils.log(TAG, "Start activity");
 				cnrAct.startActivityForResult(i, DISPLAY_STATEMENTS);
 
 				final PluginResult pluginResult = new PluginResult(
@@ -103,7 +101,7 @@ public class StatementPlugin extends CordovaPlugin {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d(TAG,"inside on activity result of stmt plugin n result code is "+requestCode+" n result code is "+resultCode);
+		Utils.log(TAG,"inside on activity result of stmt plugin n result code is "+requestCode+" n result code is "+resultCode);
 		if (resultCode == StatementActivity.EXPIRE_SESSION) {
 			//this.sendJavascript("dfs.crd.lilo.logOutUser();");
 		} else if (resultCode == StatementActivity.MAINT_EXPIRE_SESSION) {

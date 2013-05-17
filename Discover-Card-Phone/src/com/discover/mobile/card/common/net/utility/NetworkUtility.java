@@ -9,15 +9,12 @@ import java.net.HttpURLConnection;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Base64;
-import android.util.Log;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.net.HttpHeaders;
-import com.discover.mobile.common.net.SessionTokenManager;
 
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 
@@ -44,7 +41,8 @@ public final class NetworkUtility {
     public static boolean isConnected(final Context context) {
         ConnectivityManager conMgr = null;
         boolean isConnected = false;
-        final Object obj = context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Object obj = context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
         if (obj != null) {
             conMgr = (ConnectivityManager) obj;
         } else {
@@ -104,7 +102,7 @@ public final class NetworkUtility {
     public static boolean prepareWithSecurityToken(
             final HttpURLConnection conn, final Context context) {
         final String token = getSecurityToken(context);
-        Log.i("Utils", "Token is " + token);
+        Utils.log("Utils", "Token is " + token);
         if (isNullOrEmpty(token)) {
             return false;
         }
@@ -150,14 +148,16 @@ public final class NetworkUtility {
 
     public static String getSecurityToken() {
         String token = null;
-        
+
         // CookieManager is assumed to bring its own thread safety
-        CookieManager cookieManager = new CookieManager();
-        for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {            
-            if("sectoken".equalsIgnoreCase(cookie.getName()))
+        final CookieManager cookieManager = new CookieManager();
+        for (final HttpCookie cookie : cookieManager.getCookieStore()
+                .getCookies()) {
+            if ("sectoken".equalsIgnoreCase(cookie.getName())) {
                 token = cookie.getValue();
+            }
         }
-        
+
         return token;
     }
 }

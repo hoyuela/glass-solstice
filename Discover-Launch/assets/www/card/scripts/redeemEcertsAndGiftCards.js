@@ -3850,8 +3850,8 @@ $("#rd-history-ios").live('pageshow', function() {
 
 /** ************************ error page loads ********************** */
 function redeemDGCInsufficientErrorLoad() {
-	try {
-		$("#err_CBB").html("$" + globalEarnRewardAmount);
+	try {	
+		$("#err_CBB_GC").html("$" + globalEarnRewardAmount);
 		$("#learnMore").click(function() {
 			navigation('../rewards/cashbackBonusSignup1');
 		});
@@ -3862,7 +3862,7 @@ function redeemDGCInsufficientErrorLoad() {
 
 }
 function redeemPartnerInsufficientErrorLoad() {
-	try {
+	try {		
 		$("#err_CBB").html("$" + globalEarnRewardAmount);
 		$("#learnMore").click(function() {
 			navigation('../rewards/cashbackBonusSignup1');

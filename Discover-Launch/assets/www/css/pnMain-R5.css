@@ -478,7 +478,7 @@ background-repeat: no-repeat;
 .pn-page #addnumber input[type="tel"]{
     float:right !important;
     margin:0px 10px 2px 2px !important;
-    height:28px !important;
+    height:27px !important;
     width:85% !important
 }
 .pn-page #addnumber select {

@@ -27,6 +27,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	private static final float FADE = 0.35f;
 	/** Flag used to know when in the middle of a log out */
 	private static boolean pendingLogout = false;
+	private  ImageView navigationToggle;
 
 	/**
 	 * Flag used for if its bank or not
@@ -69,7 +70,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
-		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
+		navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
 
 		navigationToggle.setVisibility(View.VISIBLE);
@@ -204,5 +205,15 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 			titleView.setVisibility(View.VISIBLE);
 			titleImageView.setVisibility(View.GONE);
 		}
+	}
+	
+	public void disableMenuButton()
+	{
+		navigationToggle.setVisibility(View.INVISIBLE);
+	}
+	
+	public void enableMenuButton()
+	{
+		navigationToggle.setVisibility(View.VISIBLE);
 	}
 }

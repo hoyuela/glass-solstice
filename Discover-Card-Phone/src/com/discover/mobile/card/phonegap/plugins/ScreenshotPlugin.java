@@ -9,8 +9,9 @@ import org.json.JSONException;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 public class ScreenshotPlugin extends CordovaPlugin {
 
@@ -23,7 +24,7 @@ public class ScreenshotPlugin extends CordovaPlugin {
             CallbackContext callbackContext) throws JSONException {
         PluginResult result = new PluginResult(Status.OK);
         if (action.equals(takeScreenshot)) {
-            Log.d(TAG, "inside getSecToken ");
+            Utils.log(TAG, "inside getSecToken ");
             boolean mExternalStorageAvailable = false;
             boolean mExternalStorageWriteable = false;
             String state = Environment.getExternalStorageState();

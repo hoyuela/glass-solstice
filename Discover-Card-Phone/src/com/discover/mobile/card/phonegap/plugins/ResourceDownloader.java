@@ -17,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import android.util.Log;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * @author jcoyne
@@ -100,7 +100,7 @@ public class ResourceDownloader {
 				}
 			}
 
-			Log.d(LOG_TAG, "Sending "+ method+ " to "+urlStr );
+			Utils.log(LOG_TAG, "Sending "+ method+ " to "+urlStr );
 
 			if(GET.equals(method)){
 				connection.connect();
@@ -109,7 +109,7 @@ public class ResourceDownloader {
 				try {
 					if(inputContent!=null){
 						outStream = connection.getOutputStream();
-						Log.d(LOG_TAG, "Setting inputContent: "+inputContent );
+						Utils.log(LOG_TAG, "Setting inputContent: "+inputContent );
 						outStream.write(inputContent.getBytes());
 					}
 				} finally {
@@ -119,7 +119,7 @@ public class ResourceDownloader {
 			
 			statusCode = connection.getResponseCode();
 			String respMsg = connection.getResponseMessage();
-			Log.d(LOG_TAG, "HTTP Response: "+statusCode+ " " +respMsg );
+			Utils.log(LOG_TAG, "HTTP Response: "+statusCode+ " " +respMsg );
 			
 			if(statusCode != 200){
 				throw new Exception("Bad Return. HTTP Response: "+statusCode+ " " +respMsg);
@@ -140,7 +140,7 @@ public class ResourceDownloader {
 						}
 					}else if(HDR_CNT_TYP.equalsIgnoreCase(header)){
 						for(String headerVal: connection.getHeaderFields().get(header)){
-							Log.d(LOG_TAG, HDR_CNT_TYP+"="+headerVal );
+							Utils.log(LOG_TAG, HDR_CNT_TYP+"="+headerVal );
 							if(headerVal.indexOf(contentType) >=0){
 								contentTypeFound = true;
 							}
@@ -166,7 +166,7 @@ public class ResourceDownloader {
         		}
         		buf.append(fileExt);
 			}
-			Log.d(LOG_TAG, "About to write file: "+buf.toString() );
+			Utils.log(LOG_TAG, "About to write file: "+buf.toString() );
 			theFile = new File( buf.toString() );
 			try{
 				InputStream stream = connection.getInputStream();
