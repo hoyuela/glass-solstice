@@ -46,8 +46,9 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 		}
 		
-		/**Hide footer with accept button*/
+		/**Hide footer with accept button & hide header*/
 		showFooter(false);
+		view.findViewById(R.id.header).setVisibility(View.GONE);
 		
 		CommonUtils.fixBackgroundRepeat(view);
 		return view;
