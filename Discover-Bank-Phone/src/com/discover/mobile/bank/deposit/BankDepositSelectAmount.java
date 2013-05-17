@@ -298,11 +298,6 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Disable Text Watcher to support rotation*/
 		this.amountItem.getEditableField().enableBankAmountTextWatcher(false);
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
 		
 		/**Check if onPause was called because of an orientation change*/
 		if( !isOrientationChanging ) {
