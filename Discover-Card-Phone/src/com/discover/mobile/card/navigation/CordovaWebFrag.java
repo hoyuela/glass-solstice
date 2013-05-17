@@ -22,6 +22,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -39,6 +40,7 @@ import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
+import com.discover.mobile.common.ActivityUtil;
 import com.discover.mobile.common.BaseFragment;
 
 /*
@@ -90,8 +92,30 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
     private CardMenuItemLocationIndex mCardMenuLocation;
 
     private String m_currentLoadedJavascript = null;
-    
+
     private int m_currentTitleId = -1;
+
+    private static CordovaWebFrag mCordovaWebFrag = null;
+
+    private ViewParent parent = null;
+
+    private ActivityUtil activityUtil = null;
+
+    /**
+     * Constructor
+     * 
+     */
+    private CordovaWebFrag() {
+
+    }
+
+    public static CordovaWebFrag getCordovaWebFragInstance() {
+        if (null == mCordovaWebFrag) {
+            mCordovaWebFrag = new CordovaWebFrag();
+        }
+        return mCordovaWebFrag;
+    }
+
     /**
      * Called when fragment gets attached to activity
      */
@@ -111,13 +135,42 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         Log.v(TAG, "inside onCreateView....");
 
         if (mView != null) {
+            // MyWebviewClient myWebViewClient = new MyWebviewClient(this);
+            // myWebViewClient.setWebView(cwv);
+            // cwv.setWebViewClient(myWebViewClient);
+
             final ViewParent oldParent = mView.getParent();
-            if (oldParent != container) {
-                ((ViewGroup) oldParent).removeView(mView);
+            if (null != oldParent) {
+                if (oldParent != container) {
+                    ((ViewGroup) oldParent).removeView(mView);
+                }
+            } else if (null != parent) {
+                if (parent instanceof ViewGroup)
+                    Log.d(TAG, "parent is instance of ViewGroup ");
+                ((ViewGroup) parent).removeView(mView);
+                // container.addView(mView);
+                // parent = null;
             }
-            return mView;
-        } else {
-            mView = inflater.inflate(R.layout.cordova_web_frag, null, false);
+            if (null != mContext)
+                setGeolocationClient();
+        }
+        /********** Hemang **********/
+        if (cwv != null) {
+            WebSettings webSettings = cwv.getSettings();
+            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        }
+        /********** Hemang **********/
+        return mView;
+    }
+
+    public View loadWebView(Activity activity) {
+        LayoutInflater mInflater = (LayoutInflater) mContext
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mView = mInflater.inflate(R.layout.cordova_web_frag, null, false);
+        parent = (ViewParent) activity.getWindow().getDecorView();
+
+        activityUtil.getInstance();
+        if (null == cwv) {
             cwv = (CordovaWebView) mView
                     .findViewById(R.id.cordova_web_frag_cordova_webview);
             cwv.clearCache(true);
@@ -128,78 +181,20 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
             MyWebviewClient myWebViewClient = new MyWebviewClient(this);
             myWebViewClient.setWebView(cwv);
             cwv.setWebViewClient(myWebViewClient);
-
-            this.cwv.setWebChromeClient(new org.apache.cordova.CordovaChromeClient(
-                    CordovaWebFrag.this) {
-
-                @Override
-                public void onGeolocationPermissionsShowPrompt(
-                        final String origin,
-                        final GeolocationPermissions.Callback callback) {
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(
-                            mContext);
-
-                    builder.setMessage(
-                            "Discover Would Like to Use Your Current Location")
-
-                            .setPositiveButton("Accept",
-                                    new DialogInterface.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog, int id) {
-
-                                            callback.invoke(origin, true, false);
-
-                                        }
-
-                                    })
-
-                            .setNegativeButton("Decline",
-                                    new DialogInterface.OnClickListener() {
-
-                                        @Override
-                                        public void onClick(
-                                                DialogInterface dialog, int id) {
-
-                                            // User cancelled the dialog
-
-                                            callback.invoke(origin, false,
-                                                    false);
-
-                                            // Toast.makeText(DiscoverMobileActivity.this,
-                                            // "Cannot determine current location",
-                                            // Toast.LENGTH_LONG).show();
-
-                                        }
-
-                                    });
-
-                    AlertDialog dialog = builder.create();
-
-                    dialog.show();
-
-                }
-
-            });
-            /********** Hemang **********/
-            WebSettings webSettings = cwv.getSettings();        
-            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-            /********** Hemang **********/
-            return mView;
         }
+
+        return mView;
     }
 
     public String getM_currentLoadedJavascript() {
-		return m_currentLoadedJavascript;
-	}
+        return m_currentLoadedJavascript;
+    }
 
-	public void setM_currentLoadedJavascript(String m_currentLoadedJavascript) {
-		this.m_currentLoadedJavascript = m_currentLoadedJavascript;
-	}
+    public void setM_currentLoadedJavascript(String m_currentLoadedJavascript) {
+        this.m_currentLoadedJavascript = m_currentLoadedJavascript;
+    }
 
-	/**
+    /**
      * Create the fragment
      */
     @Override
@@ -208,7 +203,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         super.onCreate(savedInstanceState);
 
         mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
-
+        activityUtil = ActivityUtil.getInstance();
         passCookieToWebview();
     }
 
@@ -220,8 +215,8 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         super.onResume();
 
         Log.v(TAG, "onResume");
-        if(null !=cwv)
-        	cwv.handleResume(true, false);
+        if (null != cwv)
+            cwv.handleResume(true, false);
     }
 
     @Override
@@ -229,16 +224,19 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         super.onPause();
 
         Log.v(TAG, "onPause");
-        if(null !=cwv)
-        	cwv.handlePause(true);
+        if (null != cwv)
+            cwv.handlePause(true);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.v(TAG, "onDestroy");
-        if (null != cwv)
-            cwv.handleDestroy();
+        // if (null != cwv)
+        // cwv.handleDestroy();
+
+        if (null != mCordovaWebFrag)
+            mCordovaWebFrag = null;
     }
 
     /**
@@ -246,14 +244,14 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
      */
     @Override
     public int getActionBarTitle() {
-    	m_currentTitleId = -1;
+        m_currentTitleId = -1;
         Log.v(TAG, "getActionBarTitle n title is " + m_title);
         if (null != m_title) {
             jqmResourceMapper = JQMResourceMapper.getInstance();
-            
+
             m_currentTitleId = jqmResourceMapper.getTitleStringId(m_title);
-        } 
-         return m_currentTitleId;
+        }
+        return m_currentTitleId;
     }
 
     // PhoneGap Interface
@@ -269,66 +267,72 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         javascript = restWithoutSpecialChar.replaceAll("[^a-zA-Z]+", "") + "()";
         // javascript = firstLetter + rest + "();";
         Log.v(TAG, "javascript to send: " + javascript);
-        cwv.sendJavascript(javascript);
-       
+        if(null!= cwv)
+        {
+            cwv.requestFocus(View.FOCUS_DOWN);
+            cwv.setOnTouchListener(new View.OnTouchListener() {
+        
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        if (!v.hasFocus()) {
+                            v.requestFocus();
+                        }
+                        break;
+                    }
+                    return false;
+                }
+            });
+        
+            cwv.sendJavascript(javascript);
+        }
+
     }
 
     /**
      * This method is used for passing the cookie from http Cookie manager to
      * WebView Cookie Manager
      */
-    /*private void passCookieToWebview() {
-        final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
-                .createInstance(getActivity());
-        final android.webkit.CookieManager webCookieManager = CookieManager
-                .getInstance();
-        webCookieManager.setAcceptCookie(true);
-        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                .getInstance(getActivity());
-        final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-                .getCookieManagerInstance();
-        final List<HttpCookie> cookies = sessionCookieManagerObj
-                .getHttpCookie();
-        final String url = sessionCookieManagerObj.getBaseUri().toString();
-        if (null != cookies) {
-            for (final HttpCookie cookie : cookies) {
-                if ("sectoken".equalsIgnoreCase(cookie.getName())) {
-                    String strognAuthCookie = new StringBuilder("sectoken=")
-                    .append((String) sessionCookieManagerObj.getSecToken())
-                    .append("; domain=.discovercard.com").append("; path=/")
-                    .toString();
-                    webCookieManager.setCookie(url, strognAuthCookie);
-                    webCookieSync.sync();
-                    
-                    Log.d("cookies1111111", "cookies:"+strognAuthCookie);
+    /*
+     * private void passCookieToWebview() { final
+     * android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
+     * .createInstance(getActivity()); final android.webkit.CookieManager
+     * webCookieManager = CookieManager .getInstance();
+     * webCookieManager.setAcceptCookie(true); final CardShareDataStore
+     * cardShareDataStoreObj = CardShareDataStore .getInstance(getActivity());
+     * final SessionCookieManager sessionCookieManagerObj =
+     * cardShareDataStoreObj .getCookieManagerInstance(); final List<HttpCookie>
+     * cookies = sessionCookieManagerObj .getHttpCookie(); final String url =
+     * sessionCookieManagerObj.getBaseUri().toString(); if (null != cookies) {
+     * for (final HttpCookie cookie : cookies) { if
+     * ("sectoken".equalsIgnoreCase(cookie.getName())) { String strognAuthCookie
+     * = new StringBuilder("sectoken=") .append((String)
+     * sessionCookieManagerObj.getSecToken())
+     * .append("; domain=.discovercard.com").append("; path=/") .toString();
+     * webCookieManager.setCookie(url, strognAuthCookie); webCookieSync.sync();
+     * 
+     * Utils.log("cookies1111111", "cookies:"+strognAuthCookie);
+     * 
+     * }else{ final String setCookie = new StringBuilder(cookie.toString())
+     * .append("; domain=").append(cookie.getDomain())
+     * .append("; path=").append(cookie.getPath()).toString();
+     * webCookieManager.setCookie(url, setCookie); webCookieSync.sync();
+     * Utils.log("cookies22222", "cookies:"+setCookie); }
+     * 
+     * } String strognAuthCookie = new StringBuilder("STRONGAUTHSVCS=")
+     * .append((String) CardShareDataStore .getInstance(getActivity())
+     * .getReadOnlyAppCache() .get(getActivity().getString(
+     * R.string.strong_auth_svcs)))
+     * .append("; domain=discovercard.com").append("; path=/") .toString();
+     * webCookieManager.setCookie(url, strognAuthCookie); webCookieSync.sync();
+     * 
+     * Utils.log("cookies333333", "cookies:"+strognAuthCookie);
+     * 
+     * } }
+     */
 
-                }else{
-                final String setCookie = new StringBuilder(cookie.toString())
-                        .append("; domain=").append(cookie.getDomain())
-                        .append("; path=").append(cookie.getPath()).toString();
-                webCookieManager.setCookie(url, setCookie);
-                webCookieSync.sync();
-                Log.d("cookies22222", "cookies:"+setCookie);
-                }
-
-            }
-            String strognAuthCookie = new StringBuilder("STRONGAUTHSVCS=")
-                    .append((String) CardShareDataStore
-                            .getInstance(getActivity())
-                            .getReadOnlyAppCache()
-                            .get(getActivity().getString(
-                                    R.string.strong_auth_svcs)))
-                    .append("; domain=discovercard.com").append("; path=/")
-                    .toString();
-            webCookieManager.setCookie(url, strognAuthCookie);
-            webCookieSync.sync();
-            
-            Log.d("cookies333333", "cookies:"+strognAuthCookie);
-
-        }
-    }
-*/
- 
     private void passCookieToWebview() {
         final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
                 .createInstance(getActivity());
@@ -349,12 +353,11 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
             webCookieManager.setCookie(url, setCookie);
             webCookieSync.sync();
 
-            Log.d("passCookieToWebview", "setCookie11111"+setCookie);
-            
+            Utils.log("passCookieToWebview", "setCookie11111" + setCookie);
+
         }
     }
 
-    
     /**
      * It returns the instance of CordovaWebView of this Fragment.
      * CordovaWebView
@@ -370,7 +373,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
      *            to set.
      */
     public void setTitle(final String title) {
-        Log.d(TAG, "inside setTitle n title is " + title);
+        Utils.log(TAG, "inside setTitle n title is " + title);
         m_title = title;
     }
 
@@ -380,41 +383,41 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 
     @Override
     public int getGroupMenuLocation() {
-        Log.d(TAG, "inside getGroupMenuLocation ");
+        Utils.log(TAG, "inside getGroupMenuLocation ");
         int tempId = getActionBarTitle();
-        if(tempId == -1)
-        {
-        	if(null != m_currentLoadedJavascript){
-        		
-        	Log.d(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
-        	jqmResourceMapper = JQMResourceMapper.getInstance();
-              
-             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
-             return mCardMenuLocation.getMenuGroupLocation(tempId);
-        	}else
-        		return mCardMenuLocation.getMenuGroupLocation(tempId);
-        }
-        else
-        	return mCardMenuLocation.getMenuGroupLocation(tempId);
+        if (tempId == -1) {
+            if (null != m_currentLoadedJavascript) {
+
+                Utils.log(TAG, "m_currentLoadedJavascript is "
+                        + m_currentLoadedJavascript);
+                jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                tempId = jqmResourceMapper
+                        .getTitleStringId(m_currentLoadedJavascript);
+                return mCardMenuLocation.getMenuGroupLocation(tempId);
+            } else
+                return mCardMenuLocation.getMenuGroupLocation(tempId);
+        } else
+            return mCardMenuLocation.getMenuGroupLocation(tempId);
     }
 
     @Override
     public int getSectionMenuLocation() {
-        Log.d(TAG, "inside getSectionMenuLocation");
+        Utils.log(TAG, "inside getSectionMenuLocation");
         int tempId = getActionBarTitle();
-        if(tempId == -1)
-        {
-        	if(null != m_currentLoadedJavascript){
-        	Log.d(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
-        	jqmResourceMapper = JQMResourceMapper.getInstance();
-              
-             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
-             return mCardMenuLocation.getMenuSectionLocation(tempId);
-        	}else
-        		return mCardMenuLocation.getMenuSectionLocation(tempId);
-        }
-        else
-        	return mCardMenuLocation.getMenuSectionLocation(tempId);
+        if (tempId == -1) {
+            if (null != m_currentLoadedJavascript) {
+                Utils.log(TAG, "m_currentLoadedJavascript is "
+                        + m_currentLoadedJavascript);
+                jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                tempId = jqmResourceMapper
+                        .getTitleStringId(m_currentLoadedJavascript);
+                return mCardMenuLocation.getMenuSectionLocation(tempId);
+            } else
+                return mCardMenuLocation.getMenuSectionLocation(tempId);
+        } else
+            return mCardMenuLocation.getMenuSectionLocation(tempId);
     }
 
     /*
@@ -488,6 +491,61 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 
     }
 
+    private void setGeolocationClient() {
+        this.cwv.setWebChromeClient(new org.apache.cordova.CordovaChromeClient(
+                CordovaWebFrag.this) {
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(final String origin,
+                    final GeolocationPermissions.Callback callback) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+
+                builder.setMessage(
+                        "Discover Would Like to Use Your Current Location")
+
+                        .setPositiveButton("Accept",
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+
+                                        callback.invoke(origin, true, false);
+
+                                    }
+
+                                })
+
+                        .setNegativeButton("Decline",
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(DialogInterface dialog,
+                                            int id) {
+
+                                        // User cancelled the dialog
+
+                                        callback.invoke(origin, false, false);
+
+                                        // Toast.makeText(DiscoverMobileActivity.this,
+                                        // "Cannot determine current location",
+                                        // Toast.LENGTH_LONG).show();
+
+                                    }
+
+                                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+
+            }
+
+        });
+
+    }
+
     class MyWebviewClient extends CordovaWebViewClient {
 
         /**
@@ -511,7 +569,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             // TODO Auto-generated method stub
             super.onPageStarted(view, url, favicon);
-            Log.d(TAG, "url loaded on page started.... " + url);
+            Utils.log(TAG, "url loaded on page started.... " + url);
         }
 
         /*
@@ -525,8 +583,8 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         public void onPageFinished(WebView arg0, String arg1) {
             // TODO Auto-generated method stub
             super.onPageFinished(arg0, arg1);
-            Log.d(TAG, "on pagefinished.... " + arg1);
-            
+            Utils.log(TAG, "on pagefinished.... " + arg1);
+
         }
 
         /*
@@ -553,9 +611,14 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         @Override
         public void onReceivedError(WebView arg0, int arg1, String arg2,
                 String arg3) {
-            // TODO Auto-generated method stub
             super.onReceivedError(arg0, arg1, arg2, arg3);
             Log.d(TAG, "on onReceivedError.... " + arg2);
+            if (arg1 == -6) {
+                Log.d(TAG,
+                        "on onReceivedError timeout error loading again .... "
+                                + arg2);
+                loadWebView(activityUtil.getCurrentActivity());
+            }
             Utils.hideSpinner();
         }
 
@@ -599,6 +662,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         public void onLoadResource(WebView view, String url) {
             // TODO Auto-generated method stub
             super.onLoadResource(view, url);
+            Log.d(TAG, "on onLoadResource.... ");
         }
 
         /*
