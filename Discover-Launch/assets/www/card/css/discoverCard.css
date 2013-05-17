@@ -3492,7 +3492,7 @@ border:none !important; }
 #paymentsHistory-pg .wraper{margin:0 !important}
 #paymentsHistory-pg .ui-content{padding:0;}
 #paymentsHistory-pg .ui-corner-bottom{border-radius:0} 
-#paymentsHistory-pg .ui-content-internalpages h1{margin:15px 0px 15px 15px }
+#paymentsHistory-pg .ui-content-internalpages h1,#pendingPayments-pg .ui-content-internalpages h1{margin:10px 0px 10px 10px; }
 /* #paymentsSummary-pg ul.whitebg-list-view li:nth-child(2n+1){background:#fff !important} 
 #paymentsSummary-pg .whitebg-list-view li span{float:left !important}
 #paymentStep1-pg label span.ui-btn-text{font-size:16px;color:grey} */
@@ -3691,6 +3691,5 @@ background-position:5px 5px !important;
 }
 ul li.ui-corner-top{-webkit-border-top-left-radius:3px !important; -webkit-border-top-right-radius:3px !important;}
 ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-border-bottom-left-radius:3px !important;}
-
-.padding10pxLeftright, #pendingPayments-pg  #errorPendingPaymentDiv
+.padding10pxLeftright /* #pendingPayments-pg  #errorPendingPaymentDiv */
 {padding-left:10px; padding-right:10px}

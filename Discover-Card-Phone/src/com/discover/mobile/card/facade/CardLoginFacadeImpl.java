@@ -558,10 +558,18 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 						// TODO Cancel Button click flow
 					}
 				};
-				CardErrorBean cardErrorBean = (CardErrorBean) data;
-				cardErrorBean.setErrorCode("40311022");
-				cardErrorBean.setFooterStatus("101");
-				cardErrorResHandler.handleCardError(cardErrorBean,
+				
+				CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
+				CardErrorBean beanError = new CardErrorBean(
+						cardErrorUtil
+								.getTitleforErrorCode("4031102_SSO_DELINK"),
+						cardErrorUtil
+								.getMessageforErrorCode("4031102_SSO_DELINK"),
+						"4031102", false, "101");
+//				CardErrorBean cardErrorBean = (CardErrorBean) data;
+//				cardErrorBean.setErrorCode("40311022");
+//				cardErrorBean.setFooterStatus("101");
+				cardErrorResHandler.handleCardError(beanError,
 						errorClickCallback);
 
 			} else {
