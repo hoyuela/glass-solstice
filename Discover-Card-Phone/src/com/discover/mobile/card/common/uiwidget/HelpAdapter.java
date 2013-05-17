@@ -6,8 +6,6 @@ package com.discover.mobile.card.common.uiwidget;
 import java.util.List;
 
 import android.content.Context;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +30,9 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>> {
 
     /** Inflater used to inflate layouts */
     private final LayoutInflater inflater;
+    
+    /** */
+	private final static String CARET = " >";
 
     /**
      * Constructor for the adapter
@@ -80,14 +81,8 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>> {
         }
 
         if (detail.isShowArrow()) {
-            final ImageSpan imagespan = new ImageSpan(this.getContext(),
-                    R.drawable.detail_disclosure_white_arrow,
-                    ImageSpan.ALIGN_BASELINE);
-            final SpannableString text = new SpannableString(this.getContext()
-                    .getString(detail.getText()) + "  ");
-            text.setSpan(imagespan, text.length() - 1, text.length(),
-                    SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
-            holder.text.setText(text);
+        	final String text = view.getResources().getString(detail.getText());
+			holder.text.setText( text +CARET);
         } else {
             holder.text.setText(detail.getText());
         }
