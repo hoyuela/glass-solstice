@@ -199,3 +199,8 @@ function paymentHistory()
 {
 navigation('../payments/paymentsHistory');
 }
+
+function redemptionOptions()
+{
+navigation('../rewards/redemptionLanding');
+}

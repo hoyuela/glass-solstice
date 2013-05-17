@@ -144,8 +144,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             }
         }
 
-        cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+        
+        if(null != cordovaWebFrag)
+        {
+         cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
                 "javascript:setDeviceReady(true)");
+         Utils.log("CardNavigationRootActivity",
+                 "cordova not null");
+        }
 
         // Check intent for logout action and call logout function.
         final String action = getIntent().getAction();
@@ -245,25 +251,24 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 editor.commit();
 
                 sendNavigationTextToPhoneGapInterface(getString(redirect));
-                
-               /* if (!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE,
-                        true)) {
-                    sendNavigationTextToPhoneGapInterface(getString(redirect));
-                } else {
-                    Handler handler = new Handler();
-                    Utils.isSpinnerForOfflinePush = true;
-                    Utils.isSpinnerAllowed = true;
 
-                    Utils.showSpinner(getActivity(), null, null);
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            sendNavigationTextToPhoneGapInterface(getString(redirect));
-                            Utils.isSpinnerForOfflinePush = false;
-                            Utils.hideSpinner();
-                        }
-                    }, 60000);
-                }*/
+                /*
+                 * if
+                 * (!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE,
+                 * true)) {
+                 * sendNavigationTextToPhoneGapInterface(getString(redirect)); }
+                 * else { Handler handler = new Handler();
+                 * Utils.isSpinnerForOfflinePush = true; Utils.isSpinnerAllowed
+                 * = true;
+                 * 
+                 * Utils.showSpinner(getActivity(), null, null);
+                 * handler.postDelayed(new Runnable() {
+                 * 
+                 * @Override public void run() {
+                 * sendNavigationTextToPhoneGapInterface(getString(redirect));
+                 * Utils.isSpinnerForOfflinePush = false; Utils.hideSpinner(); }
+                 * }, 60000); }
+                 */
             } else {
                 if (pushStatus) {
                     pushStatus = false;
@@ -825,5 +830,47 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
     public CordovaWebFrag getCordovaWebFragInstance() {
         return cordovaWebFrag;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.discover.mobile.common.BaseFragmentActivity#makeFragmentVisible(android
+     * .support.v4.app.Fragment)
+     */
+    @Override
+    public void makeFragmentVisible(Fragment fragment) {
+        /**
+         * Clear any modal that may have been created during the life of the
+         * current fragment
+         */
+        DiscoverModalManager.clearActiveModal();
+
+        setVisibleFragment(fragment);
+        hideSlidingMenuIfVisible();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.discover.mobile.common.BaseFragmentActivity#makeFragmentVisible(android
+     * .support.v4.app.Fragment, boolean)
+     */
+    @Override
+    public void makeFragmentVisible(Fragment fragment, boolean addToHistory) {
+        /**
+         * Clear any modal that may have been created during the life of the
+         * current fragment
+         */
+        DiscoverModalManager.clearActiveModal();
+
+        if (addToHistory) {
+            setVisibleFragment(fragment);
+        } else {
+            setVisibleFragmentNoHistory(fragment);
+        }
+        hideSlidingMenuIfVisible();
     }
 }
