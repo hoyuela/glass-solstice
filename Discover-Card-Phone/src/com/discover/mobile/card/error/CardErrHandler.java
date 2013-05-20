@@ -21,8 +21,7 @@ import com.discover.mobile.card.common.ui.modals.ModalAlertWithTwoButtons;
  * @version 1.0
  */
 
-public interface CardErrHandler
-{
+public interface CardErrHandler {
 
     /**
      * 
@@ -63,11 +62,17 @@ public interface CardErrHandler
      * 
      * @return Returns the modal dialog created
      */
-    public abstract ModalAlertWithOneButton createErrorModal(int errorCode, int titleText, int errorText);
+    public abstract ModalAlertWithOneButton createErrorModal(int errorCode,
+            int titleText, int errorText);
 
-    public abstract ModalAlertWithTwoButtons createErrorModalWithTwoButton(final String titleText, final String errorText, final String footerStatus, final CardErrorCallbackListener errorClickCallback);
-    
-    public abstract ModalAlertWithTwoButtons createErrorModalWithTwoButton(final String titleText, final String errorText, final String footerStatus);
+    public abstract ModalAlertWithTwoButtons createErrorModalWithTwoButton(
+            final String titleText, final String errorText,
+            final String footerStatus,
+            final CardErrorCallbackListener errorClickCallback);
+
+    public abstract ModalAlertWithTwoButtons createErrorModalWithTwoButton(
+            final String titleText, final String errorText,
+            final String footerStatus);
 
     /**
      * Creates an error dialog with a single button using the title and error
@@ -86,10 +91,11 @@ public interface CardErrHandler
      * @return Returns the modal dialog created
      */
     public abstract ModalAlertWithOneButton createErrorModal(String titleText,
-            String errorText,final String footerStatus, CardErrorCallbackListener cardErrorCallbackListener);
-    
+            String errorText, final String footerStatus,
+            CardErrorCallbackListener cardErrorCallbackListener);
+
     public abstract ModalAlertWithOneButton createErrorModal(String titleText,
-            String errorText,final String footerStatus);
+            String errorText, final String footerStatus);
 
     public abstract ModalAlertWithOneButton createErrorModal(String titleText,
             String errorText);
@@ -111,7 +117,8 @@ public interface CardErrHandler
      * @param mErrorHandlerUi
      * @return
      */
-    public abstract ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(CardErrorHandlerUi mErrorHandlerUi, String message);
+    public abstract ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(
+            CardErrorHandlerUi mErrorHandlerUi, String message);
 
     /**
      * Handler for an HTTP 503 Service Unavailable error response. Creates a one
@@ -128,7 +135,8 @@ public interface CardErrHandler
      * @return Returns a one button modal which can be displayed by the calling
      *         activity
      */
-    public abstract ModalAlertWithOneButton handleHttpServiceUnavailableModal(String errorText);
+    public abstract ModalAlertWithOneButton handleHttpServiceUnavailableModal(
+            String errorText);
 
     public abstract void handleHttpForbiddenError();
 
@@ -143,7 +151,8 @@ public interface CardErrHandler
 
     public abstract void handleHttpUnauthorizedError();
 
-    public abstract void handleLoginAuthFailure(CardErrorHandlerUi errorHandlerUi, String errorMessage);
+    public abstract void handleLoginAuthFailure(
+            CardErrorHandlerUi errorHandlerUi, String errorMessage);
 
     /**
      * Handler for an HTTP 403 Forbidden error response to a Login or Strong
@@ -159,7 +168,8 @@ public interface CardErrHandler
      * @return Returns a one button modal which can be displayed by the calling
      *         activity
      */
-    public abstract ModalAlertWithOneButton handleLockedOut(CardErrorHandlerUi errorHandlerUi, String errorText);
+    public abstract ModalAlertWithOneButton handleLockedOut(
+            CardErrorHandlerUi errorHandlerUi, String errorText);
 
     /**
      * Navigates to login page after a session expired

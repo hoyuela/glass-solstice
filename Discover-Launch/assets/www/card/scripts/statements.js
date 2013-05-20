@@ -1016,7 +1016,7 @@ function accountLandingLoad() {
 		var dom = {
 			$statementsNav: $("#accountLanding-pg #statementsNav"),
 				//TODO ideally clean this up so btn classes are generated automatically by JQM, prob spent ~2hrs playing around with .listview('refresh') and .trigger('create') but hardcoded like this for sake of time.		
-			noStatements: '<h1>No current statements are available</h1><p>A current statement may be unavailable for new Cardmembers who have not completed a billing preiod. If you’re a new Cardmember, or would like to go paperless, check out electronic billing statements.</p>'
+			noStatements: '<h1>There are no statement for your account.</h1><p>Please check back after your statement closing date. Or view recent activity. </p>'
 		};
 		console.log("Account landing load calling getStatements");
 		var statements = dfs.crd.stmt.shared.util.getStatements(); 

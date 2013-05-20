@@ -49,6 +49,7 @@ function sendMoney1Load() {
 		if(fromPageName!="sendMoney2" && fromPageName!="cancelTransaction")
 		{
 			killDataFromCache("SM1_DATA");
+			dfs.crd.p2p.phoneOrEmail="";
 		}
 		dfs.crd.p2p.validPriorPagesOfStep1 = new Array("moreLanding",
 				"sendMoneyLanding", "strongAuthFirstQues", "howItWorks",

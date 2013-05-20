@@ -16,26 +16,31 @@ import com.discover.mobile.card.services.logout.CardLogOutCall;
 
 /**
  * @author ekaram
- *
+ * 
  */
-public class CardLogoutFacadeImpl implements CardLogoutFacade{
+public class CardLogoutFacadeImpl implements CardLogoutFacade {
 
-	public void logout(Activity fromActivity, ErrorHandlerUi errorUi){
-		
-			final AsyncCallback<Object> callback = CardAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class, fromActivity, errorUi, true)
-			.withSuccessListener(new LogOutSuccessFailListener(fromActivity))
-			.withErrorResponseHandler(new LogOutSuccessFailListener(fromActivity))
-			.withExceptionFailureHandler(new BaseExceptionFailureHandler())
-			.showProgressDialog("Discover", "Signing Out...", true)
-			//.withCompletionListener(new LockScreenCompletionListener(fromActivity))
-			.build();
+    public void logout(Activity fromActivity, ErrorHandlerUi errorUi) {
 
-			new CardLogOutCall(fromActivity, callback).submit();
-	}
+        final AsyncCallback<Object> callback = CardAsyncCallbackBuilder
+                .createDefaultCallbackBuilder(Object.class, fromActivity,
+                        errorUi, true)
+                .withSuccessListener(
+                        new LogOutSuccessFailListener(fromActivity))
+                .withErrorResponseHandler(
+                        new LogOutSuccessFailListener(fromActivity))
+                .withExceptionFailureHandler(new BaseExceptionFailureHandler())
+                .showProgressDialog("Discover", "Signing Out...", true)
+                // .withCompletionListener(new
+                // LockScreenCompletionListener(fromActivity))
+                .build();
 
-//	public void logout(Activity fromActivity,ErrorHandlerUi errorUi) {
-//		new CardLogoutAsyncTask((Context)fromActivity).execute();
-//		
-//	}
-	
+        new CardLogOutCall(fromActivity, callback).submit();
+    }
+
+    // public void logout(Activity fromActivity,ErrorHandlerUi errorUi) {
+    // new CardLogoutAsyncTask((Context)fromActivity).execute();
+    //
+    // }
+
 }

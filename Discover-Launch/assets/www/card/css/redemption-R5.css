@@ -728,8 +728,8 @@ min-height:0px;
 padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 /*.rd-right-arrow{background:url(../images/right_arrow.png) right center no-repeat;height:32px;width:100%;display:block}*/
 .rd-right-arrow{margin-right:0 !important; background: url(../../images/listGrayArrow.png) no-repeat right center;height:20px; width:20px; background-size:7px 9px; /*display:block; */ float: right;  }
-#rd-history .errormsg-all{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
-#rd-history .errormsg-ecert{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
+#rd-history .errormsg-all{color:#5c5f61;text-shadow:none;padding:8px;font-size:14px;display:none}
+#rd-history .errormsg-ecert{color:#5c5f61;text-shadow:none;padding:8px;font-size:14px;display:none}
 /*redemption-history ends*/
 
 /*Redeem- Pay with Cashback and pay with Miles Starts*/
@@ -1031,7 +1031,8 @@ background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56
 .rd-page .ui-btn-down-d
 {
 /*background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56%,#d6d6d6 100%) !important*/
--webkit-box-shadow:inset 0px 0px 10px #dce3e5 !important;
+/* -webkit-box-shadow:inset 0px 0px 10px #dce3e5 !important; */
+ background:#e9e9e9 !important;
 }
 #cardHome-pg .ui-btn-down-d a,
 #accountLanding-pg .ui-btn-down-d a,
@@ -1176,8 +1177,9 @@ border:1px solid rgb(138, 138, 138) /*{a-bup-border}*/
 .rd-page .shipping-details-btm-border ul li, .shipping-detl-content ul li {padding:0px 10px}
 .browseAllPartners .ui-btn-up-c {border-top:0px !important;}
 #faqDeviceAlerts-pg .rdfaq-hidden-element a{ font-size:12px !important; color:#267bb1 !important; font-weight:normal !important;}
-
-
+#ecart-ios div.bottom-text{ text-align:center !important; margin-top:10px !important;}
+#ecart-ios .ftextLeft{margin-left:5px;}
+#redm-cb .ol-part{ margin-top:5px; }
 /* retina image changes */
 @media ( -webkit-min-device-pixel-ratio :2) {
 	#redemption-landing li div.arrow, #browse-landing .whitebg-list-view li div.arrow ,.rd-right-arrow,.rd-page.browse-partners .ui-icon{

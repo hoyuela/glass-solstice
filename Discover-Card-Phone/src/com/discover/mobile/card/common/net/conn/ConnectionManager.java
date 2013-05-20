@@ -15,9 +15,9 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.utils.Utils;
 
 public final class ConnectionManager {
 
@@ -62,18 +62,17 @@ public final class ConnectionManager {
             }
         } catch (final MalformedURLException e) {
             in = httpConn.getErrorStream();
-            Log.e(context.getClass().getName(), e.getMessage(), e);
+            Utils.log(context.getClass().getName(), e.getMessage(), e);
         } catch (final SocketTimeoutException e) {
             in = httpConn.getErrorStream();
-            Log.e(context.getClass().getName(), e.getMessage(), e);
+            Utils.log(context.getClass().getName(), e.getMessage(), e);
         } catch (final IOException e) {
             in = httpConn.getErrorStream();
-            Log.e(context.getClass().getName(), e.getMessage(), e);
+            Utils.log(context.getClass().getName(), e.getMessage(), e);
         } catch (final Exception e) {
             in = httpConn.getErrorStream();
-            Log.e(context.getClass().getName(), e.getMessage(), e);
+            Utils.log(context.getClass().getName(), e.getMessage(), e);
         } finally {
-            // httpConn.disconnect();
         }
 
         return in;

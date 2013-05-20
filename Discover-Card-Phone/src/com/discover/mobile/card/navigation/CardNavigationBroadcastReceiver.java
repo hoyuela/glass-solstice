@@ -3,9 +3,9 @@ package com.discover.mobile.card.navigation;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 
 /*
  * This class acts as an broadcast receiver for CardNavigation.
@@ -21,7 +21,7 @@ public class CardNavigationBroadcastReceiver extends BroadcastReceiver {
 
         if (intent.getAction().equals(
                 context.getString(R.string.logout_broadcast_action))) {
-            Log.d(TAG, "logout action is called");
+            Utils.log(TAG, "logout action is called");
             Intent logoutIntent = new Intent(context,
                     CardNavigationRootActivity.class);
             logoutIntent.setAction(context

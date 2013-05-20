@@ -1,6 +1,14 @@
 package com.discover.mobile.card.login.register;
 
-import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.*;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.BAD_ACCOUNT_STATUS;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.FAILED_SECURITY;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.FINAL_LOGIN_ATTEMPT;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.INVALID_EXTERNAL_STATUS;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.INVALID_ONLINE_STATUS;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.MAX_LOGIN_ATTEMPTS;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.ONLINE_STATUS_PROHIBITED;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM;
+import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.REG_AUTHENTICATION_PROBLEM_SECOND;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -17,12 +25,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
-import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -34,18 +43,16 @@ import com.discover.mobile.card.common.uiwidget.CustomDatePickerDialog;
 import com.discover.mobile.card.common.uiwidget.DatePickerEditText;
 import com.discover.mobile.card.common.uiwidget.SsnEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
-import com.discover.mobile.card.common.utils.Utils;
 
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.card.auth.strong.StrongAuthHandler;
+import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.forgot.ForgotBoth;
 import com.discover.mobile.card.services.auth.forgot.ForgotPassword;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.utils.CommonUtils;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -104,7 +111,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     private final String MODAL_BODY_KEY = "o";
     private final String MODAL_TITLE_KEY = "p";
     private final String MODAL_CLOSES_ACTIVITY_KEY = "q";
-    
+
     private final String MAIN_ICON_VISIBILITY_KEY = "r";
 
     private int modalTitleText;
@@ -190,55 +197,40 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         restoreState(savedInstanceState);
         TrackingHelper.trackPageView(ANALYTICS_PAGE_IDENTIFIER);
 
-       /* strongAuthCheckListener = new CardEventListener() {
-
-            @Override
-            public void onSuccess(Object data) {
-                navToNextScreenWithDetails(accountInformationDetails);
-            }
-
-            @Override
-            public void OnError(Object data) {
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                        ForgotOrRegisterFirstStep.this);
-                cardErrorResHandler.handleCardError((CardErrorBean) data);
-            }
-        };*/
-        
         strongAuthCheckListener = new StrongAuthListener() {
-            
+
             @Override
-            public void onStrongAuthSucess(Object data) {
+            public void onStrongAuthSucess(final Object data) {
                 // TODO Auto-generated method stub
                 navToNextScreenWithDetails(accountInformationDetails);
             }
-            
+
             @Override
-            public void onStrongAuthSkipped(Object data) {
+            public void onStrongAuthSkipped(final Object data) {
                 // TODO Auto-generated method stub
                 navToNextScreenWithDetails(accountInformationDetails);
             }
-            
+
             @Override
-            public void onStrongAuthNotEnrolled(Object data) {
+            public void onStrongAuthNotEnrolled(final Object data) {
                 // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
-            
+
             @Override
-            public void onStrongAuthError(Object data) {
+            public void onStrongAuthError(final Object data) {
                 // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
-            
+
             @Override
-            public void onStrongAuthCardLock(Object data) {
+            public void onStrongAuthCardLock(final Object data) {
                 // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
@@ -254,7 +246,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);
         ssnField = (SsnEditText) findViewById(R.id.account_info_ssn_input_field);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_error_label);
-        errorIcon = (ImageView)findViewById(R.id.icon);
+        errorIcon = (ImageView) findViewById(R.id.icon);
         cardErrorLabel = (TextView) findViewById(R.id.account_info_card_account_number_error_label);
         ssnErrorLabel = (TextView) findViewById(R.id.account_info_ssn_error_label);
         dobErrorLabel = (TextView) findViewById(R.id.account_info_dob_year_error_label);
@@ -367,15 +359,17 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             cardErrorLabel.setVisibility(savedInstanceState
                     .getInt(MAIN_FIELD_ERROR_KEY));
-            if (cardErrorLabel.getVisibility() == View.VISIBLE)
+            if (cardErrorLabel.getVisibility() == View.VISIBLE) {
                 accountIdentifierField.updateAppearanceForInput();
+            }
 
             ssnField.setText(savedInstanceState.getString(SSN_KEY));
 
             ssnErrorLabel.setVisibility(savedInstanceState
                     .getInt(SSN_ERROR_KEY));
-            if (ssnErrorLabel.getVisibility() == View.VISIBLE)
+            if (ssnErrorLabel.getVisibility() == View.VISIBLE) {
                 ssnField.updateAppearanceForInput();
+            }
 
             restoreCardExpDatePicker(savedInstanceState);
             restoreDatePickerEditText(savedInstanceState);
@@ -400,7 +394,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     private void restoreMainErrorLabel(final Bundle savedInstanceState) {
         errorMessageLabel.setVisibility(savedInstanceState
                 .getInt(MAIN_ERROR_VISIBILITY_KEY));
-        errorIcon.setVisibility(savedInstanceState.getInt(MAIN_ICON_VISIBILITY_KEY));
+        errorIcon.setVisibility(savedInstanceState
+                .getInt(MAIN_ICON_VISIBILITY_KEY));
         errorMessageLabel.setText(savedInstanceState
                 .getString(MAIN_ERROR_TEXT_KEY));
     }
@@ -425,8 +420,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             birthDatePicker.updateAppearanceForInput();
         } else {
             birthDatePicker.clearData();
-            if (dobErrorLabel.getVisibility() == View.VISIBLE)
+            if (dobErrorLabel.getVisibility() == View.VISIBLE) {
                 birthDatePicker.updateAppearanceForInput();
+            }
         }
     }
 
@@ -450,8 +446,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             cardExpDatePicker.updateAppearanceForInput();
         } else {
             cardExpDatePicker.clearData();
-            if (expirationDateErrorLabel.getVisibility() == View.VISIBLE)
+            if (expirationDateErrorLabel.getVisibility() == View.VISIBLE) {
                 cardExpDatePicker.updateAppearanceForInput();
+            }
         }
     }
 
@@ -642,30 +639,31 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         // Check whether its is for Forgot Password or Forgot Both/Register
         try {
             if (accountIdentifierField.isUsernameField()) {
-                ForgotPassword forgotPassword = new ForgotPassword(
+                final ForgotPassword forgotPassword = new ForgotPassword(
                         ForgotOrRegisterFirstStep.this,
                         new CardEventListener() {
 
                             @Override
-                            public void onSuccess(Object data) {
+                            public void onSuccess(final Object data) {
 
                                 // This is hook for Strong Auth Check
-                                StrongAuthHandler authHandler = new StrongAuthHandler(
+                                final StrongAuthHandler authHandler = new StrongAuthHandler(
                                         ForgotOrRegisterFirstStep.this,
                                         strongAuthCheckListener, false);
                                 authHandler.strongAuth();
                             }
 
                             @Override
-                            public void OnError(Object data) {
-                                String errorCode = ((CardErrorBean) data)
+                            public void OnError(final Object data) {
+                                final String errorCode = ((CardErrorBean) data)
                                         .getErrorCode();
-                                String[] errorMsgSplit = errorCode.split("_");
+                                final String[] errorMsgSplit = errorCode
+                                        .split("_");
                                 final int errorCodeNumber = Integer
                                         .parseInt(errorMsgSplit[0]);
                                 switch (errorCodeNumber) {
-                                
-                                case REG_AUTHENTICATION_PROBLEM_SECOND :
+
+                                case REG_AUTHENTICATION_PROBLEM_SECOND:
                                 case REG_AUTHENTICATION_PROBLEM:
                                     showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
                                     break;
@@ -681,7 +679,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                                 case ONLINE_STATUS_PROHIBITED:
                                 case INVALID_ONLINE_STATUS:
                                 default:
-                                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                             ForgotOrRegisterFirstStep.this);
                                     cardErrorResHandler
                                             .handleCardError((CardErrorBean) data);
@@ -691,30 +689,31 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                         }, accountInformationDetails);
                 forgotPassword.sendRequest();
             } else {
-                ForgotBoth forgotBoth = new ForgotBoth(
+                final ForgotBoth forgotBoth = new ForgotBoth(
                         ForgotOrRegisterFirstStep.this,
                         new CardEventListener() {
 
                             @Override
-                            public void onSuccess(Object data) {
+                            public void onSuccess(final Object data) {
 
                                 // This is hook for Strong Auth Check
-                                StrongAuthHandler authHandler = new StrongAuthHandler(
+                                final StrongAuthHandler authHandler = new StrongAuthHandler(
                                         ForgotOrRegisterFirstStep.this,
                                         strongAuthCheckListener, false);
                                 authHandler.strongAuth();
                             }
 
                             @Override
-                            public void OnError(Object data) {
-                                String errorCode = ((CardErrorBean) data)
+                            public void OnError(final Object data) {
+                                final String errorCode = ((CardErrorBean) data)
                                         .getErrorCode();
-                                String[] errorMsgSplit = errorCode.split("_");
+                                final String[] errorMsgSplit = errorCode
+                                        .split("_");
                                 final int errorCodeNumber = Integer
                                         .parseInt(errorMsgSplit[0]);
                                 switch (errorCodeNumber) {
-                                
-                                case REG_AUTHENTICATION_PROBLEM_SECOND :
+
+                                case REG_AUTHENTICATION_PROBLEM_SECOND:
                                 case REG_AUTHENTICATION_PROBLEM:
                                     showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
                                     break;
@@ -730,7 +729,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                                 case ONLINE_STATUS_PROHIBITED:
                                 case INVALID_ONLINE_STATUS:
                                 default:
-                                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                             ForgotOrRegisterFirstStep.this);
                                     cardErrorResHandler
                                             .handleCardError((CardErrorBean) data);
@@ -740,11 +739,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                         }, accountInformationDetails);
                 forgotBoth.sendRequest();
             }
-        } catch (JsonGenerationException e) {
+        } catch (final JsonGenerationException e) {
             handleError(e);
-        } catch (JsonMappingException e) {
+        } catch (final JsonMappingException e) {
             handleError(e);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             handleError(e);
         }
     }
@@ -754,10 +753,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * 
      * @param Exception
      */
-    private void handleError(Exception e) {
+    private void handleError(final Exception e) {
         e.printStackTrace();
-        CardErrorBean cardErrorBean = new CardErrorBean(e.toString(), true);
-        CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+        final CardErrorBean cardErrorBean = new CardErrorBean(e.toString(),
+                true);
+        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                 ForgotOrRegisterFirstStep.this);
         cardErrorResHandler.handleCardError(cardErrorBean);
     }
@@ -768,13 +768,13 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     }
 
     @Override
-    public void onSuccess(Object data) {
+    public void onSuccess(final Object data) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void OnError(Object data) {
+    public void OnError(final Object data) {
         // TODO Auto-generated method stub
 
     }

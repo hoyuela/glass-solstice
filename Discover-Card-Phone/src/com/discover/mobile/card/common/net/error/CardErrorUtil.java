@@ -10,10 +10,10 @@ import java.util.List;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
-import android.util.Log;
 
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSResponse;
+import com.discover.mobile.card.common.utils.Utils;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -48,7 +48,7 @@ final public class CardErrorUtil {
      * @param response
      */
 
-    public CardErrorUtil(Context context) {
+    public CardErrorUtil(final Context context) {
         this.context = context;
         mResource = context.getResources();
 
@@ -59,31 +59,42 @@ final public class CardErrorUtil {
      *            This method will handle the error based on error response code
      * @return
      */
-    public CardErrorBean handleCardErrorforResponse(WSResponse response) {
-        Log.d("handleCardErrorforResponse",
+    public CardErrorBean handleCardErrorforResponse(final WSResponse response) {
+        Utils.log("handleCardErrorforResponse",
                 "RespCode:" + response.getResponseCode());
         switch (response.getResponseCode()) {
-        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid user id password
-        	CardErrorBean cardErrBean = getCardErrorBeanwithResponseStatus(response, false);
-        	if (null==cardErrBean.getErrorCode())
-        		cardErrBean.setErrorCode(""+response.getResponseCode());
+        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid
+                                                                 // user id
+                                                                 // password
+            final CardErrorBean cardErrBean = getCardErrorBeanwithResponseStatus(
+                    response, false);
+            if (null == cardErrBean.getErrorCode()) {
+                cardErrBean.setErrorCode("" + response.getResponseCode());
+            }
             return cardErrBean;
-        case CardErrorResponseHandler.INVALID_INPUT: //500 http status code
-        case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked           
+        case CardErrorResponseHandler.INVALID_INPUT: // 500 http status code
+        case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
-        	CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
-        	if (null==cardErrBean1.getErrorCode())
-        		cardErrBean1.setErrorCode(""+response.getResponseCode());
+            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(
+                    response, false);
+            if (null == cardErrBean1.getErrorCode()) {
+                cardErrBean1.setErrorCode("" + response.getResponseCode());
+            }
             return cardErrBean1;
-        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503: maintenance error
-        	CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(response, true);
-        	if (null==cardErrBean2.getErrorCode())
-        		cardErrBean2.setErrorCode(""+response.getResponseCode());
+        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503:
+                                                                 // maintenance
+                                                                 // error
+            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(
+                    response, true);
+            if (null == cardErrBean2.getErrorCode()) {
+                cardErrBean2.setErrorCode("" + response.getResponseCode());
+            }
             return cardErrBean2;
         default: // for other error
-        	CardErrorBean cardErrBean3 = getCardErrorBeanwithoutResponseStatus(response);
-        	if (null==cardErrBean3.getErrorCode())
-        		cardErrBean3.setErrorCode(""+response.getResponseCode());
+            final CardErrorBean cardErrBean3 = getCardErrorBeanwithoutResponseStatus(response);
+            if (null == cardErrBean3.getErrorCode()) {
+                cardErrBean3.setErrorCode("" + response.getResponseCode());
+            }
             return cardErrBean3;
         }
 
@@ -100,7 +111,7 @@ final public class CardErrorUtil {
      */
 
     private CardErrorBean getCardErrorBeanwithResponseStatus(
-            WSResponse response, boolean isHeaderMsg) {
+            final WSResponse response, final boolean isHeaderMsg) {
 
         CardErrorBean cardErrBean = null;
         String errorMessage = null;
@@ -108,30 +119,18 @@ final public class CardErrorUtil {
         String footerStatus = null;
         String strResbody = null;
 
-        /*
-         * String body="{\"status\": \"1007\","+
-         * "\"message\": \"Strongauth status invalid\","+ "\"data\": ["+
-         * "{\"status\": \"\""+ "}"+ "]"+ "}";
-         * 
-         * 
-         * Log.d("body", " body:"+ body); InputStream is1 = new
-         * ByteArrayInputStream(body.getBytes());
-         * 
-         * 
-         * response.setInputStream(is1);
-         */
-
         try {
             strResbody = fromStream(response.getInputStream());
             if (strResbody != null && strResbody != "") {
-                Log.d("fromStream", "inputstring" + strResbody + "len:"
+                Utils.log("fromStream", "inputstring" + strResbody + "len:"
                         + strResbody.length());
-                InputStream is = new ByteArrayInputStream(strResbody.getBytes());
+                final InputStream is = new ByteArrayInputStream(
+                        strResbody.getBytes());
 
                 response.setInputStream(is);
             }
 
-        } catch (IOException e1) {
+        } catch (final IOException e1) {
 
             e1.printStackTrace();
         }
@@ -157,7 +156,6 @@ final public class CardErrorUtil {
 
                     // Check if response contains SSO user info
                     boolean isSSOUser = false;
-                    boolean isSSODelinkable = false;
 
                     if (null != responseBean.data) {
                         for (int index = 0; index < responseBean.data.size(); index++) {
@@ -174,8 +172,7 @@ final public class CardErrorUtil {
                     } else if (null != responseBean.data) {
                         if (isSSOUser) {
                             return getSSOData(response, responseBean);
-                        }
-                        else{
+                        } else {
                             errorCode = getErrorCodewithResponse(response,
                                     responseBean);
                             errorTitle = getTitleforErrorCode(errorCode);
@@ -188,7 +185,7 @@ final public class CardErrorUtil {
                         footerStatus = getHelpFooterErrorCode(errorCode);
                     }
 
-                    if ((isHeaderMsg == true) && (responseBean.status != null)) {
+                    if (isHeaderMsg == true && responseBean.status != null) {
                         getHeaderValue(response, "Location");
 
                         if (null != headerMsg) {
@@ -242,16 +239,16 @@ final public class CardErrorUtil {
      * @param responseBean
      * @return final error code
      */
-    private String getErrorCodewithResponse(WSResponse response,
-            CardErrorResponse responseBean) {
+    private String getErrorCodewithResponse(final WSResponse response,
+            final CardErrorResponse responseBean) {
         final StringBuilder errCode = new StringBuilder();
 
-        String resCode = Integer.toString(response.getResponseCode());
+        final String resCode = Integer.toString(response.getResponseCode());
         errCode.append(resCode);
         errCode.append(responseBean.status);
 
-        Log.d("responseBean", " responseBean status:" + responseBean.status);
-        Log.d("responseBean", " responseBean: msg" + responseBean.message);
+        Utils.log("responseBean", " responseBean status:" + responseBean.status);
+        Utils.log("responseBean", " responseBean: msg" + responseBean.message);
 
         if (responseBean.data != null) {
             if (responseBean.data.get(0).saStatus != null) {
@@ -270,7 +267,8 @@ final public class CardErrorUtil {
 
         }
 
-        Log.d("responseBean", " responseBean int code:" + errCode.toString());
+        Utils.log("responseBean",
+                " responseBean int code:" + errCode.toString());
 
         return errCode.toString();
 
@@ -283,16 +281,17 @@ final public class CardErrorUtil {
      * @param responseBean
      * @return CardErrorBean
      */
-    private CardErrorBean getStrongAuthData(WSResponse response,
-            CardErrorResponse responseBean) {
+    private CardErrorBean getStrongAuthData(final WSResponse response,
+            final CardErrorResponse responseBean) {
         String questionId = null;
         String questionText = null;
         final StringBuilder errCode = new StringBuilder();
 
-        String resCode = Integer.toString(response.getResponseCode());
+        final String resCode = Integer.toString(response.getResponseCode());
         errCode.append(resCode);
-        if (null != responseBean.status)
+        if (null != responseBean.status) {
             errCode.append(responseBean.status);
+        }
 
         if (responseBean.data != null) {
             for (int index = 0; index < responseBean.data.size(); index++) {
@@ -315,9 +314,10 @@ final public class CardErrorUtil {
      * @return converted String
      * @throws IOException
      */
-    private static String fromStream(InputStream in) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        StringBuilder out = new StringBuilder();
+    private static String fromStream(final InputStream in) throws IOException {
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(
+                in));
+        final StringBuilder out = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
             out.append(line);
@@ -334,7 +334,7 @@ final public class CardErrorUtil {
      */
 
     private CardErrorBean getCardErrorBeanwithoutResponseStatus(
-            WSResponse response) {
+            final WSResponse response) {
 
         String footerStatus = null;
         final String statusCode = Integer.toString(response.getResponseCode());
@@ -360,8 +360,8 @@ final public class CardErrorUtil {
     private CardErrorResponse parseResponse(final InputStream in)
             throws JsonParseException, JsonMappingException, IOException {
 
-        CardErrorResponse carderrRes = JacksonObjectMapperHolder.getMapper()
-                .readValue(in, CardErrorResponse.class);
+        final CardErrorResponse carderrRes = JacksonObjectMapperHolder
+                .getMapper().readValue(in, CardErrorResponse.class);
 
         return carderrRes;
 
@@ -374,51 +374,16 @@ final public class CardErrorUtil {
      * @param headerTag
      *            e.i. Location
      */
-    private void getHeaderValue(WSResponse response, String headerTag) {
+    private void getHeaderValue(final WSResponse response,
+            final String headerTag) {
 
-        List<String> headerMsgList = response.getHeaders().get(headerTag);
-        // Log.d("headerMsgList", " headerMsgList.get(0):"+
-        // headerMsgList.get(0));
-        // Log.d("headerMsgList", " headerMsgList.get(1):"+
-        // headerMsgList.get(1));
-
-        /*
-         * String headerMsgList =
-         * "UnScheduled://We're sorry. We are currently updating our system and cannot complete your request at this time. "
-         * +
-         * "We apologize for any inconvenience. Please try again later or, for immediate assistance call."
-         * +
-         * "|~|We're sorry. We are currently updating our system and cannot complete your request at this time."
-         * +
-         * "We apologize for any inconvenience. Please try again later or, for immediate assistance call 1-800-347-2683.|~|UnScheduled Maintenance"
-         * ;
-         */
-
-        /*
-         * String headerMsgList =
-         * "UnScheduled://We're sorry. We are currently updating our system and cannot complete your request at this time. We apologize for any inconvenience. Please try again later or, for immediate assistance call <a href=\"tel:+18003472683\">1-800-347-2683</a>.|~|We're sorry. We are currently updating our system and cannot complete your request at this time. We apologize for any inconvenience. Please try again later or, for immediate assistance call 1-800-347-2683.|~|UnScheduled Maintenance"
-         * ;
-         */
-
-        // Log.d("headerMsgList", " headerMsgList.get(0):"+
-        // headerMsgList.get(0));
+        final List<String> headerMsgList = response.getHeaders().get(headerTag);
         if (null != headerMsgList) {
             String[] splitMsg = headerMsgList.get(0).split("//");
-
-            /*
-             * Log.d("headerMsgList", " splitMsg[0].1:" + splitMsg[0]);
-             * 
-             * Log.d("headerMsgList", " splitMsg[1].1:" + splitMsg[1]);
-             */
 
             headerMsg = splitMsg[1];
             splitMsg = headerMsg.split("\\|~\\|");
 
-            /*
-             * Log.d("headerMsgList", " splitMsg[0].2:" + splitMsg[0]);
-             * Log.d("headerMsgList", " splitMsg[1].2:" + splitMsg[1]); //
-             * Log.d("headerMsgList", " splitMsg[2].2:"+ splitMsg[2]);
-             */
             headerMsg = splitMsg[1];
         }
 
@@ -434,16 +399,16 @@ final public class CardErrorUtil {
 
         String ErrorMessage = null;
 
-        Log.d("get msg in", "getMessageforErrorCode"+errorResponseCode);
+        Utils.log("get msg in", "getMessageforErrorCode" + errorResponseCode);
 
         String name = appendErrortag("E_", errorResponseCode);
         try {
             final int resId = mResource.getIdentifier(name, "string",
                     context.getPackageName());
             ErrorMessage = mResource.getString(resId);
-            
-            Log.d("get msg out--", "ErrorMessage " + ErrorMessage);
-            
+
+            Utils.log("get msg out--", "ErrorMessage " + ErrorMessage);
+
             if (null != userIdToken) {
                 ErrorMessage = ErrorMessage.replace("!~~!", userIdToken);
             }
@@ -459,7 +424,7 @@ final public class CardErrorUtil {
 
         }
 
-        Log.d("get msg out", "ErrorMessage " + ErrorMessage);
+        Utils.log("get msg out", "ErrorMessage " + ErrorMessage);
 
         return ErrorMessage;
     }
@@ -473,7 +438,7 @@ final public class CardErrorUtil {
     public String getTitleforErrorCode(final String errorResponseCode) {
 
         String ErrorTitle = null;
-        Log.d("get msg in", "getMessageforErrorCode");
+        Utils.log("get msg in", "getMessageforErrorCode");
 
         String name = appendErrortag("E_T_", errorResponseCode);
 
@@ -491,7 +456,7 @@ final public class CardErrorUtil {
             ErrorTitle = mResource.getString(resId);
         }
 
-        Log.d("get msg out", "ErrorTitle " + ErrorTitle);
+        Utils.log("get msg out", "ErrorTitle " + ErrorTitle);
 
         return ErrorTitle;
     }
@@ -505,10 +470,10 @@ final public class CardErrorUtil {
     public String getHelpFooterErrorCode(final String errorResponseCode) {
 
         String strFooter = null;
-        Log.d("get msg in", "getMessageforErrorCode" + errorResponseCode);
+        Utils.log("get msg in", "getMessageforErrorCode" + errorResponseCode);
 
-        String name = appendErrortag("E_H_", errorResponseCode);
-        Log.d("get msg in", "name" + name);
+        final String name = appendErrortag("E_H_", errorResponseCode);
+        Utils.log("get msg in", "name" + name);
 
         try {
             final int resId = mResource.getIdentifier(name, "string",
@@ -519,17 +484,12 @@ final public class CardErrorUtil {
                                              // error
             // xml file then to avoid exception
             // displaying generic error message.
-            /*
-             * name = GENERAL_ERROR_TITLE_TAG; final int resId =
-             * mResource.getIdentifier(name, "string",
-             * context.getPackageName());
-             */
             strFooter = "1"; // for help footer
 
-            Log.d("get msg out", "needHelp e " + strFooter);
+            Utils.log("get msg out", "needHelp e " + strFooter);
         }
 
-        Log.d("get msg out", "needHelp " + strFooter);
+        Utils.log("get msg out", "needHelp " + strFooter);
 
         return strFooter;
     }
@@ -559,20 +519,21 @@ final public class CardErrorUtil {
      * @param responseBean
      * @return
      */
-    private CardErrorBean getSSOData(WSResponse response,
-            CardErrorResponse responseBean) {
+    private CardErrorBean getSSOData(final WSResponse response,
+            final CardErrorResponse responseBean) {
         boolean isSSOUidDLinkable = false;
         boolean isSSOUser = false;
         boolean isSSNMatch = false;
-        String footerStatus =null;
-        String errTitle =null;
-        String errText=null;
+        String footerStatus = null;
+        String errTitle = null;
+        String errText = null;
         final StringBuilder errCode = new StringBuilder();
 
-        String resCode = Integer.toString(response.getResponseCode());
+        final String resCode = Integer.toString(response.getResponseCode());
         errCode.append(resCode);
-        if (null != responseBean.status)
+        if (null != responseBean.status) {
             errCode.append(responseBean.status);
+        }
 
         if (responseBean.data != null) {
             for (int index = 0; index < responseBean.data.size(); index++) {
@@ -582,21 +543,21 @@ final public class CardErrorUtil {
                 if (responseBean.data.get(index).isSSOUser) {
                     isSSOUser = responseBean.data.get(index).isSSOUser;
                 }
-                if(responseBean.data.get(index).isSSNMatched)
-                {
-                	isSSNMatch = responseBean.data.get(index).isSSNMatched;
+                if (responseBean.data.get(index).isSSNMatched) {
+                    isSSNMatch = responseBean.data.get(index).isSSNMatched;
                 }
             }
         }
 
         errTitle = getTitleforErrorCode(errCode.toString());
         errText = getMessageforErrorCode(errCode.toString());
-        
+
         footerStatus = getHelpFooterErrorCode(errCode.toString());
-        
-        Log.i(CardErrorUtil.class.getSimpleName(), "errCode "+errCode+" errTitle "+
-        		errTitle+" errText "+errText+" footerStatus "
-        		+footerStatus);
-        return new CardErrorBean(isSSOUidDLinkable, isSSOUser,isSSNMatch, errCode.toString(),errTitle,errText,footerStatus);
+
+        Utils.log(CardErrorUtil.class.getSimpleName(), "errCode " + errCode
+                + " errTitle " + errTitle + " errText " + errText
+                + " footerStatus " + footerStatus);
+        return new CardErrorBean(isSSOUidDLinkable, isSSOUser, isSSNMatch,
+                errCode.toString(), errTitle, errText, footerStatus);
     }
 }
