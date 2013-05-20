@@ -47,12 +47,12 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
 	private static final int API_ELEVEN = 11;
 	
-	/** Key for storing exact amount of WebView scroll on orientation change. */
-	private static final String SCROLL_KEY = "scroll";
-	
 	/** Delay which allows the WebView to finish drawing before manually scrolling. */
 	private static final int SCROLL_DELAY = 100;
-
+	
+	/** Holds the last known scroll amount (percent). */
+	private float scroll = 0f;
+	
 	/**The ProgressBar that is shown while the web view loads its content */
 	private ProgressBar loadingSpinner;
 
@@ -93,12 +93,8 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 */
 	boolean pageLoadSuccess = true;
 
-	private void setupWebView(final boolean loadUrl) {
-		setupWebView(loadUrl, 0);
-	}
-	
 	@SuppressLint("NewApi")
-	private void setupWebView(final boolean loadUrl, final float scroll) {
+	private void setupWebView(final boolean loadUrl) {
 		pageLoadSuccess = true;
 		final WebSettings webSettings = termsWebView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -147,7 +143,8 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		/**Verify webview is not null*/
 		if( null != termsWebView ) {
 			termsWebView.saveState(outState);
-			outState.putFloat(SCROLL_KEY, WebUtility.calculateProgression(termsWebView));
+			// Since we are retaining instance, no need to store in the bundle.
+			scroll = WebUtility.calculateProgression(termsWebView);
 		}
 		
 		/**
@@ -181,7 +178,8 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		
 		if (savedInstanceState != null) {
 			termsWebView.restoreState(savedInstanceState);
-			setupWebView(false, savedInstanceState.getFloat(SCROLL_KEY, 0));
+			setupWebView(false);
+			
 		} else {
 			setupWebView(true);
 		}
