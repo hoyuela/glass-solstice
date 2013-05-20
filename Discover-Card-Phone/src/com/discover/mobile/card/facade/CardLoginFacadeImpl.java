@@ -92,7 +92,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 		final String authString = NetworkUtility.getAuthorizationString(
 				username, password);
 		context = callingActivity.getContext();
-		loadCordovaWebview((Activity) callingActivity);
+		//loadCordovaWebview((Activity) callingActivity);
 		// Setting the headers available for the service
 		final HashMap<String, String> headers = request.getHeaderValues();
 		headers.put("Authorization", authString);
@@ -166,13 +166,25 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 		};
 	}
 
-	private void loadCordovaWebview(Activity activity) {
-		mCordovaFrag = CordovaWebFrag.getCordovaWebFragInstance();
+    /* (non-Javadoc)
+     * @see com.discover.mobile.common.facade.CardLoginFacade#loadCordovaWebview(android.app.Activity)
+     */
+    @Override
+    public void loadCordovaWebview(Activity activity) {
+        // TODO Auto-generated method stub
+        mCordovaFrag = CordovaWebFrag.getCordovaWebFragInstance();
+        mCordovaFrag.setContext(context);
+        mCordovaFrag.loadWebView(activity);
+    }
 
-		mCordovaFrag.setContext(context);
-		mCordovaFrag.loadWebView(activity);
-	}
-
+//	@Override
+//	public void loadCordovaWebview(Activity activity) {
+//		mCordovaFrag = CordovaWebFrag.getCordovaWebFragInstance();
+//
+//		mCordovaFrag.setContext(context);
+//		mCordovaFrag.loadWebView(activity);
+//	}
+	
 	@Override
 	public void loginWithPayload(final LoginActivityInterface callingActivity,
 			final String tokenValue, final String hashedTokenValue) {
