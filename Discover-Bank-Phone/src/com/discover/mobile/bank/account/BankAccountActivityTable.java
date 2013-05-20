@@ -56,7 +56,9 @@ public class BankAccountActivityTable extends BaseTable{
 		getLoadMoreFooter().showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 
-		if (bundle.getBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY)) {
+		// Toggle between scheduled/posted if incoming list type does not match view
+		if ((list.type == ActivityDetailType.Posted && !header.isPosted())
+				|| (list.type == ActivityDetailType.Scheduled && header.isPosted())) {
 			header.setSelectedCategory(!header.isPosted());
 		}
 
