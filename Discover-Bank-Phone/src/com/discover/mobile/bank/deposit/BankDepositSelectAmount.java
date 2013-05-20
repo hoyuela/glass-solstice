@@ -46,15 +46,13 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	private BankAmountItem amountItem;
 	/**
-	 * Boolean flag to detect if fragment's orientation is changing
-	 */
-	private boolean isOrientationChanging = false;
-	/**
 	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
 	 */
 	private Bundle bundle = null;
 	
 	private static final int CAPTURE_ACTIVITY = 1;
+	/** Time (ms) to delay keyboard display on resume. */
+	private static final int KEYBOARD_DELAY = 800;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -256,34 +254,30 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		/**Restore amount value stored when paused*/
 		setupAmountFieldValue();
 		
-		/**Reset flag*/
-		isOrientationChanging = false;
-		
 		/**Enable text watcher which will format text in text field*/
-		this.amountItem.getEditableField().enableBankAmountTextWatcher(true);
+		amountItem.getEditableField().enableBankAmountTextWatcher(true);
+		
+		amountItem.getEditableField().requestFocus();
+		
+		/**Set cursor to the end of the end of the text*/
+		amountItem.getEditableField().setSelection(amountItem.getEditableField().getText().length());
 		
 		/**
-		 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
-		 * the keyboard doesn't open.
+		 * Have to show keyboard asynchronously otherwise it doesn't open.
 		 */
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				if( amountItem != null ) {
-					amountItem.getEditableField().requestFocus();
-					/**Set cursor to the end of the end of the text*/
-					amountItem.getEditableField().setSelection(amountItem.getEditableField().getText().length());
+					amountItem.getEditableField().showKeyboard(true);
 				}
 			}
-		}, 1000);	
+		}, KEYBOARD_DELAY);
 	}
 	
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		super.onSaveInstanceState(outState);
-		
-		/**Set to true so that keyboard is not closed in onPause*/
-		isOrientationChanging = true;
 			
 		/**Saved data required for orientation change*/
 		if( amountItem != null ) {
@@ -299,11 +293,9 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		/**Disable Text Watcher to support rotation*/
 		this.amountItem.getEditableField().enableBankAmountTextWatcher(false);
 		
-		/**Check if onPause was called because of an orientation change*/
-		if( !isOrientationChanging ) {
-			if(amountItem != null && amountItem.getEditableField() != null){
-				this.amountItem.getEditableField().showKeyboard(false);
-			}
+		/** Close the keyboard (will reopen after orientation change). */
+		if (amountItem != null && amountItem.getEditableField() != null) {
+			this.amountItem.getEditableField().showKeyboard(false);
 		}
 	}
 
