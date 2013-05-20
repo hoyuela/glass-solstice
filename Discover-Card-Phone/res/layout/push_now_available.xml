@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/light_gray_bkgrd">
-    
-	<RelativeLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="@dimen/forms_inner_padding">
-	    
-	    <TextView
-	        android:id="@+id/title"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/push_alerts_are_available"
-	    	android:textColor="@color/title"
-	    	android:textSize="@dimen/title_max"
-	    	android:textStyle="bold"
-	    	android:layout_marginBottom="@dimen/between_related_elements_padding"/>
-	    
-	    <TextView
-	        android:id="@+id/title_text"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/push_alerts_are_available_text"
-	        android:textColor="@color/sub_copy"
-	        android:textSize="@dimen/body_copy_max"
-	        android:layout_below="@+id/title"/>
-	
-	    <Button
-	        android:id="@+id/manage_alerts_button"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/manage_alerts" 
-	  		style="@style/call_to_action_theme"
-	  		android:layout_marginRight="@dimen/forms_inner_padding"
-	    	android:layout_marginLeft="@dimen/forms_inner_padding"
-	  		android:layout_marginTop="@dimen/orange_button_margin_top"
-	  		android:layout_below="@+id/title_text"
-	  		android:layout_centerHorizontal="true"/>
-	    
-	    <TextView
-	        android:id="@+id/account_home_view"
-	        android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:text="@string/account_home" 
-	    	style="@style/blue_hyperlink"
-	  		android:layout_marginRight="@dimen/forms_inner_padding"
-	    	android:layout_marginLeft="@dimen/forms_inner_padding"
-	  		android:layout_below="@+id/manage_alerts_button"
-	  		android:layout_marginTop="@dimen/between_related_elements_padding"
-	  		android:layout_centerHorizontal="true"/>
-	        
-	</RelativeLayout>
-</ScrollView>
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:padding="@dimen/forms_inner_padding" >
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/between_related_elements_padding"
+                android:text="@string/push_alerts_are_available"
+                android:textColor="@color/title"
+                android:textSize="24dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:text="@string/push_alerts_are_available_text"
+                android:textColor="#3d484d"
+                android:textSize="16dp" />
+
+            <Button
+                android:id="@+id/manage_alerts_button"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_text"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
+                android:layout_marginRight="@dimen/forms_inner_padding"
+                android:layout_marginTop="@dimen/orange_button_margin_top"
+                android:text="@string/manage_alerts" />
+
+            <TextView
+                android:id="@+id/account_home_view"
+                style="@style/blue_hyperlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/manage_alerts_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
+                android:layout_marginRight="@dimen/forms_inner_padding"
+                android:layout_marginTop="18dp"
+                android:text="@string/account_home"
+                android:textSize="17dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/push_footer"
+        android:layout_below="@+id/account_home_view"
+        layout="@layout/card_fragment_footer" 
+        android:layout_marginBottom="10dp"/>
+
+</RelativeLayout>

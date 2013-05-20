@@ -9,6 +9,7 @@ import org.apache.cordova.api.PluginResult.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -18,10 +19,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.discover.mobile.card.phonegap.plugins.ContactViewResult;
+import com.discover.mobile.card.common.utils.Utils;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -52,18 +52,18 @@ public class ContactsListPlugin extends CordovaPlugin {
 
 		jsonArray = new JSONArray(rawArgs);
 		if (action.equals(showContacts)) {	
-			Log.d(TAG,"inside ContactListPlugin");
+			Utils.log(TAG,"inside ContactListPlugin");
 			result = new PluginResult(Status.NO_RESULT);
 			result.setKeepCallback(true);
 
 			try {
 				String queryType = (String) jsonArray.get(0);
-				Log.d(TAG,"1");
+				Utils.log(TAG,"1");
 				if (queryType.equals(PHONE)) {
-					Log.d(TAG,"2");
+					Utils.log(TAG,"2");
 					showEmail = false;
 				} else if (queryType.equals(EMAIL)) {
-					Log.d(TAG,"3");
+					Utils.log(TAG,"3");
 					showPhone = false;
 				}
 			} catch (JSONException e) {
@@ -157,7 +157,7 @@ public class ContactsListPlugin extends CordovaPlugin {
 
 	@Override
 	public void onActivityResult(int reqCode, int resultCode, Intent data) {
-		Log.d(TAG,"inside onActivityResult....");
+		Utils.log(TAG,"inside onActivityResult....");
 		switch(reqCode) {
 		case PICK_CONTACT:
 			if (resultCode == Activity.RESULT_OK) {

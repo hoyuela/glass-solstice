@@ -13,11 +13,15 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.common.LoggedInRoboActivity;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.slidingmenu.lib.SlidingMenu;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -33,7 +37,8 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	
 	/**String representing this class to enter into the back stack*/
 	private static final String TAG = PushNowAvailableFragment.class.getSimpleName();
-	
+	private static final String REFERER = "cardHome-pg";
+	 
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.
 	 * @param inflater - inflater that will inflate the layout
@@ -50,6 +55,31 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		final Button manageAlerts = (Button) view.findViewById(R.id.manage_alerts_button);
 		final TextView accountHome = (TextView) view.findViewById(R.id.account_home_view);
 		
+		TextView provideFeedback = (TextView) view.findViewById(R.id.provide_feedback_button);
+	    TextView termsOfUse = (TextView) view.findViewById(R.id.privacy_terms);
+	    
+	    provideFeedback.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				 Utils.createProvideFeedbackDialog(getActivity(), REFERER);
+			}
+		});
+	    
+	    termsOfUse.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				((NavigationRootActivity)getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+				((LoggedInRoboActivity)getActivity()).enableMenuButton();
+				
+	            ((CardMenuInterface) getActivity()).sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
+			}
+		});
+	    
+	    
 		manageAlerts.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -115,6 +145,14 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 		return view;
 	}
 
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		//Disabling menu navigation
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		((LoggedInRoboActivity)this.getActivity()).disableMenuButton();
+	}
 	/**
 	 * Swap out this fragment and replace it with the push manage fragment so that the user can manage his/her alerts
 	 */
@@ -147,5 +185,13 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	@Override
 	public int getSectionMenuLocation() {
 		return CardMenuItemLocationIndex.HOME_SECTION;
+	}
+	
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		((LoggedInRoboActivity)this.getActivity()).enableMenuButton();
 	}
 }

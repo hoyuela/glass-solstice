@@ -207,22 +207,24 @@ public final class CardMenuItemLocationIndex {
                         REDEEM_MILES_SECTION));
     }
 
-    public int getMenuGroupLocation(int title) {
+    public int getMenuGroupLocation(final int title) {
         int location = 0;
 
         if (title != -1) {
-            if (itemIdLocationMap.containsKey(title))
+            if (itemIdLocationMap.containsKey(title)) {
                 location = itemIdLocationMap.get(title).first;
+            }
         }
         return location;
     }
 
-    public int getMenuSectionLocation(int title) {
+    public int getMenuSectionLocation(final int title) {
         int location = 0;
 
         if (title != -1) {
-            if (itemIdLocationMap.containsKey(title))
+            if (itemIdLocationMap.containsKey(title)) {
                 location = itemIdLocationMap.get(title).second;
+            }
         }
         return location;
     }

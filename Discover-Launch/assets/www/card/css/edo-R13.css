@@ -659,15 +659,19 @@ background:none;font-size:14px;color:#50555a}
 	margin-top: 10px;
 	width:33%;	
 }
-
+#edoHistory-pg .wraper .historyList	.listLi .ui-block-b {
+	display: inline-block;
+	width:36%;
+}
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-c {
 	display: inline-block;
-	width:34%;
+	width:30%;
+	float:right;
 }
 
 
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-c span {
-	margin-left: 36%;
+	/*margin-left: 36%;*/
 	color: #777e81;
 	font-size: 12px;
 }

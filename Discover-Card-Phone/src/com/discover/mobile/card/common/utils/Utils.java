@@ -1,27 +1,35 @@
 package com.discover.mobile.card.common.utils;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -30,6 +38,7 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.phonegap.plugins.ResourceDownloader;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
 /**
@@ -41,25 +50,30 @@ import com.discover.mobile.card.services.auth.AccountDetails;
 public class Utils {
 
     static ProgressDialog progressBar;
+
+    public static boolean enableLogging = true;
+
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
-    public static boolean  isSpinnerAllowed=true;
-    public static boolean  isSpinnerForOfflinePush=false;
-    
-    //CARD TYPE DEFINED TO SHOW ON TOGGLE VIEW TOOL TIP
+    public static boolean isSpinnerAllowed = true;
+    public static boolean isSpinnerForOfflinePush = false;
+
+    public static boolean isSpinnerShow = true;
+
+    // CARD TYPE DEFINED TO SHOW ON TOGGLE VIEW TOOL TIP
     public static final String CARDTYPE_MORE = "MOR";
-	public static final String CARDTYPE_OPEN_ROAD = "OPR";
-	public static final String CARDTYPE_MOTIVA = "MTV";
-	public static final String CARDTYPE_DISCOVER_IT = "DIT";
-	public static final String CARDTYPE_MILES = "MLS";
-	public static final String CARDTYPE_ESCAPE = "ESC";
-	public static final String CARDTYPE_ESSENTIALS = "ESN";
-	public static final String CARDTYPE_ESSENTIALS_WITH_FEE = "ESF";
-	public static final String CARDTYPE_CORP = "CRP";
-	public static final String CARDTYPE_DBC = "DBC";
-	public static final String CARDTYPE_DBC_MILES = "DBM";
-	public static final String CARDTYPE_DEFAULT = "Not Supported";
-    
+    public static final String CARDTYPE_OPEN_ROAD = "OPR";
+    public static final String CARDTYPE_MOTIVA = "MTV";
+    public static final String CARDTYPE_DISCOVER_IT = "DIT";
+    public static final String CARDTYPE_MILES = "MLS";
+    public static final String CARDTYPE_ESCAPE = "ESC";
+    public static final String CARDTYPE_ESSENTIALS = "ESN";
+    public static final String CARDTYPE_ESSENTIALS_WITH_FEE = "ESF";
+    public static final String CARDTYPE_CORP = "CRP";
+    public static final String CARDTYPE_DBC = "DBC";
+    public static final String CARDTYPE_DBC_MILES = "DBM";
+    public static final String CARDTYPE_DEFAULT = "Not Supported";
+
     /**
      * 
      * Simple utility method to check whether the internet connection is
@@ -71,6 +85,26 @@ public class Utils {
      */
 
     private static final String ID_PREFIX = "%&(()!12["; //$NON-NLS-1$
+
+    protected static final String LOG_TAG = "Utils";
+
+    private static final String TYPE_PDF = "application/pdf";
+    private static final String TITLE_NO_DL = "No SD Card";
+    private static final String MSG_NO_DL = "An SD card is required to Download PDFs.";
+    private static final String TITLE_NO_PDF = "No PDF Viewer";
+    private static final String MSG_NO_PDF = "A PDF Viewer was not found to view the file.";
+    private static final String TITLE_ERROR = "Error";
+    private static final String MSG_ERROR = "There was a problem downloading the file, please try again later.";
+
+    /** Potential directories to save PDF file is none of the defaults exist */
+    private static final ArrayList<String> DIR_LIST;
+    static {
+        DIR_LIST = new ArrayList<String>();
+        DIR_LIST.add("/mnt/emmc/download");
+        DIR_LIST.add("/mnt/emmc/downloads");
+        DIR_LIST.add("/mnt/emmc/Download");
+        DIR_LIST.add("/mnt/emmc/Downloads");
+    }
 
     /**
      * prevent the object creation
@@ -85,7 +119,7 @@ public class Utils {
             return userId.startsWith(CARD_NUMBER_PREFIX)
                     && userId.length() == CARD_NUMBER_LENGTH_OK
                     && !userId.contains(" ");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             return false;
         }
 
@@ -105,24 +139,6 @@ public class Utils {
         return value;
 
     }
-
-    /**
-     * This method returns the Progress Dialog
-     * 
-     * @param context
-     *            Activity Context
-     * @param strTitle
-     *            Progress Dialog Title
-     * @param strMessage
-     *            Progress Dialog Message
-     * @return Progress Dialog
-     */
-    /*
-     * public static ProgressDialog getProgressDialog(final Context context,
-     * final String strTitle, final String strMessage) { ProgressDialog
-     * progressDialog; progressDialog = ProgressDialog.show(context, strTitle,
-     * strMessage); return progressDialog; }
-     */
 
     /**
      * Hashing for the device identifiers
@@ -219,30 +235,30 @@ public class Utils {
      */
     public static void showSpinner(final Context context,
             final String strTitle, final String strMessage) {
-if(isSpinnerAllowed || isSpinnerForOfflinePush)
-{
-        if (null == progressBar) {
-            progressBar = new ProgressDialog(context);
-            progressBar.setCancelable(false);
-            if (null != strMessage && strMessage != "")
-                progressBar.setMessage(strMessage);
-            else
-                progressBar.setMessage("Loading...");
-            progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            if (null != strTitle && strTitle != "")
-                progressBar.setTitle(strTitle);
-            else
-                progressBar.setTitle("Discover");
+        if (isSpinnerAllowed && isSpinnerShow || isSpinnerForOfflinePush) {
+            if (null == progressBar) {
+                progressBar = new ProgressDialog(context);
+                progressBar.setCancelable(false);
+                if (null != strMessage && strMessage != "") {
+                    progressBar.setMessage(strMessage);
+                } else {
+                    progressBar.setMessage("Loading...");
+                }
+                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                if (null != strTitle && strTitle != "") {
+                    progressBar.setTitle(strTitle);
+                } else {
+                    progressBar.setTitle("Discover");
+                }
+            }
+            try {
+                if (progressBar != null && !progressBar.isShowing()) {
+                    progressBar.show();
+                }
+            } catch (final Exception e) {
+                e.printStackTrace();
+            }
         }
-        try {
-        	if(progressBar != null && !progressBar.isShowing())
-        	{
-        		progressBar.show();
-        	}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-}
     }
 
     /**
@@ -251,7 +267,8 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
      * the updated one .
      */
     public static void updateAccountDetails(final Context context,
-            final CardEventListener cardEventListener , final String strTitle , final String strMessage) {
+            final CardEventListener cardEventListener, final String strTitle,
+            final String strMessage) {
         // TODO Auto-generated method stub
         final WSRequest request = new WSRequest();
 
@@ -265,23 +282,19 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
         request.setHeaderValues(headers);
 
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new AccountDetails(), strTitle ,
-                strMessage , cardEventListener);
+                new AccountDetails(), strTitle, strMessage, cardEventListener);
         serviceCall.execute(request);
     }
 
     public static void hideSpinner() {
-    	if(!isSpinnerForOfflinePush)
-    	{
-	        if (null != progressBar && progressBar.isShowing()) {
-	            progressBar.dismiss();
-	            progressBar = null;
-	        }
-	        else
-	        {
-	        	isSpinnerAllowed=false;
-	        }
-    	}   
+        if (!isSpinnerForOfflinePush && isSpinnerShow) {
+            if (null != progressBar && progressBar.isShowing()) {
+                progressBar.dismiss();
+                progressBar = null;
+            } else {
+                isSpinnerAllowed = false;
+            }
+        }
     }
 
     /**
@@ -315,14 +328,13 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
                     + Utils.getStringResource(context,
                             R.string.xApplicationVersion);
         }
-        String provideFeedbackUrl = context.getString(R.string.share_url)
+        final String provideFeedbackUrl = context.getString(R.string.share_url)
                 + referer + customerInformation;
-        Log.d("inside createProvideFeedback", provideFeedbackUrl);
-        LinearLayout main = new LinearLayout(context);
+        Utils.log("inside createProvideFeedback", provideFeedbackUrl);
+        final LinearLayout main = new LinearLayout(context);
         main.setOrientation(LinearLayout.VERTICAL);
 
-        RelativeLayout toolbar = new RelativeLayout(context);
-        //toolbar.setBackgroundColor();
+        final RelativeLayout toolbar = new RelativeLayout(context);
         toolbar.setBackgroundResource(R.drawable.action_bar_background);
         toolbar.setLayoutParams(new LinearLayout.LayoutParams(
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
@@ -366,8 +378,7 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
         webview.requestFocus();
         webview.requestFocusFromTouch();
 
-        ImageButton close = new ImageButton(context);
-        //close.setBackgroundColor(Color.BLACK);
+        final ImageButton close = new ImageButton(context);
         close.setBackgroundResource(R.drawable.action_bar_background);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -382,13 +393,20 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
         close.setImageResource(R.drawable.btn_close);
         close.setLayoutParams(closeParams);
 
-        ImageView logoView = new ImageView(context);
-        logoView.setId(2);
-        logoView.setLayoutParams(logoParams);
-        logoView.setImageResource(R.drawable.discover_blk_logo_login);
+        /*
+         * final ImageView logoView = new ImageView(context); logoView.setId(2);
+         * logoView.setLayoutParams(logoParams);
+         * logoView.setImageResource(R.drawable.discover_blk_logo_login);
+         */
+
+        final TextView headerText = new TextView(context);
+        headerText.setId(2);
+        headerText.setLayoutParams(logoParams);
+        headerText.setTextAppearance(context, R.style.action_bar_text);
+        headerText.setText(context.getString(R.string.provide_feedback_title));
 
         toolbar.addView(close);
-        toolbar.addView(logoView);
+        toolbar.addView(headerText);
 
         main.addView(toolbar);
         main.addView(webview);
@@ -407,8 +425,9 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
              * , int, java.lang.String, java.lang.String)
              */
             @Override
-            public void onReceivedError(WebView view, int errorCode,
-                    String description, String failingUrl) {
+            public void onReceivedError(final WebView view,
+                    final int errorCode, final String description,
+                    final String failingUrl) {
                 // TODO Auto-generated method stub
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 Utils.hideSpinner();
@@ -426,7 +445,7 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
                     final Bitmap favicon) {
                 // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
-                Utils.isSpinnerAllowed=true;
+                Utils.isSpinnerAllowed = true;
                 Utils.showSpinner(context, null, null);
             }
 
@@ -446,51 +465,205 @@ if(isSpinnerAllowed || isSpinnerForOfflinePush)
 
         });
     }
-    
-    
-	/**
-	 * This method returns a CARD TYPE
-	 * @param context
-	 * @param cardGroupCode
-	 * @return card type
-	 */
-	public static String getCardTypeFromGroupCode(Context context,
-			String cardGroupCode) {
 
-		String cardtype = cardGroupCode;
+    /**
+     * This method returns a CARD TYPE
+     * 
+     * @param context
+     * @param cardGroupCode
+     * @return card type
+     */
+    public static String getCardTypeFromGroupCode(final Context context,
+            final String cardGroupCode) {
 
-		if (cardtype.equals(CARDTYPE_MORE)) {
+        final String cardtype = cardGroupCode;
 
-			return context.getString(R.string.card_type_more);
-		} else if (cardtype.equals(CARDTYPE_DISCOVER_IT)) {
+        if (cardtype.equals(CARDTYPE_MORE)) {
 
-			return context.getString(R.string.card_type_discover_it);
-		} else if (cardtype.equals(CARDTYPE_MOTIVA)) {
+            return context.getString(R.string.card_type_more);
+        } else if (cardtype.equals(CARDTYPE_DISCOVER_IT)) {
 
-			return context.getString(R.string.card_type_motiva);
-		} else if (cardtype.equals(CARDTYPE_OPEN_ROAD)) {
+            return context.getString(R.string.card_type_discover_it);
+        } else if (cardtype.equals(CARDTYPE_MOTIVA)) {
 
-			return context.getString(R.string.card_type_open_road);
-		} else if (cardtype.equals(CARDTYPE_CORP)) {
+            return context.getString(R.string.card_type_motiva);
+        } else if (cardtype.equals(CARDTYPE_OPEN_ROAD)) {
 
-			return context.getString(R.string.card_type_corp);
-		} else if (cardtype.equals(CARDTYPE_DBC)) {
+            return context.getString(R.string.card_type_open_road);
+        } else if (cardtype.equals(CARDTYPE_CORP)) {
 
-			return context.getString(R.string.card_type_dbc);
-		} else if (cardtype.equals(CARDTYPE_DBC_MILES)) {
+            return context.getString(R.string.card_type_corp);
+        } else if (cardtype.equals(CARDTYPE_DBC)) {
 
-			return context.getString(R.string.card_type_dbc);
-		} else if (cardtype.equals(CARDTYPE_ESCAPE)) {
+            return context.getString(R.string.card_type_dbc);
+        } else if (cardtype.equals(CARDTYPE_MILES)) {
 
-			return context.getString(R.string.card_type_escape);
-		} else if (cardtype.equals(CARDTYPE_ESSENTIALS)) {
+            return context.getString(R.string.card_type_miles);
+        } else if (cardtype.equals(CARDTYPE_DBC_MILES)) {
 
-			return context.getString(R.string.card_type_essential);
-		} else if (cardtype.equals(CARDTYPE_ESSENTIALS_WITH_FEE)) {
+            return context.getString(R.string.card_type_dbc);
+        } else if (cardtype.equals(CARDTYPE_ESCAPE)) {
 
-			return context.getString(R.string.card_type_essential_with_fee);
-		}
-		return CARDTYPE_DEFAULT;
-	}
+            return context.getString(R.string.card_type_escape);
+        } else if (cardtype.equals(CARDTYPE_ESSENTIALS)) {
 
+            return context.getString(R.string.card_type_essential);
+        } else if (cardtype.equals(CARDTYPE_ESSENTIALS_WITH_FEE)) {
+
+            return context.getString(R.string.card_type_essential_with_fee);
+        }
+        return CARDTYPE_DEFAULT;
+    }
+
+    public static void log(final String strMessage) {
+        log("Discover", strMessage);
+    }
+
+    public static void log(final String strTag, final String strMessage) {
+        if (enableLogging) {
+            Log.d(strTag, strMessage);
+        }
+    }
+
+    public static void log(final String strTag, final String strMessage,
+            final Throwable e) {
+        if (enableLogging) {
+            Log.d(strTag, strMessage, e);
+        }
+    }
+
+    public static PDFObject downloadPDF(final String url) {
+        String directory = null;
+        final File downloadDir = Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (downloadDir != null && downloadDir.exists()
+                && downloadDir.isDirectory() && downloadDir.canWrite()) {
+            directory = downloadDir.toString();
+            Utils.log(LOG_TAG, "onPageStarted() using downloadDir=" + directory);
+        } else if (Environment.getExternalStorageDirectory().canWrite()) {
+            directory = Environment.getExternalStorageDirectory().toString();
+            Utils.log(LOG_TAG,
+                    "onPageStarted() using externalStorageDirectory="
+                            + directory);
+        } else {
+            for (final String dir : DIR_LIST) {
+                final File intStorage = new File(dir);
+                if (intStorage.exists() && intStorage.isDirectory()
+                        && intStorage.canWrite()) {
+                    directory = dir;
+                    Utils.log(LOG_TAG, "onPageStarted() using dir=" + dir);
+                    break;
+                }
+            }
+            if (directory == null) {
+                // Can't find a directory to save the file.
+                Utils.log(LOG_TAG,
+                        "onPageStarted() can't find a directory to download");
+                return new PDFObject(null, false, TITLE_NO_DL, MSG_NO_DL);
+            }
+        }
+        HashMap<String, String> headers = null;
+        final String domain = url.substring(0, url.indexOf(".com") + 4);
+        CookieSyncManager.getInstance().sync();
+        // Get the cookie from cookie jar.
+        final String cookie = CookieManager.getInstance().getCookie(domain);
+        if (cookie != null) {
+            headers = new HashMap<String, String>();
+            headers.put("Cookie", cookie);
+            Utils.log(LOG_TAG, "onPageStarted() Cookie=" + cookie);
+        } else {
+            Utils.log(LOG_TAG, "onPageStarted() No Cookies");
+        }
+
+        Utils.log(LOG_TAG, "onPageStarted. before executeDownload, directory="
+                + directory);
+
+        boolean success = false;
+        File file = null;
+        try {
+            file = ResourceDownloader.getInstance().executeDownload(url,
+                    ResourceDownloader.GET, null, headers, directory, ".pdf",
+                    TYPE_PDF);
+            success = true;
+        } catch (final Exception e1) {
+            Utils.log(
+                    LOG_TAG,
+                    "onPageStarted() problem downloading file. message:"
+                            + e1.getMessage());
+            return new PDFObject(null, false, TITLE_ERROR, MSG_ERROR);
+        }
+        if (success && file != null && file.exists()) {
+            final Uri path = Uri.fromFile(file);
+            final Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+            pdfIntent.setDataAndType(path, TYPE_PDF);
+            pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            try {
+
+                return new PDFObject(file, true);
+            } catch (final Exception e) {
+                Utils.log(LOG_TAG,
+                        "onPageStarted() Problem with launching PDF Viewer.", e);
+                return new PDFObject(null, false, TITLE_NO_PDF, MSG_NO_PDF);
+            }
+        } else {
+            Utils.log(LOG_TAG,
+                    "onPageStarted() Problem downloading/saving file.");
+            return new PDFObject(null, false, TITLE_ERROR, MSG_ERROR);
+        }
+    }
+
+    /**
+     * 
+     * @param context
+     * @param title
+     * @param message
+     */
+    public static void showOkAlert(final Context context, final String title,
+            final String message) {
+        // We can't download the file anywhere.
+        final AlertDialog alertDialog = new AlertDialog.Builder(context)
+                .create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, final int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.setIcon(android.R.drawable.stat_notify_error);
+        alertDialog.show();
+    }
+
+    /**
+     * Tests to see if there is a network connection (wifi or mobile network)
+     * 
+     * @param cm
+     *            ConnectivityManager object from activity.
+     * @return true if network connection exists, false if not.
+     */
+    public static boolean isNetworkConnection(final ConnectivityManager cm) {
+        boolean isConnectedMobile = false;
+        boolean isConnectedWifi = false;
+        if (cm == null) {
+            return true;
+        }
+        final NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (final NetworkInfo ni : netInfo) {
+            if ("WIFI".equalsIgnoreCase(ni.getTypeName())) {
+                if (ni.isConnected()) {
+                    isConnectedWifi = true;
+                }
+            }
+            if ("mobile".equalsIgnoreCase(ni.getTypeName())) {
+                if (ni.isConnected()) {
+                    isConnectedMobile = true;
+                }
+            }
+        }
+
+        Utils.log(LOG_TAG, "Wifi On: " + isConnectedWifi);
+        Utils.log(LOG_TAG, "Mobile On: " + isConnectedMobile);
+        return isConnectedWifi || isConnectedMobile;
+    }
 }

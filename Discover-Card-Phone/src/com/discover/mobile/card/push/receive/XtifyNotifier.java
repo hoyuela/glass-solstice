@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 import com.xtify.sdk.api.NotificationsPreference;
 import com.xtify.sdk.api.XtifyBroadcastReceiver;
 import com.xtify.sdk.api.XtifySDK;
@@ -43,7 +43,7 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 	 */
 	@Override
 	public void onRegistered(final Context context) {
-		Log.i(TAG, "XID is: " + XtifySDK.getXidKey(context));
+		Utils.log(TAG, "XID is: " + XtifySDK.getXidKey(context));
 		Toast.makeText(context,XtifySDK.getXidKey(context) ,Toast.LENGTH_LONG).show();
 		 SharedPreferences pushSharedPrefs = context.getSharedPreferences("PUSH_PREF", //TODO: Push
 	                Context.MODE_PRIVATE);
@@ -51,7 +51,7 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 		 editor.putString(PushConstant.pref.PUSH_XID,  XtifySDK.getXidKey(context));
 		 editor.commit();
 		 
-		 Log.i(TAG, "XID is:Pref " + pushSharedPrefs.getString(PushConstant.pref.PUSH_XID, "0"));
+		 Utils.log(TAG, "XID is:Pref " + pushSharedPrefs.getString(PushConstant.pref.PUSH_XID, "0"));
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class XtifyNotifier extends XtifyBroadcastReceiver{
 	 */
 	@Override
 	public void onC2dmError(final Context context, final String errorId) {
-		Log.i(TAG, "ErrorId: " + errorId); //$NON-NLS-1$
+		Utils.log(TAG, "ErrorId: " + errorId); //$NON-NLS-1$
 	}
 	
 	/**

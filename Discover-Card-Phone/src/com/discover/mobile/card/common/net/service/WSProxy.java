@@ -15,7 +15,6 @@ import java.security.cert.X509Certificate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -25,11 +24,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.cookie.Cookie;
-
 import android.content.Context;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.conn.ConnectionManager;
@@ -93,19 +89,17 @@ public final class WSProxy {
      */
     public WSResponse invoke(final Context context,
             final WSRequest requestDetail) {
-    	
-    	
-    	Log.d("WSResponse", "inside invoke : ulr"+requestDetail.getUrl());
+
+        Utils.log("WSResponse", "inside invoke : ulr" + requestDetail.getUrl());
         mcontext = context;
-        if(!requestDetail.isFrequentCaller())
-        {
-        	setLastRestCallTime();
+        if (!requestDetail.isFrequentCaller()) {
+            setLastRestCallTime();
         }
         final WSResponse response = new WSResponse();
         X_APP_VERSION = Utils.getStringResource(context,
-        		R.string.xApplicationVersion);
+                R.string.xApplicationVersion);
         X_CLIENT_PLATFORM = Utils.getStringResource(context,
-        		 R.string.xClientPlatform );
+                R.string.xClientPlatform);
 
         X_CONTENT_TYPE = "application/json";
 
@@ -113,14 +107,13 @@ public final class WSProxy {
             setupDeviceIdentifiers(context);
         }
         connection = createConnection(requestDetail);
-       
+
         setCookies(connection, context);
-        
+
         try {
             final InputStream is = ConnectionManager.connect(connection,
                     context, requestDetail.getInput());
-            if (null!=is)
-            {
+            if (null != is) {
                 response.setResponseCode(connection.getResponseCode());
                 response.setHeaders(connection.getHeaderFields());
                 response.setInputStream(is);
@@ -174,8 +167,8 @@ public final class WSProxy {
             if (headers != null) {
                 final Set<String> keys = headers.keySet();
                 for (final String key : keys) {
-                     System.out.println("Headers========> " + key + " "
-                     + headers.get(key));
+                    System.out.println("Headers========> " + key + " "
+                            + headers.get(key));
                     connection.setRequestProperty(key, headers.get(key));
                 }
             }
@@ -223,7 +216,7 @@ public final class WSProxy {
             HttpsURLConnection.setDefaultSSLSocketFactory(context
                     .getSocketFactory());
         } catch (final Exception e) {
-            Log.e("RestfulHandler", e.getMessage(), e);
+            Utils.log("RestfulHandler", e.getMessage(), e);
         }
     }
 
@@ -343,27 +336,28 @@ public final class WSProxy {
         connection.setRequestProperty("X-Application-Version", X_APP_VERSION);
         connection.setRequestProperty("Content-Type", X_CONTENT_TYPE);
     }
-    
-    private void setCookies(final HttpURLConnection connection,Context context)
-    {
-    	final CardShareDataStore cardShareDataStore = CardShareDataStore
+
+    private void setCookies(final HttpURLConnection connection, Context context) {
+        final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(context);
         final SessionCookieManager sessionCookieManager = cardShareDataStore
                 .getCookieManagerInstance();
-        List<HttpCookie> cookies=sessionCookieManager.getHttpCookie();
+        List<HttpCookie> cookies = sessionCookieManager.getHttpCookie();
         StringBuffer cookieStringBuffer = new StringBuffer();
         for (HttpCookie cookie : cookies) {
-        	
-        	if(null!=cookie&&null!=cookie.getName()&& (!("null".equals(cookie.getValue()))&& null!=cookie.getValue()))
-        	{
-        	cookieStringBuffer.append(cookie.getName());
-        	cookieStringBuffer.append("=");
-        	cookieStringBuffer.append(cookie.getValue());
-        	cookieStringBuffer.append(";");
-        	}
-        	
+
+            if (null != cookie
+                    && null != cookie.getName()
+                    && (!("null".equals(cookie.getValue())) && null != cookie
+                            .getValue())) {
+                cookieStringBuffer.append(cookie.getName());
+                cookieStringBuffer.append("=");
+                cookieStringBuffer.append(cookie.getValue());
+                cookieStringBuffer.append(";");
+            }
+
         }
-        connection.setRequestProperty("Cookie",cookieStringBuffer.toString());
+        connection.setRequestProperty("Cookie", cookieStringBuffer.toString());
     }
 
     /**
@@ -404,11 +398,11 @@ public final class WSProxy {
     }
 
     public void setLastRestCallTime() {
-        Log.d("WSProxy", "inside setLastRestCallTime()...");
+        Utils.log("WSProxy", "inside setLastRestCallTime()...");
         final Calendar mCalendar = Calendar.getInstance(TimeZone
                 .getTimeZone("UTC"));
         lastRestCallTime = mCalendar.getTimeInMillis();
-        Log.d("WSProxy", "lastrestcalltime modified to " + lastRestCallTime);
+        Utils.log("WSProxy", "lastrestcalltime modified to " + lastRestCallTime);
     }
 
     public long getLastRestCallTime() {

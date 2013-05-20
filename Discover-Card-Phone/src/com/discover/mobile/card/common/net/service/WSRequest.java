@@ -17,27 +17,27 @@ public final class WSRequest {
     private byte[] btInput;
     private HashMap<String, String> hmHeaderValues;
     private boolean isFrequentCaller;
-    
+
     public String getUsername() {
-		return username;
-	}
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(final String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
-	private String username;
+    private String username;
     private String password;
-    
-    private int connectionTimeOut=10000;
+
+    private int connectionTimeOut = 10000;
 
     public WSRequest() {
         hmHeaderValues = new HashMap<String, String>();
@@ -51,13 +51,13 @@ public final class WSRequest {
         hmHeaderValues = null;
     }
 
-    public void setCookieHander()
-    {
+    public void setCookieHander() {
         CookieHandler.setDefault(new CookieManager());
-        ((CookieManager)CookieHandler.getDefault()).setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-        
+        ((CookieManager) CookieHandler.getDefault())
+                .setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
     }
-    
+
     /**
      * @return the url
      */
@@ -103,7 +103,6 @@ public final class WSRequest {
         hmHeaderValues = headerValues;
     }
 
-   
     /**
      * @return the input
      */
@@ -119,19 +118,19 @@ public final class WSRequest {
         btInput = input;
     }
 
-	public int getConnectionTimeOut() {
-		return connectionTimeOut;
-	}
+    public int getConnectionTimeOut() {
+        return connectionTimeOut;
+    }
 
-	public void setConnectionTimeOut(int connectionTimeOut) {
-		this.connectionTimeOut = connectionTimeOut;
-	}
+    public void setConnectionTimeOut(final int connectionTimeOut) {
+        this.connectionTimeOut = connectionTimeOut;
+    }
 
-	public boolean isFrequentCaller() {
-		return isFrequentCaller;
-	}
+    public boolean isFrequentCaller() {
+        return isFrequentCaller;
+    }
 
-	public void setFrequentCaller(boolean isFrequentCaller) {
-		this.isFrequentCaller = isFrequentCaller;
-	}
+    public void setFrequentCaller(final boolean isFrequentCaller) {
+        this.isFrequentCaller = isFrequentCaller;
+    }
 }
