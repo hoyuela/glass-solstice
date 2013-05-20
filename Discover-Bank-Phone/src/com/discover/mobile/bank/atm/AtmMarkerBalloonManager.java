@@ -27,7 +27,6 @@ import com.discover.mobile.common.utils.StringUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
-import com.google.common.base.Strings;
 
 /**
  * Info overlay balloon manager.  Creates and populates the view that will
@@ -176,10 +175,23 @@ public class AtmMarkerBalloonManager{
 	 * @throws IOException
 	 */
 	protected Bundle getStreetViewBundle(final AtmDetail atm) throws IOException{
-		final String addressString =  atm.address1 + StringUtility.SPACE 
-				+ atm.city + StringUtility.SPACE + atm.state;
+		final StringBuilder addressString = new StringBuilder();
+		addressString.append(atm.address1);
+		addressString.append(StringUtility.SPACE);
+		addressString.append(atm.city);
+		addressString.append(StringUtility.SPACE);
+		addressString.append(atm.state);
+
 		final Geocoder coder = new Geocoder(context);
-		final List<Address> addresses = coder.getFromLocationName(addressString, 1);
+
+		List<Address> addresses = null;
+
+		try {
+			addresses = coder.getFromLocationName(addressString.toString(), 1);
+		} catch (final Exception ex) {
+			addresses = null;
+		}
+
 		final Bundle bundle = new Bundle();
 		if(null != addresses &&  !addresses.isEmpty()){
 			bundle.putDouble(BankExtraKeys.STREET_LAT, addresses.get(0).getLatitude());
