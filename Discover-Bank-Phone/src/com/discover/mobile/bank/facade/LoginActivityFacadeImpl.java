@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.discover.mobile.bank.login.LockOutUserActivity;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.facade.LoginActivityFacade;
 
@@ -50,7 +51,17 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 
 			// Close current activity
 			currentActivity.finish();
-		} 
+		} else if (bundle != null) {
+			if (bundle.containsKey(IntentExtraKey.SESSION_EXPIRED)) {
+				((LoginActivity) currentActivity).showSessionExpired();
+			} else if (bundle
+					.containsKey(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE)) {
+				((LoginActivity) currentActivity).showLogoutSuccessful();
+			} else if (bundle.containsKey(IntentExtraKey.SHOW_ERROR_MESSAGE)) {
+				((LoginActivity) currentActivity).showErrorMessage(bundle
+						.getString(IntentExtraKey.SHOW_ERROR_MESSAGE));
+			}
+		}
 		
 	}
 	
