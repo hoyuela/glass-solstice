@@ -18,6 +18,8 @@
 -dontwarn org.junit.**
 
 
+-dontwarn org.apache.commons.codec.binary.Base64
+
 -libraryjars <java.home>/lib/rt.jar
 -libraryjars ../ActionBarSherlock/bin/classes
 -libraryjars ../Android-PullToRefresh/bin/classes
