@@ -13,11 +13,11 @@ import android.telephony.TelephonyManager;
 /**
  * 
  * ©2013 Discover Bank
- *
+ * 
  * This class generate key for Strong Authentication
- *
+ * 
  * @author CTS
- *
+ * 
  * @version 1.0
  */
 public class StrongAuthUtil {
@@ -34,6 +34,7 @@ public class StrongAuthUtil {
 
     /**
      * Constructor
+     * 
      * @param context
      */
     public StrongAuthUtil(final Context context) {
@@ -53,8 +54,7 @@ public class StrongAuthUtil {
         final StrongAuthBean authBean = new StrongAuthBean();
         authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
         authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
-        authBean.setSubscriberId(getSha256Hash(telephonyManager
-                .getDeviceId()));
+        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
         return authBean;
     }
 
@@ -71,7 +71,7 @@ public class StrongAuthUtil {
                 + toHash;
 
         final MessageDigest digester = MessageDigest.getInstance("SHA-256");
-        final byte[] preHash = safeToHash.getBytes(); 
+        final byte[] preHash = safeToHash.getBytes();
 
         // Reset happens automatically after digester.digest() but we don't know
         // its state beforehand so call reset()

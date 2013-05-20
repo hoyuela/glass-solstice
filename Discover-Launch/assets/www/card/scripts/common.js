@@ -71,7 +71,7 @@ function onBodyLoad ()
 function onDeviceReady(){
 	try{
 		cordova.exec(null, null, "SplashScreen", "hide", []);
-		isDeviceReady= true;
+	//	isDeviceReady= true;
 		deviceType=device.platform;
         deviceVersion=device.version;
         if (deviceType=="iPhone Simulator") deviceType="iPhone";
@@ -100,6 +100,11 @@ function onDeviceReady(){
 	}catch(err){
 		showSysException(err);
 	}
+}
+
+function setDeviceReady(isReady){
+	console.log("is device ready "+isReady);
+	isDeviceReady= isReady;
 }
 
 function manageTransition()
@@ -1493,7 +1498,7 @@ function redirectToPageAfterConfirm(eventElement) {
         var BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT=HREF_URL+"cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/rewards/app/browseInvest?modeCode=EFT1&view=cash";
         var IPHONEAPPURL="http://itunes.apple.com/app/discovermobile/id338010821?mt=8";
         var ANDROIDAPPURL="http://market.android.com/search?q=pname:com.discoverfinancial.mobile";
-
+		var PAYWITHCBBLNK="https://www.discover.com/paywithcbb";
 
 		if(isDeviceReady == true)
 		{      
@@ -1532,6 +1537,9 @@ function redirectToPageAfterConfirm(eventElement) {
 			break;
 		case "manageCurrentDayPayment":
 			window.open(manageCurrentDayPayment,'_system','location=yes');				
+			break;
+		case "Pay with cbb":
+			window.open(PAYWITHCBBLNK,'_system','location=yes');				
 			break;
 
 		case "updateAppVersion":

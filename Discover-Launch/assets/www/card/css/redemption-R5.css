@@ -291,7 +291,7 @@ background-size: 11px 11px;
 .rd-page .cancel-btn{ /*padding-right:30px;*/ font-weight:bold !important;}
 .rd-page .ecart-txt{ font-size:9px !Important; color:#b7b7b7 !important; line-height:9px;}
 .rd-page .ecart-padd{ padding-top:28px !important;}
-.rd-page .yellow-bg{ background:url(../images/btn-bkground-pill.png) no-repeat; -webkit-background-size:127px 34px; width:124px; height:36px; display:inline-block;}
+.rd-page .yellow-bg{ background:url(../images/btn-bkground-pill.png) no-repeat; -webkit-background-size:127px 34px; width:124px; height:31px; display:inline-block;}
 .rd-page .disabled-btn{ background:url(../images/disabled-bg.png) no-repeat; -webkit-background-size:127px 34px; /*width:80px; height:24px;*/ display:inline-block;}
 .rd-page .yellow-bg span, .rd-page .disabled-btn span{ /*padding:0px 8px 5px 0px;*/ float:left; font-weight:normal; text-shadow:none;}
 .rd-page .disabled-btn span {padding:1px 0 2px 0;}
@@ -581,7 +581,7 @@ border-bottom:1px solid #e8eced !important;-webkit-border-radius:0 !important; /
 	
 }
 .rd-page.browse-partners .ui-listview-filter .ui-input-search{/*-webkit-border-radius: 30px;border-radius: 30px;padding-top:0px;*/-webkit-box-shadow:none !important; margin:5px 0px 5px 0; border:1px solid #c0c8cc !important;}
-.rd-page.browse-partners .ui-icon-searchfield::after {background-image: url(../images/search-icon.png);background-position: -1px -1px;background-color: white; background-size:20px 19px;}
+.rd-page.browse-partners .ui-icon-searchfield::after {background-image: url(../images/search-icon.png);background-position: 1px 0px;background-color: white; background-size:18px 17px;}
 
 .rd-page.browse-partners .ui-icon {
 	background:none;
@@ -728,8 +728,8 @@ min-height:0px;
 padding-right: 20px !important; margin-bottom: 5px !important; max-width:84%}
 /*.rd-right-arrow{background:url(../images/right_arrow.png) right center no-repeat;height:32px;width:100%;display:block}*/
 .rd-right-arrow{margin-right:0 !important; background: url(../../images/listGrayArrow.png) no-repeat right center;height:20px; width:20px; background-size:7px 9px; /*display:block; */ float: right;  }
-#rd-history .errormsg-all{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
-#rd-history .errormsg-ecert{color:#b7b7b7;text-shadow:none;padding:8px;font-size:14px;display:none}
+#rd-history .errormsg-all{color:#5c5f61;text-shadow:none;padding:8px;font-size:14px;display:none}
+#rd-history .errormsg-ecert{color:#5c5f61;text-shadow:none;padding:8px;font-size:14px;display:none}
 /*redemption-history ends*/
 
 /*Redeem- Pay with Cashback and pay with Miles Starts*/
@@ -1031,7 +1031,8 @@ background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56
 .rd-page .ui-btn-down-d
 {
 /*background-image: -webkit-linear-gradient(top, #d6d6d6 0%,#f8f8f9 39%,#f8f8f9 56%,#d6d6d6 100%) !important*/
--webkit-box-shadow:inset 0px 0px 10px #dce3e5 !important;
+/* -webkit-box-shadow:inset 0px 0px 10px #dce3e5 !important; */
+ background:#e9e9e9 !important;
 }
 #cardHome-pg .ui-btn-down-d a,
 #accountLanding-pg .ui-btn-down-d a,
@@ -1176,8 +1177,9 @@ border:1px solid rgb(138, 138, 138) /*{a-bup-border}*/
 .rd-page .shipping-details-btm-border ul li, .shipping-detl-content ul li {padding:0px 10px}
 .browseAllPartners .ui-btn-up-c {border-top:0px !important;}
 #faqDeviceAlerts-pg .rdfaq-hidden-element a{ font-size:12px !important; color:#267bb1 !important; font-weight:normal !important;}
-
-
+#ecart-ios div.bottom-text{ text-align:center !important; margin-top:10px !important;}
+#ecart-ios .ftextLeft{margin-left:5px;}
+#redm-cb .ol-part{ margin-top:5px; }
 /* retina image changes */
 @media ( -webkit-min-device-pixel-ratio :2) {
 	#redemption-landing li div.arrow, #browse-landing .whitebg-list-view li div.arrow ,.rd-right-arrow,.rd-page.browse-partners .ui-icon{

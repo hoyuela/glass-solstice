@@ -1,7 +1,6 @@
 package com.discover.mobile.card.push.manage;
 
-import android.util.Log;
-
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -32,7 +31,7 @@ public class GetPushPrefsErrorResponseHandler implements ErrorResponseHandler {
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> error) {
-		Log.e(TAG, Integer.toString(error.getHttpStatusCode()));
+		Utils.log(TAG, Integer.toString(error.getHttpStatusCode()));
 		//TODO:  Handle this correctly
 		return true;
 	}

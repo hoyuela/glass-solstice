@@ -2,7 +2,7 @@ package com.discover.mobile.card.hybrid;
 
 import org.apache.cordova.CordovaWebView;
 
-import android.util.Log;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * 
@@ -21,14 +21,16 @@ public final class CacheManagerUtil {
     }
 
     public void clearJQMGlobalCache() {
-        Log.d("CacheManagement", "inside clearJQMGlobalCache()......");
-        if(null!=m_cwv)
-        m_cwv.sendJavascript("clearGlobalCache();");
+        Utils.log("CacheManagement", "inside clearJQMGlobalCache()......");
+        if (null != m_cwv) {
+            m_cwv.sendJavascript("clearGlobalCache();");
+        }
     }
 
     public void clearJQMHistory() {
-        Log.d("CacheManagement", "inside clearJQMGlobalCache()......");
-        if(null!=m_cwv)
-        m_cwv.sendJavascript("clearHistory();");
+        Utils.log("CacheManagement", "inside clearJQMGlobalCache()......");
+        if (null != m_cwv) {
+            m_cwv.sendJavascript("clearHistory();");
+        }
     }
 }

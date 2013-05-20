@@ -13,6 +13,7 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * 
@@ -61,6 +62,7 @@ public class StrongAuthCheck {
 
 		request.setUrl(url);
 		request.setHeaderValues(headers);
+		Utils.isSpinnerShow =false;
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
 				"Discover", "Authenticating...", listener);
 		serviceCall.execute(request);

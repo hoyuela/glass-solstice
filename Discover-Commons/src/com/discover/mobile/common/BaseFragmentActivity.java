@@ -279,6 +279,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		final FragmentManager mgr = getSupportFragmentManager();
 		
+		
 		if( mgr.getBackStackEntryCount() > 0 ) {
 			/**If back stack has fragments on it then use animations in transitions*/
 			setVisibleFragment(fragment);
