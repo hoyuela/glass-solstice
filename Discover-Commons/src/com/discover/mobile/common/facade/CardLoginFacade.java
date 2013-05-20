@@ -3,6 +3,7 @@
  */
 package com.discover.mobile.common.facade;
 
+import android.app.Activity;
 import android.content.Context;
 
 /**
@@ -27,7 +28,14 @@ public interface CardLoginFacade {
 	 */
 	public void login(LoginActivityInterface callingActivity, String username,
 			String password);
-
+	
+	/**
+     * Submits the login call
+     * 
+     * @param callingActivity
+     */
+    public void loadCordovaWebview(Activity activity);
+    
 	/**
 	 * Starts the process of retrieving a Bank payload and authorizing the user
 	 * against Bank services. The Bank authentication process, upon success,

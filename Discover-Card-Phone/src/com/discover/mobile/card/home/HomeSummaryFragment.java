@@ -38,6 +38,7 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.navigation.CordovaWebFrag;
 import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
 import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.card.navigation.CordovaWebFrag;
 
 import com.discover.mobile.PushConstant;
 
@@ -87,6 +88,8 @@ public class HomeSummaryFragment extends BaseFragment implements
     private CardMenuItemLocationIndex mCardMenuLocation;
     private CordovaWebFrag cordovaWebFrag = null;
 
+  
+    
     @Override
     public View onCreateView(final LayoutInflater inflater,
             final ViewGroup container, final Bundle savedInstanceState) {
@@ -105,10 +108,13 @@ public class HomeSummaryFragment extends BaseFragment implements
         accountName = (TextView) statusBarView.findViewById(R.id.account_name);
         pushErrorTV = (TextView) view.findViewById(R.id.push_ac_home_errorTV);
 
-        mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
-        cordovaWebFrag = ((CardNavigationRootActivity) getActivity())
-                .getCordovaWebFragInstance();
+//        mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
+//        cordovaWebFrag = ((CardNavigationRootActivity) getActivity())
+//                .getCordovaWebFragInstance();
 
+        mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
+	     cordovaWebFrag = ((CardNavigationRootActivity)getActivity()).getCordovaWebFragInstance();
+        
         // Get the boolean flag from extra
         final Bundle extras = getActivity().getIntent().getExtras();
         if (extras != null) {
@@ -125,6 +131,8 @@ public class HomeSummaryFragment extends BaseFragment implements
             pushErrorTV.setVisibility(View.GONE);
         }
 
+       
+        
         if (Globals.getCurrentAccount().equals(AccountType.CARD_ACCOUNT)) {
             // Statusbarfragment is removed from Account Home View is included
             // in Home Summary Fragment itself
@@ -557,56 +565,89 @@ public class HomeSummaryFragment extends BaseFragment implements
     @Override
     public int getGroupMenuLocation() {
         Utils.log(TAG, "inside getGroupMenuLocation ");
+//        int tempId = getActionBarTitle();
+//        final String m_title = ((CardNavigationRootActivity) getActivity())
+//                .getActionBarTitle();
+//
+//        if (null != m_title) {
+//
+//            if (!m_title.equalsIgnoreCase(getResources().getString(
+//                    R.string.section_title_home))
+//                    && tempId == -1) {
+//                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
+//
+//                    Utils.log(TAG, "m_currentLoadedJavascript is "
+//                            + cordovaWebFrag.getM_currentLoadedJavascript());
+//                    jqmResourceMapper = JQMResourceMapper.getInstance();
+//
+//                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
+//                            .getM_currentLoadedJavascript());
+//                    return mCardMenuLocation.getMenuGroupLocation(tempId);
+//                }
+//            }
+//        }
+//        return mCardMenuLocation.getMenuGroupLocation(tempId);
+//		return CardMenuItemLocationIndex.HOME_GROUP;
+		Log.d(TAG, "inside getGroupMenuLocation ");
         int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuGroupLocation(tempId);
-                }
-            }
+        if(tempId == -1)
+        {
+        	if(null != cordovaWebFrag.getM_currentLoadedJavascript()){
+        		
+        	Log.d(TAG,"m_currentLoadedJavascript is "+cordovaWebFrag.getM_currentLoadedJavascript());
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag.getM_currentLoadedJavascript());
+             return mCardMenuLocation.getMenuGroupLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuGroupLocation(tempId);
         }
-        return mCardMenuLocation.getMenuGroupLocation(tempId);
+        else
+        	return mCardMenuLocation.getMenuGroupLocation(tempId);
     }
 
     @Override
     public int getSectionMenuLocation() {
         Utils.log(TAG, "inside getSectionMenuLocation");
+//        int tempId = getActionBarTitle();
+//        final String m_title = ((CardNavigationRootActivity) getActivity())
+//                .getActionBarTitle();
+//
+//        if (null != m_title) {
+//
+//            if (!m_title.equalsIgnoreCase(getResources().getString(
+//                    R.string.section_title_home))
+//                    && tempId == -1) {
+//                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
+//
+//                    Utils.log(TAG, "m_currentLoadedJavascript is "
+//                            + cordovaWebFrag.getM_currentLoadedJavascript());
+//                    jqmResourceMapper = JQMResourceMapper.getInstance();
+//
+//                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
+//                            .getM_currentLoadedJavascript());
+//                    return mCardMenuLocation.getMenuSectionLocation(tempId);
+//                }
+//            }
+//        }
+//
+//        return mCardMenuLocation.getMenuSectionLocation(tempId);
+        
+        Log.d(TAG, "inside getSectionMenuLocation");
         int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuSectionLocation(tempId);
-                }
-            }
+        if(tempId == -1)
+        {
+        	if(null != cordovaWebFrag.getM_currentLoadedJavascript()){
+        	Log.d(TAG,"m_currentLoadedJavascript is "+cordovaWebFrag.getM_currentLoadedJavascript());
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag.getM_currentLoadedJavascript());
+             return mCardMenuLocation.getMenuSectionLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuSectionLocation(tempId);
         }
-
-        return mCardMenuLocation.getMenuSectionLocation(tempId);
+        else
+        	return mCardMenuLocation.getMenuSectionLocation(tempId);
     }
 
     /*
@@ -627,7 +668,7 @@ public class HomeSummaryFragment extends BaseFragment implements
         } else if (v.getId() == R.id.home_bonus_balance) {
             if (isCashback) {
                 ((CardMenuInterface) callingActivity)
-                        .sendNavigationTextToPhoneGapInterface("Partner Gift Cards & eCerts");
+                        .sendNavigationTextToPhoneGapInterface("Redemption Options");
             } else {
                 ((CardMenuInterface) callingActivity)
                         .sendNavigationTextToPhoneGapInterface("Redeem Miles");

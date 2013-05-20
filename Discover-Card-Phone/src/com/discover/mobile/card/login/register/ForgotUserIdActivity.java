@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 
+import com.discover.mobile.common.ActivityUtil;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
@@ -58,7 +59,7 @@ import com.discover.mobile.card.services.auth.registration.RegistrationConfirmat
  * 
  */
 public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
-        implements CardEventListener, OnClickListener,CordovaInterface {
+        implements CardEventListener, OnClickListener {
 
     private static final String TAG = ForgotUserIdActivity.class
             .getSimpleName();
@@ -102,10 +103,13 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
     private ScrollView mainScrollView;
 
     protected final Activity currentContext = this;
-
+    
+    private ActivityUtil activityUtil = null;
+    
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.register_forgot_id);
 
         loadAllViews();
@@ -325,12 +329,6 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
              * getDataFromAsync(cachedData); } else
              */
         
-           
-        CordovaWebFrag mCordovaFrag = CordovaWebFrag.getCordovaWebFragInstance();
-
-                mCordovaFrag.setContext(ForgotUserIdActivity.this);
-                mCordovaFrag.loadWebView((Activity)ForgotUserIdActivity.this);
-           
             {
                 // new ForgotUserIDAsyncTask(this).execute(data);
                 callForgotUserID(data);
@@ -543,41 +541,4 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
                     REFERER);
         }
     }
-
-    @Override
-    public void cancelLoadUrl() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public Activity getActivity() {
-        // TODO Auto-generated method stub
-        return DiscoverActivityManager.getActiveActivity();
-    }
-
-    @Override
-    public ExecutorService getThreadPool() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Object onMessage(String arg0, Object arg1) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public void setActivityResultCallback(CordovaPlugin arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-        // TODO Auto-generated method stub
-        
-    }
-
 }

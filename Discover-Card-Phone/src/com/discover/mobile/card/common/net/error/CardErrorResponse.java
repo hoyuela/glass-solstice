@@ -27,8 +27,12 @@ public class CardErrorResponse implements Serializable {
     public List<Data> data;
 
     @Struct
-    public static class Data {
+    public static class Data implements Serializable {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 2892504726702613380L;
         public String status;
         public String saStatus;
         public String userid;
