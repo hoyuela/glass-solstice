@@ -49,8 +49,9 @@ dfs.crd.pymt.getPaymentSummaryData = function(pageId)
 		var PAYMENTSSUMMARYURL = RESTURL + "pymt/v1/paymentsummary?" + newDate
 		+ "";
 		var pmtSummary = getDataFromCache(pageId);
-
-		showSpinner();
+		if(!isLhnNavigation){
+			showSpinner();
+		}
 		$.ajax(
 				{
 					type : "GET",
@@ -834,6 +835,9 @@ dfs.crd.pymt.makePaymentStepOneAjaxCall = function(pageId)
 		var newDate = new Date();
 		var MAKEPAYMENTSTEPONEURL = RESTURL+"pymt/v1/makepayment?"+newDate+"" ;
 		var stepOne = getDataFromCache(pageId);
+		if(!isLhnNavigation){
+			showSpinner();
+		}
 //		showSpinner();
 		$
 		.ajax(
@@ -846,7 +850,7 @@ dfs.crd.pymt.makePaymentStepOneAjaxCall = function(pageId)
 					success : function(responseData, status, jqXHR)
 					{
 
-						hideSpinner();
+//						hideSpinner();
               if (!validateResponse(responseData,"makeaPaymentstep1Validation"))      // Pen Test Validation
               {
               errorHandler("SecurityTestFail","","");

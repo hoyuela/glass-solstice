@@ -286,6 +286,7 @@ $(".head-bg-logo").live("click",function(){
 function showSpinner(){
 	try{
 	//	window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
+	if(isDeviceReady == true)
 		HybridControl.prototype.showSpinner();
 	}catch(err)
 	{
@@ -299,6 +300,7 @@ function showSpinnerPageBeforeChange(){
         	if (!isEmpty(deviceType)) deviceT=deviceType.toLowerCase();     //Change
 
 		if (deviceT!="android"){               //Change
+		if(isDeviceReady == true)
 			HybridControl.prototype.showSpinner();
 		//	window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
 		}
@@ -311,17 +313,18 @@ function showSpinnerPageBeforeChange(){
 function hideSpinner(){
 	try {
 	//	window.plugins.LoadingView.spinnerOff(null, null);
+	if(isDeviceReady == true)
 		HybridControl.prototype.dismissProgressBar();
 	}catch(err)
 	{
 		//showSysException(err)
 	}
 }
-
 /*** reseat popup blackout area on background as per the oriantation **/
 function doOnOrientationChange()
 {   
 	try{
+		setGridwpwidth() // This function is to set grid view wraper width
 		var winORIN = window.orientation;
 		if(!isEmpty(winORIN)){  
 			

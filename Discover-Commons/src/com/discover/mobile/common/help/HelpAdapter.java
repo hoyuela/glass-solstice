@@ -6,6 +6,8 @@ package com.discover.mobile.common.help;
 import java.util.List;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +32,6 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	/**Inflater used to inflate layouts*/
 	private final LayoutInflater inflater;
 
-	/** */
-	private final static String CARET = " >";
-	
 	/**
 	 * Constructor for the adapter
 	 * @param context - activity context
@@ -65,21 +64,21 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 				view = inflater.inflate(R.layout.common_help_list_item, null);
 				holder.text = (TextView) view.findViewById(R.id.text);
 			}
-		/**Else reuse the old one*/
+			/**Else reuse the old one*/
 		}else{
 			holder = (HelpViewHolder) view.getTag();
 		}
 
-		
 		if(detail.isShowArrow()){
-			final String text = view.getResources().getString(detail.getText());
-			holder.text.setText( text +CARET);
+			final ImageSpan imagespan = 
+					new ImageSpan(this.getContext(), R.drawable.detail_disclosure_white_arrow, ImageSpan.ALIGN_BASELINE); 
+			final SpannableString text = new SpannableString(this.getContext().getString(detail.getText()) + "  ");
+			text.setSpan(imagespan, text.length()-1, text.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+			holder.text.setText(text);
 		}else{
 			holder.text.setText(detail.getText());
 		}
-		
 		view.setBackgroundDrawable(this.getContext().getResources().getDrawable(getDrawable(detail.isDark(), position)));
-		
 		view.setOnClickListener(detail.getListener());
 		return view;
 	}

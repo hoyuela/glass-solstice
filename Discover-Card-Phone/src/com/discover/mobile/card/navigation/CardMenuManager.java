@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * ©2013 Discover Bank
@@ -40,7 +40,7 @@ public class CardMenuManager {
                 new MilesCard());
         cardMenuTypes.put(mContext.getString(R.string.card_sendmoney),
                 new SendMoney());
-        Log.d("CardMenu", "list size is" + cardMenuTypes.size());
+        Utils.log("CardMenu", "list size is" + cardMenuTypes.size());
     }
 
     public ArrayList<String> getValidMenuItems(String incentiveTypeCode,
@@ -60,9 +60,9 @@ public class CardMenuManager {
                                     .indexOf(incentiveCode) != -1
                             && cardMenuTypes.get(card).docs.indexOf(optionCode) == -1) {
                         supportedMenus.add(card);
-                        Log.d("CardMenu", "adding menu " + card);
+                        Utils.log("CardMenu", "adding menu " + card);
                     } else
-                        Log.d("CardMenu", "list is empty");
+                        Utils.log("CardMenu", "list is empty");
                 }
             }
         }

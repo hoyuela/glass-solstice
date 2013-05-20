@@ -100,7 +100,7 @@ function partnerGiftCardseCerts()
    }
 }
 
-function discoverGiftCards()
+function discoverGiftCard()
 {	
 	dfs.crd.rwd.getAllPartners();
 	s.prop1 = 'HANDSET_REDEEM_DGC_BTN'; // campaign code
@@ -198,4 +198,9 @@ function acHome(){
 function paymentHistory()
 {
 navigation('../payments/paymentsHistory');
+}
+
+function redemptionOptions()
+{
+navigation('../rewards/redemptionLanding');
 }

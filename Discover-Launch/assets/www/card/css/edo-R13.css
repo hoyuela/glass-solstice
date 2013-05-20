@@ -657,18 +657,21 @@ background:none;font-size:14px;color:#50555a}
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-a,#edoHistory-pg .wraper .historyList	.listLi .ui-block-b,#edoHistory-pg .wraper .historyList	.listLi .ui-block-c
 {
 	margin-top: 10px;
-	width:33%;
-	
+	width:33%;	
 }
-
+#edoHistory-pg .wraper .historyList	.listLi .ui-block-b {
+	display: inline-block;
+	width:36%;
+}
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-c {
 	display: inline-block;
-	width:34%;
+	width:30%;
+	float:right;
 }
 
 
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-c span {
-	margin-left: 36%;
+	/*margin-left: 36%;*/
 	color: #777e81;
 	font-size: 12px;
 }
@@ -1318,8 +1321,8 @@ border-bottom: 2px solid #d0ceca;
 		), color-stop(0.47, #FFFFFF) );
 	display: inline-block;
 	margin: 2px;
-	/*float: left;*/
-	margin-left: 3px;
+	/*float: left;
+	margin-left: 3px;*/
 }
 
 .edo-page .showGridview .items .partnerLogo {
@@ -1392,9 +1395,10 @@ border-bottom: 2px solid #d0ceca;
 
 .ui-content-internalpages ul.showGridview {
 	margin: auto;
-	text-align: center;
 	margin-top: 20px;
-	/*width:100%;*/
+	/*margin-left:5%;
+	text-align: left;
+	width:100%;*/
 }
 /*.edo-page .showGridview .items:nth-child(2n){margin-left:13px;}*/
 .edo-page #edoLandingSortOptions .ui-select .ui-btn .ui-btn-text {
@@ -1410,11 +1414,21 @@ border-bottom: 2px solid #d0ceca;
 	padding:0px;
 	font-weight:bold;
 }*/
-#edoDetailsDisplay {
-	text-align: center;
+
+#edoDetailsDisplay.edoDetailsDisplay_showListview {
+	/*text-align: center;
+	display: inline-block;*/
+	width: 100%;
+	margin: auto;
+	}
+
+#edoDetailsDisplay.edoDetailsDisplay_showGridview {
+	/*text-align: center;
 	display: inline-block;
-	width:99.8%;
-}
+	width: 283px;*/
+	margin: auto;
+	}
+	
 /* landscape css */
 @media all and (orientation:landscape) {
 	/*.edo-page .showGridview {
@@ -1472,6 +1486,7 @@ border-bottom: 2px solid #d0ceca;
 	/*.edo-page .showGridview {
 		width: 290px;
 	}*/
+	#edoLandingPage-pg .edoDetailsDisplay_showGridview {width:282px !important}
 	#edoLandingPage-pg .overlay_wraper {
 	width:87% !important;
 	background-color: #fff;

@@ -16,9 +16,9 @@ import com.discover.mobile.common.net.ServiceCallSessionManager;
  */
 public final class TrackingHelper {
 
-	private static final String CARD_TRACKING_RSID = "discovercardmobileprod"; //$NON-NLS-1$
+	private static final String CARD_TRACKING_RSID = "discovercardmobiledev"; //$NON-NLS-1$
 
-	private static final String BANK_TRACKING_RSID = "discoverbankmobileprod"; //$NON-NLS-1$
+	private static final String BANK_TRACKING_RSID = "discoverbankmobiledev"; //$NON-NLS-1$
 
 	private static final String TRACKING_SERVER = "smetrics.discover.com"; //$NON-NLS-1$
 

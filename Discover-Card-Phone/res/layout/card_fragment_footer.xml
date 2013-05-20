@@ -13,7 +13,6 @@
         android:text="@string/privacy_terms_title"
         android:textSize="11sp"
         android:textStyle="bold" />
-  
 
     <TextView
         android:id="@+id/divider"
@@ -23,20 +22,18 @@
         android:layout_marginLeft="@dimen/between_related_elements_padding"
         android:layout_marginRight="@dimen/between_related_elements_padding"
         android:layout_toRightOf="@+id/privacy_terms"
-        android:text=""
+        android:text="@string/card_divider"
         android:textSize="11sp"
         android:textStyle="bold" />
-    
-      <TextView
+
+    <TextView
         android:id="@+id/provide_feedback_button"
         style="@style/card_blue_hyperlink_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/feedback_text"
         android:layout_toRightOf="@+id/divider"
+        android:text="@string/feedback_text"
         android:textSize="11sp"
         android:textStyle="bold" />
-
-    
 
 </RelativeLayout>

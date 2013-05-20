@@ -9,7 +9,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,11 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.uiwidget.PushManageEditText;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.services.push.manage.PostPrefDetail;
 import com.discover.mobile.card.services.push.manage.PostPrefParam;
 import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
 import com.discover.mobile.card.services.push.manage.PreferencesDetail;
-import com.discover.mobile.card.common.uiwidget.PushManageEditText;
 import com.google.common.base.Strings;
 
 /**
@@ -164,7 +164,7 @@ public class PushManageToggleItemEditText extends BasePushManageToggleItem {
 			try {
 				number =  NumberFormat.getCurrencyInstance().parse(amount).toString();
 			} catch (final ParseException e) {
-				Log.e(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
+				Utils.log(TAG, "Error parsing string "+ amount + " , reason: " + e.getMessage());
 			}	
 		}
 		return number;

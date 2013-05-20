@@ -10,7 +10,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 
@@ -28,45 +29,45 @@ import com.discover.mobile.card.R;
 public final class SessionCookieManager {
 
     public static final String sectoken = "sectoken";
-    private String pmData=null;
+    private String pmData = null;
     public static final String vfirst = "v1st";
     public static final String dfsedskey = "dfsedskey";
     private final Context sessionCookieContext;
     private String secToken = null;
     private String dfsKey = null;
     private String vone = null;
-    private String dcsession=null;
-    private String STRONGAUTHSVCS=null;
+    private String dcsession = null;
+    private String STRONGAUTHSVCS = null;
 
     private CookieStore rawCookieStore;
     private URI baseUri;
     private static SessionCookieManager sessionCookieManager;
 
     public String getDcsession() {
-		return dcsession;
-	}
+        return dcsession;
+    }
 
-	public void setDcsession(String dcsession) {
-		this.dcsession = dcsession;
-	}
+    public void setDcsession(final String dcsession) {
+        this.dcsession = dcsession;
+    }
 
-	public String getSTRONGAUTHSVCS() {
-		return STRONGAUTHSVCS;
-	}
+    public String getSTRONGAUTHSVCS() {
+        return STRONGAUTHSVCS;
+    }
 
-	public void setSTRONGAUTHSVCS(String sTRONGAUTHSVCS) {
-		STRONGAUTHSVCS = sTRONGAUTHSVCS;
-	}
+    public void setSTRONGAUTHSVCS(final String sTRONGAUTHSVCS) {
+        STRONGAUTHSVCS = sTRONGAUTHSVCS;
+    }
 
     public String getPmData() {
-		return pmData;
-	}
+        return pmData;
+    }
 
-	public void setPmData(String pmData) {
-		this.pmData = pmData;
-	}
+    public void setPmData(final String pmData) {
+        this.pmData = pmData;
+    }
 
-	/**
+    /**
      * Follows a singleton design pattern. Therefore this constructor is made
      * private
      */
@@ -96,14 +97,11 @@ public final class SessionCookieManager {
     }
 
     public String getSecToken() {
-//        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-//                .getInstance(sessionCookieContext);
-//        return (String)cardShareDataStoreObj.getValueOfAppCache("secToken");
         return secToken;
     }
 
     public void setSecToken(final String secToken) {
-        Log.d("setSecToken in ", "token:"+secToken);
+        Utils.log("setSecToken in ", "token:" + secToken);
         this.secToken = secToken;
     }
 
@@ -117,58 +115,55 @@ public final class SessionCookieManager {
 
     public void clearSecToken() {
         secToken = null;
-//        java.net.CookieStore cookieStore = getCookieStore();
-//        if (null != cookieStore)
-//            cookieStore.removeAll();
     }
 
     /**
      * This method is used to fetch the value from http Cookie manager
      */
     public void setCookieValues() {
-        List<HttpCookie> cookieList = getHttpCookie();
+        final List<HttpCookie> cookieList = getHttpCookie();
         if (null != cookieList) {
             for (final HttpCookie cookie : cookieList) {
 
-            	if (sectoken.equalsIgnoreCase(cookie.getName())) {
+                if (sectoken.equalsIgnoreCase(cookie.getName())) {
                     setSecToken(cookie.getValue());
-                    Log.d("setCookieValues","token value"+cookie.getValue());
+                    Utils.log("setCookieValues",
+                            "token value" + cookie.getValue());
                 } else if (vfirst.equalsIgnoreCase(cookie.getName())) {
                     setVone(cookie.getValue());
                 } else if ("dcsession".equalsIgnoreCase(cookie.getName())) {
                     setDcsession(cookie.getValue());
-                }
-                else if ("STRONGAUTHSVCS".equalsIgnoreCase(cookie.getName())) {
+                } else if ("STRONGAUTHSVCS".equalsIgnoreCase(cookie.getName())) {
                     setSTRONGAUTHSVCS(cookie.getValue());
                 }
-                
+
                 else if ("PMData".equalsIgnoreCase(cookie.getName())) {
                     setPmData(cookie.getValue());
                 }
             }
         }
     }
-    
+
     /**
      * This method is used to fetch the value from http Cookie manager
      */
-    public void setSecTokenInCookie(String strSecToken) {
-        List<HttpCookie> cookieList = getHttpCookie();
+    public void setSecTokenInCookie(final String strSecToken) {
+        final List<HttpCookie> cookieList = getHttpCookie();
         if (null != cookieList) {
             for (final HttpCookie cookie : cookieList) {
 
-            	if (sectoken.equalsIgnoreCase(cookie.getName())) {
+                if (sectoken.equalsIgnoreCase(cookie.getName())) {
                     setSecToken(cookie.getValue());
-                    Log.d("setCookieValues","token value"+cookie.getValue());
+                    Utils.log("setCookieValues",
+                            "token value" + cookie.getValue());
                 } else if (vfirst.equalsIgnoreCase(cookie.getName())) {
                     setVone(cookie.getValue());
                 } else if ("dcsession".equalsIgnoreCase(cookie.getName())) {
                     setDcsession(cookie.getValue());
-                }
-                else if ("STRONGAUTHSVCS".equalsIgnoreCase(cookie.getName())) {
+                } else if ("STRONGAUTHSVCS".equalsIgnoreCase(cookie.getName())) {
                     setSTRONGAUTHSVCS(cookie.getValue());
                 }
-                
+
                 else if ("PMData".equalsIgnoreCase(cookie.getName())) {
                     setPmData(cookie.getValue());
                 }
@@ -181,13 +176,14 @@ public final class SessionCookieManager {
      */
     public List<HttpCookie> getHttpCookie() {
         final URI u = getBaseUri();
-        Log.d("getHttpCookie in ", "base url"+u);
-        java.net.CookieStore cookieStore = getCookieStore();
-        if (null != u && null != cookieStore)
-            //return cookieStore.get(u);
-        	return cookieStore.getCookies();
-        else
+        Utils.log("getHttpCookie in ", "base url" + u);
+        final java.net.CookieStore cookieStore = getCookieStore();
+        if (null != u && null != cookieStore) {
+            // return cookieStore.get(u);
+            return cookieStore.getCookies();
+        } else {
             return null;
+        }
     }
 
     /**
@@ -195,26 +191,17 @@ public final class SessionCookieManager {
      */
     public CookieStore getCookieStore() {
         if (null == rawCookieStore) {
-            // java.net.CookieManager cookieMgr = ((java.net.CookieManager)
-            // CookieHandler.getDefault());
-            // if (null!=cookieMgr)
-            // rawCookieStore =cookieMgr.getCookieStore();
-        	try {
-//              rawCookieStore = ((java.net.CookieManager) CookieHandler
-//                      .getDefault()).getCookieStore();
-             
-          	
-          	CookieManager cm=new CookieManager();
-          	cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-          	CookieHandler.setDefault(cm);
-          	
-          	rawCookieStore =cm.getCookieStore();
-          	
-              
-          }
+            try {
+                final CookieManager cm = new CookieManager();
+                cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+                CookieHandler.setDefault(cm);
 
-          catch (Exception e) {
-          }
+                rawCookieStore = cm.getCookieStore();
+            }
+
+            catch (final Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return rawCookieStore;

@@ -28,7 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/logout_button"
-        android:layout_toRightOf="@+id/navigation_button" />
+        android:layout_toRightOf="@+id/navigation_button" 
+        android:singleLine="true"
+        android:ellipsize="end"/>
 
     <TextView
         android:id="@+id/logged_out_title_view"
