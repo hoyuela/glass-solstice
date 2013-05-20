@@ -1137,7 +1137,8 @@ public class LoginActivity extends BaseActivity implements
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
 		if ( !phoneGapInitComplete ) {
-			FacadeFactory.getCardFacade().initPhoneGap();
+		    FacadeFactory.getCardFacade().initPhoneGap();
+		    FacadeFactory.getCardLoginFacade().loadCordovaWebview(this);
 			phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);

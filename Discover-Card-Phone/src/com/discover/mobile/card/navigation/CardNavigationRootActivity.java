@@ -23,9 +23,17 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.PushConstant;
-import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.R;
+import com.slidingmenu.lib.SlidingMenu;
+
+import com.discover.mobile.common.ActivityUtil;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -36,6 +44,9 @@ import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.CardMenuItemLocationIndex;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
@@ -44,17 +55,10 @@ import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.services.push.PushReadMessage;
 import com.discover.mobile.card.statement.StatementActivity;
 import com.discover.mobile.card.ui.modals.ModalConfirmationTop;
-import com.discover.mobile.common.ActivityUtil;
-import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.DiscoverModalManager;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+
+import com.discover.mobile.PushConstant;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * Root activity for the application after login. This will transition fragment
@@ -123,7 +127,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         if (cordovaWebFrag == null) {
             cordovaWebFrag = CordovaWebFrag.getCordovaWebFragInstance();
             cordovaWebFrag.setContext(this.getContext());
-
+            cordovaWebFrag.loadWebView(this);
             boolean isFragmentAdded = (Boolean) mCardStoreData
                     .getValueOfAppCache("isFragmentAdded");
 
@@ -144,13 +148,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             }
         }
 
-        
-        if(null != cordovaWebFrag)
-        {
-         cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
-                "javascript:setDeviceReady(true)");
-         Utils.log("CardNavigationRootActivity",
-                 "cordova not null");
+        if (null != cordovaWebFrag) {
+            cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+                    "javascript:setDeviceReady(true)");
+            Utils.log("CardNavigationRootActivity", "cordova not null");
         }
 
         // Check intent for logout action and call logout function.

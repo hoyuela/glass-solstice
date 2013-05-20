@@ -52,7 +52,7 @@ public class PushEnrollFragment extends BasePushRegistrationUI {
         enroll.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(final View v) {
-                //registerWithDiscover(ACCEPT, true);
+                // registerWithDiscover(ACCEPT, true);
             }
         });
 
