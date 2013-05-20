@@ -1,9 +1,11 @@
 package com.discover.mobile.bank.transfer;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -72,6 +74,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private static final double MAXIMUM_TRANSFER_VALUE = 999999.99;
 
 	private AmountValidatedEditField amountField;
+	
+	/**
+	 * Holds the number of days added to the next business day, used to determine the next valid re-occurring transfer date.
+	 */
+	private final static int REOCURRING_TRANSFER_OFFSET = 2;
 	
 	private BankErrorResponse lastErrorObject = null;
 	
@@ -195,9 +202,12 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			
 			if(isRecurringTransfer && !accountsAreInternal) {
-				setDateFieldToFirstValidDate(1);
+				final Calendar sendOnDate = convertToDate(sendOnDateCell.getText().toString());
+				if( !isValidReoccuringTransferDate(sendOnDate) ) {
+					setDateFieldToFirstValidDate(0,REOCURRING_TRANSFER_OFFSET);
+				}
 			} else if(accountsAreInternal) {
-				setDateFieldToFirstValidDate(0);
+				setDateFieldToFirstValidDate(0,0);
 				disableDateSelection();
 				
 				setFrequencyToOneTime();
@@ -205,7 +215,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			} else if(!Strings.isNullOrEmpty(savedDate)) {
 				dateTextView.setText(savedDate);				
 			}else {
-				setDateFieldToFirstValidDate(0);
+				setDateFieldToFirstValidDate(0,0);
 			}
 		}
 	}
@@ -275,26 +285,99 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	/**
 	 * Sets the dateTextView text to display the first valid date based on the current date.
 	 */
-	private void setDateFieldToFirstValidDate(final int offset) {
-		final Calendar tempCal = Calendar.getInstance();
-		tempCal.add(Calendar.DAY_OF_MONTH, offset);
+	private void setDateFieldToFirstValidDate(final int earliestPmtOffset, final int textViewOffset) {
+		//Set the date to the next available business day, used to determine the minimum selectable date in the calendar
+		earliestPaymentDate = addBusinessDays(Calendar.getInstance(), earliestPmtOffset);
 		
-		//Set the date to the first valid date for a transfer.
-		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
-		
+				
 		//Set the dateTextView's text to the new valid date.
 		if(dateTextView != null) {
-			dateTextView.setText(BankStringFormatter.formatDate(String.valueOf(earliestPaymentDate.get(Calendar.YEAR)),
-					String.valueOf(earliestPaymentDate.get(Calendar.MONTH) + 1),
-							String.valueOf(earliestPaymentDate.get(Calendar.DAY_OF_MONTH))));
-		}
-		
-		final Bundle args = getArguments();
-		if(args != null && dateTextView != null && !Strings.isNullOrEmpty(dateTextView.getText().toString())) {
-			args.putString(DATE, dateTextView.getText().toString());
+			final Calendar textViewDate = addBusinessDays(Calendar.getInstance(), textViewOffset);
+			
+			dateTextView.setText(BankStringFormatter.formatDate(
+					String.valueOf(textViewDate.get(Calendar.YEAR)),
+					String.valueOf(textViewDate.get(Calendar.MONTH) + 1),
+					String.valueOf(textViewDate.get(Calendar.DAY_OF_MONTH))));
+																
+			final Bundle args = getArguments();
+			if(args != null  && !Strings.isNullOrEmpty(dateTextView.getText().toString())) {
+				args.putString(DATE, dateTextView.getText().toString());
+			}
 		}
 	}
+	
+	/**
+	 * Method used to add business days (days that are not weekends or holidays)
+	 * to the date provided.
+	 * 
+	 * @param date
+	 *            Reference to a Calendar which holds the date that will be
+	 *            added to.
+	 * @param days
+	 *            Number of business days to add to date
+	 * @return Reference to a Calendar object that will hold the date + number
+	 *         of business days added.
+	 */
+	private Calendar addBusinessDays(final Calendar date, final int days) {
+		//Set the date to the first valid date for a transfer.
+		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(date, BankUser.instance().getHolidays());
+		
+		// Add Business Days
+		for( int i = 0; i < days; i++) {	
+			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
+			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
+		}
+		
+		return tempCal;
+	}
+	
+	/**
+	 * Method used to check if the date specified is later than the next valid re-occurring transfer date from today.
+	 * 
+	 * @param date The date that is being used to compare with the next valid re-occurring transfer date.
+	 * 
+	 * @return True if the date specified is valid re-occuring transfer date, false otherwise.
+	 */
+	private boolean isValidReoccuringTransferDate(final Calendar date) {
+		Calendar nextBusinessDay = Calendar.getInstance();
+		nextBusinessDay.add(Calendar.DAY_OF_MONTH, REOCURRING_TRANSFER_OFFSET);
+		
+		nextBusinessDay = CalendarFragment.getFirstValidDateCalendar(nextBusinessDay, BankUser.instance().getHolidays());
+			
+		final int comparison = nextBusinessDay.compareTo(date);
+		
+		return (date != null &&  comparison <= 0 );
+	}
 
+	/**
+	 * Method used to convert a string date MM/dd/yyyy to a Calendar object.
+	 * 
+	 * @param text
+	 *            Holds the date in the format MM/dd/yyyy
+	 * 
+	 * @return Reference to Calendar object with the date specified in the text
+	 *         parameter.
+	 */
+	private Calendar convertToDate(final String text) {
+		final Calendar cal = Calendar.getInstance();
+		
+		try {
+			// here set the pattern as you date in string was containing like date/month/year
+			final SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy",
+					Locale.US);
+			Date date;
+			date = sdf.parse(text);
+			cal.setTime(date);
+		} catch(final java.text.ParseException ex){
+			 if( Log.isLoggable(TAG, Log.ERROR)) {
+				 Log.e(TAG,"Unable to conver to date");
+			 }
+		} 
+		
+		return cal;
+	}
+
+	
 	/**
 	 * Save the current state of the screen.
 	 */
@@ -921,19 +1004,36 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			
 			@Override
 			public void onClick(final View v) {
-				useMyBackPress = false;
 				
-				if (goToAccountSummary) {
-					cancelModal.dismiss();
-					((BankNavigationRootActivity)getActivity()).popTillFragment(BankAccountSummaryFragment.class);
-				} else {
-					((BankNavigationRootActivity)getActivity()).onBackPressed();
+				if( DiscoverActivityManager.getActiveActivity() != null ) {
+					final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+							
+					if (goToAccountSummary) {
+						cancelModal.dismiss();
+						activity.popTillFragment(BankAccountSummaryFragment.class);
+					} else {
+						final BankTransferStepOneFragment fragment = (BankTransferStepOneFragment) activity.getCurrentContentFragment();
+						fragment.navigateBack();
+					}
 				}
 			}
 
 		});		
 		
 		this.showCustomAlertDialog(cancelModal);
+	}
+	
+	/**
+	 * Method used to navigate back to the previous fragment in the current activities back stack.
+	 */
+	public void navigateBack() {
+		/**
+		 * Set this flag to false otherwise calling the onBackPressed on the current activity will call this fragments
+		 * back press callback instead of the activity's
+		 */
+		useMyBackPress = false;
+		
+		DiscoverActivityManager.getActiveActivity().onBackPressed();
 	}
 
 	/**
