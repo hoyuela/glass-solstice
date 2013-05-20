@@ -132,7 +132,7 @@ public final class PageTimeOutUtil {
 
         if (activityUtil.getCurrentActivity() instanceof CardNavigationRootActivity)
             ((CardNavigationRootActivity) activityUtil.getCurrentActivity())
-                    .logout();
+                    .idealTimeoutLogout();
 
     }
 }

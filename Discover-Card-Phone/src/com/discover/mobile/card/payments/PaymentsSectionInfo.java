@@ -3,9 +3,10 @@ package com.discover.mobile.card.payments;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.discover.mobile.card.R;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
+
+import com.discover.mobile.card.R;
 
 /**
  * ©2013 Discover Bank
