@@ -9,23 +9,28 @@ import org.json.JSONException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.telephony.TelephonyManager;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.discover.mobile.PushConstant;
-import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.R;
+
+import com.discover.mobile.common.Globals;
+
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.CardMenuItemLocationIndex;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.navigation.CordovaWebFrag;
 import com.discover.mobile.card.navigation.StatusBarFragment;
-import com.discover.mobile.common.Globals;
+
+import com.discover.mobile.PushConstant;
 
 public class HybridControlPlugin extends CordovaPlugin {
 
@@ -233,18 +238,6 @@ public class HybridControlPlugin extends CordovaPlugin {
                 }
 
             });
-            // } else {
-            // cnrAct.runOnUiThread(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            // Utils.log(TAG,
-            // "calling showactionbarlogo from popPhoneGapToFront action");
-            // cnrAct.showActionBarLogo();
-            // }
-            // });
-            // }
-
             if (!fragTag.equalsIgnoreCase(title0)) {
 
                 Fragment fragmentByTag = fragmentManager
@@ -265,15 +258,9 @@ public class HybridControlPlugin extends CordovaPlugin {
                 cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*
-                         * fragmentManager.beginTransaction()
-                         * .replace(R.id.navigation_content, cordovaFrag)
-                         * .commit();
-                         */
 
                         fragmentManager
                                 .beginTransaction()
-                                /* .hide(statusBarFragment) */
                                 .remove(cordovaFrag)
                                 .add(R.id.navigation_content, cordovaFrag,
                                         "CordovaWebFrag").addToBackStack(title)
@@ -393,10 +380,7 @@ public class HybridControlPlugin extends CordovaPlugin {
         }
 
         else if (action.equals(getAccountDetails)) {
-            /*
-             * Toast.makeText(this.cordova.getActivity().getApplicationContext(),
-             * "inside getAccountDetails", Toast.LENGTH_SHORT).show();
-             */
+
             Utils.log(TAG, "inside getAccountDetails ");
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
@@ -406,10 +390,7 @@ public class HybridControlPlugin extends CordovaPlugin {
                     .get(cordova.getActivity().getString(
                             R.string.account_details_for_js));
             Utils.log(TAG, "json: " + json);
-            /*
-             * Toast.makeText(this.cordova.getActivity().getApplicationContext(),
-             * "json: " + json, Toast.LENGTH_SHORT).show();
-             */
+
             final PluginResult pluginResult = new PluginResult(
                     PluginResult.Status.OK, json);
             pluginResult.setKeepCallback(true);
@@ -591,9 +572,12 @@ public class HybridControlPlugin extends CordovaPlugin {
             return true;
         } else if (action.equals(getOID)) {
             Utils.log(TAG, "inside OID ");
+            /*
             final TelephonyManager telephonyManager = (TelephonyManager) cordova
                     .getContext().getSystemService(Context.TELEPHONY_SERVICE);
             String oid = telephonyManager.getDeviceId();
+            */
+            String oid = Settings.Secure.getString(cordova.getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
             final PluginResult pluginResult = new PluginResult(
                     PluginResult.Status.OK, oid);
             pluginResult.setKeepCallback(true);
