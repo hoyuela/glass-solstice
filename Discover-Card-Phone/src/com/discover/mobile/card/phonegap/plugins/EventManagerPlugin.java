@@ -105,12 +105,7 @@ public class EventManagerPlugin extends CordovaPlugin {
                     long beginVal = 0;
 
                     Log.v(TAG, "cur: " + cur);
-                    // Get the field values
-                    // eventID = cur.getLong(PROJECTION_ID_INDEX);
-                    // beginVal = cur.getLong(PROJECTION_BEGIN_INDEX);
-                    // title = cur.getString(PROJECTION_TITLE_INDEX);
 
-                    // Do something with the values.
                 }
             }
             return true;

@@ -4,8 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.R;
 
 /*
  * This class acts as an broadcast receiver for CardNavigation.

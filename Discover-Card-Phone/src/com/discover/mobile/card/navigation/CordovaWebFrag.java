@@ -34,14 +34,16 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.ActivityUtil;
+import com.discover.mobile.common.BaseFragment;
+
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.CardMenuItemLocationIndex;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
-import com.discover.mobile.common.ActivityUtil;
-import com.discover.mobile.common.BaseFragment;
 
 /*
  Fragment Initialization:
@@ -154,12 +156,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
             if (null != mContext)
                 setGeolocationClient();
         }
-        /********** Hemang **********/
-        if (cwv != null) {
-            WebSettings webSettings = cwv.getSettings();
-            webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-        }
-        /********** Hemang **********/
         return mView;
     }
 
@@ -181,6 +177,11 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
             MyWebviewClient myWebViewClient = new MyWebviewClient(this);
             myWebViewClient.setWebView(cwv);
             cwv.setWebViewClient(myWebViewClient);
+            /********** Hemang **********/
+                WebSettings webSettings = cwv.getSettings();
+                webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+            /********** Hemang **********/
+
         }
 
         return mView;
@@ -267,11 +268,10 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
         javascript = restWithoutSpecialChar.replaceAll("[^a-zA-Z]+", "") + "()";
         // javascript = firstLetter + rest + "();";
         Log.v(TAG, "javascript to send: " + javascript);
-        if(null!= cwv)
-        {
+        if (null != cwv) {
             cwv.requestFocus(View.FOCUS_DOWN);
             cwv.setOnTouchListener(new View.OnTouchListener() {
-        
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
@@ -285,7 +285,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
                     return false;
                 }
             });
-        
+
             cwv.sendJavascript(javascript);
         }
 

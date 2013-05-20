@@ -3,7 +3,6 @@ package com.discover.mobile.card.services.auth;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.util.Base64;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
@@ -48,12 +47,12 @@ public class SSOAuthenticate {
         HashMap<String, String> headers = request.getHeaderValues();
         String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.sso_authenticate_url);
-        
-        if(tokenValue != null && hashedTokenValue != null)
-        {
-	        String authString = getAuthorizationString(tokenValue, hashedTokenValue);
-	        headers.put("Authorization", authString);
-	        request.setHeaderValues(headers);
+
+        if (tokenValue != null && hashedTokenValue != null) {
+            String authString = getAuthorizationString(tokenValue,
+                    hashedTokenValue);
+            headers.put("Authorization", authString);
+            request.setHeaderValues(headers);
         }
         request.setUrl(url);
 
@@ -66,8 +65,9 @@ public class SSOAuthenticate {
     // encode credential
     private String getAuthorizationString(final String tokenValue,
             final String hashedTokenValue) {
-        final String concatenatedCreds = "DCRDSSO "+tokenValue + ": :" + hashedTokenValue;
-        return   concatenatedCreds;//Base64.encodeToString(concatenatedCreds.getBytes(),Base64.NO_WRAP);
-                
+        final String concatenatedCreds = "DCRDSSO " + tokenValue + ": :"
+                + hashedTokenValue;
+        return concatenatedCreds;// Base64.encodeToString(concatenatedCreds.getBytes(),Base64.NO_WRAP);
+
     }
 }
