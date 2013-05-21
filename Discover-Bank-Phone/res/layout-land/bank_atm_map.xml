@@ -64,6 +64,9 @@
             android:background="@drawable/atm_pinview_button_ds_landscape" />
     </LinearLayout>
 
+     <!-- Layout Displays Google's Terms of Use -->
+	<include layout="@layout/google_terms_of_use_layout" />
+	
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleLarge"
