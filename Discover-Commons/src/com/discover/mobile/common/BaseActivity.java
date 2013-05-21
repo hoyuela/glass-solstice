@@ -212,12 +212,29 @@ public abstract class BaseActivity extends RoboActivity
 		
 		super.startActivity(intent);
 	}
+	
+	/**
+	 * Start an activity but dont clear the active modal
+	 * @param intent - intent to start
+	 */
+	public void startActivityNoReset (final Intent intent) {
+		super.startActivity(intent);
+	}
 
 	@Override
 	public void startActivityForResult (final Intent intent, final int requestCode) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
 		
+		super.startActivityForResult(intent, requestCode);
+	}
+	
+	/**
+	 * Start an activity for result but dont clear the active modfal
+	 * @param intent - intent to start
+	 * @param requestCode - requestCode
+	 */
+	public void startActivityForResultNoReset(final Intent intent, final int requestCode){
 		super.startActivityForResult(intent, requestCode);
 	}
 	
