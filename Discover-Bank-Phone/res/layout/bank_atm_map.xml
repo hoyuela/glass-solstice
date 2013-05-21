@@ -28,18 +28,21 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
 
-    <com.discover.mobile.common.help.HelpWidget
+ 	<com.discover.mobile.common.help.HelpWidget
         android:id="@+id/help"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content" /> 
+    
+ 	 <!-- Layout Displays Google's Terms of Use -->
+	<include layout="@layout/google_terms_of_use_layout" />
+	
     <ImageView
         android:id="@+id/drop_shadow"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_above="@+id/map_navigation_panel"
         android:background="@drawable/atm_search_dropshadow" />
-
+     
     <LinearLayout
         android:id="@+id/map_navigation_panel"
         android:layout_width="match_parent"
