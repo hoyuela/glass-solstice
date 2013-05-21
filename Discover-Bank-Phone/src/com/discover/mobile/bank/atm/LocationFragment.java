@@ -47,15 +47,21 @@ public interface LocationFragment {
 	 * failed.
 	 */
 	int LOCATION_FAILED = 5;
+	
+	/**Key to save the camera zoom level*/
+	String MAP_ZOOM = "z";
 
 	/**Key to get the location status out of a bundle*/
 	String LOCATION_STATUS = "status";
-
+	
 	/**Constant to save the users longitude location*/
 	String LONG_KEY = "long";
 
 	/**Constant to save the users latitude location*/
 	String LAT_KEY = "lat";
+	
+	String CAMERA_LAT = "clat";
+	String CAMERA_LON = "clon";
 
 	/**Zoom level that the app should zoom into when the users current location is found*/
 	float MAP_CURRENT_GPS_ZOOM = 14f;

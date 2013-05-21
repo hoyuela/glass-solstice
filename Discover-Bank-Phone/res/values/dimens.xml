@@ -8,8 +8,7 @@
     <dimen name="small_margin">5dp</dimen>
     <dimen name="large_margin">30dp</dimen>
     
-   
-   
+   <dimen name="atm_zoom_padding">80dp</dimen>
     
     <!--  Login Bottom Buttons -->
     <dimen name="login_bottom_button_height">50dp</dimen>
