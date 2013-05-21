@@ -11,7 +11,6 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -873,8 +872,6 @@ public abstract class AtmMapFragment extends BaseFragment
 		if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
 
 			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * 80 / 100;
-
-			Log.v("Discover", "X=" + event.getRawX() + " Left=" + locationOfLink);
 
 			if (event.getRawX() > locationOfLink) {
 				this.showTerms();
