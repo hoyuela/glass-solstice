@@ -41,8 +41,6 @@ public class TermsLandingPageFragment extends BaseFragment {
 	private static final int INDEX_USE = 1;
 	private static final int INDEX_BILL_PAY = 2;
 	private static final int INDEX_DEPOSIT = 3;
-	private static final int INDEX_GOOGLE = 4;
-
 	private boolean cardMode = false;
 
 	/**
@@ -195,12 +193,6 @@ public class TermsLandingPageFragment extends BaseFragment {
 					customer.getDepositsEligibility().isEligible() ) {
 				values.add(allValues.get(INDEX_DEPOSIT));
 			}
-
-			/**Add Google Menu Item*/
-			values.add(allValues.get(INDEX_GOOGLE));
-		} else {
-			/**Add Google Menu Item*/
-			values.add(allValues.get(INDEX_GOOGLE));
 		}
 
 		return values;
@@ -214,7 +206,6 @@ public class TermsLandingPageFragment extends BaseFragment {
 		final List<String> values = new ArrayList<String>();
 		values.add(allValues.get(INDEX_PRIVACY));
 		values.add(allValues.get(INDEX_USE));
-		values.add(allValues.get(INDEX_GOOGLE));
 		return values;
 	}
 

@@ -121,7 +121,7 @@ final public class CardErrorUtil {
 
         try {
             strResbody = fromStream(response.getInputStream());
-            if (strResbody != null && strResbody != "") {
+            if (strResbody != null && !strResbody.equalsIgnoreCase("")) {
                 Utils.log("fromStream", "inputstring" + strResbody + "len:"
                         + strResbody.length());
                 final InputStream is = new ByteArrayInputStream(

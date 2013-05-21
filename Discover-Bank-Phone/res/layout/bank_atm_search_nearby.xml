@@ -32,6 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!-- Layout Displays Google's Terms of Use -->
+	<include layout="@layout/google_terms_of_use_layout" />
+    
     <ImageView
         android:id="@+id/drop_shadow"
         android:layout_width="match_parent"

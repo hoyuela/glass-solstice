@@ -99,8 +99,6 @@ public class LoginActivity extends BaseActivity implements
 	private static final String ERROR_MESSAGE_COLOR = "i";
 	private static final String TOGGLE_KEY = "j";
 
-	/** ID that allows control over relative buttons' placement.*/
-	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -569,7 +567,7 @@ public class LoginActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToFeedback();
+				BankConductor.navigateToFeedback(isCardLogin());
 			}
 		});
 
@@ -1137,7 +1135,8 @@ public class LoginActivity extends BaseActivity implements
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
 		if ( !phoneGapInitComplete ) {
-			FacadeFactory.getCardFacade().initPhoneGap();
+		    FacadeFactory.getCardFacade().initPhoneGap();
+		    FacadeFactory.getCardLoginFacade().loadCordovaWebview(this);
 			phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);
@@ -1149,6 +1148,16 @@ public class LoginActivity extends BaseActivity implements
 	 */
 	public boolean getPreAuthHasRun() {
 		return preAuthHasRun;
+	}
+
+	/**
+	 * Method used to determine whether the user is in the Card Login Page or
+	 * Bank Login Page.
+	 * 
+	 * @return True if in the Card login page, false otherwise.
+	 */
+	public boolean isCardLogin() {
+		return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -1214,19 +1223,19 @@ public class LoginActivity extends BaseActivity implements
 	}
 
 	@Override
-	public Object onMessage(String arg0, Object arg1) {
+	public Object onMessage(final String arg0, final Object arg1) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setActivityResultCallback(CordovaPlugin arg0) {
+	public void setActivityResultCallback(final CordovaPlugin arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
+	public void startActivityForResult(final CordovaPlugin arg0, final Intent arg1, final int arg2) {
 		// TODO Auto-generated method stub
 
 	}

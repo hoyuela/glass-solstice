@@ -155,11 +155,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	@Override
 	public void onClick(final View sender) {
 		if (provideFeedback.getId() == sender.getId()) {
-			if(!cardMode){
-				BankConductor.navigateToFeedback();
-			}else{
-				BankConductor.navigateToFeedback();
-			}
+			BankConductor.navigateToFeedback(cardMode);
 		} else if (privacyTerms.getId() == sender.getId()) {
 			if(!cardMode){
 				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
