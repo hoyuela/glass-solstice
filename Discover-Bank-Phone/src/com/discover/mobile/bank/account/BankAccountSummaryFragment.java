@@ -40,6 +40,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
@@ -67,7 +68,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
-
+		updateGreeting();
+		
 		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
 		
 		/**Fetch linear layout that will contain list of account groups*/
@@ -136,7 +138,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	private String getFirstName() {
 		final Customer currentUser = BankUser.instance().getCustomerInfo();
-		final StringBuilder nameBuilder = new StringBuilder("");
+		final StringBuilder nameBuilder = new StringBuilder(StringUtility.EMPTY);
 		Name customerName = null;
 
 		if(currentUser != null) {
@@ -150,6 +152,12 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				final String name = firstName.toLowerCase(Locale.US);
 				nameBuilder.append(name.substring(0,1).toUpperCase(Locale.US) + name.substring(1));
 			}
+		}
+		final String name = nameBuilder.toString();
+		final int maxOneLineLength = 17;
+		
+		if(name.length() > maxOneLineLength) {
+			nameBuilder.insert(0, StringUtility.NEW_LINE);
 		}
 		
 		return nameBuilder.toString();
