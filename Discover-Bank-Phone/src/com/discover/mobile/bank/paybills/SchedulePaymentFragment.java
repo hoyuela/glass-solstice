@@ -246,11 +246,17 @@ public class SchedulePaymentFragment extends BaseFragment
 	@Override
 	public void onStart() {
 		if (amountEdit.getText().length() < 1) {
-			final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
-			InputMethodManager imm = activity.getInputMethodManager();
-			amountEdit.requestFocus();
-			imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
-			imm = null;
+			final int halfSecond = 500;
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+					InputMethodManager imm = activity.getInputMethodManager();
+					amountEdit.requestFocus();
+					imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
+					imm = null;
+				}
+			}, halfSecond);
 		}
 		super.onStart();
 	}

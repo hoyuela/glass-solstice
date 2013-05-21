@@ -336,7 +336,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( bundle != null  ) {
 			for( final Object object : getContent()) {
 				if( object instanceof BankEditDetail ) {
-					
+					final int halfSecond = 500;
 					final BankEditDetail item = (BankEditDetail)object;
 					final String key = item.getTopLabel().getText().toString();
 					final boolean hasFocus  = bundle.getBoolean(key, false);
@@ -350,7 +350,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 						 * Have to execute the setting of the editable field to edit mode asyncronously otherwise
 						 * the keyboard doesn't open.
 						 */
-						new Handler().post(new Runnable() {
+						new Handler().postDelayed(new Runnable() {
 							@Override
 							public void run() {
 								if( hasFocus ) {
@@ -374,7 +374,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 								
 								showGeneralError(genError);
 							}
-						});
+						}, halfSecond);
 					}
 				}
 			}
