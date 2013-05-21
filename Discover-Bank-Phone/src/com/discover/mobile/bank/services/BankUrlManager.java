@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.common.DiscoverEnvironment;
 import com.google.common.base.Strings;
 
 /**
@@ -17,8 +18,8 @@ import com.google.common.base.Strings;
  */
 public final class BankUrlManager  {
 
-	private static String baseURL = BankBaseUrl.getString("BankUrlManager.0");
-	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
+	private static String baseURL = DiscoverEnvironment.getBankBaseUrl();
+	private static final String DISCOVER_STRIPPED_URL = DiscoverEnvironment.getBankStrippedUrl();
 
 	// 600 secs = 10 min
 	public static final double MAX_IDLE_TIME = 600; 
