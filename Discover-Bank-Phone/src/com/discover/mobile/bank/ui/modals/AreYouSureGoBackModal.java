@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -113,23 +114,20 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 	 */
 	@Override
 	public final void showModal() {
-		Activity currentActivity = null;
-		
-		if(baseFragment != null) {
-			currentActivity = baseFragment.getActivity();
-		}
+		final String questionMark = "?";
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		
 		if(currentActivity != null) {
-			final ModalDefaultTopView top = new ModalDefaultTopView(baseFragment.getActivity(), null);
+			final ModalDefaultTopView top = new ModalDefaultTopView(currentActivity, null);
 			final ModalDefaultOneButtonBottomView bottom = 
 									new ModalDefaultOneButtonBottomView(currentActivity, null);
 			
 			bottom.setButtonText(buttonText);
 			
 			top.hideNeedHelpFooter();
-			String title = baseFragment.getResources().getString(titleText);
-			if(!title.endsWith("?")) {
-				title += "?";
+			String title = currentActivity.getResources().getString(titleText);
+			if(!title.endsWith(questionMark)) {
+				title += questionMark;
 			}
 			
 			top.setTitle(title);
@@ -157,7 +155,7 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 	 * Perform the backstack popping action based on given parameters to this modal.
 	 */
 	private void performBackstackPopping() {
-		final Activity activity = baseFragment.getActivity();
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		if(activity != null && activity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;

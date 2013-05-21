@@ -57,6 +57,7 @@ import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
@@ -309,28 +310,30 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @param savedInstanceState
 	 *            the Bundle from which the data is loaded.
 	 */
-	public void restoreState(Bundle savedInstanceState) {
-		if (savedInstanceState == null && savedBundle != null) {
-			savedInstanceState = new Bundle(savedBundle);
+	public void restoreState(final Bundle savedInstanceState) {
+		Bundle saveState = savedInstanceState;
+		
+		if (saveState == null && savedBundle != null) {
+			saveState = new Bundle(savedBundle);
 		}
 
-		if (savedInstanceState != null) {
-			paymentAccountSpinner.setSelection(savedInstanceState
+		if (saveState != null) {
+			paymentAccountSpinner.setSelection(saveState
 					.getInt(PAY_FROM_ACCOUNT_ID));
-			amountEdit.setText(savedInstanceState.getString(AMOUNT));
-			final String year = savedInstanceState.getString(DATE_YEAR);
+			amountEdit.setText(saveState.getString(AMOUNT));
+			final String year = saveState.getString(DATE_YEAR);
 			if(year != null) {
 				dateText.setText(formatPaymentDate(
 						year,
-						savedInstanceState.getString(DATE_MONTH),
-						savedInstanceState.getString(DATE_DAY)));
+						saveState.getString(DATE_MONTH),
+						saveState.getString(DATE_DAY)));
 			}
-			memoEdit.setText(savedInstanceState.getString(MEMO));
-			memoText.setText(savedInstanceState.getString(MEMO));
+			memoEdit.setText(saveState.getString(MEMO));
+			memoText.setText(saveState.getString(MEMO));
 
 			
 			/**Restore error state*/
-			final Bundle data = savedInstanceState;
+			final Bundle data = saveState;
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -358,17 +361,25 @@ public class SchedulePaymentFragment extends BaseFragment
 		/**Restore focus state*/
 		if( data.containsKey(FOCUS) ) {
 			if( data.getString(FOCUS).equals(MEMO)) {
-				/**This seems to required to open the keyboard on rotation for memo field*/
-				memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), 
-						SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN , 0, 0, 0));
-				memoItem.dispatchTouchEvent(MotionEvent.obtain(SystemClock.uptimeMillis(), 
-						SystemClock.uptimeMillis(), MotionEvent.ACTION_UP , 0, 0, 0));                      
+				dispatchTouchToMemoItem(MotionEvent.ACTION_DOWN);
+				dispatchTouchToMemoItem(MotionEvent.ACTION_UP);               
 			} else if(data.getString(FOCUS).equals(AMOUNT)) {
 				amountEdit.requestFocus();
 			}				
 		} else {
 			amountEdit.requestFocus();
 		}
+	}
+	
+	/**
+	 * Is used when focus needs to be set to the memo item cell.
+	 * @param actionEvent
+	 */
+	private void dispatchTouchToMemoItem(final int actionEvent) {
+		final MotionEvent event = MotionEvent.obtain(SystemClock.uptimeMillis(), 
+				SystemClock.uptimeMillis(), actionEvent , 0, 0, 0);
+		memoItem.dispatchTouchEvent(event);
+		event.recycle();
 	}
 
 	/**
@@ -617,13 +628,14 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @return
 	 */
 	private void updateEarliestPaymentDate(final String date) {
+		final int three = 3;
 		final Matcher m = R8601.matcher(date);
 		if (m.lookingAt()) {
 			earliestPaymentDate = Calendar.getInstance();
 			// Month - 1 is because Calendar starts Months at 0.
 			earliestPaymentDate.set(Integer.parseInt(m.group(1)),
 					Integer.parseInt(m.group(2)) - 1,
-					Integer.parseInt(m.group(3)));	
+					Integer.parseInt(m.group(three)));	
 		}
 	}
 	
@@ -928,7 +940,11 @@ public class SchedulePaymentFragment extends BaseFragment
 				@Override
 				public void onClick(final View v) {
 					canceledListener.onPaymentCanceled();
-					((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+					if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+						final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
+						navActivity.popTillFragment(BankSelectPayee.class);
+					}
 				}
 			});
 			

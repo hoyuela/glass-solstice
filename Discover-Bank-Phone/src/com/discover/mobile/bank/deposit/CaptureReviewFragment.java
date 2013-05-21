@@ -31,6 +31,7 @@ import com.discover.mobile.bank.services.error.BankErrorCodes;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.google.common.base.Strings;
@@ -200,7 +201,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						CheckDepositCaptureActivity.deleteBothImages(getActivity());
+						CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
 					}
 				});
 		
@@ -356,7 +357,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						CheckDepositCaptureActivity.deleteBothImages(getActivity());
+						CheckDepositCaptureActivity.deleteBothImages(DiscoverActivityManager.getActiveActivity());
 					}
 				}); 
 		

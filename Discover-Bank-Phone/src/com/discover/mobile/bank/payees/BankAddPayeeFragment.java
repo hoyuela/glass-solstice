@@ -2,6 +2,7 @@ package com.discover.mobile.bank.payees;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
-import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
@@ -231,7 +232,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, popToStartClickListener);
+		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, getPopToStartClickListener());
 		
 		modal.setButtonText(R.string.cancel_this_action);
 		modal.setModalBodyText(R.string.cancel_this_action_content);
@@ -241,26 +242,24 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		modal.showModal();
 	}
 	
-	OnClickListener popToStartClickListener = new OnClickListener() {
-		
-		@Override
-		public void onClick(final View v) {
-			if ((BankNavigationRootActivity) getActivity() != null) {
-				final BaseFragment currentFragment = 
-						((BankNavigationRootActivity)getActivity()).getCurrentContentFragment();
-				if(currentFragment != null) {
-					/**Check if user navigated to this screen from Manage Payees*/
+	private OnClickListener getPopToStartClickListener() {
+		return new OnClickListener() {
+	
+			@Override
+			public void onClick(final View v) {
+				final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+				if (currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
+
 					if(isCameFromPayBills()) {
-						((BankNavigationRootActivity) getActivity())
-						.popTillFragment(BankSelectPayee.class);
+						navActivity.popTillFragment(BankSelectPayee.class);
 					} else {
-						((BankNavigationRootActivity) getActivity())
-						.popTillFragment(BankManagePayee.class);
+						navActivity.popTillFragment(BankManagePayee.class);
 					}
 				}
 			}
-		}
-	};
+		};
+	}
 
 
 	/**
@@ -419,9 +418,9 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		
 		for( final Object object : getContent()) {
 			if( object instanceof BankEditDetail ) {
-				final BankEditDetail detail = (BankEditDetail) object;
-				detail.getEditableField().clearErrors();
-				detail.setEditMode(false);
+				final BankEditDetail errorField = (BankEditDetail) object;
+				errorField.getEditableField().clearErrors();
+				errorField.setEditMode(false);
 			}
 		}
 		
@@ -436,12 +435,12 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	public void setErrorString(final int field, final String text) {
 		final List<?> content = getContent();
 		if( content != null && field < content.size() ) {
-			final BankEditDetail detail = getFieldDetail(field);
+			final BankEditDetail errorField = getFieldDetail(field);
 			
-			if( detail != null ) {
-				detail.setEditModeNoFocus(true);
+			if( errorField != null ) {
+				errorField.setEditModeNoFocus(true);
 				
-				detail.getEditableField().showErrorLabel(text);
+				errorField.getEditableField().showErrorLabel(text);
 			}
 		}
 	}
