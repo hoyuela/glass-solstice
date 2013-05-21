@@ -10,13 +10,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Base64;
 
-import com.discover.mobile.common.net.HttpHeaders;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.DiscoverEnvironment;
+import com.discover.mobile.common.net.HttpHeaders;
 
 /**
  * This class will hold the utility functions related to web service connection
@@ -84,7 +83,7 @@ public final class NetworkUtility {
      * @return String webservice url
      */
     public static String getWebServiceUrl(final Context context, final int id) {
-        return context.getString(R.string.url_in_use)
+		return DiscoverEnvironment.getCardBaseUrl()
                 + context.getString(R.string.discover_url)
                 + context.getString(id);
 

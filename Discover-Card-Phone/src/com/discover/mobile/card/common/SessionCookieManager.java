@@ -12,8 +12,7 @@ import java.util.List;
 import android.content.Context;
 
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.DiscoverEnvironment;
 
 /**
  * Class used to manage the secToken , dfsKey , V1st etc .provided via cookies .
@@ -31,7 +30,6 @@ public final class SessionCookieManager {
     public static final String sectoken = "sectoken";
     public static final String vfirst = "v1st";
     public static final String dfsedskey = "dfsedskey";
-    private final Context sessionCookieContext;
     private String secToken = null;
     private String dfsKey = null;
     private String vone = null;
@@ -76,7 +74,6 @@ public final class SessionCookieManager {
      */
 
     private SessionCookieManager(final Context context) {
-        sessionCookieContext = context;
     }
 
     public static synchronized SessionCookieManager getInstance(
@@ -243,8 +240,7 @@ public final class SessionCookieManager {
     public URI getBaseUri() {
 
         if (null == baseUri) {
-            final String url = sessionCookieContext
-                    .getString(R.string.url_in_use);
+			final String url = DiscoverEnvironment.getCardBaseUrl();
             try {
                 baseUri = new URI(url);
             } catch (final URISyntaxException e) {

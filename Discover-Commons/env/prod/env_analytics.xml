@@ -1,0 +1,4 @@
+<resources xmlns:tools="https://schemas.android.com/tools" tools:ignore="TypographyDashes">
+     <string name="card_tracking_rsid">discovercardmobileprod</string>
+     <string name="bank_tracking_rsid">discoverbankmobileprod</string>
+</resources>
