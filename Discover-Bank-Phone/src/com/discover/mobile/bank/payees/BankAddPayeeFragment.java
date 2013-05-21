@@ -2,6 +2,7 @@ package com.discover.mobile.bank.payees;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -21,12 +22,11 @@ import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResult;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.google.common.base.Strings;
 
 /**
@@ -62,6 +62,8 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	final private static String KEY_SEARCH_RESULT = "search-result";
 		
+	/**A boolean that is used to know where we should navigate back to if the user cancels the add payee flow.*/
+	private static boolean cameFromPayBills = false;
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -98,7 +100,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		hideBottomNote();
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
+		final BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(0);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
@@ -127,7 +129,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	protected boolean canProceed() {
 		boolean ret = true;
-		List<?> content = getContent();
+		final List<?> content = getContent();
 		
 		/**Iterate through each BankEditDetail object and make sure their editable field validates correctly*/
 		if( content != null){
@@ -153,7 +155,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * Shows inline errors for all BankEditDetail objects if fields do not validate correctly.
 	 */
 	protected void updateFieldsAppearance() {
-		List<?> content = getContent();
+		final List<?> content = getContent();
 		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
 		if( content != null){
 			for(final Object element : content) {
@@ -202,18 +204,18 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	protected int getFindError() {
 		int firstItemWithError = -1;
-		List<?> content = getContent();
+		final List<?> content = getContent();
 		
 		/**Iterate through each BankEditDetail and ensure it validates correctly otherwise show inline errors*/
 		if( content != null) {
 			for( int i = 0; i < content.size(); i++ ) {
-				final BankEditDetail detail = (BankEditDetail) content.get(i);
+				final BankEditDetail editableRow = (BankEditDetail) content.get(i);
 				
-				detail.enableValidation(true);
+				editableRow.enableValidation(true);
 				
-				final boolean isValid = !detail.getEditableField().isValid();
+				final boolean isValid = !editableRow.getEditableField().isValid();
 				
-				detail.enableValidation(false);
+				editableRow.enableValidation(false);
 				
 				if( isValid ) {
 					firstItemWithError = i;
@@ -230,48 +232,33 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		cancel();
+		final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, getPopToStartClickListener());
+		
+		modal.setButtonText(R.string.cancel_this_action);
+		modal.setModalBodyText(R.string.cancel_this_action_content);
+		modal.setTitleTextResource(R.string.cancel_this_action);
+		modal.setOverridePop(true);
+		
+		modal.showModal();
 	}
 	
-	/**
-	 * Method used to cancel the Add payee workflow. Displays a modal to receive confirmation
-	 * from user to canel or not.
-	 */
-	public void cancel() {
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this.getActivity(), null);
-		final ModalDefaultTopView top = new ModalDefaultTopView(this.getActivity(), null);
-		final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(this.getActivity(), top, bottom);
-		
-		top.setTitle(R.string.bank_cancel_title);
-		top.setContent(R.string.cancel_this_action_content);
-		top.hideNeedHelpFooter();
-		
-		bottom.setButtonText(R.string.cancel_this_action);
-		bottom.getButton().setOnClickListener(new OnClickListener() {
-
+	private OnClickListener getPopToStartClickListener() {
+		return new OnClickListener() {
+	
 			@Override
 			public void onClick(final View v) {
-				cancelModal.dismiss();
-			    
-				/**
-				 * Pop all fragments till we reach BankManagePayee. 
-				 * Checking if the Activity is null due to a crash occuring when the modal is open
-				 * and you tap yes quickly the activity is null and the app will crash. 
-				 */
-				if ((BankNavigationRootActivity) getActivity() != null) {
-					/**Check if user navigated to this screen from Manage Payees*/
-					final boolean handled = ((BankNavigationRootActivity) getActivity()).popTillFragment(BankManagePayee.class);
-					
-					/**If was unable to navigate to Manage Payees then navigate to BankSelect Payee*/
-					if( !handled ) {
-						((BankNavigationRootActivity) getActivity()).popTillFragment(BankSelectPayee.class);
+				final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+				if (currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
+
+					if(isCameFromPayBills()) {
+						navActivity.popTillFragment(BankSelectPayee.class);
+					} else {
+						navActivity.popTillFragment(BankManagePayee.class);
 					}
 				}
 			}
-
-		});
-			
-		this.showCustomAlertDialog(cancelModal);
+		};
 	}
 
 
@@ -318,7 +305,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		}
 
 		if( arguments != null ) {
-			List<?> content = getContent();
+			final List<?> content = getContent();
 			/**Store the state of the editable fields, to re-open keyboard on orientation change if necessary*/
 			if( content != null ) {
 				for( final Object object : content) {
@@ -331,7 +318,8 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 						
 						/**If has an error then show it on rotation */
 						if( item.getEditableField().isInErrorState ) {
-							arguments.putString(key +KEY_ERROR_EXT, item.getEditableField().getErrorLabel().getText().toString());
+							arguments.putString(key +KEY_ERROR_EXT, 
+												item.getEditableField().getErrorLabel().getText().toString());
 						}
 						
 						if( getGeneralError().getVisibility() == View.VISIBLE ) {
@@ -348,7 +336,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		if( bundle != null  ) {
 			for( final Object object : getContent()) {
 				if( object instanceof BankEditDetail ) {
-					
+					final int halfSecond = 500;
 					final BankEditDetail item = (BankEditDetail)object;
 					final String key = item.getTopLabel().getText().toString();
 					final boolean hasFocus  = bundle.getBoolean(key, false);
@@ -386,7 +374,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 								
 								showGeneralError(genError);
 							}
-						}, 1000);
+						}, halfSecond);
 					}
 				}
 			}
@@ -414,7 +402,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 
 	@Override
 	public void onBackPressed() {
-		cancel();
+		new AreYouSureGoBackModal(this).showModal();
 	}
 
 	@Override
@@ -430,9 +418,9 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		
 		for( final Object object : getContent()) {
 			if( object instanceof BankEditDetail ) {
-				final BankEditDetail detail = (BankEditDetail) object;
-				detail.getEditableField().clearErrors();
-				detail.setEditMode(false);
+				final BankEditDetail errorField = (BankEditDetail) object;
+				errorField.getEditableField().clearErrors();
+				errorField.setEditMode(false);
 			}
 		}
 		
@@ -445,14 +433,14 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * @param text The inline error text is to be applied to the field
 	 */
 	public void setErrorString(final int field, final String text) {
-		List<?> content = getContent();
+		final List<?> content = getContent();
 		if( content != null && field < content.size() ) {
-			final BankEditDetail detail = getFieldDetail(field);
+			final BankEditDetail errorField = getFieldDetail(field);
 			
-			if( detail != null ) {
-				detail.setEditModeNoFocus(true);
+			if( errorField != null ) {
+				errorField.setEditModeNoFocus(true);
 				
-				detail.getEditableField().showErrorLabel(text);
+				errorField.getEditableField().showErrorLabel(text);
 			}
 		}
 	}
@@ -466,7 +454,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 */
 	public BankEditDetail getFieldDetail(final int field)  {
 		BankEditDetail ret = null;
-		List<?> content = getContent();
+		final List<?> content = getContent();
 		
 		if( content != null && field < content.size() ) {
 			ret =  ((BankEditDetail)content.get(field)); 
@@ -546,4 +534,18 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	 * @param savedInstanceState the Bundle from which the data is loaded.
 	 */
 	protected abstract void restoreState(final Bundle bundle);
+
+	/**
+	 * @return the cAME_FROM_PAY_BILLS
+	 */
+	public static final boolean isCameFromPayBills() {
+		return cameFromPayBills;
+	}
+
+	/**
+	 * @param cameFromPayBills the cAME_FROM_PAY_BILLS to set
+	 */
+	public static final void setCameFromPayBills(final boolean cameFromPayBills) {
+		BankAddPayeeFragment.cameFromPayBills = cameFromPayBills;
+	}
 }
