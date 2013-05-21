@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >   
+    <RelativeLayout 
+        android:id="@+id/terms_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/drop_shadow"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/forms_inner_padding"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginBottom="@dimen/forms_inner_padding">
+       	<ImageView
+     	   android:id="@+id/google_logo"
+     	   android:layout_width="wrap_content"
+     	   android:layout_height="wrap_content"
+     	   android:layout_alignParentLeft="true"
+     	   android:background="@drawable/map_google_logo_white"/>
+       	
+       	<ImageView
+     	   android:id="@+id/google_terms_of_use"
+     	   android:layout_width="wrap_content"
+     	   android:layout_height="wrap_content"
+     	   android:layout_alignParentRight="true"
+     	   android:background="@drawable/map_data_google_termsofuse" />       
+    </RelativeLayout>  
+</merge> 

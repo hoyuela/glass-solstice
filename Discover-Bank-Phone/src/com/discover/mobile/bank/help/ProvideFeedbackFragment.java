@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
-import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -28,6 +28,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	/**URL for providing feedback for card when the user is not logged in*/
 	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
 	
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,10 +41,16 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		
 		/**Help icon setup*/
 		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		if( !Globals.isLoggedIn() ) {
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+		if (!isCardMode()) {
+			if (!Globals.isLoggedIn()) {
+				help.showHelpItems(HelpMenuListFactory.instance()
+						.getLoggedOutHelpItems());
+			} else {
+				help.showHelpItems(HelpMenuListFactory.instance()
+						.getAccountHelpItems());
+			}
 		} else {
-			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+			help.setVisibility(View.GONE);
 		}
 		
 		/**Hide footer with accept button & hide header*/
@@ -54,10 +61,29 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		return view;
 	}
 	
+	/**
+	 * Method used to check if the application is in card.
+	 * 
+	 * @return True if in card, false otherwise.
+	 */
+	public boolean isCardMode() {
+		/**
+		 * Flag used to determine if the view is meant for Card or Bank side of
+		 * the application
+		 */
+		boolean isCard = false;
+
+		if (null != this.getArguments()) {
+			isCard = getArguments().containsKey(BankExtraKeys.CARD_MODE_KEY);
+		}
+
+		return isCard;
+	}
+
 	@Override
 	public String getTermsUrl() {
 		/**Determine whether to use feedback link for Card or Bank*/
-		if( AccountType.CARD_ACCOUNT == Globals.getCurrentAccount() ) {
+		if (isCardMode()) {
 			return CARD_PROVIDE_FEEDBACK;
 		} else {
 			return BankUrlManager.getProvideFeedbackUrl();

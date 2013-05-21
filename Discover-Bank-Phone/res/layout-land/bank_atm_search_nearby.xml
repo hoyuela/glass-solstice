@@ -62,6 +62,9 @@
             android:background="@drawable/atm_pinview_button_ds_landscape" />
     </LinearLayout>
 
+    <!-- Layout Displays Google's Terms of Use -->
+	<include layout="@layout/google_terms_of_use_layout" />
+	
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
