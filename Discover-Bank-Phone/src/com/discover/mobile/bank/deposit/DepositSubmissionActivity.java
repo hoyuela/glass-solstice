@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -50,6 +51,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		setContentView(R.layout.deposit_submission);
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
+		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
 		submit();
 	}
 
