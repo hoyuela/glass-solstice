@@ -3,6 +3,7 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -388,21 +389,26 @@ public final class BankConductor  extends Conductor {
 	 *
 	 * @param url String that holds the url to be used when opening the browser.
 	 */
-	public static void navigateToBrowser(final String url) {
+	public static AlertDialog navigateToBrowser(final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		ModalAlertWithOneButton modal = null;
 
 		if(activity != null && activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+			modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_open_browser_title,
 					R.string.bank_open_browser_text,
 					R.string.continue_text);
+
+			/** Needs to be final in order to dismiss in listener */
+			final ModalAlertWithOneButton modalParam = modal;
 
 			//Set the dismiss listener that will navigate the user to the browser
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
-					modal.dismiss();
+					modalParam.dismiss();
 					final Intent i = new Intent(Intent.ACTION_VIEW);
 					i.setData(Uri.parse(url));
 					activity.startActivity(i);
@@ -413,8 +419,9 @@ public final class BankConductor  extends Conductor {
 			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
 
 			((NavigationRootActivity)activity).showCustomAlert(modal);
-
 		}
+
+		return modal;
 	}
 
 	/**
@@ -622,13 +629,18 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigation method used to display feedback landing page
 	 */
-	public static void navigateToFeedback() {
+	public static void navigateToFeedback(final boolean isCard) {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final Bundle bundle = new Bundle();
 		bundle.putBoolean(BankInfoNavigationActivity.PROVIDE_FEEDBACK, true);
+
+		// Only add flag if true
+		if (isCard) {
+			bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, isCard);
+		}
 
 		if( activity != null ) {
 			/**Launch Provide Feedback Activity if user is not logged in*/
@@ -640,7 +652,9 @@ public final class BankConductor  extends Conductor {
 			} 			
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if(currentActivity != null && currentActivity instanceof NavigationRootActivity) {
-				((NavigationRootActivity)currentActivity).makeFragmentVisible(new ProvideFeedbackFragment());
+				final Fragment provideFeedback = new ProvideFeedbackFragment();
+				provideFeedback.setArguments(bundle);
+				((NavigationRootActivity) currentActivity).makeFragmentVisible(provideFeedback);
 			}
 		}
 	}
@@ -803,7 +817,7 @@ public final class BankConductor  extends Conductor {
 				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
 				
 				/**Update arguments bundle in fragment*/
-				Bundle args = revPmtFrag.getArguments();
+				final Bundle args = revPmtFrag.getArguments();
 				if( args != null) {
 					args.putAll(bundle);
 				}
@@ -1424,6 +1438,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
 				activity instanceof LoginActivity ? true : false);
 		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
+		bundle.putBoolean(BankInfoNavigationActivity.PRIVACY_AND_TERMS, true);
 		intent.putExtras(bundle);
 		activity.startActivity(intent);
 

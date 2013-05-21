@@ -9,7 +9,7 @@
         android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/between_related_elements_padding"
         android:paddingRight="@dimen/forms_inner_padding"
         android:paddingTop="@dimen/forms_inner_padding" >
 
