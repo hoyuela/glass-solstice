@@ -64,7 +64,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	 * @param parent - parent view group
 	 */
 	@Override
-	public View getView(final int position, View view, final ViewGroup parent){
+	public View getView(final int position, final View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
 		View convertedView;
 

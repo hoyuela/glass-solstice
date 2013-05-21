@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
@@ -113,18 +114,21 @@ public class DiscoverMapWrapper {
 		}
 
 		final Geocoder coder = new Geocoder(context);
+		final String spaceCommaSpace = " , ";
+		final String commaSpace = ", ";
+		
 		try {
 			final List<Address> addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 			if(null == addresses || addresses.isEmpty()){
-				addressString =  location.getLatitude() + " , " + location.getLongitude();
+				addressString =  location.getLatitude() + spaceCommaSpace + location.getLongitude();
 				return;
 			}
 			final Address address = addresses.get(0);
 			adapter.setCurrentLocation(address);
-			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +", " 
-					+ address.getLocality() +", " + address.getAdminArea() + ", " + address.getCountryName();
+			addressString =  address.getFeatureName() + " " + address.getAddressLine(0) +commaSpace 
+					+ address.getLocality() +commaSpace + address.getAdminArea() + commaSpace + address.getCountryName();
 		} catch (final IOException e) {
-			addressString =  location.getLatitude() + " , " + location.getLongitude();
+			addressString =  location.getLatitude() + spaceCommaSpace + location.getLongitude();
 		}
 	}
 
@@ -180,7 +184,29 @@ public class DiscoverMapWrapper {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel));
 		}
 	}
-
+	
+	/**
+	 * Animate a camera change from the current camera view to a new one.
+	 * @param newZoom a CameraUpdate object.
+	 */
+	public final void animateZoomChange(final CameraUpdate newZoom ) {
+		if(map != null) {
+			map.animateCamera(newZoom);
+		}
+	}
+	
+	/**
+	 * 
+	 * @return the GoogleMap in use.
+	 */
+	public final GoogleMap getMap() {
+		return map;
+	}
+	
+	public final float getCurrentMapZoom() {
+		return 	map.getCameraPosition().zoom;
+	}
+	
 	/**
 	 * Focus the camera on a location
 	 * @param latitude
@@ -201,7 +227,7 @@ public class DiscoverMapWrapper {
 	public void focusCameraOnLocation(final Double latitude, final Double longitude, final float zoomLevel){
 		if(null != map){
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-					new LatLng(location.getLatitude(), location.getLongitude()), zoomLevel));
+					new LatLng(latitude, longitude), zoomLevel));
 		}
 	}
 
@@ -210,6 +236,20 @@ public class DiscoverMapWrapper {
 	 */
 	public Location getCurrentLocation() {
 		return location;
+	}
+	
+	/**
+	 * Return the current camera location.
+	 * @return a LatLng object that represents the current camera location.
+	 */
+	public LatLng getCameraLocation() {
+		LatLng cameraPosition = null;
+		
+		if(map != null) {
+			cameraPosition = map.getCameraPosition().target;
+		}
+		
+		return cameraPosition;
 	}
 
 	/**

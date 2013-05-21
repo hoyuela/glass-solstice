@@ -147,6 +147,14 @@ public abstract class AtmMapFragment extends BaseFragment
 
 	/**Location of the user*/
 	private Location location;
+	private Location cameraLocation = null;
+	
+	private static boolean needsToAnimateZoom = false;
+	
+	private AtmResults tempResults = null;
+	private int resultEndIndex = 0;
+	
+	private float cameraZoom = MAP_CURRENT_GPS_ZOOM;
 
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
@@ -165,7 +173,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setRetainInstance(true);
 		/**
 		 * Check if this is called because of rotation or because it is the first time it is instantiated.
 		 * Nested Fragments should only be instantiated on the initial creation of this fragment.
@@ -245,18 +253,13 @@ public abstract class AtmMapFragment extends BaseFragment
 		setUpMap();
 		disableMenu();
 
-		if(isOnMap){
-			showMap();
-		}else{
-			showList();
-		}	
+		setupMapOrListView();
 
 		/**
 		 * Verify that the bundle used to populate the map fragment has data.
 		 */
-		if(null != savedState && !savedState.isEmpty()){
-			resumeStateOfFragment(savedState);
-		}
+		resumeStateOfFragment(savedState);
+		
 
 		determineNavigationStatus();
 
@@ -272,6 +275,32 @@ public abstract class AtmMapFragment extends BaseFragment
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
 		} else if (this.isLeavingModalShowing) {
 			showTerms();
+		}
+		
+		restoreCameraView();
+		adjustMapZoomIfNeeded();
+	}
+	
+	/**
+	 * Setup the view of the map fragment to be either the map or the list depending on the current
+	 * isOnMap boolean.
+	 */
+	private void setupMapOrListView() {
+		if(isOnMap){
+			showMap();
+		}else{
+			showList();
+		}
+	}
+	
+	/**
+	 * Restore the position of the camera on the map to what is stored in the local variables for the camera position
+	 * and zoom level.
+	 */
+	private void restoreCameraView() {
+		if(cameraLocation != null && cameraZoom != 0) {
+			mapWrapper.getMap().stopAnimation();
+			mapWrapper.focusCameraOnLocation(cameraLocation.getLatitude(), cameraLocation.getLongitude(), cameraZoom);
 		}
 	}
 
@@ -452,52 +481,120 @@ public abstract class AtmMapFragment extends BaseFragment
 					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
 			listButton.setBackgroundResource((isLandscape) ? 
 					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
-			isOnMap = true;
+			isOnMap = true;	
+			adjustMapZoomIfNeeded();
 		}
 	}
-
+	
+	/**
+	 * Will re-focus the camera on the current location and all visible pins if for example, a user loads more atms
+	 * from the list view and toggles back to the map view.
+	 */
+	private void adjustMapZoomIfNeeded() {
+		if(needsToAnimateZoom) {
+			if(tempResults != null && resultEndIndex != 0 && isOnMap) {
+				mapWrapper.getMap().stopAnimation();
+				adjustZoomToShowPins(tempResults, resultEndIndex);
+				tempResults = null;
+				resultEndIndex = 0;
+				needsToAnimateZoom = false;
+			}
+		}
+	}
+	
+	private final static String TEMP_RESULTS = "tr";
+	private final static String RESULT_END_INDEX = "ren";
+	
 	/**
 	 * Resume the state of the fragment
 	 * @param savedInstanceState - bundle holding the state of the fragment
 	 */
 	private void resumeStateOfFragment(final Bundle savedInstanceState) {
-
-		locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
-		final Double lat = savedInstanceState.getDouble(LAT_KEY);
-		final Double lon = savedInstanceState.getDouble(LONG_KEY);
-
-		isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
-		toggleButton();
-		results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
-		listFragment.handleReceivedData(savedInstanceState);
-		setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
-		isLeavingModalShowing = savedInstanceState.getBoolean(LEAVING_APP_MODAL, false);
-		if(0.0 == lat && 0.0 == lon){
-			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
-		}else{
-			if(null != results){
-				hasLoadedAtms = true;
-			}
-			final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
-			newLocation.setLatitude(lat);
-			newLocation.setLongitude(lon);
-			mapWrapper.setCurrentLocation(newLocation);
-			setUserLocation(newLocation);
-			if(null != results){
-				mapWrapper.addObjectsToMap(results.results.atms.subList(0, currentIndex));
-				hasLoadedAtms = true;
-			}
-			searchBar.restoreState(savedInstanceState);
-			streetView.hide();
-
-			shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
-			if(shouldGoBack){
-				showStreetView(savedInstanceState);
+		if(savedInstanceState != null && !savedInstanceState.isEmpty()) {
+			locationStatus = savedInstanceState.getInt(LOCATION_STATUS, locationStatus);
+			final Double lat = savedInstanceState.getDouble(LAT_KEY);
+			final Double lon = savedInstanceState.getDouble(LONG_KEY);
+			tempResults = (AtmResults)savedInstanceState.getSerializable(TEMP_RESULTS);
+			resultEndIndex = savedInstanceState.getInt(RESULT_END_INDEX);
+	
+			isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
+			toggleButton();
+			results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+			currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
+			listFragment.handleReceivedData(savedInstanceState);
+			setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
+			isLeavingModalShowing = savedInstanceState.getBoolean(LEAVING_APP_MODAL, false);
+			if(0.0 == lat && 0.0 == lon){
+				mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
+			}else{
+				if(null != results){
+					hasLoadedAtms = true;
+				}
+				
+				final float zoom = savedInstanceState.getFloat(MAP_ZOOM);
+				
+				if(zoom != 0.0f) {
+					cameraZoom = zoom;
+				}
+				
+				restoreCameraLocation(savedInstanceState);
+				
+				restoreCurrentLocation(lat, lon);
+				
+				addResultsToMap(results, currentIndex);
+				
+				searchBar.restoreState(savedInstanceState);
+				streetView.hide();
+	
+				shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
+				if(shouldGoBack){
+					showStreetView(savedInstanceState);
+				}
 			}
 		}
-
 	}
+	
+	/**
+	 * Set the current location marker to the following lat and lon values.
+	 * @param lat
+	 * @param lon
+	 */
+	private void restoreCurrentLocation(final double lat, final double lon) {
+		final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+		newLocation.setLatitude(lat);
+		newLocation.setLongitude(lon);
+		mapWrapper.setCurrentLocation(newLocation);
+	}
+	
+	/**
+	 * Retrieve a saved camera position from a Bundle and set the camera's position to that value.
+	 * @param savedInstanceState a Bundle which contains a lat and lon value for camera position.
+	 */
+	private void restoreCameraLocation(final Bundle savedInstanceState)  {
+		final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+
+		final double cameraLat = savedInstanceState.getDouble(CAMERA_LAT);
+		final double cameraLon = savedInstanceState.getDouble(CAMERA_LON);
+		cameraLocation = new Location(newLocation);
+		
+		if(cameraLat != 0 && cameraLon != 0) {
+			cameraLocation.setLatitude(cameraLat);
+			cameraLocation.setLongitude(cameraLon);
+		}
+	}
+	
+	/**
+	 * Add a set of atm results objects to the map.
+	 * @param results an AtmResults object that contains atm locations.
+	 * @param endIndex the index that is the lat position in the list of atm results that should be added to the map.
+	 */
+	private void addResultsToMap(final AtmResults results, final int endIndex) {
+		if(null != results && !hasLoadedAtms){
+			mapWrapper.addObjectsToMap(results.results.atms.subList(0, endIndex));
+			hasLoadedAtms = true;
+		}
+	}
+	
 
 	/**
 	 * Disable the sliding menu
@@ -533,6 +630,23 @@ public abstract class AtmMapFragment extends BaseFragment
 		currentIndex = endIndex;
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		listFragment.handleReceivedData(bundle);
+		if(isOnMap) {
+			adjustZoomToShowPins(results, endIndex);
+		}else {
+			needsToAnimateZoom = true;
+			tempResults = results;
+			resultEndIndex = endIndex;
+		}
+	}
+	
+	/**
+	 * Adjusts the camera to zoom to encompass all pins within 25 miles of the users location.
+	 * 
+	 * @param atms a list that contians ATM locations
+	 * @param endIndex the last position in the list of atms to zoom around.
+	 */
+	private void adjustZoomToShowPins(final AtmResults atms, final int endIndex) {
+		new Thread(new AutoZoomRunnable(mapWrapper, atms, endIndex)).start();
 	}
 
 	/**
@@ -608,6 +722,13 @@ public abstract class AtmMapFragment extends BaseFragment
 
 		searchBar.saveState(outState);
 		hideModalIfNeeded();
+		
+		outState.putFloat(MAP_ZOOM, mapWrapper.getCurrentMapZoom());
+		outState.putDouble(CAMERA_LAT, mapWrapper.getCameraLocation().latitude);
+		outState.putDouble(CAMERA_LON, mapWrapper.getCameraLocation().longitude);
+		outState.putSerializable(TEMP_RESULTS, tempResults);
+		outState.putInt(RESULT_END_INDEX, resultEndIndex);
+		
 		outState.putInt(LOCATION_STATUS, locationStatus);
 		if(null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
@@ -870,8 +991,10 @@ public abstract class AtmMapFragment extends BaseFragment
 	public boolean onTouch(final View sender, final MotionEvent event) {
 		/** Check if User clicked on Terms link in footer */
 		if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
-
-			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * 80 / 100;
+			final int four = 4;
+			final int five = 5;
+			
+			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * four / five;
 
 			if (event.getRawX() > locationOfLink) {
 				this.showTerms();
