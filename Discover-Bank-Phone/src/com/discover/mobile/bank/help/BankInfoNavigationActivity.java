@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.help;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,9 +64,18 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	private void launchStartPage() {
 		final Bundle bundle = this.getIntent().getExtras();
 		if( bundle == null || bundle.containsKey(BankExtraKeys.CARD_MODE_KEY)) {
-			final TermsLandingPageFragment terms = new TermsLandingPageFragment(); 
-			terms.setArguments(bundle);
-			makeFragmentVisible(terms);
+			Fragment fragment = null;
+
+			if (bundle.containsKey(PRIVACY_AND_TERMS)) {
+				fragment = new TermsLandingPageFragment();
+			} else if (bundle.containsKey(PROVIDE_FEEDBACK)) {
+				fragment = new ProvideFeedbackFragment();
+			}
+
+			if (fragment != null) {
+				fragment.setArguments(bundle);
+				makeFragmentVisible(fragment);
+			}
 		} else {
 			if( bundle.containsKey(CONTACT_US)) {
 				final CustomerServiceContactsFragment contactUs = new CustomerServiceContactsFragment();
