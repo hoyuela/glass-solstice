@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="base_url_dev">https://mst0.m.discovercard.com</string>
-    <string name="base_url_dev1">https://mst0.m.discovercard.com</string>
+    <string name="base_url_dev">https://asys.mapi.discovercard.com</string>
+    <string name="base_url_dev1">https://asys.mapi.discovercard.com</string>
     
-    <string name="url_in_use">https://mst0.m.discovercard.com</string>
+    <string name="url_in_use">https://asys.mapi.discovercard.com</string>
     <string name="discover_url">/cardsvcs/acs/</string>
     <string name="forgotUserID_url">reg/v1/user/id</string>
     <string name="logOut_url">session/v1/delete</string>
