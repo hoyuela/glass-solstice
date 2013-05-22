@@ -159,10 +159,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		 extras = getIntent().getExtras();
 		 pushStatus = extras.getBoolean(PushConstant.extras.PUSH_GET_CALL_STATUS);	
 		
-//		 Utils.isSpinnerShow = true;
-//		 Utils.hideSpinner();
-		 Utils.showSpinner(this, "Discover", "Loading...");
-		/* if(dialog == null)
+		 if (!pushStatus)
+		 {
+    		 Utils.isSpinnerShow = true;
+    		 Utils.hideSpinner();
+    		 Utils.isSpinnerShow = true;
+    		 Utils.isSpinnerAllowed = true;
+    		 Utils.showSpinner(this, "Discover", "Loading...");
+		 }
+		 /*if(dialog == null)
 		 {
 			 dialog = ProgressDialog.show(this, "Waittt", "D Cordova is Loading");
 		 }*/
@@ -340,16 +345,17 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				|| text.equals(getString(R.string.section_title_profile_and_settings))
 				|| text.equals(getString(R.string.section_title_customer_service))
 				|| text.equals(getString(R.string.section_title_miles)) || text.equals(getString(R.string.section_title_home)))) {
-//			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
-//					.findFragmentByTag("CordovaWebFrag");
+			/*cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
+					.findFragmentByTag("CordovaWebFrag");*/
 			if (cordovaWebFrag != null) {
 				try {
-				Utils.isSpinnerAllowed=true;
+				 Utils.isSpinnerAllowed=true;
+				 Utils.isSpinnerShow = true;
             	 Handler handler = new Handler();
                  handler.postDelayed(new Runnable() {
                      public void run() {
                     	
-                    	 Utils.showSpinner(getActivity(),null,null);
+                         Utils.showSpinner(CardNavigationRootActivity.this, "Discover", "Loading...");
                        
                      }},500);  
 				} catch (Exception e) {
@@ -519,12 +525,17 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 */
 	@Override
 	public void setActionBarTitle(final String title) {
+		Log.i(LOG_TAG, "Set title as "+title);
 		if(title.equalsIgnoreCase(getString(R.string.error_no_title)))
+		{
 			showActionBarLogo();
+		}
 		else
+		{
 			super.setActionBarTitle(title);
-		
-		if (null != title) {
+		}
+		cordovaWebFrag.setTitle(title);
+		/*if (null != title) {
 			Utils.log("CardNavigationRootActivity",
 					"inside setActionbartitle n title is " + title);
 //			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
@@ -535,7 +546,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				highlightMenuItems(cordovaWebFrag.getGroupMenuLocation(),
 						cordovaWebFrag.getSectionMenuLocation());
 			mCardStoreData.addToAppCache("currentPageTitle", title);
-		}
+		}*/
 	}
 
 	public void updateActionBarTitle() {
@@ -579,10 +590,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				.add(R.id.navigation_content, fragment,
 						fragment.getClass().getSimpleName()).commit();
 			}
-			mCardStoreData.addToAppCache("currentPageTitle", "Home");
+			/*mCardStoreData.addToAppCache("currentPageTitle", "Home");
 
-			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);
-
+			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);*/
+				// Fix for defect 96085
+			cordovaWebFrag.getCordovaWebviewInstance().loadUrl("javascript:home()");
+			// Fix for defect 96085
 		} else if(fragment.getClass().getSimpleName().equalsIgnoreCase("RedeemMilesFragment")) { 
 			return;
 		}else {
@@ -648,7 +661,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
 		DiscoverModalManager.clearActiveModal();
-		cordovaWebFrag.setTitle(null);
+		//cordovaWebFrag.setTitle(null);
 		cordovaWebFrag.setM_currentLoadedJavascript(null);
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
@@ -658,16 +671,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		if (fragCount > 2) {
 			String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
 					.getName();
-			// Fragment frg = HybridControlPlugin.frag123;//
-			// fragManager.findFragmentByTag(str);
-
-			/*
-			 * if (frg instanceof CordovaWebFrag && ((CordovaWebFrag)
-			 * frg).getCordovaWebviewInstance() .canGoBack()) {
-			 * ((CordovaWebFrag) frg).getCordovaWebviewInstance()
-			 * .printBackForwardList(); ((CordovaWebFrag)
-			 * frg).getCordovaWebviewInstance().goBack(); } else {
-			 */
 
 			boolean isPopped = fragManager.popBackStackImmediate();
 			Utils.log("CardNavigationRootActivity", "is fragment popped" + isPopped);
@@ -681,8 +684,17 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				makeFragmentVisible(homeFragment, false);
 
 			} else {
-				sendNavigationTextToPhoneGapInterface(fragTag);
-				super.onBackPressed();
+				if(fragTag.equalsIgnoreCase(getString(R.string.enhanced_account_security_title)))
+				{
+					Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
+					onBackPressed();
+				}
+				else
+				{
+					sendNavigationTextToPhoneGapInterface(fragTag);
+					super.onBackPressed();
+				}
+				
 			}
 		} else {
 			sendNavigationTextToPhoneGapInterface("AcHome");
@@ -788,10 +800,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		
 	}
 	
-	@Override
+	/*@Override
 	public String getActionBarTitle() {
 		return (String)mCardStoreData.getValueOfAppCache("currentPageTitle");
-	}
+	}*/
 	
 	public void enableSlidingMenu(boolean enable)
 	{
@@ -809,7 +821,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 */
 	public void isDeviceReady()
 	{
-		 Utils.isSpinnerShow = true;
+	    //dialog.dismiss();
+		 //Utils.isSpinnerShow = true;
 		 Utils.hideSpinner();
 		 
 		 /*
@@ -825,4 +838,46 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 			 }
 		 }
 	}
+	
+	/*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.discover.mobile.common.BaseFragmentActivity#makeFragmentVisible(android
+     * .support.v4.app.Fragment)
+     */
+    @Override
+    public void makeFragmentVisible(Fragment fragment) {
+        /**
+         * Clear any modal that may have been created during the life of the
+         * current fragment
+         */
+        DiscoverModalManager.clearActiveModal();
+
+        setVisibleFragment(fragment);
+        hideSlidingMenuIfVisible();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.discover.mobile.common.BaseFragmentActivity#makeFragmentVisible(android
+     * .support.v4.app.Fragment, boolean)
+     */
+    @Override
+    public void makeFragmentVisible(Fragment fragment, boolean addToHistory) {
+        /**
+         * Clear any modal that may have been created during the life of the
+         * current fragment
+         */
+        DiscoverModalManager.clearActiveModal();
+
+        if (addToHistory) {
+            setVisibleFragment(fragment);
+        } else {
+            setVisibleFragmentNoHistory(fragment);
+        }
+        hideSlidingMenuIfVisible();
+    }
 }

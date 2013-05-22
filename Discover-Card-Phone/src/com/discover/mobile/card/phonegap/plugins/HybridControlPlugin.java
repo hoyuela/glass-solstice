@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -534,25 +535,37 @@ public class HybridControlPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
             return true;
         }else if (action.equals(gotoAchome)) {
-        	Utils.log(TAG, "inside gotoAchome ");
-        	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-        			.getActivity();
-        	final FragmentManager fragManager = cnrAct.getSupportFragmentManager();
-        	fragManager.popBackStack();
-        	Fragment homeFragment = fragManager
-        			.findFragmentByTag("HomeSummaryFragment");
-        	cnrAct.makeFragmentVisible(homeFragment, false);
-        	cnrAct.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                        cnrAct.showActionBarLogo();
-                }
-            });
-        	final PluginResult pluginResult = new PluginResult(
-        			PluginResult.Status.OK);
-        	pluginResult.setKeepCallback(true);
-        	callbackContext.sendPluginResult(pluginResult);
-        	return true;
+        	 Utils.log(TAG, "inside gotoAchome ");
+             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                     .getActivity();
+             final FragmentManager fragManager = cnrAct
+                     .getSupportFragmentManager();
+
+             cnrAct.runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     cnrAct.getCordovaWebFragInstance().setTitle(null);
+                 }
+             });
+
+             fragManager.popBackStack();
+             Fragment homeFragment = fragManager
+                     .findFragmentByTag("HomeSummaryFragment");
+             cnrAct.makeFragmentVisible(homeFragment, false);
+             cnrAct.runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                     cnrAct.showActionBarLogo();
+                     cnrAct.highlightMenuItems(
+                             CardMenuItemLocationIndex.HOME_GROUP,
+                             CardMenuItemLocationIndex.HOME_SECTION);
+                 }
+             });
+             final PluginResult pluginResult = new PluginResult(
+                     PluginResult.Status.OK);
+             pluginResult.setKeepCallback(true);
+             callbackContext.sendPluginResult(pluginResult);
+             return true;
         }else if (action.equals(getDID)) {
         	Utils.log(TAG, "inside DID ");        	
         	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()

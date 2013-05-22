@@ -1224,7 +1224,7 @@ margin-top:3px;
 /* 12-jun-2012 */
 
 .pn-page .input_hightlight_error {
-    border:2px solid #fd0202;
+    border:2px solid #fd0202 !important;
 }
 
 .pn-page .standard_error_msg { 
