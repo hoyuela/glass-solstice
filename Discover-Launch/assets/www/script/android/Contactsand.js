@@ -19,7 +19,7 @@ showAllContactsForRAF = function(successCallback, failureCallback) {
           $('.email-inputs').val(args.value); 
 		}
 		$('.email-inputs').focus();
-		}, failureCallback, 'ContactsListPlugin', 'invokecontacts', ["jsonformat"]);
+		}, failureCallback, 'ContactsListPlugin', 'showContacts', ["jsonformat"]);
 };
 
 PhoneGap.addConstructor(function() {
