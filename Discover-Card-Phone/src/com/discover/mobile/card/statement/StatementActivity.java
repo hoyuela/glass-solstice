@@ -54,10 +54,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.PDFObject;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 
 /**
  * Displays cardmembers selected statement images in a scrollable view
@@ -89,7 +88,7 @@ public class StatementActivity extends DroidGap {
 
     // page elements
     private TextView mTextCycleDate;
-    private TextView titleView;
+    private TextView titleView ; 
     private WebView mWebView;
     private ImageButton mBtnPrev;
     private ImageButton mBtnNext;
@@ -128,7 +127,7 @@ public class StatementActivity extends DroidGap {
         mBtnPrev = (ImageButton) findViewById(R.id.statement_btn_prev);
         mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);
         logout = (Button) findViewById(R.id.logout_button);
-        titleView = (TextView) findViewById(R.id.title_view);
+        titleView = (TextView)findViewById(R.id.title_view);
 
         mFadeInAnimation = AnimationUtils.loadAnimation(StatementActivity.this,
                 R.anim.fadein);
@@ -163,6 +162,13 @@ public class StatementActivity extends DroidGap {
     private void configureWebView() {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true);
+
+        // loads the WebView completely zoomed out
+        // webView.getSettings().setLoadWithOverviewMode(true);
+        // makes the Webview have a normal viewport (such as a normal desktop
+        // browser), while when false the webview will have a viewport
+        // constrained to it's own dimensions (so if the webview is 50px*50px
+        // the viewport will be the same size)
         mWebView.getSettings().setUseWideViewPort(true);
         mWebView.setVerticalScrollBarEnabled(false);
         mWebView.setHorizontalScrollBarEnabled(false);
@@ -176,8 +182,9 @@ public class StatementActivity extends DroidGap {
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage cm) {
-                Utils.log("StatementsWebView", cm.message() + " -- From line "
-                        + cm.lineNumber() + " of " + cm.sourceId());
+                Utils.log("StatementsWebView",
+                        cm.message() + " -- From line " + cm.lineNumber()
+                                + " of " + cm.sourceId());
                 return true;
             }
         });
@@ -714,8 +721,7 @@ public class StatementActivity extends DroidGap {
                     notification.flags |= Notification.FLAG_AUTO_CANCEL;
                     mNotificationManager.notify(1, notification);
                 } catch (Exception e) {
-                    Utils.log(
-                            LOG_TAG,
+                    Utils.log(LOG_TAG,
                             "onPageStarted() Problem with launching PDF Viewer.",
                             e);
                     Utils.showOkAlert(mContext, TITLE_NO_PDF, MSG_NO_PDF);
@@ -852,7 +858,12 @@ public class StatementActivity extends DroidGap {
                     "Webview is null on KeyCode: " + String.valueOf(keyCode));
         }
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // if (mWebView.canGoBack()) {
+            // Utils.log("Stmt", "back key detected n can go back.");
+            // mWebView.goBack();
+            // } else {
             finish();
+            // }
         }
         return true;
     }

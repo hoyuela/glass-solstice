@@ -10,6 +10,9 @@ import java.util.HashMap;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthBean;
+import com.discover.mobile.card.auth.strong.StrongAuthUtil;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
@@ -17,11 +20,6 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.StrongAuthBean;
-import com.discover.mobile.card.auth.strong.StrongAuthUtil;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 
 /**
@@ -36,80 +34,79 @@ import com.fasterxml.jackson.core.JsonGenerationException;
  */
 public class StrongAuthAns {
 
-    private final Context context;
-    private final CardEventListener listener;
+	private Context context;
+	private CardEventListener listener;
 
-    /**
-     * Constructor
-     * 
-     * @param context
-     * @param listener
-     *            CardEventListener
-     */
-    public StrongAuthAns(final Context context, final CardEventListener listener) {
-        this.context = context;
-        this.listener = listener;
-    }
+	/**
+	 * Constructor
+	 * 
+	 * @param context
+	 * @param listener
+	 *            CardEventListener
+	 */
+	public StrongAuthAns(Context context, CardEventListener listener) {
+		this.context = context;
+		this.listener = listener;
+	}
 
-    /**
-     * TODO: Method description
-     * 
-     * @param answer
-     * @param strongAuthQuestionId
-     * @param selectedIndex
-     * @throws NoSuchAlgorithmException
-     * @throws JsonGenerationException
-     * @throws IOException
-     * @throws Exception
-     */
-    public void sendRequest(final String answer,
-            final String strongAuthQuestionId, final int selectedIndex)
-            throws NoSuchAlgorithmException, JsonGenerationException,
-            IOException, Exception {
-        final StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
-        answerDetails.questionAnswer = answer;
-        answerDetails.questionId = strongAuthQuestionId;
+	/**
+	 * TODO: Method description
+	 * 
+	 * @param answer
+	 * @param strongAuthQuestionId
+	 * @param selectedIndex
+	 * @throws NoSuchAlgorithmException
+	 * @throws JsonGenerationException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public void sendRequest(String answer, String strongAuthQuestionId,
+			int selectedIndex) throws NoSuchAlgorithmException,
+			JsonGenerationException, IOException, Exception {
+		final StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
+		answerDetails.questionAnswer = answer;
+		answerDetails.questionId = strongAuthQuestionId;
 
-        if (selectedIndex == 0) {
-            answerDetails.bindDevice = "true";
-        } else {
-            answerDetails.bindDevice = "false";
-        }
+		if (selectedIndex == 0) {
+			answerDetails.bindDevice = "true";
+		} else {
+			answerDetails.bindDevice = "false";
+		}
 
-        final StrongAuthUtil authUtil = new StrongAuthUtil(context);
-        StrongAuthBean authBean = null;
-        authBean = authUtil.getStrongAuthData();
-        answerDetails.did = authBean.getDeviceId();
-        answerDetails.sid = authBean.getSimId();
-        answerDetails.oid = authBean.getSubscriberId();
+		StrongAuthUtil authUtil = new StrongAuthUtil(context);
+		StrongAuthBean authBean = null;
+		authBean = authUtil.getStrongAuthData();
+		answerDetails.did = authBean.getDeviceId();
+		answerDetails.sid = authBean.getSimId();
+		answerDetails.oid = authBean.getSubscriberId();
 
-        final WSRequest request = new WSRequest();
-        final HashMap<String, String> headers = request.getHeaderValues();
+		WSRequest request = new WSRequest();
+		HashMap<String, String> headers = request.getHeaderValues();
+		
+		CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+				.getInstance(context);
+		SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+				.getCookieManagerInstance();
+		sessionCookieManagerObj.setCookieValues();
 
-        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                .getInstance(context);
-        final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-                .getCookieManagerInstance();
-        sessionCookieManagerObj.setCookieValues();
+		headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
+		
+		String url = NetworkUtility.getWebServiceUrl(context,
+				R.string.strongAuth_ans_url);
 
-        headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
+		request.setUrl(url);
+		request.setHeaderValues(headers);
 
-        final String url = NetworkUtility.getWebServiceUrl(context,
-                R.string.strongAuth_ans_url);
+		request.setMethodtype("POST");
 
-        request.setUrl(url);
-        request.setHeaderValues(headers);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        request.setMethodtype("POST");
+		JacksonObjectMapperHolder.getMapper().writeValue(baos, answerDetails);
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		request.setInput(baos.toByteArray());
 
-        JacksonObjectMapperHolder.getMapper().writeValue(baos, answerDetails);
-
-        request.setInput(baos.toByteArray());
-
-        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
-                "Discover", "Authenticating...", listener);
-        serviceCall.execute(request);
-    }
+		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
+				"Discover", "Authenticating...", listener);
+		serviceCall.execute(request);
+	}
 }

@@ -4,9 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * ©2013 Discover Bank
@@ -48,7 +47,7 @@ public class JQMResourceMapper {
      */
     private static void initialiseTitleMap() {
 
-        final Map<String, Integer> temp = new HashMap<String, Integer>();
+        Map<String, Integer> temp = new HashMap<String, Integer>();
         temp.put("Account Summary", R.string.sub_section_title_account_summary);
         temp.put("Recent Activity", R.string.sub_section_title_recent_activity);
         temp.put("Search Transactions",
@@ -70,7 +69,7 @@ public class JQMResourceMapper {
 
         temp.put("Partner Gift Cards & eCerts",
                 R.string.sub_section_title_partner_gift_cards);
-        // Change title for defect #96089
+        //Change title for defect #96089
         temp.put("Discover Gift Card",
                 R.string.sub_section_title_discover_gift_cards);
         temp.put("Statement Credit",
@@ -111,19 +110,17 @@ public class JQMResourceMapper {
      *            for which resource id to be returned.
      * @return corresponding integer resource id.
      */
-    public int getTitleStringId(final String title) {
+    public int getTitleStringId(String title) {
         Utils.log(TAG, "inside getTitleString n title is " + title
                 + "value is " + titleIdMap.get(title));
 
         int titleId = -1;
 
         if (null != title) {
-            if (titleIdMap.containsKey(title)) {
+            if (titleIdMap.containsKey(title))
                 titleId = titleIdMap.get(title);
-            }
             return titleId;
-        } else {
+        } else
             return titleId;
-        }
     }
 }

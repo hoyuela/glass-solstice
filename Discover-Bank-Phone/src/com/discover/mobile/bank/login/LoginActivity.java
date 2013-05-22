@@ -2,10 +2,7 @@ package com.discover.mobile.bank.login;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
-import org.apache.cordova.api.CordovaInterface;
-import org.apache.cordova.api.CordovaPlugin;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -81,7 +78,7 @@ import com.google.common.base.Strings;
  */
 
 public class LoginActivity extends BaseActivity implements
-		LoginActivityInterface, CordovaInterface {
+		LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -99,6 +96,8 @@ public class LoginActivity extends BaseActivity implements
 	private static final String ERROR_MESSAGE_COLOR = "i";
 	private static final String TOGGLE_KEY = "j";
 
+	/** ID that allows control over relative buttons' placement.*/
+	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -174,9 +173,7 @@ public class LoginActivity extends BaseActivity implements
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
 
-		activityUtil = ActivityUtil.getInstance();
-		activityUtil.setCurrentActivity(this);
-		DiscoverActivityManager.setActiveActivity(this);
+	
 	}
 
 	/**
@@ -322,10 +319,7 @@ public class LoginActivity extends BaseActivity implements
 	@Override
 	public void onResume(){
 		super.onResume();
-		
-		 activityUtil.setCurrentActivity(this);
-		 DiscoverActivityManager.setActiveActivity(this);
-
+	
 
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
@@ -417,7 +411,7 @@ public class LoginActivity extends BaseActivity implements
 	public void onStart() {
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(
-				activityUtil.getCurrentActivity());
+				this);
 	}
 
 	@Override
@@ -567,7 +561,7 @@ public class LoginActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToFeedback(isCardLogin());
+				BankConductor.navigateToFeedback(true);
 			}
 		});
 
@@ -1136,7 +1130,7 @@ public class LoginActivity extends BaseActivity implements
 		// we take it down
 		if ( !phoneGapInitComplete ) {
 		    FacadeFactory.getCardFacade().initPhoneGap();
-		    FacadeFactory.getCardLoginFacade().loadCordovaWebview(this);
+		    
 			phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);
@@ -1148,16 +1142,6 @@ public class LoginActivity extends BaseActivity implements
 	 */
 	public boolean getPreAuthHasRun() {
 		return preAuthHasRun;
-	}
-
-	/**
-	 * Method used to determine whether the user is in the Card Login Page or
-	 * Bank Login Page.
-	 * 
-	 * @return True if in the Card login page, false otherwise.
-	 */
-	public boolean isCardLogin() {
-		return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -1203,40 +1187,5 @@ public class LoginActivity extends BaseActivity implements
 				}
 			}
 		});
-	}
-	@Override
-	public void cancelLoadUrl() {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public Activity getActivity() {
-		// TODO Auto-generated method stub
-		return DiscoverActivityManager.getActiveActivity();
-	}
-
-	@Override
-	public ExecutorService getThreadPool() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object onMessage(final String arg0, final Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setActivityResultCallback(final CordovaPlugin arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void startActivityForResult(final CordovaPlugin arg0, final Intent arg1, final int arg2) {
-		// TODO Auto-generated method stub
-
-	}
-}
+}}
