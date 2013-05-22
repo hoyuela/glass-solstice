@@ -158,7 +158,7 @@ public final class BankTrackingHelper {
 		trackingMap.put(BankSelectPayee.class.getSimpleName(), R.string.bank_payment_start);
 		trackingMap.put(SearchByLocationFragment.class.getSimpleName(), R.string.bank_atm_start);
 		trackingMap.put(SearchNearbyFragment.class.getSimpleName(), R.string.bank_atm_start);
-		trackingMap.put(BankDepositSelectAmount.class.getSimpleName(), R.string.bank_deposit_amount);
+		trackingMap.put(BankDepositSelectAmount.class.getSimpleName(), R.string.bank_deposit_amount_tracking);
 		trackingMap.put(CaptureReviewFragment.class.getSimpleName(), R.string.bank_capture_confirm);
 		trackingMap.put(DepositSubmissionActivity.class.getSimpleName(), R.string.bank_capture_sending);
 		trackingMap.put(BankDepositConfirmFragment.class.getSimpleName(), R.string.bank_capture_acknowledge);

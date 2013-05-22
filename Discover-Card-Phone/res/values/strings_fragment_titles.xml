@@ -12,10 +12,4 @@
     <string name="push_alert_history_title">Alerts History</string>
     <string name="account_activity_title">Account Activity</string>
     <string name="account_statements_title">Statements</string>
-    
-    <!-- All Fragments' tags -->    
-    <string name="cordova_frag">CordovaWebFrag</string>
-    <string name="home_frag">HomeSummaryFragment</string>
-     <string name="manage_bank_accounts_frag">ManageBankAccountsFragment</string>
-    
 </resources>

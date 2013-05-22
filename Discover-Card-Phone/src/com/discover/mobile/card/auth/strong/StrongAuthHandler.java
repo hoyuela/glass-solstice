@@ -98,6 +98,9 @@ public class StrongAuthHandler {
                         authDetails.questionText);
                 strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID,
                         authDetails.questionId);
+                
+                strongAuth.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                
                 Log.i(TAG, "In Strong auth --"+context.getClass());
                 if (authListener != null) {
                     context.startActivity(strongAuth);

@@ -3,10 +3,9 @@ package com.discover.mobile.card.miles;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
-
-import com.discover.mobile.card.R;
 
 /**
  * ©2013 Discover Bank
@@ -29,7 +28,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_sign_up_for_miles,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v) {
+                    public void onClick(View v) {
 
                     }
                 }),
@@ -37,7 +36,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_miles_extras, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v) {
+                    public void onClick(View v) {
 
                     }
                 }),
@@ -45,7 +44,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_miles_refer_a_friend,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(final View v) {
+                    public void onClick(View v) {
 
                     }
                 }));
@@ -53,8 +52,7 @@ public class MilesInfo extends GroupComponentInfo {
 
     class MilesComponentInfo extends ClickComponentInfo {
 
-        public MilesComponentInfo(final int titleResource,
-                final OnClickListener listener) {
+        public MilesComponentInfo(int titleResource, OnClickListener listener) {
             super(titleResource, false, listener);
         }
 
