@@ -50,6 +50,8 @@ import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
+import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
+import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankStringFormatter;
