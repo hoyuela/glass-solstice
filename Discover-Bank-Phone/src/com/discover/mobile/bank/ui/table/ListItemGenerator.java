@@ -316,7 +316,11 @@ public class ListItemGenerator {
 		}else{
 			items.add(getPhoneNumberCell(item.phone.number));
 			items.add(getAddressCell(item.address.formattedAddress));
-			items.add(getUnmanagedPayeeMemoCell(item.memo));	
+
+			/** only show memo field if it is provided */
+			if (!Strings.isNullOrEmpty(item.memo)) {
+				items.add(getUnmanagedPayeeMemoCell(item.memo));
+			}
 		}
 
 		hideDivider(items);

@@ -1096,13 +1096,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		}
 		
 		/**Show calendar as a dialog*/
-		calendarFragment
-			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
-				getResources().getString(R.string.schedule_pay_deliver_on_title),
-				displayedDate,
-			    chosenPaymentDate, 
-			    earliestPaymentDate,
-				BankUser.instance().getHolidays(),
+		calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), getResources()
+				.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance().getHolidays(),
 				createCalendarListener());
 	}
 
