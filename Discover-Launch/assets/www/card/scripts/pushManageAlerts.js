@@ -448,6 +448,12 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
     {
         var str = $("#txt-phone-number").val();
         var index = $("#addnumber select").get(0).selectedIndex;
+	 	/*96028*/
+		if(isEmpty(str)){
+		$('.add_phone_number').addClass("input_hightlight_error");
+		$('#global-errors').html(errEmptyPhoneNumber).addClass('redtext boldtext').show();		
+		 return false;
+		}
         if(str.length > 0)
         {
             if (!dfs.crd.push.manage.validatePhoneNumbers(str))
@@ -475,8 +481,8 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
         
         var str = $("#txt-change-phone-number").val();
         var index = $("#changenumber select").get(0).selectedIndex;
-        
-if(isEmpty(str)){
+        /*96028*/
+		if(isEmpty(str)){
 		$('.phone_number').addClass("input_hightlight_error");
 		 return false;
 		}
@@ -506,7 +512,12 @@ if(isEmpty(str)){
                 $("#txt-phone-number").removeClass("input_hightlight_error");
             var str = $("#txt-phone-number").val();
             var index = $("#addnumber select").get(0).selectedIndex;
-            if(str.length > 0)
+			/*96028*/
+            if(isEmpty(str)){
+			$('.add_phone_number').addClass("input_hightlight_error");
+			return false;
+			}
+		            if(str.length > 0)
             {
                 if (!dfs.crd.push.manage.validatePhoneNumbers(str))
                 {

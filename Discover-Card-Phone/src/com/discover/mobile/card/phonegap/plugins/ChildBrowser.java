@@ -35,6 +35,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
@@ -253,7 +254,7 @@ public class ChildBrowser extends CordovaPlugin {
 				toolbar.setLayoutParams(new LinearLayout.LayoutParams(
 						LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
-				logoView = new ImageView(ChildBrowser.this.cordova
+				/*logoView = new ImageView(ChildBrowser.this.cordova
 						.getActivity().getApplicationContext());
 				logoView.setId(3);
 				logoView.setLayoutParams(logoParams);
@@ -269,7 +270,20 @@ public class ChildBrowser extends CordovaPlugin {
 						e.printStackTrace();
 					}
 
-				}
+				}*/
+				
+				final TextView headerText = new TextView(
+                        ChildBrowser.this.cordova.getActivity()
+                                .getApplicationContext());
+                headerText.setId(3);
+                headerText.setLayoutParams(logoParams);
+                headerText.setTextAppearance(ChildBrowser.this.cordova
+                        .getActivity().getApplicationContext(),
+                        R.style.action_bar_text);
+                headerText.setText(ChildBrowser.this.cordova.getActivity()
+                        .getApplicationContext()
+                        .getString(R.string.provide_feedback_title));
+                
 				// ** _added code to purple-cabbage **
 
 				ImageButton close = new ImageButton(ChildBrowser.this.cordova
@@ -305,7 +319,7 @@ public class ChildBrowser extends CordovaPlugin {
 				webview.requestFocusFromTouch();
 
 				toolbar.addView(close);
-				toolbar.addView(logoView);
+				toolbar.addView(headerText);
 
 				if (getShowLocationBar()) {
 					main.addView(toolbar);

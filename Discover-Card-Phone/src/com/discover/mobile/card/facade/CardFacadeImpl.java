@@ -43,7 +43,9 @@ public class CardFacadeImpl implements CardFacade {
         final Intent newVisibleIntent = new Intent(callingActivity,
                 RegistrationAccountInformationActivity.class);
         callingActivity.startActivity(newVisibleIntent);
-        callingActivity.finish();
+      //DEFECT 96355
+       // callingActivity.finish();  
+      //DEFECT 96355
     }
 
     @Override
