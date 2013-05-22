@@ -1008,7 +1008,8 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * Show modal to prompt user that they are navigating away from
 		 * application
 		 */
-		final AlertDialog dialog = BankConductor.navigateToBrowser(BankUrlManager.getCardGoogleTermsUrl());
+		final AlertDialog dialog = BankConductor.navigateToBrowser(R.string.atm_browser_title, R.string.atm_browser_body,
+				BankUrlManager.getCardGoogleTermsUrl());
 
 		/** Listen to when modal is dismissed to set flag to false */
 		dialog.setOnDismissListener(new OnDismissListener() {
