@@ -1064,7 +1064,8 @@ $.extend(Datepicker.prototype, {
 			return;
 		}
 		var inst = this._getInst(target[0]);
-		inst.selectedDay = inst.currentDay = $('a', td).html().substring(0,2);
+		//inst.selectedDay = inst.currentDay = $('a', td).html().substring(0,2);
+		inst.selectedDay = inst.currentDay = parseInt($('a', td).text().substring(0,2));
 		inst.selectedMonth = inst.currentMonth = month;
 		inst.selectedYear = inst.currentYear = year;
 		this._selectDate(id, this._formatDate(inst,
