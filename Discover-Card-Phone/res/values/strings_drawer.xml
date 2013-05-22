@@ -52,4 +52,8 @@
      <string name="redeem_cashback_bonus_landing">Redemption Options</string>
     <string name="error_no_title">No Title</string>
     <string name="enhanced_account_security_title">Enhanced Account Security</string>
+    
+    <string name="provide_feedback_title">Provide Feedback</string>
+    
+    
 </resources>

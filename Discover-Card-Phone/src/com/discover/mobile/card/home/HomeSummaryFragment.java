@@ -542,71 +542,17 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public int getActionBarTitle() {
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-        Log.v(TAG, "getActionBarTitle n title is " + m_title);
-        if (null != m_title) {
-            jqmResourceMapper = JQMResourceMapper.getInstance();
-
-            return jqmResourceMapper.getTitleStringId(m_title);
-        } else {
-            return -1;
-        }
+       return -1;
     }
 
     @Override
     public int getGroupMenuLocation() {
-        Utils.log(TAG, "inside getGroupMenuLocation ");
-        int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuGroupLocation(tempId);
-                }
-            }
-        }
-        return mCardMenuLocation.getMenuGroupLocation(tempId);
+        return CardMenuItemLocationIndex.HOME_GROUP;
     }
 
     @Override
     public int getSectionMenuLocation() {
-        Utils.log(TAG, "inside getSectionMenuLocation");
-        int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuSectionLocation(tempId);
-                }
-            }
-        }
-
-        return mCardMenuLocation.getMenuSectionLocation(tempId);
+        return CardMenuItemLocationIndex.HOME_SECTION;
     }
 
     /*
