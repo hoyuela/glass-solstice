@@ -6,15 +6,13 @@ import java.util.TimeZone;
 import android.content.Context;
 import android.os.Handler;
 
-import com.discover.mobile.common.ActivityUtil;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 
 import com.discover.mobile.card.common.net.service.WSProxy;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 /**
  * This class will hold page timeout related logic and will also be shared by
@@ -33,11 +31,9 @@ public final class PageTimeOutUtil {
     private final String TAG = "PageTimeOut";
     private static final long TIMEOUT_PERIOD = 600000; // 600000
     private Calendar mCalendar;
-    private ActivityUtil activityUtil = null;
 
     public PageTimeOutUtil(final Context context) {
         mContext = context;
-        activityUtil = ActivityUtil.getInstance();
         mWSProxy = new WSProxy();
     }
 
@@ -97,7 +93,7 @@ public final class PageTimeOutUtil {
     public void keepSessionAlive() {
         Utils.log(TAG, "inside keepSessionAlive()......");
         // fire KeepSessionAlive if last rest call is 30 seconds ago
-        mCalendar = Calendar.getInstance(TimeZone.getTimeZone(DiscoverActivityManager.getActiveActivity()
+        mCalendar = Calendar.getInstance(TimeZone.getTimeZone(mContext
                 .getString(R.string.current_timezone)));
         final long now = mCalendar.getTimeInMillis();
 
@@ -130,9 +126,9 @@ public final class PageTimeOutUtil {
     public void logoutUserOnTimerExpire() {
         Utils.log(TAG, "inside logoutUserOnTimerExpire().....");
 
-        if (activityUtil.getCurrentActivity() instanceof CardNavigationRootActivity)
-            ((CardNavigationRootActivity) activityUtil.getCurrentActivity())
-                    .idealTimeoutLogout();
+        if (mContext instanceof CardNavigationRootActivity) {
+            ((CardNavigationRootActivity) mContext).idealTimeoutLogout();
+        }
 
     }
 }

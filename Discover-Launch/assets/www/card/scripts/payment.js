@@ -226,6 +226,7 @@ dfs.crd.pymt.getPendingPaymentData = function(pageId)
 						hideSpinner();
 						cpEvent.preventDefault();
 						var code = getResponseStatusCode(jqXHR);
+						code=1233;
 						switch (code)
 						{
 						case "1233":
@@ -431,10 +432,11 @@ dfs.crd.pymt.getPaymentHistoryData = function(pageId)
 					{
 						hideSpinner();
 						var code = getResponseStatusCode(jqXHR);
+						code="1219";
 						switch (code)
 						{
 						case "1219":
-							var errorText  = errorCodeMap["1233"];
+							var errorText  = errorCodeMap["1233_history"];
 							errorHandler(code, errorText, "paymentsHistory");
 							break;
 						default:
