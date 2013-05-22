@@ -71,7 +71,7 @@ function onBodyLoad ()
 function onDeviceReady(){
 	try{
 		cordova.exec(null, null, "SplashScreen", "hide", []);
-	//	isDeviceReady= true;
+		isDeviceReady= true;
 		deviceType=device.platform;
         deviceVersion=device.version;
         if (deviceType=="iPhone Simulator") deviceType="iPhone";
@@ -96,15 +96,12 @@ function onDeviceReady(){
 			var cd = ChildBrowser.install();
 		}
 		manageTransition()
+		HybridControl.prototype.deviceReadyUpdate(null,null,isDeviceReady);
+		
 //		navigation('card/html/common/loadingPage');
 	}catch(err){
 		showSysException(err);
 	}
-}
-
-function setDeviceReady(isReady){
-	console.log("is device ready "+isReady);
-	isDeviceReady= isReady;
 }
 
 function manageTransition()
@@ -356,6 +353,9 @@ function navigation(pageName,pageHashArg)
 	}
 	},30);
 }
+
+
+//var a = navigation('card/html/common/loadingPage',false); 
 
 /*
  * Gets the data for the Dynamic part of an HTML. For anypage with a dynamic
@@ -1234,9 +1234,7 @@ $('[data-role=page]').live('pageshow', function(e,data){
 				//timeStartAfterLogin();
 				if(isDeviceReady == true)
 				{									
-					PageSessionTimer.prototype.keepSessionAlive();
-					HybridControl.prototype.getSecToken(function successToken (arg) {sectoken = arg;}, null);
-					HybridControl.prototype.getOtherUserFlag(function successgetOtherUser (arg) {globalOtherUser = arg;}, null);
+					PageSessionTimer.prototype.keepSessionAlive();					
 					achomeData=getDataFromCache("ACHOME");					
 					if(jQuery.isEmptyObject(achomeData)){					
 					populateGlobalCache();
@@ -1729,6 +1727,7 @@ try
 {
 	var vid;
 	HybridControl.prototype.getVID(function successvid (arg) {vid = arg;}, null);
+	HybridControl.prototype.getOtherUserFlag(function successgetOtherUser (arg) {globalOtherUser = arg;}, null);
 	//alert("vid:"+vid);
 	return vid;
 	}
@@ -1754,6 +1753,7 @@ function getClientPlat (){
 /* prepare header */
 function preparePostHeader(customHeaders) {
 	try{
+		HybridControl.prototype.getSecToken(function successToken (arg) {sectoken = arg;}, null);
 		var postHeader = {
 				'X-Application-Version' : APPVER,
 				'X-Client-Platform' : getClientPlat(),

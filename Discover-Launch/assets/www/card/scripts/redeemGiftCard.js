@@ -21,6 +21,11 @@
 	function giftcard1Load() {
 		try {
 			//console.log("gift card 1 load");
+			if(fromPageName!="giftcard2" && fromPageName!="giftcardselectdesign" && fromPageName!="giftcardTerms"){
+               killDataFromCache("GCSelectedInput");
+               $(document).removeData();
+            }
+			
 			killDataFromCache("GIFTDATATOPOST");// if some error came up from step2 to step3, POST data should be deleted before logging out also.
 			dfs.crd.rwd.dgc.populateGiftCard1Page('GIFTCARD1');
 		} catch (err) {
@@ -458,7 +463,7 @@
 					
 				$("#giftCard2Cancel").click(function(){
 					s.prop1 = 'HANDSET_REDEEM_DGC_MAIL_MAIL_CANCEL_BTN'; //campaign code
-					discoverGiftCards();
+					discoverGiftCard();
 					//navigation('../rewards/redemptionLanding');
 				});
 					
