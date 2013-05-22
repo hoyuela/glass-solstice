@@ -38,6 +38,7 @@
         Due to special conditions related to your credit card account, we can\'t provide you with access to your account 
         information at this time. \n\nBecause of increased security measures, you will need to log into Discover Bank in 
         order to access your online account.</string>
+    <string name="skipsso_modal_number">1&#8211;800&#8211;290&#8211;9885</string>
     <string name="skipsso_modal_button">Continue</string>
 
 </resources>
