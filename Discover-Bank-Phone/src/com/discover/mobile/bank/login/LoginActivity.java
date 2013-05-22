@@ -3,8 +3,9 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
@@ -137,6 +137,9 @@ public class LoginActivity extends BaseActivity implements
 	 * Should only be done at application start-up.
 	 */
 	private boolean preAuthHasRun = false;
+	
+	/**Set to true when the alu modal is showing*/
+	private boolean isAluModalShowing = false;
 
 	private boolean saveUserId = false;
 
@@ -173,7 +176,7 @@ public class LoginActivity extends BaseActivity implements
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
 
-	
+		DiscoverActivityManager.setActiveActivity(this);
 	}
 
 	/**
@@ -561,7 +564,7 @@ public class LoginActivity extends BaseActivity implements
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToFeedback(true);
+				BankConductor.navigateToFeedback(isCardLogin());
 			}
 		});
 
@@ -605,6 +608,16 @@ public class LoginActivity extends BaseActivity implements
 			}
 		});
 	}
+	
+	/**
+	  * Method used to determine whether the user is in the Card Login Page or
+	  * Bank Login Page.
+	  * 
+	  * @return True if in the Card login page, false otherwise.
+	  */
+	 public boolean isCardLogin() {
+	   return View.VISIBLE == cardCheckMark.getVisibility();
+	 }
 
 	/**
 	 * If the user id, or password field are effectively blank, do not
@@ -941,19 +954,6 @@ public class LoginActivity extends BaseActivity implements
 	}
 
 	/**
-	 * Opens Privacy and Security screen when user taps the Privacy and Security button while
-	 * in the Card Login Screen
-	 */
-	public void openPrivacyAndSecurity() {
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		final CharSequence text = "Privacy & Security Under Development";
-		final int duration = Toast.LENGTH_SHORT;
-
-		final Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
-	}
-
-	/**
 	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while
 	 * in the Bank Login Screen
 	 */
@@ -1166,26 +1166,71 @@ public class LoginActivity extends BaseActivity implements
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);
-		aluModalTopView.hideNeedHelpFooter();
+		aluModalTopView.getHelpFooter().setToDialNumberOnClick(R.string.skipsso_modal_number);
 		aluModalTopView.showErrorIcon(true);
 
 		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(this, null);
 		confirmModalButton.setButtonText(R.string.skipsso_modal_button);
 
 		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(this, aluModalTopView, confirmModalButton);
-		this.showCustomAlert(aluModal);
-		closeDialog();
-
 		confirmModalButton.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(final View v) {
-				aluModal.dismiss();				
+			public void onClick(final View v) {		
 				if (credentials == null) {
 					BankConductor.continueAuthDueToALU();
 				} else {
 					BankConductor.continueAuthDueToALU(credentials);
 				}
+				aluModal.dismiss();		
 			}
 		});
-
-}}
+		
+		aluModal.setOnShowListener(new OnShowListener() {
+			
+			@Override
+			public void onShow(DialogInterface dialog) {
+				isAluModalShowing = true;
+			}
+		});
+		
+		aluModal.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				isAluModalShowing = false;
+				
+			}
+		});
+		closeDialog();
+		showCustomAlert(aluModal);
+	}
+	
+	/**
+	 * Start an activity (this needs to be overwritten so that the ALU modal
+	 * can stay visible after the phone number is clicked)
+	 */
+	@Override
+	public void startActivity(Intent intent){
+		if(isAluModalShowing){
+			super.startActivityNoReset(intent);
+		}else{
+			super.startActivity(intent);
+		}
+	}
+	
+	/**
+	 * Start an activity for result but dont clear the active moddal
+	 * (this needs to be overwritten so that the ALU modal
+	 * can stay visible after the phone number is clicked)
+	 * @param intent - intent to start
+	 * @param requestCode - requestCode
+	 */
+	@Override
+	public void startActivityForResult(final Intent intent, final int requestCode){
+		if(isAluModalShowing){
+			super.startActivityForResultNoReset(intent, requestCode);
+		}else{
+			super.startActivityForResult(intent, requestCode);
+		}	
+	}
+}
