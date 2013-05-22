@@ -476,7 +476,7 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
         var str = $("#txt-change-phone-number").val();
         var index = $("#changenumber select").get(0).selectedIndex;
         
-		if(isEmpty(str)){
+if(isEmpty(str)){
 		$('.phone_number').addClass("input_hightlight_error");
 		 return false;
 		}

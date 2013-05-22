@@ -99,12 +99,9 @@ $('body').live('pagebeforeshow',function(event){
     // Push Notification Change End
                
 	/* This function is adding foot note in footer */
-		//footnote for after login pages 
-		
-	
-
-	var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/moreLanding\")'> Privacy & Terms </a><a href='#' onclick='provideFeedBack();'>| Provide Feedback </a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";
-	$(".footnotes").html(footnotesHtml);
+		//footnote for after login pages
+		var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/moreLanding\")'> Privacy & Terms </a><a href='#' onclick='provideFeedBack();'>| Provide Feedback </a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";
+		$(".footnotes").html(footnotesHtml);
 	
 	//Footnote for index page
 	var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);' onclick='navigation(\"card/html/common/privacyPolicy\")'>Privacy Statement </a><a href='javascript:void(0);' onclick='navigation(\"card/html/common/termsUse\")' class='registerNow'>| Terms of Use</a></p><p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p>";
@@ -196,11 +193,11 @@ $(".collapsible li a.collapslink").live("click",function(){
 	var winh = $(window).height();
 	var actualh = winh-139; // 139 means header height + footer height 
 	$(".ui-content-internalpages").css("min-height",actualh+"px");
-}
-
+}*/
 $(window).resize(function() {
-	resetview();
-});*/
+	//resetview();
+	setGridwpwidth();
+});
 
 
 /* desabled button */
@@ -286,7 +283,6 @@ $(".head-bg-logo").live("click",function(){
 function showSpinner(){
 	try{
 	//	window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
-	if(isDeviceReady == true)
 		HybridControl.prototype.showSpinner();
 	}catch(err)
 	{
@@ -300,7 +296,6 @@ function showSpinnerPageBeforeChange(){
         	if (!isEmpty(deviceType)) deviceT=deviceType.toLowerCase();     //Change
 
 		if (deviceT!="android"){               //Change
-		if(isDeviceReady == true)
 			HybridControl.prototype.showSpinner();
 		//	window.plugins.LoadingView.spinnerOn(null, null, "", '     Loading...');
 		}
@@ -313,13 +308,13 @@ function showSpinnerPageBeforeChange(){
 function hideSpinner(){
 	try {
 	//	window.plugins.LoadingView.spinnerOff(null, null);
-	if(isDeviceReady == true)
 		HybridControl.prototype.dismissProgressBar();
 	}catch(err)
 	{
 		//showSysException(err)
 	}
 }
+
 /*** reseat popup blackout area on background as per the oriantation **/
 function doOnOrientationChange()
 {   

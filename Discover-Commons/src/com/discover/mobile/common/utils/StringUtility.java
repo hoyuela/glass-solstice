@@ -11,6 +11,7 @@ public final class StringUtility {
 	public static final String SPACE = " ";
 	public static final String ENCODED_SPACE = "%20";
 	public static final String COMMA = ",";
+	public static final String NEW_LINE = "\n";
 	
 	private StringUtility() {
 		throw new AssertionError();

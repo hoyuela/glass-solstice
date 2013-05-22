@@ -109,3 +109,6 @@ HybridControl.prototype.setOtherUserFlag = function(successCallback, OtherUserFl
 HybridControl.prototype.enableSlidingMenu = function(successCallback, enable) {
 	cordova.exec(successCallback, null, 'HybridControlPlugin', 'enableSlidingMenu', [enable]);
 }
+HybridControl.prototype.deviceReadyUpdate = function(successCallback, failureCallBack,isDeviceReady) {
+	cordova.exec(successCallback, null, 'HybridControlPlugin', 'deviceReadyUpdate', [isDeviceReady]);
+}

@@ -16,14 +16,5 @@
     <string name="view_blue_button_text">VIEW</string>
     <string name="redeem_blue_button_text">REDEEM</string>
     <string name="sign_up_blue_button_text">SIGN UP</string>
-    
-    <!-- Strings related to Manage Bank Account -->
-    
-     <string name="welcome_bank">Welcome to \nManage Bank Accounts</string>
-    <string name="welcome_text">You currently don\'t have any bank \naccounts set up for online payment.  \nSet up an account now by tapping \nAdd Account.</string>
-	<string name="add_acct_text">Add Account</string>
-	<string name="edt_acct_text">Edit Account Details</string>
-	<string name="rem_acct_text">Remove Account</string>
-	<string name="pending_pay_text">This bank accounts has pending payments. \nThey will be updated when you edit the \nbank information.</string>
 
 </resources>

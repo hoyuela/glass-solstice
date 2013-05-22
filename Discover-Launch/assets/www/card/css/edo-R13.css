@@ -657,8 +657,9 @@ background:none;font-size:14px;color:#50555a}
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-a,#edoHistory-pg .wraper .historyList	.listLi .ui-block-b,#edoHistory-pg .wraper .historyList	.listLi .ui-block-c
 {
 	margin-top: 10px;
-	width:33%;	
+	width:33%;
 }
+<<<<<<< HEAD
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-b {
 	display: inline-block;
 	width:36%;
@@ -667,6 +668,16 @@ background:none;font-size:14px;color:#50555a}
 	display: inline-block;
 	width:30%;
 	float:right;
+=======
+#edoHistory-pg .wraper .historyList        .listLi .ui-block-b {
+                display: inline-block;
+                width:36%;
+}
+#edoHistory-pg .wraper .historyList        .listLi .ui-block-c {
+                display: inline-block;
+                width:30%;
+                float:right;
+>>>>>>> 86481db... US7225 20130521 Card Bank Code Merge
 }
 
 
@@ -1428,7 +1439,6 @@ border-bottom: 2px solid #d0ceca;
 	width: 283px;*/
 	margin: auto;
 	}
-	
 /* landscape css */
 @media all and (orientation:landscape) {
 	/*.edo-page .showGridview {
@@ -1486,7 +1496,7 @@ border-bottom: 2px solid #d0ceca;
 	/*.edo-page .showGridview {
 		width: 290px;
 	}*/
-	#edoLandingPage-pg .edoDetailsDisplay_showGridview {width:282px !important}
+	/*#edoLandingPage-pg .edoDetailsDisplay_showGridview {width:282px !important}*/
 	#edoLandingPage-pg .overlay_wraper {
 	width:87% !important;
 	background-color: #fff;

@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -49,24 +50,21 @@ public class CancelThisActionModal implements BaseFragmentModal {
 	 */
 	@Override
 	public final void showModal() {			
-		Activity currentActivity = null;
-		
-		if(baseFragment != null) {
-			currentActivity = baseFragment.getActivity();
-		}
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		
 		if(currentActivity != null) {
-			final ModalDefaultTopView top = new ModalDefaultTopView(baseFragment.getActivity(), null);
+			final String questionMark = "?";
+			final ModalDefaultTopView top = new ModalDefaultTopView(currentActivity, null);
 			final ModalDefaultOneButtonBottomView bottom = 
 									new ModalDefaultOneButtonBottomView(currentActivity, null);
 			
 			bottom.setButtonText(buttonText);
 		
 			top.hideNeedHelpFooter();
-			String title = baseFragment.getResources().getString(titleText);
+			String title = currentActivity.getResources().getString(titleText);
 			
-			if(!title.endsWith("?")) {
-				title += "?";
+			if(!title.endsWith(questionMark)) {
+				title += questionMark;
 			}
 			
 			top.setTitle(title);

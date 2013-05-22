@@ -54,4 +54,8 @@
     <string name="atm_location_timeout_title">Cannot Retrieve Current Location</string>
     <string name="atm_location_timeout_text">We\'re sorry, we are unable to find your location at this time. Please allow us to search for your location again.</string>
     
+    <!-- Leaving Application Modal Text  -->
+    <string name="atm_browser_title">You\'re Leaving This Application</string>
+    <string name="atm_browser_body">Tap Continue to view this page in your mobile browser.</string>
+  
 </resources>

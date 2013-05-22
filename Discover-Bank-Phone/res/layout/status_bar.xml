@@ -12,11 +12,9 @@
         android:layout_marginLeft="@dimen/between_related_elements_padding"
         android:ellipsize="marquee"
         android:gravity="center_vertical"
-        android:maxLength="20"
-        android:singleLine="true"
         android:textColor="@color/title"
         android:textStyle="bold"
-        android:text="@string/hi_text"/>
+        android:text="@string/empty"/>
 
     <RelativeLayout 
         android:id="@+id/account_toggle_layout"
@@ -33,6 +31,7 @@
 	        android:paddingTop="10dp"	        
 	        android:layout_centerVertical="true"
 	        android:src="@drawable/bank_gray_icon"
+	        android:contentDescription="@null"
 	        android:visibility="invisible"  />
 	
 	    <ImageView
@@ -43,6 +42,7 @@
 	        android:layout_toRightOf="@+id/cardBankIcon"
 	        android:paddingLeft="@dimen/nav_menu_list_padding"
 	        android:src="@drawable/orange_down_carrot"
+	        android:contentDescription="@null"
 	        android:visibility="invisible" />   
 	        
 	    <TextView
@@ -57,5 +57,6 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="3dp"
 	        android:layout_alignParentBottom="true"
+	        android:contentDescription="@null"
 	        android:src="@drawable/table_solid_line" /> 
 </RelativeLayout>

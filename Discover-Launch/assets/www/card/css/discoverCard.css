@@ -3693,3 +3693,4 @@ ul li.ui-corner-top{-webkit-border-top-left-radius:3px !important; -webkit-borde
 ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-border-bottom-left-radius:3px !important;}
 .padding10pxLeftright /* #pendingPayments-pg  #errorPendingPaymentDiv */
 {padding-left:10px; padding-right:10px}
+.minWidth .ui-btn{ min-width:0px !important; left:-10px;}

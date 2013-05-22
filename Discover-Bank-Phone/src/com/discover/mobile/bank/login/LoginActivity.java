@@ -2,12 +2,10 @@ package com.discover.mobile.bank.login;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
-import org.apache.cordova.api.CordovaInterface;
-import org.apache.cordova.api.CordovaPlugin;
-
-import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -28,7 +26,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
@@ -47,7 +44,6 @@ import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.ActivityUtil;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
@@ -81,7 +77,7 @@ import com.google.common.base.Strings;
  */
 
 public class LoginActivity extends BaseActivity implements
-		LoginActivityInterface, CordovaInterface {
+		LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -99,6 +95,8 @@ public class LoginActivity extends BaseActivity implements
 	private static final String ERROR_MESSAGE_COLOR = "i";
 	private static final String TOGGLE_KEY = "j";
 
+	/** ID that allows control over relative buttons' placement.*/
+	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -138,6 +136,9 @@ public class LoginActivity extends BaseActivity implements
 	 * Should only be done at application start-up.
 	 */
 	private boolean preAuthHasRun = false;
+	
+	/**Set to true when the alu modal is showing*/
+	private boolean isAluModalShowing = false;
 
 	private boolean saveUserId = false;
 
@@ -155,8 +156,6 @@ public class LoginActivity extends BaseActivity implements
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
-	private ActivityUtil activityUtil = null;
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -173,10 +172,8 @@ public class LoginActivity extends BaseActivity implements
 
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
-
-		activityUtil = ActivityUtil.getInstance();
-		activityUtil.setCurrentActivity(this);
-		DiscoverActivityManager.setActiveActivity(this);
+		
+		DiscoverActivityManager.setActiveActivity(this);	
 	}
 
 	/**
@@ -322,10 +319,7 @@ public class LoginActivity extends BaseActivity implements
 	@Override
 	public void onResume(){
 		super.onResume();
-		
-		 activityUtil.setCurrentActivity(this);
-		 DiscoverActivityManager.setActiveActivity(this);
-
+	
 
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
@@ -417,7 +411,7 @@ public class LoginActivity extends BaseActivity implements
 	public void onStart() {
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(
-				activityUtil.getCurrentActivity());
+				this);
 	}
 
 	@Override
@@ -610,6 +604,16 @@ public class LoginActivity extends BaseActivity implements
 				BankConductor.navigateToCardPrivacyAndTermsLanding();
 			}
 		});
+	}
+	
+	/**
+	  * Method used to determine whether the user is in the Card Login Page or
+	  * Bank Login Page.
+	  * 
+	  * @return True if in the Card login page, false otherwise.
+	  */
+	public boolean isCardLogin() {
+		return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -947,19 +951,6 @@ public class LoginActivity extends BaseActivity implements
 	}
 
 	/**
-	 * Opens Privacy and Security screen when user taps the Privacy and Security button while
-	 * in the Card Login Screen
-	 */
-	public void openPrivacyAndSecurity() {
-		//TODO: Remove this code once implemented. This is only for QA testing purposes only
-		final CharSequence text = "Privacy & Security Under Development";
-		final int duration = Toast.LENGTH_SHORT;
-
-		final Toast toast = Toast.makeText(this, text, duration);
-		toast.show();
-	}
-
-	/**
 	 * Opens Privacy and Terms screen when user taps the Privacy and Terms button while
 	 * in the Bank Login Screen
 	 */
@@ -1136,7 +1127,7 @@ public class LoginActivity extends BaseActivity implements
 		// we take it down
 		if ( !phoneGapInitComplete ) {
 		    FacadeFactory.getCardFacade().initPhoneGap();
-		    FacadeFactory.getCardLoginFacade().loadCordovaWebview(this);
+		    
 			phoneGapInitComplete = true;
 		}
 		showSplashScreen(false);
@@ -1148,16 +1139,6 @@ public class LoginActivity extends BaseActivity implements
 	 */
 	public boolean getPreAuthHasRun() {
 		return preAuthHasRun;
-	}
-
-	/**
-	 * Method used to determine whether the user is in the Card Login Page or
-	 * Bank Login Page.
-	 * 
-	 * @return True if in the Card login page, false otherwise.
-	 */
-	public boolean isCardLogin() {
-		return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -1182,61 +1163,71 @@ public class LoginActivity extends BaseActivity implements
 		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
 		aluModalTopView.setTitle(R.string.skipsso_modal_title);
 		aluModalTopView.setContent(R.string.skipsso_modal_body);
-		aluModalTopView.hideNeedHelpFooter();
+		aluModalTopView.getHelpFooter().setToDialNumberOnClick(R.string.skipsso_modal_number);
 		aluModalTopView.showErrorIcon(true);
 
 		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(this, null);
 		confirmModalButton.setButtonText(R.string.skipsso_modal_button);
 
 		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(this, aluModalTopView, confirmModalButton);
-		this.showCustomAlert(aluModal);
-		closeDialog();
-
 		confirmModalButton.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(final View v) {
-				aluModal.dismiss();				
+			public void onClick(final View v) {		
 				if (credentials == null) {
 					BankConductor.continueAuthDueToALU();
 				} else {
 					BankConductor.continueAuthDueToALU(credentials);
 				}
+				aluModal.dismiss();		
 			}
 		});
+		
+		aluModal.setOnShowListener(new OnShowListener() {
+			
+			@Override
+			public void onShow(DialogInterface dialog) {
+				isAluModalShowing = true;
+			}
+		});
+		
+		aluModal.setOnDismissListener(new OnDismissListener() {
+			
+			@Override
+			public void onDismiss(DialogInterface dialog) {
+				isAluModalShowing = false;
+				
+			}
+		});
+		closeDialog();
+		showCustomAlert(aluModal);
 	}
+	
+	/**
+	 * Start an activity (this needs to be overwritten so that the ALU modal
+	 * can stay visible after the phone number is clicked)
+	 */
 	@Override
-	public void cancelLoadUrl() {
-		// TODO Auto-generated method stub
-
+	public void startActivity(Intent intent){
+		if(isAluModalShowing){
+			super.startActivityNoReset(intent);
+		}else{
+			super.startActivity(intent);
+		}
 	}
-
+	
+	/**
+	 * Start an activity for result but dont clear the active moddal
+	 * (this needs to be overwritten so that the ALU modal
+	 * can stay visible after the phone number is clicked)
+	 * @param intent - intent to start
+	 * @param requestCode - requestCode
+	 */
 	@Override
-	public Activity getActivity() {
-		// TODO Auto-generated method stub
-		return DiscoverActivityManager.getActiveActivity();
-	}
-
-	@Override
-	public ExecutorService getThreadPool() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object onMessage(final String arg0, final Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setActivityResultCallback(final CordovaPlugin arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void startActivityForResult(final CordovaPlugin arg0, final Intent arg1, final int arg2) {
-		// TODO Auto-generated method stub
-
+	public void startActivityForResult(final Intent intent, final int requestCode){
+		if(isAluModalShowing){
+			super.startActivityForResultNoReset(intent, requestCode);
+		}else{
+			super.startActivityForResult(intent, requestCode);
+		}	
 	}
 }

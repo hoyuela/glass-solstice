@@ -7,7 +7,13 @@
     <string name="bank_ira_account">Retirement Plans</string>
     <string name="bank_loan_account">Personal Loans</string>
     <string name="bank_unknown_account">Other Accounts</string>
-
+    
+    <!-- Greeting Strings -->
+    <string name="greeting_prefix">Good %s,</string>
+    <string name="greeting_morning_suffix">morning</string>
+	<string name="greeting_afternoon_suffix">afternoon</string>
+	<string name="greeting_evening_suffix">evening</string>
+	
     <!-- Account Activity Strings -->
     <string name="activity_screen_title">Account Activity</string>
     <string name="activity_title">Discover Online Checking</string>
@@ -32,6 +38,7 @@
         Due to special conditions related to your credit card account, we can\'t provide you with access to your account 
         information at this time. \n\nBecause of increased security measures, you will need to log into Discover Bank in 
         order to access your online account.</string>
+    <string name="skipsso_modal_number">1&#8211;800&#8211;290&#8211;9885</string>
     <string name="skipsso_modal_button">Continue</string>
 
 </resources>
