@@ -23,13 +23,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * @author 228218
- * 
+ *
  */
 public class ForgotBoth {
-    private final Context context;
-    private final CardEventListener listener;
-    private final AccountInformationDetails accountInformationDetails;
-
+    private Context context;    
+    private CardEventListener listener;
+    private AccountInformationDetails accountInformationDetails;
     /**
      * Constructor
      * 
@@ -39,14 +38,14 @@ public class ForgotBoth {
      * @param accountInformationDetails
      *            AccountInformationDetails
      */
-    public ForgotBoth(final Context context, final CardEventListener listener,
-            final AccountInformationDetails accountInformationDetails) {
+    public ForgotBoth(Context context, CardEventListener listener,
+            AccountInformationDetails accountInformationDetails) {
         super();
         this.context = context;
         this.listener = listener;
         this.accountInformationDetails = accountInformationDetails;
     }
-
+    
     /**
      * This method make a service call for sending account details to server.
      * 
@@ -56,26 +55,26 @@ public class ForgotBoth {
      */
     public void sendRequest() throws JsonGenerationException,
             JsonMappingException, IOException {
-        final WSRequest request = new WSRequest();
+        WSRequest request = new WSRequest();
 
         // Setting the headers available for the service
-        final HashMap<String, String> headers = request.getHeaderValues();
+        HashMap<String, String> headers = request.getHeaderValues();
         headers.put("X-SEC-Token", "");
-        final String url = NetworkUtility.getWebServiceUrl(context,
+        String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.forgotBoth_url);
 
         request.setUrl(url);
         request.setHeaderValues(headers);
         request.setMethodtype("POST");
 
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         JacksonObjectMapperHolder.getMapper().writeValue(baos,
                 accountInformationDetails);
 
         request.setInput(baos.toByteArray());
 
-        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
                 "Discover", "Loading...", listener);
         serviceCall.execute(request);
     }

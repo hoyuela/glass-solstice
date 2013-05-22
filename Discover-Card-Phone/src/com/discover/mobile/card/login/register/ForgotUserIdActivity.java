@@ -2,10 +2,6 @@ package com.discover.mobile.card.login.register;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-
-import org.apache.cordova.api.CordovaInterface;
-import org.apache.cordova.api.CordovaPlugin;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,8 +17,6 @@ import android.widget.TextView;
 
 import com.google.common.base.Strings;
 
-import com.discover.mobile.common.ActivityUtil;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -46,7 +40,6 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.navigation.CordovaWebFrag;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
 
 /**
@@ -103,13 +96,10 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
     private ScrollView mainScrollView;
 
     protected final Activity currentContext = this;
-    
-    private ActivityUtil activityUtil = null;
-    
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
         setContentView(R.layout.register_forgot_id);
 
         loadAllViews();
@@ -281,9 +271,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 	 * 
 	 */
     private void checkInputsAndSubmit() {
-        
         cardNumField.updateAppearanceForInput();
-       if(passField.getText().toString().length()<5)
+        
+        if(passField.getText().toString().length()<5)
         {
            passField.setErrors();
         }
@@ -301,6 +291,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
        }
        
+        
+       
+
     }
 
     /**
@@ -328,7 +321,6 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
              * )globalCache.getData().get(data[0]); if(cachedData!=null) {
              * getDataFromAsync(cachedData); } else
              */
-        
             {
                 // new ForgotUserIDAsyncTask(this).execute(data);
                 callForgotUserID(data);
@@ -541,4 +533,5 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
                     REFERER);
         }
     }
+
 }

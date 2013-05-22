@@ -3,8 +3,6 @@
  */
 package com.discover.mobile.card.facade;
 
-import android.app.Activity;
-
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.facade.PushFacade;
 
@@ -24,7 +22,7 @@ public class PushFacadeImpl implements PushFacade {
     }
 
     @Override
-    public void startXtifySDK(final Activity callingActivity) {
+    public void startXtifySDK(final BaseActivity callingActivity) {
         new PushNotificationService().start(callingActivity);
 
     }
