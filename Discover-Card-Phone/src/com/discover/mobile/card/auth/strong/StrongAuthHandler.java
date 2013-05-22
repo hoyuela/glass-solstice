@@ -10,21 +10,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.discover.mobile.common.IntentExtraKey;
-
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity;
-import com.discover.mobile.card.login.register.ForgotOrRegisterFinalStep;
 import com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity;
+import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCheck;
 import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthQuestion;
+import com.discover.mobile.common.IntentExtraKey;
 
 /**
  * 
@@ -98,12 +96,16 @@ public class StrongAuthHandler {
                         authDetails.questionText);
                 strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID,
                         authDetails.questionId);
+                
+                strongAuth.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//DEFECT 96497 
+                
                 Log.i(TAG, "In Strong auth --"+context.getClass());
                 if (authListener != null) {
                     context.startActivity(strongAuth);
                     Log.i(TAG, "In Strong auth "+context.getClass());
                     if(context instanceof ForgotPasswordAccountInformationActivity ||
-                    		context instanceof ForgotBothAccountInformationActivity)
+                    		context instanceof ForgotBothAccountInformationActivity ||
+                    		context instanceof RegistrationAccountInformationActivity) //DEFECT 96355 
                     {
                     	Log.i(TAG, "Finish him");
                     	Activity activity = (Activity) context;

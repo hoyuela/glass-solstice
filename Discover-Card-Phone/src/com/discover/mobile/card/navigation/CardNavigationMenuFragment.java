@@ -17,20 +17,12 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.common.collect.ImmutableList;
-
-import com.discover.mobile.common.BaseFragmentActivity;
-import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.nav.NavigationItem;
-import com.discover.mobile.common.nav.NavigationMenuFragment;
-import com.discover.mobile.common.nav.section.ComponentInfo;
-
+import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.account.AccountSectionInfo;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.account.AccountSectionInfo;
 import com.discover.mobile.card.earncashbackbonus.EarnCashbackBonusInfo;
 import com.discover.mobile.card.help.CustomerServiceContactInfo;
 import com.discover.mobile.card.home.HomeSectionInfo;
@@ -44,8 +36,12 @@ import com.discover.mobile.card.redeemcashbackbonus.RedeemCashbackBonusInfo;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.GetPushCount;
 import com.discover.mobile.card.services.push.GetPushCountBean;
-
-import com.discover.mobile.PushConstant;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.nav.NavigationItem;
+import com.discover.mobile.common.nav.NavigationMenuFragment;
+import com.discover.mobile.common.nav.section.ComponentInfo;
+import com.google.common.collect.ImmutableList;
 import com.xtify.sdk.api.XtifySDK;
 
 public class CardNavigationMenuFragment extends NavigationMenuFragment {
@@ -197,7 +193,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
         Context context = this.getActivity().getApplicationContext();
 
-       // ArrayList<ComponentInfo> tempList = new ArrayList<ComponentInfo>();
+        //ArrayList<ComponentInfo> tempList = new ArrayList<ComponentInfo>();
 
         CardShareDataStore dataStore = CardShareDataStore.getInstance(context);
 

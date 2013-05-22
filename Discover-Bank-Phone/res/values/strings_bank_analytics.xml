@@ -11,7 +11,7 @@
     <string name="bank_select_account">select_account-pg</string>
     <string name="bank_payment_start">payment_start-pg</string>
     <string name="bank_atm_start">atmlocator_start-pg</string>
-    <string name="bank_deposit_amount">enter_amount-pg</string>
+    <string name="bank_deposit_amount_tracking">enter_amount-pg</string>
     <string name="bank_capture_front">capture_front-pg</string>
     <string name="bank_capture_back">capture_back-pg</string>
     <string name="bank_capture_confirm">confirm_authorize-pg</string>

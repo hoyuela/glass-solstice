@@ -3,15 +3,20 @@
  */
 package com.discover.mobile.bank.atm;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
@@ -23,8 +28,10 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
@@ -48,7 +55,8 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
-implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, DynamicDataFragment{
+ implements LocationFragment, AtmMapSearchFragment,
+		FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -64,6 +72,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 	/**Key to get the state of the help modal from the bundle*/
 	private static final String ATM_HELP_MODAL = "atmModal";
+	
+	/**Key to get the state of the Leaving App modal from the bundle*/
+	private static final String LEAVING_APP_MODAL = "leaveApp";
 
 	/**Modal that asks the user if the app can use their current location*/
 	private ModalAlertWithTwoButtons locationModal;
@@ -140,6 +151,17 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
 
+	/**
+	 * Flag used to determing if the modal used for leaving the application is
+	 * being shown
+	 */
+	private boolean isLeavingModalShowing = false;
+
+	/**
+	 * Holds reference to layout that displays Google Logo and Terms of Use Link
+	 */
+	private RelativeLayout googleTerms;
+
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -197,6 +219,8 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
 		searchBar = (AtmLocatorMapSearchBar) view.findViewById(R.id.full_search_bar);
 		searchBar.setFragment(this);
+		googleTerms = (RelativeLayout) view.findViewById(R.id.terms_layout);
+		googleTerms.setOnTouchListener(this);
 
 		DiscoverModalManager.clearActiveModal();
 
@@ -246,7 +270,9 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
-		}		
+		} else if (this.isLeavingModalShowing) {
+			showTerms();
+		}
 	}
 
 	/**
@@ -446,6 +472,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		listFragment.handleReceivedData(savedInstanceState);
 		setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
+		isLeavingModalShowing = savedInstanceState.getBoolean(LEAVING_APP_MODAL, false);
 		if(0.0 == lat && 0.0 == lon){
 			mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		}else{
@@ -590,6 +617,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		}
 		outState.putBoolean(ATM_HELP_MODAL, isHelpModalShowing());
+		outState.putBoolean(LEAVING_APP_MODAL, isLeavingModalShowing);
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		outState.putBoolean(BUTTON_KEY, isOnMap);
 		outState.putBoolean(STREET_VIEW_SHOWING, shouldGoBack);
@@ -686,6 +714,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void showList(){
 		streetView.hide();
+		googleTerms.setVisibility(View.GONE);
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.GONE);
 		searchBar.showListView();
@@ -709,6 +738,7 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 	@Override
 	public void showMap(){
 		streetView.hide();
+		googleTerms.setVisibility(View.VISIBLE);
 		searchBar.setVisibility(View.VISIBLE);
 		help.setVisibility(View.VISIBLE);
 		searchBar.showMapView();
@@ -834,5 +864,41 @@ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed, Dynami
 		} else {
 			mapWrapper.zoomToLocation(location, MAP_CURRENT_NETWORK_ZOOM);
 		}
+	}
+
+	@Override
+	public boolean onTouch(final View sender, final MotionEvent event) {
+		/** Check if User clicked on Terms link in footer */
+		if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
+
+			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * 80 / 100;
+
+			if (event.getRawX() > locationOfLink) {
+				this.showTerms();
+			}
+		}
+		return false;
+	}
+
+	private void showTerms() {
+		/**
+		 * Show modal to prompt user that they are navigating away from
+		 * application
+		 */
+		final AlertDialog dialog = BankConductor.navigateToBrowser(R.string.atm_browser_title, R.string.atm_browser_body,
+				BankUrlManager.getCardGoogleTermsUrl());
+
+		/** Listen to when modal is dismissed to set flag to false */
+		dialog.setOnDismissListener(new OnDismissListener() {
+
+			@Override
+			public void onDismiss(final DialogInterface arg0) {
+				isLeavingModalShowing = false;
+			}
+		});
+
+		/** Set flag to true so modal is displayed on rotation */
+		isLeavingModalShowing = true;
+
 	}
 }

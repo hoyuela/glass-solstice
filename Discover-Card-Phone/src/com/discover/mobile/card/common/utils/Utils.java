@@ -255,6 +255,8 @@ public class Utils {
                 if (progressBar != null && !progressBar.isShowing()) {
                     progressBar.show();
                 }
+                else if (null != strMessage && strMessage != "")
+                    progressBar.setMessage(strMessage);
             } catch (final Exception e) {
                 e.printStackTrace();
             }
@@ -289,7 +291,12 @@ public class Utils {
     public static void hideSpinner() {
         if (!isSpinnerForOfflinePush && isSpinnerShow) {
             if (null != progressBar && progressBar.isShowing()) {
-                progressBar.dismiss();
+                try
+                {
+                    progressBar.dismiss();
+                }
+                catch(Exception e)
+                {}
                 progressBar = null;
             } else {
                 isSpinnerAllowed = false;
