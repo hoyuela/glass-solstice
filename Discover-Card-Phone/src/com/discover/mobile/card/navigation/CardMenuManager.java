@@ -7,9 +7,8 @@ import java.util.Set;
 
 import android.content.Context;
 
-import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * ©2013 Discover Bank
@@ -31,7 +30,7 @@ public class CardMenuManager {
      * Constructor
      * 
      */
-    public CardMenuManager(final Context context) {
+    public CardMenuManager(Context context) {
         mContext = context;
         cardMenuTypes = new HashMap<String, CardMenu>();
 
@@ -44,13 +43,13 @@ public class CardMenuManager {
         Utils.log("CardMenu", "list size is" + cardMenuTypes.size());
     }
 
-    public ArrayList<String> getValidMenuItems(final String incentiveTypeCode,
-            final String incentiveCode, final String optionCode) {
+    public ArrayList<String> getValidMenuItems(String incentiveTypeCode,
+            String incentiveCode, String optionCode) {
 
-        final Set<String> cards = cardMenuTypes.keySet();
+        Set<String> cards = cardMenuTypes.keySet();
         supportedMenus = new ArrayList<String>();
 
-        for (final String card : cards) {
+        for (String card : cards) {
             // CardMenu cardMenu = cardMenuTypes.get(card);
 
             if (null != cardMenuTypes.get(card)) {
@@ -62,9 +61,8 @@ public class CardMenuManager {
                             && cardMenuTypes.get(card).docs.indexOf(optionCode) == -1) {
                         supportedMenus.add(card);
                         Utils.log("CardMenu", "adding menu " + card);
-                    } else {
+                    } else
                         Utils.log("CardMenu", "list is empty");
-                    }
                 }
             }
         }
