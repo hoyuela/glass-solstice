@@ -1,5 +1,6 @@
 function accountSummary()
 {	
+	populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../achome/accountSummary');   
 }
@@ -35,49 +36,57 @@ function handleNativeFrame(activePage)
 
 function dismissProgressBar()
 {
-
 HybridControl.prototype.dismissProgressBar();
 }
 
 function makeaPayment()
 {
+populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../payments/paymentStep1');
 }
 
 function managePayments()
 {
+populateGlobalCache();
 	navigation('../payments/paymentsLanding');
 }
 
 function manageBankInformation()
 {
+populateGlobalCache();
 	navigation('../payments/manageBankInformation');
 }
 
 function sendMoney()
-{	isLhnNavigation  = true;
+{	
+	populateGlobalCache();
+	isLhnNavigation  = true;
 	navigation('../p2p/sendMoney1');
 }
 
 function sendMoneyHistory()
 {
+	populateGlobalCache();
 	navigation('../p2p/transactionHistory');
 }
 
 function cashbackBonusPromos()
 {
+	populateGlobalCache();
 	s.prop1='HANDSET_CBB_SIGNUP_BTN';
 	navigation('../rewards/cashbackBonusSignup1');
 }
 
 function extras()
 {
+	populateGlobalCache();
 	navigation('../edo/edoLandingPage');
 }
 
 function referAFriend()
 {
+	populateGlobalCache();
 	s.prop1='HANDSET_CBB_RAF_BTN';
 	if(accountEarnsCBB(incentiveTypeCode)){	
 	  dfs.crd.raf.navFromCBBLanding();
@@ -89,6 +98,7 @@ function referAFriend()
 
 function partnerGiftCardseCerts()
 {
+	populateGlobalCache();
     dfs.crd.rwd.getAllPartners();
 	s.prop1 = 'HANDSET_REDEEM_PGC_BTN'; // campaign code	
 	var insuffErr = dfs.crd.rwd.insuficientErrorPresent;
@@ -102,6 +112,7 @@ function partnerGiftCardseCerts()
 
 function discoverGiftCard()
 {	
+	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
 	s.prop1 = 'HANDSET_REDEEM_DGC_BTN'; // campaign code
 	var insuffErr = dfs.crd.rwd.insuficientErrorPresent;
@@ -115,6 +126,7 @@ function discoverGiftCard()
 
 function statementCredit()
 {
+	populateGlobalCache();
 	s.prop1 = 'HANDSET_REDEEM_STATE_CREDIT_BTN'; // campaign code
 	isLhnNavigation  = true;
 	navigation('../rewards/statementCredit1');	
@@ -122,6 +134,7 @@ function statementCredit()
 
 function directDeposit()
 {
+	populateGlobalCache();
 	s.prop1 = 'HANDSET_REDEEM_DIRECT_DEP_BTN'; // campaign code
 	isLhnNavigation  = true;
 	navigation('../rewards/directDeposit1');	
@@ -129,6 +142,7 @@ function directDeposit()
 
 function paywithCashbackBonus()
 {
+	populateGlobalCache();
 	s.prop1 = 'HANDSET_REDEEM_PAY_CBB_BTN'; // campaign code
 	//navigation('../rewards/redeemCashbackEcert1');
 	navigation('../rewards/redeem_pay_with_cbb');
@@ -136,12 +150,14 @@ function paywithCashbackBonus()
 
 function redemptionHistory()
 {
+	populateGlobalCache();
 	s.prop1 = 'HANDSET_REDEEM_HIST_BTN'; // campaign code
 	navigation('../rewards/redemption_History');
 }
 
 function manageTextAlerts()
 {
+	
 	navigation('../pushNotification/manageAlertsOverride');
 }
 
@@ -168,16 +184,19 @@ function frequentlyAskedQuestions()
 
 function earnMoreMilesRewards()
 {
+	populateGlobalCache();
 	navigation('../rewards/milesHome');
 }
 
 function milesPromotions()
 {
+	populateGlobalCache();
 	navigation('../rewards/milesSignup1');
 }
 
 function redeemMiles()
 {
+	populateGlobalCache();
 	navigation('../rewards/milesRedeem');
 }
 
@@ -197,10 +216,12 @@ function acHome(){
 
 function paymentHistory()
 {
+populateGlobalCache();
 navigation('../payments/paymentsHistory');
 }
 
 function redemptionOptions()
 {
+populateGlobalCache();
 navigation('../rewards/redemptionLanding');
 }

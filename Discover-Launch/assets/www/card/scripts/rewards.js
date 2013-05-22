@@ -144,7 +144,7 @@ dfs.crd.rwds.populateCBBLandingPromitionsList = function(cashbackbonusSignupDeta
 							signupStatusText="<span class='signin orangetxt'>You&#39;re Signed Up!</span>";
 							
 							}else if(promotionInfo.promoCode =="COMINGSOON"){
-								signupStatusText = "";
+								signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
 							}
 							else{
 								signupStatusText= "<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
@@ -213,6 +213,7 @@ dfs.crd.rwds.populatecashbackSignup2Div = function(){
 	try{
 		var cashbackbonusSignupSelected=getDataFromCache("CASHBACK_BONUS_SIGNUP_SELECTED");
 		var cashbackbonusSignupDetails=getDataFromCache("CASHBACK_BONUS_SIGNUP_DETAILS");
+	$("#cashbackSignup2_CashBackbonusBalance").html("$"+ globalEarnRewardAmount);
 
 		var promoCodeJson=dfs.crd.rwds.getRewardsPCCData("cashbackBonusSignup2");
 		/*var promoCodeJson;
@@ -334,6 +335,7 @@ function cashbackBonusSignup3Load(){
 				promoCodeText=promoCodeJson[key];
 			}			
 			promoCodeText= parseContent(promoCodeText,promoCodeTextData);			
+			$("#cashbackSignup3_CashBackbonusBalance").html("$"+ globalEarnRewardAmount);
 			$("#cashBackBonusSignUpConfirm_Div").html(promoCodeText);
 			killDataFromCache('CASHBACK_BONUS_SIGNUP_DETAILS');
 			killDataFromCache('CASHBACK_BONUS_SIGNUP_SELECTED');
