@@ -11,11 +11,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
+
+import com.google.common.base.Strings;
 
 /**
  * 
  */
-final class ContextNetworkUtility {
+final public class ContextNetworkUtility {
 	
 	// This should only ever be mutated on the main thread
 	@SuppressLint("UseSparseArrays")
@@ -48,6 +52,28 @@ final class ContextNetworkUtility {
 		return networkInfo != null && networkInfo.isConnected();
 	}
 	
+	/**
+	 * Method used to fetch a unique identifier for the device. Returns
+	 * telephony device id, if not available returns the ANDROID_ID. Note, the
+	 * ANDROID_ID is not available
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static String getUUID(final Context context) {
+		String identifier = "";
+
+		final TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+		if (telephonyManager != null)
+			telephonyManager.getDeviceId();
+
+		if (Strings.isNullOrEmpty(identifier) || identifier.length() == 0)
+			identifier = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+
+		return identifier;
+	}
+
 	private ContextNetworkUtility() {
 		throw new UnsupportedOperationException("This class is non-instantiable");
 	}

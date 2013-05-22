@@ -13,6 +13,7 @@
     <string name="open_an_account">Open an Account</string>
     <string name="frequency_title">Frequency</string>
     <string name="view_account_summary">View Account Summary</string>
+    <string name="select_transfer_date">Select a Transfer Date</string>
     
     <string-array name="transfer_frequency_strings">
         <item>One Time</item>
@@ -65,4 +66,5 @@
 	<string name="amount_less_than_twenty_five">Too low (less than $25).</string>
 	<string name="invalid_date">Please select a date.</string>
 	<string name="too_few_transfers">Enter the number of total transfers, must be greater than 1.</string>
+	
 </resources>
