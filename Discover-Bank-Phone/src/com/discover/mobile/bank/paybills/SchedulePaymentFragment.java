@@ -50,8 +50,6 @@ import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.AccountAdapter;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
-import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
-import com.discover.mobile.bank.ui.modals.CancelThisActionModal;
 import com.discover.mobile.bank.ui.widgets.AmountValidatedEditField;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.util.BankStringFormatter;
@@ -349,6 +347,12 @@ public class SchedulePaymentFragment extends BaseFragment
 					setErrorString(dateError, data.getString(CreatePaymentDetail.DELIVERBY_FIELD));
 					setErrorString(memoError,data.getString(CreatePaymentDetail.MEMO_FIELD));
 					setErrorString(conflictError,data.getString(CONFLICT));
+
+					/** Highlight text field in red with X if has an error */
+					if (data.containsKey(CreatePaymentDetail.AMOUNT_FIELD)) {
+						amountEdit.setErrors();
+					}
+
 					restoreCellFocus(data);
 				}
 			}, ERROR_STATE_DELAY);
@@ -844,6 +848,9 @@ public class SchedulePaymentFragment extends BaseFragment
 				/**Check if error is for amount field*/
 				else if( error.name.equals(CreatePaymentDetail.AMOUNT_FIELD)) {
 					setErrorString(amountError, error.message);
+
+					/** Highlight in red to show error */
+					amountEdit.setErrors();
 				}
 				/**Check if error is for Payment method field*/
 				else if( error.name.equals(CreatePaymentDetail.PAYMENT_METHOD_FIELD)) {
@@ -887,6 +894,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		setDateError(false);
 		memoError.setVisibility(View.GONE);
 		conflictError.setVisibility(View.GONE);
+		amountEdit.clearErrors();
 	}
 
 	@Override 
