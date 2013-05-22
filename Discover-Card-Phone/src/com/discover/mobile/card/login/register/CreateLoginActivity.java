@@ -165,10 +165,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         } else {
             passConfirmField.setupDefaultAppearance();
         }
-        if (isError1) {
+        //Defect id 95719
+        /*if (isError1) {
             mainErrorMessageLabel.setVisibility(View.VISIBLE);
-        }
-        if (isError2) {
+        }*/
+        //Defect id 95719
+        if (isError2 ) {
             mainErrorMessageLabelTwo.setVisibility(View.VISIBLE);
             errorIcon.setVisibility(View.VISIBLE);
         }
@@ -191,11 +193,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
         outState.putBoolean(UPDATE_PASS_CONFIRM_STATE,
                 passConfirmField.isInErrorState);
-        if (mainErrorMessageLabel.getVisibility() == View.VISIBLE) {
+        //Defect id 95719
+      /*  if (mainErrorMessageLabel.getVisibility() == View.VISIBLE) {
             outState.putBoolean(ERROR_1, true);
             outState.putString(EROR_STRING_1, mainErrorMessageLabel.getText()
                     .toString());
-        }
+        }*/
+        //Defect id 95719
         if (mainErrorMessageLabelTwo.getVisibility() == View.VISIBLE) {
             outState.putBoolean(ERROR_2, true);
             outState.putBoolean(ERROR_ICON, true);
@@ -230,8 +234,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
             isError1 = savedInstanceState.getBoolean(ERROR_1, false);
             isError2 = savedInstanceState.getBoolean(ERROR_2, false);
             isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
-            mainErrorMessageLabel.setText(savedInstanceState
-                    .getString(EROR_STRING_1));
+            //Defect id 95719
+           /* mainErrorMessageLabel.setText(savedInstanceState
+                    .getString(EROR_STRING_1));*/
+            //Defect id 95719
             mainErrorMessageLabelTwo.setText(savedInstanceState
                     .getString(ERROR_STRING_2));
             errorMessageLabel.setText(savedInstanceState
@@ -273,7 +279,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         mainErrorMessageLabelTwo = (TextView) findViewById(R.id.account_info_error_label_two);
         errorIcon = (ImageView) findViewById(R.id.icon);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
-        mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
+        //mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
         idConfirmErrorLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
         emailErrorLabel = (TextView) findViewById(R.id.account_info_email_error_label);
         passConfirmErrorLabel = (TextView) findViewById(R.id.account_info_pass_two_confirm_error_label);
@@ -344,8 +350,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
      * @param v
      */
     public void checkInputsThenSubmit(final View v) {
-        CommonUtils.setViewGone(mainErrorMessageLabel);
-
+        //Defect id 95719
+        CommonUtils.setViewGone(mainErrorMessageLabelTwo);
+        CommonUtils.setViewGone(errorIcon);
+        //Defect id 95719
+        
         emailField.updateAppearanceForInput();
         passField.updateAppearanceForInput();
         idField.updateAppearanceForInput();
@@ -361,10 +370,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
             submitFormInfo();
         } else {
             mainScrollView.smoothScrollTo(0, 0);
+            //Defect id 95719
             CommonUtils
-                    .showLabelWithStringResource(mainErrorMessageLabel,
+                    .showLabelWithStringResource(mainErrorMessageLabelTwo,
                             R.string.account_info_bad_input_error_text,
                             currentActivity);
+            CommonUtils.setViewVisible(errorIcon);
+            //Defect id 95719
         }
 
     }
@@ -397,9 +409,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                 case REG_AUTHENTICATION_PROBLEM_SECOND:
                 case REG_AUTHENTICATION_PROBLEM: // Provided information was
                                                  // incorrect.
-                    CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                    //Defect id 95719
+                    CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo,
                             R.string.account_info_bad_input_error_text,
                             currentActivity);
+                    CommonUtils.setViewVisible(errorIcon);
+                    //Defect id 95719
                     break;
                 case ID_AND_PASS_EQUAL:
 

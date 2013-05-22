@@ -27,18 +27,17 @@ import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.phonegap.plugins.ResourceDownloader;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
@@ -256,8 +255,8 @@ public class Utils {
                 if (progressBar != null && !progressBar.isShowing()) {
                     progressBar.show();
                 }
-                else if (null != strTitle && strTitle != "")
-                    progressBar.setMessage(strTitle);
+                else if (null != strMessage && strMessage != "")
+                    progressBar.setMessage(strMessage);
             } catch (final Exception e) {
                 e.printStackTrace();
             }
@@ -401,13 +400,20 @@ public class Utils {
         close.setImageResource(R.drawable.btn_close);
         close.setLayoutParams(closeParams);
 
-        final ImageView logoView = new ImageView(context);
-        logoView.setId(2);
-        logoView.setLayoutParams(logoParams);
-        logoView.setImageResource(R.drawable.discover_blk_logo_login);
+        /*
+         * final ImageView logoView = new ImageView(context); logoView.setId(2);
+         * logoView.setLayoutParams(logoParams);
+         * logoView.setImageResource(R.drawable.discover_blk_logo_login);
+         */
+
+        final TextView headerText = new TextView(context);
+        headerText.setId(2);
+        headerText.setLayoutParams(logoParams);
+        headerText.setTextAppearance(context, R.style.action_bar_text);
+        headerText.setText(context.getString(R.string.provide_feedback_title));
 
         toolbar.addView(close);
-        toolbar.addView(logoView);
+        toolbar.addView(headerText);
 
         main.addView(toolbar);
         main.addView(webview);
