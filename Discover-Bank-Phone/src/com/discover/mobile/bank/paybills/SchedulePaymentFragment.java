@@ -343,6 +343,11 @@ public class SchedulePaymentFragment extends BaseFragment
 					setErrorString(memoError,data.getString(CreatePaymentDetail.MEMO_FIELD));
 					setErrorString(conflictError,data.getString(CONFLICT));
 					
+					/** Highlight text field in red with X if has an error */
+					if (data.containsKey(CreatePaymentDetail.AMOUNT_FIELD)) {
+						amountEdit.setErrors();
+					}
+
 					/**Restore focus state*/
 					if( data.containsKey(FOCUS) ) {
 						if( data.getString(FOCUS).equals(MEMO)) {
@@ -864,6 +869,9 @@ public class SchedulePaymentFragment extends BaseFragment
 				/**Check if error is for amount field*/
 				else if( error.name.equals(CreatePaymentDetail.AMOUNT_FIELD)) {
 					setErrorString(amountError, error.message);
+
+					/** Highlight in red to show error */
+					amountEdit.setErrors();
 				}
 				/**Check if error is for Payment method field*/
 				else if( error.name.equals(CreatePaymentDetail.PAYMENT_METHOD_FIELD)) {
@@ -907,6 +915,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		setDateError(false);
 		memoError.setVisibility(View.GONE);
 		conflictError.setVisibility(View.GONE);
+		amountEdit.clearErrors();
 	}
 
 	@Override 

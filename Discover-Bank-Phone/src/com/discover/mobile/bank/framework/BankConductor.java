@@ -376,22 +376,39 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigates a user to the browser using the URL specified. Prior to moving the user to the
-	 * browser, a modal will be displayed to warn the user that they are navigating away from the application.
-	 *
-	 * @param url String that holds the url to be used when opening the browser.
+	 * Navigates a user to the browser using the URL specified. Prior to moving
+	 * the user to the browser, a modal will be displayed to warn the user that
+	 * they are navigating away from the application.
+	 * 
+	 * @param url
+	 *            String that holds the url to be used when opening the browser.
 	 */
 	public static AlertDialog navigateToBrowser(final String url) {
+		return navigateToBrowser(R.string.bank_open_browser_title, R.string.bank_open_browser_text, url);
+	}
+
+	/**
+	 * Navigates a user to the browser using the URL specified. Prior to moving
+	 * the user to the browser, a modal will be displayed to warn the user that
+	 * they are navigating away from the application.
+	 * 
+	 * @param title
+	 *            Resource ID that identifies the string that should be used as
+	 *            the title of the modal
+	 * @param body
+	 *            Resource ID that identifies the string that should be used as
+	 *            the body of the modal
+	 * @param url
+	 *            String that holds the url to be used when opening the browser.
+	 */
+	public static AlertDialog navigateToBrowser(final int title, final int body, final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		ModalAlertWithOneButton modal = null;
 
 		if(activity != null && activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
-			modal = new ModalAlertWithOneButton(activity,
-					R.string.bank_open_browser_title,
-					R.string.bank_open_browser_text,
-					R.string.continue_text);
+			modal = new ModalAlertWithOneButton(activity, title, body, R.string.continue_text);
 
 			/** Needs to be final in order to dismiss in listener */
 			final ModalAlertWithOneButton modalParam = modal;
