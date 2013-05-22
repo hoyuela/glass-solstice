@@ -3,8 +3,12 @@ package com.discover.mobile.bank.account;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +31,8 @@ import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.services.customer.Customer;
+import com.discover.mobile.bank.services.json.Name;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
@@ -34,10 +40,12 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Fragment used to display all of a user's account information in a single view using BankGroupView and BankAccountView
- * to organize the data in the layout. The layout used to display the content can be found in res/layout/bank_account_summary_view.xml.
+ * to organize the data in the layout. The layout used to display the content can be found 
+ * in res/layout/bank_account_summary_view.xml.
  * The fragment uses the list of Accounts stored in the BankUser singleton instance.
  * 
  * @author henryoyuela
@@ -60,12 +68,10 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
-
+		updateGreeting();
+		
 		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
-
-		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
-		salutation.setText(setFirstName());
-
+		
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
 
@@ -103,8 +109,20 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		//Update the background to prevent a pixelated view
 		CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.background_view));
-
 		return view;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().registerReceiver(timeListener, new IntentFilter(Intent.ACTION_TIME_TICK));
+		updateGreeting();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		getActivity().unregisterReceiver(timeListener);
 	}
 
 	@Override
@@ -118,12 +136,57 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	/** Set the first name in the status bar. The first name can sometimes be 
 	 * returned in all caps and only the first letter should be capitalized. 
 	 */
-	private String setFirstName() {
-		final String firstName = BankUser.instance().getCustomerInfo().name.type;
-		final String name = firstName.toLowerCase();
-		final String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
-		return "Hi, " + upperString;
+	private String getFirstName() {
+		final Customer currentUser = BankUser.instance().getCustomerInfo();
+		final StringBuilder nameBuilder = new StringBuilder(StringUtility.EMPTY);
+		Name customerName = null;
+
+		if(currentUser != null) {
+			customerName = currentUser.name;
+		}
+		
+		if(customerName != null) {
+			final String firstName = customerName.type;
+			
+			if(firstName != null) {
+				final String name = firstName.toLowerCase(Locale.US);
+				nameBuilder.append(name.substring(0,1).toUpperCase(Locale.US) + name.substring(1));
+			}
+		}
+		final String name = nameBuilder.toString();
+		final int maxOneLineLength = 17;
+		
+		if(name.length() > maxOneLineLength) {
+			nameBuilder.insert(0, StringUtility.NEW_LINE);
+		}
+		
+		return nameBuilder.toString();
 	}
+		
+	private void updateGreeting() {
+		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
+
+		new Thread(new SalutationUpdater(salutation, getFirstName(), getActivity())).start();
+	}
+
+	/**
+	 * A broadcast receiver that will call the update greeting method when the time changes
+	 * and if it determines that the time should be updated.
+	 * This broadcast is sent by the operating system every minute.
+	 */
+	private final BroadcastReceiver timeListener = new BroadcastReceiver() {
+		@Override
+		public void onReceive(final Context context, final Intent intent) {
+			if(intent != null) {
+				final String action = intent.getAction();
+				if(action.equalsIgnoreCase(Intent.ACTION_TIME_TICK)) {
+					if(SalutationUpdater.shouldUpdateGreeting()) {
+						updateGreeting();
+					}
+				}
+			}
+		}
+	};
 
 	/**
 	 * Method used to display the account information stored in the AccountList object. This method
@@ -174,13 +237,8 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				group.addTopStroke(context);
 			}
 			//Ensures the last group drawn has the bottom as a solid stroke.
-			if(prevGroup != null) {
-				if(prevGroup.getGroupSize() == 1) {
-					prevGroup.addAllStrokes(context);
-				} else {
-					prevGroup.addBottomStroke(context);
-				}
-			}
+			drawBottomStroke(prevGroup);
+			
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Account List is Empty");
@@ -188,7 +246,20 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		}
 
 	}
-
+	
+	/**
+	 * Draws the final stroke on a group of account items.
+	 * @param group a group of BankAccountGroupView objects.
+	 */
+	private void drawBottomStroke(final BankAccountGroupView group) {
+		if(group != null) {
+			if(group.getGroupSize() == 1) {
+				group.addAllStrokes(getActivity());
+			} else {
+				group.addBottomStroke(getActivity());
+			}
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -244,19 +315,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
 		accountToggleSection.setOnClickListener(new AccountToggleListener());
 	}
-
-	/**
-	 * Listener associated with items that hide/show the Account Toggle Widget. 
-	 */
-	private class AccountToggleListener implements OnClickListener {
-
-		@Override
-		public void onClick(final View v) {
-			toggleView.toggleVisibility();
-		}
-
-	}
-
+	
 	@Override
 	public void onBackPressed() {
 		if(toggleView.getVisibility() == View.VISIBLE) {
@@ -272,6 +331,18 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Listener associated with items that hide/show the Account Toggle Widget. 
+	 */
+	private class AccountToggleListener implements OnClickListener {
+
+		@Override
+		public void onClick(final View v) {
+			toggleView.toggleVisibility();
+		}
+
 	}
 
 }
