@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.telephony.TelephonyManager;
 
 import com.discover.mobile.bank.services.BankHttpHeaders;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.ContextNetworkUtility;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -45,12 +45,13 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 				/**Wait for response to request for two minutes maximum*/
 				this.readTimeoutSeconds = 120;
 				
-				final TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+				
 				
 				//Custom headers for Deposit Check
+				
 				headers = ImmutableMap.<String,String>builder()
 						.put(BankHttpHeaders.XDeviceType, "Android")
-						.put(BankHttpHeaders.XDeviceUuid, telephonyManager.getDeviceId())
+						.put(BankHttpHeaders.XDeviceUuid, ContextNetworkUtility.getUUID(context))
 						.build();
 				
 				errorResponseParser = BankErrorResponseParser.instance();
@@ -95,6 +96,7 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 		 * 
 		 * @return True if the response to this network service call has been handled, false otherwise
 		 */
+		@Override
 		public boolean isHandled() {
 			return handled;
 		}
