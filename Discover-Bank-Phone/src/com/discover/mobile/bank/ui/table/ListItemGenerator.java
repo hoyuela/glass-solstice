@@ -180,7 +180,7 @@ public class ListItemGenerator {
 	}
 	
 	public ViewPagerListItem getReferenceNumberCell(final String referenceNumber) {
-		return getTwoItemCell(R.string.reference_number, "#" + referenceNumber);
+		return getTwoItemCell(R.string.reference_number, StringUtility.HASH + referenceNumber);
 	}
 
 	public ViewPagerListItem getStatusCell(final String status) {
@@ -225,7 +225,7 @@ public class ListItemGenerator {
 		} else if (phoneNumber.length() < PHONE_LENGTH_MIN) {
 			return phoneNumber;
 		} else {
-			return phoneNumber.subSequence(0, PHONE_DASH_INDEX) + "-" 
+			return phoneNumber.subSequence(0, PHONE_DASH_INDEX) + StringUtility.DASH 
 					+ badPhoneNumberFormatter(phoneNumber.substring(PHONE_DASH_INDEX));
 		}
 	}
@@ -233,13 +233,13 @@ public class ListItemGenerator {
 	// TEMP should not be necessary if we get a formatted phone number from the server.
 	private String unformatPhoneNumber(final String phoneNumber){
 		//removes all characters that are not a number from a String.
-		return phoneNumber.replaceAll("[^0-9]", "");
+		return phoneNumber.replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
 	}
 
 	public ViewPagerListItem getAddressCell(final String address){
 		ViewPagerListItem item;
 		if (address == null) {
-			item = getTwoItemCell(R.string.address, "");
+			item = getTwoItemCell(R.string.address, StringUtility.EMPTY);
 		} else {
 			item = getTwoItemCell(R.string.address, address);
 		}

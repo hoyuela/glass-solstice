@@ -8,10 +8,8 @@ import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Header for the review payments list.  This contains the controls for the buttons.
@@ -50,9 +48,6 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Status message*/
 	private final StatusMessageView status;
 
-	/**Help icon setup*/
-	private final HelpWidget help;
-
 	/**
 	 * Constructor for the layout
 	 * @param context - activity context
@@ -62,10 +57,6 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		super(context, attrs);
 
 		final View view = LayoutInflater.from(context).inflate(R.layout.review_payments_header, null);
-
-		/**Help icon setup*/
-		help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 
 		scheduled = (ToggleButton) view.findViewById(R.id.toggle_left);
 		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
@@ -180,10 +171,4 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		titles.hideMessage();
 	}
 
-	/**
-	 * @return the help
-	 */
-	public HelpWidget getHelp() {
-		return help;
-	}
 }

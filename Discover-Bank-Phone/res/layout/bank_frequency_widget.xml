@@ -38,11 +38,6 @@
             android:orientation="vertical"
             android:paddingRight="@dimen/forms_inner_padding" />
 
-        <com.discover.mobile.common.help.HelpWidget
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/help_bar_height_two_items" />
-        
          <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
             android:id="@+id/bank_footer"
             android:layout_width="fill_parent"

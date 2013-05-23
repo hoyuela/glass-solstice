@@ -19,10 +19,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -60,12 +57,6 @@ public class BankWebViewFragment extends BaseFragment{
 		pageTitle = (TextView)view.findViewById(R.id.header_title);
 
 		pageTitle.setText(this.getArguments().getString(KEY_TITLE));
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		if( !Globals.isLoggedIn() ) {
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
-		}
 
 		if (savedInstanceState != null) {
 			webView.restoreState(savedInstanceState);

@@ -13,13 +13,11 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.ui.widgets.FooterType;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display the Check Deposit - Confirmation Page after submitting a check deposit
@@ -127,11 +125,6 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	@Override
 	protected String getPageTitle() {		
 		return this.getActivity().getResources().getString(R.string.bank_deposit_received_title);
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 	}
 
 	/**

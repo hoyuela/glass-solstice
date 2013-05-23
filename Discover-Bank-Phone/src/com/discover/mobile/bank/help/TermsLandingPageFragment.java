@@ -24,8 +24,6 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -51,14 +49,6 @@ public class TermsLandingPageFragment extends BaseFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_privacy_terms_layout, null);
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		if( !Globals.isLoggedIn() ) {
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
-		} else {
-			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
-		}
 
 		if(null != this.getArguments() && this.getArguments().containsKey(BankExtraKeys.CARD_MODE_KEY)){
 			setUpForCard(inflater, view);

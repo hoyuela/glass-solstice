@@ -20,7 +20,8 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 	public void setItemSelected(final int group, final int subSection){
 		if(NavigationIndex.getMainIndex()>=0)
 		{
-		if(getListView().getAdapter().getItem(NavigationIndex.getMainIndex()) instanceof GroupNavigationItem){
+		if(getListView() != null && 
+				getListView().getAdapter().getItem(NavigationIndex.getMainIndex()) instanceof GroupNavigationItem){
 			final GroupNavigationItem currentGroup = 
 					(GroupNavigationItem)getListView().getAdapter().getItem(NavigationIndex.getMainIndex());
 			currentGroup.collapse();

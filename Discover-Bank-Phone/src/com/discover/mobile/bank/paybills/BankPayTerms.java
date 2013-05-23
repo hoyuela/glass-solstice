@@ -18,10 +18,8 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * The terms and conditions page for Pay Bills or Mange Payees.
@@ -80,10 +78,6 @@ public class BankPayTerms extends BaseFragment{
 	 * @param mainView
 	 */
 	private void loadResources(final View mainView) {
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
 		termsWebView = (WebView)mainView.findViewById(R.id.agreement_web_view);
 		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);

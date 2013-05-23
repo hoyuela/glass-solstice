@@ -42,9 +42,4 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <com.discover.mobile.common.help.HelpWidget
-        android:id="@+id/help"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/help_bar_height_two_items" />
-
 </RelativeLayout>

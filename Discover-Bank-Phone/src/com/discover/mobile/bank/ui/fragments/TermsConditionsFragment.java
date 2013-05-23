@@ -42,6 +42,7 @@ import com.discover.mobile.common.utils.WebUtility;
  * @author scottseward, hoyuela
  *
  */
+@SuppressLint("SetJavaScriptEnabled")
 public abstract class TermsConditionsFragment extends BaseFragment implements OnClickListener{
 
 	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
@@ -110,29 +111,38 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			public void onPageFinished(final WebView view, final String url) {
 				super.onPageFinished(view, url);
 				loadingSpinner.setVisibility(View.GONE);
-				termsWebView.setVisibility(View.VISIBLE);
-				termsWebView.requestFocus(View.FOCUS_DOWN);
-				loadingSpinner.clearAnimation();
-				if(pageLoadSuccess){
-					acceptButton.setEnabled(true);
-				}
-				if (scroll > 0) {
-					// Scroll to exact previous point on page (lost on orientation change)
-					WebUtility.scrollAfterDelay(termsWebView, scroll, SCROLL_DELAY);
-				}
+				showTerms();
 			}
 
 			@Override
-			public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
+			public void onReceivedError(final WebView view, final int errorCode, 
+																final String description, final String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl);
 				pageLoadSuccess = false;
 			}
 		});
+		
 
 		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
 		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+		}
+	}
+	
+	/**
+	 * Display the content of the web view.
+	 */
+	private void showTerms() {
+		termsWebView.setVisibility(View.VISIBLE);
+		termsWebView.requestFocus(View.FOCUS_DOWN);
+		loadingSpinner.clearAnimation();
+		if(pageLoadSuccess){
+			acceptButton.setEnabled(true);
+		}
+		if (scroll > 0) {
+			// Scroll to exact previous point on page (lost on orientation change)
+			WebUtility.scrollAfterDelay(termsWebView, scroll, SCROLL_DELAY);
 		}
 	}
 

@@ -14,10 +14,8 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.paybills.SimpleChooseListItem;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Widget used to determine how often the user would like to have
@@ -41,8 +39,6 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_frequency_widget, null);
 
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
 		list = (LinearLayout) view.findViewById(R.id.list);
 
 		initLayout();

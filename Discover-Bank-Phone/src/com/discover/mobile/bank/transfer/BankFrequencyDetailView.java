@@ -35,6 +35,7 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.discover.mobile.common.ui.widgets.PositiveIntegerEditText;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * View for the reocurring transfer widget
@@ -255,7 +256,8 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				value = transactionAmount.getText().toString();
 				break;
 			case AMOUNT:
-				value = dollarAmount.getText().toString().replaceAll("[^0-9]", "");
+				value = dollarAmount.getText().toString().
+												replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
 				break;
 			default:
 				value = "";

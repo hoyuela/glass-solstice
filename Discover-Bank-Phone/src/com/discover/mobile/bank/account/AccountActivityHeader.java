@@ -18,8 +18,6 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
-import com.discover.mobile.common.help.HelpWidget;
-import com.google.common.base.Strings;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -82,9 +80,6 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Current Account*/
 	private final Account account;
 
-	/**Help Widget*/
-	private final HelpWidget help;
-
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -105,8 +100,6 @@ public class AccountActivityHeader extends RelativeLayout{
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
 		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
-		help = (HelpWidget) view.findViewById(R.id.help);
-		
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
 		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
@@ -243,14 +236,6 @@ public class AccountActivityHeader extends RelativeLayout{
 			view.findViewById(R.id.lable2).setVisibility(visibility);
 			availableBalance.setVisibility(visibility);
 		}
-	}
-
-	/**
-	 * Get the help button in the header
-	 * @return the help button in the header
-	 */
-	public HelpWidget getHelp(){
-		return help;
 	}
 
 	/**

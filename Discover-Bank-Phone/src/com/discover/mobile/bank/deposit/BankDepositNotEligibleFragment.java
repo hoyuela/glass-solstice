@@ -10,11 +10,9 @@ import android.widget.Button;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display the Check Deposit - Not Eligible User Page. It uses the layout defined
@@ -42,10 +40,6 @@ public class BankDepositNotEligibleFragment extends BaseFragment implements OnCl
 		/**Set the fragment as the handler for the button click event*/
 		final Button openAccountBtn = (Button)view.findViewById(R.id.openAccount);		
 		openAccountBtn.setOnClickListener(this);
-		
-		/**Help widget setup to show faq*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 		
 		return view;
 	}

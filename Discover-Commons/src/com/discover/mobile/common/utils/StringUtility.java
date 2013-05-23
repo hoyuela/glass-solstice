@@ -12,6 +12,9 @@ public final class StringUtility {
 	public static final String ENCODED_SPACE = "%20";
 	public static final String COMMA = ",";
 	public static final String NEW_LINE = "\n";
+	public static final String NON_NUMBER_CHARACTERS = "[^0-9]";
+	public static final String DASH = "-";
+	public static final String HASH = "#";
 	
 	private StringUtility() {
 		throw new AssertionError();
