@@ -9,6 +9,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -27,11 +29,13 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	/**List of details to show*/
 	private List<HelpItemGenerator> data;
 
-	/**Inflater used to inflate layouts*/
-	private final LayoutInflater inflater;
+	public List<HelpItemGenerator> getData() {
+		return data;
+	}
 
-	/** */
-	private final static String CARET = " >";
+	/** Reference to context hosting adapter */
+	private final Context context;
+
 
 	/**
 	 * Constructor for the adapter
@@ -42,7 +46,7 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	public HelpAdapter(final Context context, final int textViewResourceId, final List<HelpItemGenerator> data) {
 		super(context, textViewResourceId);
 		this.data = data;
-		inflater = LayoutInflater.from(context);		
+		this.context = context;
 	}
 
 	/**
@@ -54,33 +58,46 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	 */
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
-		HelpViewHolder holder = null;
+		/** If the view is null, create a new one */
+		if (null == view) {
+			final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.common_help_list_item, null);
+		}
 
 		final HelpItemGenerator detail = data.get(position);
 
-		/**If the view is null, create a new one*/
-		if(null == view || !(view.getTag() instanceof HelpViewHolder)){
-			holder = new HelpViewHolder();
-			if(null != detail){
-				view = inflater.inflate(R.layout.common_help_list_item, null);
-				holder.text = (TextView) view.findViewById(R.id.text);
+		if (detail != null) {
+			final TextView menuItem = (TextView) view.findViewById(R.id.text);
+
+			menuItem.setBackgroundDrawable(context.getResources().getDrawable(getDrawable(detail.isDark(), position)));
+			menuItem.setText(detail.getText());
+
+			if (!detail.isShowArrow()) {
+				menuItem.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+			} else {
+				/**
+				 * Calculate padding necessary to draw the caret on the right of
+				 * text correctly this can only be done after the view has been
+				 * drawn
+				 */
+				final ViewTreeObserver viewTreeObserver = menuItem.getViewTreeObserver();
+				if (viewTreeObserver.isAlive()) {
+					viewTreeObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+						@Override
+						public void onGlobalLayout() {
+							menuItem.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+							final String text = menuItem.getText().toString();
+							final int rightPadding = (int) (menuItem.getMeasuredWidth() - menuItem.getPaint().measureText(text) - 30);
+							menuItem.setPadding(menuItem.getPaddingLeft(), menuItem.getPaddingTop(), rightPadding, menuItem.getPaddingBottom());
+						}
+					});
+				}
 			}
-			/** Else reuse the old one */
-		}else{
-			holder = (HelpViewHolder) view.getTag();
+
+			view.setOnClickListener(detail.getListener());
 		}
 
-
-		if(detail.isShowArrow()){
-			final String text = view.getResources().getString(detail.getText());
-			holder.text.setText(text + CARET);
-		}else{
-			holder.text.setText(detail.getText());
-		}
-
-		view.setBackgroundDrawable(this.getContext().getResources().getDrawable(getDrawable(detail.isDark(), position)));
-
-		view.setOnClickListener(detail.getListener());
 		return view;
 	}
 
@@ -116,14 +133,5 @@ public class HelpAdapter extends ArrayAdapter<List<HelpItemGenerator>>{
 	 */
 	public void setData(final List<HelpItemGenerator> data){
 		this.data = data;
-	}
-
-	/**
-	 * Private class that holds view information
-	 * @author jthornton
-	 *
-	 */
-	private class HelpViewHolder {
-		public TextView text;
 	}
 }
