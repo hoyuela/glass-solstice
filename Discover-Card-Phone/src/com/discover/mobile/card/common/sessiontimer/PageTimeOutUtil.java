@@ -6,12 +6,12 @@ import java.util.TimeZone;
 import android.content.Context;
 import android.os.Handler;
 
-import com.discover.mobile.common.nav.NavigationRootActivity;
-
 import com.discover.mobile.card.common.net.service.WSProxy;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.login.register.CreateLoginActivity;
+import com.discover.mobile.card.login.register.EnterNewPasswordActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 /**
@@ -125,10 +125,19 @@ public final class PageTimeOutUtil {
      */
     public void logoutUserOnTimerExpire() {
         Utils.log(TAG, "inside logoutUserOnTimerExpire().....");
-
-        if (mContext instanceof CardNavigationRootActivity) {
+      //DEFECT 96936
+        if (mContext instanceof CardNavigationRootActivity)
+        {
             ((CardNavigationRootActivity) mContext).idealTimeoutLogout();
         }
-
+        else if(mContext instanceof CreateLoginActivity)
+        {
+            ((CreateLoginActivity) mContext).idealTimeoutLogout();
+        }
+        else if(mContext instanceof EnterNewPasswordActivity)
+        {
+            ((EnterNewPasswordActivity) mContext).idealTimeoutLogout();
+        }
+      //DEFECT 96936
     }
 }
