@@ -23,7 +23,7 @@
     <string name="E_4031102_SSO_DELINK">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time."&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access at DiscoverBank.com.</string>
     <string name="E_4031102_SSO_DELINK_BUTTON">true.</string>
     <string name="E_4031102_SSO">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time.Because of increased security measures, you will need to log into Discover Bank in order to access your online account.</string>
-    <string name="E_4031102_SSN_NOT_MATCH">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time.Because of increased security measures, you will need to log into &lt;a href="http://www.discover.com">Discover Bank&lt;/a> in order to access your online account.</string>
+    <string name="E_4031102_SSN_NOT_MATCH">We are unable to load your Discover Bank Account(s). Please contact Customer Service at 1-800-347-2683 so we can verify your social security number.</string>
     <string name="E_4031102_SSO_AccountNo">Can not Login with Account Number.</string>
     <string name="E_40311021">SSN NOT MATCHED !!</string>
     <string name="E_4031102_SSO_BUTTON">true.</string>
@@ -169,8 +169,7 @@
     <string name="E_1228">Make a Payment:We are unable to process your online payment today	because it is past the 5:00pm Eastern Time cut off and you have	no available payment dates. For assistance call 1-877-742-7822.</string>
     <string name="E_1229">Make a Payment:We’re unable to process your online payment because	it is past the 5:00pm Eastern Time cutoff time and you have no available payment dates for the selected bank account. You can make a payment by selecting a different bank account. For assistance call 1-877-742-7822.</string>
     <string name="E_1230">Make a Payment: You have missed the Eastern Time cut off for submitting a payment that will post today. Your next	available payment posting date is !~nextAvailableDate~!. If you would like to submit your payment of $!~payAmount~! using this date please Submitbelow.</string>
-    <string name="E_1231">Your bank account is problematic, provide valid bank short name.
-</string>
+    <string name="E_1231">Your bank account is problematic, provide valid bank short name.</string>
     <string name="E_1232">Make a PaymentSome of our website features are unavailable at this time resulting in limited access to functionality and can process payments for the current day only. If you would like to schedule a payment for a future date, please try again later. We	thank you for your patience.</string>
     <string name="E_1233">Make a PaymentSome of our website features are unavailable at this	time resulting in limited access to functionality.We can however,process payments for the current day only. If you would like to schedule a payment for a future date,please try again later. We thank you for your patience.</string>
     <string name="E_1234">Hashed account number required. Please enter a valid hashed account number.</string>
@@ -269,7 +268,7 @@
     <string name="E_T_5031007">Performing System Maintenance</string>
     <!-- <string name="E_T_503">Performing System Maintenance</string> -->
     <string name="E_T_4011107">Password Error</string>
-    <string name="E_T_4031102_SSN_NOT_MATCH">Secure Credit Card Log In</string>
+    <string name="E_T_4031102_SSN_NOT_MATCH">We\'re Sorry</string>
 
     <!-- New Codes Message -->
     <string name="E_1401">Help us keep your account safe by visiting discover.com on your primary computer to establish your set of security questions.</string>
@@ -291,6 +290,9 @@
     <string name="E_1916">You have entered invalid information.Carefully review your information and please try again.</string>
 
     <!-- Registration Code title -->
+    <!-- DEFECT ID:97030 -->
+    <string name="E_T_4031928">We\'re Sorry</string>
+    <!-- DEFECT ID:97030 -->
     <string name="E_T_4001905">We\'re Sorry</string>
     <string name="E_T_5001905">We\'re Sorry</string>
     <string name="E_T_5031905">We\'re Sorry</string>
@@ -301,7 +303,9 @@
     <string name="E_T_4001911">We\'re Sorry</string>
     <string name="E_T_4001912">Your Request Could Not Be Completed</string>
     <string name="E_T_4001913">We\'re Sorry</string>
-    <string name="E_T_4001914">Contact Customer Service</string>
+    <!-- DEFECT ID:96742 -->
+    <string name="E_T_4001914">Please Contact Customer Service</string>
+    <!-- DEFECT ID:96742 -->
     <string name="E_T_4001915">We\'re Sorry</string>
     <string name="E_T_4001916">We\'re Sorry</string>
     <string name="E_T_4031922">Secure Credit Card Log In</string>
@@ -325,7 +329,9 @@
     <string name="E_4001912">Due to special conditions related to your account, we cannot provide you with access to discover.com Mobile at this time. 
 	     Please contact customer service at 1-877-742-7822 for more information or assistance.</string>
     <string name="E_4001913">Due to special conditions related to your account, we could not complete your request. Please contact Customer Service at 1-800-347-2683.</string>
-    <string name="E_4001914">At this time, only the primary cardholder can register for and access Account Center.  For more assistance, please contact Customer Service at 1-877-742-7822.</string>
+    <!-- DEFECT ID:96742 -->
+    <string name="E_4001914">We\'re sorry, but the primary Cardholder is the only one allowed to register for, and access the Account Center.</string>
+    <!-- DEFECT ID:96742 -->
     <string name="E_4001915">Your request cannot be completed because the rewards application is currently under maintenance.We apologize for the inconvenience. Please try again later or contact Customer Service at 1-800-347-2683.</string>
     <string name="E_4001916">You have entered invalid information.Carefully review your information and please try again.</string>
     <string name="E_4001917">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822.</string>
@@ -338,7 +344,9 @@
     <string name="E_4001924">The User ID is invalid. Please enter a valid User ID.</string>
     <string name="E_4001925">The password is empty. Please enter a password.</string>
     <string name="E_4001926">The password is invalid. Please enter a valid password.</string>
-    <string name="E_4031928">Due to special conditions related to your account, we can\'t retrieve your User ID at this time.To recover your User ID, you will need to re-register for online account access.</string>
+    <!-- DEFECT ID:97030 -->
+    <string name="E_4031928">Due to special conditions related to your account, we can\'t retrieve your User ID at this time."&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access.</string>
+    <!-- DEFECT ID:97030 -->
     <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
 
     <!-- need help footer and feedback -->
@@ -370,17 +378,13 @@
     <string name="E_H_4031401_NOTENROLLED">3</string>
     <string name="E_H_4031401_UNLOCKED">3</string>
     <string name="E_H_4031401_UNVERIFIED">3</string>
-	
     <string name="E_T_101">Timeout!</string>
     <string name="E_101">Getting slow network!</string>
-    
     <string name="E_T_102">No Connection!</string>
     <string name="E_102">Could not connect to the server!</string>
-    
     <string name="E_T_103">Malformed URL</string>
     <string name="E_103">Bad Request!</string>
-    
     <string name="E_T_104">Connection Problem!</string>
     <string name="E_104">Could not connect to the server!</string>
-    
+
 </resources>

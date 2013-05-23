@@ -22,8 +22,8 @@ dfs.crd.p2p.heightSet;
 dfs.crd.p2p.count = 0;
 
 dfs.crd.p2p.validatePriorPage = function(validPriorPages) {
-	try{
-		for ( var i in validPriorPages) {
+try{
+	for ( var i in validPriorPages) {
 			if (fromPageName == validPriorPages[i])
 				return true;
 		}
@@ -1529,9 +1529,9 @@ dfs.crd.p2p.updateDataDetails = function(responseData, curr_iteration) {
 					}
 					$("#" + objId).html("Hide Details");
 					$("#" + liId).css("display", "block");
-					detailsHtml = "<div>Sent to<span><b>"
+					detailsHtml = "<div>Sent to<span class='breakword'><b>"
 							+ recipientId
-							+ "</b></span></div><div>Transaction Type<span><b>"
+							+ "</b></span></div><div class='clearboth'>Transaction Type<span><b>"
 							+ transactionType
 							+ "</b></span></div><div>Note<span><b>"
 							+ note
