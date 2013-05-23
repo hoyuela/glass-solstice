@@ -12,7 +12,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -39,7 +38,6 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-		view.findViewById(R.id.help);
 		if (isCardMode()) {
 			final Activity activity = getActivity();
 			if(activity instanceof NavigationRootActivity){
