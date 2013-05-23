@@ -240,7 +240,8 @@
             </intent-filter>
         </receiver>
         
-
+        <activity android:name="com.discover.mobile.bank.help.CardLoggedOutFAQActivity"></activity>
+        
         <activity android:name=".card.phonegap.plugins.ContactViewResult" >
         </activity>
          <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"

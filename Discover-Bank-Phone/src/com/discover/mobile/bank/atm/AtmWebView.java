@@ -44,7 +44,7 @@ public class AtmWebView{
 	private static final String STREET_URL = "https://asys.discoverbank.com/api/content/atm/streetview.html?lat=%s&lng=%s";
 
 	/**Url to show the report atm*/
-	private static final String REPORT_URL =  "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&atmIdentifier=";
+	private static final String REPORT_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&referer=http://android.discoverbank.com/m/accountcenter/atm-locator&custom_var=atmIdentifier={0}|DiscoverMobileVersion=5.0.0";
 
 	/**Url used for Google's terms*/
 	private static final String GOOGLE_PRIVACY = "http://www.google.com/intl/en-US_US/help/terms_maps.html";
@@ -116,7 +116,7 @@ public class AtmWebView{
 	public void reportAtm(final String id){
 		isReportingAtm = true;
 		atmID = id;
-		setupWebView(REPORT_URL + atmID);
+		setupWebView(REPORT_URL.replace("{0}", atmID));
 		web.setVisibility(View.VISIBLE);
 		web.setBackgroundColor(Color.WHITE);
 	}
