@@ -52,6 +52,7 @@ public class BankAccountActivityTable extends BaseTable{
 		setIsLoadingMore(false);
 		super.refreshListener();
 		getLoadMoreFooter().showDone();
+		final boolean dataDeleted = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE);
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 
 		// Toggle between scheduled/posted if incoming list type does not match view
@@ -68,6 +69,11 @@ public class BankAccountActivityTable extends BaseTable{
 		final ReceivedUrl url = getLoadMoreUrl();
 		if(null == url){
 			showNothingToLoad();
+		}
+		
+		//Shows that a transfer has been deleted.
+		if (dataDeleted) {
+			this.showStatusMessage();
 		}
 	}
 	
@@ -290,9 +296,9 @@ public class BankAccountActivityTable extends BaseTable{
 		setIsLoadingMore(true);
 		
 		if( header.isPosted() ) {
-			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted).submit();
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted, false).submit();
 		} else {
-			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Scheduled).submit();
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Scheduled, false).submit();
 		}
 	}
 
@@ -426,6 +432,10 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public void createDefaultLists() {
 		//This does not need to be done
+	}
+	
+	public void showStatusMessage() {
+		header.showStatusMessage(R.string.account_activity_scheduled_transfer_deleted);
 	}
 
 	/**

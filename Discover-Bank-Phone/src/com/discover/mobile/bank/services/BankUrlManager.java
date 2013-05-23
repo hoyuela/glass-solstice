@@ -77,6 +77,22 @@ public final class BankUrlManager  {
 
 
 	/**
+	 * String used to construct a URL for specifying deleting a once time transfer
+	 */
+	public static final String CANCEL_SCHEDULED_TRANSFER = "?type=CS";
+
+	/**
+	 * String used to construct a URL for specifying deleting all remaining transfer
+	 */
+	public static final String CANCEL_ALL_REMAINING_TRANSERS = "?type=CAR";
+
+	/**
+	 * String used to construct a URL for specifying deleting the next transfer
+	 */
+	public static final String CANCEL_NEXT_TRANSFER = "?type=CNR";
+
+
+	/**
 	 * This is a utility class and should not have a public or default constructor.
 	 */
 	private BankUrlManager() {
@@ -124,21 +140,21 @@ public final class BankUrlManager  {
 	/**
 	 * @return The URL link to be used for getting bank holidays from the server
 	 */
-	public static String getBankHolidaysUrl() {		
+	public static String getBankHolidaysUrl() {
 		return getUrl(BANK_HOLIDAYS_URL_KEY);
 	}
 
 	/**
 	 * @return The URL link to be used for getting Privacy & Terms from the server
 	 */
-	public static String getPrivacyTermsUrl() {	
+	public static String getPrivacyTermsUrl() {
 		return resolveTermsKeyToURL(PRIVACY_POLICY_KEY);
 	}
 
 	/**
 	 * @return The URL link to be used for getting Terms of Use from the server
 	 */
-	public static String getTermsOfUse() {	
+	public static String getTermsOfUse() {
 		return resolveTermsKeyToURL(TERMS_OF_USE);
 	}
 
@@ -157,7 +173,7 @@ public final class BankUrlManager  {
 	 * @return if the link is html/htm content.
 	 */
 	private static boolean looksLikeContent(final String link) {
-		return link != null && (link.endsWith("html") || link.endsWith("htm"));
+		return (link != null) && (link.endsWith("html") || link.endsWith("htm"));
 	}
 
 	/**
@@ -264,7 +280,7 @@ public final class BankUrlManager  {
 
 				persistentLinks.put(pairs.getKey(), pairs.getValue());
 
-			}	       
+			}
 		}
 
 		links.clear();
@@ -289,7 +305,7 @@ public final class BankUrlManager  {
 	}
 
 	/**
-	 * @return Returns the URL for providing feedback 
+	 * @return Returns the URL for providing feedback
 	 */
 	public static String getProvideFeedbackUrl() {
 		return BankUrlManager.FEEDBACK_URL;
@@ -325,7 +341,7 @@ public final class BankUrlManager  {
 
 	/**
 	 * Utility method used to remove base url from the link
-	 * @param link Link with BASE_URL example: http://beta.discoverbank.com/api/token 
+	 * @param link Link with BASE_URL example: http://beta.discoverbank.com/api/token
 	 * 		  where http://beta.discoverbank.com is the base url.
 	 * @return Returns Relative path in a url, example  http://beta.discoverbank.com/api/token  would return /api/token
 	 */
@@ -349,7 +365,7 @@ public final class BankUrlManager  {
 	 * @return Returns URL link that was stored in hashmap
 	 */
 	public static String getUrl( final Map<String, ReceivedUrl> urls, final String key) {
-		if( urls != null && urls.containsKey(key)  ) {
+		if( (urls != null) && urls.containsKey(key)  ) {
 			final String url = urls.get(key).url;
 			return getRelativePath(url);
 		} else {
@@ -361,7 +377,7 @@ public final class BankUrlManager  {
 	/**
 	 * Method used to construct a query URL string using the Payments URL provided in Customer Download.
 	 * 
-	 * @param query Value can be eitherSCHEDULED, CANCELLED, COMPLETED, or ALL. Static Strings are found 
+	 * @param query Value can be eitherSCHEDULED, CANCELLED, COMPLETED, or ALL. Static Strings are found
 	 * in GetPaymentsServiceCall.
 	 * @return Returns a URL to use when using GetPaymentsServiceCall to send a request.
 	 */

@@ -60,6 +60,9 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 
 	private final ActivityDetailType type;
 	
+	/**Retains a reference to whether we deleted an activity before calling this service*/
+	private final boolean didDeleteActivity;
+	
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API
@@ -67,7 +70,7 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	 * @param url to get the activity from
 	 */
 	public GetActivityServerCall(final Context context,
-			final AsyncCallback<ListActivityDetail> callback, final String url, final ActivityDetailType type) {
+			final AsyncCallback<ListActivityDetail> callback, final String url, final ActivityDetailType type, final boolean didDeleteActivity) {
 
 		super(context, new GetCallParams(url) {
 			{
@@ -91,6 +94,7 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 		}, ListActivityDetail.class, ActivityDetail.class);
 
 		this.type = type;
+		this.didDeleteActivity = didDeleteActivity;
 		
 		handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}
@@ -121,5 +125,9 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	@Override
 	public TypedReferenceHandler<ListActivityDetail> getHandler() {
 		return handler;
+	}
+	
+	public boolean getDidDeleteActivity() {
+		return this.didDeleteActivity;
 	}
 }

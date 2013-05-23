@@ -28,6 +28,8 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.services.atm.GetAtmDetailsCall;
@@ -56,6 +58,7 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.common.AccountType;
@@ -339,7 +342,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		KeepAlive.updateLastBankRefreshTime();
 
 		// FIRST UPDATE GLOBAL CACHE IF DESIRED
-		if ( sender.cacheResults() ) { 
+		if ( sender.cacheResults() ) {
 			BankUser.instance().updateCache(result);
 		}
 
@@ -449,15 +452,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
 
 				BankConductor.navigateToManagePayee(bundle);
-			} 
+			}
 			/**Check to see if the payees were downloaded because of an added payee call*/
-			else if( prevCall instanceof AddPayeeServiceCall && 
+			else if( prevCall instanceof AddPayeeServiceCall &&
 					!((AddPayeeServiceCall)prevCall).isHandled() ) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((AddPayeeServiceCall)prevCall).markHandled();
 
 				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, ((AddPayeeServiceCall)prevCall).getResponse());
-			} 
+			}
 			/**Catch-all means it was just a payee download*/
 			else {
 				BankConductor.navigateToManagePayee(bundle);
@@ -504,6 +507,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		else if( sender instanceof GetActivityServerCall){
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, ((GetActivityServerCall)sender).getDidDeleteActivity());
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}
 		//Delete Payment Successful, navigate to Review Payments Page
@@ -517,13 +521,31 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Mark the scheduled activity dirty so that it is refreshed
 			final Account account = BankUser.instance().getAccount(detail.paymentAccount.id);
 			if(null != account){
-				account.scheduled = null;			
+				account.scheduled = null;
 			}
 			//Mark the scheduled payments dirty so that it is refreshed
 			BankUser.instance().setScheduled(null);
-			
+
 			//Mark the cancelled payment dirty so that it is refreshed
 			BankUser.instance().setCancelled(null);
+		} else if (sender instanceof DeleteTransferServiceCall) {
+			//Adds the Activity detail to the Bundle and navigates to the Account Activity page.
+			final ActivityDetail detail = ((DeleteTransferServiceCall)sender).getActivityDetail();
+
+			//Marks the internal transfer accounts as dirty.  External accounts will have an account type of null
+			Account account = BankUser.instance().getAccount((null != detail.fromAccount.type) ? detail.fromAccount.id : null);
+			if (account != null) {
+				account.scheduled = null;
+			}
+
+			account = BankUser.instance().getAccount((null != detail.toAccount.type) ? detail.toAccount.id : null);
+			if (account != null) {
+				account.scheduled = null;
+			}
+
+			//Calls to re-get the activity data because it has been modified.
+			final String link = BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY);
+			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled, true).submit();
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
@@ -573,8 +595,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				final Account account = ((GetAccountLimits)sender).getAccount();
 
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-				final double amount = bundle.getInt(BankExtraKeys.AMOUNT)/100;
-
 				if(navToReview){
 					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.ReviewDeposit);
 				} else {
@@ -634,7 +654,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final String currentTitle = activity.getActionBarTitle();
 		final String payBills = activity.getString(R.string.section_title_pay_bills);
 		final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
-		
+
 		if(currentTitle.equals(payBills)) {
 			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 		} else if(currentTitle.equals(managePayees)) {
@@ -668,7 +688,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			 * or if current call is null
 			 */
 			if( curCall == null || curCall.getClass() != sender.getClass() ) {
-				prevCall = curCall;			
+				prevCall = curCall;
 			} else {
 				if( Log.isLoggable(TAG, Log.WARN)) {
 					Log.w(TAG, "Previous NetworkServiceCall was not updated!");
@@ -771,7 +791,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				&& cm.getActiveNetworkInfo().isAvailable()
 				&& cm.getActiveNetworkInfo().isConnected()) {
 			connected = true;
-		} 
+		}
 
 		return connected;
 	}
