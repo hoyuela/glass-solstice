@@ -28,6 +28,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	/** Flag used to know when in the middle of a log out */
 	private static boolean pendingLogout = false;
 	private  ImageView navigationToggle;
+	private ImageView backButtonX;
 
 	/**
 	 * Flag used for if its bank or not
@@ -72,6 +73,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
+		backButtonX = (ImageView) findViewById(R.id.navigation_back_x_button);
 
 		navigationToggle.setVisibility(View.VISIBLE);
 		logout.setVisibility(View.VISIBLE);
@@ -82,6 +84,14 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 			@Override
 			public void onClick(final View v) {
 				toggle();
+			}
+		});
+
+
+		backButtonX.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				onBackPressed();
 			}
 		});
 
@@ -124,10 +134,10 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * the visibility
 	 */
 	public void setStatusBarVisbility() {
-		final FragmentTransaction ft = this.getSupportFragmentManager()
+		final FragmentTransaction ft = getSupportFragmentManager()
 				.beginTransaction();
 		final boolean statusBarVisitility = Globals.isStatusBarVisibility();
-		final Fragment statusBar = this.getSupportFragmentManager()
+		final Fragment statusBar = getSupportFragmentManager()
 				.findFragmentById(R.id.status_bar);
 
 		/**
@@ -149,7 +159,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 *            - boolean for setting the shared pref
 	 */
 	public void updateStatusBarVisibility() {
-		final Fragment statusBar = this.getSupportFragmentManager()
+		final Fragment statusBar = getSupportFragmentManager()
 				.findFragmentById(R.id.status_bar);
 		boolean visible = true;
 		if (statusBar.isVisible()) {
@@ -189,6 +199,22 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	}
 
 	/**
+	 * Shows the "X" in the action bar
+	 */
+	public void showBackX(){
+		backButtonX.setVisibility(View.VISIBLE);
+		navigationToggle.setVisibility(View.GONE);
+	}
+
+	/**
+	 * Show menu button
+	 */
+	public void showMenuButton(){
+		backButtonX.setVisibility(View.GONE);
+		navigationToggle.setVisibility(View.VISIBLE);
+	}
+
+	/**
 	 * Hides and shows the textView and ImageView.
 	 * 
 	 * @param show
@@ -206,12 +232,12 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 			titleImageView.setVisibility(View.GONE);
 		}
 	}
-	
+
 	public void disableMenuButton()
 	{
 		navigationToggle.setVisibility(View.INVISIBLE);
 	}
-	
+
 	public void enableMenuButton()
 	{
 		navigationToggle.setVisibility(View.VISIBLE);
