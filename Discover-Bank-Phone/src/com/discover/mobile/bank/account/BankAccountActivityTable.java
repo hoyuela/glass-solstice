@@ -211,7 +211,7 @@ public class BankAccountActivityTable extends BaseTable{
 			// Both posted lists are null -- Generate service call
 			BankServiceCallFactory.createGetActivityServerCall(
 				BankUser.instance().getCurrentAccount().
-						getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted).submit();
+						getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted, false).submit();
 		}
 	}
 
@@ -262,7 +262,7 @@ public class BankAccountActivityTable extends BaseTable{
 		// Both scheduled lists are null -- Generate service call
 		BankServiceCallFactory.createGetActivityServerCall(
 			BankUser.instance().getCurrentAccount().
-						getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled).submit();
+						getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false).submit();
 	}
 
 	/**
