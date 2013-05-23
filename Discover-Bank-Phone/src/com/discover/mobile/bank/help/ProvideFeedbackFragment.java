@@ -12,8 +12,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -40,18 +38,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		if (!isCardMode()) {
-			if (!Globals.isLoggedIn()) {
-				help.showHelpItems(HelpMenuListFactory.instance()
-						.getLoggedOutHelpItems());
-			} else {
-				help.showHelpItems(HelpMenuListFactory.instance()
-						.getAccountHelpItems());
-			}
-		} else {
-			help.setVisibility(View.GONE);
+		if (isCardMode()) {
 			final Activity activity = getActivity();
 			if(activity instanceof NavigationRootActivity){
 				((NavigationRootActivity)activity).showBackX();
