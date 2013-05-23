@@ -27,7 +27,6 @@ import com.discover.mobile.common.utils.CommonUtils;
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	/**URL for providing feedback for card when the user is not logged in*/
 	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
-	
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -49,6 +48,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 				help.showHelpItems(HelpMenuListFactory.instance()
 						.getAccountHelpItems());
 			}
+			help.setVisibility(View.GONE);
 		} else {
 			help.setVisibility(View.GONE);
 		}
