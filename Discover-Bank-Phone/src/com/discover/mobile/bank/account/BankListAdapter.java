@@ -92,14 +92,20 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		holder.date.setText(convertDate(date));
 		holder.desc.setText(detail.description);
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
-		if(amount == 0.00){
-			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-		} else if(amount < 0){
-			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
-		}else{
-			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+		
+		if (((AccountActivityHeader)fragment.getHeader()).isPosted()) {
+			if(amount == 0.00){
+				holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+			} else if(amount < 0){
+				holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
+			}else{
+				holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+				holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+			}
+		} else {
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
+		
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);
 		return view;
