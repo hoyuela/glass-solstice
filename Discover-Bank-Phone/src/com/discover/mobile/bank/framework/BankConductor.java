@@ -1317,7 +1317,8 @@ public final class BankConductor  extends Conductor {
 		}
 
 		/** Launches Privacy & Terms Activity */
-		if ((activity instanceof LoginActivity) || (activity instanceof AtmLocatorActivity)) {
+		if ((activity instanceof LoginActivity) || (activity instanceof AtmLocatorActivity)
+				|| (activity instanceof EnhancedAccountSecurityActivity)) {
 			final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
