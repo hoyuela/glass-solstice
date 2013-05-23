@@ -152,6 +152,9 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	/**Flag used to control whether back press should show cancel modal*/
 	private final boolean isBackPressedDisabled = true;
 
+	/** boolean set to true when the fragment is in edit mode*/
+	private boolean editMode = false;
+
 
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
@@ -489,6 +492,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			if( payee == null ) {
 				paymentDetail = (PaymentDetail)b.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			}
+			editMode = b.getBoolean(EDIT_MODE, false);
 		}
 	}
 
@@ -684,26 +688,32 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			}
 		});
 
-		memoItem.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View arg0) {
-				if (memoText.getVisibility() == View.VISIBLE) {
-					flipMemoElements(true);
+		if(!editMode){
+			memoItem.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(final View arg0) {
+					if (memoText.getVisibility() == View.VISIBLE) {
+						flipMemoElements(true);
+					}
 				}
-			}
-		});
+			});
 
-		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				if (!hasFocus) {
-					flipMemoElements(false);
+			memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(final View v, final boolean hasFocus) {
+					if (!hasFocus) {
+						flipMemoElements(false);
+					}
 				}
-			}
-		});
+			});
 
-		/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
-		memoEdit.setOnEditorActionListener(this);
+			/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
+			memoEdit.setOnEditorActionListener(this);
+		}else{
+			((ImageView) memoItem.findViewById(R.id.memo_caret))
+			.setImageDrawable(getResources().getDrawable(R.drawable.gray_right_arrow));
+
+		}
 
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
