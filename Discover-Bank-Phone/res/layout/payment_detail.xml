@@ -24,8 +24,7 @@
             android:layout_below="@+id/content_table"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:text="@string/edit_payment"
-            android:visibility="gone" >
+            android:text="@string/edit_payment" >
         </Button>
 
         <Button

@@ -62,7 +62,7 @@ import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.google.common.base.Strings;
 
 public class SchedulePaymentFragment extends BaseFragment 
-	implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
+implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -73,6 +73,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	private static final String MEMO = "f";
 	private static final String CONFLICT = "conflict";
 	private static final String FOCUS="focus";
+
+	public static final String EDIT_MODE = "em";
 
 	private RelativeLayout parentView;
 
@@ -135,7 +137,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private Calendar chosenPaymentDate;
 	/** Fragment used to select a payment date*/
 	private CalendarFragment calendarFragment;
-	
+
 	/** saved bundle data */
 	private Bundle savedBundle;
 
@@ -149,7 +151,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private OnPaymentCanceledListener canceledListener;
 	/**Flag used to control whether back press should show cancel modal*/
 	private final boolean isBackPressedDisabled = true;
-	
+
 
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
@@ -158,7 +160,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private static final Pattern R8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2}))((\\+|-)(\\d{4}))");
-	
+
 	/** Amount of time to wait when closing the calendar to finish selection animation. */
 	private static final int CALENDAR_DELAY = 500;
 	private static final int ERROR_STATE_DELAY = 1000;
@@ -200,7 +202,7 @@ public class SchedulePaymentFragment extends BaseFragment
 
 		/**Set a default value for chosen payment date*/
 		chosenPaymentDate = Calendar.getInstance();
-		
+
 		loadDataFromBundle();
 		setInitialViewData();
 		setMemoFieldValidation();
@@ -213,7 +215,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if(savedInstanceState != null) {
 			savedBundle = new Bundle(savedInstanceState);
 		}
@@ -253,13 +255,13 @@ public class SchedulePaymentFragment extends BaseFragment
 		}
 		super.onStart();
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if(amountEdit == null || dateText == null || memoText == null) { return; }
+		if((amountEdit == null) || (dateText == null) || (memoText == null)) { return; }
 
-		
+
 		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
 		outState.putString(AMOUNT, amountEdit.getText().toString());
 		final String[] datesToSave = dateText.getText().toString().split("/");
@@ -267,7 +269,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
 		outState.putString(MEMO, memoText.getText().toString());
-		
+
 		/**Remember which field has focus*/
 		if( amountEdit.hasFocus() ) {
 			outState.putString(FOCUS, AMOUNT);
@@ -302,7 +304,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		}
 	}
 
-	
+
 	/**
 	 * Restores the widget's states from before rotation.
 	 * 
@@ -311,8 +313,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	public void restoreState(final Bundle savedInstanceState) {
 		Bundle saveState = savedInstanceState;
-		
-		if (saveState == null && savedBundle != null) {
+
+		if ((saveState == null) && (savedBundle != null)) {
 			saveState = new Bundle(savedBundle);
 		}
 
@@ -330,7 +332,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			memoEdit.setText(saveState.getString(MEMO));
 			memoText.setText(saveState.getString(MEMO));
 
-			
+
 			/**Restore error state*/
 			final Bundle data = saveState;
 			new Handler().postDelayed(new Runnable() {
@@ -353,15 +355,15 @@ public class SchedulePaymentFragment extends BaseFragment
 			}, ERROR_STATE_DELAY);
 
 		}
-		
+
 		/**Reset Calendar Event Listener*/
-	    final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
-	    if(fragment instanceof CalendarFragment) {
-	      calendarFragment = (CalendarFragment) fragment;
-	      calendarFragment.setCalendarListener(createCalendarListener());
-	    }
+		final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
+		if(fragment instanceof CalendarFragment) {
+			calendarFragment = (CalendarFragment) fragment;
+			calendarFragment.setCalendarListener(createCalendarListener());
+		}
 	}
-	
+
 	private void restoreCellFocus(final Bundle data) {
 		/**Restore focus state*/
 		if( data.containsKey(FOCUS) ) {
@@ -375,7 +377,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			amountEdit.requestFocus();
 		}
 	}
-	
+
 	/**
 	 * Is used when focus needs to be set to the memo item cell.
 	 * @param actionEvent
@@ -394,7 +396,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @param text String to show to the user as an inline error
 	 */
 	public void setErrorString(final TextView view, final String text ) {
-		if( view != null && !Strings.isNullOrEmpty(text)  ) {
+		if( (view != null) && !Strings.isNullOrEmpty(text)  ) {
 			view.setText(text);
 			view.setVisibility(View.VISIBLE);
 		}
@@ -422,7 +424,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			/**Hide Caret when only a single account is selectable for scheduling payment*/
 			paymentCaret.setVisibility(View.INVISIBLE);
 		}
-		
+
 		/**Check if page is displayed to add a payment*/
 		if (payee != null) {
 			dateText.setText(getPaymentDate(payee.paymentDate));
@@ -436,10 +438,10 @@ public class SchedulePaymentFragment extends BaseFragment
 			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
-			
+
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
-			
+
 			final PayeeDetail currentPayee = BankUser.instance().getPayees().getPayeeFromId(paymentDetail.payee.id);
 			if( currentPayee != null ) {
 				updateEarliestPaymentDate(currentPayee.paymentDate);
@@ -620,11 +622,11 @@ public class SchedulePaymentFragment extends BaseFragment
 			return formatPaymentDate(m.group(1), m.group(2), m.group(groupThree));
 		} else {
 			return formatPaymentDate( Integer.toString(chosenPaymentDate.get(Calendar.YEAR)), 
-									  Integer.toString(chosenPaymentDate.get(Calendar.MONTH) + 1), 
-					                  Integer.toString(chosenPaymentDate.get(Calendar.DAY_OF_MONTH)));
+					Integer.toString(chosenPaymentDate.get(Calendar.MONTH) + 1), 
+					Integer.toString(chosenPaymentDate.get(Calendar.DAY_OF_MONTH)));
 		}
 	}
-	
+
 	/**
 	 * Takes an ISO8601 formatted date of format 2013-01-30T05:00:00.000+0000
 	 * and sets the earliestPaymentDate date member.
@@ -643,7 +645,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					Integer.parseInt(m.group(three)));	
 		}
 	}
-	
+
 	/**
 	 * Formats date as MM/dd/YYYY.
 	 * 
@@ -727,7 +729,7 @@ public class SchedulePaymentFragment extends BaseFragment
 						public void onNothingSelected(final AdapterView<?> arg0) {
 						}
 					});
-					
+
 					paymentAccountSpinner.performClick();
 				}
 			}
@@ -772,25 +774,25 @@ public class SchedulePaymentFragment extends BaseFragment
 				if(!amountEdit.isValid()) {
 					amountEdit.setErrors();
 				}
-				
+
 				if( amountEdit.isValid() && !isDateError) {
 					amountEdit.clearFocus();
 
 					clearErrors();
 
 					final String memo = memoEdit.getText().toString();
-					
+
 					final CreatePaymentDetail payment = new CreatePaymentDetail();
 					payment.payee.id = (payee != null ) ? payee.id : paymentDetail.payee.id;
 					payment.amount = formatAmount(amountEdit.getText()
-									.toString());
+							.toString());
 					payment.paymentMethod.id = Integer.toString(accountId);
 					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString(),true);
-							
+
 					if ( !Strings.isNullOrEmpty(memo)) {
 						payment.memo = memo;
 					}
-					
+
 					//Check if user is adding payment
 					if( payee != null ) {		
 						BankServiceCallFactory.createMakePaymentCall(payment).submit();
@@ -803,7 +805,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			}
 		});
 	}
-	
+
 	/**
 	 * Formats the amount from 1.13 to 113 and converts to a int
 	 * @param amount
@@ -833,7 +835,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	public boolean handleError(final BankErrorResponse msgErrResponse) {		
 		/**If handled is false it the Error Handler that called this method will show a catch all modal*/
 		boolean handled = false;
-		
+
 		for( final BankError error : msgErrResponse.errors ) {
 			if( !Strings.isNullOrEmpty(error.name) ) {
 				/**Check if error is for Payee field*/
@@ -863,19 +865,19 @@ public class SchedulePaymentFragment extends BaseFragment
 				else {
 					setErrorString(conflictError,error.message);
 				}
-				
+
 				/**Set to true to avoid a catch all modal being displayed*/
 				handled = true;
 			} else if( !Strings.isNullOrEmpty(error.message) ) { 
 				setErrorString(conflictError,error.message);
-				
+
 				/**Set to true to avoid a catch all modal being displayed*/
 				handled = true;
 			}
 		}
-		
-		((ScrollView)this.getView().findViewById(R.id.main_view)).smoothScrollTo(0,0);
-		
+
+		((ScrollView)getView().findViewById(R.id.main_view)).smoothScrollTo(0,0);
+
 		return handled;
 	}
 
@@ -916,7 +918,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		super.onDestroy();
 
 		/**Check if onPause was called because of an orientation change*/
-		if( !isOrientationChanging && amountEdit != null ) {
+		if( !isOrientationChanging && (amountEdit != null) ) {
 			amountEdit.showKeyboard(false);
 		}
 	}
@@ -934,7 +936,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	@Override
 	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-		if (actionId == EditorInfo.IME_ACTION_DONE && v.equals(memoEdit)) {
+		if ((actionId == EditorInfo.IME_ACTION_DONE) && v.equals(memoEdit)) {
 			flipMemoElements(false);
 		}
 		return false;
@@ -950,13 +952,13 @@ public class SchedulePaymentFragment extends BaseFragment
 				public void onClick(final View v) {
 					canceledListener.onPaymentCanceled();
 					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-					if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+					if((currentActivity != null) && (currentActivity instanceof BankNavigationRootActivity)) {
 						final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
 						navActivity.popTillFragment(BankSelectPayee.class);
 					}
 				}
 			});
-			
+
 			modal.setOverridePop(true);
 			modal.showModal();
 		}
@@ -975,24 +977,24 @@ public class SchedulePaymentFragment extends BaseFragment
 				calendarFragment.dismiss();
 			}
 		};
-		
+
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
 			private static final long serialVersionUID = -5277452816704679940L;
-			
+
 			@Override
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
 				final Calendar cal=Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-				
+
 				//Delay closing of calendar to be able to see the selection change
 				new Handler().postDelayed(closeCalendarRunnable, CALENDAR_DELAY);
 			}
 		};
-		
-		
+
+
 		return calendarListener;
 	}
 
@@ -1001,39 +1003,39 @@ public class SchedulePaymentFragment extends BaseFragment
 	 */
 	private void showCalendar() {
 		calendarFragment = new CalendarFragment();
-		
+
 		/** The calendar will appear with the month and year in this Calendar instance */
 		Calendar displayedDate = Calendar.getInstance();
-		
-		
+
+
 		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
 		try{
 			final String[] date = dateText.getText().toString().split("[\\/]+");
-			
+
 			/** The Calendar will appear with the date specified by this calendar instance selected*/
 			chosenPaymentDate.set( Integer.parseInt(date[2]),
-				      Integer.parseInt(date[0]) - 1,
-					  Integer.parseInt(date[1]));
-			
+					Integer.parseInt(date[0]) - 1,
+					Integer.parseInt(date[1]));
+
 			displayedDate = chosenPaymentDate;	
 		}catch(final NumberFormatException ex){
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 					chosenPaymentDate.get(Calendar.MONTH),
 					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-			
+
 			displayedDate = chosenPaymentDate;
 		}
-		
+
 		/**Show calendar as a dialog*/
 		calendarFragment.show(getFragmentManager(),
-						      getString(R.string.schedule_pay_date_picker_title),
-						      displayedDate,
-						      chosenPaymentDate, 
-						      earliestPaymentDate,
-							  BankUser.instance().getHolidays(),
-							  createCalendarListener());
+				getString(R.string.schedule_pay_date_picker_title),
+				displayedDate,
+				chosenPaymentDate, 
+				earliestPaymentDate,
+				BankUser.instance().getHolidays(),
+				createCalendarListener());
 	}
-	
+
 	/**
 	 * Informs the implementing Activity that this fragment's transaction was
 	 * canceled.
