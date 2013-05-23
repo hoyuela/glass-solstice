@@ -50,6 +50,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	/** Delay which allows the WebView to finish drawing before manually scrolling. */
 	private static final int SCROLL_DELAY = 100;
 	
+	/** Delay which allows the WebView to finish drawing before manually scrolling. (higher delay for Baseline devices) */
+	private static final int SCROLL_DELAY_BASELINE = 300;
+	
 	/** Holds the last known scroll amount (percent). */
 	private float scroll = 0f;
 	
@@ -110,16 +113,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			public void onPageFinished(final WebView view, final String url) {
 				super.onPageFinished(view, url);
 				loadingSpinner.setVisibility(View.GONE);
-				termsWebView.setVisibility(View.VISIBLE);
-				termsWebView.requestFocus(View.FOCUS_DOWN);
-				loadingSpinner.clearAnimation();
-				if(pageLoadSuccess){
-					acceptButton.setEnabled(true);
-				}
-				if (scroll > 0) {
-					// Scroll to exact previous point on page (lost on orientation change)
-					WebUtility.scrollAfterDelay(termsWebView, scroll, SCROLL_DELAY);
-				}
+				showTerms();
 			}
 
 			@Override
@@ -133,6 +127,26 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
 		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+		}
+	}
+	
+	/**
+	 * Display the content of the web view.
+	 */
+	private void showTerms() {
+		termsWebView.setVisibility(View.VISIBLE);
+		termsWebView.requestFocus(View.FOCUS_DOWN);
+		loadingSpinner.clearAnimation();
+		if(pageLoadSuccess){
+			acceptButton.setEnabled(true);
+		}
+		if (scroll > 0) {
+			// Use OS version to determine how long to delay the WebView scroll restore
+			final boolean isBaseline = 
+					android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB;
+			// Scroll to exact previous point on page (lost on orientation change)
+			WebUtility.scrollAfterDelay(termsWebView, scroll, 
+					isBaseline ? SCROLL_DELAY_BASELINE : SCROLL_DELAY);
 		}
 	}
 
