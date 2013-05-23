@@ -25,6 +25,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 import android.content.Context;
+import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 
 import com.discover.mobile.card.common.SessionCookieManager;
@@ -290,7 +291,26 @@ public final class WSProxy {
                         .getSystemService(Context.TELEPHONY_SERVICE);
                 did = telephonyManager.getDeviceId();
                 sid = telephonyManager.getSimSerialNumber();
-                oid = telephonyManager.getDeviceId();
+                if (null == sid)
+                    sid = "null";
+                if (null == did)
+                    did = "null";
+
+                oid = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID); //Will be same as phonegap
+                
+                final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                        .getInstance(context);
+                cardShareDataStoreObj.addToAppCache(
+                        context.getString(R.string.SID),
+                        sid);
+                cardShareDataStoreObj.addToAppCache(
+                        context.getString(R.string.OID),
+                        oid);
+                cardShareDataStoreObj.addToAppCache(
+                        context.getString(R.string.DID),
+                        did);
+                
+                Utils.log("SID:" + sid + " DID:" + did + " OID:" + oid);
             }
         };
     }

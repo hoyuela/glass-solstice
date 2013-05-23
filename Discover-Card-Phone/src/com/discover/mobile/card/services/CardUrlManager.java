@@ -14,7 +14,7 @@ public class CardUrlManager {
 	/**
 	 * Pre Auth URL
 	 */
-	private static final String PRE_AUTH_URL = "/cardsvcs/acs/session/preauthcheck";
+	private static final String PRE_AUTH_URL = "/cardsvcs/acs/session/v1/preauthcheck";
 
 	/**
 	 * Forgot User ID/Password URLs
