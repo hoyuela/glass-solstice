@@ -19,6 +19,7 @@ import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.account.BankOpenAccountFragment;
+import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.atm.AtmLocatorActivity;
 import com.discover.mobile.bank.atm.AtmMapFragment;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
@@ -64,6 +65,7 @@ import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -150,7 +152,7 @@ public final class BankConductor  extends Conductor {
 	 * 
 	 * @param fragmentClass
 	 *            - the destination class
-	 * assumes no payload required for service call, if necessary 
+	 * assumes no payload required for service call, if necessary
 	 * 
 	 */
 	@Override
@@ -159,11 +161,11 @@ public final class BankConductor  extends Conductor {
 	}
 
 	/**
-	 * Navigates to the given fragment. 
+	 * Navigates to the given fragment.
 	 * <pre>
-	 * 1. checks to see if fragment requires data 
-	 * 2. requests data from cache manager 
-	 * 3. makes service call if cache data unavailable 
+	 * 1. checks to see if fragment requires data
+	 * 2. requests data from cache manager
+	 * 3. makes service call if cache data unavailable
 	 * 4. navigates to class
 	 * 
 	 * @param fragmentClass
@@ -314,7 +316,7 @@ public final class BankConductor  extends Conductor {
 			activity.getCurrentContentFragment();
 
 			/**Check if user is already viewing FAQ*/
-			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
+			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP,
 					BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)) {
 				activity.makeFragmentVisible(new FAQLandingPageFragment());
 			} else {
@@ -525,12 +527,20 @@ public final class BankConductor  extends Conductor {
 				navActivity.addDataToDynamicDataFragment(bundle);
 			}
 			//Handle the case where switch between different types of activity posted and scheduled
-			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable ) {
-				final BankAccountActivityTable revPmtFrag = 
+			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable) {
+				final BankAccountActivityTable revPmtFrag =
 						(BankAccountActivityTable)navActivity.getCurrentContentFragment();
 				bundle.putBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY, true);
 				revPmtFrag.handleReceivedData(bundle);
 
+			} else if( bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
+				BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
+				//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
+				if( rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
+					final BankAccountActivityTable accountActivityFragment = (BankAccountActivityTable)rootActivity.getCurrentContentFragment();
+					accountActivityFragment.showStatusMessage();
+					bundle.remove(BankExtraKeys.CONFIRM_DELETE);
+				}
 			}
 			//Handle the first time user opens Account Activity page
 			else {
@@ -566,7 +576,7 @@ public final class BankConductor  extends Conductor {
 		((AlertDialogParent)activity).closeDialog();
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
-		} else if( extras != null && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
+		} else if( (extras != null) && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
 			/**Navigate user back to Manage Payee screen if they were in the middle of a delete*/
 			activity.popTillFragment(BankManagePayee.class);
 
@@ -601,7 +611,7 @@ public final class BankConductor  extends Conductor {
 	 * @param bundle
 	 */
 	public static void navigateToAccountActivityPage(final Bundle bundle){
-		navigateToAccountActivityPage(bundle, false);
+		navigateToAccountActivityPage(bundle, bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE));
 	}
 
 	/**
@@ -629,7 +639,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		//Fetch the current activity
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 			call.setWasDeleted(true);
@@ -666,9 +676,9 @@ public final class BankConductor  extends Conductor {
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
 				activity.finish();
-			} 			
+			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
-			else if(currentActivity != null && currentActivity instanceof NavigationRootActivity) {
+			else if((currentActivity != null) && (currentActivity instanceof NavigationRootActivity)) {
 				final Fragment provideFeedback = new ProvideFeedbackFragment();
 				provideFeedback.setArguments(bundle);
 				((NavigationRootActivity) currentActivity).makeFragmentVisible(provideFeedback);
@@ -717,6 +727,18 @@ public final class BankConductor  extends Conductor {
 		});
 
 		activity.showCustomAlert(modal);
+	}
+
+	/**
+	 * Navigation method used to initiate the delete transfers work flow.  This pops a modal to ensure the user
+	 * wants to delete the transfer.  After confirming the user performs a service call to delete the scheduled transfer.
+	 * Once the service call is completed the user is returned to the Account Activity screen.
+	 * 
+	 * @param transferDetails	- Object containing the transfer to be deleted.
+	 * @param deletionType		- Type of deletion to perform (e.g. One Time, Next in Series or Entire Series)
+	 */
+	public static void navigateToDeleteTransferConfirmation(final ActivityDetail transferDetails, final TransferDeletionType deletionType) {
+		BankServiceCallFactory.createDeleteTransferServiceCall(transferDetails, deletionType).submit();
 	}
 
 	/**
@@ -827,7 +849,7 @@ public final class BankConductor  extends Conductor {
 			final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
 			revPmtFrag.handleReceivedData(bundle);
 		}
-		//Handle case where a payment was deleted
+		//Handle cas where a payment was deleted
 		else if( bundle.containsKey(BankExtraKeys.CONFIRM_DELETE)) {
 			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
@@ -913,7 +935,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
@@ -927,7 +949,7 @@ public final class BankConductor  extends Conductor {
 				nextVisibleFragment = new BankTransferNotEligibleFragment();
 			}
 
-			if (args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
+			if ((args != null) && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
 				navActivity.popTillFragment(BankTransferStepOneFragment.class);
 				navActivity.getSupportFragmentManager().popBackStack();
 				nextVisibleFragment = new BankTransferStepOneFragment();
@@ -949,12 +971,12 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
 			if(currentArgs != null) {
-				args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, 
+				args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS,
 						currentArgs.getSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS));
 			}
 			navActivity.closeDialog();
@@ -972,7 +994,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
 
@@ -1049,7 +1071,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 					R.string.bank_callmodal_title,
@@ -1282,7 +1304,7 @@ public final class BankConductor  extends Conductor {
 
 	/**
 	 * Method to navigate to Privacy and Terms page. Specify which page to load via the type parameter.
-	 * If user is not logged in and Privacy and Terms is not already displayed, then this method will 
+	 * If user is not logged in and Privacy and Terms is not already displayed, then this method will
 	 * launch an activity with the Privacy and Terms landing page.
 	 * 
 	 * @param type Enum type that specifies which Privacy and Terms page to display on the active Navigation Activity.
@@ -1295,11 +1317,11 @@ public final class BankConductor  extends Conductor {
 		}
 
 		/** Launches Privacy & Terms Activity */
-		if (activity instanceof LoginActivity || activity instanceof AtmLocatorActivity) {
+		if ((activity instanceof LoginActivity) || (activity instanceof AtmLocatorActivity)) {
 			final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
-			bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
+			bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN,
 					activity instanceof LoginActivity ? true : false);
 			intent.putExtras(bundle);
 			activity.startActivity(intent);
@@ -1317,15 +1339,15 @@ public final class BankConductor  extends Conductor {
 
 			/** Check whether to continue with navigation to Privacy and terms or not  */
 			if (navActivity instanceof BankNavigationRootActivity) {
-				/** 
-				 * Show requested page if no fragment is present, user is not already in privacy terms view, 
-				 * or if user is already viewing privacy and terms, 
+				/**
+				 * Show requested page if no fragment is present, user is not already in privacy terms view,
+				 * or if user is already viewing privacy and terms,
 				 * they are not requesting to view the landing page again
 				 */
-				continueNavigation = (fragment == null
-						|| fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP 
-						|| (fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
-						&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage));
+				continueNavigation = ((fragment == null)
+						|| (fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP)
+						|| ((fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP)
+								&& (fragment instanceof TermsLandingPageFragment) && (type != PrivacyTermsType.LandingPage)));
 			}
 
 			if (continueNavigation) {
@@ -1352,7 +1374,7 @@ public final class BankConductor  extends Conductor {
 					fragment = new BankPrivacyTermsFragment();
 					fragment.setArguments(bundle);
 					break;
-				}				
+				}
 				navActivity.makeFragmentVisible(fragment);
 			} else {
 				navActivity.hideSlidingMenuIfVisible();
@@ -1388,20 +1410,20 @@ public final class BankConductor  extends Conductor {
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
 				activity.finish();
-			} 			
+			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
 				final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
 
 				BaseFragment fragment = navActivity.getCurrentContentFragment();
 
-				if( !BankNavigationHelper.isViewingMenuSection( BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP, 
+				if( !BankNavigationHelper.isViewingMenuSection( BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP,
 						BankMenuItemLocationIndex.CONTACT_US_SECTION)) {
 
 					fragment = new CustomerServiceContactsFragment();
 					fragment.setArguments(bundle);
 
-					navActivity.makeFragmentVisible(fragment);		
+					navActivity.makeFragmentVisible(fragment);
 				} else {
 					navActivity.hideSlidingMenuIfVisible();
 				}
@@ -1414,13 +1436,13 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToCardFaq() {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		if(currentActivity instanceof NavigationRootActivity && !(currentActivity instanceof AtmLocatorActivity)) {
+		if((currentActivity instanceof NavigationRootActivity) && !(currentActivity instanceof AtmLocatorActivity)) {
 			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 			final BaseFragment current = activity.getCurrentContentFragment();
 
 			/**Check if user is already viewing FAQ*/
-			if(current.getGroupMenuLocation() != BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP && 
-					current.getSectionMenuLocation() != BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS){
+			if((current.getGroupMenuLocation() != BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP) &&
+					(current.getSectionMenuLocation() != BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)){
 				activity.makeFragmentVisible(new CardFAQLandingPageFragment());
 			} else if(!(current instanceof FAQDetailFragment) && !(current instanceof FAQLandingPageFragment)) {
 				activity.makeFragmentVisible(new CardFAQLandingPageFragment());
@@ -1452,7 +1474,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 		final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
 		final Bundle bundle = new Bundle();
-		bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
+		bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN,
 				activity instanceof LoginActivity ? true : false);
 		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
 		bundle.putBoolean(BankInfoNavigationActivity.PRIVACY_AND_TERMS, true);

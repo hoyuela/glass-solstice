@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/delete_recurring_transfers_relative_layout"
+    style="alert_modal_black_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center" 
+    android:paddingTop="@dimen/modal_top_padding"
+    android:clickable="true">
+
+    <LinearLayout
+	android:id="@+id/linearLayout2"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#E2E6E7"
+	android:orientation="vertical"
+	android:layout_alignParentBottom="true" >
+	
+	<LinearLayout
+	   	android:orientation="horizontal" 
+	   	android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:weightSum="2"
+		android:padding="@dimen/forms_inner_padding"> 
+		
+	    <ImageButton
+	    	android:id="@+id/delete_next_transfer_in_series_button"
+	    	android:layout_width="0dp"
+	    	android:layout_weight="1"
+	    	android:layout_height="wrap_content"
+	    	android:layout_gravity="left"
+	    	android:paddingTop="23dp"
+	    	android:paddingBottom="23dp"
+	    	android:src="@drawable/actionsheet_delete_icon"
+	    	android:contentDescription="@string/delete_next_transfer_in_series_content_description"
+	        android:background="@drawable/white_button"
+	        android:layout_marginRight="@dimen/forms_inner_padding"
+	    />
+
+	    <ImageButton
+	        android:id="@+id/delete_entire_transfer_series_button"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:adjustViewBounds="true"
+	        android:paddingBottom="20.5dp"
+	        android:paddingTop="20.5dp"
+	        android:src="@drawable/actionsheet_delete_series_icon"
+	        android:contentDescription="@string/delete_entire_transfer_series_content_description"
+	        android:background="@drawable/white_button"
+		/>
+
+	</LinearLayout>
+	
+	<LinearLayout
+	    android:orientation="horizontal"
+	    android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="12dp"
+		android:paddingRight="12dp"
+		android:paddingBottom="12dp" >
+	    
+	    <Button 
+	    	android:id="@+id/cancel_button"
+	    	android:text="@string/cancel_text"
+	    	android:layout_gravity="center"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content" 
+	    	android:background="@drawable/actionsheet_cancel" />
+	    
+	</LinearLayout>
+</LinearLayout>
+    
+</RelativeLayout>

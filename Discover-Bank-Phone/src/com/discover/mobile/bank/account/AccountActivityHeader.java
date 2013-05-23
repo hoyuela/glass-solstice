@@ -18,6 +18,9 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
+import com.discover.mobile.bank.ui.widgets.StatusMessageView;
+import com.discover.mobile.common.help.HelpWidget;
+import com.google.common.base.Strings;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -79,6 +82,12 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Current Account*/
 	private final Account account;
+	
+	/**Status Message View*/
+	private final StatusMessageView status;
+	
+	/**Duration of the status message*/
+	private final int STATUS_MESSAGE_DURATION = 5000;
 
 	/**
 	 * Constructor of the class
@@ -100,6 +109,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
 		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
+		status = (StatusMessageView) view.findViewById(R.id.status);
 
 		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
 		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
@@ -357,5 +367,15 @@ public class AccountActivityHeader extends RelativeLayout{
 		}else{
 			toggleButton(scheduledButton, postedButton, isPosted);			
 		}
+	}
+	
+	/**
+	 * Shows the supplied strings file string.
+	 * 
+	 * @param deleteMessageToShow	- ID to the strings file string.
+	 */
+	public void showStatusMessage(final int deleteMessageToShow){
+		status.setText(deleteMessageToShow);
+		status.showAndHide(STATUS_MESSAGE_DURATION);
 	}
 }

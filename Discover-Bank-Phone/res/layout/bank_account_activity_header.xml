@@ -154,13 +154,21 @@
         android:text="@string/activity_table_name"
         android:textStyle="bold" />
 
+   	<com.discover.mobile.bank.ui.widgets.StatusMessageView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/table_title"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding" />
+    
     <com.discover.mobile.bank.ui.table.TableTitles
         android:id="@+id/table_titles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/table_title"
+        android:layout_below="@+id/status"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:layout_marginTop="@dimen/between_related_elements_padding" />
 

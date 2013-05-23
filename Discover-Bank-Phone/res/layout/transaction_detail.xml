@@ -134,13 +134,46 @@
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-        
-       <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
-         android:id="@+id/bank_footer"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/content_table" 
-         style="@style/bank_layout_footer_style"/>
+
+        <RelativeLayout
+            android:id="@+id/delete_transfer_button_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content_table"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" 
+            android:layout_marginBottom="@dimen/groups_of_elements_padding">
+
+            <Button
+                android:id="@+id/delete_one_time_transfer_button"
+                style="@style/blue_hyperlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="@string/delete_transfer"
+                android:visibility="gone" >
+            </Button>
+
+            <Button
+                android:id="@+id/delete_recurring_transfer_button"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:drawableLeft="@drawable/external_link_icon_white"
+                android:drawablePadding="@dimen/between_related_elements_padding"
+                android:text="@string/see_options"
+                android:visibility="gone" >
+            </Button>
+        </RelativeLayout>
+
+        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            style="@style/bank_layout_footer_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/delete_transfer_button_group" />
     </RelativeLayout>
 
 </ScrollView>
