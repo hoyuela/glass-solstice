@@ -34,6 +34,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	 * Reference to action bar back button.
 	 */
 	private ImageView navigationBackButton;
+	private ImageView backButtonX;
 	/**
 	 * True when "onBackPressed" will navigate to login on back (given no fragments on the stack)
 	 */
@@ -46,24 +47,23 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bank_privacy_terms_activity_layout);
+		showActionBar();
 
 		/**Check if this is the first time this activity is being launched*/
 		if( savedInstanceState == null ) {
 			launchStartPage();
 		} else {
-			final Bundle bundle = this.getIntent().getExtras();
+			final Bundle bundle = getIntent().getExtras();
 			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
-
-		showActionBar();
 
 		/**Sliding menu is not used for this activity*/
 		enableSlidingMenu(false);
 	}
 
 	private void launchStartPage() {
-		final Bundle bundle = this.getIntent().getExtras();
-		if( bundle == null || bundle.containsKey(BankExtraKeys.CARD_MODE_KEY)) {
+		final Bundle bundle = getIntent().getExtras();
+		if( (bundle == null) || bundle.containsKey(BankExtraKeys.CARD_MODE_KEY)) {
 			Fragment fragment = null;
 
 			if (bundle.containsKey(PRIVACY_AND_TERMS)) {
@@ -106,6 +106,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
+		backButtonX = (ImageView) findViewById(R.id.navigation_back_x_button);
 
 		navigationBackButton = (ImageView) findViewById(R.id.navigation_back_button);
 		titleView.setVisibility(View.VISIBLE);
@@ -113,6 +114,23 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 		navigationBackButton.setVisibility(View.GONE);
 		logout.setVisibility(View.INVISIBLE);	
 		navigationBackButton.setOnClickListener(this);
+		backButtonX.setOnClickListener(this);
+	}
+
+	/**
+	 * Shows the "X" in the action bar
+	 */
+	@Override
+	public void showBackX(){
+		backButtonX.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * Show menu button
+	 */
+	@Override
+	public void showMenuButton(){
+		backButtonX.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -135,7 +153,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	 *            True to enable sliding navigation menu, false otherwise.
 	 */
 	public void enableSlidingMenu(final boolean value) {
-		final SlidingMenu slidingMenu = this.getSlidingMenu();
+		final SlidingMenu slidingMenu = getSlidingMenu();
 
 		if (value) {
 			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -146,8 +164,9 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 
 	@Override
 	public void onClick(final View sender) {
-		if( sender.getId() == navigationBackButton.getId()) {
-			this.onBackPressed();
+		if( (sender.getId() == navigationBackButton.getId()) || 
+				(sender.getId() == backButtonX.getId())) {
+			onBackPressed();
 		}
 	}
 
@@ -158,7 +177,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	 */
 	@Override
 	public void onBackPressed() {
-		final FragmentManager fragmentManager = this.getSupportFragmentManager();
+		final FragmentManager fragmentManager = getSupportFragmentManager();
 		final int backStackCount = fragmentManager.getBackStackEntryCount();
 
 		if( backStackCount > 1 ) {
