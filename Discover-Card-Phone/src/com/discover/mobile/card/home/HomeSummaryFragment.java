@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,8 +53,7 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
+    		super.onResume();        
     }
 
     protected static final String TAG = "HomeSummaryFragment";
@@ -118,7 +119,10 @@ public class HomeSummaryFragment extends BaseFragment implements
                     .getString(PushConstant.extras.PUSH_ERROR_AC_HOME);
         }
 
-        if (pushErrorMsg != null) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+                Context.MODE_PRIVATE);
+        boolean otherUser = sharedPreferences.getBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
+        if (pushErrorMsg != null && !otherUser) {
             pushErrorTV.setText(pushErrorMsg);
             pushErrorTV.setVisibility(View.VISIBLE);
         } else {
@@ -542,17 +546,71 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public int getActionBarTitle() {
-       return -1;
+        final String m_title = ((CardNavigationRootActivity) getActivity())
+                .getActionBarTitle();
+        Log.v(TAG, "getActionBarTitle n title is " + m_title);
+        if (null != m_title) {
+            jqmResourceMapper = JQMResourceMapper.getInstance();
+
+            return jqmResourceMapper.getTitleStringId(m_title);
+        } else {
+            return -1;
+        }
     }
 
     @Override
     public int getGroupMenuLocation() {
-        return CardMenuItemLocationIndex.HOME_GROUP;
+        Utils.log(TAG, "inside getGroupMenuLocation ");
+        int tempId = getActionBarTitle();
+        final String m_title = ((CardNavigationRootActivity) getActivity())
+                .getActionBarTitle();
+
+        if (null != m_title) {
+
+            if (!m_title.equalsIgnoreCase(getResources().getString(
+                    R.string.section_title_home))
+                    && tempId == -1) {
+                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
+
+                    Utils.log(TAG, "m_currentLoadedJavascript is "
+                            + cordovaWebFrag.getM_currentLoadedJavascript());
+                    jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
+                            .getM_currentLoadedJavascript());
+                    return mCardMenuLocation.getMenuGroupLocation(tempId);
+                }
+            }
+        }
+        return mCardMenuLocation.getMenuGroupLocation(tempId);
     }
 
     @Override
     public int getSectionMenuLocation() {
-        return CardMenuItemLocationIndex.HOME_SECTION;
+        Utils.log(TAG, "inside getSectionMenuLocation");
+        int tempId = getActionBarTitle();
+        final String m_title = ((CardNavigationRootActivity) getActivity())
+                .getActionBarTitle();
+
+        if (null != m_title) {
+
+            if (!m_title.equalsIgnoreCase(getResources().getString(
+                    R.string.section_title_home))
+                    && tempId == -1) {
+                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
+
+                    Utils.log(TAG, "m_currentLoadedJavascript is "
+                            + cordovaWebFrag.getM_currentLoadedJavascript());
+                    jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
+                            .getM_currentLoadedJavascript());
+                    return mCardMenuLocation.getMenuSectionLocation(tempId);
+                }
+            }
+        }
+
+        return mCardMenuLocation.getMenuSectionLocation(tempId);
     }
 
     /*

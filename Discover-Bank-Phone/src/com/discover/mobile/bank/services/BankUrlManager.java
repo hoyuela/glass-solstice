@@ -39,7 +39,7 @@ public final class BankUrlManager  {
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
-	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp ";
+	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=http://android.discoverbank.com(null)&custom_var=DiscoverMobileVersion=5.0.0";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
 

@@ -8,6 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -27,6 +29,7 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.card.common.utils.Utils;
 
@@ -48,7 +51,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * 
  */
 public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
-        implements CardErrorHandlerUi, OnClickListener {
+        implements CardErrorHandlerUi, OnClickListener,CardEventListener { //DEFECT 96936
 
     private static final String TAG = EnterNewPasswordActivity.class
             .getSimpleName();
@@ -91,6 +94,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         Utils.hideSpinner();
         provideFeedback.setOnClickListener(this);
         restoreState(savedInstanceState);
+        
+        Utils.log("PageTimeOutUtil.getInstance","in side EnterNewPasswordActivity");
+        PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
     }
 
     /**
@@ -310,6 +316,64 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
     }
 
+    //DEFECT 96936
+    public void idealTimeoutLogout() {
+        Utils.log("CardNavigationRootActivity", "inside logout...");
+        // super.logout();
+        
+         Utils.isSpinnerAllowed = true;
+        final WSRequest request = new WSRequest();
+        final String url = NetworkUtility.getWebServiceUrl(this,
+                R.string.logOut_url);
+        request.setUrl(url);
+        request.setMethodtype("POST");
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
+                "Discover", "Signing Out...", this);
+        serviceCall.execute(request);
+
+    }
+
+
+    @Override
+    public void OnError(final Object data) {
+        // CardErrorResponseHandler cardErrorResHandler = new
+        // CardErrorResponseHandler(
+        // this);
+        // cardErrorResHandler.handleCardError((CardErrorBean) data);
+        finish();
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+        //clearNativeCache();
+        //clearJQMCache(); // Call this method to clear JQM cache.
+
+       
+        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
+    }
+
+    @Override
+    public void onSuccess(final Object data) {
+        final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+        finish();
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+        //clearNativeCache();
+        //clearJQMCache(); // Call this method to clear JQM cache.
+       
+        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
+    }
+    
+    
+    
+    @Override
+    public Context getContext() {
+        // TODO Auto-generated method stub
+        return this;
+    }
+    
+  //DEFECT 96936
     /*
      * (non-Javadoc)
      * 

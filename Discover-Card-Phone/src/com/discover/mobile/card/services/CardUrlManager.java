@@ -9,12 +9,12 @@ package com.discover.mobile.card.services;
 
 public class CardUrlManager {
 
-	private static final String BASE_URL = "https://mst0.m.discovercard.com";
+		private static final String BASE_URL = "https://asys.mapi.discovercard.com";
 
 	/**
 	 * Pre Auth URL
 	 */
-	private static final String PRE_AUTH_URL = "/cardsvcs/acs/session/preauthcheck";
+	private static final String PRE_AUTH_URL = "/cardsvcs/acs/session/v1/preauthcheck";
 
 	/**
 	 * Forgot User ID/Password URLs

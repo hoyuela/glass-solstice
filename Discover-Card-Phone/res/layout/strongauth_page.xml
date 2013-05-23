@@ -148,7 +148,7 @@
                 android:id="@+id/account_security_choice_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_security_question_answer_field"
+                android:layout_below="@+id/error_message_strong_auth"
                 android:layout_marginTop="@dimen/top_margin_betwwn_components"
                 android:background="@drawable/rounded_table_corners_no_padding"
                 android:divider="@drawable/modal_divider_line"

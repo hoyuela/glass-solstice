@@ -383,7 +383,7 @@ $("#gift-card-select").live('pageshow', function (event){
 		var amount = $("#select-amount").val();
 		
 		$("div.active").removeClass("active");
-		$(this).parent().addClass("active clicked");
+		$(this).parent().addClass("active clicked").removeClass("blur");
 		$(this).parent().parent().siblings().find(".imgWrapper").addClass("activeImg");
 		$("#gift-card-select .imgWrapper p").css("color","#000");	
 		$("div.imgWrapper:not('.active')").addClass("blur");
@@ -391,7 +391,7 @@ $("#gift-card-select").live('pageshow', function (event){
 		$(document).jqmData("selectImgSrc", selectedImg);
 		setTimeout(function(){
 			//$.mobile.changePage( history.go(-1), {"transition":"pop"});
-			history.back();
+			/*history.back();*/
 		},1000);
 	});
 	
@@ -820,7 +820,7 @@ $("#gift-card-verify-partner").live('pageshow',function(event){
 
 $(document).bind("pageshow", function(event,ui){
                  
-                 $('#cardHome-pg .cardhome_ul a').bind('click',function(){
+$('#cardHome-pg .cardhome_ul a').bind('click',function(){
                                                        $(this).addClass('ui-btn-down-d');
                                                        });
                  

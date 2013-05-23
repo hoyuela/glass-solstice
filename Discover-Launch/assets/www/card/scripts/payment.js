@@ -2330,7 +2330,7 @@ function lateMinPayWarn1Load(){
 dfs.crd.pymt.getPaymentWarningData = function(pageId){
 try {
 		var newDate = new Date();
-		var PAYMENTSLATEWARN = RESTURL + "stmt/v1/paymentwarning?" + newDate
+		var PAYMENTSLATEWARN = RESTURL + "stmt/v2/paymentwarning?" + newDate
 		+ "";
 		 var pmtWarnData = getDataFromCache("LatePayWarnMAPStep1");
 		if(!isEmpty(pmtWarnData)){

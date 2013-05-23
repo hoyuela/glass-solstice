@@ -42,7 +42,7 @@ public final class PreAuthCallHelper  {
 	
 	protected static final long DAY_IN_MILLISECONDS = 86400000;
 	protected static final int OPTIONAL_UPGRADE_DAYS = 30;
-	protected static final String PACKAGE_NAME = "com.discover.mobile.DiscoverMobileActivity";
+	protected static final String PACKAGE_NAME = "com.discoverfinancial.mobile";
 	
 	protected static final String PREFS_FILE = "UpdatePreferences";
 

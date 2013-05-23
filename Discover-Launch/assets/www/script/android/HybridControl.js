@@ -71,6 +71,14 @@ HybridControl.prototype.dismissProgressBar = function(successCallback, failureCa
 HybridControl.prototype.getSecToken = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getSecToken', []);
 }
+/*Changes made for passing dfskey and vone in provide feedback link*/
+HybridControl.prototype.getVOne = function(successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getVOne', []);
+}
+HybridControl.prototype.getDFSKey = function(successCallback, failureCallback) {
+	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'getDFSKey', []);
+}
+/*Changes made for passing dfskey and vone in provide feedback link*/
 
 HybridControl.prototype.updatedAccountDetails = function(successCallback, failureCallback) {
 	cordova.exec(successCallback, failureCallback, 'HybridControlPlugin', 'updatedAccountDetails', []);
@@ -111,4 +119,8 @@ HybridControl.prototype.enableSlidingMenu = function(successCallback, enable) {
 }
 HybridControl.prototype.deviceReadyUpdate = function(successCallback, failureCallBack,isDeviceReady) {
 	cordova.exec(successCallback, null, 'HybridControlPlugin', 'deviceReadyUpdate', [isDeviceReady]);
+}
+
+HybridControl.prototype.showOnBrowser = function(successCallback, failureCallBack,isDeviceReady) {
+	cordova.exec(successCallback, failureCallBack, 'HybridControlPlugin', 'checkForExternalBrowser', [isDeviceReady]);
 }
