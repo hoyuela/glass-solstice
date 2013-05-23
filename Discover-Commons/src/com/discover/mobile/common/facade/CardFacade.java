@@ -24,7 +24,14 @@ public interface CardFacade {
 	 * @param callingActivity
 	 */
 	public void navToRegister(BaseActivity callingActivity);
-
+	
+	//Defect id 97126
+	   /**
+     * Navigates to the provide feedback 
+     * @param callingActivity
+     */
+    public void navToProvideFeedback(Activity callingActivity);
+  //Defect id 97126
 	/**
 	 * Navigates to the forgot activity
 	 * @param callingActivity

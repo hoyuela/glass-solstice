@@ -28,8 +28,10 @@ var menuItems = {
 	ED_MORE:"<li data-icon='false' onclick='showED();'class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' class='bluelink ui-link-inherit'>Explore Discover</a><spanclass='floatright arrow'> </span></div></div></li>",
 	CS_MORE:"<li data-icon='false'class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' onclick='showCS();' class='bluelink ui-link-inherit'>Customer Service</a><span class='floatright arrow'> </span></div></div></li>",
 	MP_MORE:"<li data-icon='false' class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d'><div class='ui-btn-inner ui-li'><div class='ui-btn-text'><a href='#' onclick='showMP();' class='bluelink ui-link-inherit'>Profile and Settings</a><spanclass='floatright arrow'></span></div></div></li>",
-	PS_MORE:"<li data-icon='false' class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' onclick='navigation(\"privacyPolicyMore\");' class='bluelink ui-link-inherit'>Privacy Statement</a><spanclass='floatright arrow'> </span></div></div></li>",
-	TU_MORE:"<li data-icon='false' class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d ui-corner-bottom'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' onclick='navigation(\"termsUseMore\");' class='bluelink ui-link-inherit'>Terms of Use</a><spanclass='floatright arrow'> </span></div></div></li>"
+	//Defect id 95822
+	PS_MORE:"<li data-icon='false' class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' onclick='navigation(\"privacyPolicyMore\");' class='bluelink ui-link-inherit'>Mobile Privacy Statement</a><spanclass='floatright arrow'> </span></div></div></li>",
+	TU_MORE:"<li data-icon='false' class='ui-btn ui-btn-icon-right ui-li ui-btn-up-d ui-corner-bottom'><div class='ui-btn-inner ui-li' aria-hidden='true'><div class='ui-btn-text'><a href='#' onclick='navigation(\"termsUseMore\");' class='bluelink ui-link-inherit'>Mobile Terms of Use</a><spanclass='floatright arrow'> </span></div></div></li>"
+	//Defect id 95822
 }
 
 var menuConfig = {

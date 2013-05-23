@@ -20,7 +20,7 @@
 "orderHistory.offerId":"Skip",
 "orderHistory.bankAcctNumber":"Skip",
 "orderHistory.itemId":"Skip",
-"orderHistory.splitFullAmount":"Number", 
+"orderHistory.splitFullAmount":"Decimal", 
 "orderHistory.vendorOrderId":"Skip",  
 "orderHistory.isModeConfigured":"Boolean",  
 "orderHistory.redeemOptionId":"Number",
