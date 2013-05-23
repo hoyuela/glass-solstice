@@ -4,4 +4,8 @@
     <string name="account_details">1</string>
     <string name="account_details_for_js">2</string>
     <string name="strong_auth_svcs">3</string>
+    <string name="SID">4</string>
+    <string name="OID">5</string>
+    <string name="DID">6</string>
+    
 </resources>

@@ -851,6 +851,7 @@ input.ui-input-text {
 	color: red !important;
 	font-size: 13px !important;
 	}
+
 #exploreDiscover-pg .ui-listview-inset .ui-li{border-left-width:0 !important;border-right-width:0 !important;}
 #exploreDiscover-pg .ui-li, .ui-li.ui-field-contain{border-top-width:0 !important;}
 .redtext10px{font-size:10px; color:red;}
@@ -1045,7 +1046,7 @@ padding-bottom: 6px;
 margin-left: -10px;
 width:107%*/
 }
-#pendingPayments-pg .ui-content{padding:7px 0px 10px 0px}
+#pendingPayments-pg .ui-content{padding:0px 0px 10px 0px}
 #pendingPayments-pg .ui-corner-bottom,#statementCredit1-pg .ui-corner-bottom{border-bottom-left-radius: 0em;border-bottom-right-radius: 0em}
 #accountSummary-pg #accountSummary_minpay {width:auto}
 #alertHistory-pg #alert_header .ui-block-b{width: 45.333%;margin-left: 15%;
@@ -3694,3 +3695,6 @@ ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-borde
 .padding10pxLeftright /* #pendingPayments-pg  #errorPendingPaymentDiv */
 {padding-left:10px; padding-right:10px}
 .minWidth .ui-btn{ min-width:0px !important; left:-10px;}
+.rd-landing-heading-text{margin-top:25px}
+#cashbackSignup1-pg ul li:first-child,#milesSignup1-pg ul li:first-child{font-weight:bold}
+.breakword{word-break:break-all}

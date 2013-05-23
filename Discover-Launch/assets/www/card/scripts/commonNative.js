@@ -28,7 +28,7 @@ function statements()
 
 function handleNativeFrame(activePage)
 {	 
-	if(activePage!="login-pg" && activePage!="loadingPage-pg") 
+	if(activePage!="login-pg" && activePage!="loadingPage-pg" && activePage!="dummy-pg") 
 	{	 
 		HybridControl.prototype.popPhoneGapToFront(null, pageTitle[activePage]);  
 	}
