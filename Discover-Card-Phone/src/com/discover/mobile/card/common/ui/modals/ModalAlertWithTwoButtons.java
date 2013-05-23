@@ -36,6 +36,10 @@ public class ModalAlertWithTwoButtons extends AlertDialog {
     /** Linear layout that holds the top and bottom views */
     private LinearLayout linearLayout;
 
+    //DEFECT 97093
+    /** Static weight for the top view in portrait mode */
+    private static final float NO_BOTTOM_WEIGHT = 10f;
+    
     /** Static int for the heights of the top and bottom views */
     private static final int VIEW_HEIGHTS = 0;
 
@@ -49,8 +53,11 @@ public class ModalAlertWithTwoButtons extends AlertDialog {
     private static final float LANDSCAPE_TOP_WEIGHT = 4f;
 
     /** Static weight for the bottom view in landscape mode */
-    private static final float LANDSCAPE_BOTTOM_WEIGHT = 6f;
+    private static final float LANDSCAPE_BOTTOM_WEIGHT = 6.5f;
 
+  //DEFECT 97093
+    
+    
     /** Static variable for the orientation */
     static int orientation = 0;
 
@@ -193,7 +200,13 @@ public class ModalAlertWithTwoButtons extends AlertDialog {
         final int orientation = context.getResources().getConfiguration().orientation;
         float topWeight;
         float bottomWeight;
-        if (Configuration.ORIENTATION_LANDSCAPE == orientation) {
+        
+       
+        if (null == bottom) {
+            topWeight = NO_BOTTOM_WEIGHT;
+            bottomWeight = VIEW_HEIGHTS;
+        }
+        else if (Configuration.ORIENTATION_LANDSCAPE == orientation) {
             topWeight = LANDSCAPE_TOP_WEIGHT;
             bottomWeight = LANDSCAPE_BOTTOM_WEIGHT;
         } else {
@@ -205,13 +218,14 @@ public class ModalAlertWithTwoButtons extends AlertDialog {
                 LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, topWeight);
 
         final LinearLayout.LayoutParams p2 = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, VIEW_HEIGHTS, bottomWeight);
-
+                LayoutParams.WRAP_CONTENT, VIEW_HEIGHTS, bottomWeight);
+       
         linearLayout.removeAllViews();
         if (null != top) {
             linearLayout.addView((View) top, p1);
         }
         if (null != bottom) {
+        	
             linearLayout.addView((View) bottom, p2);
         }
     }

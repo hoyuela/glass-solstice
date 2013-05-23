@@ -96,8 +96,8 @@ public class CardFacadeImpl implements CardFacade {
                     .getValueOfAppCache(context
                             .getString(R.string.account_details));
 
-            if (cardHomedata != null && cardHomedata.lastFourAcctNbr != null
-                    && cardHomedata.primaryCardMember.nameOnCard != null) {
+           if ((cardHomedata != null) && (cardHomedata.lastFourAcctNbr != null)
+					&& (cardHomedata.primaryCardMember.nameOnCard != null)) {
                 cardInfo.setCardEndingDigits(cardHomedata.lastFourAcctNbr);
                 cardInfo.setCardAccountName(Utils.getCardTypeFromGroupCode(
                         context, cardHomedata.cardProductGroupCode));
@@ -151,15 +151,20 @@ public class CardFacadeImpl implements CardFacade {
         return null;
     }
 
-    public void navToProvideFeedback(final Activity callingActivity) {
+    
+    
+ 
+    @Override
+    public String getPreAuthBaseUrl() {
+		return CardUrlManager.getBaseUrl();
+
+    }
+
+    //Defect id 97126
+    @Override
+    public void navToProvideFeedback(Activity callingActivity) {
         // TODO Auto-generated method stub
         Utils.createProvideFeedbackDialog(callingActivity, "cardLogin-pg");
     }
-
-    @Override
-    public String getPreAuthBaseUrl() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
+  //Defect id 97126
 }

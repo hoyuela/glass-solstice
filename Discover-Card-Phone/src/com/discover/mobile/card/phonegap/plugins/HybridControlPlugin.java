@@ -6,14 +6,17 @@ import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.PushConstant;
@@ -57,12 +60,16 @@ public class HybridControlPlugin extends CordovaPlugin {
 	public static final String setOtherUserFlag = "setOtherUserFlag";
 	public static final String getOtherUserFlag = "getOtherUserFlag";
 	public static final String enableSlidingMenu = "enableSlidingMenu";
+	public static final String checkForExternalBrowser = "checkForExternalBrowser";
+	public static final String getDFSKey = "getDFSKey";
+	public static final String getVOne = "getVOne";
 	
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
     public static String strLastTitleDisplayed = null;
     
     public static final String isDeviceReady = "deviceReadyUpdate";
+    boolean showInBrowser = false;
 
     @Override
     public boolean execute(final String action, final JSONArray args,
@@ -539,11 +546,12 @@ public class HybridControlPlugin extends CordovaPlugin {
              final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                      .getActivity();
              final FragmentManager fragManager = cnrAct
-                     .getSupportFragmentManager();
-
+                     .getSupportFragmentManager();            
              cnrAct.runOnUiThread(new Runnable() {
                  @Override
                  public void run() {
+                	 //Added changes to clear page cache when return back to achome.
+                	 cnrAct.getCordovaWebFragInstance().getCordovaWebviewInstance().loadUrl("javascript:home()");
                      cnrAct.getCordovaWebFragInstance().setTitle(null);
                  }
              });
@@ -567,24 +575,36 @@ public class HybridControlPlugin extends CordovaPlugin {
              callbackContext.sendPluginResult(pluginResult);
              return true;
         }else if (action.equals(getDID)) {
-        	Utils.log(TAG, "inside DID ");        	
+        	Utils.log(TAG, "inside DID ");    
+        	/*
         	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String did = telephonyManager.getDeviceId();
+            */
+        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+            String did = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
+                    R.string.DID));
             final PluginResult pluginResult = new PluginResult(
         			PluginResult.Status.OK, did);
-            Utils.log(TAG, "did:" + did);
+            Utils.log(TAG, "DID:" + did);
         	pluginResult.setKeepCallback(true);
         	callbackContext.sendPluginResult(pluginResult);
         	return true;
         }else if (action.equals(getSID)) {
-        	Utils.log(TAG, "inside SID ");        	
+        	Utils.log(TAG, "inside SID ");
+        	/*
         	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String sid = telephonyManager.getSimSerialNumber();
             if (null == sid)
                 sid = telephonyManager.getDeviceId();
-            Utils.log(TAG, "sid:" + sid);
+            */
+        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+        	String sid = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
+                    R.string.SID));
+            Utils.log(TAG, "SID:" + sid);
             final PluginResult pluginResult = new PluginResult(
         			PluginResult.Status.OK, sid);
         	pluginResult.setKeepCallback(true);
@@ -592,10 +612,16 @@ public class HybridControlPlugin extends CordovaPlugin {
         	return true;
         }else if (action.equals(getOID)) {
         	Utils.log(TAG, "inside OID ");        	
+        	/*
         	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
                     .getSystemService(Context.TELEPHONY_SERVICE);
             String oid = telephonyManager.getDeviceId();
-            Utils.log(TAG, "oid:" + oid);
+            */
+        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+            String oid = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
+                    R.string.OID));
+            Utils.log(TAG, "OID:" + oid);
             final PluginResult pluginResult = new PluginResult(
         			PluginResult.Status.OK, oid);
         	pluginResult.setKeepCallback(true);
@@ -699,6 +725,89 @@ public class HybridControlPlugin extends CordovaPlugin {
           callbackContext.sendPluginResult(pluginResult);
           return true;
       }
+      else if (action.equals(getDFSKey)) {
+          Utils.log(TAG, "inside getDFSKey ");
+          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                  .getActivity();
+          final String dfsKey = CardShareDataStore.getInstance(cnrAct)
+                  .getCookieManagerInstance().getDfsKey();
+          Utils.log(TAG, "getDFSKey: " + dfsKey);
+
+          final PluginResult pluginResult = new PluginResult(
+                  PluginResult.Status.OK, dfsKey);
+          pluginResult.setKeepCallback(true);
+          callbackContext.sendPluginResult(pluginResult);
+          return true;
+      }
+      else if (action.equals(getVOne)) {
+          Utils.log(TAG, "inside getVOne ");
+          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                  .getActivity();
+          final String strVOne = CardShareDataStore.getInstance(cnrAct)
+                  .getCookieManagerInstance().getVone();
+          Utils.log(TAG, "getVOne: " + strVOne);
+
+          final PluginResult pluginResult = new PluginResult(
+                  PluginResult.Status.OK, strVOne);
+          pluginResult.setKeepCallback(true);
+          callbackContext.sendPluginResult(pluginResult);
+          return true;
+      }else if (action.equals(checkForExternalBrowser)) {
+
+    	  Log.i(TAG, "OH YES ABHI");
+    	  final String strURLtoOpen = args.getString(0);
+    	  
+          /*final boolean isPhonegapReady = (Boolean) args.get(0);
+          Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled "
+                  + isPhonegapReady);*/
+
+          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                  .getActivity();
+          
+          cnrAct.runOnUiThread(new Runnable() {
+              @Override
+              public void run() {
+            	  AlertDialog.Builder builder = new AlertDialog.Builder(cnrAct.getContext());
+                  
+            		builder.setMessage("Do you want to open this link in an extenal web browser? ")
+            		.setCancelable(true)
+            		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            			public void onClick(DialogInterface dialog, int id) {
+            				dialog.dismiss();
+            				startUrlInChrome(strURLtoOpen);
+          					showInBrowser = true;
+            			}
+            		})
+            		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            			public void onClick(DialogInterface dialog, int id) {
+            				dialog.cancel();
+            				showInBrowser = false;
+            			}
+            		});
+            		AlertDialog alert = builder.create();
+            		alert.show();
+              }
+          });
+          final PluginResult pluginResult = new PluginResult(
+                  PluginResult.Status.OK,showInBrowser);
+          pluginResult.setKeepCallback(true);
+          callbackContext.sendPluginResult(pluginResult);
+          return true;
+      }
+
+        
         return false;
     }
+    
+    protected void startUrlInChrome(final String urlStr) {
+    	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                .getActivity();
+		Uri uri = Uri.parse(urlStr);
+		try {
+			Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+			cnrAct.startActivity(launchBrowser);
+		} catch (ActivityNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 }

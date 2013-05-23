@@ -269,7 +269,7 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 /*.rd-page .r5-buttons .drkgry-wht-btn{ margin-right:10px;}*/
 .rd-page .rd-txt{ padding-left:35px;}
 .detl-view-content{ padding:10px; border-bottom:1px solid #e8eced;}
-.detl-view-content .redtext{ font-size:9px !Important; padding-bottom:5px !Important;}
+.detl-view-content .redtext{ font-size:12px !Important; padding-bottom:5px !Important;}
 .detl-view-content .text{ height:17px; padding:0;}
 /*.gry-wht-btn{background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.57, #E4E4E4),color-stop(0.54, #DDDDDD),color-stop(0.07, #FFFFFF));text-shadow: none; color:#fa5317 !important; border:1px solid #dbdbdb;}*/
 .rd-page .fix-height{ height:17px;}
