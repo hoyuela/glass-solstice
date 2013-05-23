@@ -14,14 +14,12 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment class displayed to the user after adding a Payee successfully. User will have the option to Schedule a Payment or
@@ -36,7 +34,8 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	 */
 	private PayeeDetail detail = new PayeeDetail();
 	/**
-	 * Key used to read flag from bundle, obtained via getArguments(), to determine if confirmation page is for a update or addition.
+	 * Key used to read flag from bundle, obtained via getArguments(), to determine if 
+	 * confirmation page is for a update or addition.
 	 */
 	public static final String KEY_PAYEE_UPDATE = "update";
 	/**
@@ -79,7 +78,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		topNote.setVisibility(View.VISIBLE);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 **/
-		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
+		final BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(2);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_payee_details, R.string.bank_payee_added, R.string.bank_payee_added);
@@ -198,10 +197,4 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		//Disable the back press
 	}
 
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-
-	}
 } 

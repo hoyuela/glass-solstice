@@ -35,55 +35,58 @@
                 android:layout_toRightOf="@+id/step1_confirm"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/between_related_elements_padding"
-                android:text="@string/bank_deposit_enter_details" />
+                android:text="@string/edit" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/step2"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/step3"
-            android:layout_toRightOf="@+id/step1"
-            android:gravity="center" >
+            android:layout_centerHorizontal="true"
+			 >
 
             <ImageView
                 android:id="@+id/step2_confirm"
                 style="@style/status_check_mark"
-                android:layout_toLeftOf="@+id/step2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:contentDescription="@null"
-                android:visibility="gone"
-                android:paddingTop="@dimen/breadcrumb_confirm_toppadding" />
+                android:paddingTop="@dimen/breadcrumb_confirm_toppadding"
+                android:visibility="invisible" />
 
             <ImageView
                 android:id="@+id/step2_indicator"
                 style="@style/status_indicator_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/step2_text"
                 android:layout_marginLeft="25dp"
-                android:contentDescription="@null"/>
+                android:contentDescription="@null" />
 
             <TextView
                 android:id="@+id/step2_text"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
+                android:layout_toRightOf="@+id/step2_confirm"
                 android:layout_below="@+id/step2_indicator"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:paddingLeft="@dimen/between_related_elements_padding"
-                android:text="@string/bank_deposit_capture" />
+                android:text="@string/edit" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/step3"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/help_layout"
+            android:layout_alignParentRight="true"
             android:gravity="right" >
 
             <ImageView
                 android:id="@+id/step3_indicator"
                 style="@style/status_indicator_image"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@null"/>
+                android:contentDescription="@null" />
 
             <TextView
                 android:id="@+id/step3_text"
@@ -92,25 +95,7 @@
                 android:layout_below="@+id/step3_indicator"
                 android:layout_centerVertical="true"
                 android:gravity="center_vertical|right"
-                android:text="@string/bank_deposit_confirmation" />
-        </RelativeLayout>
-
-         <RelativeLayout
-            android:id="@+id/help_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/breadcrumb_help_left_margin"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:gravity="center_vertical|right">
-	        <ImageView
-	            android:id="@+id/help_view"
-	            android:layout_width="@dimen/orange_help_button_size"
-	            android:layout_height="@dimen/orange_help_button_size"
-	            android:layout_centerVertical="true"
-	            android:contentDescription="@null"
-	            android:visibility="invisible"
-	            android:src="@drawable/common_question_mark_icon" />
+                android:text="@string/edit" />
         </RelativeLayout>
     </RelativeLayout>
 

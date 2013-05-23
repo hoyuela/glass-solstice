@@ -14,12 +14,10 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display the Payee Confirmation Modal. User will be allowed to confirm
@@ -38,14 +36,14 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		
-		Bundle bundle = (savedInstanceState != null) ? savedInstanceState : getArguments();
+		final Bundle bundle = (savedInstanceState != null) ? savedInstanceState : getArguments();
 		
 		if( bundle != null ) {
 			payee = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		}
 		
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		TextView noteTextMsg = getNoteMessage();
+		final TextView noteTextMsg = getNoteMessage();
 		
 		/**Update screen with text strings for delete payee*/
 		noteTextMsg.setText(R.string.bank_payee_delete_body);
@@ -105,11 +103,6 @@ public class BankDeletePayeeModal extends BankOneButtonFragment {
 		/*Navigate back to the screen that brought this page to the foreground*/
 		final Activity curActivity = DiscoverActivityManager.getActiveActivity();
 		curActivity.onBackPressed();
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 	}
 
 	@Override

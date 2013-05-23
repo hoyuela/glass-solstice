@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 public class CustomerServiceContactsFragment extends BaseFragment {
@@ -37,23 +35,6 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 
 		loadViewsIn(mainView);
 		loadLists(mainView);
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
-		switch( type ) {
-		case ALL:
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
-			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)help.getLayoutParams();
-			params.height = (int) this.getResources().getDimension(R.dimen.help_bar_height_three_items);
-			help.setLayoutParams(params);
-			break;
-		case BANK:
-			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
-			break;
-		default:
-			help.showHelpItems(HelpMenuListFactory.instance().getCardHelpItems());
-			break;
-		} 
 
 		if(card){
 			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
@@ -124,7 +105,8 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 * @param layout a linear layout to insert view elements into
 	 * @param elementList a list of view elements that can be inserted into a linear layout.
 	 */
-	public static void loadListElementsToLayoutFromList(final LinearLayout layout, final List<TwoElementListItem> elementList) {
+	public static void loadListElementsToLayoutFromList(final LinearLayout layout, 
+														final List<TwoElementListItem> elementList) {
 		if(layout != null){
 			for(final TwoElementListItem element : elementList){
 				layout.addView(element);
@@ -133,13 +115,17 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	}
 
 	private void showCardElements(final View mainView) {
-		loadListElementsToLayoutFromList(cardPhoneNumberList, CustomerServiceContactLists.getCardPhoneNumberListElements(this.getActivity()));
-		loadListElementsToLayoutFromList(cardMailingAddressList, CustomerServiceContactLists.getCardMailingAddressListElements(this.getActivity()));
+		loadListElementsToLayoutFromList(cardPhoneNumberList, 
+								CustomerServiceContactLists.getCardPhoneNumberListElements(this.getActivity()));
+		loadListElementsToLayoutFromList(cardMailingAddressList, 
+								CustomerServiceContactLists.getCardMailingAddressListElements(this.getActivity()));
 	}
 
 	private void showBankElements(final View mainView) {
-		loadListElementsToLayoutFromList(bankPhoneNumberList, CustomerServiceContactLists.getBankPhoneNumberListElements(this.getActivity()));
-		loadListElementsToLayoutFromList(bankMailingAddressList, CustomerServiceContactLists.getBankMailingAddressListElements(this.getActivity()));
+		loadListElementsToLayoutFromList(bankPhoneNumberList, 
+								CustomerServiceContactLists.getBankPhoneNumberListElements(this.getActivity()));
+		loadListElementsToLayoutFromList(bankMailingAddressList, 
+								CustomerServiceContactLists.getBankMailingAddressListElements(this.getActivity()));
 	}
 
 	/**

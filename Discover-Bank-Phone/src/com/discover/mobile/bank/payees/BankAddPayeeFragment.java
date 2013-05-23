@@ -15,7 +15,6 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
@@ -26,7 +25,6 @@ import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 /**
@@ -464,13 +462,6 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		return ret;
 	}
 
-	
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
-	}
-	
 	/**
 	 * Method used to set the text for a field.
 	 * 

@@ -10,7 +10,6 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
@@ -21,7 +20,6 @@ import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 public class PaymentDetailsViewPager extends DetailViewPager implements FragmentOnBackPressed{
@@ -61,16 +59,6 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 			detailList.payments = new ArrayList<PaymentDetail>();
 		}
 
-	}
-
-
-	/**
-	 * 
-	 * @return if the currently displayed data set has more data that can be retrieved from the server.
-	 */
-	private boolean canLoadMore() {
-		return detailList != null && detailList.links != null &&
-				detailList.links.get(ListActivityDetail.NEXT) != null;
 	}
 
 	/**
@@ -189,10 +177,6 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 		resetViewPagerAdapter();
 	}
 
-	/**
-	 * This method is called when the back button is pressed on this Fragment.
-	 */
-	// FIXME need to have a navigator method defined that allows navigating back to the view payments Fragment.
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -239,9 +223,11 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 */
 	@Override
 	protected boolean isFragmentEditable(final int position) {
-		return (detailList != null && 
-				detailList.payments != null && 
-				detailList.payments.size() > 0) &&
+		final boolean hasPayments = detailList != null && 
+									detailList.payments != null && 
+									detailList.payments.size() > 0;
+								
+		return  hasPayments &&
 				isUserPrimaryHolder(position) &&
 				"SCHEDULED".equalsIgnoreCase(detailList.payments.get(position).status );
 	}
@@ -254,11 +240,6 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
@@ -24,12 +23,11 @@ import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * This class is used to show confirmation of a Payment scheduled by a user. It consists
  * of a progress indicator, an action button to make another payment, a link to reivew
- * a list of payments, a feedback link and a help button.
+ * a list of payments, and a feedback link.
  * 
  * 
  * @author henryoyuela
@@ -67,7 +65,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		setLinkText(R.string.bank_pmt_review);
 
 		/**Setup Progress Indicator to show Payment Details and Payment Scheduled, on step 1, and hide step 2 */
-		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
+		final BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(2);
 		progressIndicator.hideStepTwo();
 		progressIndicator.setTitle(R.string.bank_pmt_details, R.string.confirm, R.string.confirm);
@@ -144,9 +142,4 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		//Disable the back press
 	}
 
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-	}
 }

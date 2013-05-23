@@ -19,7 +19,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankSelectAccountComparable;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
@@ -27,7 +26,6 @@ import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 /**
@@ -58,8 +56,6 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		
 		final View mainView = inflater.inflate(R.layout.bank_transfer_select_account, null);
 		setTitleFromArguments(mainView);
-
-		helpMenuOnClick((HelpWidget) mainView.findViewById(R.id.help));
 
 		loadSelectedAccounts();
 
@@ -539,10 +535,6 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
-	}
-
-	public void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
 	}
 
 	/**

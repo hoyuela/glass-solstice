@@ -40,7 +40,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.error.BankError;
@@ -58,7 +57,6 @@ import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
 import com.google.common.base.Strings;
@@ -172,11 +170,6 @@ public class SchedulePaymentFragment extends BaseFragment
 		final View view = inflater.inflate(R.layout.schedule_payment, null);
 
 		parentView = (RelativeLayout) view;
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-
 
 		payeeText = (TextView) view.findViewById(R.id.payee_text);
 		payeeError = (TextView)view.findViewById(R.id.payee_error);

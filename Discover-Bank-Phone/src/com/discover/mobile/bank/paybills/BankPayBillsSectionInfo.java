@@ -55,19 +55,27 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 
 				/**Check if user is already in this workflow*/
 				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.PAY_BILLS_SECTION)) {
-					if(!isEligible()){
-						BankConductor.navigateToPayBillsLanding();
-					} else if(isEligible() && !isEnrolled()){
-						sendToTermsScreen(R.string.section_title_pay_bills);
-					} else{
-						BankAddManagedPayeeFragment.setCameFromPayBills(true);
-						BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
-					}
+					navigateIntoPayBills();
 				} else {
 					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 		};
+	}
+	
+	/**
+	 * Navigates to the first step of pay bills, or to the other steps
+	 * if a user is not eligible or enrolled.
+	 */
+	private static void navigateIntoPayBills() {
+		if(!isEligible()){
+			BankConductor.navigateToPayBillsLanding();
+		} else if(isEligible() && !isEnrolled()){
+			sendToTermsScreen(R.string.section_title_pay_bills);
+		} else{
+			BankAddManagedPayeeFragment.setCameFromPayBills(true);
+			BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
+		}
 	}
 
 	/**
@@ -85,21 +93,29 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					return;
 				}
 
-				if (!isEligible()) {
-					BankConductor.navigateToPayBillsLanding();
-				} else if (isEligible() && !isEnrolled()) {
-					sendToTermsScreen(R.string.sub_section_title_manage_payees);
-				} else if (null != BankUser.instance().getPayees()) {
-					final Bundle bundle = new Bundle();
-					bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
-					BankConductor.navigateToManagePayee(bundle);
-				} else {
-					BankServiceCallFactory.createManagePayeeServiceRequest().submit();
-				}
+				navigateIntoManagePayees();
 				BankAddManagedPayeeFragment.setCameFromPayBills(false);
 				
 			}
 		};
+	}
+	
+	/**
+	 * Navigates into the first step of manage payees based on the user's current
+	 * eligibility and the satus of the BankUser cache.
+	 */
+	private static void navigateIntoManagePayees() {
+		if (!isEligible()) {
+			BankConductor.navigateToPayBillsLanding();
+		} else if (isEligible() && !isEnrolled()) {
+			sendToTermsScreen(R.string.sub_section_title_manage_payees);
+		} else if (null != BankUser.instance().getPayees()) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+			BankConductor.navigateToManagePayee(bundle);
+		} else {
+			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+		}
 	}
 
 	/**
@@ -127,20 +143,24 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					return;
 				}
 
-				if (!isEligible()) {
-					BankConductor.navigateToPayBillsLanding();
-				} else if (isEligible() && !isEnrolled()) {
-					sendToTermsScreen(R.string.review_payments_title);
-				} else if( null != BankUser.instance().getScheduled()) {
-					final Bundle bundle = new Bundle();
-					bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
-					BankConductor.navigateToReviewPaymentsTable(bundle);
-				} else {
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-				}
+				navigateIntoReviewPayments();
 			}
 		};
+	}
+	
+	private static void navigateIntoReviewPayments() {
+		if (!isEligible()) {
+			BankConductor.navigateToPayBillsLanding();
+		} else if (isEligible() && !isEnrolled()) {
+			sendToTermsScreen(R.string.review_payments_title);
+		} else if( null != BankUser.instance().getScheduled()) {
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
+			BankConductor.navigateToReviewPaymentsTable(bundle);
+		} else {
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+		}
 	}
 
 	/**

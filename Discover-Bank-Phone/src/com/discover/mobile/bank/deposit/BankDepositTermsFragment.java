@@ -9,10 +9,8 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment class for displaying the Terms & Conditions for Check Deposit. It is a sub-class 
@@ -27,10 +25,6 @@ public class BankDepositTermsFragment extends TermsConditionsFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 
 		return view;
 	}

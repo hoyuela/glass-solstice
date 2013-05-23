@@ -15,7 +15,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
@@ -237,74 +236,85 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		header.getScheduled().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if (scheduled != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-					updateAdapter(scheduled);
-				} else if (BankUser.instance().getScheduled() != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-					scheduled = BankUser.instance().getScheduled();
-					updateAdapter(scheduled);
-				} else {
-					//Generate a url to download schedule payments
-					final Bundle bundle = new Bundle();
-					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
-					call.setExtras(bundle);
-					call.submit();
-				}
+				setupScheduledList();
 			}
 		});
 
 		header.getCompleted().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if (completed != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
-					updateAdapter(completed);
-				} else if (BankUser.instance().getCompleted() != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
-					completed = BankUser.instance().getCompleted();
-					updateAdapter(completed);
-				} else {
-					//Generate a url to download schedule payments
-					final Bundle bundle = new Bundle();
-					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.COMPLETED_PAYMENTS);
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
-					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
-					call.setExtras(bundle);
-					call.submit();
-				}
+				setupCompletedList();
 			}
 		});
 
 		header.getCanceled().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if (canceled != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
-					updateAdapter(canceled);
-				} else if (BankUser.instance().getCancelled() != null) {
-					header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
-					canceled = BankUser.instance().getCancelled();
-					updateAdapter(canceled);
-				} else {
-					//Generate a url to download schedule payments
-					final Bundle bundle = new Bundle();
-					bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.CANCELED_PAYMENTS);
-					final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
-					final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
-					call.setExtras(bundle);
-					call.submit();
-				}
+				setupCancelledList();
 			}
 		});
 	}
 
+	private void setupScheduledList() {
+		if (scheduled != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+			updateAdapter(scheduled);
+		} else if (BankUser.instance().getScheduled() != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+			scheduled = BankUser.instance().getScheduled();
+			updateAdapter(scheduled);
+		} else {
+			//Generate a url to download schedule payments
+			final Bundle bundle = new Bundle();
+			bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+			call.setExtras(bundle);
+			call.submit();
+		}
+	}
+	
+	private void setupCompletedList() {
+		if (completed != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
+			updateAdapter(completed);
+		} else if (BankUser.instance().getCompleted() != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
+			completed = BankUser.instance().getCompleted();
+			updateAdapter(completed);
+		} else {
+			//Generate a url to download schedule payments
+			final Bundle bundle = new Bundle();
+			bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.COMPLETED_PAYMENTS);
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
+			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+			call.setExtras(bundle);
+			call.submit();
+		}
+	}
+	
+	private void setupCancelledList() {
+		if (canceled != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
+			updateAdapter(canceled);
+		} else if (BankUser.instance().getCancelled() != null) {
+			header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
+			canceled = BankUser.instance().getCancelled();
+			updateAdapter(canceled);
+		} else {
+			//Generate a url to download schedule payments
+			final Bundle bundle = new Bundle();
+			bundle.putInt(BankExtraKeys.CATEGORY_SELECTED,  ReviewPaymentsHeader.CANCELED_PAYMENTS);
+			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
+			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
+			call.setExtras(bundle);
+			call.submit();
+		}
+	}
 	@Override
 	public void onResume(){
 		super.onResume();
-		header.getHelp().showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+//		header.getHelp().showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 		header.requestLayout();
 	}
 
@@ -438,14 +448,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @param list - activities to update the adapter with
 	 */
 	public void updateAdapter(final ListPaymentDetail list){
-		final int category = header.getCurrentCategory();
-		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && null == BankUser.instance().getScheduled()){
-			BankUser.instance().setScheduled(list);
-		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && null == BankUser.instance().getCompleted()){
-			BankUser.instance().setCompleted(list);
-		}else if(category == ReviewPaymentsHeader.CANCELED_PAYMENTS && null == BankUser.instance().getCancelled()){
-			BankUser.instance().setCancelled(list);
-		}
+		cacheCurrentList(list);
+		
 		adapter.clear();
 		adapter.setData(list.payments);
 		if(adapter.getCount() < 1){
@@ -465,6 +469,21 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * Saves the passed list to the BankUser cache based on the currently selected category.
+	 * @param list
+	 */
+	private void cacheCurrentList(final ListPaymentDetail list) {
+		final int category = header.getCurrentCategory();
+		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && null == BankUser.instance().getScheduled()){
+			BankUser.instance().setScheduled(list);
+		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && null == BankUser.instance().getCompleted()){
+			BankUser.instance().setCompleted(list);
+		}else if(category == ReviewPaymentsHeader.CANCELED_PAYMENTS && null == BankUser.instance().getCancelled()){
+			BankUser.instance().setCancelled(list);
+		}
+	}
+	
 	/**
 	 * Get the string that should be shown in the empty list view
 	 * @return the string that should be show in the empty list view
