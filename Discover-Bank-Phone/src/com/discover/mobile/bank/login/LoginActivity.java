@@ -496,8 +496,9 @@ public class LoginActivity extends BaseActivity implements
 		final boolean errorTextViewIsVisible = errorTextView.getVisibility() == View.VISIBLE;
 		final boolean errorTextIsNotLogoutMessage =
 				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
-
-		return errorTextViewIsVisible && errorTextIsNotLogoutMessage;
+		final boolean errorTextIsNotSessionExpired = 
+				!getResources().getString(R.string.session_expired).equals(errorTextView.getText().toString());
+		return errorTextViewIsVisible && errorTextIsNotLogoutMessage && errorTextIsNotSessionExpired;
 	}
 
 	/**
