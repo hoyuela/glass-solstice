@@ -51,6 +51,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	/** Delay which allows the WebView to finish drawing before manually scrolling. */
 	private static final int SCROLL_DELAY = 100;
 	
+	/** Delay which allows the WebView to finish drawing before manually scrolling. (higher delay for Baseline devices) */
+	private static final int SCROLL_DELAY_BASELINE = 300;
+	
 	/** Holds the last known scroll amount (percent). */
 	private float scroll = 0f;
 	
@@ -141,8 +144,12 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			acceptButton.setEnabled(true);
 		}
 		if (scroll > 0) {
+			// Use OS version to determine how long to delay the WebView scroll restore
+			final boolean isBaseline = 
+					android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB;
 			// Scroll to exact previous point on page (lost on orientation change)
-			WebUtility.scrollAfterDelay(termsWebView, scroll, SCROLL_DELAY);
+			WebUtility.scrollAfterDelay(termsWebView, scroll, 
+					isBaseline ? SCROLL_DELAY_BASELINE : SCROLL_DELAY);
 		}
 	}
 
