@@ -467,7 +467,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		/**Show calendar as a dialog*/
 		calendarFragment
 			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
-				res.getString(R.string.schedule_pay_date_picker_title),
+				res.getString(R.string.select_transfer_date),
 				displayedDate,
 			    chosenPaymentDate, 
 			    earliestPaymentDate,
