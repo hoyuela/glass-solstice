@@ -7,7 +7,6 @@ import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -152,10 +151,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		if (!isLogout)
 			PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
 
-		/*
-		 * pageTimeOutUtil = new PageTimeOutUtil(this);
-		 * pageTimeOutUtil.startPageTimer();
-		 */
 		 extras = getIntent().getExtras();
 		 pushStatus = extras.getBoolean(PushConstant.extras.PUSH_GET_CALL_STATUS);	
 		
@@ -167,10 +162,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     		 Utils.isSpinnerAllowed = true;
     		 Utils.showSpinner(this, "Discover", "Loading...");
 		 }
-		 /*if(dialog == null)
-		 {
-			 dialog = ProgressDialog.show(this, "Waittt", "D Cordova is Loading");
-		 }*/
 	}
 
 	@Override
@@ -218,6 +209,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 					//Once request id send, make sure it wont call again.
 					//So making it blank.
 					requestId = "";
+					Editor editor = pushSharedPrefs.edit();
+					editor.putString(PushConstant.pref.PUSH_REQUEST_ID, "");
+					editor.commit();
 				}
 				catch (JsonGenerationException e)
 				{
@@ -261,6 +255,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				}
 			}
 		}
+		
+		
 	}
 
 	@Override
@@ -525,17 +521,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 */
 	@Override
 	public void setActionBarTitle(final String title) {
-		Log.i(LOG_TAG, "Set title as "+title);
 		if(title.equalsIgnoreCase(getString(R.string.error_no_title)))
-		{
 			showActionBarLogo();
-		}
 		else
-		{
 			super.setActionBarTitle(title);
-		}
-		cordovaWebFrag.setTitle(title);
-		/*if (null != title) {
+		
+		if (null != title) {
 			Utils.log("CardNavigationRootActivity",
 					"inside setActionbartitle n title is " + title);
 //			cordovaWebFrag = (CordovaWebFrag) this.getSupportFragmentManager()
@@ -546,7 +537,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				highlightMenuItems(cordovaWebFrag.getGroupMenuLocation(),
 						cordovaWebFrag.getSectionMenuLocation());
 			mCardStoreData.addToAppCache("currentPageTitle", title);
-		}*/
+		}
 	}
 
 	public void updateActionBarTitle() {
@@ -590,9 +581,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				.add(R.id.navigation_content, fragment,
 						fragment.getClass().getSimpleName()).commit();
 			}
-			/*mCardStoreData.addToAppCache("currentPageTitle", "Home");
+			mCardStoreData.addToAppCache("currentPageTitle", "Home");
 
-			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);*/
+			highlightMenuItems(CardMenuItemLocationIndex.HOME_GROUP, CardMenuItemLocationIndex.HOME_SECTION);
 				// Fix for defect 96085
 			cordovaWebFrag.getCordovaWebviewInstance().loadUrl("javascript:home()");
 			// Fix for defect 96085
@@ -661,7 +652,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
 		DiscoverModalManager.clearActiveModal();
-		//cordovaWebFrag.setTitle(null);
+		cordovaWebFrag.setTitle(null);
 		cordovaWebFrag.setM_currentLoadedJavascript(null);
 		final FragmentManager fragManager = this.getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
@@ -800,10 +791,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		
 	}
 	
-	/*@Override
+	@Override
 	public String getActionBarTitle() {
 		return (String)mCardStoreData.getValueOfAppCache("currentPageTitle");
-	}*/
+	}
 	
 	public void enableSlidingMenu(boolean enable)
 	{
@@ -821,22 +812,38 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 	 */
 	public void isDeviceReady()
 	{
-	    //dialog.dismiss();
-		 //Utils.isSpinnerShow = true;
-		 Utils.hideSpinner();
-		 
-		 /*
-		  * Check if this is offline push redirect to JQM pages.
-		  */
-		 if(redirect > 0)
-		 {	
-			 SharedPreferences pushSharedPrefs = getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
-		                Context.MODE_PRIVATE);			 
-			 if(pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE, true))
-			 {
-				 sendNavigationTextToPhoneGapInterface(getString(redirect));
-			 }
+		/*
+		 * Precaution is better than cure. 
+		 * Added 5 sec delay for precaution measure to load push navigated page.
+		 */
+		if(redirect > 0)
+		 {
+			Handler handler = new Handler();
+			handler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					 Utils.hideSpinner();
+					 
+					 /*
+					  * Check if this is offline push redirect to JQM pages.
+					  */
+					 	
+						 SharedPreferences pushSharedPrefs = getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
+					                Context.MODE_PRIVATE);			 
+						 if(pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE, true))
+						 {
+							 sendNavigationTextToPhoneGapInterface(getString(redirect));
+						 }
+					 
+				}
+			}, 5000);
 		 }
+		else
+		{
+			 Utils.hideSpinner();
+		}
 	}
 	
 	/*

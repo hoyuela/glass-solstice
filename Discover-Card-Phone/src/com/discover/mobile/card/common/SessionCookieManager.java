@@ -140,6 +140,9 @@ public final class SessionCookieManager {
                 else if ("PMData".equalsIgnoreCase(cookie.getName())) {
                     setPmData(cookie.getValue());
                 }
+                else if (dfsedskey.equalsIgnoreCase(cookie.getName())) {
+                    setDfsKey(cookie.getValue());
+                }
             }
         }
     }
@@ -166,6 +169,9 @@ public final class SessionCookieManager {
 
                 else if ("PMData".equalsIgnoreCase(cookie.getName())) {
                     setPmData(cookie.getValue());
+                }
+                else if (dfsedskey.equalsIgnoreCase(cookie.getName())) {
+                    setDfsKey(cookie.getValue());
                 }
             }
         }
