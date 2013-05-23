@@ -114,11 +114,5 @@
                 android:layout_below="@+id/bank_mail_address_list"
                 custom:footerType="11" />
         </RelativeLayout>
-        
-        <com.discover.mobile.common.help.HelpWidget
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/help_bar_height_two_items" />
     </RelativeLayout>
-
 </ScrollView>

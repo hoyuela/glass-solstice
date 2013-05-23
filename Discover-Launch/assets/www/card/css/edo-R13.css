@@ -659,16 +659,6 @@ background:none;font-size:14px;color:#50555a}
 	margin-top: 10px;
 	width:33%;
 }
-<<<<<<< HEAD
-#edoHistory-pg .wraper .historyList	.listLi .ui-block-b {
-	display: inline-block;
-	width:36%;
-}
-#edoHistory-pg .wraper .historyList	.listLi .ui-block-c {
-	display: inline-block;
-	width:30%;
-	float:right;
-=======
 #edoHistory-pg .wraper .historyList        .listLi .ui-block-b {
                 display: inline-block;
                 width:36%;
@@ -677,7 +667,6 @@ background:none;font-size:14px;color:#50555a}
                 display: inline-block;
                 width:30%;
                 float:right;
->>>>>>> 86481db... US7225 20130521 Card Bank Code Merge
 }
 
 

@@ -19,13 +19,11 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.modals.HowItWorksModalTop;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 
 /**
@@ -147,44 +145,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			
 			/**Verify account reference is not null*/
 			if( null != account ) {
-				final Bundle args = getArguments();
-				int depositAmount = 0;
-				boolean reviewDepositOnFinish = false;
-				if(args != null) {
-					depositAmount = args.getInt(BankExtraKeys.AMOUNT);
-					reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
-				}
-				
-				if(reviewDepositOnFinish && account.limits != null){
-					//Reset the review deposit bundle boolean to prevent odd navigation issues later.
-					args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
-					args.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.ReviewDeposit);
-				}
-				/**See if the limits for the account have already been downloaded and cached*/
-				else if( null != account.limits && !reviewDepositOnFinish) {
-					/**Navigate to Check Deposit - Select Amount Page*/
-					final Bundle bundle = new Bundle();
-					bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-					BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
-				} else {
-					if(reviewDepositOnFinish){
-						final BankNavigationRootActivity current = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-						Bundle bundle = current.getIntent().getExtras();
-						if(bundle == null){
-							bundle = new Bundle();
-						}
-						bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
-						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
-						bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);
-						current.getIntent().putExtras(bundle);
-					}
-					/**
-					 * Send a request to download account limits for the selected account. If successful
-					 * it will navigate to select account step 2 in check deposit work flow and send selected account
-					 * */
-					BankServiceCallFactory.createGetAccountLimits(account, false).submit();
-				}
+				getAccountLimitsAndNavigate(account);
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unable to retreive account limits");
@@ -193,6 +154,54 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		}
 	}
 	
+
+	/**
+	 * Downloads account limits or, if cached, checks the current limits of the account. Then either navigates or 
+	 * shows an error on screen.
+	 * @param account an Account to check the limits of.
+	 */
+	private void getAccountLimitsAndNavigate(final Account account) {
+		final Bundle args = getArguments();
+		int depositAmount = 0;
+		boolean reviewDepositOnFinish = false;
+		if(args != null) {
+			depositAmount = args.getInt(BankExtraKeys.AMOUNT);
+			reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
+		}
+		
+		if(reviewDepositOnFinish && account.limits != null){
+			//Reset the review deposit bundle boolean to prevent odd navigation issues later.
+			args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
+			args.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+			BankConductor.navigateToCheckDepositWorkFlow(args, BankDepositWorkFlowStep.ReviewDeposit);
+		}
+		/**See if the limits for the account have already been downloaded and cached*/
+		else if( null != account.limits && !reviewDepositOnFinish) {
+			/**Navigate to Check Deposit - Select Amount Page*/
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+			BankConductor.navigateToCheckDepositWorkFlow(bundle, BankDepositWorkFlowStep.SelectAmount);
+		} else {
+			if(reviewDepositOnFinish){
+				final BankNavigationRootActivity current = 
+								(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+				Bundle bundle = current.getIntent().getExtras();
+				if(bundle == null){
+					bundle = new Bundle();
+				}
+				bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
+				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+				bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);
+				current.getIntent().putExtras(bundle);
+			}
+			/**
+			 * Send a request to download account limits for the selected account. If successful
+			 * it will navigate to select account step 2 in check deposit work flow and send selected account
+			 * */
+			BankServiceCallFactory.createGetAccountLimits(account, false).submit();
+		}
+	}
+		
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 0;
@@ -253,8 +262,4 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		}
 	}
 
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
-	}
 }

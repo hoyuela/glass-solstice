@@ -54,11 +54,6 @@
 
         </LinearLayout>
 
-        <com.discover.mobile.common.help.HelpWidget
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <com.discover.mobile.common.ui.widgets.AccountToggleView
             android:id="@+id/acct_toggle"
             android:layout_width="wrap_content"

@@ -225,3 +225,11 @@ function redemptionOptions()
 populateGlobalCache();
 navigation('../rewards/redemptionLanding');
 }
+
+// Defect id 96085
+function home()
+{
+console.log("home function is called");
+navigation('../common/dummy');
+}
+// Defect id 96085

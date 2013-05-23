@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.ui.fragments.BankMessageFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment used to display a duplicate check error to the user. The user will be allowed to navigate
@@ -25,10 +23,6 @@ public class DuplicateCheckErrorFragment extends BankMessageFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
-		/**Help widget setup to show faq*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
 		
 		return view;
 	}

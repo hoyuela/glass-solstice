@@ -14,13 +14,11 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.payees.BankEnterPayeeFragment;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment that will be used in the first step of the pay bill process.
@@ -69,10 +67,6 @@ public class BankSelectPayee extends BaseFragment{
 			final Bundle savedInstanceState) {
 
 		view = inflater.inflate(R.layout.select_payee, null);
-
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
 
 		payeesList = (LinearLayout)view.findViewById(R.id.payee_list);
 		empty = (TextView)view.findViewById(R.id.no_payees);

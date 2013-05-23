@@ -5,8 +5,6 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -33,9 +31,7 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.google.common.base.Strings;
 
 /**
@@ -131,14 +127,14 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} 
 			//SSO Fraud users must be handled here, because they are taken to Card home instead of doing nothing.
-			else if(sender instanceof CreateBankSSOLoginCall && 
+			else if((sender instanceof CreateBankSSOLoginCall) && 
 					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
 							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
 
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} 
 			//Handle bad bank status but good card status
-			else if(sender instanceof CreateBankSSOLoginCall && errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
+			else if((sender instanceof CreateBankSSOLoginCall) && errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
 				final Activity activity = DiscoverActivityManager.getActiveActivity();
 				if(activity instanceof BaseFragmentActivity){
 					((BaseFragmentActivity) activity).showCustomAlert(getBadBankStatusModal());
@@ -197,30 +193,18 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 */
 	private AlertDialog getBadBankStatusModal() {
 		final Context context = DiscoverActivityManager.getActiveActivity();
-		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
-		top.setTitle(R.string.sso_bad_bank_status_title);
-		top.setContent(R.string.sso_bad_bank_status_content);
-		top.showErrorIcon(true);
-		top.hideNeedHelpFooter();
-		bottom.setButtonText(R.string.sso_bad_bank_button);
-		bottom.getButton().setOnClickListener(new OnClickListener(){
-
+		final SimpleContentModal modal = new SimpleContentModal(context);
+		modal.setTitle(R.string.sso_bad_bank_status_title);
+		modal.setContent(R.string.sso_bad_bank_status_content);
+		modal.showErrorIcon();
+		modal.hideNeedHelpFooter();
+		modal.setButtonText(R.string.sso_bad_bank_button);
+		modal.getButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
+				goToCardHome();
 				modal.dismiss();
 			}
-
-		});
-		modal.setOnDismissListener(new OnDismissListener(){
-
-			@Override
-			public void onDismiss(final DialogInterface dialog) {
-				goToCardHome();
-
-			}
-
 		});
 		return modal;
 	}
@@ -294,7 +278,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			mErrorHandler.handleGenericError(httpErrorCode);
 			return true;
 		case HttpURLConnection.HTTP_CONFLICT:
-			if(sender != null && sender instanceof CreatePaymentCall) {
+			if((sender != null) && (sender instanceof CreatePaymentCall)) {
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {

@@ -18,13 +18,12 @@ import android.widget.RelativeLayout;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -200,7 +199,8 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 */
 	private void navigateToReviewDeposit() {
 		/**Remove everything but numbers so we have the value in cents.*/
-		final String amount = amountItem.getEditableField().getText().toString().replaceAll("[^0-9]", "");
+		final String amount = amountItem.getEditableField().getText().toString().
+												replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
 		final Bundle arguments = getArguments();
 		arguments.putInt(BankExtraKeys.AMOUNT, Integer.parseInt(amount));
 		BankConductor.navigateToCheckDepositWorkFlow(arguments, BankDepositWorkFlowStep.ReviewDeposit);
@@ -300,8 +300,4 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		}
 	}
 
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getCheckDepositHelpItems());
-	}
 }

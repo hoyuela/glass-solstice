@@ -8,7 +8,6 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -17,7 +16,6 @@ import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.google.common.base.Strings;
 
 /**
@@ -260,11 +258,6 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 	}
 
 	@Override

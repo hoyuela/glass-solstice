@@ -79,11 +79,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/continue_button" 
             style="@style/bank_layout_footer_style"/>
-	    
-	    <com.discover.mobile.common.help.HelpWidget
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/help_bar_height_two_items" />
 	
 	</RelativeLayout>
 </ScrollView>

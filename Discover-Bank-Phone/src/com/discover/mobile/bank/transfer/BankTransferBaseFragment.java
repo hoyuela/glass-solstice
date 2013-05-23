@@ -10,11 +10,9 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * This is the base fragment for all Transfer Money Fragments that need a progress indicator.
@@ -28,7 +26,7 @@ public abstract class BankTransferBaseFragment extends BankOneButtonFragment {
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
-		BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
+		final BankHeaderProgressIndicator progressIndicator = getProgressIndicator();
 		progressIndicator.initialize(getProgressIndicatorStep());
 		progressIndicator.setTitle(R.string.transfer_money, R.string.empty, R.string.confirm);
 
@@ -62,11 +60,6 @@ public abstract class BankTransferBaseFragment extends BankOneButtonFragment {
 	@Override
 	protected void onActionLinkClick() {
 
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
 	}
 
 	@Override

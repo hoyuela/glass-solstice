@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/between_related_elements_padding"
                 android:layout_marginTop="@dimen/forms_inner_padding"
-                android:layout_marginRight="@dimen/next_button_margin"
+                android:layout_marginRight="@dimen/forms_inner_padding"
                 android:layout_alignParentRight="true"
                 android:contentDescription="@string/empty"
                 android:src="@drawable/right_page_control" />
@@ -76,10 +76,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </android.support.v4.view.ViewPager>
-
-    <com.discover.mobile.common.help.HelpWidget
-        android:id="@+id/help"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
 </RelativeLayout>

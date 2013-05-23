@@ -39,6 +39,14 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	private static final String TAG = PushNowAvailableFragment.class.getSimpleName();
 	private static final String REFERER = "cardHome-pg";
 	 
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+	    // TODO Auto-generated method stub
+	    super.onCreate(savedInstanceState);
+	    Utils.isSpinnerShow = true;
+        Utils.hideSpinner();
+	}
 	/**
 	 * Creates the fragment, inflates the view and defines the button functionality.
 	 * @param inflater - inflater that will inflate the layout

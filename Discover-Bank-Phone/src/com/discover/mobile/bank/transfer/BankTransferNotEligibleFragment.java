@@ -10,10 +10,8 @@ import android.widget.ImageView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.BankMessageFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * This Fragment shows the user information if they are not eligible for transfer money.
@@ -32,14 +30,10 @@ public class BankTransferNotEligibleFragment extends BankMessageFragment{
 			final Bundle savedInstanceState) {	
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		
-		Button actionButton = getActionButton();
+		final Button actionButton = getActionButton();
 		actionButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.external_link_icon_white, 0);
 		actionButton.setCompoundDrawablePadding((int) getResources().getDimension(R.dimen.between_related_elements_padding));
 
-		/**Help widget setup to show faq*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getBankTransferHelpItems());
-		
 		final ImageView image = (ImageView)view.findViewById(R.id.icon);
 		image.setVisibility(View.GONE);
 		

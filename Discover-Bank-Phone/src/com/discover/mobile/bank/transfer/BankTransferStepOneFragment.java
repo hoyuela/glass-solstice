@@ -45,6 +45,7 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -63,7 +64,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	private String frequencyText = "One Time";
 	
 	private static final String DATE = "date";
-	private static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 	private static final String ERROR_OBJECT = "err";
 	/**
 	 * Static field used to determine maximum value allowed for a transfer
@@ -839,7 +839,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 			transferObject.sendDate = BankStringFormatter.convertToISO8601Date(dateTextView.getText().toString(),false);
 	
-			final String cents = amountField.getText().toString().replaceAll(NON_NUMBER_CHARACTERS, "");
+			final String cents = amountField.getText().toString().replaceAll(StringUtility.NON_NUMBER_CHARACTERS, 
+																				StringUtility.EMPTY);
 			if(!Strings.isNullOrEmpty(cents)) {
 				transferObject.amount.value = Integer.parseInt(cents);
 			}
@@ -871,7 +872,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		boolean hasEnoughTransfers = true;
 		
 		if(TransferDetail.UNTIL_COUNT.equalsIgnoreCase(recurring.getDurationType())) {
-			hasEnoughTransfers = !Strings.isNullOrEmpty(recurring.getDurationValue()) && 1 < Integer.parseInt(recurring.getDurationValue());
+			hasEnoughTransfers = !Strings.isNullOrEmpty(recurring.getDurationValue()) && 
+																1 < Integer.parseInt(recurring.getDurationValue());
 			if(!hasEnoughTransfers) {
 				showErrorLabel(getString(R.string.too_few_transfers), 
 										(TextView)recurring.findViewById(R.id.transactions_error_label));
@@ -982,7 +984,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final int twentyFiveDollars = 2500;
 		
 		if(!Strings.isNullOrEmpty(amount)){
-			value = Integer.parseInt(amount.replaceAll(NON_NUMBER_CHARACTERS, ""));
+			value = Integer.parseInt(amount.replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY));
 		}
 		
 		return InputValidator.isValueBoundedBy(value, twentyFiveDollars, Integer.MAX_VALUE);
@@ -1096,13 +1098,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		}
 		
 		/**Show calendar as a dialog*/
-		calendarFragment
-			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
-				getResources().getString(R.string.schedule_pay_deliver_on_title),
-				displayedDate,
-			    chosenPaymentDate, 
-			    earliestPaymentDate,
-				BankUser.instance().getHolidays(),
+		calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), getResources()
+				.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance().getHolidays(),
 				createCalendarListener());
 	}
 

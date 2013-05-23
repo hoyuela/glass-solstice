@@ -16,9 +16,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 
 /**
  * Fragment class used to display the Enter Payee Page Step 1 of the Add Payee workflow. 
@@ -67,14 +65,9 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 
 		/**Temporarily disable validation*/
 		searchField.enableValidation(false);
-	
 
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-		
 		/**Text View which displays a message to the user on why they are shown this screen, by visibility is gone*/
-		TextView msgText = (TextView)view.findViewById(R.id.msg_text);
+		final TextView msgText = (TextView)view.findViewById(R.id.msg_text);
 
 		/**
 		 * Check if message text should be made visible, shown when navigating from Manage Payees Welcome page
@@ -172,27 +165,31 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 		if( clearText ) {
 			searchField.getText().clear();
 		}
-		
+		final long oneSecond = 1000;
 		/**Open Keyboard*/
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				final Activity activity = getActivity();
 				if( null != searchField && activity != null) {
-					final InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+					final InputMethodManager imm = 
+									(InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 					searchField.requestFocus();
 					
 					imm.showSoftInput(searchField, InputMethodManager.SHOW_FORCED);
-					
-					/**Show inline error if there was one prior to resuming*/
-					if( hasInlineError() ) {
-						searchField.enableValidation(true);
-						searchField.updateAppearanceForInput();
-						searchField.enableValidation(false);
-					}
+					restoreInlineError();
 				}
 			}
-		}, 1000);
+		}, oneSecond);
+	}
+	
+	private void restoreInlineError() {
+		/**Show inline error if there was one prior to resuming*/
+		if( hasInlineError() ) {
+			searchField.enableValidation(true);
+			searchField.updateAppearanceForInput();
+			searchField.enableValidation(false);
+		}
 	}
 
 	@Override

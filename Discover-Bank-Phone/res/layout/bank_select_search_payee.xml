@@ -62,11 +62,6 @@
             android:layout_below="@+id/enter_payee_details" 
             style="@style/bank_layout_footer_style"/>
         
-        
-        <com.discover.mobile.common.help.HelpWidget
-            android:id="@+id/help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </RelativeLayout>
 
 </ScrollView>

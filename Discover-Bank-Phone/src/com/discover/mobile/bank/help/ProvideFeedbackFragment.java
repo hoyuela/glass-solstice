@@ -11,8 +11,6 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -27,7 +25,6 @@ import com.discover.mobile.common.utils.CommonUtils;
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	/**URL for providing feedback for card when the user is not logged in*/
 	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
-	
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -38,20 +35,6 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		if (!isCardMode()) {
-			if (!Globals.isLoggedIn()) {
-				help.showHelpItems(HelpMenuListFactory.instance()
-						.getLoggedOutHelpItems());
-			} else {
-				help.showHelpItems(HelpMenuListFactory.instance()
-						.getAccountHelpItems());
-			}
-		} else {
-			help.setVisibility(View.GONE);
-		}
 		
 		/**Hide footer with accept button & hide header*/
 		showFooter(false);

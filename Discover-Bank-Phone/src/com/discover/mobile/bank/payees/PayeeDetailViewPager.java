@@ -9,11 +9,9 @@ import android.support.v4.view.ViewPager;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
-import com.discover.mobile.common.help.HelpWidget;
 
 public class PayeeDetailViewPager extends DetailViewPager {
 	private ListPayeeDetail detailList;
@@ -182,12 +180,6 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.MANAGE_PAYEES_SECTION;
-	}
-
-	@Override
-	protected void helpMenuOnClick(final HelpWidget help) {
-		help.showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
-
 	}
 
 }

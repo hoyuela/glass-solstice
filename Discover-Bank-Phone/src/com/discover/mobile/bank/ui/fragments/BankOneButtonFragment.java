@@ -19,7 +19,6 @@ import com.discover.mobile.bank.ui.widgets.BankHeaderProgressIndicator;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
@@ -106,10 +105,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 			final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.bank_one_button_layout, null);
 		
-		/**Help icon setup*/
-		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
-		helpMenuOnClick(help);
-		
 		progressIndicator = (BankHeaderProgressIndicator)view.findViewById(R.id.header);
 		
 		
@@ -190,9 +185,9 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	}
 	
 	/**
-	 * Abstract method to be implemented by sub-class to provid a list of ViewPagerListItems to be
-	 * displayed by this fragment. Sub-class can choose to return null for this method and use getRelativeLayoutListContent() 
-	 * instead.
+	 * Abstract method to be implemented by sub-class to provide a list of ViewPagerListItems to be
+	 * displayed by this fragment. Sub-class can choose to return null for this method and use 
+	 * getRelativeLayoutListContent() instead.
 	 * 
 	 * @return Returns a list of ViewPagerListItem objects 
 	 */
@@ -200,8 +195,8 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	
 	/**
 	 * Abstract method to be implemented by sub-class to provide a list of RelativeLayout objects to be
-	 * displayed by this fragment. Sub-class can choose to return null for this method and use getRelativeLayoutListContent() 
-	 * instead.
+	 * displayed by this fragment. Sub-class can choose to return null for this method and use 
+	 * getRelativeLayoutListContent() instead.
 	 * 
 	 * @return Returns a list of RelativeLayout objects 
 	 */
@@ -216,11 +211,6 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 * Abstract Method to be implmented by sub-class to handle when the action link is clicked
 	 */
 	protected abstract void onActionLinkClick();
-	
-	/**
-	 * Abstract Method to be implemented for the help menu
-	 */
-	protected abstract void helpMenuOnClick(HelpWidget help);
 	
 	/**
 	 * Method implementation of OnClickListener to specifiy to the sub-class
@@ -297,11 +287,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		noteTextMsg.setVisibility(View.GONE);
 	}
 	
-	protected void setButtonText(int resId) {
+	protected void setButtonText(final int resId) {
 		actionButton.setText(resId);
 	}
 	
-	protected void setLinkText(int resId) {
+	protected void setLinkText(final int resId) {
 		actionLink.setText(resId);
 	}
 	

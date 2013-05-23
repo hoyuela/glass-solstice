@@ -1130,6 +1130,8 @@ public class LoginActivity extends BaseActivity implements
 		    
 			phoneGapInitComplete = true;
 		}
+		setInputFieldsDrawablesToDefault();
+		CommonUtils.setViewGone(errorTextView);
 		showSplashScreen(false);
 
 	}
