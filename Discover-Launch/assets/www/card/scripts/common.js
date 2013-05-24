@@ -51,6 +51,7 @@ var errorFlag=false;
 var incentiveTypeSuffix="";
 var incentiveCodeSuffix = "";
 var globalOtherUser="";
+var rewardErrorFlag = false; //Fix for defect 96754
 /** **CONSTANTS and Global Variables End ** */
 
 /** Name Space**/
@@ -161,11 +162,18 @@ function onOffline()
 
 function onBackKeyDown () {
 console.log("inside onBackKeyDown");
-console.log("in back activepage beforing calling back "+currentActivePage);
-isLhnNavigation = false;
+console.log("in back activepage beforing calling back "+currentActivePage+" n islhnnavigation is "+isLhnNavigation);
 	if(currentActivePage != "cardHome-pg")
 	{
-		if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg")
+		if(currentActivePage == "strongAuthLocked-Pg")
+		{
+			HybridControl.prototype.logOutUser();
+		}
+		else if(currentActivePage == "paymentsSummary-pg" && isLhnNavigation)
+		{
+			HybridControl.prototype.popCurrentFragment(null,null);
+		}
+		else if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg" && (!isLhnNavigation))
 		{
 			window.history.back();
 		}
@@ -175,14 +183,7 @@ isLhnNavigation = false;
 			HybridControl.prototype.popCurrentFragment(null,null);
 		}
 	}
-//if($.mobile.activePage.is('#login-pg')){
-//e.preventDefault();
-//navigator.app.exitApp();
-//}
-//else {
-//navigator.app.backHistory();
-//}
-
+isLhnNavigation = false;
 }
 
 
@@ -1035,7 +1036,14 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 				//	cpEvent.preventDefault();
 					 var activePage=$.mobile.activePage.attr('id');
 					 console.log("calling handlenativeframe from pagebforechange");
-					 handleNativeFrame(activePage);   
+					 
+					 if(activePage == "paymentsSummary-pg" && isLhnNavigation)
+					 {
+					 	HybridControl.prototype.popPhoneGapToFront(null, "Make a Payment");
+					 }
+					 else				 	
+					    handleNativeFrame(activePage);
+					       
 					if(isDeviceReady == true)
 					{      
 						if(activePage != "loadingPage-pg")
@@ -1219,6 +1227,8 @@ $('[data-role=page]').live('pageshow', function(e,data){
 
         var activePage=$.mobile.activePage.attr('id');
         currentActivePage = activePage;
+        
+        console.log("inside pageshow and current active page is "+ currentActivePage);        
         		        
         switch (activePage){
 		case "login-pg":
@@ -1285,7 +1295,14 @@ $('[data-role=page]').live('pageshow', function(e,data){
 
 	console.log("activepage beforing calling handlenativeframe "+activePage+"  && LHn  NAv value is :- "+isLhnNavigation);
 	
-	if(pageTitle[activePage] != null || activePage == "pageError-pg" || isLhnNavigation)
+	if(activePage == "paymentsSummary-pg" && isLhnNavigation)
+	{
+		console.log("condition is true");
+		//isLhnNavigation = false;
+		console.log("calling handlenativeframe from pageshow");
+		HybridControl.prototype.popPhoneGapToFront(null, "Make a Payment");
+	}
+	 else if(pageTitle[activePage] != null || activePage == "pageError-pg" || isLhnNavigation)
 	{
 		console.log("condition is true");
 		isLhnNavigation = false;
@@ -1791,7 +1808,12 @@ function preparePostHeader(customHeaders) {
 				'X-Application-Version' : APPVER,
 				'X-Client-Platform' : getClientPlat(),
 				'Content-Type' : 'application/json',
-				'X-SEC-Token' : sectoken
+				'X-SEC-Token' : sectoken,
+				'Accept' : '*/*',
+                'Charset': null,
+                'Encoding': null,
+                'Language': null,
+                'Referer': null
 		};		
 		if (!isEmpty(customHeaders)) {	
 			$.extend(postHeader, customHeaders);

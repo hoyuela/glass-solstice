@@ -177,7 +177,7 @@ border: 1px solid grey;
 /*from app start */
 span.small_btn_150px .ui-btn-up-c, span.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px; /*line-height:20px;*/ margin-left:10px;}
 span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hover-c{padding:0 25px 0 25px;line-height:20px; margin-left:10px;}
-#paymentsHistory-pg .txtcenteraln .small_btn{padding:0 15px 0 15px !important}
+#pendingPayments-pg .txtcenteraln .small_btn, #paymentsHistory-pg .txtcenteraln .small_btn{padding:0 15px 0 15px !important}
 /*#paymentsHistory-pg .txtcenteraln .small_btn.ui-btn-hover-c{padding:0 15px 0 15px !important}*/
 /*from app end */
 /*gray button*/

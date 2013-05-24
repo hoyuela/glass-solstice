@@ -187,7 +187,10 @@ public class ContactsListPlugin extends CordovaPlugin {
 					this.cordova.getActivity().startActivityForResult(intent, PICK_CONTACT);
 
 					CharSequence text = "No email addresses or phone numbers are available for this contact";
-					int duration = Toast.LENGTH_LONG;					
+					int duration = Toast.LENGTH_LONG;	
+					//Fix for defect 95878
+					Toast toast = Toast.makeText(this.cordova.getActivity().getApplicationContext(), text, duration);
+					toast.show();
 					JSONObject jsonObject = new JSONObject();
 					try {
 						jsonObject.put("name", name);
