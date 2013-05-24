@@ -627,7 +627,10 @@ public final class BankConductor  extends Conductor {
 		final Bundle bundle = new Bundle();
 
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
-		bundle.putSerializable(BankExtraKeys.EDIT_MODE, true);
+
+		if(editMode){
+			bundle.putSerializable(BankExtraKeys.EDIT_MODE, true);
+		}
 		fragment.setArguments(bundle);
 
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
