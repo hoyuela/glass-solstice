@@ -74,8 +74,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private static final String CONFLICT = "conflict";
 	private static final String FOCUS="focus";
 
-	public static final String EDIT_MODE = "em";
-
 	private RelativeLayout parentView;
 
 	/** Pay From table item */
@@ -445,8 +443,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
 
-			final PayeeDetail currentPayee = BankUser.instance().getPayees().getPayeeFromId(paymentDetail.payee.id);
-			if( currentPayee != null ) {
+			final PayeeDetail currentPayee = paymentDetail.payee;
+			if( (currentPayee != null) && (null != currentPayee.paymentDate)) {
 				updateEarliestPaymentDate(currentPayee.paymentDate);
 			}
 		}
@@ -492,7 +490,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			if( payee == null ) {
 				paymentDetail = (PaymentDetail)b.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			}
-			editMode = b.getBoolean(EDIT_MODE, false);
+			editMode = b.getBoolean(BankExtraKeys.EDIT_MODE, false);
 		}
 	}
 
@@ -710,8 +708,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
 			memoEdit.setOnEditorActionListener(this);
 		}else{
-			((ImageView) memoItem.findViewById(R.id.memo_caret))
-			.setImageDrawable(getResources().getDrawable(R.drawable.gray_right_arrow));
+			memoItem.setVisibility(View.GONE);
 
 		}
 
@@ -964,7 +961,11 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 					if((currentActivity != null) && (currentActivity instanceof BankNavigationRootActivity)) {
 						final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
-						navActivity.popTillFragment(BankSelectPayee.class);
+						if(editMode){
+							navActivity.getSupportFragmentManager().popBackStackImmediate();
+						}else{
+							navActivity.popTillFragment(BankSelectPayee.class);
+						}
 					}
 				}
 			});

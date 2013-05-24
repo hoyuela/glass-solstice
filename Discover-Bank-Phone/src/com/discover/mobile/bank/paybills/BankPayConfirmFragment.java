@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -73,6 +74,12 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
 
+		if((null != bundle) && getArguments().containsKey(BankExtraKeys.EDIT_MODE)){
+			final TextView success = (TextView) view.findViewById(R.id.success_note_text);
+			success.setText(R.string.schedule_pay_success_edit);
+			success.setVisibility(View.VISIBLE);
+		}
+
 		return view;
 	}
 
@@ -88,7 +95,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	 */
 	@Override
 	protected void onActionButtonClick() {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
 		activity.popTillFragment(BankSelectPayee.class);
 	}
 
@@ -101,7 +108,7 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 		//Generate a url to download schedule payments
 		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
 		activity.popTillFragment(BankAccountSummaryFragment.class);
 
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();

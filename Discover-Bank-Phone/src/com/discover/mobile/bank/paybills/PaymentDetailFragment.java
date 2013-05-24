@@ -73,7 +73,7 @@ public class PaymentDetailFragment extends DetailFragment{
 				@Override
 				public void onClick(final View v) {
 					final Bundle bundle = getArguments();
-					bundle.putBoolean(SchedulePaymentFragment.EDIT_MODE, true);
+					bundle.putBoolean(BankExtraKeys.EDIT_MODE, true);
 					BankConductor.navigateToPayBillStepTwo(bundle);
 				}
 			});

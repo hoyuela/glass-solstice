@@ -96,6 +96,9 @@ public final class BankExtraKeys {
 	/** A key used for when a user is toggling between sections in posted/scheduled activity*/
 	public static final String IS_TOGGLING_ACTIVITY = "acttog";
 
+	/** A key used for when a fragment needs communicate that it was in edit mode*/
+	public static final String EDIT_MODE = "edit mode";
+
 	public static final String GENERAL_CARD_FAQ = "general";
 
 	public static final String DISCOVER_EXTRAS_CARD_FAQ = "discoverExtras";

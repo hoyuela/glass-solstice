@@ -303,7 +303,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	public static void navigateToHomePage() {
 		navigateToHomePage(false);
 	}
@@ -416,7 +416,7 @@ public final class BankConductor  extends Conductor {
 
 		ModalAlertWithOneButton modal = null;
 
-		if(activity != null && activity instanceof NavigationRootActivity ) {
+		if((activity != null) && (activity instanceof NavigationRootActivity) ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			modal = new ModalAlertWithOneButton(activity, title, body, R.string.continue_text);
 
@@ -534,7 +534,7 @@ public final class BankConductor  extends Conductor {
 				revPmtFrag.handleReceivedData(bundle);
 
 			} else if( bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
-				BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
+				final BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
 				//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 				if( rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
 					final BankAccountActivityTable accountActivityFragment = (BankAccountActivityTable)rootActivity.getCurrentContentFragment();
@@ -621,12 +621,13 @@ public final class BankConductor  extends Conductor {
 	 *
 	 * @param value Reference to PaymentDetail information used to schedule a Payment
 	 */
-	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
+	public static void navigateToPayConfirmFragment(final PaymentDetail value, final boolean editMode) {
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
 		final Bundle bundle = new Bundle();
 
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
+		bundle.putSerializable(BankExtraKeys.EDIT_MODE, true);
 		fragment.setArguments(bundle);
 
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -854,13 +855,13 @@ public final class BankConductor  extends Conductor {
 			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
 				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
-				
+
 				/**Update arguments bundle in fragment*/
 				final Bundle args = revPmtFrag.getArguments();
 				if( args != null) {
 					args.putAll(bundle);
 				}
-				
+
 				revPmtFrag.handleReceivedData(bundle);
 			}
 		}
