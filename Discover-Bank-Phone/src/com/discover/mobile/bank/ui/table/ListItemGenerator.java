@@ -31,10 +31,10 @@ public class ListItemGenerator {
 	private static final int PHONE_LENGTH_MIN = 5;
 	/** Index where the phone number dash "-" should be inserted. */
 	private static final int PHONE_DASH_INDEX = 3;
-	
+
 	private static final String STATUS_PAID = "PAID";
 	private static final String STATUS_CANCELLED = "CANCELLED";
-	
+
 	private ViewPagerListItem listItem;
 	private Context context = null;
 
@@ -55,7 +55,7 @@ public class ListItemGenerator {
 		}
 		return listItem;
 	}
-	
+
 	/** Same as a Two Item Cell but with a decreased text size for the middle label. */
 	public ViewPagerListItem getSmallTwoItemCell(final int topLabelResource, final String middleLabelText) {
 		initNewListItem();
@@ -69,10 +69,10 @@ public class ListItemGenerator {
 		}
 		return listItem;
 	}
-	
+
 	public ViewPagerListItem getTwoItemImageCell(final int topLabelResource, final String middleLabelText) {
 		final ViewPagerListItemWithImage listItemWithImage = new ViewPagerListItemWithImage(context);
-		
+
 		if(middleLabelText != null) {
 			listItemWithImage.getTopLabel().setText(topLabelResource);
 			listItemWithImage.getMiddleLabel().setText(middleLabelText);
@@ -127,7 +127,7 @@ public class ListItemGenerator {
 		return getThreeItemCell(R.string.from, from, 
 				context.getString(R.string.available_balance) + StringUtility.SPACE + balance);
 	}
-	
+
 	public ViewPagerListItem getFromCell(final String from) {
 		return getTwoItemCell(R.string.from, from);
 	}
@@ -151,14 +151,14 @@ public class ListItemGenerator {
 	public ViewPagerListItem getFrequencyCell(final String frequency) {
 		ViewPagerListItem item = null;
 		final boolean isOneTimeTransfer = TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequency) ||
-									context.getResources().getString(R.string.one_time).equalsIgnoreCase(frequency);
-		
+				context.getResources().getString(R.string.one_time).equalsIgnoreCase(frequency);
+
 		if(isOneTimeTransfer){
 			item = getTwoItemCell(R.string.frequency, frequency);
 		}else{
 			item = getTwoItemImageCell(R.string.frequency, frequency);
 		}
-		
+
 		return item;
 	}
 
@@ -178,7 +178,7 @@ public class ListItemGenerator {
 		temp.getTopLabel().setText(formattedTitle);
 		return temp;
 	}
-	
+
 	public ViewPagerListItem getReferenceNumberCell(final String referenceNumber) {
 		return getTwoItemCell(R.string.reference_number, "#" + referenceNumber);
 	}
@@ -190,7 +190,7 @@ public class ListItemGenerator {
 	public ViewPagerListItem getConfirmationCell(final String confirmationNumber) {
 		return getTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
-	
+
 	public ViewPagerListItem getLongConfirmationCell(final String confirmationNumber) {
 		return getSmallTwoItemCell(R.string.confirmation_number, confirmationNumber);
 	}
@@ -210,11 +210,11 @@ public class ListItemGenerator {
 	public ViewPagerListItem getPhoneNumberCell(final String phoneNumber) {
 		return getTwoItemCell(R.string.phone_number, badPhoneNumberFormatter(unformatPhoneNumber(phoneNumber)));
 	}
-	
+
 	public ViewPagerListItem getFrequencyDurationCell(final String frequencyDuration) {
 		final ViewPagerListItem item = getTwoItemCell(R.string.duration, frequencyDuration);
 		item.getMiddleLabel().setSingleLine(false);
-		
+
 		return item;
 	}
 
@@ -388,7 +388,7 @@ public class ListItemGenerator {
 		final String itemStatus = item.status;
 		ViewPagerListItem paymentDateItem = null;
 
-		 if(STATUS_PAID.equalsIgnoreCase(itemStatus)){
+		if(STATUS_PAID.equalsIgnoreCase(itemStatus)){
 			dates = item.deliverBy;
 			paymentDateItem = getDeliverByCell(BankStringFormatter.getFormattedDate(dates));
 			paymentDateItem.getTopLabel().setText(R.string.completed_pay_date);
@@ -403,7 +403,7 @@ public class ListItemGenerator {
 
 		return paymentDateItem;
 	}
-	
+
 	/**
 	 * Generates a list of items that can be inserted into a layout at runtime.
 	 * 
@@ -418,14 +418,18 @@ public class ListItemGenerator {
 		items.add(getAmountCell(BankStringFormatter.convertCentsToDollars(item.amount.value)));
 		items.add(getStatusCell(BankStringFormatter.capitalize(item.status)));
 		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverByDate)));
-			
+
 		// Using transaction id for the confirmation number. Using specialized Confirmation cell to fit the long id.
-		items.add(getLongConfirmationCell(item.id));
-		
+		if(Strings.isNullOrEmpty(item.confirmationNumber)){
+			items.add(getLongConfirmationCell(item.id));
+		}else{
+			items.add(getLongConfirmationCell(item.confirmationNumber));
+		}
+
 		hideDivider(items);
 		return items;
 	}
-	
+
 	/**
 	 * Generates a list of items that can be inserted into a linear layout.
 	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
@@ -437,21 +441,21 @@ public class ListItemGenerator {
 		if(item.fromAccount != null){
 			items.add(getFromCell(item.fromAccount.nickname));
 		}
-		
+
 		items.add(getToCell(item.toAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
 		items.add(getSendOnCell(BankStringFormatter.getFormattedDate(item.sendDate)));
 		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverBy)));
 		items.add(getFrequencyCell(TransferDetail.getFormattedFrequency(context, item.frequency)));
 
-		
+
 		if( !Strings.isNullOrEmpty(item.durationType) && 
-			!Strings.isNullOrEmpty(item.frequency) &&
-			!item.frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)){
+				!Strings.isNullOrEmpty(item.frequency) &&
+				!item.frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)){
 			items.add(getFrequencyDurationCell(
-				TransferDetail.getFormattedDuration(context, item.durationType)));
+					TransferDetail.getFormattedDuration(context, item.durationType)));
 		}
-		
+
 		hideDivider(items);
 		return items;
 	}
@@ -467,13 +471,13 @@ public class ListItemGenerator {
 
 		items.add(getAmountCell(item.amount.formatted));
 		items.add(getDateCell(item.getTableDisplayDate()));
-		
+
 		hideDivider(items);
 		return items;
 	}
-	
+
 	private void hideDivider(final List<ViewPagerListItem> items) {
-		if(items != null && items.size() > 0){
+		if((items != null) && (items.size() > 0)){
 			items.get(0).getDividerLine().setVisibility(View.GONE);
 		}
 	}
