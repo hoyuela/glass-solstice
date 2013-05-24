@@ -17,7 +17,7 @@ import com.google.common.base.Strings;
  */
 public final class BankUrlManager  {
 
-	private static String baseURL = "http://192.168.0.158:8009";//BankBaseUrl.getString("BankUrlManager.0");
+	private static String baseURL = BankBaseUrl.getString("BankUrlManager.0");
 	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 
 	public static final double MAX_IDLE_TIME = 600; // 600 secs = 10 min
