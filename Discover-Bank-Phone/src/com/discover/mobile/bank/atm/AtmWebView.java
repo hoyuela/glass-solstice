@@ -95,7 +95,7 @@ public class AtmWebView{
 			@Override
 			public boolean shouldOverrideUrlLoading(final WebView  view, final String  url){
 				if(url.contains(GOOGLE_PRIVACY) || url.contains(GOOGLE_REPORT)) {
-					BankConductor.navigateToBrowser(url);
+					BankConductor.navigateToBrowser(R.string.atm_browser_title, R.string.atm_browser_body, url);
 					return true;
 				}
 				return false;
