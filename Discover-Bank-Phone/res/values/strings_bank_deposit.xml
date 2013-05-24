@@ -18,7 +18,7 @@
     <string name="bank_deposit_received_actionlink">View This Transaction</string>
     <string name="bank_deposit_received_confirmation">Confirmation #: </string>
     <string name="bank_deposit_received_note">Note</string>
-    <string name="bank_deposit_received_notetext">You will be receiving a confirmation email shortly. Please retain your check in a safe place for at least 60 days. Checks deposited before 6:30 PM EST will be posted to your account on the next business day.</string>
+    <string name="bank_deposit_received_notetext">You will be receiving a confirmation email shortly. Please retain your check in a safe place for at least 60 days. Checks deposited before 6:30 PM EST on a business day will be posted to your account on the next business day.</string>
     <string name="bank_deposit_noteligible_title">Sign Up for Mobile\nCheck Deposit</string>
     <string name="bank_deposit_noteligible_body">Enjoy the ease and convenience of Mobile Check Deposit.\n\nTo start, simply open up a Money Market or Discover Savings account.</string>
     <string name="bank_deposit_noteligible_number">1&#8211;800&#8211;290&#8211;9885</string>

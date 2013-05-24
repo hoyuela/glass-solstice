@@ -3,6 +3,8 @@ package com.discover.mobile.bank.help;
 import java.io.Serializable;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +32,7 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 
 	private void doSetup(final Context context) {
 		final RelativeLayout view = getInflatedLayout(context);
-		view.setOnClickListener(expandClickListener);
+
 		addView(view);
 	}
 
@@ -52,6 +54,8 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 
 		if(bodyLabel != null){ 
 			bodyLabel.setText(bodyText);
+			bodyLabel.setText(Html.fromHtml(bodyText));
+			bodyLabel.setMovementMethod(LinkMovementMethod.getInstance());
 		}
 	}
 
@@ -64,6 +68,7 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 
 		if(titleLabel != null){
 			titleLabel.setText(title);
+			titleLabel.setOnClickListener(expandClickListener);
 		}
 	}
 
