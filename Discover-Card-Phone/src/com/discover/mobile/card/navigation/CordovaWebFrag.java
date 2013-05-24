@@ -93,8 +93,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	private String m_currentLoadedJavascript = null;
 
 	private int m_currentTitleId = -1;
-	
-	private boolean stopFurtherLoading = false;
 
 	/**
 	 * Called when fragment gets attached to activity
@@ -265,7 +263,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	// PhoneGap Interface
 	@Override
 	public void javascriptCall(String javascript) {
-		stopFurtherLoading = false;
 		Log.v(TAG, "javascript: " + javascript);
 		m_currentLoadedJavascript = javascript;
 		String firstLetter = javascript.substring(0, 1);
@@ -295,13 +292,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			});
 
 			cwv.sendJavascript(javascript);
-			if(javascript.equalsIgnoreCase("acHome()"))
-			{
-				Log.d(TAG,"clearing history n stopping d load");
-				cwv.stopLoading();
-				cwv.clearHistory();
-				stopFurtherLoading = true;
-			}
 		}
 
 	}
@@ -326,7 +316,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			webCookieManager.setCookie(url, setCookie);
 			webCookieSync.sync();
 
-			Utils.log("passCookieToWebview", "SAB Cookie in CWV:" + setCookie);
+			Utils.log("passCookieToWebview", "setCookie11111" + setCookie);
 
 		}
 	}
@@ -498,12 +488,11 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 		 * .WebView, java.lang.String)
 		 */
 		@Override
-		public void onPageFinished(WebView webview, String url) {
+		public void onPageFinished(WebView arg0, String arg1) {
 			// TODO Auto-generated method stub
-			super.onPageFinished(webview, url);
-			Utils.log(TAG, "on pagefinished.... " + url);
-			if(stopFurtherLoading)
-				webview.stopLoading();
+			super.onPageFinished(arg0, arg1);
+			Utils.log(TAG, "on pagefinished.... " + arg1);
+
 		}
 
 		/*
