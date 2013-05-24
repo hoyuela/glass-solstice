@@ -42,7 +42,7 @@
 	<!-- Delete Payee Modal Strings -->
 	<string name="bank_payee_delete_title">Delete Payee?</string>
 	<string name="bank_payee_delete_body">Are you sure you want to delete this payee? Any future payments that have been scheduled for this payee will be cancelled. Any existing repeating payments for this payee will be deleted.</string>
-	<string name="bank_payee_delete_action">Delete This Payee</string>
+	<string name="bank_payee_delete_action">Yes, Delete</string>
 	<string name="bank_payee_delete_link">Do Not Delete This Payee</string>
 	<string name="bank_payee_delete_confirm">The payee has been deleted.</string>
 	<string name="bank_payee_action_edit">Edit</string>
