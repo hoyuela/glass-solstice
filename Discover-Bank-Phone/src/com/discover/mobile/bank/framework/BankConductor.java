@@ -100,7 +100,9 @@ import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
@@ -801,31 +803,53 @@ public final class BankConductor  extends Conductor {
 	 *               the payee being deleted. Use the key DATA_LIST_ITEM to populate with PayeeDetail object.
 	 */
 	public static void navigateToDeletePayeeModal(final Bundle bundle) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager
+				.getActiveActivity();
 
-		// Create a one button modal to notify the user that they are leaving the application
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-				R.string.bank_payee_delete_title,
-				R.string.bank_payee_delete_body,
-				R.string.bank_payee_delete_action);
+		// Create a one button modal to notify the user that they are leaving
+		// the application
+		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(activity, 
+																		new ModalDefaultTopView(activity, null), 
+																		new ModalDefaultTwoButtonBottomView(activity, null));
 
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+		final ModalDefaultTopView topView = (ModalDefaultTopView) modal
+				.getTop();
 		topView.hideNeedHelpFooter();
 
-		//Set the click listener that will delete the payment
-		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+		//Set modal top view text
+		modal.getTop().setTitle(R.string.bank_payee_delete_title);
+		modal.getTop().setContent(R.string.bank_payee_delete_body);
+		
+		//Set modal button text
+		modal.getBottom().setOkButtonText(R.string.bank_payee_delete_action);
+		modal.getBottom().setCancelButtonText(R.string.bank_payee_delete_link);
+		
+		// Set the click listener that will delete the payment
+		modal.getBottom().getOkButton().setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 
-				if( bundle != null ) {
-					final PayeeDetail payee = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-					BankServiceCallFactory.createDeletePayeeServiceCall(payee).submit();
+				if (bundle != null) {
+					final PayeeDetail payee = (PayeeDetail) bundle
+							.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+					BankServiceCallFactory.createDeletePayeeServiceCall(payee)
+							.submit();
 				}
 			}
+		});
+		
+		modal.getBottom().getCancelButton().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				modal.dismiss();
+			}
+			
 		});
 
 		activity.showCustomAlert(modal);
