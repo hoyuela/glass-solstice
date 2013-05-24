@@ -44,6 +44,9 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
     final Activity currentContext = this;
     protected TextView helpNumber;
     protected TextView provideFeedback;
+  //Defect id 95853
+    protected TextView privacy_terms ;
+  //Defect id 95853
 
     /**
      * Load list options into the list and setup an OnClickListener to wait for
@@ -59,7 +62,11 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
                 android.R.id.text1, Option.values());
         helpNumber = (TextView) findViewById(R.id.help_number_label);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+      //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
         provideFeedback.setOnClickListener(this);
+        privacy_terms.setOnClickListener(this);
+      //Defect id 95853
 
         choicesList.setAdapter(optionAdapter);
 
@@ -220,7 +227,12 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotCredentialsActivity.this,
                     REFERER);
+          //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+      //Defect id 95853
     }
 
 }

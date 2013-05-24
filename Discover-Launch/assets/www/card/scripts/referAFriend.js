@@ -269,8 +269,8 @@ if(x=="disabled")
 		$(this).hide();
 		$(this).prev().hide();
 		$(this).next().show();
-		$(this).next().select();
-		$("#subject").val('');
+		/*$(this).next().select();
+		$("#subject").val(''); */ // Commented as a fix for defect 97172
 	});
 	
 	

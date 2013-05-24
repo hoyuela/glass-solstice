@@ -28,7 +28,7 @@ function statements()
 
 function handleNativeFrame(activePage)
 {	 
-	if(activePage!="login-pg" && activePage!="loadingPage-pg" && activePage!="dummy-pg") 
+	if(activePage!="login-pg" && activePage!="loadingPage-pg" && activePage!="dummy-pg"  && activePage!="cardHome-pg") 
 	{	 
 		HybridControl.prototype.popPhoneGapToFront(null, pageTitle[activePage]);  
 	}
@@ -100,6 +100,7 @@ function partnerGiftCardseCerts()
 {
 	populateGlobalCache();
     dfs.crd.rwd.getAllPartners();
+	if(!rewardErrorFlag){ // Fix for defect 96754
 	s.prop1 = 'HANDSET_REDEEM_PGC_BTN'; // campaign code	
 	var insuffErr = dfs.crd.rwd.insuficientErrorPresent;
    if (!isEmpty(insuffErr) && insuffErr === 'true') {
@@ -108,12 +109,15 @@ function partnerGiftCardseCerts()
    } else if(!errorFlag) {  
     navigation('../rewards/browseLanding');
    }
+   rewardErrorFlag = false;
+   }
 }
 
 function discoverGiftCard()
 {	
 	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
+	if(!rewardErrorFlag){ // Fix for defect 96754
 	s.prop1 = 'HANDSET_REDEEM_DGC_BTN'; // campaign code
 	var insuffErr = dfs.crd.rwd.insuficientErrorPresent;
    	if (!isEmpty(insuffErr) && insuffErr === 'true') {
@@ -122,30 +126,44 @@ function discoverGiftCard()
    } else if(!errorFlag){
     navigation('../rewards/giftcard1');
    }
+   rewardErrorFlag = false;
+   }
 }
 
 function statementCredit()
 {
 	populateGlobalCache();
+	dfs.crd.rwd.getAllPartners();
+	if(!rewardErrorFlag){ // Fix for defect 96754
 	s.prop1 = 'HANDSET_REDEEM_STATE_CREDIT_BTN'; // campaign code
 	isLhnNavigation  = true;
 	navigation('../rewards/statementCredit1');	
+	}
+	rewardErrorFlag = false;
 }
 
 function directDeposit()
 {
 	populateGlobalCache();
+	dfs.crd.rwd.getAllPartners();
+	if(!rewardErrorFlag){ // Fix for defect 96754
 	s.prop1 = 'HANDSET_REDEEM_DIRECT_DEP_BTN'; // campaign code
 	isLhnNavigation  = true;
-	navigation('../rewards/directDeposit1');	
+	navigation('../rewards/directDeposit1');
+	}
+	rewardErrorFlag = false;
 }
 
 function paywithCashbackBonus()
 {
 	populateGlobalCache();
+	dfs.crd.rwd.getAllPartners();
+	if(!rewardErrorFlag){ // Fix for defect 96754
 	s.prop1 = 'HANDSET_REDEEM_PAY_CBB_BTN'; // campaign code
 	//navigation('../rewards/redeemCashbackEcert1');
 	navigation('../rewards/redeem_pay_with_cbb');
+	}
+	rewardErrorFlag = false;
 }
 
 function redemptionHistory()
@@ -212,6 +230,8 @@ function noTitle(){
 
 function acHome(){
 	navigation('../achome/cardHome');
+	activePage = "cardHome-pg";
+	currentActivePage = "cardHome-pg";
 }
 
 function paymentHistory()
@@ -230,6 +250,6 @@ navigation('../rewards/redemptionLanding');
 function home()
 {
 console.log("home function is called");
-navigation('../common/dummy');
+navigation('../common/dummy',false);
 }
 // Defect id 96085

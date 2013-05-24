@@ -37,6 +37,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             .getSimpleName();
     private static final String REFERER = "forgot-password-step2-pg";
     protected TextView provideFeedback;
+    //Defect id 95853
+    private TextView privacy_terms ;
+    //Defect id 95853
     protected TextView helpNumber;
 
     @Override
@@ -45,6 +48,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
         setContentView(R.layout.register_help_strength);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+        //Defect id 95853
         helpNumber = (TextView) findViewById(R.id.help_number_label);
         provideFeedback.setOnClickListener(new OnClickListener() {
 
@@ -64,7 +70,15 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
                         StrengthBarHelpActivity.this);
             }
         });
+        //Defect id 95853
+        privacy_terms.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(final View v) {
+                //bank Code for privacy and terms
+            }
+        });
+        //Defect id 95853
         // Determine what help guide to configure the screen for based on extra
         // in INTENT
         final Bundle extras = getIntent().getExtras();

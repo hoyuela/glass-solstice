@@ -100,9 +100,15 @@ $('body').live('pagebeforeshow',function(event){
                
 	/* This function is adding foot note in footer */
 		//footnote for after login pages
-		var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/moreLanding\")'> Privacy & Terms </a><a href='#' onclick='provideFeedBack();'>| Provide Feedback </a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";
+		var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);'  data-rel='external' class='registerNow' onclick='navigation(\"../common/moreLanding\")'> Privacy & Terms |</a><a href='#' onclick='provideFeedBack();'> Provide Feedback </a></p><div class='footertemlinks'><a href='#' onclick='showallnemu();' class='footerlinks navigationicon'></a><a href='#' class='footerlinks backicon' data-rel='back' onClick = 'changebackImage()'></a><a href='#' class='footerlinks logouticon' onclick='dfs.crd.lilo.logOutUser(\"LOGOUT\")'></a></div><!-- p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p -->";
 		$(".footnotes").html(footnotesHtml);
+
+
 	
+
+
+
+
 	//Footnote for index page
 	var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);' onclick='navigation(\"card/html/common/privacyPolicy\")'>Privacy Statement </a><a href='javascript:void(0);' onclick='navigation(\"card/html/common/termsUse\")' class='registerNow'>| Terms of Use</a></p><p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p>";
 	$("#login-pg .footnotes").html(footnotesHtml);
@@ -194,6 +200,8 @@ $(".collapsible li a.collapslink").live("click",function(){
 	var actualh = winh-139; // 139 means header height + footer height 
 	$(".ui-content-internalpages").css("min-height",actualh+"px");
 }*/
+
+
 $(window).resize(function() {
 	//resetview();
 	setGridwpwidth();

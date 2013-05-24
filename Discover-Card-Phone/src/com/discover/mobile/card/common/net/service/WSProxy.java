@@ -107,6 +107,22 @@ public final class WSProxy {
         if (deviceIdentifiers == null) {
             setupDeviceIdentifiers(context);
         }
+        else
+        {
+        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(context);
+            cardShareDataStoreObj.addToAppCache(
+                    context.getString(R.string.SID),
+                    deviceIdentifiers.sid);
+            cardShareDataStoreObj.addToAppCache(
+                    context.getString(R.string.OID),
+                    deviceIdentifiers.oid);
+            cardShareDataStoreObj.addToAppCache(
+                    context.getString(R.string.DID),
+                    deviceIdentifiers.did);
+            
+            Utils.log("SID:" + deviceIdentifiers.sid + " DID:" + deviceIdentifiers.did + " OID:" + deviceIdentifiers.oid);
+        }
         connection = createConnection(requestDetail);
 
         setCookies(connection, context);
@@ -378,6 +394,7 @@ public final class WSProxy {
 
         }
         connection.setRequestProperty("Cookie", cookieStringBuffer.toString());
+        Utils.log("SAB Cookie in Request:" + cookieStringBuffer.toString());
     }
 
     /**

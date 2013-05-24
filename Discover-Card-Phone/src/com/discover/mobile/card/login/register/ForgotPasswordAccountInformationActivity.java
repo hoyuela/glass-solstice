@@ -97,10 +97,11 @@ public class ForgotPasswordAccountInformationActivity extends
 
     @Override
     public void goBack() {
-
-        /*final Intent forgotCredentialsActivity = new Intent(this,
+        // Defect id 97237
+        final Intent forgotCredentialsActivity = new Intent(this,
                 ForgotCredentialsActivity.class);
-        startActivity(forgotCredentialsActivity);*/
+        startActivity(forgotCredentialsActivity);
+        // Defect id 97237
 
         finish();
     }
@@ -143,6 +144,11 @@ public class ForgotPasswordAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+        //Defect id 95853
     }
 }
