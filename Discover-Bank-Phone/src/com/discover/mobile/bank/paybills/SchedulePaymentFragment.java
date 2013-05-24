@@ -144,7 +144,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	/** date error exists - Cannot submit payment */
 	private boolean isDateError = false;
 	/** Max character length for memo */
-	private static final int MAX_CHAR_MEMO = 40;
+	private static final int MAX_CHAR_MEMO = 34;
 	/** Boolean flag to detect if fragment's orientation is changing*/
 	private boolean isOrientationChanging = false;
 	/** Reference to the Activity's canceled listener */
