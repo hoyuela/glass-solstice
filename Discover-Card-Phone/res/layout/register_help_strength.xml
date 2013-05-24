@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@drawable/light_gray_bkgrd"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd" >
 
-     <LinearLayout
+    <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -12,7 +12,6 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding" >
-        
 
         <include
             android:id="@+id/reg_help_weak_pswd"
@@ -24,12 +23,13 @@
 
         <include
             android:id="@+id/reg_help_strong_pswd"
-            layout="@layout/register_help_strength_item"/>
+            layout="@layout/register_help_strength_item" />
 
         <include
             android:id="@+id/reg_help_footer"
             layout="@layout/new_general_need_help_footer" />
-
+        <!-- Defect id 95853 -->
+        <!--
         <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/blue_hyperlink_small"
@@ -40,7 +40,19 @@
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:gravity="center"
             android:text="@string/feedback_text" />
+        -->
 
+        <RelativeLayout
+            android:id="@+id/provide_feedback_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reg_help_footer" >
+
+            <include
+                android:id="@+id/home_footer"
+                layout="@layout/card_fragment_footer" />
+        </RelativeLayout>
+        <!-- Defect id 95853 -->
     </LinearLayout>
 
 </ScrollView>

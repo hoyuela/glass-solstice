@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -27,6 +28,10 @@ import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
+import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 
@@ -52,7 +57,7 @@ import com.xtify.sdk.api.XtifySDK;
  * 
  */
 public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
-        implements CardErrorHandlerUi {
+        implements CardErrorHandlerUi,CardEventListener {  //DEFECT 96936
     /**
      * The details object that the server will return upon successful flow
      * through forgot or register.
@@ -62,6 +67,18 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
     protected boolean isForgotFlow = false;
     protected boolean isForgotPassword = false;
 
+  //DEFECT 96936 
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+     
+        
+       Utils.log("PageTimeOutUtil.getInstance","in side CreateLoginActivity");
+        PageTimeOutUtil.getInstance(this).startPageTimer();
+        
+    }
+    
+  //DEFECT 96936
     /**
      * This method submits the users information to the Card server for
      * verification.
@@ -87,6 +104,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
                 cardShareDataStoreObj.addToAppCache(
                         ForgotOrRegisterFinalStep.this
                                 .getString(R.string.account_details), data);
+                Utils.log("retrieveAccountDetailsFromServer", "clear timer");
+                PageTimeOutUtil.getInstance(ForgotOrRegisterFinalStep.this).destroyTimer();  //DEFECT 96936 
                 navigateToConfirmationScreenWithResponseData(confirmationDetails);
                 finish();
             }
@@ -193,6 +212,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
      */
     protected void navigateToConfirmationScreenWithResponseData(
             final RegistrationConfirmationDetails responseData) {
+        
+       
         final Intent confirmationAndLoginScreen = new Intent(this,
                 CardNavigationRootActivity.class);
         confirmationAndLoginScreen.putExtra(IntentExtraKey.UID,
@@ -256,15 +277,8 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
 
     @Override
     public void goBack() {
-        Intent lastScreen = null;
-        if (isForgotFlow || isForgotPassword) {
-            lastScreen = new Intent(this, ForgotCredentialsActivity.class);
-            startActivity(lastScreen);
-        } else {
-            FacadeFactory.getLoginFacade().navToLogin(this);
-        }
-
-        finish();
+        
+        idealTimeoutLogout();
 
     }
 
@@ -273,6 +287,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
         goBack();
     }
 
+   
     /*
      * (non-Javadoc)
      * 
@@ -307,4 +322,75 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
         return null;
     }
 
+    
+  //DEFECT 96936
+    public void idealTimeoutLogout() {
+        Utils.log("CardNavigationRootActivity", "inside logout...");
+        // super.logout();
+        
+         Utils.isSpinnerAllowed = true;
+        final WSRequest request = new WSRequest();
+        final String url = NetworkUtility.getWebServiceUrl(this,
+                R.string.logOut_url);
+        request.setUrl(url);
+        request.setMethodtype("POST");
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
+                "Discover", "Signing Out...", this);
+        serviceCall.execute(request);
+
+    }
+
+
+    @Override
+    public void OnError(final Object data) {
+        // CardErrorResponseHandler cardErrorResHandler = new
+        // CardErrorResponseHandler(
+        // this);
+        // cardErrorResHandler.handleCardError((CardErrorBean) data);
+        //finish();
+        /*final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);*/
+        //clearNativeCache();
+        //clearJQMCache(); // Call this method to clear JQM cache.
+
+        
+       
+        
+        PageTimeOutUtil.getInstance(this).destroyTimer();
+        navigateToPreviousActivity();
+    }
+
+    @Override
+    public void onSuccess(final Object data) {
+     
+        /*final Bundle bundle = new Bundle();
+        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);*/
+        //finish();
+        //clearNativeCache();
+        //clearJQMCache(); // Call this method to clear JQM cache.
+        
+        PageTimeOutUtil.getInstance(this).destroyTimer();
+        navigateToPreviousActivity();
+    }
+
+    
+    public void navigateToPreviousActivity()
+    {
+        Intent lastScreen = null;
+        if (isForgotFlow || isForgotPassword) {
+            lastScreen = new Intent(this, ForgotCredentialsActivity.class);
+            startActivity(lastScreen);
+           
+        } else {
+            FacadeFactory.getLoginFacade().navToLogin(this);
+            
+        }
+        finish();
+    }
+  //DEFECT 96936
+    
 }

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@drawable/light_gray_bkgrd"
-   >
+    android:layout_height="match_parent"
+    android:background="@drawable/light_gray_bkgrd" >
+
     <RelativeLayout
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
-        android:paddingBottom="@dimen/forms_inner_padding"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding" >
 
         <LinearLayout
             android:id="@+id/linear_layout_one"
@@ -17,18 +17,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-                      
             <TextView
                 android:id="@+id/forgot_credentials_label"
                 style="@style/title_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="50dp"
+                android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
-                android:paddingTop="4dp"
                 android:paddingBottom="4dp"
+                android:paddingTop="4dp"
                 android:text="@string/forgot_credentials_text" />
 
             <ListView
@@ -36,10 +35,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:background="@drawable/list_bg"
+                android:cacheColorHint="@android:color/transparent"
                 android:divider="@drawable/row_shadow"
                 android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:cacheColorHint="@android:color/transparent">
+                android:paddingRight="4dp" >
             </ListView>
         </LinearLayout>
 
@@ -52,9 +51,9 @@
 
             <include layout="@layout/old_general_need_help_footer" />
         </RelativeLayout>
-
-          
-        <TextView
+	     <!-- Defect id 95853 -->
+        <!--
+             <TextView
             android:id="@+id/provide_feedback_button"
             style="@style/blue_hyperlink_small"
             android:layout_width="wrap_content"
@@ -64,7 +63,19 @@
             android:layout_marginBottom="@dimen/orange_button_margin_top"
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:text="@string/feedback_text" />
-        
+        -->
+
+        <RelativeLayout
+            android:id="@+id/provide_feedback_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/need_help_footer" >
+
+            <include
+                android:id="@+id/home_footer"
+                layout="@layout/card_fragment_footer" />
         </RelativeLayout>
+             <!-- Defect id 95853 -->
+    </RelativeLayout>
 
 </ScrollView>

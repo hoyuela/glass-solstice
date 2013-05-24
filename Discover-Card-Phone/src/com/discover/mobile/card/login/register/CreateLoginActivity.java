@@ -63,7 +63,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * 
  */
 public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
-        CardErrorHandlerUi, OnClickListener,CardEventListener { //DEFECT 96936
+        CardErrorHandlerUi, OnClickListener { 
     private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
 
     private CreateLoginDetails formDataTwo;
@@ -84,6 +84,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     // TEXT LABELS
     private TextView provideFeedback;
+    private TextView privacy_terms ;
 
     // ERROR LABELS
     private TextView mainErrorMessageLabel;
@@ -136,11 +137,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         setupHeaderProgress();
         setupHelpNumber();
         provideFeedback.setOnClickListener(this);
+        privacy_terms.setOnClickListener(this);
         restoreState(savedInstanceState);
         
         
-        Utils.log("PageTimeOutUtil.getInstance","in side CreateLoginActivity");
-        PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
+       /* Utils.log("PageTimeOutUtil.getInstance","in side CreateLoginActivity");
+        PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();*/
         
     }
 
@@ -295,6 +297,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
         headerProgressIndicator = (HeaderProgressIndicator) findViewById(R.id.header);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+       
 
     }
 
@@ -496,56 +500,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
     }
 
     
-  //DEFECT 96936
-    public void idealTimeoutLogout() {
-        Utils.log("CardNavigationRootActivity", "inside logout...");
-        // super.logout();
-        
-         Utils.isSpinnerAllowed = true;
-        final WSRequest request = new WSRequest();
-        final String url = NetworkUtility.getWebServiceUrl(this,
-                R.string.logOut_url);
-        request.setUrl(url);
-        request.setMethodtype("POST");
-        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
-                "Discover", "Signing Out...", this);
-        serviceCall.execute(request);
-
-    }
-
-
-    @Override
-    public void OnError(final Object data) {
-        // CardErrorResponseHandler cardErrorResHandler = new
-        // CardErrorResponseHandler(
-        // this);
-        // cardErrorResHandler.handleCardError((CardErrorBean) data);
-        finish();
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        //clearNativeCache();
-        //clearJQMCache(); // Call this method to clear JQM cache.
-
-       
-        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
-    }
-
-    @Override
-    public void onSuccess(final Object data) {
-        finish();
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        //clearNativeCache();
-        //clearJQMCache(); // Call this method to clear JQM cache.
-       
-        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
-    }
-
-  //DEFECT 96936
+  
     /*
      * (non-Javadoc)
      * 
@@ -563,7 +518,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+        //Defect id 95853
     }
 
     @Override

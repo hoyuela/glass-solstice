@@ -215,6 +215,7 @@ dfs.crd.rwd.getAllPartners = function() {
 						break;
 					case "1629":
 						cpEvent.preventDefault();
+						rewardErrorFlag = true; // Fix for defect 96754
 						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
 						var promoCodeTextData = [];
 						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
@@ -231,6 +232,7 @@ dfs.crd.rwd.getAllPartners = function() {
 					case "1656":
 						// console.log("error 1656");
 						cpEvent.preventDefault();
+						rewardErrorFlag = true; // Fix for defect 96754
 						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
 						var promoCodeTextData = [];
 						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"

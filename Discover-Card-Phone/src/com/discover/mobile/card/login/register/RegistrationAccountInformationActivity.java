@@ -170,6 +170,12 @@ public class RegistrationAccountInformationActivity extends
                     false);
             bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
             FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+        //Defect id 95853
+        
     }
 }
