@@ -36,7 +36,9 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	 */
 	protected void registerWithDiscover(final String regStatus, final String venderId) throws Exception{
 		final Context context = this.getActivity();
-		
+		Utils.isSpinnerShow = true;
+        Utils.isSpinnerAllowed=true;
+        Utils.showSpinner(context, "Discover", "Loading...");
 		PostPushRegistration postPushRegistration = new PostPushRegistration(context, new CardEventListener()
 		{
 			

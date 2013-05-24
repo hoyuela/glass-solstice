@@ -123,6 +123,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected TextView accountIdentifierFieldRestrictionsLabel;
     protected TextView helpNumber;
     protected TextView provideFeedback;
+  //Defect id 95853
+    protected TextView privacy_terms ;
+  //Defect id 95853
     protected TextView cancel;
 
     // INPUT FIELDS
@@ -190,6 +193,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         setupFieldsAndLabels();
         setupCustomTextChangedListeners();
         provideFeedback.setOnClickListener(this);
+        privacy_terms.setOnClickListener(this);
         cancel.setOnClickListener(this);
         setupClickablePhoneNumbers();
         setHeaderProgressText();
@@ -258,6 +262,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         continueButton = (Button) findViewById(R.id.account_info_continue_button);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         cancel = (TextView) findViewById(R.id.account_info_cancel_label);
+      //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+      //Defect id 95853
     }
 
     /**

@@ -94,6 +94,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         // Setting the headers available for the service
         final HashMap<String, String> headers = request.getHeaderValues();
         headers.put("Authorization", authString);
+        showToggleFlag = false;//DEFECT 97099
 
         final String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.login_url);

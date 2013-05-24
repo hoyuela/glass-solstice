@@ -152,8 +152,9 @@
 
                 <include layout="@layout/old_general_need_help_footer" />
             </RelativeLayout>
-
-            <TextView
+            <!-- Defect id 95853 -->
+            <!--
+                 <TextView
                 android:id="@+id/provide_feedback_button"
                 style="@style/blue_hyperlink_small"
                 android:layout_width="wrap_content"
@@ -164,6 +165,19 @@
                 android:layout_marginTop="@dimen/orange_button_margin_top"
                 android:includeFontPadding="false"
                 android:text="@string/feedback_text" />
+            -->
+
+            <RelativeLayout
+                android:id="@+id/provide_feedback_footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/footer" >
+
+                <include
+                    android:id="@+id/home_footer"
+                    layout="@layout/card_fragment_footer" />
+            </RelativeLayout>
+            <!-- Defect id 95853 -->
         </RelativeLayout>
     </ScrollView>
 

@@ -72,9 +72,9 @@ public class PostPushRegistration
         request.setMethodtype("POST");
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new GetPushData(), "Discover", null, listener);
-        Utils.isSpinnerShow = true;
-        Utils.isSpinnerAllowed=true;
-        Utils.showSpinner(context, "Discover", "Loading...");
+//        Utils.isSpinnerShow = true;
+//        Utils.isSpinnerAllowed=true;
+//        Utils.showSpinner(context, "Discover", "Loading...");
         serviceCall.execute(request);
     }
 
