@@ -29,7 +29,6 @@ import com.discover.mobile.card.R;
 public final class SessionCookieManager {
 
     public static final String sectoken = "sectoken";
-    private String pmData = null;
     public static final String vfirst = "v1st";
     public static final String dfsedskey = "dfsedskey";
     private final Context sessionCookieContext;
@@ -37,6 +36,7 @@ public final class SessionCookieManager {
     private String dfsKey = null;
     private String vone = null;
     private String dcsession = null;
+    private String pmData = null;
     private String STRONGAUTHSVCS = null;
 
     private CookieStore rawCookieStore;
@@ -60,10 +60,13 @@ public final class SessionCookieManager {
     }
 
     public String getPmData() {
+    	Utils.log("pmData:" + pmData);
         return pmData;
     }
 
     public void setPmData(final String pmData) {
+    	Utils.log("SAB pmData:" + pmData);
+
         this.pmData = pmData;
     }
 
@@ -113,8 +116,14 @@ public final class SessionCookieManager {
         this.dfsKey = dfsKey;
     }
 
-    public void clearSecToken() {
+    public void clearAllCookie() {
         secToken = null;
+        dfsKey = null;
+        vone = null;
+        dcsession = null;
+        pmData = null;
+        STRONGAUTHSVCS = null;
+        clearCookieStore();
     }
 
     /**
@@ -122,9 +131,9 @@ public final class SessionCookieManager {
      */
     public void setCookieValues() {
         final List<HttpCookie> cookieList = getHttpCookie();
+        
         if (null != cookieList) {
             for (final HttpCookie cookie : cookieList) {
-
                 if (sectoken.equalsIgnoreCase(cookie.getName())) {
                     setSecToken(cookie.getValue());
                     Utils.log("setCookieValues",
@@ -213,6 +222,24 @@ public final class SessionCookieManager {
         return rawCookieStore;
     }
 
+    /**
+     * This method will provide the current cookiestore used by cookiemanager
+     */
+    public void clearCookieStore() {
+        try {
+            final CookieManager cm = new CookieManager();
+            cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+            CookieHandler.setDefault(cm);
+
+            rawCookieStore = cm.getCookieStore();
+            rawCookieStore.removeAll();
+        }
+
+        catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public URI getBaseUri() {
 
         if (null == baseUri) {

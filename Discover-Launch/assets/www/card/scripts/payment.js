@@ -1101,6 +1101,7 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 						formatPaymentDueDate_MakePaymentStep1(currentDate));
 				$("#button-selectdate").remove();
 				$("#paymentStep1-pg .bluelink:eq(1)").css("display","none");
+				$("#impOnlinePayment").css("display","none");
 			}
 
 			globalLastStatementBalance = stepOne.lastStatementBalance;

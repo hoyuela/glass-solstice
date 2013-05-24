@@ -2,6 +2,7 @@ package com.discover.mobile.card.common.net.error;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +24,11 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity;
+import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
+import com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity;
+import com.discover.mobile.card.login.register.ForgotUserIdActivity;
+import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 /**
@@ -99,6 +105,7 @@ public class CardErrorUIWrapper implements CardErrHandler {
         view.hideFeedbackView(); // to hide feedback footer for all cases
         switch (footerValue) {
         case 0:// to hide only need help footer
+        case 5:
             view.hideNeedHelpFooter();
             break;
 
@@ -144,7 +151,30 @@ public class CardErrorUIWrapper implements CardErrHandler {
                         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
                         FacadeFactory.getLoginFacade().navToLoginWithMessage(
                                 activeActivity, bundle);
-                    } else {
+                    }
+                    else if (activeActivity instanceof ForgotUserIdActivity || activeActivity instanceof ForgotPasswordAccountInformationActivity || activeActivity instanceof ForgotBothAccountInformationActivity ) {
+                        Utils.log("ondismiss dialog", "call logout activity");
+                       
+                        Intent intent = new Intent(activeActivity,ForgotCredentialsActivity.class);
+                        activeActivity.startActivity(intent);        
+                        modal.dismiss();
+                        activeActivity.finish();
+                        
+                    }
+                    else if (activeActivity instanceof RegistrationAccountInformationActivity) {
+                        Utils.log("ondismiss dialog", "call logout activity");
+                       
+                        final Bundle bundle = new Bundle();
+                        bundle.putBoolean(
+                                IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
+                                false);
+                        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+                        FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                                activeActivity, bundle);
+                        modal.dismiss();
+                        activeActivity.finish();
+                    }
+                    else {
                         Utils.log("ondismiss dialog", "modal dismiss");
                         modal.dismiss();
                     }

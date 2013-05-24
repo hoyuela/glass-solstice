@@ -85,9 +85,11 @@ public class ForgotBothAccountInformationActivity extends
     @Override
     public void goBack() {
 
-       /* final Intent forgotCredentials = new Intent(this,
+        //Defect id 97237
+        final Intent forgotCredentials = new Intent(this,
                 ForgotCredentialsActivity.class);
-        startActivity(forgotCredentials);*/
+        startActivity(forgotCredentials);
+      //Defect id 97237
         finish();
     }
 
@@ -127,7 +129,12 @@ public class ForgotBothAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+        //Defect id 95853
     }
 
 }
