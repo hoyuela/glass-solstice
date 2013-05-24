@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
@@ -43,6 +45,12 @@ public class BankTextViewFragment extends BaseFragment {
 			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
 		} else {
 			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		}
+
+		final boolean isCard = this.getArguments().getBoolean(BankExtraKeys.CARD_MODE_KEY, true);
+		if (isCard) {
+			final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+			footer.setCardMode(isCard);
 		}
 
 		/**Populate text view text with google's terms of use*/

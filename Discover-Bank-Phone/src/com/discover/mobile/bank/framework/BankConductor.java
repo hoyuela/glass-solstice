@@ -1467,6 +1467,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putSerializable(BankTextViewFragment.KEY_TEXT, content);
 		bundle.putSerializable(BankTextViewFragment.KEY_TITLE, navActivity.getString(R.string.card_privacy_title));
 		bundle.putSerializable(BankTextViewFragment.KEY_USE_HTML, true);
+		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
 		final Fragment fragment = new BankTextViewFragment();
 		fragment.setArguments(bundle);
 		navActivity.makeFragmentVisible(fragment);
@@ -1482,6 +1483,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putSerializable(BankTextViewFragment.KEY_TEXT, content);
 		bundle.putSerializable(BankTextViewFragment.KEY_TITLE, navActivity.getString(R.string.card_terms_of_use_title));
 		bundle.putSerializable(BankTextViewFragment.KEY_USE_HTML, true);
+		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
 		final Fragment fragment = new BankTextViewFragment();
 		fragment.setArguments(bundle);
 		navActivity.makeFragmentVisible(fragment);
