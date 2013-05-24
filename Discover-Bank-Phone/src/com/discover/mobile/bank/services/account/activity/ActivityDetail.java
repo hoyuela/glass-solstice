@@ -8,6 +8,7 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
@@ -116,7 +117,7 @@ public class ActivityDetail implements Serializable{
 	/**Activity date string*/
 	@JsonProperty("activityDate")
 	public String activityDate;
-
+	
 	/**Payment Activity Fields*/
 
 	/**Payee detail*/
@@ -189,9 +190,9 @@ public class ActivityDetail implements Serializable{
 
 	@JsonProperty("paymentMethod")
 	public Account paymentMethod;
-
+	
 	/**
-	 * Contains Bank web-service API Resource links
+	 * Contains Bank web-service API Resource links for postedActivity and scheduledActivity
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
@@ -222,6 +223,21 @@ public class ActivityDetail implements Serializable{
 		}
 
 		return value;
+	}
+	
+	/**
+	 * Return a PaymentDetail object that has some of the information as this ActivityDetail object.
+	 * @return a PaymentDetail object that has some of the information as this ActivityDetail object.
+	 */
+	public PaymentDetail toPaymentDetail() {
+		final PaymentDetail paymentDetail = new PaymentDetail();
+		
+		paymentDetail.id = this.id;
+		paymentDetail.links = this.links;
+		paymentDetail.amount = this.amount;
+		paymentDetail.description = this.description;
+		
+		return paymentDetail;
 	}
 
 }

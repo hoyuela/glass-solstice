@@ -62,6 +62,9 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	
 	/**Retains a reference to whether we deleted an activity before calling this service*/
 	private final boolean didDeleteActivity;
+	private boolean didDeleteTransfer;
+	private boolean didDeletePayment;
+	
 	
 	/**
 	 * 
@@ -129,5 +132,27 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 	
 	public boolean getDidDeleteActivity() {
 		return this.didDeleteActivity;
+	}
+	
+	public boolean getDidDeletePayment() {
+		return this.didDeletePayment;
+	}
+	
+	public boolean getDidDeleteTransfer() {
+		return this.didDeleteTransfer;
+	}
+
+	/**
+	 * @param didDeleteTransfer the didDeleteTransfer to set
+	 */
+	public final void setDidDeleteTransfer(final boolean didDeleteTransfer) {
+		this.didDeleteTransfer = didDeleteTransfer;
+	}
+
+	/**
+	 * @param didDeletePayment the didDeletePayment to set
+	 */
+	public final void setDidDeletePayment(final boolean didDeletePayment) {
+		this.didDeletePayment = didDeletePayment;
 	}
 }

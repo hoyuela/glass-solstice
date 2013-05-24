@@ -52,7 +52,6 @@ public class BankAccountActivityTable extends BaseTable{
 		setIsLoadingMore(false);
 		super.refreshListener();
 		getLoadMoreFooter().showDone();
-		final boolean dataDeleted = bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE);
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 
 		// Toggle between scheduled/posted if incoming list type does not match view
@@ -71,10 +70,6 @@ public class BankAccountActivityTable extends BaseTable{
 			showNothingToLoad();
 		}
 		
-		//Shows that a transfer has been deleted.
-		if (dataDeleted) {
-			this.showStatusMessage();
-		}
 	}
 	
 	/**
@@ -436,6 +431,10 @@ public class BankAccountActivityTable extends BaseTable{
 	
 	public void showStatusMessage() {
 		header.showStatusMessage(R.string.account_activity_scheduled_transfer_deleted);
+	}
+	
+	public final void showDeletePaymentMessage() {
+		header.showStatusMessage(R.string.review_payments_scheduled_deleted);
 	}
 
 	/**

@@ -65,7 +65,10 @@ import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
+import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -538,9 +541,19 @@ public final class BankConductor  extends Conductor {
 			} else if( bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
 				final BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
 				//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
-				if( rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
-					final BankAccountActivityTable accountActivityFragment = (BankAccountActivityTable)rootActivity.getCurrentContentFragment();
-					accountActivityFragment.showStatusMessage();
+				if(rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
+					
+					final BankAccountActivityTable accountActivityFragment = 
+												(BankAccountActivityTable)rootActivity.getCurrentContentFragment();
+
+					if(bundle.getBoolean(BankExtraKeys.DID_DELETE_PAYMENT, false)) {
+						accountActivityFragment.showDeletePaymentMessage();
+					}else {
+						accountActivityFragment.showStatusMessage();
+					}
+					
+					accountActivityFragment.handleReceivedData(bundle);
+					accountActivityFragment.saveDataInBundle();
 					bundle.remove(BankExtraKeys.CONFIRM_DELETE);
 				}
 			}
@@ -656,6 +669,28 @@ public final class BankConductor  extends Conductor {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Unable to get current Activity");
 			}
+		}
+	}
+	
+	/**
+	 * Navigate to the activity detail list after deleting a scheduled activity.
+	 * @param bundle
+	 */
+	public static void navigateToActivityDetailFromDelete(final Bundle bundle) {
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+			//Clear dat cache/
+			BankUser.instance().setScheduled(null);
+			BankUser.instance().getCurrentAccount().scheduled = null;
+			
+			final GetActivityServerCall getActivityCall = BankServiceCallFactory.createGetActivityServerCall(
+					BankUser.instance().getCurrentAccount().getLink(
+					Account.LINKS_SCHEDULED_ACTIVITY), 
+					ActivityDetailType.Scheduled, 
+					true);
+			
+			getActivityCall.setDidDeletePayment(true);
+			getActivityCall.submit();
 		}
 	}
 
