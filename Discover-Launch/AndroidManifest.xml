@@ -153,10 +153,14 @@
             android:name="com.discover.mobile.card.login.register.StrengthBarHelpActivity"
             android:label="@string/app_name"
             android:launchMode="standard" />
+        <!--DEFECT96936-->
         <activity
             android:name="com.discover.mobile.card.login.register.ForgotCredentialsActivity"
             android:label="@string/app_name"
+             android:noHistory= "true"
             android:launchMode="standard" >
+            <!--DEFECT96936-->
+        
         </activity>
         <activity
             android:name="com.discover.mobile.card.login.register.ForgotUserIdActivity"
@@ -226,6 +230,17 @@
                 <action android:name="com.discover.mobile.CHANGE_URL_BROADCAST_INTENT" />
             </intent-filter>
         </receiver>
+        
+         <!--Broadcast Receiver for Receiving Intents when navigating to browser  -->
+        <activity android:name="com.discover.mobile.bank.BrowserNavigator" 
+            	  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+			    <category android:name="android.intent.category.DEFAULT" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <data android:scheme="com.discover.mobile" />  
+			</intent-filter>
+        </activity>
+       
 
         <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
             android:windowSoftInputMode="adjustPan"></activity>

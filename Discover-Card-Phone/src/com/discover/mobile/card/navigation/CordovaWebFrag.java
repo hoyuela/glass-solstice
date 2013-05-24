@@ -250,13 +250,15 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	 */
 	@Override
 	public int getActionBarTitle() {
-		m_currentTitleId = -1;
-		Log.v(TAG, "getActionBarTitle n title is " + m_title);
-		if (null != m_title) {
-			m_currentTitleId = jqmResourceMapper.getTitleStringId(m_title);
-		}
-		return m_currentTitleId;
-	}
+    	m_currentTitleId = -1;
+        Log.v(TAG, "getActionBarTitle n title is " + m_title);
+        if (null != m_title) {
+            jqmResourceMapper = JQMResourceMapper.getInstance();
+            
+            m_currentTitleId = jqmResourceMapper.getTitleStringId(m_title);
+        } 
+         return m_currentTitleId;
+    }
 
 	// PhoneGap Interface
 	@Override
@@ -293,48 +295,6 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 		}
 
 	}
-
-	/**
-	 * This method is used for passing the cookie from http Cookie manager to
-	 * WebView Cookie Manager
-	 */
-	/*
-	 * private void passCookieToWebview() { final
-	 * android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
-	 * .createInstance(getActivity()); final android.webkit.CookieManager
-	 * webCookieManager = CookieManager .getInstance();
-	 * webCookieManager.setAcceptCookie(true); final CardShareDataStore
-	 * cardShareDataStoreObj = CardShareDataStore .getInstance(getActivity());
-	 * final SessionCookieManager sessionCookieManagerObj =
-	 * cardShareDataStoreObj .getCookieManagerInstance(); final List<HttpCookie>
-	 * cookies = sessionCookieManagerObj .getHttpCookie(); final String url =
-	 * sessionCookieManagerObj.getBaseUri().toString(); if (null != cookies) {
-	 * for (final HttpCookie cookie : cookies) { if
-	 * ("sectoken".equalsIgnoreCase(cookie.getName())) { String strognAuthCookie
-	 * = new StringBuilder("sectoken=") .append((String)
-	 * sessionCookieManagerObj.getSecToken())
-	 * .append("; domain=.discovercard.com").append("; path=/") .toString();
-	 * webCookieManager.setCookie(url, strognAuthCookie); webCookieSync.sync();
-	 * 
-	 * Utils.log("cookies1111111", "cookies:"+strognAuthCookie);
-	 * 
-	 * }else{ final String setCookie = new StringBuilder(cookie.toString())
-	 * .append("; domain=").append(cookie.getDomain())
-	 * .append("; path=").append(cookie.getPath()).toString();
-	 * webCookieManager.setCookie(url, setCookie); webCookieSync.sync();
-	 * Utils.log("cookies22222", "cookies:"+setCookie); }
-	 * 
-	 * } String strognAuthCookie = new StringBuilder("STRONGAUTHSVCS=")
-	 * .append((String) CardShareDataStore .getInstance(getActivity())
-	 * .getReadOnlyAppCache() .get(getActivity().getString(
-	 * R.string.strong_auth_svcs)))
-	 * .append("; domain=discovercard.com").append("; path=/") .toString();
-	 * webCookieManager.setCookie(url, strognAuthCookie); webCookieSync.sync();
-	 * 
-	 * Utils.log("cookies333333", "cookies:"+strognAuthCookie);
-	 * 
-	 * } }
-	 */
 
 	private void passCookieToWebview() {
 		final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
@@ -386,16 +346,42 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 
 	@Override
 	public int getGroupMenuLocation() {
-		int tempId = getActionBarTitle();
-		return mCardMenuLocation.getMenuGroupLocation(tempId);
-	}
+        Utils.log(TAG, "inside getGroupMenuLocation ");
+        int tempId = getActionBarTitle();
+        if(tempId == -1)
+        {
+        	if(null != m_currentLoadedJavascript){
+        		
+        	Utils.log(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
+             return mCardMenuLocation.getMenuGroupLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuGroupLocation(tempId);
+        }
+        else
+        	return mCardMenuLocation.getMenuGroupLocation(tempId);
+    }
 
 	@Override
 	public int getSectionMenuLocation() {
-		Utils.log(TAG, "inside getSectionMenuLocation");
-		int tempId = getActionBarTitle();
-		return mCardMenuLocation.getMenuSectionLocation(tempId);
-	}
+        Utils.log(TAG, "inside getSectionMenuLocation");
+        int tempId = getActionBarTitle();
+        if(tempId == -1)
+        {
+        	if(null != m_currentLoadedJavascript){
+        	Utils.log(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
+        	jqmResourceMapper = JQMResourceMapper.getInstance();
+              
+             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
+             return mCardMenuLocation.getMenuSectionLocation(tempId);
+        	}else
+        		return mCardMenuLocation.getMenuSectionLocation(tempId);
+        }
+        else
+        	return mCardMenuLocation.getMenuSectionLocation(tempId);
+    }
 
 	/*
 	 * (non-Javadoc)

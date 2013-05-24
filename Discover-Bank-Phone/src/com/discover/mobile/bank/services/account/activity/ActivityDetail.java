@@ -1,9 +1,12 @@
 package com.discover.mobile.bank.services.account.activity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
@@ -42,7 +45,7 @@ public class ActivityDetail implements Serializable{
 
 	/**Key to get posted date*/
 	public static final String POSTED = "posted";
-	
+
 	/**Key to get received date*/
 	public static final String RECEIVED = "received";
 
@@ -57,6 +60,27 @@ public class ActivityDetail implements Serializable{
 
 	/**Key to indicate that the type of scheduled activity is a deposit*/
 	public static final String TYPE_DEPOSIT = "deposit";
+
+	/**Key to indicate that the frequency is one time*/
+	public static final String FREQUENCY_ONE_TIME_TRANSFER = "one_time_transfer";
+
+	/**Key to indicate that the frequency is weekly*/
+	public static final String FREQUENCY_WEEKLY = "weekly";
+
+	/**Key to indicate that the frequency is every two weeks*/
+	public static final String FREQUENCY_EVERY_TWO_WEEKS = "every_two_weeks";
+
+	/**Key to indicate that the frequency is monthly*/
+	public static final String FREQUENCY_MONTHLY = "monthly";
+
+	/**Key to indicate that the frequency is every three months*/
+	public static final String FREQUENCY_EVERY_THREE_MONTHS = "every_three_months";
+
+	/**Key to indicate that the frequency is every six months*/
+	public static final String FREQUENCY_EVERY_SIX_MONTHS = "every_six_months";
+
+	/**Key to indicate that the frequency is annually*/
+	public static final String FREQUENCY_ANNUALLY = "annually";
 
 	/**Key of the date divider*/
 	public static final String DATE_DIVIDER = "T";
@@ -132,7 +156,7 @@ public class ActivityDetail implements Serializable{
 	/**Delivery by date*/
 	@JsonProperty("deliverBy")
 	public String deliverBy;
-	
+
 	/**Received On Date for Check Deposit*/
 	@JsonProperty("receivedOn")
 	public String receivedOn;
@@ -162,9 +186,15 @@ public class ActivityDetail implements Serializable{
 	/**Confirmation string*/
 	@JsonProperty("confirmation")
 	public String confirmation;
-	
+
 	@JsonProperty("paymentMethod")
 	public Account paymentMethod;
+
+	/**
+	 * Contains Bank web-service API Resource links
+	 */
+	@JsonProperty("links")
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
 	/**
 	 * Return the date that needs to be shown in the table
@@ -172,13 +202,13 @@ public class ActivityDetail implements Serializable{
 	 */
 	public String getTableDisplayDate() {
 		String date = "";
-		
+
 		if( !Strings.isNullOrEmpty(activityDate)) {
 			date = activityDate;
-		} 
+		}
 		return date;
 	}
-	
+
 	/**
 	 * Method used to retrieve the value in the balance.
 	 * 
@@ -186,11 +216,11 @@ public class ActivityDetail implements Serializable{
 	 */
 	public int getBalanceValue() {
 		int value = 0;
-		
+
 		if( balance != null ) {
 			value = balance.value;
 		}
-		
+
 		return value;
 	}
 

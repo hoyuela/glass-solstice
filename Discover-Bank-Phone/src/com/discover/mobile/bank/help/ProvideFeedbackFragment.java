@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.help;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -24,26 +26,33 @@ import com.discover.mobile.common.utils.CommonUtils;
  */
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	/**URL for providing feedback for card when the user is not logged in*/
-	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";
+	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=MFKupcjM&referer=https://mobileapp.discover.com/cardHome-pg&custom_var=DiscoverMobileVersion=5.0.0";
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
+
+		if (isCardMode()) {
+			final Activity activity = getActivity();
+			if(activity instanceof NavigationRootActivity){
+				((NavigationRootActivity)activity).showBackX();
+			}
+		}
+
 		/**Hide footer with accept button & hide header*/
 		showFooter(false);
 		view.findViewById(R.id.header).setVisibility(View.GONE);
-		
+
 		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
-	
+
 	/**
 	 * Method used to check if the application is in card.
 	 * 
@@ -56,7 +65,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		 */
 		boolean isCard = false;
 
-		if (null != this.getArguments()) {
+		if (null != getArguments()) {
 			isCard = getArguments().containsKey(BankExtraKeys.CARD_MODE_KEY);
 		}
 
@@ -76,19 +85,37 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		/**This is required such that the keyboard does not overlap the provided feedback input field*/
-		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+		if(isCardMode()){
+			final Activity activity = getActivity();
+			if(activity instanceof NavigationRootActivity){
+				((NavigationRootActivity)activity).showBackX();
+			}
+		}
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		/**Return to the state required by the navigation activity*/
-		this.getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 	}
-	
+
+	@Override
+	public void onDestroyView(){
+		if(isCardMode()){
+			final Activity activity = getActivity();
+			if(activity instanceof NavigationRootActivity){
+				((NavigationRootActivity)activity).showMenuButton();
+			}
+		}
+		super.onDestroyView();
+	}
+
 	@Override
 	public int getPageTitle() {
 		return R.string.bank_provide_feedback;

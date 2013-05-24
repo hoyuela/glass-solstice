@@ -17,22 +17,48 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 		navigationItemAdapter.getItem(position).onClick(listView, clickedView);
 	}
 
-	public void setItemSelected(final int group, final int subSection){
-		if(NavigationIndex.getMainIndex()>=0)
-		{
-		if(getListView() != null && 
-				getListView().getAdapter().getItem(NavigationIndex.getMainIndex()) instanceof GroupNavigationItem){
-			final GroupNavigationItem currentGroup = 
-					(GroupNavigationItem)getListView().getAdapter().getItem(NavigationIndex.getMainIndex());
+	/**
+	 * Method used to select a menu item group title and its corresponding
+	 * section if applicable. The group must be within the limit of number of
+	 * menu groups in the menu. If the menu item referred to via the group index
+	 * specified is not a GroupNavigationItem, then the subsection argument is
+	 * ignored.
+	 * 
+	 * @param group
+	 *            Index referring to the menu item or main group menu item
+	 *            selected.
+	 * @param subSection
+	 *            Index referring to the sub section within the group menu
+	 *            selected. Ignored if not within the boundaries of the menu
+	 *            group.
+	 */
+	public void setItemSelected(final int group, final int subSection) {
+
+		final int mainIndex = NavigationIndex.getMainIndex();
+
+		// Make sure that the mainIndex is a valid index in the list to collapse
+		// the current menu item selected
+		if (mainIndex >= 0 && getListView().getAdapter().getItem(mainIndex) instanceof GroupNavigationItem) {
+			final GroupNavigationItem currentGroup = (GroupNavigationItem) getListView().getAdapter().getItem(mainIndex);
 			currentGroup.collapse();
 		}
+
 		final int maxIndex = getListView().getAdapter().getCount();
-		if(group < maxIndex && getListView().getAdapter().getItem(group) instanceof GroupNavigationItem){
-			final GroupNavigationItem newGroup = (GroupNavigationItem)getListView().getAdapter().getItem(group);
-			newGroup.expand();
+
+		// Make sure the new group being selected is within the boundaries of
+		// the list of menu groups
+		if (group >= 0 && group < maxIndex) {
+			// Set the new selected menu group
 			NavigationIndex.setIndex(group);
-		}
-		NavigationIndex.setSubIndex(subSection+group);
+
+			// Expand the new menu if it is a menu group with sections
+			if (getListView().getAdapter().getItem(group) instanceof GroupNavigationItem) {
+				final GroupNavigationItem newGroup = (GroupNavigationItem) getListView().getAdapter().getItem(group);
+				newGroup.expand();
+
+				// Set the new selected section in the menu
+				NavigationIndex.setSubIndex(subSection + group);
+			}
 		}
 	}
 	

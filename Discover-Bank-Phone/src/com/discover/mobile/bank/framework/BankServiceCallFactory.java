@@ -5,6 +5,7 @@ import java.io.Serializable;
 import android.app.Activity;
 
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
+import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.AcceptTermsService;
@@ -15,6 +16,7 @@ import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -59,6 +61,7 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
@@ -340,7 +343,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param type - specfies what type of activity will be downloaded
 	 * @return the service call to get the account activity
 	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url, final ActivityDetailType type){
+	public static GetActivityServerCall createGetActivityServerCall(final String url, final ActivityDetailType type, final boolean didDeleteActivity){
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListActivityDetail>  callback =
@@ -348,7 +351,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetActivityServerCall(activity, callback, url, type);
+		return new GetActivityServerCall(activity, callback, url, type, didDeleteActivity);
 	}
 
 	/**
@@ -403,6 +406,21 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new DeletePaymentServiceCall(activity, callback, pmt);
+	}
+
+	/**
+	 * Creates a DeleteTransferServiceCall object in order to delete a scheduled transfer from
+	 * a users Bank Account using the service API DELETE /api/transfers/{id}
+	 * 
+	 * @param activityDetail	- Details of the transfer to be deleted
+	 * @param deletionType		- Type of deletion to perform (e.g. One Time, Next in Series, Entire Series)
+	 * @return 					- Returns the newly created Service Call Object
+	 */
+	public static DeleteTransferServiceCall createDeleteTransferServiceCall(final ActivityDetail activityDetail, final TransferDeletionType deletionType) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		final AsyncCallback<ActivityDetail> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ActivityDetail.class, activity, (ErrorHandlerUi)activity).build();
+
+		return new DeleteTransferServiceCall(activity, callback, activityDetail, deletionType);
 	}
 
 	/**

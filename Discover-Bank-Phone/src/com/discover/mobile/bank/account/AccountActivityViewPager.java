@@ -11,6 +11,7 @@ import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
+import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
@@ -187,7 +188,8 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 				}else if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(transactionType)){
 					title = R.string.bill_pay;
 				}else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(transactionType)) {
-					if(!Strings.isNullOrEmpty(activityItems.activities.get(position).durationValue)){
+					final String frequency = activityItems.activities.get(position).frequency;
+					if (!Strings.isNullOrEmpty(frequency) && !frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)) {
 						title = R.string.repeating_funds_transfer;
 					}else{
 						title = R.string.funds_transfer;
@@ -227,8 +229,8 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	protected void loadMore(final String url) {
 		if(!getIsLoadingMore()) {
 			setIsLoadingMore(true);
-			
-			BankServiceCallFactory.createGetActivityServerCall(url, activityItems.type).submit();		
+
+			BankServiceCallFactory.createGetActivityServerCall(url, activityItems.type, false).submit();		
 		}
 	}
 

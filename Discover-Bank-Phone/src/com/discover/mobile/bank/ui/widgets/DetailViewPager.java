@@ -152,7 +152,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 
 	/**
 	 * Get all of the views in the layout that we will need to have access to.
-	 * @param mainView the inflated layout that contians views that we want to access.
+	 * @param mainView the inflated layout that contains views that we want to access.
 	 */
 	private void loadAllViewsFrom(final View mainView) {
 		viewPager = (ViewPager)mainView.findViewById(R.id.view_pager);

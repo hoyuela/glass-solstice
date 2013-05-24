@@ -162,6 +162,7 @@ function onOffline()
 function onBackKeyDown () {
 console.log("inside onBackKeyDown");
 console.log("in back activepage beforing calling back "+currentActivePage);
+isLhnNavigation = false;
 	if(currentActivePage != "cardHome-pg")
 	{
 		if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg")
@@ -188,6 +189,17 @@ console.log("in back activepage beforing calling back "+currentActivePage);
 function provideFeedBack () // Provide Feedback in Child Browser
 {
 	try{
+		
+		/*Changes made for passing dfskey and vone in provide feedback link*/
+		
+		HybridControl.prototype.getVOne(function successToken (arg) {vOne = arg;}, null);
+		HybridControl.prototype.getDFSKey(function successToken (arg) {dfsKey = arg;}, null);
+
+		console.log("Provide FeedBack dfsKey:"+dfsKey);
+		console.log("Provide FeedBack vOne:"+vOne);
+		
+		/*Changes made for passing dfskey and vone in provide feedback link*/
+		
         var referer = $.mobile.activePage.attr('id');       
 
         if (!isEmpty(vOne) && !isEmpty(dfsKey))
@@ -1022,7 +1034,7 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 
 				//	cpEvent.preventDefault();
 					 var activePage=$.mobile.activePage.attr('id');
-					 
+					 console.log("calling handlenativeframe from pagebforechange");
 					 handleNativeFrame(activePage);   
 					if(isDeviceReady == true)
 					{      
@@ -1277,6 +1289,7 @@ $('[data-role=page]').live('pageshow', function(e,data){
 	{
 		console.log("condition is true");
 		isLhnNavigation = false;
+		console.log("calling handlenativeframe from pageshow");
 		handleNativeFrame(activePage);
 		
 	}else if(isDeviceReady == true)
@@ -1502,52 +1515,72 @@ function redirectToPageAfterConfirm(eventElement) {
 		{      
        		HybridControl.prototype.dismissProgressBar(null,null);
         }  
-		switch(eventElement){
-		case "Add Bank Account":
-			window.open(BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT,'_system','location=yes');	
-			break;
-		case "Register Now":
-			window.open(REGISTERNOWURL,'_system','location=yes');	
-			break;
-		case "Apply Now":
-			window.open(APPLYDISCOVERCARDURL,'_system','location=yes');	
-			break;
-		case "Provide Feedback":
-			window.open(PROVIDEFEEDBACKURL,'_system','location=yes');				
-			break;
-		case "mybenefits":
-			window.open(MYBENIFITURL,'_system','location=yes');				
-			break;
-		case "privacyPolicy":
-			window.open(PRIVACYPOLICYURL,'_system','location=yes');	
-			break;
-		case "security":
-			window.open(SECURITYURL,'_system','location=yes');	
-			break;
-		case "faq":
-			window.open(FAQURL,'_system','location=yes');	
-			break;
-		case "DISCOVERLINK":
-			window.open(DISCOVERLINK,'_system','location=yes');	
-			break;
-		case "manageBankInfomation":
-			window.open(manageBankInfomation,'_system','location=yes');			
-			break;
-		case "manageCurrentDayPayment":
-			window.open(manageCurrentDayPayment,'_system','location=yes');				
-			break;
-		case "Pay with cbb":
-			window.open(PAYWITHCBBLNK,'_system','location=yes');				
-			break;
-
-		case "updateAppVersion":
-			if (navigator.userAgent.match(/iPhone/i))
-				window.open(IPHONEAPPURL,'_system','location=yes');	
-			else
-				window.open(ANDROIDAPPURL,'_system','location=yes');	
-				dfs.crd.sct.trackVersionUpgrade();//function call to pass sitecatalyst variable for update application.
-			break;	
-		}
+        //var showOnBrowser = false;
+        //HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},eventElement);
+		//if(showOnBrowser){
+		var strURLToOpen = '';
+			switch(eventElement){
+			case "Add Bank Account":
+				//window.open(BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT,'_system','location=yes');
+				strURLToOpen = BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT;
+				break;
+			case "Register Now":
+				//window.open(REGISTERNOWURL,'_system','location=yes');
+				strURLToOpen = REGISTERNOWURL;	
+				break;
+			case "Apply Now":
+				//window.open(APPLYDISCOVERCARDURL,'_system','location=yes');
+				strURLToOpen = APPLYDISCOVERCARDURL;	
+				break;
+			case "Provide Feedback":
+				//window.open(PROVIDEFEEDBACKURL,'_system','location=yes');
+				strURLToOpen = PROVIDEFEEDBACKURL;				
+				break;
+			case "mybenefits":
+			//	window.open(MYBENIFITURL,'_system','location=yes');
+				strURLToOpen =	MYBENIFITURL;			
+				break;
+			case "privacyPolicy":
+			//	window.open(PRIVACYPOLICYURL,'_system','location=yes');
+				strURLToOpen =	PRIVACYPOLICYURL;
+				break;
+			case "security":
+			//	window.open(SECURITYURL,'_system','location=yes');
+				strURLToOpen =	SECURITYURL;
+				break;
+			case "faq":
+			//	window.open(FAQURL,'_system','location=yes');	
+				strURLToOpen = FAQURL;
+				break;
+			case "DISCOVERLINK":
+			//	window.open(DISCOVERLINK,'_system','location=yes');	
+				strURLToOpen = DISCOVERLINK;
+				break;
+			case "manageBankInfomation":
+			//	window.open(manageBankInfomation,'_system','location=yes');	
+				strURLToOpen = manageBankInfomation;		
+				break;
+			case "manageCurrentDayPayment":
+				//window.open(manageCurrentDayPayment,'_system','location=yes');	
+				strURLToOpen =	manageCurrentDayPayment;		
+				break;
+			case "Pay with cbb":
+				//window.open(PAYWITHCBBLNK,'_system','location=yes');
+				strURLToOpen = PAYWITHCBBLNK;				
+				break;
+	
+			case "updateAppVersion":
+				if (navigator.userAgent.match(/iPhone/i))
+				//	window.open(IPHONEAPPURL,'_system','location=yes');	
+					strURLToOpen = IPHONEAPPURL;
+				else
+				//	window.open(ANDROIDAPPURL,'_system','location=yes');	
+					strURLToOpen = ANDROIDAPPURL;
+					dfs.crd.sct.trackVersionUpgrade();//function call to pass sitecatalyst variable for update application.
+				break;	
+			}
+		//}
+		HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen);
 	}catch(err){
 		showSysException(err);
 	}
@@ -2179,6 +2212,9 @@ function populateGlobalCache()
 					globalLastFourAcctNbr=achomeData["lastFourAcctNbr"];
 					globalIncentiveTypeCode=achomeData["incentiveTypeCode"];                        
 					globalEarnRewardAmount=numberWithCommas(achomeData["earnRewardAmount"]);                        
+/*Defect Id : 96837  start*/					
+					projectBeyondCard = isCardProjectBeyond(incentiveCode,incentiveTypeCode,optionCode,cardType);
+/*Close*/
 					if(applicationMode == null){
 						applicationMode = "";
 					}  
