@@ -31,6 +31,7 @@
     <string name="cancelled_payment">Cancelled Payment</string>
     <string name="edit_payment">Edit Payment</string>
     <string name="delete_payment">Delete Payment</string>
+    <string name="yes_delete">Yes, Delete</string>
     <string name="delete_transfer">Delete Transfer</string>
     <string name="see_options">See Options</string>
     <string name="non_primary_joint_account_warning">

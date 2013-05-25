@@ -15,6 +15,8 @@ public final class StringUtility {
 	public static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 	public static final String DASH = "-";
 	public static final String HASH = "#";
+	public static final String QUESTION_MARK = "?";
+	public static final String SLASH = "/";
 	
 	private StringUtility() {
 		throw new AssertionError();
