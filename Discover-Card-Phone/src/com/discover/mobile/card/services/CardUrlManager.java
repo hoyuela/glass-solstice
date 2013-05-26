@@ -1,6 +1,7 @@
 package com.discover.mobile.card.services;
 
-import com.discover.mobile.common.DiscoverEnvironment;
+import com.discover.mobile.card.R;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * This class is used for adding and getting URL's for card services. Any bank
@@ -12,7 +13,7 @@ import com.discover.mobile.common.DiscoverEnvironment;
 
 public class CardUrlManager {
 
-	private static final String BASE_URL = DiscoverEnvironment.getCardBaseUrl();
+	private static final String BASE_URL = DiscoverActivityManager.getString(R.string.card_base_url);
 
 	/**
 	 * Pre Auth URL

@@ -11,8 +11,8 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.common.DiscoverEnvironment;
 
 /**
  * Class used to manage the secToken , dfsKey , V1st etc .provided via cookies .
@@ -30,11 +30,12 @@ public final class SessionCookieManager {
     public static final String sectoken = "sectoken";
     public static final String vfirst = "v1st";
     public static final String dfsedskey = "dfsedskey";
+	private final Context sessionCookieContext;
     private String secToken = null;
     private String dfsKey = null;
     private String vone = null;
     private String dcsession = null;
-    private String pmData = null;
+	private String pmData = null;
     private String STRONGAUTHSVCS = null;
 
     private CookieStore rawCookieStore;
@@ -58,12 +59,12 @@ public final class SessionCookieManager {
     }
 
     public String getPmData() {
-    	Utils.log("pmData:" + pmData);
+		Utils.log("pmData:" + pmData);
         return pmData;
     }
 
     public void setPmData(final String pmData) {
-    	Utils.log("SAB pmData:" + pmData);
+		Utils.log("SAB pmData:" + pmData);
 
         this.pmData = pmData;
     }
@@ -74,6 +75,7 @@ public final class SessionCookieManager {
      */
 
     private SessionCookieManager(final Context context) {
+		sessionCookieContext = context;
     }
 
     public static synchronized SessionCookieManager getInstance(
@@ -113,14 +115,14 @@ public final class SessionCookieManager {
         this.dfsKey = dfsKey;
     }
 
-    public void clearAllCookie() {
+	public void clearAllCookie() {
         secToken = null;
-        dfsKey = null;
-        vone = null;
-        dcsession = null;
-        pmData = null;
-        STRONGAUTHSVCS = null;
-        clearCookieStore();
+		dfsKey = null;
+		vone = null;
+		dcsession = null;
+		pmData = null;
+		STRONGAUTHSVCS = null;
+		clearCookieStore();
     }
 
     /**
@@ -128,7 +130,7 @@ public final class SessionCookieManager {
      */
     public void setCookieValues() {
         final List<HttpCookie> cookieList = getHttpCookie();
-        
+
         if (null != cookieList) {
             for (final HttpCookie cookie : cookieList) {
                 if (sectoken.equalsIgnoreCase(cookie.getName())) {
@@ -219,32 +221,32 @@ public final class SessionCookieManager {
         return rawCookieStore;
     }
 
-    /**
-     * This method will provide the current cookiestore used by cookiemanager
-     */
-    public void clearCookieStore() {
-        try {
-            final CookieManager cm = new CookieManager();
-            cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-            CookieHandler.setDefault(cm);
+	/**
+	 * This method will provide the current cookiestore used by cookiemanager
+	 */
+	public void clearCookieStore() {
+		try {
+			final CookieManager cm = new CookieManager();
+			cm.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+			CookieHandler.setDefault(cm);
 
-            rawCookieStore = cm.getCookieStore();
-            rawCookieStore.removeAll();
-        }
+			rawCookieStore = cm.getCookieStore();
+			rawCookieStore.removeAll();
+		}
 
-        catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
+	}
+
     public URI getBaseUri() {
 
         if (null == baseUri) {
-			final String url = DiscoverEnvironment.getCardBaseUrl();
+			final String url = sessionCookieContext.getString(R.string.url_in_use);
             try {
                 baseUri = new URI(url);
             } catch (final URISyntaxException e) {
-                // TODO Auto-generated catch block
+				// TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

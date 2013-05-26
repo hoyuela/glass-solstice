@@ -14,7 +14,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.common.DiscoverEnvironment;
 import com.discover.mobile.common.net.HttpHeaders;
 
 /**
@@ -83,7 +82,7 @@ public final class NetworkUtility {
      * @return String webservice url
      */
     public static String getWebServiceUrl(final Context context, final int id) {
-		return DiscoverEnvironment.getCardBaseUrl()
+		return context.getString(R.string.url_in_use)
                 + context.getString(R.string.discover_url)
                 + context.getString(id);
 

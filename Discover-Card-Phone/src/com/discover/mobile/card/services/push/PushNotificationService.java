@@ -4,8 +4,6 @@ import roboguice.inject.ContextSingleton;
 import android.content.Context;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.common.DiscoverApplication;
-import com.discover.mobile.common.DiscoverEnvironment;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -19,19 +17,15 @@ import com.xtify.sdk.api.XtifySDK;
 @ContextSingleton
 public class PushNotificationService {
 
-    private DiscoverApplication appCache = null;
-
-    /**
-     * Starts the Xtify SDK using the correct app key and the correct Google
-     * Project ID specific to the environment
-     * 
-     * @param context
-     *            - application context
-     */
-    public void start(final Context context) {
-        appCache = (DiscoverApplication) context.getApplicationContext();
-		final String xtifyAppKey = DiscoverEnvironment.getPushKey();
-		final String googleProjectId = DiscoverEnvironment.getPushID();
-        XtifySDK.start(appCache, xtifyAppKey, googleProjectId);
-    }
+	/**
+	 * Starts the Xtify SDK using the correct app key and the correct Google Project ID specific to the environment
+	 * 
+	 * @param context
+	 *            - application context
+	 */
+	public void start(final Context context) {
+		final String xtifyAppKey = context.getResources().getString(R.string.push_key);
+		final String googleProjectId = context.getResources().getString(R.string.push_id);
+		XtifySDK.start(context.getApplicationContext(), xtifyAppKey, googleProjectId);
+	}
 }
