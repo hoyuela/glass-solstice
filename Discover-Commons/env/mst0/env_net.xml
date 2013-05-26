@@ -3,6 +3,6 @@
     <string name="bank_base_url">https://asys.discoverbank.com</string>
     <string name="bank_stripped_url">http://asys.discoverbank.com</string>
     <string name="xClientPlatform">Android</string>
-    <string name="xApplicationVersion">4.3.2</string>
-    <string name="upgrade_package_id">com.discover.mobile.DiscoverMobileActivity</string>
+    <string name="xApplicationVersion">5.0.0</string>
+    <string name="upgrade_package_id">com.discoverfinancial.mobile</string>
 </resources>
