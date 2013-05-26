@@ -44,7 +44,6 @@ import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.ActivityUtil;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
@@ -96,8 +95,6 @@ public class LoginActivity extends BaseActivity implements
 	private static final String ERROR_MESSAGE_COLOR = "i";
 	private static final String TOGGLE_KEY = "j";
 
-	/** ID that allows control over relative buttons' placement.*/
-	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -157,14 +154,15 @@ public class LoginActivity extends BaseActivity implements
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 
-	private ActivityUtil activityUtil = null;
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_start);
 
 		loadResources();
+
+		// **Activity manager has to be set before using Track Helper*/
+		DiscoverActivityManager.setActiveActivity(this);
 
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
@@ -1191,7 +1189,7 @@ public class LoginActivity extends BaseActivity implements
 		aluModal.setOnShowListener(new OnShowListener() {
 			
 			@Override
-			public void onShow(DialogInterface dialog) {
+			public void onShow(final DialogInterface dialog) {
 				isAluModalShowing = true;
 			}
 		});
@@ -1199,7 +1197,7 @@ public class LoginActivity extends BaseActivity implements
 		aluModal.setOnDismissListener(new OnDismissListener() {
 			
 			@Override
-			public void onDismiss(DialogInterface dialog) {
+			public void onDismiss(final DialogInterface dialog) {
 				isAluModalShowing = false;
 				
 			}
@@ -1213,7 +1211,7 @@ public class LoginActivity extends BaseActivity implements
 	 * can stay visible after the phone number is clicked)
 	 */
 	@Override
-	public void startActivity(Intent intent){
+	public void startActivity(final Intent intent){
 		if(isAluModalShowing){
 			super.startActivityNoReset(intent);
 		}else{

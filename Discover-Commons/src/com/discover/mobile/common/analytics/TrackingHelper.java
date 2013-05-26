@@ -6,6 +6,8 @@ import java.util.Map;
 import android.app.Activity;
 
 import com.adobe.adms.measurement.ADMS_Measurement;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.R;
 import com.discover.mobile.common.net.ServiceCallSessionManager;
 
 /**
@@ -16,11 +18,11 @@ import com.discover.mobile.common.net.ServiceCallSessionManager;
  */
 public final class TrackingHelper {
 
-	private static final String CARD_TRACKING_RSID = "discovercardmobiledev"; //$NON-NLS-1$
+	private static final String CARD_TRACKING_RSID = DiscoverActivityManager.getString(R.string.card_tracking_rsid);
 
-	private static final String BANK_TRACKING_RSID = "discoverbankmobiledev"; //$NON-NLS-1$
+	private static final String BANK_TRACKING_RSID = DiscoverActivityManager.getString(R.string.bank_tracking_rsid);
 
-	private static final String TRACKING_SERVER = "smetrics.discover.com"; //$NON-NLS-1$
+	private static final String TRACKING_SERVER = DiscoverActivityManager.getString(R.string.tracking_server);
 
 	private static ADMS_Measurement measurement;
 
@@ -112,7 +114,7 @@ public final class TrackingHelper {
 		if(measurement == null){return;}
 		measurement.clearVars();
 		final Hashtable<String, Object> contextData = new Hashtable<String, Object>();
-		contextData.put(CONTEXT_APP_NAME, appName);  //$NON-NLS-1$//$NON-NLS-2$
+		contextData.put(CONTEXT_APP_NAME, appName);  
 
 		if ( ServiceCallSessionManager.getEDSKey() != null ){ 
 			contextData.put(CONTEXT_EDS_PROP, ServiceCallSessionManager.getEDSKey());

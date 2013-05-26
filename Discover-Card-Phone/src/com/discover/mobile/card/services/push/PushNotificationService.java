@@ -19,7 +19,9 @@ public class PushNotificationService {
 
 	/**
 	 * Starts the Xtify SDK using the correct app key and the correct Google Project ID specific to the environment
-	 * @param context - application context
+	 * 
+	 * @param context
+	 *            - application context
 	 */
 	public void start(final Context context) {
 		final String xtifyAppKey = context.getResources().getString(R.string.push_key);

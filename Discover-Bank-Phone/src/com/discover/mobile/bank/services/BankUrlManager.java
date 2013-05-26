@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 /**
@@ -17,8 +19,8 @@ import com.google.common.base.Strings;
  */
 public final class BankUrlManager  {
 
-	private static String baseURL = BankBaseUrl.getString("BankUrlManager.0");
-	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
+	private static String baseURL = DiscoverActivityManager.getString(R.string.bank_base_url);
+	private static final String DISCOVER_STRIPPED_URL = DiscoverActivityManager.getString(R.string.bank_stripped_url);
 
 	public static final double MAX_IDLE_TIME = 600; // 600 secs = 10 min
 
