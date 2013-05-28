@@ -3,14 +3,20 @@ package com.discover.mobile.bank.ui.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
@@ -25,6 +31,7 @@ public class BankTextViewFragment extends BaseFragment {
 	public static final String KEY_TEXT = "text-content";
 	public static final String KEY_TITLE = "text-title";
 	public static final String KEY_USE_HTML = "text-html";
+	public static final String SHOW_FOOTER = "show-footer";
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -34,11 +41,32 @@ public class BankTextViewFragment extends BaseFragment {
 		/**Set Page title of the fragment*/
 		final TextView pageTitle = (TextView)view.findViewById(R.id.page_title);
 
+		/**Help icon setup*/
+		final HelpWidget help = (HelpWidget) view.findViewById(R.id.help);
+		if( !Globals.isLoggedIn() ) {
+			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+		} else {
+			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
+		}
+
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		
+		final boolean isCard = this.getArguments().getBoolean(BankExtraKeys.CARD_MODE_KEY, true);
+		if (isCard) {	
+			footer.setCardMode(isCard);
+		}
+		
+		final boolean showFooter = this.getArguments().getBoolean(SHOW_FOOTER, false);
+		if( !showFooter) {
+			footer.setVisibility(View.INVISIBLE);
+		}
+
 		/**Populate text view text with google's terms of use*/
 		final TextView content = (TextView)view.findViewById(R.id.content_text_view);
 		if(this.getArguments().containsKey(KEY_USE_HTML)){
 			content.setText(Html.fromHtml(this.getArguments().getString(KEY_TEXT)));
 			pageTitle.setText(Html.fromHtml(this.getArguments().getString(KEY_TITLE)));
+			content.setMovementMethod(LinkMovementMethod.getInstance());
 		}else{
 			content.setText(this.getArguments().getString(KEY_TEXT));
 			pageTitle.setText(this.getArguments().getString(KEY_TITLE));
