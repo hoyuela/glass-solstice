@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.DiscoverIntentListener;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.BankAccountActivityTable;
@@ -653,7 +654,7 @@ public final class BankConductor  extends Conductor {
 
 		if( activity != null ) {
 			/**Launch Provide Feedback Activity if user is not logged in*/
-			if( activity instanceof LoginActivity ) {
+			if (activity instanceof LoginActivity || activity instanceof DiscoverIntentListener) {
 				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
@@ -1484,6 +1485,7 @@ public final class BankConductor  extends Conductor {
 		bundle.putSerializable(BankTextViewFragment.KEY_TITLE, navActivity.getString(R.string.card_terms_of_use_title));
 		bundle.putSerializable(BankTextViewFragment.KEY_USE_HTML, true);
 		bundle.putBoolean(BankExtraKeys.CARD_MODE_KEY, true);
+		bundle.putBoolean(BankTextViewFragment.SHOW_FOOTER, true);
 		final Fragment fragment = new BankTextViewFragment();
 		fragment.setArguments(bundle);
 		navActivity.makeFragmentVisible(fragment);
