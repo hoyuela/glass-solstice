@@ -116,7 +116,7 @@ public class DiscoverMapWrapper {
 		final Geocoder coder = new Geocoder(context);
 		final String spaceCommaSpace = " , ";
 		final String commaSpace = ", ";
-		
+
 		try {
 			final List<Address> addresses = coder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 			if(null == addresses || addresses.isEmpty()){
@@ -184,7 +184,7 @@ public class DiscoverMapWrapper {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, zoomLevel));
 		}
 	}
-	
+
 	/**
 	 * Animate a camera change from the current camera view to a new one.
 	 * @param newZoom a CameraUpdate object.
@@ -194,7 +194,7 @@ public class DiscoverMapWrapper {
 			map.animateCamera(newZoom);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return the GoogleMap in use.
@@ -202,11 +202,15 @@ public class DiscoverMapWrapper {
 	public final GoogleMap getMap() {
 		return map;
 	}
-	
+
 	public final float getCurrentMapZoom() {
-		return 	map.getCameraPosition().zoom;
+		float zoomLevel = 0;
+		if(null != map){
+			zoomLevel = map.getCameraPosition().zoom;
+		}
+		return zoomLevel;
 	}
-	
+
 	/**
 	 * Focus the camera on a location
 	 * @param latitude
@@ -237,18 +241,18 @@ public class DiscoverMapWrapper {
 	public Location getCurrentLocation() {
 		return location;
 	}
-	
+
 	/**
 	 * Return the current camera location.
 	 * @return a LatLng object that represents the current camera location.
 	 */
 	public LatLng getCameraLocation() {
 		LatLng cameraPosition = null;
-		
+
 		if(map != null) {
 			cameraPosition = map.getCameraPosition().target;
 		}
-		
+
 		return cameraPosition;
 	}
 
