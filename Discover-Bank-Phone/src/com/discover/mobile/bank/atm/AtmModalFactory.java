@@ -127,8 +127,10 @@ public final class AtmModalFactory{
 		top.getAllow().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				fragment.setLocationStatus(LocationFragment.SEARCHING);
-				fragment.getLocation();
+				if(fragment instanceof AtmMapFragment) {
+					((AtmMapFragment)fragment).searchCurrentLocation();
+				}
+				AtmMapFragment.setHasAcceptedLocationModal(true);
 				modal.dismiss();
 			}
 		});
