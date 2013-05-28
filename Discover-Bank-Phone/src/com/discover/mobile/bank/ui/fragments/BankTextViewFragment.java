@@ -3,6 +3,7 @@ package com.discover.mobile.bank.ui.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class BankTextViewFragment extends BaseFragment {
 	public static final String KEY_TEXT = "text-content";
 	public static final String KEY_TITLE = "text-title";
 	public static final String KEY_USE_HTML = "text-html";
+	public static final String SHOW_FOOTER = "show-footer";
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -47,10 +49,16 @@ public class BankTextViewFragment extends BaseFragment {
 			help.showHelpItems(HelpMenuListFactory.instance().getAccountHelpItems());
 		}
 
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		
 		final boolean isCard = this.getArguments().getBoolean(BankExtraKeys.CARD_MODE_KEY, true);
-		if (isCard) {
-			final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		if (isCard) {	
 			footer.setCardMode(isCard);
+		}
+		
+		final boolean showFooter = this.getArguments().getBoolean(SHOW_FOOTER, false);
+		if( !showFooter) {
+			footer.setVisibility(View.INVISIBLE);
 		}
 
 		/**Populate text view text with google's terms of use*/
@@ -58,6 +66,7 @@ public class BankTextViewFragment extends BaseFragment {
 		if(this.getArguments().containsKey(KEY_USE_HTML)){
 			content.setText(Html.fromHtml(this.getArguments().getString(KEY_TEXT)));
 			pageTitle.setText(Html.fromHtml(this.getArguments().getString(KEY_TITLE)));
+			content.setMovementMethod(LinkMovementMethod.getInstance());
 		}else{
 			content.setText(this.getArguments().getString(KEY_TEXT));
 			pageTitle.setText(this.getArguments().getString(KEY_TITLE));
