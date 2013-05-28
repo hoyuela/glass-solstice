@@ -53,7 +53,8 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 			@Override
 			public void OnError(Object data)
 			{
-				Toast.makeText(getActivity(), data.toString(), Toast.LENGTH_LONG).show();
+			    setStatus(DECLINE);
+				//Toast.makeText(getActivity(), data.toString(), Toast.LENGTH_LONG).show();
 			}
 		});
 		

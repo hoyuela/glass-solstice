@@ -21,6 +21,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
@@ -536,7 +537,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-            //bank Code for privacy and terms
+        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
     }

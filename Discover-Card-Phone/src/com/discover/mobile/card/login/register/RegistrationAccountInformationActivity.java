@@ -71,7 +71,7 @@ public class RegistrationAccountInformationActivity extends
     @Override
     public void goBack() {
         finish();
-        FacadeFactory.getLoginFacade().navToLogin(this);
+        //;FacadeFactory.getLoginFacade().navToLogin(this);//DEFECT 97478
     }
 
     /**
@@ -173,7 +173,7 @@ public class RegistrationAccountInformationActivity extends
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-            //bank Code for privacy and terms
+        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
         

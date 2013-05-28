@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -132,7 +133,7 @@ public class ForgotBothAccountInformationActivity extends
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-            //bank Code for privacy and terms
+        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
     }

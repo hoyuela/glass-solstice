@@ -2383,20 +2383,23 @@ dfs.crd.pymt.populatePayWarningPage = function(payWarnData,showVariable){
 			if(showVariable){
 			$("#lateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 			$("#latePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
-				if(payWarnData.isNegativeAmortization){
+				if(!payWarnData.isNegativeAmortization){
 					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
 					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
 					$("#latePayWarnRow2").remove();
-				}else if(payWarnData.needTwoRowWarning){
-					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
-					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
-					$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
-					$("#defaultTermYears").text(payWarnData.defaultTermYears);
-					$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
-					$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+				}else
+					{
+					 $("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
+					 $("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					 if(payWarnData.needTwoRowWarning){						
+						$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
+						$("#defaultTermYears").text(payWarnData.defaultTermYears);
+						$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
+						$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+					}
 				}
 			}else{
-				$("#noMinPaylateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount  );
+				$("#noMinPaylateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 				$("#noMinPaylatePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
 			}
 		}
