@@ -203,7 +203,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 					}
 				});
 		
-		modal.setModalBodyText(R.string.cancel_deposit_content);
+		modal.setModalBodyText(R.string.deposit_go_back_content);
 		
 		modal.showModal();
 	}
