@@ -31,6 +31,8 @@ import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -82,7 +84,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK | FooterType.NEED_HELP);
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
-		this.populateList(BankUser.instance().getAccounts());
+		populateList(BankUser.instance().getAccounts());
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
@@ -135,7 +137,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	public void populateList(final AccountList accountList) {
 		if( null != accountList ) {
-			final Context context = this.getActivity();
+			final Context context = getActivity();
 
 			//Create a hash map to help sort accounts into groups 
 			final HashMap<String, BankAccountGroupView> groupsMap = new HashMap<String, BankAccountGroupView>();
@@ -242,7 +244,21 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				.findViewById(R.id.downArrow);
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
-		accountToggleSection.setOnClickListener(new AccountToggleListener());
+		accountToggleSection.setOnClickListener(new AccountToggleListener());		
+		toggleView.findViewById(R.id.acct_toggle_bank_section).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				toggleView.setVisibility(View.INVISIBLE);
+			}
+
+		});
+		toggleView.findViewById(R.id.acct_toggle_card_section).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				FacadeFactory.getCardLoginFacade().toggleToCard(DiscoverActivityManager.getActiveActivity());
+			}	
+		});
 	}
 
 	/**
