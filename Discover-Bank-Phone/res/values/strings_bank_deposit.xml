@@ -53,8 +53,8 @@
 	<string name="cancel_this_deposit">Cancel This Deposit</string>
 	
 	<string name="cancel_deposit_title">Cancel Your Deposit?</string>
-	<string name="cancel_deposit_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
-
+	<string name="cancel_deposit_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete this transaction.</string>
+	<string name="deposit_go_back_content">All information you entered for this deposit will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
 	<string name="are_you_sure_title">Are You Sure You Want to Go Back?</string>
 	<string name="account_ending_in">Account ending in</string>
 	<string name="account_ending_in_first_two_caps">Account Ending in</string>
