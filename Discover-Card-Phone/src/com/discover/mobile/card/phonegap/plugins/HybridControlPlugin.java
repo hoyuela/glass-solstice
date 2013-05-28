@@ -754,7 +754,6 @@ public class HybridControlPlugin extends CordovaPlugin {
           return true;
       }else if (action.equals(checkForExternalBrowser)) {
 
-    	  Log.i(TAG, "OH YES ABHI");
     	  final String strURLtoOpen = args.getString(0);
     	  
           /*final boolean isPhonegapReady = (Boolean) args.get(0);

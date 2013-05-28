@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.utils.Utils;
@@ -75,7 +76,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
             @Override
             public void onClick(final View v) {
-                //bank Code for privacy and terms
+            	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
             }
         });
         //Defect id 95853

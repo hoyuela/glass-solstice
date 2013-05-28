@@ -143,7 +143,7 @@ public class EnhancedAccountSecurityActivity extends
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
      */
-    private static final int MIN_ANSWER_LENGTH = 2;
+    private static final int MIN_ANSWER_LENGTH = 1;
 
     private CardEventListener authAnsListener;
     private int questionAttemptCounter = 0;
@@ -194,7 +194,8 @@ public class EnhancedAccountSecurityActivity extends
         restoreState(savedInstanceState);
 
         // Disabling continue button only applies to Bank
-        if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
+       // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
+        {
             // Add text change listener to determine when the user has entered
             // text
             // to enable/disable continue button
@@ -203,6 +204,7 @@ public class EnhancedAccountSecurityActivity extends
             // Disable continue button by default
             continueButton.setEnabled(false);
         }
+        
         // Adding Tool Tip menu
         // setupClickableHelpItem();
         /**

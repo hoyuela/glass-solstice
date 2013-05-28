@@ -108,11 +108,17 @@ function personalizeCashPin2Load() {
 dfs.crd.profile.createPersonalPinUrl = RESTURL + "personalprofile/v1/personalizepin";
 
 dfs.crd.profile.moveToDiscoverSiteReminder = function() {
-	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	var strURLToOpen="";
+	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen); 
+	//window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
 }
 
 dfs.crd.profile.moveToDiscoverSiteProfile = function() {
-	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	var strURLToOpen="";
+	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen);
+	//window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
 }
 
 dfs.crd.profile.personalizeCashPin2 = function(enterPin, confirmPin) {

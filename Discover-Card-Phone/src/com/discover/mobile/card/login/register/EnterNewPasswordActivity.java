@@ -404,7 +404,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-          //bank Code for privacy and terms
+          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
     }
