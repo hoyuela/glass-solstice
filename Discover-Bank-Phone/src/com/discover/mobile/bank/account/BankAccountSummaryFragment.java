@@ -36,6 +36,8 @@ import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
@@ -67,9 +69,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
 		updateGreeting();
-		
+
 		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
-		
+
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
 
@@ -82,7 +84,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK | FooterType.NEED_HELP);
 
 		/**Setup list of account groups using the list of Accounts downloaded at login*/
-		this.populateList(BankUser.instance().getAccounts());
+		populateList(BankUser.instance().getAccounts());
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
@@ -105,14 +107,14 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.background_view));
 		return view;
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		getActivity().registerReceiver(timeListener, new IntentFilter(Intent.ACTION_TIME_TICK));
 		updateGreeting();
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -138,10 +140,10 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		if(currentUser != null) {
 			customerName = currentUser.name;
 		}
-		
+
 		if(customerName != null) {
 			final String firstName = customerName.type;
-			
+
 			if(firstName != null) {
 				final String name = firstName.toLowerCase(Locale.US);
 				nameBuilder.append(name.substring(0,1).toUpperCase(Locale.US) + name.substring(1));
@@ -149,14 +151,14 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		}
 		final String name = nameBuilder.toString();
 		final int maxOneLineLength = 17;
-		
+
 		if(name.length() > maxOneLineLength) {
 			nameBuilder.insert(0, StringUtility.NEW_LINE);
 		}
-		
+
 		return nameBuilder.toString();
 	}
-		
+
 	private void updateGreeting() {
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
 
@@ -192,7 +194,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	public void populateList(final AccountList accountList) {
 		if( null != accountList ) {
-			final Context context = this.getActivity();
+			final Context context = getActivity();
 
 			//Create a hash map to help sort accounts into groups 
 			final HashMap<String, BankAccountGroupView> groupsMap = new HashMap<String, BankAccountGroupView>();
@@ -232,7 +234,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 			}
 			//Ensures the last group drawn has the bottom as a solid stroke.
 			drawBottomStroke(prevGroup);
-			
+
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Account List is Empty");
@@ -240,7 +242,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		}
 
 	}
-	
+
 	/**
 	 * Draws the final stroke on a group of account items.
 	 * @param group a group of BankAccountGroupView objects.
@@ -308,8 +310,22 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
 		accountToggleSection.setOnClickListener(new AccountToggleListener());
+		toggleView.findViewById(R.id.acct_toggle_bank_section).setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(final View v) {
+				toggleView.setVisibility(View.INVISIBLE);
+			}
+
+		});
+		toggleView.findViewById(R.id.acct_toggle_card_section).setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				FacadeFactory.getCardLoginFacade().toggleToCard(DiscoverActivityManager.getActiveActivity());
+			}	
+		});
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		if(toggleView.getVisibility() == View.VISIBLE) {
@@ -326,7 +342,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		return false;
 	}
-	
+
 	/**
 	 * Listener associated with items that hide/show the Account Toggle Widget. 
 	 */
