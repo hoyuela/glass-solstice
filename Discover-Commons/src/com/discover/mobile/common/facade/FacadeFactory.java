@@ -86,6 +86,14 @@ public final class FacadeFactory {
 	public static CardFacade getCardFacade(){
 		return (CardFacade) getImplClass("com.discover.mobile.card.facade.CardFacadeImpl");
 	}
+	
+	/**
+	 * Common bank navigation 
+	 * @return
+	 */
+	public static BankFacade getBankFacade(){
+		return (BankFacade) getImplClass("com.discover.mobile.bank.facade.BankFacadeImpl");
+	}
 
 	/**
 	 * Common card navigation 
