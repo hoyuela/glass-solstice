@@ -262,6 +262,21 @@
          <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
                    android:windowSoftInputMode="adjustPan" />
         <activity android:name=".bank.help.BankInfoNavigationActivity"></activity>
+        
+         <!--Broadcast Receiver for Receiving Intents when navigating to browser  -->
+        <activity android:name="com.discover.mobile.bank.DiscoverIntentListener" 
+            	  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+			    <category android:name="android.intent.category.DEFAULT" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <data android:scheme="com.discover.mobile" />  
+			</intent-filter>
+			<intent-filter>
+			    <category android:name="android.intent.category.DEFAULT" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <data android:scheme="method" />  
+			</intent-filter>      
+        </activity>
     </application>
 
 </manifest>

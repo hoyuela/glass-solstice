@@ -18,7 +18,7 @@
     
     <h3>Our Mobile Services collect information in different ways.</h3>
     <p><strong>Information is collected directly from you</strong>. For example, we collect information if you request to receive offers and alerts through a Mobile Service.</p>
-    <p><strong>Information is collected passively</strong>. Our Mobile Services may use tracking tools like browser cookies and web beacons. Learn more about these tools, and how you can control them, <a href="#choices">here</a>.</p>
+    <p><strong>Information is collected passively</strong>. Our Mobile Services may use tracking tools like browser cookies and web beacons. Learn more about these tools, and how you can control them, here.</p>
     <p><strong>We get information about you from third parties</strong>. For example, our business partners and service providers may give us information about you. Social media platforms may also give us information about you.</p>
     
     <h3>We use information from our Mobile Services in many ways.</h3>
@@ -27,7 +27,7 @@
     <p><strong>We use information for security purposes</strong>. We may use information to protect our company, our customers, and our websites.</p>
     
     <p><strong>We use information for marketing purposes.</strong>
-    For example, we might send you information about new products and special offers. We might tell you about new features or updates. We may also use push notifications on our mobile apps. To manage this, read the <a href="#choices">choices</a> section below.</p>
+    For example, we might send you information about new products and special offers. We might tell you about new features or updates. We may also use push notifications on our mobile apps. To manage this, read the choices section below.</p>
     <p><strong>We use information to communicate with you about your account or our relationship.</strong>
     We may contact you about your account or feedback. We might also contact you about this Privacy Statement or our Terms and Conditions.</p>
     <p><strong>We use information as otherwise permitted by law.</strong>
@@ -42,7 +42,7 @@
     For example, we share information with vendors who send texts for us.  We may also share information with companies that operate our websites and apps.</p>
     
     <p><strong>We will share this information with our business partners.</strong>
-    For example, we may share information with social media sites.  To control this, read the <a href="#choices">choices</a> section below.</p>
+    For example, we may share information with social media sites.  To control this, read the choices section below.</p>
     
     <p><strong>We will share this information if we think we have to in order to comply with the law or to protect ourselves.</strong> For example, we will share information to respond to a court order or subpoena. We may share it if a government agency or investigatory body requests. We might share information when we are investigating potential fraud.</p>
     
@@ -86,7 +86,7 @@
     
     <p>Mobile Privacy Statement last updated January 23, 2013</p>
 
-    <div style="text-align:center; font-size:9pt;"><a href="method://provideFeedback" style="color:#0267b1; text-decoration:none">Provide Feedback</a></div><br/><br/>]]>
+    <div style="text-align:center; font-size:9pt;"><a href="method://cardProvideFeedback" style="color:#0267b1; text-decoration:none">Provide Feedback</a></div><br/><br/>]]>
     </string>
     
 </resources>
