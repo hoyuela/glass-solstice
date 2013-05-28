@@ -108,11 +108,11 @@ function personalizeCashPin2Load() {
 dfs.crd.profile.createPersonalPinUrl = RESTURL + "personalprofile/v1/personalizepin";
 
 dfs.crd.profile.moveToDiscoverSiteReminder = function() {
-	window.location.href = HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
 }
 
 dfs.crd.profile.moveToDiscoverSiteProfile = function() {
-	window.location.href = HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
 }
 
 dfs.crd.profile.personalizeCashPin2 = function(enterPin, confirmPin) {

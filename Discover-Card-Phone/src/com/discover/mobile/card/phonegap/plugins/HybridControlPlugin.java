@@ -291,7 +291,7 @@ public class HybridControlPlugin extends CordovaPlugin {
                         fragmentManager.executePendingTransactions();
                         
                         
-                        String topfragName = fragmentManager.getBackStackEntryAt(fragCount - 1)
+                        String topfragName = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1)
                                 .getName();
                         Fragment topFragment = fragmentManager
                                 .findFragmentByTag(topfragName);

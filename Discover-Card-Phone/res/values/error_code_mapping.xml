@@ -22,7 +22,9 @@
     <string name="E_4031102">Due to special conditions related to your account, we could not complete your request. Please contact Customer Service at 1-800-347-2683.</string>
     <string name="E_4031102_SSO_DELINK">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time."&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access at DiscoverBank.com.</string>
     <string name="E_4031102_SSO_DELINK_BUTTON">true.</string>
-    <string name="E_4031102_SSO">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time.Because of increased security measures, you will need to log into Discover Bank in order to access your online account.</string>
+    <!-- Defect ID: 95998 -->
+    <string name="E_4031102_SSO">We are unable to load your Discover Bank Account(s). Please contact Customer Service at 1-800-347-2683 so we can verify your social security number.</string>
+    <!-- Defect ID: 95998 -->
     <string name="E_4031102_SSN_NOT_MATCH">We are unable to load your Discover Bank Account(s). Please contact Customer Service at 1-800-347-2683 so we can verify your social security number.</string>
     <string name="E_4031102_SSO_AccountNo">Can not Login with Account Number.</string>
     <string name="E_40311021">SSN NOT MATCHED !!</string>

@@ -6,7 +6,7 @@ dfs.crd.rwd.availablePartners = HREF_URL
 + "mobile/rewards/advanced/images/partners/available/";
 dfs.crd.rwd.unavailablePartners = HREF_URL
 + "mobile/rewards/advanced/images/partners/unavailable/";
-dfs.crd.rwd.REDEMPTION_OPTIONS_URL = HREF_URL
+dfs.crd.rwd.REDEMPTION_OPTIONS_URL = EXT_HREF_URL
 + "cardmembersvcs/rewards/app/redeem?ICMPGN=ACH_TAB_CBB_BTN_RDM";
 dfs.crd.rwd.insuficientErrorPresent;
 dfs.crd.rwd.insuficientErrorPresentSubmit;

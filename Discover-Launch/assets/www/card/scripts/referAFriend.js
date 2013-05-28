@@ -227,10 +227,10 @@ if(x=="disabled")
 		  	$(".share-prv").show();	
         } 
 		
-		if($(document).jqmData('redirectToPreview') == true) {
+		/*if($(document).jqmData('redirectToPreview') == true) {
 			$(".share-prv").hide();
 			$(".share-send-email").addClass('ui-disabled');
-        } 
+        } */
     });
 
 
@@ -486,6 +486,10 @@ $("#raf-status-miles,#raf-status,#raf-status-dollar").live("pagebeforeshow", fun
 	$('.referral-detail').hide();
 	
 });
+$("#share-mail-app").live("pagebeforeshow", function () {
+                $(".share-send-email").addClass('ui-disabled'); 
+                });
+
 
 $("#raf-dollar,#raf-miles").live("pageshow", function (event) {
 	$('#fbBtn,#twBtn,#lnBtn').click(function(event)

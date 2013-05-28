@@ -1,5 +1,6 @@
 function accountSummary()
-{	
+{
+	preventBack = false;	
 	populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../achome/accountSummary');   
@@ -7,16 +8,19 @@ function accountSummary()
 
 function recentActivity()
 {
+	preventBack = false;
 	navigation('../statements/accountActivity');	
 }
 
 function searchTransactions()
 {
+	preventBack = false;
 	navigation('../statements/searchTrans');	
 }
 
 function statements()
 {	
+	preventBack = false;
 	var statements = dfs.crd.stmt.shared.util.getStatements(); 
 	if ( statements.isEmpty() ) {
 			navigation('../achome/accountLanding');
@@ -41,6 +45,7 @@ HybridControl.prototype.dismissProgressBar();
 
 function makeaPayment()
 {
+preventBack = false;
 populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../payments/paymentStep1');
@@ -48,18 +53,21 @@ populateGlobalCache();
 
 function managePayments()
 {
+preventBack = false;
 populateGlobalCache();
 	navigation('../payments/paymentsLanding');
 }
 
 function manageBankInformation()
 {
+preventBack = false;
 populateGlobalCache();
 	navigation('../payments/manageBankInformation');
 }
 
 function sendMoney()
 {	
+	preventBack = false;
 	populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../p2p/sendMoney1');
@@ -67,12 +75,14 @@ function sendMoney()
 
 function sendMoneyHistory()
 {
+	preventBack = false;
 	populateGlobalCache();
 	navigation('../p2p/transactionHistory');
 }
 
 function cashbackBonusPromos()
 {
+	preventBack = false;
 	populateGlobalCache();
 	s.prop1='HANDSET_CBB_SIGNUP_BTN';
 	navigation('../rewards/cashbackBonusSignup1');
@@ -80,12 +90,14 @@ function cashbackBonusPromos()
 
 function extras()
 {
+	preventBack = false;
 	populateGlobalCache();
 	navigation('../edo/edoLandingPage');
 }
 
 function referAFriend()
 {
+	preventBack = false;
 	populateGlobalCache();
 	s.prop1='HANDSET_CBB_RAF_BTN';
 	if(accountEarnsCBB(incentiveTypeCode)){	
@@ -98,6 +110,7 @@ function referAFriend()
 
 function partnerGiftCardseCerts()
 {
+	preventBack = false;
 	populateGlobalCache();
     dfs.crd.rwd.getAllPartners();
 	if(!rewardErrorFlag){ // Fix for defect 96754
@@ -115,6 +128,7 @@ function partnerGiftCardseCerts()
 
 function discoverGiftCard()
 {	
+	preventBack = false;
 	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
 	if(!rewardErrorFlag){ // Fix for defect 96754
@@ -132,6 +146,7 @@ function discoverGiftCard()
 
 function statementCredit()
 {
+	preventBack = false;
 	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
 	if(!rewardErrorFlag){ // Fix for defect 96754
@@ -144,6 +159,7 @@ function statementCredit()
 
 function directDeposit()
 {
+	preventBack = false;
 	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
 	if(!rewardErrorFlag){ // Fix for defect 96754
@@ -156,6 +172,7 @@ function directDeposit()
 
 function paywithCashbackBonus()
 {
+	preventBack = false;
 	populateGlobalCache();
 	dfs.crd.rwd.getAllPartners();
 	if(!rewardErrorFlag){ // Fix for defect 96754
@@ -168,6 +185,7 @@ function paywithCashbackBonus()
 
 function redemptionHistory()
 {
+	preventBack = false;
 	populateGlobalCache();
 	s.prop1 = 'HANDSET_REDEEM_HIST_BTN'; // campaign code
 	navigation('../rewards/redemption_History');
@@ -175,51 +193,59 @@ function redemptionHistory()
 
 function manageTextAlerts()
 {
-	
+	preventBack = false;
 	navigation('../pushNotification/manageAlertsOverride');
 }
 
 function pushAlertsHistory()
 {
+	preventBack = false;
 	navigation('../pushNotification/alertHistory');
 }
 
 function createCashPIN()
 {
+	preventBack = false;
 	isLhnNavigation  = true;
 	navigation('../profile/personalizeCashPin1');
 }
 
 function contactUs()
 {
+	preventBack = false;
    navigation('../custormerService/contactUs');
 }
 
 function frequentlyAskedQuestions()
 {
+	preventBack = false;
 	navigation('../custormerService/customerServiceFaqs');
 }
 
 function earnMoreMilesRewards()
 {
+	preventBack = false;
 	populateGlobalCache();
 	navigation('../rewards/milesHome');
 }
 
 function milesPromotions()
 {
+	preventBack = false;
 	populateGlobalCache();
 	navigation('../rewards/milesSignup1');
 }
 
 function redeemMiles()
 {
+	preventBack = false;
 	populateGlobalCache();
 	navigation('../rewards/milesRedeem');
 }
 
 function privacyTerms()
 {
+	preventBack = false;
 	navigation('../common/moreLanding');
 }
 
@@ -229,19 +255,23 @@ function noTitle(){
 }
 
 function acHome(){
-	navigation('../achome/cardHome');
+	preventBack = true;
+	console.log("inside acHome and preventback is "+preventBack);
+	//navigation('../achome/cardHome',false);
 	activePage = "cardHome-pg";
 	currentActivePage = "cardHome-pg";
 }
 
 function paymentHistory()
 {
+preventBack = false;
 populateGlobalCache();
 navigation('../payments/paymentsHistory');
 }
 
 function redemptionOptions()
 {
+preventBack = false;
 populateGlobalCache();
 navigation('../rewards/redemptionLanding');
 }
