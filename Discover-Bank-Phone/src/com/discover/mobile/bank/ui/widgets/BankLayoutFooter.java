@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,8 +18,8 @@ import com.discover.mobile.bank.util.BankNeedHelpFooter;
 
 public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	private TextView divider;
-	private TextView provideFeedback;
-	private TextView privacyTerms;
+	private Button provideFeedback;
+	private Button privacyTerms;
 	private TextView copyRight;
 	private BankNeedHelpFooter helpFooter;
 
@@ -90,8 +91,8 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 
 		/** Load UI Widgets */
 		divider = (TextView) this.findViewById(R.id.divider);
-		provideFeedback = (TextView) this.findViewById(R.id.provide_feedback_button);
-		privacyTerms = (TextView) this.findViewById(R.id.privacy_terms);
+		provideFeedback = (Button) this.findViewById(R.id.provide_feedback_button);
+		privacyTerms = (Button) this.findViewById(R.id.privacy_terms);
 		copyRight = (TextView)this.findViewById(R.id.discover_copyright);
 
 		/**
