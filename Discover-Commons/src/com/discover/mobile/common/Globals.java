@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.discover.mobile.common.utils.FastcheckUtil;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -41,6 +42,9 @@ public final class Globals {
 
 	/**Key to whether or not the shared preferences should be shown*/
 	public static final String SHOW_LOGIN_MODAL = "showLoginModal";
+	
+	/**Key to remember if a user has accepted location services or not */
+	public static final String SHOW_ATM_LOCATION_MODAL = "atmlm";
 
 	/**Key for a user ID*/
 	public static final String USER_ID = "userId";
@@ -75,6 +79,7 @@ public final class Globals {
 	 */
 	private static boolean showLoginModal;
 
+	private static boolean showAtmLocationModal;
 	/**
 	 * Last four digits of the card account that will be displayed in the toggle view for sso
 	 */
@@ -89,6 +94,10 @@ public final class Globals {
 	private static boolean isLoggedIn;
 
 	private static long oldTouchTimeinMillis;
+	
+	private static final String KEY = "Key=";
+	private static final String VALUE = " Value=";
+	private static final String IS_LOGGED_IN = "isLoggedIn=";
 
 	//Initialize static members at start-up of application
 	static {
@@ -143,16 +152,18 @@ public final class Globals {
 		final StringBuilder keyName = new StringBuilder();
 
 		//Check if key provided is an account level preference
-		if( (getPreferenceLevel(key) & PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue()) == PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
+		if( (getPreferenceLevel(key) & PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue()) == 
+										PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
 			keyName.append(currentAccount);
-			keyName.append(".");
+			keyName.append(StringUtility.PERIOD);
 		}
 
 		//Set file name for currentUser if the currentUser is set and preference level of key is user level
 		if( !Strings.isNullOrEmpty(currentUser) &&
-				(getPreferenceLevel(key) & PreferenceLevel.USER_LEVEL_PREF.getValue()) == PreferenceLevel.USER_LEVEL_PREF.getValue() ) {
+				(getPreferenceLevel(key) & PreferenceLevel.USER_LEVEL_PREF.getValue()) == 
+											PreferenceLevel.USER_LEVEL_PREF.getValue() ) {
 			keyName.append(currentUser);
-			keyName.append(".");
+			keyName.append(StringUtility.PERIOD);
 		}
 
 		keyName.append(key);
@@ -171,7 +182,19 @@ public final class Globals {
 		//Load all application level specific preferences
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal())];
+		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), 
+																AccountType.CARD_ACCOUNT.ordinal())];
+		loadUserAndModalSelections(settings, context);
+	}
+	
+	/**
+	 * Loads settings for a user, for the logout modal and the atm location modal. Along with the status bar visibility
+	 * and the remember user id check box state.
+	 * 
+	 * @param settings the SharedPreferences object that contains the current users settings
+	 * @param context the Context of use.
+	 */
+	private static void loadUserAndModalSelections(final SharedPreferences settings, final Context context) {
 		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 		statusBarVisibility = settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
 
@@ -183,15 +206,10 @@ public final class Globals {
 		}  else {
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
+			showAtmLocationModal = settings.getBoolean(getStoredKeyName(SHOW_ATM_LOCATION_MODAL), true);
 		}
-
 		if( Log.isLoggable(TAG, Log.VERBOSE)) {
-			Log.v(TAG,"loadPreferences");
-			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
-			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
-			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
+			printLoadPreferenceLog();
 		}
 	}
 
@@ -208,27 +226,20 @@ public final class Globals {
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
 		currentAccount = account;
-		rememberId = settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
-		statusBarVisibility = settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
-
-		//Check whether logged in or not
-		if( !isLoggedIn ) {
-			//Only Load remembered user if not logged in
-			currentUser = (rememberId)?getStoredUser(context):currentUser;
-
-		} else {
-			//Load user level settings only if logged in
-			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
-		}
-
-		if( Log.isLoggable(TAG, Log.VERBOSE)) {
-			Log.v(TAG,"loadPreferences");
-			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
-			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
-			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
-		}
+		loadUserAndModalSelections(settings, context);
+	}
+	
+	/**
+	 * Prints a log statement containing all of the preferences being loaded.
+	 */
+	private static void printLoadPreferenceLog() {
+		Log.v(TAG,"loadPreferences");
+		Log.v(TAG, IS_LOGGED_IN +isLoggedIn);
+		Log.v(TAG, KEY +getStoredKeyName(CURRENT_ACCOUNT) +VALUE +currentAccount);
+		Log.v(TAG, KEY +getStoredKeyName(REMEMBER_USER_ID) +VALUE +rememberId);
+		Log.v(TAG, KEY +getStoredKeyName(STATUS_BAR_VISIBILITY) +VALUE +statusBarVisibility);
+		Log.v(TAG, KEY +getStoredKeyName(SHOW_LOGIN_MODAL) +VALUE +showLoginModal);
+		Log.v(TAG, KEY +getStoredKeyName(SHOW_ATM_LOCATION_MODAL) + VALUE +showAtmLocationModal);
 	}
 
 	/**
@@ -246,14 +257,10 @@ public final class Globals {
 
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
+			showAtmLocationModal = settings.getBoolean(getStoredKeyName(SHOW_ATM_LOCATION_MODAL), true);
 
 			if( Log.isLoggable(TAG, Log.VERBOSE)) {
-				Log.v(TAG,"loadUserPreferences");
-				Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-				Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-				Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
-				Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
-				Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
+				printLoadPreferenceLog();
 			}
 
 			ret = true;
@@ -298,11 +305,15 @@ public final class Globals {
 
 		if( Log.isLoggable(TAG, Log.VERBOSE)) {
 			Log.v(TAG,"savePreferences");
-			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
-			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
-			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
-			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
-			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true));
+			Log.v(TAG, IS_LOGGED_IN +isLoggedIn);
+			Log.v(TAG, KEY +getStoredKeyName(CURRENT_ACCOUNT) +VALUE +
+								settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
+			Log.v(TAG, KEY +getStoredKeyName(REMEMBER_USER_ID) +VALUE +
+													settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
+			Log.v(TAG, KEY +getStoredKeyName(STATUS_BAR_VISIBILITY) +
+							VALUE +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
+			Log.v(TAG, KEY +getStoredKeyName(SHOW_LOGIN_MODAL) +VALUE +
+															settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true));
 		}
 	}
 
@@ -392,6 +403,14 @@ public final class Globals {
 	public static void setShowLoginModal(final boolean showLoginModal) {
 		Globals.showLoginModal = showLoginModal;
 	}
+	
+	public static void setShowAtmLocationModal(final boolean shouldShowModal) {
+		showAtmLocationModal = shouldShowModal;
+	}
+	
+	public static boolean getShowAtmLocationModal() {
+		return showAtmLocationModal;
+	}
 
 	/**
 	 * 
@@ -444,7 +463,8 @@ public final class Globals {
 	 * 
 	 * @return Returns true if successful, false otherwise.
 	 */
-	public static boolean updateAccountInformation(final AccountType account, final Context context, final String userId, final boolean saveUserId) {
+	public static boolean updateAccountInformation(final AccountType account, final Context context, final String userId, 
+													final boolean saveUserId) {
 		boolean ret = false;
 
 		//Only update account information if logged in
@@ -508,13 +528,13 @@ public final class Globals {
 	
 	/** Encrypts and stores the user ID in Shared Preferences. 
 	 *  Please note that the provided editor does not call commit() since this is usually called mid-editing. */
-	private static void saveUser(final SharedPreferences.Editor editor, String user) {
+	private static void saveUser(final SharedPreferences.Editor editor, final String user) {
 		final String encryptedUser;
 		
 		if (!user.isEmpty()) {
 			try {
 				encryptedUser = FastcheckUtil.encrypt(user);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				// Failed to encrypt user. Will not store on device.
 				return;
 			}
@@ -524,8 +544,10 @@ public final class Globals {
 		editor.putString(getStoredKeyName(USER_ID), encryptedUser);
 	}
 	
-	/** @return a decrypted user ID from Shared Preferences or an empty String if ID does not exist or could not be deciphered. */
-	private static String getStoredUser(Context context) {
+	/** @return a decrypted user ID from Shared Preferences or an empty String if ID does not exist or 
+	 * could not be deciphered. 
+	 */
+	private static String getStoredUser(final Context context) {
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		final String encryptedUser = settings.getString(getStoredKeyName(USER_ID), "");
 		String user = "";
@@ -533,7 +555,7 @@ public final class Globals {
 		if (!encryptedUser.isEmpty()) {
 			try {
 				user = FastcheckUtil.decrypt(encryptedUser);
-			} catch (Exception e) { // Failed to decrypt user.
+			} catch (final Exception e) { // Failed to decrypt user.
 				return "";
 			}
 		}

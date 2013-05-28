@@ -156,7 +156,8 @@ public abstract class AtmMapFragment extends BaseFragment
 	private Location cameraLocation = null;
 
 	private static boolean needsToAnimateZoom = false;
-
+	private static boolean hasAcceptedLocationModal = false;
+	
 	private AtmResults tempResults = null;
 	private int resultEndIndex = 0;
 
@@ -330,8 +331,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
 			break;
 		case ENABLED:
-			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
+			showLocationAcceptanceModal();
 			break;
 		case LOCATION_FAILED:
 			locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
@@ -346,6 +346,20 @@ public abstract class AtmMapFragment extends BaseFragment
 		default:
 			break;
 		}
+	}
+	
+	private void showLocationAcceptanceModal() {
+		if(!hasAcceptedLocationModal) {
+			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
+			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
+		} else {
+			searchCurrentLocation();
+		}
+	}
+	
+	public final void searchCurrentLocation() {
+		this.setLocationStatus(LocationFragment.SEARCHING);
+		this.getLocation();
 	}
 
 	/**
@@ -401,12 +415,9 @@ public abstract class AtmMapFragment extends BaseFragment
 			locationStatus = ENABLED;
 			if(LOCKED_ON == locationStatus){
 				getLocation();
-			}else{
-				if(null == locationModal || !locationModal.isShowing()){
-					locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-					((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
-				}
-			} 
+			}else if(null == locationModal || !locationModal.isShowing()){
+				showLocationAcceptanceModal();	
+			} 	
 		}
 	}
 
