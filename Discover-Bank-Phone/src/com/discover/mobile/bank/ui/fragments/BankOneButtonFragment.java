@@ -52,9 +52,9 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 	 */
 	private Button actionButton;
 	/**
-	 * Reference to a TextView whose click event is to be handled by a sub-classs implementation of onActionLinkClick
+	 * Reference to a Button whose click event is to be handled by a sub-classs implementation of onActionLinkClick
 	 */
-	private TextView actionLink;
+	private Button actionLink;
 	/**
 	 * Reference to a Progress indicator used to display a users progress in the current work-flow
 	 */
@@ -119,7 +119,7 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		actionButton = (Button)view.findViewById(R.id.actionButton);
 		actionButton.setOnClickListener(this);
 		
-		actionLink = (TextView)view.findViewById(R.id.actionLink);
+		actionLink = (Button) view.findViewById(R.id.actionLink);
 		actionLink.setOnClickListener(this);
 			
 		/**Hide top note as it is not needed for this view**/
@@ -297,11 +297,11 @@ public abstract class BankOneButtonFragment extends BaseFragment implements OnCl
 		noteTextMsg.setVisibility(View.GONE);
 	}
 	
-	protected void setButtonText(int resId) {
+	protected void setButtonText(final int resId) {
 		actionButton.setText(resId);
 	}
 	
-	protected void setLinkText(int resId) {
+	protected void setLinkText(final int resId) {
 		actionLink.setText(resId);
 	}
 	
