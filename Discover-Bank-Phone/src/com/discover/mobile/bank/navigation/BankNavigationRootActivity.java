@@ -22,6 +22,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -198,8 +199,9 @@ implements OnPaymentCanceledListener {
 			final long currentTime) {
 		// Previous value exists
 		if (previousTime != 0) {
+			final int oneSecond = 1000;
 			final long difference = currentTime - previousTime;
-			final float secs = (float) difference / 1000;
+			final float secs = (float) difference / oneSecond;
 
 			// User has become inactive and will be set to timed-out.
 			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
@@ -210,6 +212,16 @@ implements OnPaymentCanceledListener {
 		return false;
 	}
 
+	/**
+	 * Ensures that the logout call attempts a bank logout. This is needed if the logout call is attempted on card
+	 * and fails for some reason, resulting in the user not getting logged out.
+	 */
+	@Override
+	public void logout() {
+		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+		super.logout();
+	}
+	
 	@Override
 	public int getBehindContentView() {
 		// TODO Auto-generated method stub
