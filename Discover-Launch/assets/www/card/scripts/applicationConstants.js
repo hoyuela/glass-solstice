@@ -10,6 +10,7 @@ var BANK_SSO_SSN_NOT_MATCHED_URL;
 var BASEURL;
 var RESTURL;
 var HREF_URL;
+var EXT_HREF_URL; // nidhi : adding it for 13.1.1. This will be used for any URL pointing to Big Browser
 var s_account;
 if (navigator.userAgent.match(/iPhone/))
  {
@@ -40,6 +41,7 @@ env = (function () {
 		}
 		RESTURL = BASEURL + "/cardsvcs/acs/";
 		HREF_URL = xmlDoc.getElementsByTagName("cardhrefurl")[0].childNodes[0].nodeValue;
+		EXT_HREF_URL = xmlDoc.getElementsByTagName("cardexthrefurl")[0].childNodes[0].nodeValue+"/";
 		BANK_URL =  xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/m/accounts/login?view=Touch/Handset&DiscoverMobileVersion="+APPVER;
 		BANK_LUA_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/m/accounts/login?cardstat=LUA&view=Touch/Handset&DiscoverMobileVersion="+APPVER;
 		BANK_REG_URL = xmlDoc.getElementsByTagName("bankbaseurl")[0].childNodes[0].nodeValue + "/bankac/loginreg/regone?view=Touch/Handset&DiscoverMobileVersion="+APPVER;

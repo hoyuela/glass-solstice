@@ -1543,9 +1543,9 @@ dfs.crd.p2p.updateDataDetails = function(responseData, curr_iteration) {
 							+ recipientId
 							+ "</b></span></div><div class='clearboth'>Transaction Type<span><b>"
 							+ transactionType
-							+ "</b></span></div><div>Note<span><b>"
+							+ "</b></span></div><div>Note<span class='breakword'><b>"
 							+ note
-							+ "</b></span></div><div><b>Transaction Date: </b></div><div>"
+							+ "</b></span></div><div class='clearboth'></div><div><b>Transaction Date: </b></div><div>"
 							+ datesDetails + "</div>";
 					$("#" + liId).html(detailsHtml);
 				}

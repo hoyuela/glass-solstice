@@ -683,21 +683,29 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				Fragment homeFragment = fragManager
 						.findFragmentByTag("HomeSummaryFragment");
 				makeFragmentVisible(homeFragment, false);
+				
+				if(fragManager.getBackStackEntryCount() == 2)
+				{
+					cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+							"javascript:acHome()");
+				}
 
 			} else {
 				if (fragTag
-						.equalsIgnoreCase(getString(R.string.enhanced_account_security_title))) {
+						.equalsIgnoreCase(getString(R.string.enhanced_account_security_title)) || fragTag
+						.equalsIgnoreCase("No Title")) {
 					Utils.log("CardNavigationRootActivity",
 							"inside onBackPressed()");
 					onBackPressed();
-				} else {
+				}else {
 					sendNavigationTextToPhoneGapInterface(fragTag);
 					super.onBackPressed();
 				}
 
 			}
 		} else {
-			sendNavigationTextToPhoneGapInterface("AcHome");
+			cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+					"javascript:acHome()");
 			Fragment homeFragment = fragManager
 					.findFragmentByTag("HomeSummaryFragment");
 			makeFragmentVisible(homeFragment, false);
