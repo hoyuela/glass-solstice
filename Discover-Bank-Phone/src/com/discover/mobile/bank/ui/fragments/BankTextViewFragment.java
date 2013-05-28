@@ -10,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 /**
