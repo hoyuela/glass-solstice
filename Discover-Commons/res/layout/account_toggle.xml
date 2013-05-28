@@ -38,6 +38,7 @@
                 android:paddingLeft="@dimen/toggle_x_left_pad"
                 android:paddingRight="@dimen/toggle_x_right_pad_p"
                 android:paddingTop="@dimen/toggle_x_top_pad"
+                android:contentDescription="@null"
                 android:src="@drawable/x_gray" />
         </RelativeLayout>
 
@@ -54,7 +55,7 @@
 
         <RelativeLayout
             android:id="@+id/acct_toggle_card_section"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/toggle_cell_height"
             android:layout_below="@id/acct_toggle_divider" >
 
@@ -66,6 +67,7 @@
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
                 android:paddingLeft="@dimen/toggle_title_left_pad_p"
                 android:src="@drawable/black_check_mark"
+                android:contentDescription="@null"
                 android:visibility="invisible" />
 
             <TextView
@@ -78,7 +80,7 @@
                 android:paddingBottom="@dimen/between_related_elements_padding"
                 android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/between_related_elements_padding"
-                android:text="it Card" />
+                android:text="@string/sso_it_card" />
 
             <TextView
                 android:id="@+id/acct_toggle_card_subtext"
@@ -90,7 +92,7 @@
                 android:paddingBottom="@dimen/between_related_elements_padding"
                 android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/between_related_elements_padding"
-                android:text="acct ending in 1234" />
+                android:text="@string/sso_no_account_ending" />
         </RelativeLayout>
 
         <View
@@ -106,7 +108,7 @@
 
         <RelativeLayout
             android:id="@+id/acct_toggle_bank_section"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/toggle_cell_height"
             android:layout_below="@id/acct_toggle_dash_divider" >
 
@@ -118,6 +120,7 @@
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
                 android:paddingBottom="@dimen/toggle_bottext_bottom_pad"
                 android:paddingLeft="@dimen/toggle_title_left_pad_p"
+                android:contentDescription="@null"
                 android:src="@drawable/black_check_mark" />
 
             <TextView
@@ -130,7 +133,7 @@
                 android:paddingBottom="@dimen/account_toggle_outside_padding"
                 android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/toggle_bottext_bottom_pad"
-                android:text="Discover Bank"
+                android:text="@string/sso_discover_bank"
                 android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
@@ -141,6 +144,7 @@
         android:id="@+id/acct_toggle_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@null"
         android:src="@drawable/account_widget_triangle" />
 
 </RelativeLayout>

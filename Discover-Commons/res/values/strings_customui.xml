@@ -9,4 +9,7 @@
 	<string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
     <string name="card_expiration_date_text">Card Expiration Date</string>
     <string name="toggle_select_account">SELECT ACCOUNT</string>
+    <string name="sso_discover_bank">Discover Bank</string>
+    <string name="sso_it_card">it Card</string>
+    <string name="sso_no_account_ending">acct ending in 1234</string>
 </resources>
