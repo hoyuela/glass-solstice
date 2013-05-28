@@ -55,8 +55,8 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
- implements LocationFragment, AtmMapSearchFragment,
-		FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
+implements LocationFragment, AtmMapSearchFragment,
+FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -72,7 +72,7 @@ public abstract class AtmMapFragment extends BaseFragment
 
 	/**Key to get the state of the help modal from the bundle*/
 	private static final String ATM_HELP_MODAL = "atmModal";
-	
+
 	/**Key to get the state of the Leaving App modal from the bundle*/
 	private static final String LEAVING_APP_MODAL = "leaveApp";
 
@@ -148,12 +148,12 @@ public abstract class AtmMapFragment extends BaseFragment
 	/**Location of the user*/
 	private Location location;
 	private Location cameraLocation = null;
-	
+
 	private static boolean needsToAnimateZoom = false;
-	
+
 	private AtmResults tempResults = null;
 	private int resultEndIndex = 0;
-	
+
 	private float cameraZoom = MAP_CURRENT_GPS_ZOOM;
 
 	/**Boolean true if the help menu alert menu is showing*/
@@ -195,12 +195,12 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
 		 */
 		if( getChildFragmentManager().getBackStackEntryCount() == 0 ) {
-			this.getChildFragmentManager()
+			getChildFragmentManager()
 			.beginTransaction()
 			.add(R.id.discover_map, fragment)
 			.addToBackStack(fragment.getClass().getSimpleName())
 			.commit();
-			this.getChildFragmentManager()
+			getChildFragmentManager()
 			.beginTransaction()
 			.add(R.id.discover_list, listFragment)
 			.addToBackStack(listFragment.getClass().getSimpleName())
@@ -248,7 +248,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void onResume(){
 		super.onResume();
 
-		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
+		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
 		activity.setCurrentFragment(this);
 		setUpMap();
 		disableMenu();
@@ -259,7 +259,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * Verify that the bundle used to populate the map fragment has data.
 		 */
 		resumeStateOfFragment(savedState);
-		
+
 
 		determineNavigationStatus();
 
@@ -273,14 +273,14 @@ public abstract class AtmMapFragment extends BaseFragment
 
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
-		} else if (this.isLeavingModalShowing) {
+		} else if (isLeavingModalShowing) {
 			showTerms();
 		}
-		
+
 		restoreCameraView();
 		adjustMapZoomIfNeeded();
 	}
-	
+
 	/**
 	 * Setup the view of the map fragment to be either the map or the list depending on the current
 	 * isOnMap boolean.
@@ -292,7 +292,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			showList();
 		}
 	}
-	
+
 	/**
 	 * Restore the position of the camera on the map to what is stored in the local variables for the camera position
 	 * and zoom level.
@@ -310,7 +310,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	private void determineNavigationStatus() {
 		mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		if(NOT_ENABLED == locationStatus){
-			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
+			locationStatus = locationManagerWrapper.areProvidersenabled() ? ENABLED : NOT_ENABLED;
 		}
 
 		switch(locationStatus){
@@ -389,7 +389,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		}else{
 			if(null == locationModal || !locationModal.isShowing()){
 				locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-				((NavigationRootActivity)this.getActivity()).showCustomAlert(locationModal);
+				((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
 			}
 		}
 	}
@@ -401,7 +401,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	@Override
 	public void performSearch(final String text) {		
 		isLoading = false;
-		((NavigationRootActivity)this.getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog();
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
 		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
 	}
@@ -410,7 +410,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void onStart(){
 		super.onStart();
 
-		final NavigationRootActivity activity = (NavigationRootActivity) this.getActivity();
+		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
 		activity.highlightMenuItems(getGroupMenuLocation(), getSectionMenuLocation());
 	}
 
@@ -421,8 +421,8 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void handleAddressToLocationResponse(final Bundle bundle){
 		final AddressToLocationDetail addressResults = (AddressToLocationDetail) bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		if(null == addressResults || null == addressResults.results || addressResults.results.isEmpty()){
-			((NavigationRootActivity)this.getActivity()).closeDialog();
-			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
+			((NavigationRootActivity)getActivity()).closeDialog();
+			AtmModalFactory.getInvalidAddressModal(getActivity()).show();
 		}else{
 			final AddressToLocationResultDetail address = addressResults.results.get(0);
 			final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -430,7 +430,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			newLocation.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
-			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, this.getActivity());
+			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, getActivity());
 
 			zoomToLocation(newLocation);
 
@@ -470,22 +470,22 @@ public abstract class AtmMapFragment extends BaseFragment
 		final boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 		if(isOnMap){
 			showList();
-			mapButton.setBackgroundResource((isLandscape) ? 
+			mapButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_pinview_button_landscape : R.drawable.atm_pinview_button);
-			listButton.setBackgroundResource((isLandscape) ? 
+			listButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_listview_button_ds_landscape : R.drawable.atm_listview_button_ds);
 			isOnMap = false;
 		}else{
 			showMap();
-			mapButton.setBackgroundResource((isLandscape) ? 
+			mapButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
-			listButton.setBackgroundResource((isLandscape) ? 
+			listButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
 			isOnMap = true;	
 			adjustMapZoomIfNeeded();
 		}
 	}
-	
+
 	/**
 	 * Will re-focus the camera on the current location and all visible pins if for example, a user loads more atms
 	 * from the list view and toggles back to the map view.
@@ -501,10 +501,10 @@ public abstract class AtmMapFragment extends BaseFragment
 			}
 		}
 	}
-	
+
 	private final static String TEMP_RESULTS = "tr";
 	private final static String RESULT_END_INDEX = "ren";
-	
+
 	/**
 	 * Resume the state of the fragment
 	 * @param savedInstanceState - bundle holding the state of the fragment
@@ -516,7 +516,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			final Double lon = savedInstanceState.getDouble(LONG_KEY);
 			tempResults = (AtmResults)savedInstanceState.getSerializable(TEMP_RESULTS);
 			resultEndIndex = savedInstanceState.getInt(RESULT_END_INDEX);
-	
+
 			isOnMap = !savedInstanceState.getBoolean(BUTTON_KEY, true);
 			toggleButton();
 			results = (AtmResults)savedInstanceState.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
@@ -530,22 +530,22 @@ public abstract class AtmMapFragment extends BaseFragment
 				if(null != results){
 					hasLoadedAtms = true;
 				}
-				
+
 				final float zoom = savedInstanceState.getFloat(MAP_ZOOM);
-				
+
 				if(zoom != 0.0f) {
 					cameraZoom = zoom;
 				}
-				
+
 				restoreCameraLocation(savedInstanceState);
-				
+
 				restoreCurrentLocation(lat, lon);
-				
+
 				addResultsToMap(results, currentIndex);
-				
+
 				searchBar.restoreState(savedInstanceState);
 				streetView.hide();
-	
+
 				shouldGoBack = savedInstanceState.getBoolean(STREET_VIEW_SHOWING, true);
 				if(shouldGoBack){
 					showStreetView(savedInstanceState);
@@ -553,7 +553,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the current location marker to the following lat and lon values.
 	 * @param lat
@@ -565,7 +565,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		newLocation.setLongitude(lon);
 		mapWrapper.setCurrentLocation(newLocation);
 	}
-	
+
 	/**
 	 * Retrieve a saved camera position from a Bundle and set the camera's position to that value.
 	 * @param savedInstanceState a Bundle which contains a lat and lon value for camera position.
@@ -576,13 +576,13 @@ public abstract class AtmMapFragment extends BaseFragment
 		final double cameraLat = savedInstanceState.getDouble(CAMERA_LAT);
 		final double cameraLon = savedInstanceState.getDouble(CAMERA_LON);
 		cameraLocation = new Location(newLocation);
-		
+
 		if(cameraLat != 0 && cameraLon != 0) {
 			cameraLocation.setLatitude(cameraLat);
 			cameraLocation.setLongitude(cameraLon);
 		}
 	}
-	
+
 	/**
 	 * Add a set of atm results objects to the map.
 	 * @param results an AtmResults object that contains atm locations.
@@ -594,20 +594,20 @@ public abstract class AtmMapFragment extends BaseFragment
 			hasLoadedAtms = true;
 		}
 	}
-	
+
 
 	/**
 	 * Disable the sliding menu
 	 */
 	private void disableMenu(){
-		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		((NavigationRootActivity)getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 
 	/**
 	 * Enable the sliding menu
 	 */
 	private void enableMenu(){
-		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		((NavigationRootActivity)getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	/**
@@ -618,7 +618,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void handleReceivedData(final Bundle bundle){
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		int endIndex = (currentIndex + INDEX_INCREMENT);
+		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
 			AtmModalFactory.getNoResultsModal(getActivity());
 			endIndex = 0;
@@ -638,7 +638,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			resultEndIndex = endIndex;
 		}
 	}
-	
+
 	/**
 	 * Adjusts the camera to zoom to encompass all pins within 25 miles of the users location.
 	 * 
@@ -668,8 +668,8 @@ public abstract class AtmMapFragment extends BaseFragment
 	}
 
 	private boolean isListEmpty(){
-		return (null == results || null == results.results ||
-				null == results.results.atms || results.results.atms.isEmpty());
+		return null == results || null == results.results ||
+				null == results.results.atms || results.results.atms.isEmpty();
 	}
 
 	@Override
@@ -678,7 +678,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		hasLoadedAtms = false;
 		mapWrapper.clear();
 		currentIndex = 0;
-		((NavigationRootActivity)this.getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog();
 		locationManagerWrapper.getLocation();
 	}
 
@@ -691,7 +691,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			locationManagerWrapper.stopGettingLocaiton();
 		}
 		locationStatus = LOCKED_ON;
-		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
+		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
 		if(null == location){return;}
 
 		zoomToLocation(location);
@@ -722,13 +722,15 @@ public abstract class AtmMapFragment extends BaseFragment
 
 		searchBar.saveState(outState);
 		hideModalIfNeeded();
-		
-		outState.putFloat(MAP_ZOOM, mapWrapper.getCurrentMapZoom());
-		outState.putDouble(CAMERA_LAT, mapWrapper.getCameraLocation().latitude);
-		outState.putDouble(CAMERA_LON, mapWrapper.getCameraLocation().longitude);
+
+		if(null != mapWrapper.getMap()){
+			outState.putFloat(MAP_ZOOM, mapWrapper.getCurrentMapZoom());
+			outState.putDouble(CAMERA_LAT, mapWrapper.getCameraLocation().latitude);
+			outState.putDouble(CAMERA_LON, mapWrapper.getCameraLocation().longitude);
+		}
 		outState.putSerializable(TEMP_RESULTS, tempResults);
 		outState.putInt(RESULT_END_INDEX, resultEndIndex);
-		
+
 		outState.putInt(LOCATION_STATUS, locationStatus);
 		if(null != mapWrapper.getCurrentLocation()){
 			outState.putDouble(LAT_KEY, mapWrapper.getCurrentLocation().getLatitude());
@@ -773,7 +775,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * if another fragment has been placed on top of this one in the
 		 * hosting activities back stack.
 		 */
-		this.onStoreState(getArguments());
+		onStoreState(getArguments());
 	}
 
 	/**
@@ -814,7 +816,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 */
 	@Override
 	public void handleTimeOut() {
-		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
 		activity.closeDialog();
 		locationManagerWrapper.stopGettingLocaiton();
 		locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(activity, this);
@@ -848,8 +850,8 @@ public abstract class AtmMapFragment extends BaseFragment
 			isListLand = false;
 		}
 
-		this.getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
-		this.getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 
 		if(!searchBar.isSearchExpanded()){
 			searchBar.showBar();
@@ -867,14 +869,14 @@ public abstract class AtmMapFragment extends BaseFragment
 		isOnMap = true;
 		isListLand = false;
 		if(null == fragment.getMap()){
-			final View frame = this.getView().findViewById(R.id.discover_map);
+			final View frame = getView().findViewById(R.id.discover_map);
 			final RelativeLayout.LayoutParams params = 
 					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.BELOW, R.id.full_search_bar);
 			frame.setLayoutParams(params);
 		}
-		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
-		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 		if(!searchBar.isSearchExpanded()){
 			searchBar.hideBar();
 		}
@@ -899,7 +901,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		boolean loadMore = true;
 		if(isListEmpty()){
 			loadMore =  false;
-		}else if(currentIndex == (MAX_LOADS * INDEX_INCREMENT)){
+		}else if(currentIndex == MAX_LOADS * INDEX_INCREMENT){
 			loadMore = false;
 		}else if(results.results.atms.size() == currentIndex){
 			loadMore =  false;
@@ -993,11 +995,11 @@ public abstract class AtmMapFragment extends BaseFragment
 		if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
 			final int four = 4;
 			final int five = 5;
-			
+
 			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * four / five;
 
 			if (event.getRawX() > locationOfLink) {
-				this.showTerms();
+				showTerms();
 			}
 		}
 		return false;
