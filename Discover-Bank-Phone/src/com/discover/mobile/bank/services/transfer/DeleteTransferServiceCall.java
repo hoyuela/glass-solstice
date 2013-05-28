@@ -18,12 +18,14 @@ import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.ServiceCallParams.DeleteCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.collect.ImmutableMap;
 
 public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDetail>{
 
 	private final ActivityDetail activityDetail;
 	private final TypedReferenceHandler<ActivityDetail> handler;
+	private static final int TWO_MINUTES_SECONDS = 120;
 
 	/**
 	 * Performs a deletion call to the server in order to delete a given scheduled transfer.  The service
@@ -35,7 +37,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	 * @param activityDetail	- Activity to perform the deletion on
 	 * @param deletionType		- Type of deletion (e.g. One Time, Next Transfer or Entire Series)
 	 */
-	public DeleteTransferServiceCall(final Context context, final AsyncCallback<ActivityDetail> callback, final ActivityDetail activityDetail, final TransferDeletionType deletionType) {
+	public DeleteTransferServiceCall(final Context context, final AsyncCallback<ActivityDetail> callback, 
+									final ActivityDetail activityDetail, final TransferDeletionType deletionType) {
 		super(context, new DeleteCallParams(generateUrl(activityDetail, getDeleteType(deletionType))) {
 			{
 				//This service call is made after authenticating and receiving a token,
@@ -51,8 +54,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
 				
-				this.connectTimeoutSeconds = 120;
-				this.readTimeoutSeconds = 120;
+				this.connectTimeoutSeconds = TWO_MINUTES_SECONDS;
+				this.readTimeoutSeconds = TWO_MINUTES_SECONDS;
 
 				//Custom headers for delete
 				headers = ImmutableMap.<String,String>builder()
@@ -76,7 +79,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	}
 
 	@Override
-	protected ActivityDetail parseSuccessResponse(final int status, final Map<String, List<String>> headers, final InputStream body)
+	protected ActivityDetail parseSuccessResponse(final int status, 
+													final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
 		// TODO Auto-generated method stub
 		return null;
@@ -95,14 +99,14 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 		final StringBuilder url = new StringBuilder();		
 		final String baseUrl = BankUrlManager.getUrl(BankUrlManager.TRANSFER_URL_KEY);
 
-		url.append((baseUrl.endsWith("/") ? baseUrl : baseUrl + "/"));
+		url.append((baseUrl.endsWith(StringUtility.SLASH) ? baseUrl : baseUrl + StringUtility.SLASH));
 		url.append(activityDetail.id);
 		url.append(deletionType);
 		return url.toString();
 	}
 
 	private static String getDeleteType(final TransferDeletionType recurringDeletionType) {
-		String deleteType = "";
+		String deleteType = StringUtility.EMPTY;
 
 		switch (recurringDeletionType) {
 		case DELETE_ALL_TRANSFERS:

@@ -141,8 +141,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/content_table"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/groups_of_elements_padding" 
-            android:layout_marginBottom="@dimen/groups_of_elements_padding">
+            android:layout_marginBottom="@dimen/groups_of_elements_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" >
 
             <Button
                 android:id="@+id/delete_one_time_transfer_button"
@@ -166,6 +166,17 @@
                 android:text="@string/see_options"
                 android:visibility="gone" >
             </Button>
+
+            <Button
+                android:id="@+id/delete_button"
+                style="@style/blue_hyperlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_table"
+                android:layout_centerHorizontal="true"
+                android:background="@null"
+                android:text="@string/delete_payment"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter

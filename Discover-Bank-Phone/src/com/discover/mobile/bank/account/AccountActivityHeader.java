@@ -177,8 +177,8 @@ public class AccountActivityHeader extends RelativeLayout{
 			currentBalanceLabel.setVisibility(View.GONE);
 		}
 		
-		/**Available Balance Should only be shown for non-personal loan accounts*/
-		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) ) {		
+		/** Available Balance Should be hidden for CDs and Personal Loans. */
+		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) && !account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			availableBalance.setText(account.balance.formatted);
 			availableBalance.setVisibility(View.GONE);
 			availableBalanceLabel.setVisibility(View.VISIBLE);
@@ -238,8 +238,8 @@ public class AccountActivityHeader extends RelativeLayout{
 			currentBalanceLabel.setVisibility(View.GONE);
 		}
 		
-		/**Available Balance Should only be shown for non-personal loan accounts*/
-		if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+		/** Available Balance Should be hidden for CDs and Personal Loans. */
+		if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) || account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			view.findViewById(R.id.lable2).setVisibility(View.GONE);
 			availableBalance.setVisibility(View.GONE);
 		} else {

@@ -65,7 +65,10 @@ import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
+import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
@@ -100,7 +103,9 @@ import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
@@ -303,7 +308,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	public static void navigateToHomePage() {
 		navigateToHomePage(false);
 	}
@@ -416,7 +421,7 @@ public final class BankConductor  extends Conductor {
 
 		ModalAlertWithOneButton modal = null;
 
-		if(activity != null && activity instanceof NavigationRootActivity ) {
+		if((activity != null) && (activity instanceof NavigationRootActivity) ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			modal = new ModalAlertWithOneButton(activity, title, body, R.string.continue_text);
 
@@ -534,11 +539,21 @@ public final class BankConductor  extends Conductor {
 				revPmtFrag.handleReceivedData(bundle);
 
 			} else if( bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
-				BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
+				final BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
 				//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
-				if( rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
-					final BankAccountActivityTable accountActivityFragment = (BankAccountActivityTable)rootActivity.getCurrentContentFragment();
-					accountActivityFragment.showStatusMessage();
+				if(rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
+					
+					final BankAccountActivityTable accountActivityFragment = 
+												(BankAccountActivityTable)rootActivity.getCurrentContentFragment();
+
+					if(bundle.getBoolean(BankExtraKeys.DID_DELETE_PAYMENT, false)) {
+						accountActivityFragment.showDeletePaymentMessage();
+					}else {
+						accountActivityFragment.showStatusMessage();
+					}
+					
+					accountActivityFragment.handleReceivedData(bundle);
+					accountActivityFragment.saveDataInBundle();
 					bundle.remove(BankExtraKeys.CONFIRM_DELETE);
 				}
 			}
@@ -621,12 +636,16 @@ public final class BankConductor  extends Conductor {
 	 *
 	 * @param value Reference to PaymentDetail information used to schedule a Payment
 	 */
-	public static void navigateToPayConfirmFragment(final PaymentDetail value) {
+	public static void navigateToPayConfirmFragment(final PaymentDetail value, final boolean editMode) {
 		((AlertDialogParent)DiscoverActivityManager.getActiveActivity()).closeDialog();
 		final BankPayConfirmFragment fragment = new BankPayConfirmFragment();
 		final Bundle bundle = new Bundle();
 
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, value);
+
+		if(editMode){
+			bundle.putSerializable(BankExtraKeys.EDIT_MODE, true);
+		}
 		fragment.setArguments(bundle);
 
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
@@ -650,6 +669,28 @@ public final class BankConductor  extends Conductor {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Unable to get current Activity");
 			}
+		}
+	}
+	
+	/**
+	 * Navigate to the activity detail list after deleting a scheduled activity.
+	 * @param bundle
+	 */
+	public static void navigateToActivityDetailFromDelete(final Bundle bundle) {
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+			//Clear dat cache/
+			BankUser.instance().setScheduled(null);
+			BankUser.instance().getCurrentAccount().scheduled = null;
+			
+			final GetActivityServerCall getActivityCall = BankServiceCallFactory.createGetActivityServerCall(
+					BankUser.instance().getCurrentAccount().getLink(
+					Account.LINKS_SCHEDULED_ACTIVITY), 
+					ActivityDetailType.Scheduled, 
+					true);
+			
+			getActivityCall.setDidDeletePayment(true);
+			getActivityCall.submit();
 		}
 	}
 
@@ -797,31 +838,53 @@ public final class BankConductor  extends Conductor {
 	 *               the payee being deleted. Use the key DATA_LIST_ITEM to populate with PayeeDetail object.
 	 */
 	public static void navigateToDeletePayeeModal(final Bundle bundle) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager
+				.getActiveActivity();
 
-		// Create a one button modal to notify the user that they are leaving the application
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
-				R.string.bank_payee_delete_title,
-				R.string.bank_payee_delete_body,
-				R.string.bank_payee_delete_action);
+		// Create a one button modal to notify the user that they are leaving
+		// the application
+		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(activity, 
+																		new ModalDefaultTopView(activity, null), 
+																		new ModalDefaultTwoButtonBottomView(activity, null));
 
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
+		final ModalDefaultTopView topView = (ModalDefaultTopView) modal
+				.getTop();
 		topView.hideNeedHelpFooter();
 
-		//Set the click listener that will delete the payment
-		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
+		//Set modal top view text
+		modal.getTop().setTitle(R.string.bank_payee_delete_title);
+		modal.getTop().setContent(R.string.bank_payee_delete_body);
+		
+		//Set modal button text
+		modal.getBottom().setOkButtonText(R.string.bank_payee_delete_action);
+		modal.getBottom().setCancelButtonText(R.string.bank_payee_delete_link);
+		
+		// Set the click listener that will delete the payment
+		modal.getBottom().getOkButton().setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 
-				if( bundle != null ) {
-					final PayeeDetail payee = (PayeeDetail)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-					BankServiceCallFactory.createDeletePayeeServiceCall(payee).submit();
+				if (bundle != null) {
+					final PayeeDetail payee = (PayeeDetail) bundle
+							.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+					BankServiceCallFactory.createDeletePayeeServiceCall(payee)
+							.submit();
 				}
 			}
+		});
+		
+		modal.getBottom().getCancelButton().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				modal.dismiss();
+			}
+			
 		});
 
 		activity.showCustomAlert(modal);
@@ -854,13 +917,13 @@ public final class BankConductor  extends Conductor {
 			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
 				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
-				
+
 				/**Update arguments bundle in fragment*/
 				final Bundle args = revPmtFrag.getArguments();
 				if( args != null) {
 					args.putAll(bundle);
 				}
-				
+
 				revPmtFrag.handleReceivedData(bundle);
 			}
 		}

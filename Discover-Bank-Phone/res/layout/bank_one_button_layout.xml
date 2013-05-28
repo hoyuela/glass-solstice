@@ -125,15 +125,15 @@
                 android:text="@string/action_button" />
 
             <!-- Action Link  -->
-            <TextView
+            <Button
                 android:id="@+id/actionLink"
                 style="@style/blue_hyperlink_small"
+                android:background="@android:color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/actionButton"
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/orange_button_margin_top"
-                android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:text="@string/action_link" />
 
             <com.discover.mobile.bank.ui.widgets.BankLayoutFooter

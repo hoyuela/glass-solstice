@@ -16,9 +16,10 @@
         android:layout_marginTop="@dimen/forms_inner_padding" 
  		android:gravity="center_horizontal|bottom">
 
-        <TextView
+        <Button
             android:id="@+id/privacy_terms"
             style="@style/bank_blue_hyperlink_small"
+            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bank_terms_privacy_n_terms" />
@@ -29,12 +30,14 @@
             android:layout_toRightOf="@+id/privacy_terms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/between_related_elements_padding"
             android:layout_marginRight="@dimen/between_related_elements_padding"
             android:text="@string/bank_divider" />
 
-        <TextView
+        <Button
             android:id="@+id/provide_feedback_button"
+            android:background="@android:color/transparent"
             style="@style/bank_blue_hyperlink_small"
             android:layout_toRightOf="@+id/divider"
             android:layout_width="wrap_content"

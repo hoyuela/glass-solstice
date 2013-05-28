@@ -48,6 +48,9 @@ public final class BankExtraKeys {
 
 	/**Used to notify a fragment that a transaction item has been deleted from its list*/
 	public static final String CONFIRM_DELETE = "delete";
+	
+	/**Used to notify a fragment that a payment has been deleted from its list of payments*/
+	public static final String DID_DELETE_PAYMENT = "ddp";
 
 	/**Used to pass a String resource that is meant to be displayed as the title in the action bar*/
 	public static final String TITLE_TEXT = "title";
@@ -95,6 +98,9 @@ public final class BankExtraKeys {
 
 	/** A key used for when a user is toggling between sections in posted/scheduled activity*/
 	public static final String IS_TOGGLING_ACTIVITY = "acttog";
+
+	/** A key used for when a fragment needs communicate that it was in edit mode*/
+	public static final String EDIT_MODE = "edit mode";
 
 	public static final String GENERAL_CARD_FAQ = "general";
 

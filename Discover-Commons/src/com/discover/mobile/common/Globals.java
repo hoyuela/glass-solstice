@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.discover.mobile.common.utils.FastcheckUtil;
 import com.google.common.base.Strings;
 
 /**
@@ -177,7 +178,7 @@ public final class Globals {
 		//Check whether logged in or not
 		if( !isLoggedIn ) {
 			//Only Load remembered user if not logged in
-			currentUser = (rememberId)?settings.getString(getStoredKeyName(USER_ID), ""):currentUser;
+			currentUser = (rememberId)?getStoredUser(context):currentUser;
 
 		}  else {
 			//Load user level settings only if logged in
@@ -188,7 +189,6 @@ public final class Globals {
 			Log.v(TAG,"loadPreferences");
 			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
 			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-			Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +currentUser);
 			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
 			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
 			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
@@ -214,7 +214,7 @@ public final class Globals {
 		//Check whether logged in or not
 		if( !isLoggedIn ) {
 			//Only Load remembered user if not logged in
-			currentUser = (rememberId)?settings.getString(getStoredKeyName(USER_ID), ""):currentUser;
+			currentUser = (rememberId)?getStoredUser(context):currentUser;
 
 		} else {
 			//Load user level settings only if logged in
@@ -225,7 +225,6 @@ public final class Globals {
 			Log.v(TAG,"loadPreferences");
 			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
 			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-			Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +currentUser);
 			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
 			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
 			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
@@ -252,7 +251,6 @@ public final class Globals {
 				Log.v(TAG,"loadUserPreferences");
 				Log.v(TAG, "isLoggedIn=" +isLoggedIn);
 				Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +currentAccount);
-				Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +currentUser);
 				Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +rememberId);
 				Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +statusBarVisibility);
 				Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +showLoginModal);
@@ -287,13 +285,13 @@ public final class Globals {
 			editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 
 			if( rememberId) {
-				editor.putString(getStoredKeyName(USER_ID),currentUser);
+				saveUser(editor, currentUser);
 			} else {
-				editor.putString(getStoredKeyName(USER_ID),"");
+				clearStoredUser(editor);
 			}
 		} else if( !rememberId ) {
 			//Clear user name from persistent storage
-			editor.putString(getStoredKeyName(USER_ID),"");
+			clearStoredUser(editor);
 		}
 
 		editor.commit();
@@ -302,7 +300,6 @@ public final class Globals {
 			Log.v(TAG,"savePreferences");
 			Log.v(TAG, "isLoggedIn=" +isLoggedIn);
 			Log.v(TAG, "Key=" +getStoredKeyName(CURRENT_ACCOUNT) +" Value=" +settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
-			Log.v(TAG, "Key=" +getStoredKeyName(USER_ID) +" Value=" +settings.getString(getStoredKeyName(USER_ID), ""));
 			Log.v(TAG, "Key=" +getStoredKeyName(REMEMBER_USER_ID) +" Value=" +settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
 			Log.v(TAG, "Key=" +getStoredKeyName(STATUS_BAR_VISIBILITY) +" Value=" +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
 			Log.v(TAG, "Key=" +getStoredKeyName(SHOW_LOGIN_MODAL) +" Value=" +settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true));
@@ -503,5 +500,44 @@ public final class Globals {
 		Globals.cardName = cardName;
 	}
 
+	/** Clears the user ID from Shared Preferences.
+	 *  Please note that the provided editor does not call commit() since this is usually called mid-editing. */
+	private static void clearStoredUser(final SharedPreferences.Editor editor) {
+		saveUser(editor, "");
+	}
+	
+	/** Encrypts and stores the user ID in Shared Preferences. 
+	 *  Please note that the provided editor does not call commit() since this is usually called mid-editing. */
+	private static void saveUser(final SharedPreferences.Editor editor, String user) {
+		final String encryptedUser;
+		
+		if (!user.isEmpty()) {
+			try {
+				encryptedUser = FastcheckUtil.encrypt(user);
+			} catch (Exception e) {
+				// Failed to encrypt user. Will not store on device.
+				return;
+			}
+		} else { // No need to encrypt an empty String.
+			encryptedUser = user;
+		}
+		editor.putString(getStoredKeyName(USER_ID), encryptedUser);
+	}
+	
+	/** @return a decrypted user ID from Shared Preferences or an empty String if ID does not exist or could not be deciphered. */
+	private static String getStoredUser(Context context) {
+		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		final String encryptedUser = settings.getString(getStoredKeyName(USER_ID), "");
+		String user = "";
+		
+		if (!encryptedUser.isEmpty()) {
+			try {
+				user = FastcheckUtil.decrypt(encryptedUser);
+			} catch (Exception e) { // Failed to decrypt user.
+				return "";
+			}
+		}
+		return user;
+	}
 
 }
