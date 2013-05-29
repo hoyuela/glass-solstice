@@ -58,7 +58,8 @@ final public class PayeeDetailListGenerator  {
 	 * @param isVerified
 	 * @return
 	 */
-	public static BankEditDetail createName(final Context context, final String text, final boolean isVerified, final boolean isEditable) {
+	public static BankEditDetail createName(final Context context, final String text, final boolean isVerified, 
+											final boolean isEditable) {
 		
 		final BankEditDetail name = createBankEditDetail(context,  R.string.bank_payee_name, text);
 		name.enableEditing(!isVerified && isEditable);
