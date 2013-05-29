@@ -6,8 +6,6 @@ package com.discover.mobile.bank.atm;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -147,32 +145,13 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	private void setupSearchBox(final Context context){
 		final Drawable locationImage = getResources().getDrawable(R.drawable.atm_current_location_button);
 		final Drawable magnifyingImage = getResources().getDrawable(R.drawable.magnifying_glass);
-		final Drawable clearImage = getResources().getDrawable(R.drawable.atm_searchbar_gray_x);
-
-		searchBox.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void afterTextChanged(final Editable s) {
-				if(searchBox.getText().toString().isEmpty()){
-					searchBox.setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, locationImage, null);
-				}else{
-					searchBox.setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, clearImage, null);
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after){}
-
-			@Override
-			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {}
-		});
+		searchBox.setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, locationImage, null);
 
 		searchBox.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_UP){
-					if (isTouchRegionValid(event) && !searchBox.getText().toString().isEmpty()) {
-						searchBox.setText("");
-					}else if(isTouchRegionValid(event)){
+					if(isTouchRegionValid(event)){
 						searchBox.clearFocus();
 						filterLayout.setVisibility(View.GONE);
 						final InputMethodManager manager = 
@@ -192,12 +171,8 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			 * @return Returns true if the user pressed in the region of the right drawable in the EditText field.
 			 */
 			private boolean isTouchRegionValid(final MotionEvent event){
-				if(searchBox.getText().toString().isEmpty()){
-					return event.getX() > searchBox.getWidth() - searchBox.getPaddingRight() - locationImage.getIntrinsicWidth();
-				}else{
-					return event.getX() > searchBox.getWidth() - searchBox.getPaddingRight() - clearImage.getIntrinsicWidth();
-				}
-
+				return event.getX() > 
+				searchBox.getWidth() - searchBox.getPaddingRight() - locationImage.getIntrinsicWidth();
 			}
 		});
 
@@ -287,7 +262,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	public void restoreState(final Bundle bundle){
 		isFilterOn = bundle.getBoolean(FILTER_STATE, true);		
 		filterToggle.setBackgroundDrawable(getResources().getDrawable(
-				(isFilterOn) ? R.drawable.swipe_on : R.drawable.swipe_off));
+				isFilterOn ? R.drawable.swipe_on : R.drawable.swipe_off));
 		isSearchExpanded = bundle.getBoolean(SEARCH_BOX_STATE, true);
 		if(isSearchExpanded){
 			show.setVisibility(View.GONE);
@@ -307,7 +282,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 */
 	public void hideBar(){
 		show.setVisibility(View.VISIBLE);
-		searchLayout.startAnimation(Animator.createSlideToLeftAnimation(this.getContext(), searchLayout));
+		searchLayout.startAnimation(Animator.createSlideToLeftAnimation(getContext(), searchLayout));
 		isSearchExpanded = false;
 	}
 
@@ -315,7 +290,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 * Show the search bar
 	 */
 	public void showBar(){
-		searchLayout.startAnimation(Animator.createSlideToRightAnimation(this.getContext(), searchLayout));
+		searchLayout.startAnimation(Animator.createSlideToRightAnimation(getContext(), searchLayout));
 		isSearchExpanded = true;
 		searchLayout.setVisibility(View.VISIBLE);
 		show.setVisibility(View.GONE);

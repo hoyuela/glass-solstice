@@ -4,6 +4,8 @@ package com.discover.mobile.bank.services;
 import android.content.Context;
 import android.os.Bundle;
 
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
 
@@ -13,8 +15,8 @@ import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall
  * @param <M> The <u>m</u>odel type for the JSON result
  */
 public abstract class BankJsonResponseMappingNetworkServiceCall<M> 
-	extends JsonResponseMappingNetworkServiceCall<M>
-	implements BackgroundServiceCall{
+extends JsonResponseMappingNetworkServiceCall<M>
+implements BackgroundServiceCall{
 
 	/**
 	 * Flag used to determine whether service call is to run silently in background.
@@ -25,7 +27,7 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M>
 	 * Caller is responsible for marking this flag once the result has been processed to avoid re-handling
 	 */
 	boolean handled = false;
-	
+
 	/**
 	 * 
 	 * @param context
@@ -35,7 +37,7 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M>
 	protected BankJsonResponseMappingNetworkServiceCall(final Context context,
 			final ServiceCallParams params, final Class<M> modelClass) {
 		super(context, params, modelClass);
-
+		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 	}
 
 	/**
@@ -47,7 +49,7 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M>
 	protected BankJsonResponseMappingNetworkServiceCall(final Context context,
 			final ServiceCallParams params, final Class<M> modelClass, final String url) {
 		super(context, params, modelClass, url);
-
+		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 	}
 
 	@Override
@@ -64,11 +66,11 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M>
 	public boolean isBackgroundCall() {
 		return isBackgroundCall;
 	}
-	
+
 	public Bundle getResponse() {
 		return null;
 	}
-	
+
 	/**
 	 * Method used to mark as the service call being handled. This allows the application to know whether the service call has
 	 * been processed.
@@ -76,7 +78,7 @@ public abstract class BankJsonResponseMappingNetworkServiceCall<M>
 	public void markHandled() {
 		handled = true;
 	}
-	
+
 	/**
 	 * Method used to check if the service call response has been processed.
 	 * 

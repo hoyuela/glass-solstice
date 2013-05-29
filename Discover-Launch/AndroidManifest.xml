@@ -31,9 +31,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <permission
-        android:name="com.example.mapdemo.permission.MAPS_RECEIVE"
+        android:name="com.discoverfinancial.mobile.permission.MAPS_RECEIVE"
         android:protectionLevel="signature"/>
-	<uses-permission android:name="com.discover.mobile.permission.MAPS_RECEIVE"/>
+	<uses-permission android:name="com.discoverfinancial.mobile.permission.MAPS_RECEIVE"/>
 	<!--  End Google Maps API 2 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
@@ -50,7 +50,8 @@
         android:logo="@drawable/discover_logo_inset"
         android:theme="@style/AppTheme" >
         
-        <!--  Google Maps API 2 -->
+        <!--  Google Maps API 2 DEV Key - AIzaSyB6pn6GmhEElZ6846XlAvbfJD7wsWx5MoE 
+        PROD Key - AIzaSyAOlmDvh7iLcvbLfBoRWsdzh6h1wGfah2w -->
  		<meta-data
  		    android:name="com.google.android.maps.v2.API_KEY"
  		    android:value="AIzaSyB6pn6GmhEElZ6846XlAvbfJD7wsWx5MoE"/>
@@ -262,6 +263,21 @@
          <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
                    android:windowSoftInputMode="adjustPan" />
         <activity android:name=".bank.help.BankInfoNavigationActivity"></activity>
+        
+         <!--Broadcast Receiver for Receiving Intents when navigating to browser  -->
+        <activity android:name="com.discover.mobile.bank.DiscoverIntentListener" 
+            	  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+			    <category android:name="android.intent.category.DEFAULT" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <data android:scheme="com.discover.mobile" />  
+			</intent-filter>
+			<intent-filter>
+			    <category android:name="android.intent.category.DEFAULT" />
+			    <action android:name="android.intent.action.VIEW" />
+			    <data android:scheme="method" />  
+			</intent-filter>      
+        </activity>
     </application>
 
 </manifest>

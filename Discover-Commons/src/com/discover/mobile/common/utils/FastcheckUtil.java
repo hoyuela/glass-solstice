@@ -89,7 +89,7 @@ public class FastcheckUtil {
 	public static String encrypt(String clearStr) throws Exception {
 		byte[] clearBytes = Base64.decode(clearStr, Base64.DEFAULT);
 		byte[] encryptedBytes = encrypt(clearBytes);
-		return new String(Base64.encodeToString(encryptedBytes, Base64.NO_WRAP)); 
+		return new String(Base64.encodeToString(encryptedBytes, Base64.NO_WRAP|Base64.NO_PADDING)); 
 	}
 	
 	private static byte[] encrypt(byte[] clearBytes) throws Exception {
@@ -103,7 +103,7 @@ public class FastcheckUtil {
 	public static String decrypt(String encryptedStr)throws Exception {
 		byte[] encryptedBytes = Base64.decode(encryptedStr, Base64.DEFAULT);
 		byte[] clearBytes = decrypt(encryptedBytes);
-		return new String(Base64.encodeToString(clearBytes, Base64.NO_WRAP)); 
+		return new String(Base64.encodeToString(clearBytes, Base64.NO_WRAP|Base64.NO_PADDING)); 
 	}
 	
 	private static byte[] decrypt(byte[] encryptedBytes) throws Exception {

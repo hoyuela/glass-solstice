@@ -7,6 +7,8 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkServiceCall;
@@ -21,14 +23,14 @@ import com.discover.mobile.common.net.json.UnamedListJsonResponseMappingNetworkS
  *            The <u>I</u>nner type for the JSON result
  */
 public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
-	extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> 
-	implements BackgroundServiceCall{
+extends UnamedListJsonResponseMappingNetworkServiceCall<M, I> 
+implements BackgroundServiceCall{
 
 	/**
 	 * Flag used to determine whether service call is to run silently in background.
 	 */
 	private boolean isBackgroundCall = false;
-	
+
 	/**
 	 * 
 	 * @param context
@@ -40,7 +42,7 @@ public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
 			final Context context, final ServiceCallParams params, final Class<M> modelClass,
 			final Class<I> innerClass) {
 		super(context, params, modelClass, innerClass);
-
+		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public abstract class BankUnamedListJsonResponseMappingNetworkServiceCall<M, I>
 			return urls;
 		}
 	}
-	
+
 	@Override
 	public void setIsBackgroundCall(final boolean value) {
 		isBackgroundCall = value;	

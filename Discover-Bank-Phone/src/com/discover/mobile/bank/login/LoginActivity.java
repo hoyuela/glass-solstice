@@ -559,12 +559,19 @@ public class LoginActivity extends BaseActivity implements
 		});
 
 		provideFeedbackButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				BankConductor.navigateToFeedback(isCardLogin());
-			}
-		});
+			 
+            @Override
+            public void onClick(final View v) {
+                    //Defect id 97126
+                if (View.VISIBLE == cardCheckMark.getVisibility()) {
+                    FacadeFactory.getCardFacade().navToProvideFeedback(
+                            LoginActivity.this);
+                } else {
+                    BankConductor.navigateToFeedback(true);
+                }
+                //Defect id 97126
+            }
+        });
 
 		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
