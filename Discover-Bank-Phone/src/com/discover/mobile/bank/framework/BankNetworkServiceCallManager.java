@@ -634,6 +634,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handler for Bank Delete Payee Service Call
 		else if( sender instanceof DeletePayeeServiceCall ) {
+			BankUser.instance().setScheduled(null);
+			
 			//Update list of payees
 			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		}
