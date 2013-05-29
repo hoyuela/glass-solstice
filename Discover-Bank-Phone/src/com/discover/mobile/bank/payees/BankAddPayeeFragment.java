@@ -259,20 +259,12 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		};
 	}
 
-
 	/**
 	 * Method Not Used
 	 */
 	@Override
 	protected List<ViewPagerListItem> getViewPagerListContent() {
 		return null;
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		onSaveInstanceState(getArguments());
 	}
 
 	/**
@@ -281,7 +273,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-
+		
 		/**
 		 * Use arguments for handling pause because the values are not cleared when fragment is rotated
 		 * and it is not in the foreground. onSaveInstanceState gets called even if fragment is not in foreground.
@@ -289,12 +281,6 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 		Bundle arguments = this.getArguments();
 		if( arguments == null ) {
 			arguments = outState;
-		}
-		
-		/**Check if bundle is set to a value, if it is then fragment was paused while page was is in foreground*/
-		final AddPayeeDetail curPayeeDetail = getPayeeDetail();
-		if( bundle != null && null != curPayeeDetail ) {
-			arguments.putSerializable(KEY_PAYEE_DETAIL, curPayeeDetail);
 		}
 
 		/**Check if bundle is set to a value, if it is then fragment was paused while page was is in foreground*/
@@ -314,6 +300,12 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 						final String key = item.getTopLabel().getText().toString();
 						arguments.putBoolean(key, hasFocus );
 						
+						//If the field has focus we want to grab the data from the editable field and place it in the
+						//middle field so we can grab the data during on pause.
+						if (hasFocus) {
+							item.getMiddleLabel().setText(item.getEditableField().getText());
+						}
+						
 						/**If has an error then show it on rotation */
 						if( item.getEditableField().isInErrorState ) {
 							arguments.putString(key +KEY_ERROR_EXT, 
@@ -326,6 +318,14 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 					}
 				}
 			}
+		}
+		
+		//Declare here so that any field with focus can be updated before the data is stored.
+		final AddPayeeDetail curPayeeDetail = getPayeeDetail();
+		
+		/**Check if bundle is set to a value, if it is then fragment was paused while page was is in foreground*/
+		if( bundle != null && null != curPayeeDetail ) {
+			arguments.putSerializable(KEY_PAYEE_DETAIL, curPayeeDetail);
 		}
 	}
 
@@ -341,6 +341,10 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 					final String errorString = bundle.getString(key +KEY_ERROR_EXT);
 					final String genError = bundle.getString(KEY_ERROR_EXT);
 					
+					//Force the editable fields cursor to the end of the field instead of the beginning.
+					if (hasFocus) {
+						item.getEditableField().setSelection(item.getEditableField().getText().toString().length());	
+					}
 					
 					if( hasFocus || !Strings.isNullOrEmpty(errorString) || 
 						(!Strings.isNullOrEmpty(genError) && getGeneralError().getVisibility() == View.VISIBLE) ) {

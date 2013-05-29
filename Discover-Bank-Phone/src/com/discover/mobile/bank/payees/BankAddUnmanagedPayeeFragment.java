@@ -208,7 +208,6 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 		return detail;
 	}
 
-
 	/**
 	 * Method called by onResume() to resume the state of the UI.
 	 */
