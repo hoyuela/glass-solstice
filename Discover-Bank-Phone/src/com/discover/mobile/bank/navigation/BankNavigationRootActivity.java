@@ -42,7 +42,7 @@ import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 public class BankNavigationRootActivity extends NavigationRootActivity
 implements OnPaymentCanceledListener {
 
-	/** Allows access to and manual control of the soft keyboard. */
+	/** Allows access to manual control of the soft keyboard. */
 	private InputMethodManager imm;
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;

@@ -246,7 +246,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
+					final BankNavigationRootActivity activity = 
+													(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 					InputMethodManager imm = activity.getInputMethodManager();
 					amountEdit.requestFocus();
 					imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
