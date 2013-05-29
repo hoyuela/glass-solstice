@@ -37,7 +37,10 @@ implements BackgroundServiceCall{
 	protected BankJsonResponseMappingNetworkServiceCall(final Context context,
 			final ServiceCallParams params, final Class<M> modelClass) {
 		super(context, params, modelClass);
-		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+
+		if(params.requiresSessionForRequest){
+			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+		}
 	}
 
 	/**
