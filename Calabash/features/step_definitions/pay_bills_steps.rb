@@ -30,6 +30,8 @@ Given /^I select a payment$/ do
 	# but the same queries within the steps files fail with "list not found" (for any index)
 	# Workaround: select the first date in the list
 	performAction('click_on_text', "/")
+	#macro 'I press list item number 1'
+
 end
 
 # Selects the specified Payments toggle, asserts data is loaded 
@@ -61,10 +63,14 @@ Given /^I(?: can)? schedule a payment$/ do
 	macro 'I enter a random amount into field 1'
 
 	# Schedule the payment & wait for the confirmation screen
-	performAction("drag", 50, 50, 50, 0, 1) # Unfocus amount
-	performAction("drag", 50, 50, 50, 0, 1) # Scroll down
-	performAction('wait_for_text', "Schedule Payment")
-	performAction('click_on_text', "Schedule Payment")
+	#performAction("drag", 50, 50, 50, 0, 1) # Unfocus amount
+	#performAction("drag", 50, 50, 50, 0, 1) # Scroll down
+	
+	#press schedule payment button
+	performAction('click_on_view_by_id', "pay_now")
+
+	#performAction('wait_for_text', "Schedule Payment")
+	#performAction('click_on_text', "Schedule Payment")
 	performAction('wait_for_dialog_to_close')
 	performAction('wait', 2)
 	performAction("drag", 50, 50, 50, 0, 1) # Scroll down
