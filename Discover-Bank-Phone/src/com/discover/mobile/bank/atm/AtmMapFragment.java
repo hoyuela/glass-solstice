@@ -44,7 +44,7 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -156,7 +156,6 @@ public abstract class AtmMapFragment extends BaseFragment
 	private Location cameraLocation = null;
 
 	private static boolean needsToAnimateZoom = false;
-	private static boolean hasAcceptedLocationModal = false;
 	
 	private AtmResults tempResults = null;
 	private int resultEndIndex = 0;
@@ -349,10 +348,11 @@ public abstract class AtmMapFragment extends BaseFragment
 	}
 	
 	private void showLocationAcceptanceModal() {
-		if(!hasAcceptedLocationModal) {
-			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
+		if(DiscoverApplication.getLocationPreference().shouldShowModal()) {
+			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), 
+																		AtmMapFragment.this);
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
-		} else {
+		}else {
 			searchCurrentLocation();
 		}
 	}

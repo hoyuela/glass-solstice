@@ -49,6 +49,7 @@ import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.StandardErrorCodes;
@@ -68,6 +69,7 @@ import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.FastcheckUtil;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -587,7 +589,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			@Override
 			public void onClick(final View v) {
 				CommonUtils.setViewGone(errorTextView);
-
+				
+				try {
+					final String encryptedUsername = FastcheckUtil.encrypt(idField.getText().toString());
+					DiscoverApplication.getLocationPreference().setMostRecentUser(encryptedUsername);
+				} catch (final Exception e) {
+					Log.e(TAG, "Unable to cache last attempted login");
+				}
+				
 				//Checking if imm is null before trying to hide the keyboard. This was causing a
 				//null pointer exception in landscape.
 				if (imm != null){

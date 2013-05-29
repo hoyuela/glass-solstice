@@ -5,16 +5,16 @@
     <string name="atm_locator_title">ATM Locator</string>
     <string name="atm_location_modal_title">Discover ATM Locator</string>
     <string name="atm_location_modal_content">
-        <![CDATA[The surcharge-free indicator within this ATM Locator application applies to debit card withdrawals only. Visit the <a href="https://www.discover.com/cash-atm-locator/">ATM Locator</a>
-					on discover.com if you want to locate surcharge-free ATMs for cash advances on your Discover credit card.<br /><br />You will not be charged an ATM surcharge for cash withdrawals at ATMs with orange pins. 
-					For Discover Credit Card cash advances, your cash advance APR and cash advance fee will apply.<br /><br />
-					By clicking the \"Find an ATM\" button, you hereby agree that Discover may access and use your current location
-					information to show you the nearest ATM.]]>  
+        You will not be charged an ATM surcharge for cash withdrawals at ATMs with orange pins. 
+		For Discover Credit Card cash advances, your cash advance APR and cash advance fee will apply.
+		\n\nBy tapping the \"Allow\" button, you hereby agree that Discover may access and use your current location 
+		information to show you the nearest ATM. If you tap on the \"Don\'t Allow\" button you will only be able to 
+		search by address.  
     </string>
     <string name="atm_location_modal_allow">Allow</string>
     <string name="atm_location_modal_decline">Don\'t Allow</string>
     <string name="atm_location_modal_service_title">Turn On Location Services To Allow \"Discover\" To Determine Your Location</string>
-    <string name="atm_location_modal_service_content">To show your location on the map, give you turn-by-turn navigation and search around your current location.</string>
+    <string name="atm_location_modal_service_content">To search by your location on the map, tap settings and turn on location services.</string>
     <string name="atm_location_modal_settings">Settings</string>
     <string name="atm_location_modal_cancel">Cancel</string>
     <string name="atm_location_get_directions">Distance Away %s M</string>

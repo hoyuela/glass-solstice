@@ -42,9 +42,6 @@ public final class Globals {
 
 	/**Key to whether or not the shared preferences should be shown*/
 	public static final String SHOW_LOGIN_MODAL = "showLoginModal";
-	
-	/**Key to remember if a user has accepted location services or not */
-	public static final String SHOW_ATM_LOCATION_MODAL = "atmlm";
 
 	/**Key for a user ID*/
 	public static final String USER_ID = "userId";
@@ -79,7 +76,6 @@ public final class Globals {
 	 */
 	private static boolean showLoginModal;
 
-	private static boolean showAtmLocationModal;
 	/**
 	 * Last four digits of the card account that will be displayed in the toggle view for sso
 	 */
@@ -206,7 +202,6 @@ public final class Globals {
 		}  else {
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
-			showAtmLocationModal = settings.getBoolean(getStoredKeyName(SHOW_ATM_LOCATION_MODAL), true);
 		}
 		if( Log.isLoggable(TAG, Log.VERBOSE)) {
 			printLoadPreferenceLog();
@@ -239,7 +234,6 @@ public final class Globals {
 		Log.v(TAG, KEY +getStoredKeyName(REMEMBER_USER_ID) +VALUE +rememberId);
 		Log.v(TAG, KEY +getStoredKeyName(STATUS_BAR_VISIBILITY) +VALUE +statusBarVisibility);
 		Log.v(TAG, KEY +getStoredKeyName(SHOW_LOGIN_MODAL) +VALUE +showLoginModal);
-		Log.v(TAG, KEY +getStoredKeyName(SHOW_ATM_LOCATION_MODAL) + VALUE +showAtmLocationModal);
 	}
 
 	/**
@@ -257,7 +251,6 @@ public final class Globals {
 
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
-			showAtmLocationModal = settings.getBoolean(getStoredKeyName(SHOW_ATM_LOCATION_MODAL), true);
 
 			if( Log.isLoggable(TAG, Log.VERBOSE)) {
 				printLoadPreferenceLog();
@@ -285,12 +278,12 @@ public final class Globals {
 		final SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
 		editor.putBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), showLoginModal);
-
+				
 		//Username should only be saved if logged in and user has checked remember me in login screen
 		if( isLoggedIn ) {
 			editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 			editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
-
+			
 			if( rememberId) {
 				saveUser(editor, currentUser);
 			} else {
@@ -402,14 +395,6 @@ public final class Globals {
 	 */
 	public static void setShowLoginModal(final boolean showLoginModal) {
 		Globals.showLoginModal = showLoginModal;
-	}
-	
-	public static void setShowAtmLocationModal(final boolean shouldShowModal) {
-		showAtmLocationModal = shouldShowModal;
-	}
-	
-	public static boolean getShowAtmLocationModal() {
-		return showAtmLocationModal;
 	}
 
 	/**
@@ -549,14 +534,14 @@ public final class Globals {
 	 */
 	private static String getStoredUser(final Context context) {
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-		final String encryptedUser = settings.getString(getStoredKeyName(USER_ID), "");
-		String user = "";
+		final String encryptedUser = settings.getString(getStoredKeyName(USER_ID), StringUtility.EMPTY);
+		String user = StringUtility.EMPTY;
 		
 		if (!encryptedUser.isEmpty()) {
 			try {
 				user = FastcheckUtil.decrypt(encryptedUser);
 			} catch (final Exception e) { // Failed to decrypt user.
-				return "";
+				return StringUtility.EMPTY;
 			}
 		}
 		return user;
