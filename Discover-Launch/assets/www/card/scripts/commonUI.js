@@ -122,7 +122,7 @@ function showallnemu(){
 		navigation('../common/allLinks');
 }
 	
-$('#moreLanding-pg').live("pagebeforeshow", function(){
+$("#moreLanding-pg,#moreLandingrevised-pg").live("pagebeforeshow", function(){
 	try {
 		$('#showMoreLinks li').removeClass('ui-corner-top ui-corner-bottom');	
 		$('#showMoreLinks li:first-child').addClass('ui-corner-top');
@@ -481,7 +481,7 @@ $("#privacyPolicyMore-pg,#privacyPolicy-pg").live('pageshow', function (event){
  jumpToChoices();  
 });
 
-$('#moreLanding-pg .ui-listview .ui-btn-up-d').live('click',function(){
+$('#moreLanding-pg .ui-listview .ui-btn-up-d,#moreLandingrevised-pg .ui-listview .ui-btn-up-d').live('click',function(){
     $(this).addClass('ui-btn-down-d');
 });
 

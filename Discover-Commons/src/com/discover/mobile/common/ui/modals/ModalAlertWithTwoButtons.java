@@ -42,7 +42,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 	private static final float PORTRAIT_TOP_WEIGHT = 6f;
 
 	/**Static weight for the bottom view in portrait mode*/
-	private static final float PORTRAIT_BOTTOM_WEIGHT = 4f;
+	private static final float PORTRAIT_BOTTOM_WEIGHT = 6f;
 
 	/**Static weight for the top view in landscape mode*/
 	private static final float LANDSCAPE_TOP_WEIGHT = 3f;

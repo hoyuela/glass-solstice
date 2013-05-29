@@ -306,7 +306,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         // "Loading...", true);
 
         // Lock orientation while request is being processed
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+    	//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         // if(Utils.checkNetworkConnection(this))
         {
 
@@ -537,7 +537,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            //bank Code for privacy and terms
         }
         //Defect id 95853
     }
