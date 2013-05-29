@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 
 /**
@@ -40,6 +42,9 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	/**Integer value to convert from cents to dollar*/
 	private static final int DOLLAR_CONVERSION = 100;
 
+	/** Reference to account object associated with the list of details */
+	private static Account account;
+
 	/**
 	 * Constuctor for the adapter
 	 * @param context - activity context
@@ -47,11 +52,12 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 	 * @param items - items to set in the adapter
 	 * @param fragment - fragment using the adapter
 	 */
-	public BankListAdapter(final Context context, final int textViewResourceId, final BankAccountActivityTable fragment) {
+	public BankListAdapter(final Context context, final Account account, final int textViewResourceId, final BankAccountActivityTable fragment) {
 		super(context, textViewResourceId);
 		inflater = LayoutInflater.from(context);
 		res = context.getResources();
 		this.fragment =fragment;
+		this.account = account;
 	}
 
 	/**
@@ -99,7 +105,11 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 			} else if(amount < 0){
 				holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
 			}else{
-				holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+				/** All loan activity should be black */
+				if (!account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+					holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+				}
+
 				holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 			}
 		} else {

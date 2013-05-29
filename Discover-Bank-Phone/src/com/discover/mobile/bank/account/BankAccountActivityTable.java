@@ -175,7 +175,11 @@ public class BankAccountActivityTable extends BaseTable{
 		final Bundle bundle = saveDataInBundle();
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
 		bundle.putBoolean(BankExtraKeys.IS_LOADING_MORE, getIsLoadingMore());
-		BankConductor.navigateToActivityDetailScreen(bundle);
+
+		// Prevent user from accessing account loan detail
+		if (!header.getAccount().type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+			BankConductor.navigateToActivityDetailScreen(bundle);
+		}
 	}
 
 	/**
@@ -417,7 +421,7 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	@Override
 	public void setupAdapter() {
-		adapter = new BankListAdapter(this.getActivity(), R.layout.bank_table_item, this);
+		adapter = new BankListAdapter(this.getActivity(), header.getAccount(), R.layout.bank_table_item, this);
 
 	}
 
