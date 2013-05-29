@@ -1574,7 +1574,7 @@ function redeemPartnerGCD2Load() {
 	try {
 		// console.log("redeemPartnerGCD2Load");
 		var validPriorPagesOfRenderGCD2 = new Array("redeemPartner1",
-		"redeemMerchantTerms");
+		"redeemMerchantTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfRenderGCD2) > -1) {
 
 			$("#redeemPartnerGCD_CBB").html("$" + globalEarnRewardAmount);
@@ -1648,7 +1648,7 @@ function redeemPartnerECT2Load() {
 
 	try {
 		var validPriorPagesOfRenderECT2 = new Array("redeemPartner1",
-		"redeemMerchantTerms");
+		"redeemMerchantTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfRenderECT2) > -1) {
 			// console.log( "redeemPartnerECT2Load");
 			$("#redeemPartnerECT_CBB").html("$" + globalEarnRewardAmount);
@@ -1764,7 +1764,7 @@ function redeemPartnerECT3Load() {
 
 		var validPriorPagesOfECT3 = new Array("redeemPartnerECT2",
 				"redeemInstructions", "redeem_ecert_printphotos",
-				"redeem_ecart_savetophotos_pin", "redeemMerchantSubmitTerms");
+				"redeem_ecart_savetophotos_pin", "redeemMerchantSubmitTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfECT3) > -1) {
 			$("#redeemPartnerECT3_CBB").html("$" + globalEarnRewardAmount);
 			var redeemedDATA = getDataFromCache("REDEEMSELCETED");
@@ -2375,7 +2375,7 @@ function redeemPartnerGCD3Load() {
 	try {
 		// console.log("redeemPartnerGCD3Load");
 		trafficSource = MOBILE_PARTNER_CARD;
-		var validPriorPagesOfGCD3 = new Array("redeemPartnerGCD2");
+		var validPriorPagesOfGCD3 = new Array("redeemPartnerGCD2","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfGCD3) > -1) {
 
 			var redeemedData = getDataFromCache("REDEEMSELCETED");

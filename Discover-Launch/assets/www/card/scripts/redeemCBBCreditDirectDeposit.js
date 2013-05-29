@@ -7,7 +7,7 @@ dfs.crd.cbb = dfs.crd.cbb || {};
 
 function statementCredit1Load(){
 	try{		
-		var validPriorPagesOfStat1= new Array("redemptionLanding","statementCredit2","statementCredit3");
+		var validPriorPagesOfStat1= new Array("redemptionLanding","statementCredit2","statementCredit3","moreLanding");
 		if((jQuery.inArray(fromPageName, validPriorPagesOfStat1) > -1) || isLhnNavigation ){			
 			dfs.crd.cbb.populateStatementCredit1Page('REDEEMCBBCREDITINFO');
 			isLhnNavigation  = false;
@@ -180,7 +180,7 @@ dfs.crd.cbb.redeemStatementCredit2 = function(){
 //**** statementCredit2 page Page start ****/
 function statementCredit2Load(){
 	try{
-		var validPriorPagesOfStat1= new Array("statementCredit1","statementCreditCancelTrans");
+		var validPriorPagesOfStat1= new Array("statementCredit1","statementCreditCancelTrans","moreLanding");
 		if(jQuery.inArray(fromPageName, validPriorPagesOfStat1) > -1 ){
 			var redeemCbbCreditData = getDataFromCache("REDEEMCBBCREDITINFO");
 			if (isEmpty(redeemCbbCreditData)) {
@@ -378,7 +378,7 @@ function statementCreditConfirmCancelTransLoad(){}
 //**** directDeposit1 page Page start ****/
 function directDeposit1Load() {
 	try{		
-		var validPriorPagesOfDirect1= new Array("redemptionLanding","directDeposit2","customerServiceUpdateAccount","directDeposit3");
+		var validPriorPagesOfDirect1= new Array("redemptionLanding","directDeposit2","customerServiceUpdateAccount","directDeposit3","moreLanding");
 		if((jQuery.inArray(fromPageName, validPriorPagesOfDirect1) > -1) || isLhnNavigation ){			
 			dfs.crd.cbb.populateDirectDepositPage1('REDEEMCBBDEPOSITINFO');
 			isLhnNavigation  = false;
@@ -663,7 +663,7 @@ cacheRedeemCBBDetails["bankAccountValue"]=bankSelectFieldvalue;
 //**** directDeposit2 page Page start ****/
 function directDeposit2Load() {
 	try{	
-		var validPriorPagesOfDirect1= new Array("directDeposit1","directDepositCancelTrans");
+		var validPriorPagesOfDirect1= new Array("directDeposit1","directDepositCancelTrans","moreLanding");
 		if(jQuery.inArray(fromPageName, validPriorPagesOfDirect1) > -1 ){
 			var redeemCbbDirectData = getDataFromCache("REDEEMCBBDEPOSITINFO");
 			if (isEmpty(redeemCbbDirectData)) {

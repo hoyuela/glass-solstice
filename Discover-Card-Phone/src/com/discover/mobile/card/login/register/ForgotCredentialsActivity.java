@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -230,7 +231,8 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
           //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            
+            FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
       //Defect id 95853
     }
