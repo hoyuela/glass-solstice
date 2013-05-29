@@ -104,7 +104,8 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 					@Override
 					public void onClick(final View v) {
 						if (isOneTime) {
-							showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ONE_TIME_TRANSFER);
+							showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ONE_TIME_TRANSFER,
+													   R.string.bank_delete_transfer_text);
 						} else {
 							//In the case of a recurring transfer deletion we need to pop up 
 							//a menu allowing the user to decide if the
@@ -117,7 +118,8 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 
 								@Override
 								public void onClick(final View v) {
-									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_NEXT_TRANSFER);
+									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_NEXT_TRANSFER,
+															   R.string.bank_delete_transfer_text);
 								}
 
 							});
@@ -127,7 +129,8 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 
 								@Override
 								public void onClick(final View v) {
-									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ALL_TRANSFERS);
+									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ALL_TRANSFERS,
+															   R.string.bank_delete_transfer_series_text);
 								}
 
 							});
@@ -177,11 +180,12 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	 * @param deleteType the type of transfer deletion.
 	 */
 	private void showDeleteTransactionModal(final NavigationRootActivity activity, final ActivityDetail item, 
-																		final TransferDeletionType deleteType) {
+																		final TransferDeletionType deleteType,
+																		final int textBody) {
 		// Create a one button modal to notify the user that they are leaving the application
 		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
 				R.string.bank_delete_transfer_title,
-				R.string.bank_delete_transfer_text,
+				textBody,
 				R.string.bank_yes_delete);
 
 		/**
