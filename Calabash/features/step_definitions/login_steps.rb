@@ -28,7 +28,9 @@ Given /^I am logged in as (card|bank) user "([^\"]*)", "([^\"]*)"$/ do |which, u
 	macro %Q[I am on the #{which} tab]
 	macro %Q[I enter credentials "#{user}", "#{password}"]
 	performAction('click_on_view_by_id', "login_button") # Presess the "Login" Button
+	
 	macro 'I am on a public device' # Complete enhanced account security screen
+
 	performAction('wait_for_screen', "BankNavigationRootActivity", DEFAULT_SERVICE_TIMEOUT) # Wait for the home screen. 
 end
 
@@ -59,11 +61,22 @@ Given /^I press remember me$/ do
 	performAction('click_on_view_by_id', "remember_user_id_button")
 end
 
-# Asserts the presence of the gretting "Hi, [first name]"
+# Asserts the presence of the gretting "greeting(based on time of day), [first name]"
 # Uses the default credentials from config.yml
 Given /^I see the (bank|card) greeting$/ do |which|
 	name = CONFIG[:login][which.to_sym][:name]
-	greeting = "Hi, " + name
+	currentHour = Time.new.hour
+	currentMinute = Time.new.min
+
+	if currentHour <= 11
+		salutation = "Good morning,"
+	elsif currentHour < 18
+		salutation = "Good afternoon,"
+	else
+		salutation = "Good evening,"
+	end
+
+	greeting = salutation + " " + name
 	performAction('wait_for_text', greeting)
 end
 
