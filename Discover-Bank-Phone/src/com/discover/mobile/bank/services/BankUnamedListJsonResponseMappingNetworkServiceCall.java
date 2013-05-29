@@ -42,7 +42,9 @@ implements BackgroundServiceCall{
 			final Context context, final ServiceCallParams params, final Class<M> modelClass,
 			final Class<I> innerClass) {
 		super(context, params, modelClass, innerClass);
-		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+		if(params.requiresSessionForRequest){
+			Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
+		}
 	}
 
 	@Override
