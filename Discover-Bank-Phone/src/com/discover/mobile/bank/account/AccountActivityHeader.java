@@ -19,8 +19,6 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
-import com.discover.mobile.common.help.HelpWidget;
-import com.google.common.base.Strings;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -82,7 +80,7 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Current Account*/
 	private final Account account;
-	
+
 	/**Status Message View*/
 	private final StatusMessageView status;
 	
@@ -377,5 +375,14 @@ public class AccountActivityHeader extends RelativeLayout{
 	public void showStatusMessage(final int deleteMessageToShow){
 		status.setText(deleteMessageToShow);
 		status.showAndHide(STATUS_MESSAGE_DURATION);
+	}
+
+	/**
+	 * Method used to retrieve the account associated with the header.
+	 * 
+	 * @return Reference to an account object type
+	 */
+	public Account getAccount() {
+		return account;
 	}
 }
