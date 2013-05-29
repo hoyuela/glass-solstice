@@ -2380,6 +2380,11 @@ dfs.crd.pymt.populatePayWarningPage = function(payWarnData,showVariable){
 			console.log("PayWarning Data penaltyVariableFixedInd"+payWarnData.penaltyVariableFixedInd);
 			console.log("PayWarning Data lateFeeWarningAmount"+payWarnData.lateFeeWarningAmount);
 			console.log("PayWarning Data defaultTermSavingsAmount"+payWarnData.defaultTermSavingsAmount);
+			if(incentiveCode == "000016" && incentiveTypeCode == "CBB"){
+					console.log("cardProductGroupCode it is DIT");
+					var latePayWarnText='If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $'+payWarnData.lateFeeWarningAmount+".";
+					$("#latePayWarnText").text(latePayWarnText);
+					}
 			if(showVariable){
 			$("#lateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 			$("#latePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);

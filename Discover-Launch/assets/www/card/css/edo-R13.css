@@ -667,11 +667,12 @@ background:none;font-size:14px;color:#50555a}
                 display: inline-block;
                 width:30%;
                 float:right;
+				text-align:right;
 }
 
 
 #edoHistory-pg .wraper .historyList	.listLi .ui-block-c span {
-	margin-left: 36%;
+	/*margin-left: 36%;*/
 	color: #777e81;
 	font-size: 12px;
 }
@@ -1428,7 +1429,7 @@ border-bottom: 2px solid #d0ceca;
 	width: 283px;*/
 	margin: auto;
 	}
-/* landscape css */
+	/* landscape css */
 @media all and (orientation:landscape) {
 	/*.edo-page .showGridview {
 		width: 434px;
@@ -1438,7 +1439,7 @@ border-bottom: 2px solid #d0ceca;
 	/*float:left;
 	width:70%;  
 	} */
-	.edo-page #map_canvas,.edo-page #map_canvas2 {
+.edo-page #map_canvas,.edo-page #map_canvas2 {
 		height: 304px;
 	}
 	#saveToPhotos-pg .detailPageLogo {

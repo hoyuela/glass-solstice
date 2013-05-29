@@ -3422,7 +3422,7 @@ font-weight: bold;
 color: #576166;
 cursor: pointer;
 background: #EBEFF0 !important;
-/* -webkit-box-shadow: inset 7px 8px 10px -8px #6C787B !important; */
+-webkit-box-shadow: inset 7px 8px 10px -8px #6C787B !important;
 padding-top: 1px;
 }
 .ui-slider-label {
@@ -3698,9 +3698,12 @@ ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-borde
 .rd-landing-heading-text{margin-top:25px}
 #cashbackSignup1-pg ul li:first-child,#milesSignup1-pg ul li:first-child{font-weight:bold}
 .breakword{word-break:break-all}
-#calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day.ui-datepicker-today
-{color: #CED6D7; background: #fff !important;}
+
 #moreLanding-pg #footnotes .registerNow,
 #termsUseMore-pg  #footnotes .registerNow,
+#moreLandingrevised-pg  #footnotes .registerNow,
 #privacyPolicyMore-pg  #footnotes .registerNow { display:none}
+
 .pinCashEnter .col{float:left !important; width:48% !important}
+
+#calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day {color: #CED6D7; background: #fff !important;}

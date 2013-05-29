@@ -1391,6 +1391,25 @@ function moreLandingLoad(){
 	}
 }
 
+function moreLandingRevisedLoad(){
+	try{
+		getMenuItems();
+		var moreHTML="";
+		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
+			for (var key in moreNav) 
+			{
+				if(moreNav[key] =="PS" || moreNav[key] =="TU"){
+				  		moreHTML+=menuItems[moreNav[key]+"_MORE"];
+				}
+			} 
+		moreHTML+="</ul>";
+		$("#showMoreLinks").html(moreHTML);
+		//$(".mnu_more").trigger("create");
+	}catch(err){
+		showSysException(err);
+	}
+}
+
 function notEmpty(o) {
 	return (o != null && o !== "");
 }
