@@ -141,7 +141,7 @@
 
             <RadioButton
                 android:id="@+id/account_security_choice_one_radio"
-                style="@style/small_copy"
+                style="@style/field_copy_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:button="@drawable/custom_radio_check"
