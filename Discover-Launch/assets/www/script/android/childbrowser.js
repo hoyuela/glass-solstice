@@ -88,6 +88,19 @@ ChildBrowser.install = function(){
 /**
  * Load ChildBrowser
  */
+ /*
+ This works only for Cordova 1.7
 cordova.addConstructor(function() {
     cordova.addPlugin("childBrowser", new ChildBrowser());
 });
+*/
+
+/* Below code support starts from Cordova 2.0 and higher */
+if(!window.plugins) {
+    window.plugins = {};
+}
+if (!window.plugins.childBrowser) {
+    window.plugins.childBrowser = new ChildBrowser();
+}
+
+

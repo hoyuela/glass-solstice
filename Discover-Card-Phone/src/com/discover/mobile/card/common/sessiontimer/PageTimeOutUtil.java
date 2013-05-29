@@ -10,8 +10,8 @@ import com.discover.mobile.card.common.net.service.WSProxy;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.card.login.register.CreateLoginActivity;
 import com.discover.mobile.card.login.register.EnterNewPasswordActivity;
+import com.discover.mobile.card.login.register.ForgotOrRegisterFinalStep;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 
 /**
@@ -130,9 +130,9 @@ public final class PageTimeOutUtil {
         {
             ((CardNavigationRootActivity) mContext).idealTimeoutLogout();
         }
-        else if(mContext instanceof CreateLoginActivity)
+        else if(mContext instanceof ForgotOrRegisterFinalStep)
         {
-            ((CreateLoginActivity) mContext).idealTimeoutLogout();
+            ((ForgotOrRegisterFinalStep) mContext).idealTimeoutLogout();
         }
         else if(mContext instanceof EnterNewPasswordActivity)
         {

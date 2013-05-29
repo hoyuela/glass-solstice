@@ -63,6 +63,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     private TextView errorLabelOne;
     private TextView errorLabelTwo;
     private TextView provideFeedback;
+    //Defect id 95853
+    private TextView privacy_terms ;
+    //Defect id 95853
     private ImageView errorIcon;
 
     // INPUT FIELDS
@@ -93,10 +96,13 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         Utils.isSpinnerShow =true;        
         Utils.hideSpinner();
         provideFeedback.setOnClickListener(this);
+        //Defect id 95853
+        privacy_terms.setOnClickListener(this);
+        //Defect id 95853
         restoreState(savedInstanceState);
         
-        Utils.log("PageTimeOutUtil.getInstance","in side EnterNewPasswordActivity");
-        PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
+       // Utils.log("PageTimeOutUtil.getInstance","in side EnterNewPasswordActivity");
+       // PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
     }
 
     /**
@@ -165,6 +171,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
         mainScrollView = (ScrollView) findViewById(R.id.main_scroll_view);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+        //Defect id 95853
 
     }
 
@@ -316,7 +325,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
     }
 
-    //DEFECT 96936
+   /* //DEFECT 96936
     public void idealTimeoutLogout() {
         Utils.log("CardNavigationRootActivity", "inside logout...");
         // super.logout();
@@ -363,7 +372,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         //clearJQMCache(); // Call this method to clear JQM cache.
        
         PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
-    }
+    }*/
     
     
     
@@ -392,6 +401,11 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(EnterNewPasswordActivity.this,
                     REFERER);
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
+        //Defect id 95853
     }
 }

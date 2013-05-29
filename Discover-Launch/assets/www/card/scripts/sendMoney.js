@@ -63,15 +63,18 @@ function sendMoney1Load() {
 					|| dfs.crd.p2p.errorCode == "noTransactions") {
 				dfs.crd.p2p.errorCode = "";
 				dfs.crd.p2p.showSendMoneyPage();
+				console.log("SEnd Money Load-1");
 			} else if(isLhnNavigation || dfs.crd.p2p
-					.validatePriorPage(dfs.crd.p2p.validPriorPagesOfStep1)){
+					.validatePriorPage(dfs.crd.p2p.validPriorPagesOfStep1)){					
+					console.log("SEnd Money Load-2");
 				dfs.crd.p2p.showSendMoneyPage();
-				isLhnNavigation  = false;
+				//isLhnNavigation  = false;
 			}else if (!dfs.crd.p2p
 					.validatePriorPage(dfs.crd.p2p.validPriorPagesOfStep1)) {
+					console.log("SEnd Money Load-3");
 				return;
 			} 
-			isLhnNavigation  = false;
+			//isLhnNavigation  = false;
 		}
 	} catch (err) {
 		showSysException(err);
@@ -79,30 +82,37 @@ function sendMoney1Load() {
 }
 dfs.crd.p2p.showSendMoneyPage = function() {
 	try {
+	    console.log("SEnd money - dfs.crd.p2p.showSendMoneyPage");
 		if (!dfs.crd.p2p.hIWScreenFlag) {
+			 console.log("SEnd money - if (!dfs.crd.p2p.hIWScreenFlag)");
 			var responseData = dfs.crd.p2p.getSendMoneyData();
 			if (!jQuery.isEmptyObject(responseData)) {
 				var transactionAvailable = responseData.transactionAvailable;
 				var allTransactionsFailedOrUnknown = responseData.allTransactionsFailedOrUnknown;
 				if (!transactionAvailable && !allTransactionsFailedOrUnknown) {
+				console.log("SEnd money - first");
 					cpEvent.preventDefault();
 					navigation("../p2p/howItWorks", false);
 				} else if (transactionAvailable
 						&& allTransactionsFailedOrUnknown) {
 					cpEvent.preventDefault();
+					console.log("SEnd money - second");
 					navigation("../p2p/howItWorks", false);
 				} else if (transactionAvailable
 						&& !allTransactionsFailedOrUnknown) {
+						console.log("SEnd money - bakar");
 					dfs.crd.p2p.sendMoreMoneyPage3 = false;
 					dfs.crd.p2p.displayNone();
 					dfs.crd.p2p.populateSendMoney1(responseData);
 				} else if (!transactionAvailable
 						&& allTransactionsFailedOrUnknown) {
 					cpEvent.preventDefault();
+					console.log("SEnd money - third");
 					navigation("../p2p/howItWorks", false);
 				}
 			}
 		} else {
+			console.log("SEnd money - else {");
 			dfs.crd.p2p.hIWScreenFlag = false;
 			var responseData = dfs.crd.p2p.getSendMoneyData();
 			dfs.crd.p2p.sendMoreMoneyPage3 = false;
@@ -1533,9 +1543,9 @@ dfs.crd.p2p.updateDataDetails = function(responseData, curr_iteration) {
 							+ recipientId
 							+ "</b></span></div><div class='clearboth'>Transaction Type<span><b>"
 							+ transactionType
-							+ "</b></span></div><div>Note<span><b>"
+							+ "</b></span></div><div>Note<span class='breakword'><b>"
 							+ note
-							+ "</b></span></div><div><b>Transaction Date: </b></div><div>"
+							+ "</b></span></div><div class='clearboth'></div><div><b>Transaction Date: </b></div><div>"
 							+ datesDetails + "</div>";
 					$("#" + liId).html(detailsHtml);
 				}
@@ -1701,12 +1711,15 @@ dfs.crd.p2p.getFaqHowItWorksData = function(pageName) {
 			dataType : "json",
 			headers : prepareGetHeader(),
 			success : function(responseData, status, jqXHR) {
+				
 				eligibilitChkData = responseData;
+				console.log("WE ar ein succes of FAQ ajax call");
 				hideSpinner();
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				hideSpinner();
 				code = getResponseStatusCode(jqXHR);
+				console.log("WE ar ein FAIL of FAQ ajax call");
 				cpEvent.preventDefault();
 				errorHandler(code, "", pageName);
 			}
@@ -1718,19 +1731,22 @@ dfs.crd.p2p.getFaqHowItWorksData = function(pageName) {
 }
 function howItWorksLoad() {
 	try {
-		dfs.crd.p2p.validPriorPagesOfHowIt = new Array("sendMoneyLanding",
+		console.log("We are in howItWorksLoad ");
+		dfs.crd.p2p.validPriorPagesOfHowIt = new Array(
 				"strongAuthFirstQues", "updateEmail", "sendMoney1",
 				"pageError", "sendMoney2", "confirmCancelTransaction");
 		if (acLiteModeFlag) {
 			cpEvent.preventDefault();
 			errorHandler("acLiteOutageMode_ACL", "", "howItWorks");
-		} else {
-			if (!dfs.crd.p2p
-					.validatePriorPage(dfs.crd.p2p.validPriorPagesOfHowIt)) {
+		} else {	
+			if (!(jQuery.inArray(fromPageName,dfs.crd.p2p.validPriorPagesOfHowIt) > -1) && !isLhnNavigation) {	
+					console.log("WE are RETURNING FROM HOE IT WORKS");				
 				return;
 			}
+			console.log("SEnd money - populate HowItWorks");
 			dfs.crd.p2p.hIWScreenFlag = true;
-			dfs.crd.p2p.populateHowItWorksPage();
+			dfs.crd.p2p.populateHowItWorksPage();		
+			console.log("SEnd - populateHowItWorksPage CALL:-" );	
 		}
 	} catch (err) {
 		showSysException(err);
@@ -1738,8 +1754,10 @@ function howItWorksLoad() {
 }
 dfs.crd.p2p.populateHowItWorksPage = function() {
 	try {
+		console.log("SEnd money - inside populate HowItWorks");
 		var pageName = "howItWorks";
 		var eligibilitChkData = dfs.crd.p2p.getFaqHowItWorksData(pageName);
+		console.log("SEnd - eligibilitChkData:-" + eligibilitChkData);
 		if (!jQuery.isEmptyObject(eligibilitChkData)) {
 			var dLimit = eligibilitChkData.dailyLimit;
 			var mLimit = eligibilitChkData.monthlyLimit;
@@ -1749,6 +1767,7 @@ dfs.crd.p2p.populateHowItWorksPage = function() {
 			$("#daylimitHiw").html("$" + dailyLimit[0]);
 			$("#monthLimitHiw").html("$" + monthlyLimit[0]);
 			$("#bonusTypesHiw").html(bonustypes);
+			console.log("InsideHOwItWorks:-");
 		}
 		var deviceVer = parseInt(deviceVersion);
 		if (deviceType=="Android" && deviceVer>=4)
@@ -1760,6 +1779,9 @@ dfs.crd.p2p.populateHowItWorksPage = function() {
 			{$("#sendMoneyFrame").css("display", "block");
 			 $("#sendMoneyVideo").css("display", "none");
 			}
+			
+		console.log("InsideHOwItWorks - End & LHN FLAG IS :- "+isLhnNavigation);	
+			
 	} catch (err) {
 		showSysException(err);
 	}

@@ -21,6 +21,7 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
@@ -87,6 +88,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
     private TextView cancelLabel;
     private TextView helpNumber;
     private TextView provideFeedback;
+    //Defect id 95853
+    private TextView privacy_terms ;
+    //Defect id 95853
 
     // INPUT FIELDS
     private UsernameOrAccountNumberEditText cardNumField;
@@ -107,6 +111,10 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
         TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+        privacy_terms.setOnClickListener(this);
+        //Defect id 95853
         provideFeedback.setOnClickListener(this);
 
         setOnClickActions();
@@ -272,27 +280,21 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 	 */
     private void checkInputsAndSubmit() {
         cardNumField.updateAppearanceForInput();
-        
-        if(passField.getText().toString().length()<5)
-        {
-           passField.setErrors();
+
+        if (passField.getText().toString().length() < 5) {
+            passField.setErrors();
+        } else {
+            passField.updateAppearanceForInput();
+            Utils.setViewGone(mainErrLabel);
+
+            if (cardNumField.isValid() && passField.isValid()) {
+                doForgotUserIdCall();
+            } else {
+                mainScrollView.smoothScrollTo(0, 0);
+                displayOnMainErrorLabel(getString(R.string.login_error));
+            }
+
         }
-       else
-       {
-           passField.updateAppearanceForInput();
-           Utils.setViewGone(mainErrLabel);
-
-           if (cardNumField.isValid() && passField.isValid()) {
-               doForgotUserIdCall();
-           } else {
-               mainScrollView.smoothScrollTo(0, 0);
-               displayOnMainErrorLabel(getString(R.string.login_error));
-           }
-
-       }
-       
-        
-       
 
     }
 
@@ -304,7 +306,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         // "Loading...", true);
 
         // Lock orientation while request is being processed
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+    	//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         // if(Utils.checkNetworkConnection(this))
         {
 
@@ -439,10 +441,11 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     @Override
     public void goBack() {
-
-       /* final Intent forgotCredentialsActivity = new Intent(this,
+        // Defect id 97237
+        final Intent forgotCredentialsActivity = new Intent(this,
                 ForgotCredentialsActivity.class);
-        startActivity(forgotCredentialsActivity);*/
+        startActivity(forgotCredentialsActivity);
+        // Defect id 97237
         finish();
     }
 
@@ -531,7 +534,12 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this,
                     REFERER);
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //bank Code for privacy and terms
         }
+        //Defect id 95853
     }
 
 }

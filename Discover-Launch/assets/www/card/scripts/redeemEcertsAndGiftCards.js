@@ -6,7 +6,7 @@ dfs.crd.rwd.availablePartners = HREF_URL
 + "mobile/rewards/advanced/images/partners/available/";
 dfs.crd.rwd.unavailablePartners = HREF_URL
 + "mobile/rewards/advanced/images/partners/unavailable/";
-dfs.crd.rwd.REDEMPTION_OPTIONS_URL = HREF_URL
+dfs.crd.rwd.REDEMPTION_OPTIONS_URL = EXT_HREF_URL
 + "cardmembersvcs/rewards/app/redeem?ICMPGN=ACH_TAB_CBB_BTN_RDM";
 dfs.crd.rwd.insuficientErrorPresent;
 dfs.crd.rwd.insuficientErrorPresentSubmit;
@@ -215,6 +215,7 @@ dfs.crd.rwd.getAllPartners = function() {
 						break;
 					case "1629":
 						cpEvent.preventDefault();
+						rewardErrorFlag = true; // Fix for defect 96754
 						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
 						var promoCodeTextData = [];
 						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
@@ -231,6 +232,7 @@ dfs.crd.rwd.getAllPartners = function() {
 					case "1656":
 						// console.log("error 1656");
 						cpEvent.preventDefault();
+						rewardErrorFlag = true; // Fix for defect 96754
 						var errorMessage = errorCodeMap.REDEEM_BAD_ACCOUNT_STATUS;
 						var promoCodeTextData = [];
 						promoCodeTextData['ACHome_CashBackBonusBalance'] = "$"
@@ -1572,7 +1574,7 @@ function redeemPartnerGCD2Load() {
 	try {
 		// console.log("redeemPartnerGCD2Load");
 		var validPriorPagesOfRenderGCD2 = new Array("redeemPartner1",
-		"redeemMerchantTerms");
+		"redeemMerchantTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfRenderGCD2) > -1) {
 
 			$("#redeemPartnerGCD_CBB").html("$" + globalEarnRewardAmount);
@@ -1646,7 +1648,7 @@ function redeemPartnerECT2Load() {
 
 	try {
 		var validPriorPagesOfRenderECT2 = new Array("redeemPartner1",
-		"redeemMerchantTerms");
+		"redeemMerchantTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfRenderECT2) > -1) {
 			// console.log( "redeemPartnerECT2Load");
 			$("#redeemPartnerECT_CBB").html("$" + globalEarnRewardAmount);
@@ -1762,7 +1764,7 @@ function redeemPartnerECT3Load() {
 
 		var validPriorPagesOfECT3 = new Array("redeemPartnerECT2",
 				"redeemInstructions", "redeem_ecert_printphotos",
-				"redeem_ecart_savetophotos_pin", "redeemMerchantSubmitTerms");
+				"redeem_ecart_savetophotos_pin", "redeemMerchantSubmitTerms","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfECT3) > -1) {
 			$("#redeemPartnerECT3_CBB").html("$" + globalEarnRewardAmount);
 			var redeemedDATA = getDataFromCache("REDEEMSELCETED");
@@ -2373,7 +2375,7 @@ function redeemPartnerGCD3Load() {
 	try {
 		// console.log("redeemPartnerGCD3Load");
 		trafficSource = MOBILE_PARTNER_CARD;
-		var validPriorPagesOfGCD3 = new Array("redeemPartnerGCD2");
+		var validPriorPagesOfGCD3 = new Array("redeemPartnerGCD2","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfGCD3) > -1) {
 
 			var redeemedData = getDataFromCache("REDEEMSELCETED");

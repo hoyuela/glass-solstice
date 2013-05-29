@@ -2722,8 +2722,8 @@ min-width:100px; border:0px
 .r3matchbtn a {
 	width: 70px ;
 	display: inline-block;
-	padding: 8px 0px 8px 0px;
-	margin-right: 10px;    
+	padding: 15px 0px 8px 0px;
+	/*margin-right: 10px;    */
 }
 .lineheight20px {line-height:20px}
 .wraper .socialnetIcon li {padding:15px  10px 15px 10px}
@@ -2890,7 +2890,7 @@ input.amount{
 #list1.autoUL li.autoLI:last-child,
 #list2.autoUL li.autoLI:last-child {-webkit-border-bottom-left-radius: 8px !important;	-webkit-border-bottom-right-radius: 8px !important;}
 #list1.autoUL li.autoLI, 
-#list2.autoUL li.autoLI { padding:8px;}
+#list2.autoUL li.autoLI { padding:8px; width:100% !important}
 #list1.autoUL li.autoLI span#autoname,
 #list2.autoUL li.autoLI span#autoname  {float:left}
 #list1.autoUL li.autoLI span#autoemail,
@@ -3535,7 +3535,7 @@ line-height: 25px;
 #search .hidden-element {clear:both; display:none; padding:10px; border-top:1px solid #DADADA;}
 #search .notes {margin-top:10px !important;}
 #search .searchResultsStat {border:1px solid #DADADA; background:#fff; -webkit-border-radius:4px;}
-#paymentStep2-pg .r3matchbtn a.bluelink  {padding: 8px 0px 8px 0px; width:98%}
+/*#paymentStep2-pg .r3matchbtn a.bluelink  {padding: 8px 0px 8px 0px; width:98%}*/
 #paymentStep1-pg .wraper1{ margin-top:-10px;} 
 #paymentStep1-pg .progress-indicator{ margin-bottom:10px !important;}
 #accountSummary-pg .wraper{margin:15px 0 0px 0 !important;}
@@ -3698,3 +3698,12 @@ ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-borde
 .rd-landing-heading-text{margin-top:25px}
 #cashbackSignup1-pg ul li:first-child,#milesSignup1-pg ul li:first-child{font-weight:bold}
 .breakword{word-break:break-all}
+
+#moreLanding-pg #footnotes .registerNow,
+#termsUseMore-pg  #footnotes .registerNow,
+#moreLandingrevised-pg  #footnotes .registerNow,
+#privacyPolicyMore-pg  #footnotes .registerNow { display:none}
+
+.pinCashEnter .col{float:left !important; width:48% !important}
+
+#calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day {color: #CED6D7; background: #fff !important;}

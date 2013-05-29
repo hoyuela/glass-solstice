@@ -23,24 +23,26 @@
 			<div class="wraper">
 				<!--<h1>Personalize Cash PIN:</h1>
 				<h2>Step 1 of 2</h2>-->
-				<p>Customize a secure PIN that you can use to make cash advances at participating ATMs worldwide.</p>
+				<p>Customize a secure Cash PIN that you can use to make cash advances at participating ATMs worldwide.</p>
 				<div id="errormsg" class="errormsg" style="display:block">
 						Sorry. Your new PIN and re-entered PIN must match.<br/>Please re-enter it again.  
 				</div>
-				<ul data-role="listview" data-theme="d" data-inset="true"
-					class="white-box-rd-corner">
-					<li><label class="boldtext">Enter New PIN:</label>
+				<div class="pinCashEnter">
+					<div class="col" style="margin-right:5px">
+						<label class="boldtext">Enter New PIN:</label>
 						<div>
 							<input type="password" name="enterPin" id="enterPin" value=""
 								maxlength="4" class="inputtext" />
-						</div></li>
-					<li><label class="boldtext">RE-enter New PIN:</label>
-						
+						</div>
+					</div>	
+					<div class="col">
+						<label class="boldtext">RE-enter New PIN:</label>
 						<div>
 							<input type="password" name="confirmPin" id="confirmPin" value=""
 								maxlength="4" class="inputtext" />
-						</div></li>
-				</ul>
+						</div>
+					</div>
+				</div>
 				<!--<h3>Tips for a Secure PIN</h3>-->
 				
 				<div>

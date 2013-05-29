@@ -15,8 +15,6 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
-import com.discover.mobile.card.common.utils.Utils;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -72,9 +70,9 @@ public class PostPushRegistration
         request.setMethodtype("POST");
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new GetPushData(), "Discover", null, listener);
-        Utils.isSpinnerShow = true;
-        Utils.isSpinnerAllowed=true;
-        Utils.showSpinner(context, "Discover", "Loading...");
+//        Utils.isSpinnerShow = true;
+//        Utils.isSpinnerAllowed=true;
+//        Utils.showSpinner(context, "Discover", "Loading...");
         serviceCall.execute(request);
     }
 

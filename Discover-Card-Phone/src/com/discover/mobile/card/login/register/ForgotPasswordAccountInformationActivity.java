@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -97,10 +98,11 @@ public class ForgotPasswordAccountInformationActivity extends
 
     @Override
     public void goBack() {
-
-        /*final Intent forgotCredentialsActivity = new Intent(this,
+        // Defect id 97237
+        final Intent forgotCredentialsActivity = new Intent(this,
                 ForgotCredentialsActivity.class);
-        startActivity(forgotCredentialsActivity);*/
+        startActivity(forgotCredentialsActivity);
+        // Defect id 97237
 
         finish();
     }
@@ -143,6 +145,11 @@ public class ForgotPasswordAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
+        //Defect id 95853
     }
 }

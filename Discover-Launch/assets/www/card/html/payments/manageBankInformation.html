@@ -23,7 +23,8 @@
 				<div class="txtcenteraln r3matchbtn">
 					<a href="#" onclick="redirectToPageAfterConfirm('manageBankInfomation');"
 						data-role="button" data-theme="c">Continue</a><br/>
-						<a href="#" data-rel='back' class="bluelink boldtext">Cancel</a> 
+						<!-- Fix for defect 97217 -->
+						<a href="#" onclick="onBackKeyDown();" class="bluelink boldtext">Cancel</a> 
 				</div>
 
 			</div>

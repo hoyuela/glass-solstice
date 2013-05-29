@@ -2,7 +2,6 @@ package com.discover.mobile.card.common.net.error;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -11,13 +10,10 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.facade.LoginActivityFacade;
 
 /**
  * 
- * ï¿½2013 Discover Bank
+ * ©2013 Discover Bank
  * 
  * handling errors and exceptions.
  * 
@@ -95,13 +91,7 @@ public final class CardErrorResponseHandler {
             case INCORRECT_USERID_PASSWORD:
             case LOCKOUT:
                 // for inline error messages
-				final LoginActivityFacade loginFacade = FacadeFactory
-						.getLoginFacade();
-				final Bundle bundle = new Bundle();
-				bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE,
-						cardErrorHold.getErrorMessage());
-				loginFacade.navToLoginWithMessage(
-						DiscoverActivityManager.getActiveActivity(), bundle);
+                handleInlineError(cardErrorHold.getErrorMessage());
                 break;
 
             default:
@@ -112,6 +102,20 @@ public final class CardErrorResponseHandler {
                 break;
             }
         }
+
+    }
+
+    /**
+     * Handle inline error
+     * 
+     * @param errorMessage
+     */
+    private void handleInlineError(final String errorMessage) {
+        setErrorText(errorMessage);
+        // setInputFieldsDrawableToRed();
+        getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(
+                getErrorFieldUi(), errorMessage);
+        clearInputs();
 
     }
 

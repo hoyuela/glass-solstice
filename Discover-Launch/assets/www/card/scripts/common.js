@@ -51,6 +51,8 @@ var errorFlag=false;
 var incentiveTypeSuffix="";
 var incentiveCodeSuffix = "";
 var globalOtherUser="";
+var rewardErrorFlag = false; //Fix for defect 96754
+var preventBack = false;
 /** **CONSTANTS and Global Variables End ** */
 
 /** Name Space**/
@@ -161,13 +163,24 @@ function onOffline()
 
 function onBackKeyDown () {
 console.log("inside onBackKeyDown");
-console.log("in back activepage beforing calling back "+currentActivePage);
-isLhnNavigation = false;
+console.log("in back activepage beforing calling back "+currentActivePage+" n islhnnavigation is "+isLhnNavigation+" n preventback is "+preventBack);
 	if(currentActivePage != "cardHome-pg")
 	{
-		if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg")
+		if(currentActivePage == "strongAuthLocked-Pg")
 		{
-			window.history.back();
+			HybridControl.prototype.logOutUser();
+		}
+		else if(currentActivePage == "paymentsSummary-pg" && isLhnNavigation)
+		{
+			HybridControl.prototype.popCurrentFragment(null,null);
+		}
+		else if(pageTitle[currentActivePage] == null && currentActivePage != "pageError-pg" && (!isLhnNavigation))
+		{
+			if(!preventBack)
+			{
+				console.log("calling window.history.back");
+				window.history.back();
+			}
 		}
 		else
 		{
@@ -175,14 +188,7 @@ isLhnNavigation = false;
 			HybridControl.prototype.popCurrentFragment(null,null);
 		}
 	}
-//if($.mobile.activePage.is('#login-pg')){
-//e.preventDefault();
-//navigator.app.exitApp();
-//}
-//else {
-//navigator.app.backHistory();
-//}
-
+isLhnNavigation = false;
 }
 
 
@@ -1020,9 +1026,7 @@ function showMR()
 /****************************Page Beforechange*****************************/
 
 $(document).bind( 'pagebeforechange', function( e, data ){
-	try{
-
-			
+	try{			
 		if (!(typeof data.toPage === "string" )) {
 			cpEvent=e;
             var pageName=toPage(data);
@@ -1034,8 +1038,19 @@ $(document).bind( 'pagebeforechange', function( e, data ){
 
 				//	cpEvent.preventDefault();
 					 var activePage=$.mobile.activePage.attr('id');
+					 currentActivePage = activePage;
 					 console.log("calling handlenativeframe from pagebforechange");
-					 handleNativeFrame(activePage);   
+					 
+					 if(!preventBack)
+					 {
+						 if(activePage == "paymentsSummary-pg" && isLhnNavigation)
+						 {
+						 	HybridControl.prototype.popPhoneGapToFront(null, "Make a Payment");
+						 }
+						 else				 	
+						    handleNativeFrame(activePage);
+					 }
+					       
 					if(isDeviceReady == true)
 					{      
 						if(activePage != "loadingPage-pg")
@@ -1219,6 +1234,11 @@ $('[data-role=page]').live('pageshow', function(e,data){
 
         var activePage=$.mobile.activePage.attr('id');
         currentActivePage = activePage;
+                     
+        console.log("inside pageshow and current active page is "+ currentActivePage);
+        
+         if (activePage == "cardHome-pg")
+        	cpEvent.preventDefault();         
         		        
         switch (activePage){
 		case "login-pg":
@@ -1285,13 +1305,22 @@ $('[data-role=page]').live('pageshow', function(e,data){
 
 	console.log("activepage beforing calling handlenativeframe "+activePage+"  && LHn  NAv value is :- "+isLhnNavigation);
 	
-	if(pageTitle[activePage] != null || activePage == "pageError-pg" || isLhnNavigation)
+	if(!preventBack)
 	{
-		console.log("condition is true");
-		isLhnNavigation = false;
-		console.log("calling handlenativeframe from pageshow");
-		handleNativeFrame(activePage);
-		
+		if(activePage == "paymentsSummary-pg" && isLhnNavigation)
+		{
+			console.log("condition is true");
+			//isLhnNavigation = false;
+			console.log("calling handlenativeframe from pageshow");
+			HybridControl.prototype.popPhoneGapToFront(null, "Make a Payment");
+		}
+		 else if(pageTitle[activePage] != null || activePage == "pageError-pg" || isLhnNavigation)
+		{
+			console.log("condition is true");
+			isLhnNavigation = false;
+			console.log("calling handlenativeframe from pageshow");
+			handleNativeFrame(activePage);		
+		}
 	}else if(isDeviceReady == true)
 		{      
 			if(activePage != "loadingPage-pg")
@@ -1344,6 +1373,25 @@ function postSiteCatGlobalData()
 }
 
 function moreLandingLoad(){
+	try{
+		getMenuItems();
+		var moreHTML="";
+		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
+			for (var key in moreNav) 
+			{
+				if(moreNav[key] =="PS" || moreNav[key] =="TU"){
+				  		moreHTML+=menuItems[moreNav[key]+"_MORE"];
+				}
+			} 
+		moreHTML+="</ul>";
+		$("#showMoreLinks").html(moreHTML);
+		//$(".mnu_more").trigger("create");
+	}catch(err){
+		showSysException(err);
+	}
+}
+
+function moreLandingRevisedLoad(){
 	try{
 		getMenuItems();
 		var moreHTML="";
@@ -1506,7 +1554,7 @@ function redirectToPageAfterConfirm(eventElement) {
         var DISCOVERLINK=EXTERNAL_PROD_CARD_URL+"cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/rewards/app/redeem?ICMPGN=ACH_TAB_CBB_BTN_RDM";
         var manageBankInfomation=EXTERNAL_PROD_CARD_URL+"cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/epay/app/bankInfo";
         var manageCurrentDayPayment=EXTERNAL_PROD_CARD_URL+"cardmembersvcs/mobile/app/ems/link?pageName=managePay";
-        var BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT=HREF_URL+"cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/rewards/app/browseInvest?modeCode=EFT1&view=cash";
+var BANK_ACCOUNT_URL_FOR_DIRECT_DEPOSIT=EXT_HREF_URL+"cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/rewards/app/browseInvest?modeCode=EFT1&view=cash";
         var IPHONEAPPURL="http://itunes.apple.com/app/discovermobile/id338010821?mt=8";
         var ANDROIDAPPURL="http://market.android.com/search?q=pname:com.discoverfinancial.mobile";
 		var PAYWITHCBBLNK="https://www.discover.com/paywithcbb";
@@ -1791,7 +1839,12 @@ function preparePostHeader(customHeaders) {
 				'X-Application-Version' : APPVER,
 				'X-Client-Platform' : getClientPlat(),
 				'Content-Type' : 'application/json',
-				'X-SEC-Token' : sectoken
+				'X-SEC-Token' : sectoken,
+				'Accept' : '*/*',
+                'Charset': null,
+                'Encoding': null,
+                'Language': null,
+                'Referer': null
 		};		
 		if (!isEmpty(customHeaders)) {	
 			$.extend(postHeader, customHeaders);
