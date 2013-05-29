@@ -148,7 +148,7 @@ public class ForgotPasswordAccountInformationActivity extends
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
     }

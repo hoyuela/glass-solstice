@@ -1,7 +1,6 @@
 package com.discover.mobile.card.push.register;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -36,9 +35,6 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	 */
 	protected void registerWithDiscover(final String regStatus, final String venderId) throws Exception{
 		final Context context = this.getActivity();
-		Utils.isSpinnerShow = true;
-        Utils.isSpinnerAllowed=true;
-        Utils.showSpinner(context, "Discover", "Loading...");
 		PostPushRegistration postPushRegistration = new PostPushRegistration(context, new CardEventListener()
 		{
 			
@@ -47,18 +43,18 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 			{
 				GetPushData data2 = (GetPushData) data;
 				Utils.log(LOG_TAG, "--Response Data -- "+data2.resultCode);
-				setStatus(regStatus);
+				//setStatus(regStatus);
 			}
 			
 			@Override
 			public void OnError(Object data)
 			{
-			    setStatus(DECLINE);
-				//Toast.makeText(getActivity(), data.toString(), Toast.LENGTH_LONG).show();
+			   // setStatus(DECLINE);
 			}
 		});
 		
 		postPushRegistration.sendRequest(venderId, regStatus);
+		setStatus(regStatus);
 	}
 	
 	/**

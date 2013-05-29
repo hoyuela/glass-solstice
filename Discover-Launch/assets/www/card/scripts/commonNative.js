@@ -246,7 +246,7 @@ function redeemMiles()
 function privacyTerms()
 {
 	preventBack = false;
-	navigation('../common/moreLanding');
+	navigation('../common/moreLandingRevised');
 }
 
 function noTitle(){

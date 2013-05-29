@@ -51,23 +51,23 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String updatedAccountDetails = "updatedAccountDetails";
     public static final String getStrongAuthSvcs = "getStrongAuthSvcs";
     public static final String logOutUser = "logOutUser";
-	public static final String gotoAchome = "gotoAchome";
-	public static final String getSID = "getSID";
-	public static final String getDID = "getDID";
-	public static final String getOID = "getOID";
-	public static final String showSpinner = "showSpinner";
-	public static final String getVID = "getVID";	
-	public static final String setOtherUserFlag = "setOtherUserFlag";
-	public static final String getOtherUserFlag = "getOtherUserFlag";
-	public static final String enableSlidingMenu = "enableSlidingMenu";
-	public static final String checkForExternalBrowser = "checkForExternalBrowser";
-	public static final String getDFSKey = "getDFSKey";
-	public static final String getVOne = "getVOne";
-	
+    public static final String gotoAchome = "gotoAchome";
+    public static final String getSID = "getSID";
+    public static final String getDID = "getDID";
+    public static final String getOID = "getOID";
+    public static final String showSpinner = "showSpinner";
+    public static final String getVID = "getVID";
+    public static final String setOtherUserFlag = "setOtherUserFlag";
+    public static final String getOtherUserFlag = "getOtherUserFlag";
+    public static final String enableSlidingMenu = "enableSlidingMenu";
+    public static final String checkForExternalBrowser = "checkForExternalBrowser";
+    public static final String getDFSKey = "getDFSKey";
+    public static final String getVOne = "getVOne";
+
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
     public static String strLastTitleDisplayed = null;
-    
+
     public static final String isDeviceReady = "deviceReadyUpdate";
     boolean showInBrowser = false;
 
@@ -222,38 +222,26 @@ public class HybridControlPlugin extends CordovaPlugin {
             String title0 = null;
             try {
                 title0 = (String) args.get(0);
-                Utils.log(TAG, "title received in popPhoneGapToFront action is "
-                        + title0);
+                Utils.log(TAG,
+                        "title received in popPhoneGapToFront action is "
+                                + title0);
             } catch (Exception e) {
             }
 
             final String title = title0;
 
-//            if (!title.equalsIgnoreCase("No Title")) {
+            cnrAct.runOnUiThread(new Runnable() {
 
-                cnrAct.runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (title != null) {
-                            cnrAct.hideActionBarLogo();
-                            cnrAct.setActionBarTitle(title);
-                            cnrAct.updateActionBarTitle();
-                        }
+                @Override
+                public void run() {
+                    if (title != null) {
+                        cnrAct.hideActionBarLogo();
+                        cnrAct.setActionBarTitle(title);
+                        cnrAct.updateActionBarTitle();
                     }
+                }
 
-                });
-//            } else {
-//                cnrAct.runOnUiThread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        Utils.log(TAG,
-//                                "calling showactionbarlogo from popPhoneGapToFront action");
-//                        cnrAct.showActionBarLogo();
-//                    }
-//                });
-//            }
+            });
 
             if (!fragTag.equalsIgnoreCase(title0)) {
 
@@ -270,53 +258,51 @@ public class HybridControlPlugin extends CordovaPlugin {
                 statusBarFragment = (StatusBarFragment) fragmentManager
                         .findFragmentById(R.id.status_bar);
 
-                // final String backStackString = title0;
-
                 cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        /*
-                         * fragmentManager.beginTransaction()
-                         * .replace(R.id.navigation_content, cordovaFrag)
-                         * .commit();
-                         */
 
                         fragmentManager
                                 .beginTransaction()
-                              /*  .hide(statusBarFragment)*/
+                                /* .hide(statusBarFragment) */
                                 .remove(cordovaFrag)
                                 .add(R.id.navigation_content, cordovaFrag,
                                         "CordovaWebFrag").addToBackStack(title)
                                 .commit();
                         fragmentManager.executePendingTransactions();
-                        
-                        
-                        String topfragName = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1)
+
+                        String topfragName = fragmentManager
+                                .getBackStackEntryAt(
+                                        fragmentManager
+                                                .getBackStackEntryCount() - 1)
                                 .getName();
                         Fragment topFragment = fragmentManager
                                 .findFragmentByTag(topfragName);
                         /********** Hemang **********/
-                        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1)
-                        {
-                            if (null != topFragment)
-                            {
+                        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                            if (null != topFragment) {
                                 String topFragmentTag = topFragment.getTag();
-                                if (!topFragmentTag.equalsIgnoreCase("CordovaWebFrag") && null!= strLastTitleDisplayed && !strLastTitleDisplayed.equalsIgnoreCase(title))
-                                {
-                                        ((CordovaWebFrag)cordovaFrag).getCordovaWebviewInstance().clearView();
-                                       
-                                        ((CordovaWebFrag)cordovaFrag).getCordovaWebviewInstance().invalidate();
-                                        strLastTitleDisplayed=title;
-                                }
-                                else
-                                    strLastTitleDisplayed=title;
-                            }
-                            else
-                                strLastTitleDisplayed=title;
+                                if (!topFragmentTag
+                                        .equalsIgnoreCase("CordovaWebFrag")
+                                        && null != strLastTitleDisplayed
+                                        && !strLastTitleDisplayed
+                                                .equalsIgnoreCase(title)) {
+                                    ((CordovaWebFrag) cordovaFrag)
+                                            .getCordovaWebviewInstance()
+                                            .clearView();
+
+                                    ((CordovaWebFrag) cordovaFrag)
+                                            .getCordovaWebviewInstance()
+                                            .invalidate();
+                                    strLastTitleDisplayed = title;
+                                } else
+                                    strLastTitleDisplayed = title;
+                            } else
+                                strLastTitleDisplayed = title;
                         }
                         /********** Hemang **********/
                         Utils.hideSpinner();
-                        
+
                     }
                 });
             } else {
@@ -426,7 +412,7 @@ public class HybridControlPlugin extends CordovaPlugin {
         }
 
         else if (action.equals(dismissProgressBar)) {
-            
+
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
@@ -492,7 +478,8 @@ public class HybridControlPlugin extends CordovaPlugin {
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.updateAccountDetails(cnrAct, cardEventListener ,"Discover", "Updating Account Details...");
+                    Utils.updateAccountDetails(cnrAct, cardEventListener,
+                            "Discover", "Updating Account Details...");
                 }
             });
 
@@ -541,97 +528,101 @@ public class HybridControlPlugin extends CordovaPlugin {
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
-        }else if (action.equals(gotoAchome)) {
-        	 Utils.log(TAG, "inside gotoAchome ");
-             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                     .getActivity();
-             final FragmentManager fragManager = cnrAct
-                     .getSupportFragmentManager();            
-             cnrAct.runOnUiThread(new Runnable() {
-                 @Override
-                 public void run() {
-                	 //Added changes to clear page cache when return back to achome.
-                	 cnrAct.getCordovaWebFragInstance().getCordovaWebviewInstance().loadUrl("javascript:home()");
-                     cnrAct.getCordovaWebFragInstance().setTitle(null);
-                 }
-             });
-
-             fragManager.popBackStack();
-             Fragment homeFragment = fragManager
-                     .findFragmentByTag("HomeSummaryFragment");
-             cnrAct.makeFragmentVisible(homeFragment, false);
-             cnrAct.runOnUiThread(new Runnable() {
-                 @Override
-                 public void run() {
-                     cnrAct.showActionBarLogo();
-                     cnrAct.highlightMenuItems(
-                             CardMenuItemLocationIndex.HOME_GROUP,
-                             CardMenuItemLocationIndex.HOME_SECTION);
-                 }
-             });
-             final PluginResult pluginResult = new PluginResult(
-                     PluginResult.Status.OK);
-             pluginResult.setKeepCallback(true);
-             callbackContext.sendPluginResult(pluginResult);
-             return true;
-        }else if (action.equals(getDID)) {
-        	Utils.log(TAG, "inside DID ");    
-        	/*
-        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
-                    .getSystemService(Context.TELEPHONY_SERVICE);
-            String did = telephonyManager.getDeviceId();
-            */
-        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                    .getInstance(cordova.getActivity());
-            String did = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
-                    R.string.DID));
-            final PluginResult pluginResult = new PluginResult(
-        			PluginResult.Status.OK, did);
-            Utils.log(TAG, "DID:" + did);
-        	pluginResult.setKeepCallback(true);
-        	callbackContext.sendPluginResult(pluginResult);
-        	return true;
-        }else if (action.equals(getSID)) {
-        	Utils.log(TAG, "inside SID ");
-        	/*
-        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
-                    .getSystemService(Context.TELEPHONY_SERVICE);
-            String sid = telephonyManager.getSimSerialNumber();
-            if (null == sid)
-                sid = telephonyManager.getDeviceId();
-            */
-        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                    .getInstance(cordova.getActivity());
-        	String sid = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
-                    R.string.SID));
-            Utils.log(TAG, "SID:" + sid);
-            final PluginResult pluginResult = new PluginResult(
-        			PluginResult.Status.OK, sid);
-        	pluginResult.setKeepCallback(true);
-        	callbackContext.sendPluginResult(pluginResult);
-        	return true;
-        }else if (action.equals(getOID)) {
-        	Utils.log(TAG, "inside OID ");        	
-        	/*
-        	final TelephonyManager telephonyManager = (TelephonyManager) cordova.getContext()
-                    .getSystemService(Context.TELEPHONY_SERVICE);
-            String oid = telephonyManager.getDeviceId();
-            */
-        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                    .getInstance(cordova.getActivity());
-            String oid = (String) cardShareDataStoreObj.getReadOnlyAppCache().get(cordova.getActivity().getString(
-                    R.string.OID));
-            Utils.log(TAG, "OID:" + oid);
-            final PluginResult pluginResult = new PluginResult(
-        			PluginResult.Status.OK, oid);
-        	pluginResult.setKeepCallback(true);
-        	callbackContext.sendPluginResult(pluginResult);
-        	return true;
-        }        
-        else if (action.equals(showSpinner)) {
+        } else if (action.equals(gotoAchome)) {
+            Utils.log(TAG, "inside gotoAchome ");
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
-            Utils.isSpinnerAllowed=true;
+            final FragmentManager fragManager = cnrAct
+                    .getSupportFragmentManager();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Added changes to clear page cache when return back to
+                    // achome.
+                    cnrAct.getCordovaWebFragInstance()
+                            .getCordovaWebviewInstance()
+                            .loadUrl("javascript:home()");
+                    cnrAct.getCordovaWebFragInstance().setTitle(null);
+                }
+            });
+
+            fragManager.popBackStack();
+            Fragment homeFragment = fragManager
+                    .findFragmentByTag("HomeSummaryFragment");
+            cnrAct.makeFragmentVisible(homeFragment, false);
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cnrAct.showActionBarLogo();
+                    cnrAct.highlightMenuItems(
+                            CardMenuItemLocationIndex.HOME_GROUP,
+                            CardMenuItemLocationIndex.HOME_SECTION);
+                }
+            });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getDID)) {
+            Utils.log(TAG, "inside DID ");
+            /*
+             * final TelephonyManager telephonyManager = (TelephonyManager)
+             * cordova.getContext()
+             * .getSystemService(Context.TELEPHONY_SERVICE); String did =
+             * telephonyManager.getDeviceId();
+             */
+            final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+            String did = (String) cardShareDataStoreObj.getReadOnlyAppCache()
+                    .get(cordova.getActivity().getString(R.string.DID));
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, did);
+            Utils.log(TAG, "DID:" + did);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getSID)) {
+            Utils.log(TAG, "inside SID ");
+            /*
+             * final TelephonyManager telephonyManager = (TelephonyManager)
+             * cordova.getContext()
+             * .getSystemService(Context.TELEPHONY_SERVICE); String sid =
+             * telephonyManager.getSimSerialNumber(); if (null == sid) sid =
+             * telephonyManager.getDeviceId();
+             */
+            final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+            String sid = (String) cardShareDataStoreObj.getReadOnlyAppCache()
+                    .get(cordova.getActivity().getString(R.string.SID));
+            Utils.log(TAG, "SID:" + sid);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, sid);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getOID)) {
+            Utils.log(TAG, "inside OID ");
+            /*
+             * final TelephonyManager telephonyManager = (TelephonyManager)
+             * cordova.getContext()
+             * .getSystemService(Context.TELEPHONY_SERVICE); String oid =
+             * telephonyManager.getDeviceId();
+             */
+            final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                    .getInstance(cordova.getActivity());
+            String oid = (String) cardShareDataStoreObj.getReadOnlyAppCache()
+                    .get(cordova.getActivity().getString(R.string.OID));
+            Utils.log(TAG, "OID:" + oid);
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, oid);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(showSpinner)) {
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            Utils.isSpinnerAllowed = true;
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -645,168 +636,185 @@ public class HybridControlPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
             return true;
         } else if (action.equals(getVID)) {
-        	Utils.log(TAG, "inside getVID ");        	
+            Utils.log(TAG, "inside getVID ");
 
-      	  SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
-                    Context.MODE_PRIVATE);
-           String vid = pushSharedPrefs.getString(PushConstant.pref.PUSH_XID,"0");        
-          final PluginResult pluginResult = new PluginResult(
-      			PluginResult.Status.OK, vid);
-      	pluginResult.setKeepCallback(true);
-      	callbackContext.sendPluginResult(pluginResult);
-      	return true;
-      }
-      else if (action.equals(setOtherUserFlag)) {
-      	Utils.log(TAG, "inside setOtherUserFlag ");
-      	boolean otherUserFlag =  (Boolean) args.get(0);
-      	Utils.log(TAG,"SetoTHERuSER: "+otherUserFlag);
-      	SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
-		                Context.MODE_PRIVATE);
-      	
-      	Editor  editor = pushSharedPrefs.edit();
-      	editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, otherUserFlag);
-      	editor.commit();
-      	final PluginResult pluginResult = new PluginResult(
-      			PluginResult.Status.OK);
-      	pluginResult.setKeepCallback(true);
-      	callbackContext.sendPluginResult(pluginResult);
-      	return true;
-      } else if (action.equals(getOtherUserFlag)) {
-      	Utils.log(TAG, "inside setOtherUserFlag ");
-      	//need to get otherUserFlag from native...
-      	
-      	SharedPreferences pushSharedPrefs = cordova.getContext().getSharedPreferences(PushConstant.pref.PUSH_SHARED, //TODO: Push
-	                Context.MODE_PRIVATE);	               
-      	boolean isOtherUser = pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
-      	
-      	final PluginResult pluginResult = new PluginResult(
-      			PluginResult.Status.OK,isOtherUser);
-      	pluginResult.setKeepCallback(true);
-      	callbackContext.sendPluginResult(pluginResult);
-      	return true;
-      }else if (action.equals(enableSlidingMenu)) {
-        	
-        	final boolean enableSliding = (Boolean)args.get(0);
-        	Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled "+enableSliding);
-        	
-        	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+            SharedPreferences pushSharedPrefs = cordova.getContext()
+                    .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
+                                                                         // Push
+                            Context.MODE_PRIVATE);
+            String vid = pushSharedPrefs.getString(PushConstant.pref.PUSH_XID,
+                    "0");
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, vid);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(setOtherUserFlag)) {
+            Utils.log(TAG, "inside setOtherUserFlag ");
+            boolean otherUserFlag = (Boolean) args.get(0);
+            Utils.log(TAG, "SetoTHERuSER: " + otherUserFlag);
+            SharedPreferences pushSharedPrefs = cordova.getContext()
+                    .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
+                                                                         // Push
+                            Context.MODE_PRIVATE);
+
+            Editor editor = pushSharedPrefs.edit();
+            editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,
+                    otherUserFlag);
+            editor.commit();
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getOtherUserFlag)) {
+            Utils.log(TAG, "inside setOtherUserFlag ");
+            // need to get otherUserFlag from native...
+
+            SharedPreferences pushSharedPrefs = cordova.getContext()
+                    .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
+                                                                         // Push
+                            Context.MODE_PRIVATE);
+            boolean isOtherUser = pushSharedPrefs.getBoolean(
+                    PushConstant.pref.PUSH_OTHER_USER_STATUS, false);
+
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, isOtherUser);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(enableSlidingMenu)) {
+
+            final boolean enableSliding = (Boolean) args.get(0);
+            Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled "
+                    + enableSliding);
+
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                	cnrAct.enableSlidingMenu(enableSliding);
+                    cnrAct.enableSlidingMenu(enableSliding);
                 }
             });
-          	final PluginResult pluginResult = new PluginResult(
-          			PluginResult.Status.OK);
-          	pluginResult.setKeepCallback(true);
-          	callbackContext.sendPluginResult(pluginResult);
-          	return true;
-          }
-      else if (action.equals(isDeviceReady)) {
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(isDeviceReady)) {
 
-    	  Log.i(TAG, "OH YES ABHI");
-    	  
-          /*final boolean isPhonegapReady = (Boolean) args.get(0);
-          Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled "
-                  + isPhonegapReady);*/
+            Log.i(TAG, "OH YES ABHI");
 
-          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                  .getActivity();
-          cnrAct.runOnUiThread(new Runnable() {
-              @Override
-              public void run() {
-                  cnrAct.isDeviceReady();
-              }
-          });
-          final PluginResult pluginResult = new PluginResult(
-                  PluginResult.Status.OK);
-          pluginResult.setKeepCallback(true);
-          callbackContext.sendPluginResult(pluginResult);
-          return true;
-      }
-      else if (action.equals(getDFSKey)) {
-          Utils.log(TAG, "inside getDFSKey ");
-          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                  .getActivity();
-          final String dfsKey = CardShareDataStore.getInstance(cnrAct)
-                  .getCookieManagerInstance().getDfsKey();
-          Utils.log(TAG, "getDFSKey: " + dfsKey);
+            /*
+             * final boolean isPhonegapReady = (Boolean) args.get(0);
+             * Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled " +
+             * isPhonegapReady);
+             */
 
-          final PluginResult pluginResult = new PluginResult(
-                  PluginResult.Status.OK, dfsKey);
-          pluginResult.setKeepCallback(true);
-          callbackContext.sendPluginResult(pluginResult);
-          return true;
-      }
-      else if (action.equals(getVOne)) {
-          Utils.log(TAG, "inside getVOne ");
-          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                  .getActivity();
-          final String strVOne = CardShareDataStore.getInstance(cnrAct)
-                  .getCookieManagerInstance().getVone();
-          Utils.log(TAG, "getVOne: " + strVOne);
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cnrAct.isDeviceReady();
+                }
+            });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getDFSKey)) {
+            Utils.log(TAG, "inside getDFSKey ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final String dfsKey = CardShareDataStore.getInstance(cnrAct)
+                    .getCookieManagerInstance().getDfsKey();
+            Utils.log(TAG, "getDFSKey: " + dfsKey);
 
-          final PluginResult pluginResult = new PluginResult(
-                  PluginResult.Status.OK, strVOne);
-          pluginResult.setKeepCallback(true);
-          callbackContext.sendPluginResult(pluginResult);
-          return true;
-      }else if (action.equals(checkForExternalBrowser)) {
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, dfsKey);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(getVOne)) {
+            Utils.log(TAG, "inside getVOne ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final String strVOne = CardShareDataStore.getInstance(cnrAct)
+                    .getCookieManagerInstance().getVone();
+            Utils.log(TAG, "getVOne: " + strVOne);
 
-    	  final String strURLtoOpen = args.getString(0);
-    	  
-          /*final boolean isPhonegapReady = (Boolean) args.get(0);
-          Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled "
-                  + isPhonegapReady);*/
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, strVOne);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals(checkForExternalBrowser)) {
 
-          final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                  .getActivity();
-          
-          cnrAct.runOnUiThread(new Runnable() {
-              @Override
-              public void run() {
-            	  AlertDialog.Builder builder = new AlertDialog.Builder(cnrAct.getContext());
-                  
-            		builder.setMessage("Do you want to open this link in an extenal web browser? ")
-            		.setCancelable(true)
-            		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            			public void onClick(DialogInterface dialog, int id) {
-            				dialog.dismiss();
-            				startUrlInChrome(strURLtoOpen);
-          					showInBrowser = true;
-            			}
-            		})
-            		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            			public void onClick(DialogInterface dialog, int id) {
-            				dialog.cancel();
-            				showInBrowser = false;
-            			}
-            		});
-            		AlertDialog alert = builder.create();
-            		alert.show();
-              }
-          });
-          final PluginResult pluginResult = new PluginResult(
-                  PluginResult.Status.OK,showInBrowser);
-          pluginResult.setKeepCallback(true);
-          callbackContext.sendPluginResult(pluginResult);
-          return true;
-      }
+            final String strURLtoOpen = args.getString(0);
 
-        
+            /*
+             * final boolean isPhonegapReady = (Boolean) args.get(0);
+             * Utils.log(TAG, "inside enableSlidingMenu n isSlidingEnabled " +
+             * isPhonegapReady);
+             */
+
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(
+                            cnrAct.getContext());
+
+                    builder.setMessage(
+                            "Do you want to open this link in an extenal web browser? ")
+                            .setCancelable(true)
+                            .setPositiveButton("Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                            startUrlInChrome(strURLtoOpen);
+                                            showInBrowser = true;
+                                        }
+                                    })
+                            .setNegativeButton("No",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            showInBrowser = false;
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK, showInBrowser);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        }
+
         return false;
     }
-    
+
     protected void startUrlInChrome(final String urlStr) {
-    	final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+        final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                 .getActivity();
-		Uri uri = Uri.parse(urlStr);
-		try {
-			Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
-			cnrAct.startActivity(launchBrowser);
-		} catch (ActivityNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+        Uri uri = Uri.parse(urlStr);
+        try {
+            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+            cnrAct.startActivity(launchBrowser);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
