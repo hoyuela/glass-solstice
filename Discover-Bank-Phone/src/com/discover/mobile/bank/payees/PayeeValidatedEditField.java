@@ -38,6 +38,10 @@ public class PayeeValidatedEditField extends ValidatedInputField {
 	/**
 	 * Pattern used to determine whether the user has entered a non-alphabetic character or space. 
 	 */
+	public final static Pattern NON_ALPHA_WITH_DASH = Pattern.compile("[^a-zA-Z' '-]");
+	/**
+	 * Pattern used to determine whether the user has entered a non-alphabetic character or space.
+	 */
 	public final static Pattern NON_ALPHA = Pattern.compile("[^a-zA-Z' ']");
 	/**
 	 * Pattern used to determine whether the user has entered a non-alphanumeric character or space. 
