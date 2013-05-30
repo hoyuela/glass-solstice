@@ -14,7 +14,7 @@ public interface BackgroundServiceCall {
 	 * 
 	 * @param value True to run service call silently in background, false otherwise.
 	 */
-	public void setIsBackgroundCall(boolean value);
+	void setIsBackgroundCall(boolean value);
 	
 	/**
 	 * Method used to determine whether some indication should displayed in the UI to show
@@ -22,5 +22,5 @@ public interface BackgroundServiceCall {
 	 * 
 	 * @return Returns true if running in background, false otherwise.
 	 */
-	public boolean isBackgroundCall();
+	boolean isBackgroundCall();
 }
