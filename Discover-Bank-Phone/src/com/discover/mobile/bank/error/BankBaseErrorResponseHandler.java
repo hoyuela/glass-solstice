@@ -80,7 +80,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * error response to the appropriate handler.
 	 */
 	@Override
-	public final boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
+	public boolean handleFailure(final NetworkServiceCall<?> sender, final ErrorResponse<?> errorResponse) {
 		boolean handled = false;
 
 		/**Set the last error that occurred*/
@@ -134,7 +134,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} 
 			//Handle bad bank status but good card status
-			else if((sender instanceof CreateBankSSOLoginCall) && errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
+			else if((sender instanceof CreateBankSSOLoginCall) && 
+					 errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
 				final Activity activity = DiscoverActivityManager.getActiveActivity();
 				if(activity instanceof BaseFragmentActivity){
 					((BaseFragmentActivity) activity).showCustomAlert(getBadBankStatusModal());
@@ -143,11 +144,13 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				}
 			}
 			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
-			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
+			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || 
+					 errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
 			//Strong Auth Errors
-			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
+			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || 
+					 errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
 				final BankStrongAuthDetails details = new BankStrongAuthDetails(msgErrResponse);
 
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
@@ -164,7 +167,8 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleHttpServiceUnavailableModal(msgErrResponse.getErrorMessage());
 				//Error Handling for 422 Unprocessable Entity
 			} else if( msgErrResponse.getHttpStatusCode() == BankHttpStatusCodes.HTTP_UNPROCESSABLE_ENTITY.getValue()  ) {
-				//Check if 422 could be meant for inline error handling, if it fails to handle them then send to generic handler
+				//Check if 422 could be meant for inline error handling, if it fails to handle them then send to 
+				//generic handler
 				final BankErrorHandler errorHandler = (BankErrorHandler)BankErrorHandler.getInstance();
 				if( !errorHandler.handleUnprocessableEntity(msgErrResponse) ) {
 					mErrorHandler.handleGenericError(msgErrResponse.getHttpStatusCode());
