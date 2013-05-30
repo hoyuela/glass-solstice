@@ -388,5 +388,8 @@
     <string name="E_103">Bad Request!</string>
     <string name="E_T_104">Connection Problem!</string>
     <string name="E_104">Could not connect to the server!</string>
+    
+    <string name="E_SA_SKIPPED_CONTENT">Some of our website features are unavailable at this time. We sincerely apologize for the inconvenience and are working to resolve the issue.</string>
+    <string name="E_SA_SKIPPED_TITLE">We\'re Sorry</string>
 
 </resources>
