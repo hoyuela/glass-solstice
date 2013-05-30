@@ -35,7 +35,7 @@ ssns.constant.url = {
 	STATEMENTS_URL  : RESTURL+"stmt/"+dfs.crd.stmt.shared.constant.STMT_WS_VERS+"/statements",
 	LATEPAY_TXT_URL : BASEURL + "/json/statements/latePayWarn.json",
 	STMT_TXT_URL    : BASEURL + "/json/statements/content.json",
-	STMT_URL        : HREF_URL + "cardmembersvcs/statements/app/stmt"
+	STMT_URL        : EXT_HREF_URL + "cardmembersvcs/statements/app/stmt"
 };
 
 /**

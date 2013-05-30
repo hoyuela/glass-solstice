@@ -2380,23 +2380,31 @@ dfs.crd.pymt.populatePayWarningPage = function(payWarnData,showVariable){
 			console.log("PayWarning Data penaltyVariableFixedInd"+payWarnData.penaltyVariableFixedInd);
 			console.log("PayWarning Data lateFeeWarningAmount"+payWarnData.lateFeeWarningAmount);
 			console.log("PayWarning Data defaultTermSavingsAmount"+payWarnData.defaultTermSavingsAmount);
+			if(incentiveCode == "000016" && incentiveTypeCode == "CBB"){
+					console.log("cardProductGroupCode it is DIT");
+					var latePayWarnText='If we do not receive your minimum payment by the date listed above, you may have to pay a late fee of up to $'+payWarnData.lateFeeWarningAmount+".";
+					$("#latePayWarnText").text(latePayWarnText);
+					}
 			if(showVariable){
 			$("#lateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 			$("#latePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
-				if(payWarnData.isNegativeAmortization){
+				if(!payWarnData.isNegativeAmortization){
 					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
 					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
 					$("#latePayWarnRow2").remove();
-				}else if(payWarnData.needTwoRowWarning){
-					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
-					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
-					$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
-					$("#defaultTermYears").text(payWarnData.defaultTermYears);
-					$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
-					$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+				}else
+					{
+					 $("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
+					 $("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					 if(payWarnData.needTwoRowWarning){						
+						$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
+						$("#defaultTermYears").text(payWarnData.defaultTermYears);
+						$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
+						$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+					}
 				}
 			}else{
-				$("#noMinPaylateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount  );
+				$("#noMinPaylateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 				$("#noMinPaylatePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
 			}
 		}

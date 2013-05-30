@@ -346,7 +346,7 @@
 	
 	dfs.crd.rwd.dgc.populateGiftCard2Page = function(){
 		try{		
-			var validPriorPagesOfgiftcar2= new Array("giftcard1","giftcardPurchaseAgrmnt","giftcardTerms");
+			var validPriorPagesOfgiftcar2= new Array("giftcard1","giftcardPurchaseAgrmnt","giftcardTerms","moreLanding");
 			if(jQuery.inArray(fromPageName, validPriorPagesOfgiftcar2) > -1 ){		
 		
 				var amountSelected;
@@ -649,7 +649,7 @@
         
         try{
             
-            var validPriorPagesOfgiftcar3= new Array("giftcard2");
+            var validPriorPagesOfgiftcar3= new Array("giftcard2","moreLanding");
             if(jQuery.inArray(fromPageName, validPriorPagesOfgiftcar3) > -1 ){
                 
                 var giftCardPostData = getDataFromCache("GIFTDATATOPOST");

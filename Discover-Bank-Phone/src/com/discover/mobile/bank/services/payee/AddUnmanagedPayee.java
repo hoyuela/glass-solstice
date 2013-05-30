@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.services.payee;
 
 import com.discover.mobile.bank.services.json.PhoneNumber;
+import com.discover.mobile.common.utils.StringUtility;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -93,18 +94,18 @@ public class AddUnmanagedPayee extends AddPayeeDetail {
 		
 		address = new Address();
 		address.type = null;
-		address.region = "";
-		address.postalCode = "";
-		address.locality = "";
+		address.region = StringUtility.EMPTY;
+		address.postalCode = StringUtility.EMPTY;
+		address.locality = StringUtility.EMPTY;
 		address.formattedAddress = null;
-		address.streetAddress = "";
-		address.extendedAddress = "";
+		address.streetAddress = StringUtility.EMPTY;
+		address.extendedAddress = StringUtility.EMPTY;
 		
 		phone = new PhoneNumber();	
-		phone.number = "";
-		phone.formatted = null;
-		phone.type = null;
+		phone.number = StringUtility.EMPTY;
+		phone.formatted = StringUtility.EMPTY;
+		phone.type = StringUtility.EMPTY;
 		
-		memo = "";	
+		memo = StringUtility.EMPTY;	
 	}
 }

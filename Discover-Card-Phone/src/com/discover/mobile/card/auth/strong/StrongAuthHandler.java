@@ -49,8 +49,13 @@ public class StrongAuthHandler {
     public static StrongAuthListener authListener;
     private final int SALOCKED = 1401;
     private final int NOTENROLLED = 1402;
+    private final int SKIPPED = 1404;
     private boolean skipCheck = false;
+    // Defect id 95164
+    public static final String FORGOT_BOTH_FLOW = "forgotbothflow";
+    public static final String FORGOT_PASSWORD_FLOW = "forgotpasswordflow";
 
+    // Defect id 95164
     /**
      * Constructor incase of
      * 
@@ -96,20 +101,30 @@ public class StrongAuthHandler {
                         authDetails.questionText);
                 strongAuth.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID,
                         authDetails.questionId);
-                
-                strongAuth.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);//DEFECT 96497 
-                
-                Log.i(TAG, "In Strong auth --"+context.getClass());
+
+                strongAuth.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);// DEFECT
+                                                                     // 96497
+
+                // Defect id 95164
+                if (context instanceof ForgotBothAccountInformationActivity) {
+                    strongAuth.putExtra(FORGOT_BOTH_FLOW, true);
+                } else if (context instanceof ForgotPasswordAccountInformationActivity) {
+                    strongAuth.putExtra(FORGOT_PASSWORD_FLOW, true);
+                }
+                // Defect id 95164
+
+                Log.i(TAG, "In Strong auth --" + context.getClass());
                 if (authListener != null) {
                     context.startActivity(strongAuth);
-                    Log.i(TAG, "In Strong auth "+context.getClass());
-                    if(context instanceof ForgotPasswordAccountInformationActivity ||
-                    		context instanceof ForgotBothAccountInformationActivity ||
-                    		context instanceof RegistrationAccountInformationActivity) //DEFECT 96355 
+                    Log.i(TAG, "In Strong auth " + context.getClass());
+                    if (context instanceof ForgotPasswordAccountInformationActivity
+                            || context instanceof ForgotBothAccountInformationActivity
+                            || context instanceof RegistrationAccountInformationActivity) // DEFECT
+                                                                                          // 96355
                     {
-                    	Log.i(TAG, "Finish him");
-                    	Activity activity = (Activity) context;
-                    	activity.finish();
+                        Log.i(TAG, "Finish him");
+                        Activity activity = (Activity) context;
+                        activity.finish();
                     }
                 } else {
                     ((Activity) context).startActivityForResult(strongAuth,
@@ -162,6 +177,7 @@ public class StrongAuthHandler {
                                     "--Error message-- "
                                             + bean.getErrorMessage());
 
+                            Log.i(TAG, "cache is " + cache);
                             // If error code is 401 and cache contains challenge
                             // then show strong auth question
                             if (bean.getErrorCode().contains(
@@ -177,6 +193,17 @@ public class StrongAuthHandler {
                                     "" + HttpURLConnection.HTTP_UNAUTHORIZED)
                                     && cache != null
                                     && cache.contains("skipped")) {
+                                Log.i(TAG, "yoyoooooo");
+                                cardShareDataStore
+                                        .deleteCacheObject("WWW-Authenticate");
+                                if (authListener != null) {
+                                    Log.i(TAG, "yoyoooooo11");
+                                    authListener.onStrongAuthSkipped(data);
+                                }
+                            } else if (bean.getErrorCode().contains(
+                                    "" + HttpURLConnection.HTTP_FORBIDDEN)
+                                    && bean.getErrorCode().contains(
+                                            "" + SKIPPED)) {
                                 if (authListener != null) {
                                     authListener.onStrongAuthSkipped(data);
                                 }

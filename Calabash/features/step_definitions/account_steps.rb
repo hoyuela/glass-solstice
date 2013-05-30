@@ -16,6 +16,10 @@ Given /^I select a transaction$/ do
 	# but the same queries within the steps files fail with "list not found" (for any index)
 	# Workaround: select the first date in the list
 	performAction('click_on_text', "/")
+
+	#get first item of the list
+	#first_row = performAction('get_list_item_text', '1', '1')
+	#peorformAction("click_on_view_by_id", first_row)
 end
 
 # Selects the down arrow next to the Account name which toggles details (eg. balance).

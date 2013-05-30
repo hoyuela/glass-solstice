@@ -44,6 +44,7 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
+import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -87,7 +88,10 @@ public class EnhancedAccountSecurityActivity extends
 
     private static final String TAG = EnhancedAccountSecurityActivity.class
             .getSimpleName();
-
+    // Defect id 95164
+    public static final String FORGOT_BOTH_FLOW = "forgotbothflow";
+    public static final String FORGOT_PASSWORD_FLOW = "forgotpasswordflow";
+    // Defect id 95164
     private String strongAuthQuestion;
     private String strongAuthQuestionId;
     /**
@@ -139,7 +143,7 @@ public class EnhancedAccountSecurityActivity extends
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
      */
-    private static final int MIN_ANSWER_LENGTH = 2;
+    private static final int MIN_ANSWER_LENGTH = 1;
 
     private CardEventListener authAnsListener;
     private int questionAttemptCounter = 0;
@@ -149,6 +153,12 @@ public class EnhancedAccountSecurityActivity extends
     private HelpItemGenerator helpNum, helpInfo, helpFaq;
     private HelpWidget help;
     private StrongAuthListener authListener;
+
+    // Defect id 95164
+    // Back handling
+    private boolean forgotBoth = false;
+    private boolean forgotPassword = false;
+    // Defect id 95164
 
     /**
      * Callback to watch the text field for empty/non-empty entered text from
@@ -184,7 +194,8 @@ public class EnhancedAccountSecurityActivity extends
         restoreState(savedInstanceState);
 
         // Disabling continue button only applies to Bank
-        if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT) {
+       // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
+        {
             // Add text change listener to determine when the user has entered
             // text
             // to enable/disable continue button
@@ -193,6 +204,7 @@ public class EnhancedAccountSecurityActivity extends
             // Disable continue button by default
             continueButton.setEnabled(false);
         }
+        
         // Adding Tool Tip menu
         // setupClickableHelpItem();
         /**
@@ -239,7 +251,7 @@ public class EnhancedAccountSecurityActivity extends
                     } else {
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
-                       // errorMessage.setVisibility(View.VISIBLE);
+                        // errorMessage.setVisibility(View.VISIBLE);
                         questionAnswerField.setText("");
                         questionAnswerField.setErrors();
                         // questionAnswerField.updateAppearanceForInput();
@@ -314,7 +326,7 @@ public class EnhancedAccountSecurityActivity extends
             errorMessage.setVisibility(inputErrorVisibility);
             Utils.log(TAG, "inputErrorText " + inputErrorText
                     + " inputErrorVisibility " + inputErrorVisibility);
-             restoreInputField();
+            restoreInputField();
 
             // restoreExpandableHelpMenu();
         }
@@ -402,6 +414,10 @@ public class EnhancedAccountSecurityActivity extends
                     .getString(IntentExtraKey.STRONG_AUTH_QUESTION);
             strongAuthQuestionId = extras
                     .getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
+            // Defect id 95164
+            forgotBoth = extras.getBoolean(FORGOT_BOTH_FLOW);
+            forgotPassword = extras.getBoolean(FORGOT_PASSWORD_FLOW);
+            // Defect id 95164
             questionLabel.setText(strongAuthQuestion);
 
             if (StrongAuthHandler.authListener != null) {
@@ -559,8 +575,16 @@ public class EnhancedAccountSecurityActivity extends
     @Override
     public void onBackPressed() {
         activityResult = RESULT_CANCELED;
+        // Defect id 95164
+        if (forgotBoth || forgotPassword) {
+            final Intent forgotCredentialsActivity = new Intent(this,
+                    ForgotCredentialsActivity.class);
+            startActivity(forgotCredentialsActivity);
+            forgotBoth = false;
+            forgotPassword = false;
+        }
         finish();
-
+        // Defect id 95164
     }
 
     /**

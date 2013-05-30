@@ -12,10 +12,12 @@ import org.apache.cordova.api.CordovaPlugin;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Message;
@@ -127,7 +129,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 
 			cwv.loadUrl("file:///android_asset/www/index.html", 60000);
 
-			MyWebviewClient myWebViewClient = new MyWebviewClient(this);
+			MyWebviewClient myWebViewClient = new MyWebviewClient(this, mContext);
 			myWebViewClient.setWebView(cwv);
 			cwv.setWebViewClient(myWebViewClient);
 
@@ -455,17 +457,48 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	}
 
 	class MyWebviewClient extends CordovaWebViewClient {
-
+	    Context context;
 		/**
 		 * Constructor
 		 * 
 		 * @param cordova
 		 */
-		public MyWebviewClient(CordovaInterface cordova) {
+		public MyWebviewClient(CordovaInterface cordova, Context context) {
 			super(cordova);
+			this.context = context;
 			// TODO Auto-generated constructor stub
 		}
-
+		
+		private void showDialogForExternalLink(final String strURL)
+		{
+    		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            
+            builder.setMessage("Do you want to open this link in an extenal web browser? ")
+            .setCancelable(true)
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    startUrlInChrome(strURL);
+                }
+            })
+            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+		}
+		protected void startUrlInChrome(final String urlStr) {
+	        Uri uri = Uri.parse(urlStr);
+	        try {
+	            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+	            context.startActivity(launchBrowser);
+	        } catch (ActivityNotFoundException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -477,9 +510,32 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			// TODO Auto-generated method stub
 			super.onPageStarted(view, url, favicon);
-			Utils.log(TAG, "url loaded on page started.... " + url);
-		}
+			/* Defect 95810 and 96379*/
+			if (url.indexOf("http://www.google.com/intl")>-1 &&
+			    url.indexOf("help/terms_maps.html")>-1
+			   )
+			{
+			    //cancelLoadUrl();
+			    //cwv.goBack();
+			    view.stopLoading();
+			    showDialogForExternalLink(url);
+			}
+			else if (url.indexOf("http://maps.google.com/maps?")>-1 ||
+			        url.indexOf("facebook.com")>-1 || 
+                    url.indexOf("linkedin.com")>-1 || 
+			        url.indexOf("twitter.com")>-1
+			        )
+            {
+                //cancelLoadUrl();
+                //cwv.goBack();
+                view.stopLoading();
+                showDialogForExternalLink(url);
+            }
 
+			/* Defect 95810 and 96379*/
+			Utils.log(TAG, "MyWebviewClient on pageStarted.... " + url);
+		}
+		
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -491,7 +547,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 		public void onPageFinished(WebView arg0, String arg1) {
 			// TODO Auto-generated method stub
 			super.onPageFinished(arg0, arg1);
-			Utils.log(TAG, "on pagefinished.... " + arg1);
+			Utils.log(TAG, "MyWebviewClient on pagefinished.... " + arg1);
 
 		}
 
