@@ -16,13 +16,13 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 public final class BankStringFormatter {
-	private final static String TAG = BankStringFormatter.class.getSimpleName();
+	private static final String TAG = BankStringFormatter.class.getSimpleName();
 	
 	private BankStringFormatter() {
 		Log.e(TAG, "Cannot create instance of " + this.getClass().getSimpleName());
 	}
 	
-	public final static String EMPTY_DOLLAR = "$0.00";
+	public static final String EMPTY_DOLLAR = "$0.00";
 	
 	/**String representing a negative*/
 	public static final String NEGATIVE = "-";

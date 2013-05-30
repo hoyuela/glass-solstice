@@ -28,7 +28,7 @@ import com.google.common.base.Strings;
  *
  */
 public class FAQDetailFragment extends BaseFragment {
-	private final static String SCROLL_Y = "a";
+	private static final String SCROLL_Y = "a";
 
 	/** The list of FAQ items that will be shown in this Fragment */
 	private final List<FAQListItem>faqItems = new ArrayList<FAQListItem>();

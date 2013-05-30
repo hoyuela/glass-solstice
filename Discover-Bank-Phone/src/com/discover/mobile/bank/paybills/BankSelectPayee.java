@@ -34,7 +34,7 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class BankSelectPayee extends BaseFragment{
-	final static String TAG = BankSelectPayee.class.getSimpleName();
+	static final String TAG = BankSelectPayee.class.getSimpleName();
 
 	/**List of payees*/
 	private ListPayeeDetail payees;

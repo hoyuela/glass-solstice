@@ -34,7 +34,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * @author henryoyuela
  *
  */
-final public class BankPayConfirmFragment extends BankOneButtonFragment {
+public final class BankPayConfirmFragment extends BankOneButtonFragment {
 	/**
 	 * Holds list of content that is to be displayed in the contentTable linearLayout created by the
 	 * base class.

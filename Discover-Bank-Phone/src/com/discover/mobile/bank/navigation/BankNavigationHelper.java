@@ -12,7 +12,7 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
  * @author henryoyuela
  *
  */
-final public class BankNavigationHelper {
+public final class BankNavigationHelper {
 
 	/**
 	 * This is a utility class and should not have a public or default constructor.
