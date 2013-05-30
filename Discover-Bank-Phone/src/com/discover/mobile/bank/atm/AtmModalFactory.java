@@ -13,9 +13,9 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
+import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalBottomTwoButtonView;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -43,10 +43,10 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to enable
 	 * their location services
 	 */
-	public static ModalAlertWithTwoButtons getSettingsModal(final Context context, final LocationFragment fragment){
+	public static BankModalAlertWithTwoButtons getSettingsModal(final Context context, final LocationFragment fragment){
 		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
 		final ModalBottomTwoButtonView bottom = new ModalDefaultTwoButtonBottomView(context, null);
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, bottom);
+		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, bottom);
 		top.setTitle(R.string.atm_location_modal_service_title);
 		top.setContent(R.string.atm_location_modal_service_content);
 		top.showErrorIcon(false);
@@ -80,18 +80,17 @@ public final class AtmModalFactory{
 	 * @param contentId - R String ID for the modal message
 	 * @return the modal that includes the location allow / decline buttons.
 	 */
-	private static ModalAlertWithTwoButtons getLocationModal(final Context context, 
+	private static BankModalAlertWithTwoButtons getLocationModal(final Context context, 
 			final LocationFragment fragment, final int titleId, final int contentId) {
 		final ModalDefaultTopView top = new ModalDefaultTopView(context, null);
 		final ModalTwoButtonWhiteBottom bottom = new ModalTwoButtonWhiteBottom(context, null);
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, bottom);
+		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, bottom);
 		top.setTitle(titleId);
 		top.setContent(contentId);
 		top.showErrorIcon(false);
 		top.hideNeedHelpFooter();
 		bottom.setOkButtonText(R.string.atm_location_modal_allow);
 		bottom.setCancelButtonText(R.string.atm_location_modal_decline);
-		bottom.getCancelButton().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.white_button));
 		bottom.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -118,10 +117,10 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static ModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, 
+	public static BankModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, 
 			final LocationFragment fragment){
 		final AtmGetLocationModal top = new AtmGetLocationModal(context, null);
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(context, top, null);
+		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, null);
 		final String content = context.getString(R.string.atm_location_modal_content);
 		top.getContentView().setText(Html.fromHtml(content));
 		top.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
@@ -149,7 +148,7 @@ public final class AtmModalFactory{
 	 * @param fragment - fragment using the modal
 	 * @return modal that will alert the user to failing to get the users current location and ask them to retry.
 	 */
-	public static ModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, 
+	public static BankModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, 
 			final LocationFragment fragment){
 		return getLocationModal(context, fragment, 
 				R.string.atm_location_timeout_title, R.string.atm_location_timeout_text);

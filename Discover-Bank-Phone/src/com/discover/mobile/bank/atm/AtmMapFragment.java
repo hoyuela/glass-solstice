@@ -36,12 +36,12 @@ import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -55,8 +55,8 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
- implements LocationFragment, AtmMapSearchFragment,
-		FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
+implements LocationFragment, AtmMapSearchFragment,
+FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -72,18 +72,18 @@ public abstract class AtmMapFragment extends BaseFragment
 
 	/**Key to get the state of the help modal from the bundle*/
 	private static final String ATM_HELP_MODAL = "atmModal";
-	
+
 	/**Key to get the state of the Leaving App modal from the bundle*/
 	private static final String LEAVING_APP_MODAL = "leaveApp";
 
 	/**Modal that asks the user if the app can use their current location*/
-	private ModalAlertWithTwoButtons locationModal;
+	private BankModalAlertWithTwoButtons locationModal;
 
 	/**Modal that lets the user know that their location services are disabled*/
-	private ModalAlertWithTwoButtons settingsModal;
+	private BankModalAlertWithTwoButtons settingsModal;
 
 	/**Modal that lets the user know that getting of their location failed*/
-	private ModalAlertWithTwoButtons locationFailureModal;
+	private BankModalAlertWithTwoButtons locationFailureModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
@@ -187,12 +187,12 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
 		 */
 		if( getChildFragmentManager().getBackStackEntryCount() == 0 ) {
-			this.getChildFragmentManager()
+			getChildFragmentManager()
 			.beginTransaction()
 			.add(R.id.discover_map, fragment)
 			.addToBackStack(fragment.getClass().getSimpleName())
 			.commit();
-			this.getChildFragmentManager()
+			getChildFragmentManager()
 			.beginTransaction()
 			.add(R.id.discover_list, listFragment)
 			.addToBackStack(listFragment.getClass().getSimpleName())
@@ -240,7 +240,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void onResume(){
 		super.onResume();
 
-		final NavigationRootActivity activity = ((NavigationRootActivity)this.getActivity());
+		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
 		activity.setCurrentFragment(this);
 		setUpMap();
 		disableMenu();
@@ -270,7 +270,7 @@ public abstract class AtmMapFragment extends BaseFragment
 
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
-		} else if (this.isLeavingModalShowing) {
+		} else if (isLeavingModalShowing) {
 			showTerms();
 		}
 	}
@@ -281,7 +281,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	private void determineNavigationStatus() {
 		mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
 		if(NOT_ENABLED == locationStatus){
-			locationStatus = (locationManagerWrapper.areProvidersenabled()) ? ENABLED : NOT_ENABLED;
+			locationStatus = locationManagerWrapper.areProvidersenabled() ? ENABLED : NOT_ENABLED;
 		}
 
 		switch(locationStatus){
@@ -360,7 +360,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		}else{
 			if(null == locationModal || !locationModal.isShowing()){
 				locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-				((NavigationRootActivity)this.getActivity()).showCustomAlert(locationModal);
+				((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
 			}
 		}
 	}
@@ -372,7 +372,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	@Override
 	public void performSearch(final String text) {		
 		isLoading = false;
-		((NavigationRootActivity)this.getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog();
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
 		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
 	}
@@ -381,7 +381,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void onStart(){
 		super.onStart();
 
-		final NavigationRootActivity activity = (NavigationRootActivity) this.getActivity();
+		final NavigationRootActivity activity = (NavigationRootActivity) getActivity();
 		activity.highlightMenuItems(getGroupMenuLocation(), getSectionMenuLocation());
 	}
 
@@ -392,8 +392,8 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void handleAddressToLocationResponse(final Bundle bundle){
 		final AddressToLocationDetail addressResults = (AddressToLocationDetail) bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		if(null == addressResults || null == addressResults.results || addressResults.results.isEmpty()){
-			((NavigationRootActivity)this.getActivity()).closeDialog();
-			AtmModalFactory.getInvalidAddressModal(this.getActivity()).show();
+			((NavigationRootActivity)getActivity()).closeDialog();
+			AtmModalFactory.getInvalidAddressModal(getActivity()).show();
 		}else{
 			final AddressToLocationResultDetail address = addressResults.results.get(0);
 			final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -401,7 +401,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			newLocation.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
-			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, this.getActivity());
+			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, getActivity());
 
 			zoomToLocation(newLocation);
 
@@ -441,16 +441,16 @@ public abstract class AtmMapFragment extends BaseFragment
 		final boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 		if(isOnMap){
 			showList();
-			mapButton.setBackgroundResource((isLandscape) ? 
+			mapButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_pinview_button_landscape : R.drawable.atm_pinview_button);
-			listButton.setBackgroundResource((isLandscape) ? 
+			listButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_listview_button_ds_landscape : R.drawable.atm_listview_button_ds);
 			isOnMap = false;
 		}else{
 			showMap();
-			mapButton.setBackgroundResource((isLandscape) ? 
+			mapButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
-			listButton.setBackgroundResource((isLandscape) ? 
+			listButton.setBackgroundResource(isLandscape ? 
 					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
 			isOnMap = true;
 		}
@@ -503,14 +503,14 @@ public abstract class AtmMapFragment extends BaseFragment
 	 * Disable the sliding menu
 	 */
 	private void disableMenu(){
-		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		((NavigationRootActivity)getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 
 	/**
 	 * Enable the sliding menu
 	 */
 	private void enableMenu(){
-		((NavigationRootActivity)this.getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		((NavigationRootActivity)getActivity()).getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
 
 	/**
@@ -521,7 +521,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	public void handleReceivedData(final Bundle bundle){
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
-		int endIndex = (currentIndex + INDEX_INCREMENT);
+		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
 			AtmModalFactory.getNoResultsModal(getActivity());
 			endIndex = 0;
@@ -554,8 +554,8 @@ public abstract class AtmMapFragment extends BaseFragment
 	}
 
 	private boolean isListEmpty(){
-		return (null == results || null == results.results ||
-				null == results.results.atms || results.results.atms.isEmpty());
+		return null == results || null == results.results ||
+				null == results.results.atms || results.results.atms.isEmpty();
 	}
 
 	@Override
@@ -564,7 +564,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		hasLoadedAtms = false;
 		mapWrapper.clear();
 		currentIndex = 0;
-		((NavigationRootActivity)this.getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog();
 		locationManagerWrapper.getLocation();
 	}
 
@@ -577,7 +577,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			locationManagerWrapper.stopGettingLocaiton();
 		}
 		locationStatus = LOCKED_ON;
-		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, this.getActivity());
+		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
 		if(null == location){return;}
 
 		zoomToLocation(location);
@@ -652,7 +652,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		 * if another fragment has been placed on top of this one in the
 		 * hosting activities back stack.
 		 */
-		this.onStoreState(getArguments());
+		onStoreState(getArguments());
 	}
 
 	/**
@@ -693,7 +693,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 */
 	@Override
 	public void handleTimeOut() {
-		final NavigationRootActivity activity = (NavigationRootActivity)this.getActivity();
+		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
 		activity.closeDialog();
 		locationManagerWrapper.stopGettingLocaiton();
 		locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(activity, this);
@@ -727,8 +727,8 @@ public abstract class AtmMapFragment extends BaseFragment
 			isListLand = false;
 		}
 
-		this.getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
-		this.getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().show(listFragment).commitAllowingStateLoss();
 
 		if(!searchBar.isSearchExpanded()){
 			searchBar.showBar();
@@ -746,14 +746,14 @@ public abstract class AtmMapFragment extends BaseFragment
 		isOnMap = true;
 		isListLand = false;
 		if(null == fragment.getMap()){
-			final View frame = this.getView().findViewById(R.id.discover_map);
+			final View frame = getView().findViewById(R.id.discover_map);
 			final RelativeLayout.LayoutParams params = 
 					new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.BELOW, R.id.full_search_bar);
 			frame.setLayoutParams(params);
 		}
-		this.getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
-		this.getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().hide(listFragment).commitAllowingStateLoss();
+		getChildFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
 		if(!searchBar.isSearchExpanded()){
 			searchBar.hideBar();
 		}
@@ -778,7 +778,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		boolean loadMore = true;
 		if(isListEmpty()){
 			loadMore =  false;
-		}else if(currentIndex == (MAX_LOADS * INDEX_INCREMENT)){
+		}else if(currentIndex == MAX_LOADS * INDEX_INCREMENT){
 			loadMore = false;
 		}else if(results.results.atms.size() == currentIndex){
 			loadMore =  false;
@@ -874,7 +874,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * 80 / 100;
 
 			if (event.getRawX() > locationOfLink) {
-				this.showTerms();
+				showTerms();
 			}
 		}
 		return false;
