@@ -12,13 +12,7 @@ var RESTURL;
 var HREF_URL;
 var EXT_HREF_URL; // nidhi : adding it for 13.1.1. This will be used for any URL pointing to Big Browser
 var s_account;
-if (navigator.userAgent.match(/iPhone/))
- {
-  var shareURL = "https://secure.opinionlab.com/ccc01/o.asp?id=yuNPawGE";
- }
-else {
-  var shareURL = "https://secure.opinionlab.com/ccc01/o.asp?id=OJMQyJQI";  
- }
+var shareURL = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo";  
 
 /**
  *  Environment function controls app version and environment variables

@@ -106,7 +106,9 @@ public final class CommonUtils {
 		final Calendar calendarValue = Calendar.getInstance();
 		calendarValue.set(Calendar.YEAR, year);
 		calendarValue.set(Calendar.MONTH, month);
-		
+		//Defect id 97729 by Cognizant
+		calendarValue.set(Calendar.DAY_OF_MONTH, 1);
+		//Defect id 97729
 		return new SimpleDateFormat("MM/yy", Locale.getDefault()).format(calendarValue.getTime());
 	}
 	
