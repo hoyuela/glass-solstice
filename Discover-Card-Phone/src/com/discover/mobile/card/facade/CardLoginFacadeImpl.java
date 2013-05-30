@@ -14,18 +14,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.facade.CardLoginFacade;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.facade.LoginActivityInterface;
-
+import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthHandler;
+import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -37,12 +35,10 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.card.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.card.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.CardSessionContext;
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
@@ -52,8 +48,16 @@ import com.discover.mobile.card.services.auth.BankPayload;
 import com.discover.mobile.card.services.auth.SSOAuthenticate;
 import com.discover.mobile.card.services.push.GetPushData;
 import com.discover.mobile.card.services.push.GetPushRegistration;
-
-import com.discover.mobile.PushConstant;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.facade.CardLoginFacade;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -272,24 +276,27 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
             @Override
             public void onStrongAuthSkipped(Object data) {
-                // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                        CardLoginFacadeImpl.this);
-                cardErrorResHandler.handleCardError((CardErrorBean) data,
-                        new CardErrorCallbackListener() {
-
-                            @Override
-                            public void onButton2Pressed() {
-                                // TODO Auto-generated method stub
-
-                            }
-
-                            @Override
-                            public void onButton1Pressed() {
-                                // Go to AC Home
-                                getAcHome();
-                            }
-                        });
+            	final Activity activity = DiscoverActivityManager.getActiveActivity();
+            	final ModalDefaultTopView top = new ModalDefaultTopView(activity, null);
+            	final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(activity, null);
+            	final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity, top, bottom);
+            	top.setTitle(R.string.E_SA_SKIPPED_TITLE);
+            	top.setContent(R.string.E_SA_SKIPPED_CONTENT);
+            	top.showErrorIcon(true);
+            	top.hideFeedbackView();
+            	bottom.setButtonText(R.string.ok);
+            	bottom.getButton().setOnClickListener(new OnClickListener(){
+            		@Override
+            		public void onClick(final View v){
+            			getAcHome();
+            			modal.dismiss();
+            		}
+            	});
+               if(activity instanceof BaseFragmentActivity){
+            	   ((BaseFragmentActivity) activity).showCustomAlert(modal);
+               }else if(activity instanceof BaseActivity){
+            	   ((BaseActivity) activity).showCustomAlert(modal);
+               }
             }
 
             @Override
