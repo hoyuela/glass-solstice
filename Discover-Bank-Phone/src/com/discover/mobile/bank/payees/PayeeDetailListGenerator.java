@@ -82,7 +82,7 @@ final public class PayeeDetailListGenerator  {
 		nickName.getEditableField().setMinimum(2);
 		final InputFilter[] inputFilters = { new InputFilter.LengthFilter(30) };
 		nickName.getEditableField().setFilters(inputFilters);
-		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHA);
+		nickName.getEditableField().setInvalidPattern(PayeeValidatedEditField.NON_ALPHA_WITH_DASH);
 		nickName.getEditableField().setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
 		nickName.enableEditing(isEditable);
 		nickName.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
