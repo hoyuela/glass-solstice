@@ -67,11 +67,11 @@ public class PhoneNumberTextWatcher implements TextWatcher {
             // Make sure user is deleting one char, without a selection
             final int selStart = Selection.getSelectionStart(s);
             final int selEnd = Selection.getSelectionEnd(s);
-            if (s.length() > 1 // Can delete another character
-                    && count == 1 // Deleting only one character
-                    && after == 0 // Deleting
-                    && s.charAt(start) == '-' // a hyphen
-                    && selStart == selEnd) { // no selection
+            
+            //Check if the function can delete another character and if it is a hyphen and also if the beginning and ending
+            //selection matches.
+            if (s.length() > 1 && count == 1 && after == 0 && s.charAt(start) == '-' && selStart == selEnd) { 
+            	// no selection
                 mDeletingHyphen = true;
                 mHyphenStart = start;
                 // Check if the user is deleting forward or backward

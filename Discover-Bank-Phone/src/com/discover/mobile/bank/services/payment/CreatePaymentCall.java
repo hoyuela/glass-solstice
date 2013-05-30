@@ -22,7 +22,8 @@ public class CreatePaymentCall extends BankJsonResponseMappingNetworkServiceCall
 	
 	public CreatePaymentCall(final Context context, final AsyncCallback<PaymentDetail> callback,
 			final CreatePaymentDetail modelClass) {
-		super(context, new PostCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY)) {{ //$NON-NLS-1$
+		super(context, new PostCallParams(BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY)) {{ 
+			//$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 

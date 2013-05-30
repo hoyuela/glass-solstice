@@ -750,8 +750,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 			result = (info.orientation + degrees) % twoPi;
-			result = (twoPi - result) % twoPi;  // compensate the mirror
-		} else {  // back-facing
+			
+			// compensate the mirror
+			result = (twoPi - result) % twoPi;  
+		} else {  
+			// back-facing
 			result = (info.orientation - degrees + twoPi) % twoPi;
 		}
 

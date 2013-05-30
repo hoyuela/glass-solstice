@@ -234,11 +234,11 @@ public final class BankStringFormatter {
 	 */
 	public static String formatDate(final String year, final String month, final String day) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(month); // Month
+		sb.append(month); 
 		sb.append('/');
-		sb.append(day); // Day
+		sb.append(day); 
 		sb.append('/');
-		sb.append(year); // Year
+		sb.append(year); 
 		return sb.toString();
 	}
 	

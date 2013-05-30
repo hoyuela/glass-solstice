@@ -53,7 +53,8 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 		return new OnClickListener() {
 
 			@Override
-			public void onClick(final View v) {/**Start download for bank holiday concurrently with payees download*/
+			public void onClick(final View v) {
+				/**Start download for bank holiday concurrently with payees download*/
 				if( BankUser.instance().getHolidays().isEmpty() ) {
 					BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
 				}
