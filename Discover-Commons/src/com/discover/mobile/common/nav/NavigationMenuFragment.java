@@ -59,6 +59,15 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 				// Set the new selected section in the menu
 				NavigationIndex.setSubIndex(subSection + group);
 			}
+			
+			//Defect ID:97724 by Cognizant
+			else if(getListView().getAdapter().getItem(group) instanceof FragmentNavigationItem)
+			{
+			    // This ElseIf Block written by Cognizant
+	            // Setting 0 as Sub Index if the Menu is not having sub section to fix HighLight issue for Card Side
+			    NavigationIndex.setSubIndex(0);
+			}
+			//Defect ID:97724
 		}
 	}
 	

@@ -124,3 +124,8 @@ HybridControl.prototype.deviceReadyUpdate = function(successCallback, failureCal
 HybridControl.prototype.showOnBrowser = function(successCallback, failureCallBack,isDeviceReady) {
 	cordova.exec(successCallback, failureCallBack, 'HybridControlPlugin', 'checkForExternalBrowser', [isDeviceReady]);
 }
+
+HybridControl.prototype.disableMenuButton = function() {
+	cordova.exec(null, null, 'HybridControlPlugin', 'disableMenuButton', []);
+}
+

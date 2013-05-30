@@ -138,4 +138,22 @@ public final class ServiceCallSessionManager {
 		throw new UnsupportedOperationException("This class is non-instantiable");
 	}
 	
+	//Implemented by Cognizant for Provide Feedback functionality 
+    /**
+     * Returns the V1st Cookie previously cached after a successful PreAuth call.
+     * 
+     * @return V1st Cookie value in a String Object
+     */
+    public static String getV1stCookie() {
+        String token = null;
+        
+        // CookieManager is assumed to bring its own thread safety
+        for(final HttpCookie cookie : cookieManager.getCookieStore().getCookies()) {            
+            if("v1st".equalsIgnoreCase(cookie.getName())){
+                token = cookie.getValue();
+            }
+        }
+        
+        return token;
+    }
 }
