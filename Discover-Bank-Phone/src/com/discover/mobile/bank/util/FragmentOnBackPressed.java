@@ -11,10 +11,10 @@ public interface FragmentOnBackPressed {
 	/**
 	 * The onBackPressed method that an Activity normally calls.
 	 */
-	public void onBackPressed();
+	void onBackPressed();
 	
 	/**
 	 * Interface used for disabling back press from a fragment
 	 */
-	public boolean isBackPressDisabled();
+	boolean isBackPressDisabled();
 }
