@@ -68,7 +68,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
-		updateGreeting();
 
 		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
 
@@ -88,15 +87,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
-
-		//If card and bank are authenticated then show the down arrow, since we are here
-		//Bank must be authenticated already so we only need to check to see if the card is 
-		//authenticated.
-		if(BankUser.instance().isSsoUser()){
-			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
-			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
-			setupAccountToggle();
-		}
 
 		if (savedInstanceState != null
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
@@ -159,10 +149,27 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		return nameBuilder.toString();
 	}
 
+	/**
+	 * Create and run a thread which will update the salutation on the home screen based on the time of day.
+	 * Will update the salutationLabel and re-calculate the dropdown position by calling updateDropdownPosition().
+	 */
 	private void updateGreeting() {
-		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
-
-		new Thread(new SalutationUpdater(salutation, getFirstName(), getActivity())).start();
+		final TextView salutationLabel = (TextView) view.findViewById(R.id.account_name);
+		new Thread(new SalutationUpdater(salutationLabel, getFirstName(), this)).start();
+	}
+	
+	/**
+	 * Calculates the position of the SSO dropdown arrow based on the position of the bank logo.
+	 */
+	public final void updateDropdownPosition() {
+		//If card and bank are authenticated then show the down arrow, since we are here
+		//Bank must be authenticated already so we only need to check to see if the card is 
+		//authenticated.
+		if(BankUser.instance().isSsoUser() && view != null){
+			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
+			setupAccountToggle();
+		}
 	}
 
 	/**
