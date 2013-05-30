@@ -6,6 +6,7 @@ package com.discover.mobile.bank.help;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author jthornton
  *
  */
-public class CardLoggedOutFAQActivity  extends NavigationRootActivity{
+public class CardLoggedOutFAQActivity extends NavigationRootActivity implements OnClickListener {
 	/**
 	 * Create the activity
 	 */
@@ -115,5 +116,14 @@ public class CardLoggedOutFAQActivity  extends NavigationRootActivity{
 		navigationToggle.setVisibility(View.INVISIBLE);
 		logout.setVisibility(View.INVISIBLE);
 		titleView.setText(getResources().getString(R.string.card_faq_title));
+
+		backButtonX.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(final View sender) {
+		if (sender.getId() == backButtonX.getId()) {
+			onBackPressed();
+		}
 	}
 }
