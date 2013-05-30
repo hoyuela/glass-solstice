@@ -440,6 +440,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
+			
+			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
