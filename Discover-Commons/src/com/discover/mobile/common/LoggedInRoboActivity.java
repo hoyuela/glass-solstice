@@ -27,8 +27,8 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	private static final float FADE = 0.35f;
 	/** Flag used to know when in the middle of a log out */
 	private static boolean pendingLogout = false;
-	private  ImageView navigationToggle;
-	private ImageView backButtonX;
+	protected ImageView navigationToggle;
+	protected ImageView backButtonX;
 
 	/**
 	 * Flag used for if its bank or not

@@ -103,8 +103,10 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
-		final ImageView navigationToggle = (ImageView) findViewById(R.id.navigation_button);
+		navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
+		backButtonX = (ImageView) findViewById(R.id.navigation_back_x_button);
+
 		titleView.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.INVISIBLE);
 		logout.setVisibility(View.INVISIBLE);
