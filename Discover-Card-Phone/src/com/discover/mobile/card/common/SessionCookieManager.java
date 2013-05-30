@@ -11,6 +11,8 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.discover.mobile.common.net.ServiceCallSessionManager;
+
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
@@ -139,7 +141,10 @@ public final class SessionCookieManager {
 					Utils.log("setCookieValues",
 							"token value" + cookie.getValue());
 				} else if (vfirst.equalsIgnoreCase(cookie.getName())) {
-					setVone(cookie.getValue());
+				    //setVone(cookie.getValue());
+                    // V1st cookie is received from PreAuth and will be used in All Provide Feedback
+				    Utils.log("V1st cookie:" + ServiceCallSessionManager.getV1stCookie());
+                    setVone(ServiceCallSessionManager.getV1stCookie());
 				} else if ("dcsession".equalsIgnoreCase(cookie.getName())) {
 					setDcsession(cookie.getValue());
 				} else if ("STRONGAUTHSVCS".equalsIgnoreCase(cookie.getName())) {

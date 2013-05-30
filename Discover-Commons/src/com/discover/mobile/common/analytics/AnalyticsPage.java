@@ -25,6 +25,8 @@ public interface AnalyticsPage {
 	
 	static final String FORCED_UPGRADE = "forceUpgrade-pg";
 	static final String OPTIONAL_UPGRADE = "optionalUpgrade-pg";
+	static final String STATEMENT_IMAGES = "statement-images-pg";
+	static final String STRONG_AUTH_FIRST_QUESTION = "strongAuthFirstQues-pg";
 	
 	/**Analytic for going to the push alert history*/
 	static final String PUSH_ALERT_HISTORY = "alertHistory-pg";

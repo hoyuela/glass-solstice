@@ -146,8 +146,11 @@ dfs.crd.rwd.loadredemptionLanding = function() {
 
 		$("#redemption-opts").click(
 				function() {
-					window.plugins.childBrowser
-					.showWebPage(dfs.crd.rwd.REDEMPTION_OPTIONS_URL);
+					//Defect fixed 96787
+					HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},dfs.crd.rwd.REDEMPTION_OPTIONS_URL);
+					/*window.plugins.childBrowser
+					.showWebPage(dfs.crd.rwd.REDEMPTION_OPTIONS_URL);*/
+					//Defect fixed 96787
 				});
 
 		dfs.crd.rwd.insuficientErrorPresent = 'false';
