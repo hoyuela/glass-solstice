@@ -96,7 +96,7 @@ public class BankPayTerms extends BaseFragment{
 	 */
 	@SuppressLint("NewApi")
 	private void setupWebView() {
-		termsWebView.loadUrl(BankUrlManager.getBaseUrl());
+		termsWebView.loadUrl(BankUrlManager.getPayBillsTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
