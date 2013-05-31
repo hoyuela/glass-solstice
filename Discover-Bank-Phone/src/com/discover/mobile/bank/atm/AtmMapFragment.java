@@ -383,14 +383,19 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 	 */
 	@Override
 	public void startCurrentLocationSearch() {
-		locationStatus = ENABLED;
-		if(LOCKED_ON == locationStatus){
-			getLocation();
+		if(!locationManagerWrapper.areProvidersenabled()){
+			settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
+			((NavigationRootActivity)getActivity()).showCustomAlert(settingsModal);
 		}else{
-			if(null == locationModal || !locationModal.isShowing()){
-				locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-				((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
-			}
+			locationStatus = ENABLED;
+			if(LOCKED_ON == locationStatus){
+				getLocation();
+			}else{
+				if(null == locationModal || !locationModal.isShowing()){
+					locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
+					((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
+				}
+			} 
 		}
 	}
 
