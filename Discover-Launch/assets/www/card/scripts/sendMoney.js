@@ -1543,7 +1543,7 @@ dfs.crd.p2p.updateDataDetails = function(responseData, curr_iteration) {
 							+ recipientId
 							+ "</b></span></div><div class='clearboth'>Transaction Type<span><b>"
 							+ transactionType
-							+ "</b></span></div><div>Note<span class='breakword'><b>"
+							+ "</b></span></div><div>Note<span class='wordWrap'><b>"
 							+ note
 							+ "</b></span></div><div class='clearboth'></div><div><b>Transaction Date: </b></div><div>"
 							+ datesDetails + "</div>";

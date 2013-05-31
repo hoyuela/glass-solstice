@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.google.common.base.Strings;
 
 /**
@@ -39,9 +40,6 @@ public class AtmWebView{
 
 	/**The ProgressBar that is shown while the web view loads its content */
 	private final ProgressBar loadingSpinner;
-
-	/**Url to get the street view*/
-	private static final String STREET_URL = "https://asys.discoverbank.com/api/content/atm/streetview.html?lat=%s&lng=%s";
 
 	/**Url to show the report atm*/
 	private static final String REPORT_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&referer=http://android.discoverbank.com/m/accountcenter/atm-locator&custom_var=atmIdentifier={0}|DiscoverMobileVersion=5.0.0";
@@ -135,7 +133,7 @@ public class AtmWebView{
 		lon = Double.toString(bundle.getDouble(BankExtraKeys.STREET_LON));
 		web.setBackgroundResource(R.drawable.light_gray_bkgrd);
 		web.setVisibility(View.VISIBLE);
-		setupWebView(String.format(STREET_URL, lat, lon));
+		setupWebView(String.format(BankUrlManager.getStreetViewUrl(), lat, lon));
 	}
 
 	public void bundleData(final Bundle outState){

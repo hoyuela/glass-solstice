@@ -36,7 +36,7 @@ var lastRestCallTime;
 var slideType  = "none";
 var deviceType=null;
 var deviceVersion=null;
-var vOne=null;
+var vOne="v1st";
 var dfsKey=null;
 var projectBeyondCard = false;
 var strongAuthLockedUnloadExecute=false;
@@ -206,9 +206,13 @@ function provideFeedBack () // Provide Feedback in Child Browser
 		
 		/*Changes made for passing dfskey and vone in provide feedback link*/
 		
-        var referer = $.mobile.activePage.attr('id');       
+        var referer = $.mobile.activePage.attr('id');  
+        
+        if (isEmpty(vOne)){
+        vOne="v1st";
+         }     
 
-        if (!isEmpty(vOne) && !isEmpty(dfsKey))
+        if (!isEmpty(dfsKey))
         {
             customVar = vOne+"|"+dfsKey+"|DiscoverMobileVersion="+APPVER;
             opinionLabURL = shareURL+"&referer=https://mobileapp.discover.com/"+referer+"&custom_var="+customVar;
@@ -217,7 +221,9 @@ function provideFeedBack () // Provide Feedback in Child Browser
         else
         {
             opinionLabURL=shareURL+"&referer=https://mobileapp.discover.com/"+referer+"&custom_var=DiscoverMobileVersion="+APPVER;
+            
         }
+        
 		ChildBrowser.prototype.showWebPage(opinionLabURL);
 	}catch(err){
 		
@@ -572,7 +578,8 @@ function parseContent(htmlText,contentData)
  */
 function numberWithCommas(x) {  
 	try{
-		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		if (!isEmpty(x))
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}catch(err){
 		showSysException(err);
 	}

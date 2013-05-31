@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -72,6 +73,7 @@ public class Utils {
     public static final String CARDTYPE_CORP = "CRP";
     public static final String CARDTYPE_DBC = "DBC";
     public static final String CARDTYPE_DBC_MILES = "DBM";
+    public static String vOne=null;
     public static final String CARDTYPE_DEFAULT = "Not Supported";
 
     /**
@@ -312,18 +314,24 @@ public class Utils {
     public static void createProvideFeedbackDialog(final Context context,
             final String referer) {
         // TODO Auto-generated method stub
+    	
 
         final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(context);
         final SessionCookieManager sessionCookieManager = cardShareDataStore
                 .getCookieManagerInstance();
+        vOne=sessionCookieManager.getVone();
+        if(vOne==null)
+        {
+        	vOne="v1st";
+        }
         String customerInformation;
 
         // Added to create the customer information for provide feedback url
-        if (null != sessionCookieManager.getVone()
+        if (null != vOne
                 && null != sessionCookieManager.getDfsKey()) {
             customerInformation = "&custom_var="
-                    + sessionCookieManager.getVone()
+                    + vOne
                     + "|"
                     + sessionCookieManager.getDfsKey()
                     + "|DiscoverMobileVersion="
@@ -337,6 +345,7 @@ public class Utils {
         }
         final String provideFeedbackUrl = context.getString(R.string.share_url)
                 + referer + customerInformation;
+       
         Utils.log("inside createProvideFeedback", provideFeedbackUrl);
         final LinearLayout main = new LinearLayout(context);
         main.setOrientation(LinearLayout.VERTICAL);

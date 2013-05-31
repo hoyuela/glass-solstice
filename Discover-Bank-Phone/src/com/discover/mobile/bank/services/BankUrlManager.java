@@ -44,6 +44,8 @@ public final class BankUrlManager  {
 	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=http://android.discoverbank.com(null)&custom_var=DiscoverMobileVersion=5.0.0";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
+	private static final String STREET_VIEW_URL = "/api/content/atm/streetview.html?lat=%s&lng=%s";
+	private static final String PAY_BILLS_TERMS_URL = "/api/content/payments/terms.html";
 
 	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
 	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
@@ -404,6 +406,22 @@ public final class BankUrlManager  {
 	 */
 	public static String getCardGoogleTermsUrl() {
 		return CARD_GOOGLE_TERMS_URL;
+	}
+
+	/**
+	 * 
+	 * @return the street view url
+	 */
+	public static String getStreetViewUrl() {
+		return baseURL + STREET_VIEW_URL;
+	}
+
+	/**
+	 * 
+	 * @return the pay bills terms and conditions url
+	 */	
+	public static String getPayBillsTermsUrl() {
+		return baseURL + PAY_BILLS_TERMS_URL;
 	}
 
 }

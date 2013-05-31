@@ -3559,8 +3559,8 @@ line-height: 50px;
 text-transform: uppercase;
 }
 .latePayWarnTbl li.col1 { float:left; width:29%; }
-.latePayWarnTbl li.col2 { float:left; width:27%; }
-.latePayWarnTbl li.col3 { float:left; width:31%; }
+.latePayWarnTbl li.col2 { float:left; width:26%; }
+.latePayWarnTbl li.col3 { float:left; width:32%; }
 .latePayWarnTbl li.row {border-bottom:1px solid #dce1e4}
 .latePayWarnTbl li ul li {padding;0px;}
 .latePayWarnTbl li.header {background:#e8eced; border-top:1px solid #dce1e4}
@@ -3707,3 +3707,5 @@ ul li.ui-corner-bottom{ border-bottom-right-radius:3px !important; -webkit-borde
 .pinCashEnter .col{float:left !important; width:48% !important}
 
 #calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day {color: #CED6D7; background: #fff !important;}
+.wordWrap{ word-wrap:break-word; width:80% !important; line-height:18px;}
+

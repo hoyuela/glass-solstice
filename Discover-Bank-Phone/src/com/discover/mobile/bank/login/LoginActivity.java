@@ -988,6 +988,7 @@ public class LoginActivity extends BaseActivity implements
 
 		if (wasIdEmpty && wasPassEmpty) {
 			setInputFieldsDrawableToRed();
+			setCheckMark(false, true);
 			return true;
 		} else if(wasIdEmpty || wasPassEmpty) {
 			final String errorText = this.getResources().getString(R.string.login_error);
