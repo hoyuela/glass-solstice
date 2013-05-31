@@ -101,7 +101,8 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 
 				@Override
 				public void onDismiss(final DialogInterface dialog) {
-					currentActivity.getSlidingMenu().showAbove();					
+					// updated by hlin0 20130530, integrating with latest slidingmenu
+					currentActivity.getSlidingMenu().showContent();					
 				}
 			});
 			

@@ -3,6 +3,8 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.xml.sax.ErrorHandler;
+
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
@@ -11,8 +13,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -43,28 +49,8 @@ import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.BaseActivity;
-import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.StandardErrorCodes;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.InputValidator;
-import com.discover.mobile.common.auth.KeepAlive;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.callback.GenericAsyncCallback;
-import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.facade.LoginActivityInterface;
-import com.discover.mobile.common.net.error.RegistrationErrorCodes;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
+import com.slidingmenu.lib.SlidingMenu;
 
 /**
  * LoginActivity - This is the login screen for the application. It makes three
@@ -73,14 +59,16 @@ import com.google.common.base.Strings;
  * login.
  *
  * @author scottseward, ekaram
+ * 
+ * Updated by hlin0 May 2013 --  quickview (aka fastcheck) 13.3
  *
  */
 
-public class LoginActivity extends BaseActivity implements
-		LoginActivityInterface {
+public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface, OnClickListener {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
-
+	
+	
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
@@ -95,8 +83,6 @@ public class LoginActivity extends BaseActivity implements
 	private static final String ERROR_MESSAGE_COLOR = "i";
 	private static final String TOGGLE_KEY = "j";
 
-	/** ID that allows control over relative buttons' placement.*/
-	private static final int LOGIN_BUTTON_ID = 1;
 	/**
 	 * A state flag so that we don't run this twice.
 	 */
@@ -113,9 +99,14 @@ public class LoginActivity extends BaseActivity implements
 	private Button registerOrAtmButton;
 	private Button customerServiceButton;
 	private Button provideFeedbackButton;
-
+		
 	private RelativeLayout goToBankButton;
 	private RelativeLayout goToCardButton;
+	
+	// Fastcheck Buttons
+	private Button gotoFastcheckButton;
+	private Button fcPrivacyTermButton;
+	private Button fcProvideFeedbackButton;
 
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
@@ -155,13 +146,19 @@ public class LoginActivity extends BaseActivity implements
 	private InputMethodManager imm;
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
+	
+	private GestureDetector gestureDetector;
+    private OnTouchListener gestureListener;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_start);
-
+		//setBehindContentView(R.layout.fastcheck_frame);
 		loadResources();
+
+		// **Activity manager has to be set before using Track Helper*/
+		DiscoverActivityManager.setActiveActivity(this);
 
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
@@ -172,10 +169,38 @@ public class LoginActivity extends BaseActivity implements
 
 		KeepAlive.setBankAuthenticated(false);
 		KeepAlive.setCardAuthenticated(false);
-		
-		DiscoverActivityManager.setActiveActivity(this);	
+
+		DiscoverActivityManager.setActiveActivity(this);
+				
+		gestureDetector = new GestureDetector(this, new SwipeGestureDetector());
+		gestureListener = new OnTouchListener() {
+	        @Override
+			public boolean onTouch(final View v, final MotionEvent event) {
+	            return gestureDetector.onTouchEvent(event);
+	        }
+	    };
+	    getSlidingMenu().setOnClickListener(this);
+	    getSlidingMenu().setOnTouchListener(gestureListener);
+	    
+	 }
+	
+	@Override
+	public void onClick(final View v) {
+		v.setSoundEffectsEnabled(false);
 	}
 
+	@Override
+	protected void setupSlidingMenu() {
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		slidingMenu.setMode(SlidingMenu.RIGHT);
+		//slidingMenu.setOnOpenListener(this);
+		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+	}
+	
+//	@Override
+//	public void onOpen() {}
+	
 	/**
 	 * This method is being called to prevent onResume calls for rotation
 	 * change. When not implemented (also from the manifest) then onResume is
@@ -219,6 +244,10 @@ public class LoginActivity extends BaseActivity implements
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
 		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
+		
+		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
+		fcPrivacyTermButton = (Button)findViewById(R.id.fastcheck_privacy_terms_button);
+		fcProvideFeedbackButton = (Button)findViewById(R.id.fastcheck_provide_feedback_button);
 
 	}
 
@@ -412,8 +441,10 @@ public class LoginActivity extends BaseActivity implements
 		super.onStart();
 		FacadeFactory.getPushFacade().startXtifySDK(
 				this);
+		getSlidingMenu().showContent();
 	}
 
+		
 	@Override
 	public void onRestoreInstanceState(final Bundle bundle) {
 		super.onRestoreInstanceState(bundle);
@@ -582,7 +613,7 @@ public class LoginActivity extends BaseActivity implements
 
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if( regOrAtmText.equals(regText) ) {
-					FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
+				 	FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
 				} else {
 					openAtmLocator();
 				}
@@ -612,6 +643,29 @@ public class LoginActivity extends BaseActivity implements
 				BankConductor.navigateToCardPrivacyAndTermsLanding();
 			}
 		});
+		gotoFastcheckButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				//FacadeFactory.getCardFacade().navToFastcheck(LoginActivity.this);
+				getSlidingMenu().toggle();
+			}
+		});
+		
+		fcPrivacyTermButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				BankConductor.navigateToCardPrivacyAndTermsLanding();
+			}
+		});
+		
+		fcProvideFeedbackButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				FacadeFactory.getCardFacade().navToProvideFeedback(
+                        LoginActivity.this);
+			}
+		});
+	
 	}
 	
 	/**
@@ -621,7 +675,7 @@ public class LoginActivity extends BaseActivity implements
 	  * @return True if in the Card login page, false otherwise.
 	  */
 	public boolean isCardLogin() {
-		return View.VISIBLE == cardCheckMark.getVisibility();
+	   return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -844,6 +898,19 @@ public class LoginActivity extends BaseActivity implements
 			((ScrollView)findViewById(R.id.login_pane)).smoothScrollTo(0, 0);
 		}
 	}
+	
+	@Override
+	public void hideFastcheck() {
+		gotoFastcheckButton.setVisibility(View.GONE);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+	}
+	
+	private void showFastcheckOnCondition() {
+		if (fastcheckTokenExists()) {
+			gotoFastcheckButton.setVisibility(View.VISIBLE);
+			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		} else hideFastcheck();
+	}
 
 	private void deleteAndSaveCurrentUserPrefs() {
 		Globals.setRememberId(false);
@@ -883,6 +950,8 @@ public class LoginActivity extends BaseActivity implements
 
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
+		
+		showFastcheckOnCondition();
 	}
 
 	/**
@@ -915,6 +984,8 @@ public class LoginActivity extends BaseActivity implements
 
 		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
+		
+		hideFastcheck();
 	}
 
 	/**
@@ -972,6 +1043,10 @@ public class LoginActivity extends BaseActivity implements
 	 */
 	private void forgotIdAndOrPass() {
 		FacadeFactory.getCardFacade().navToForgot(this);
+	}
+	
+	private boolean fastcheckTokenExists() {
+		return FacadeFactory.getCardFacade().fastcheckTokenExists(this);
 	}
 
 	/**
@@ -1196,15 +1271,15 @@ public class LoginActivity extends BaseActivity implements
 		aluModal.setOnShowListener(new OnShowListener() {
 			
 			@Override
-			public void onShow(DialogInterface dialog) {
+			public void onShow(final DialogInterface dialog) {
 				isAluModalShowing = true;
 			}
 		});
-		
+
 		aluModal.setOnDismissListener(new OnDismissListener() {
 			
 			@Override
-			public void onDismiss(DialogInterface dialog) {
+			public void onDismiss(final DialogInterface dialog) {
 				isAluModalShowing = false;
 				
 			}
@@ -1218,7 +1293,7 @@ public class LoginActivity extends BaseActivity implements
 	 * can stay visible after the phone number is clicked)
 	 */
 	@Override
-	public void startActivity(Intent intent){
+	public void startActivity(final Intent intent){
 		if(isAluModalShowing){
 			super.startActivityNoReset(intent);
 		}else{
@@ -1239,6 +1314,85 @@ public class LoginActivity extends BaseActivity implements
 			super.startActivityForResultNoReset(intent, requestCode);
 		}else{
 			super.startActivityForResult(intent, requestCode);
-		}	
+		}
 	}
-}
+
+	
+	@Override
+    public int getBehindContentView() {
+        // TODO Auto-generated method stub
+        return R.layout.fastcheck_frame;
+    }
+	
+	@Override
+	public void showActionBar(){
+		setBehindContentView(getBehindContentView());
+	}
+	
+	@Override
+	protected void showActionBarLogo(final boolean show) {}
+	
+	@Override
+	public void setActionBarTitle(final String title) {}
+	
+	@Override
+	public String getActionBarTitle() {
+		return "";
+	}
+	
+		
+	public void onLeftSwipe() {
+	}
+	
+	public void onRightSwipe() {
+		if (Log.isLoggable(TAG, Log.DEBUG)) Log.d(TAG, "onRightSwipe");
+		getSlidingMenu().toggle();
+	}
+	
+	
+	
+	private class SwipeGestureDetector extends SimpleOnGestureListener {
+	    private static final int SWIPE_MIN_DISTANCE = 50;
+	    private static final int SWIPE_MAX_OFF_PATH = 200;
+	    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	    @Override
+	    public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
+	            final float velocityY) {
+	        try {
+	            //Toast t = Toast.makeText(this, "Gesture detected", Toast.LENGTH_SHORT);
+	            //t.show();
+	            final float diffAbs = Math.abs(e1.getY() - e2.getY());
+	            final float diff = e1.getX() - e2.getX();
+
+	            if (diffAbs > SWIPE_MAX_OFF_PATH)
+	                return false;
+
+	            // Left swipe
+	            if (diff > SWIPE_MIN_DISTANCE
+	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	                onLeftSwipe();
+	            } 
+	            // Right swipe
+	            else if (-diff > SWIPE_MIN_DISTANCE
+	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	                onRightSwipe();
+	            }
+	        } catch (final Exception e) {
+	            if (Log.isLoggable(TAG, Log.ERROR)) Log.e(TAG, "onFling() Error on gestures");
+	        }
+	        return false;
+	    }
+
+	}
+	
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	

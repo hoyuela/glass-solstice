@@ -12,13 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
-import com.discover.mobile.common.DiscoverModalManager;
-import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 
 
 /**
@@ -73,8 +66,8 @@ public final class PreAuthCallHelper  {
 		twoButtonBottomView.setOkButtonText(R.string.upgrade_dialog_button_text);
 		twoButtonBottomView.setCancelButtonText(R.string.no_thanks);
 
-		final BankModalAlertWithTwoButtons optionalUpgradeDialog = 
-				new BankModalAlertWithTwoButtons(context, titleAndContentForDialog, twoButtonBottomView);
+		final ModalAlertWithTwoButtons optionalUpgradeDialog = 
+				new ModalAlertWithTwoButtons(context, titleAndContentForDialog, twoButtonBottomView);
 
 		twoButtonBottomView.getOkButton().setOnClickListener(new OnClickListener() {
 			@Override
