@@ -20,9 +20,7 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 /**
  * This is the base activity for any activity that wants to use the Action bar
@@ -32,10 +30,10 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
  * 
  */
 public abstract class NotLoggedInRoboActivity extends SherlockActivity 
-	implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
-	
+implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
+
 	private static final String TAG = NotLoggedInRoboActivity.class.getSimpleName();
-	
+
 	protected boolean modalIsPresent = false;
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
@@ -71,13 +69,13 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 		super.onResume();
 
 		DiscoverActivityManager.setActiveActivity(this);
-		
+
 		//If a modal was showing show the modal
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
 			DiscoverModalManager.getActiveModal().show();
 			DiscoverModalManager.setAlertShowing(true);
 		}
-		
+
 		/**
 		 * Unlocks any thread blocking on waitForResume() 
 		 */
@@ -88,10 +86,10 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	public void onPause() {
 		/**Reset flag to detect if activity is in it's resumed state*/
 		resumed = false;
-		
+
 		super.onPause();
 		closeDialog();
-		
+
 		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
 			DiscoverModalManager.getActiveModal().dismiss();
@@ -100,28 +98,28 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 			DiscoverModalManager.clearActiveModal();
 		}
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.onBackPressed();
 	}
-	
+
 	@Override
 	public void startActivity (final Intent intent) {
 		/**Clear any modal that may have been created during the life of the current activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivity(intent);
 	}
-	
+
 	@Override
 	public void startActivityForResult (final Intent intent, final int requestCode) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivityForResult(intent, requestCode);
 	}
 
@@ -135,10 +133,8 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 				R.layout.action_bar_menu_layout, null));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-		final ImageView logo = (ImageView) this
-				.findViewById(R.id.action_bar_discover_logo);
-		final ImageView back = (ImageView) this
-				.findViewById(R.id.navigation_back_button);
+		final ImageView logo = (ImageView) findViewById(R.id.action_bar_discover_logo);
+		final ImageView back = (ImageView) findViewById(R.id.navigation_back_button);
 
 		back.setVisibility(View.INVISIBLE);
 		logo.setVisibility(View.VISIBLE);
@@ -156,7 +152,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	 */
 	public void setActionBarTitle(final int stringResource) {
 		//Hide the title image in the action bar.
-		((ImageView)this.findViewById(R.id.action_bar_discover_logo)).setVisibility(View.GONE);
+		((ImageView)findViewById(R.id.action_bar_discover_logo)).setVisibility(View.GONE);
 
 		//Show title text with string resource.
 		final TextView titleText = (TextView)findViewById(R.id.logged_out_title_view);
@@ -170,7 +166,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	 */
 	public void setActionBarTitleImageVisible() {
 		//Hide the title image in the action bar.
-		((ImageView)this.findViewById(R.id.action_bar_discover_logo)).setVisibility(View.VISIBLE);
+		((ImageView)findViewById(R.id.action_bar_discover_logo)).setVisibility(View.VISIBLE);
 
 		//Hide title text and reset text value.
 		final TextView titleText = (TextView)findViewById(R.id.title_view);
@@ -190,24 +186,22 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	protected void showErrorModal(final int titleText, final int bodyText, final boolean finishActivityOnClose) {
 		final Activity activity = this;
 
-		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
-		final ModalDefaultOneButtonBottomView oneButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
+		final SimpleContentModal errorModal =  new SimpleContentModal(activity);
 
-		titleAndContentForDialog.setTitle(activity.getResources().getString(titleText));
-		titleAndContentForDialog.setContent(activity.getResources().getString(bodyText));
+		errorModal.setTitle(activity.getResources().getString(titleText));
+		errorModal.setContent(activity.getResources().getString(bodyText));
 
-		titleAndContentForDialog.showErrorIcon(true);
-		oneButtonBottomView.setButtonText(R.string.close_text);
+		errorModal.showErrorIcon(true);
+		errorModal.setButtonText(R.string.close_text);
 
-		titleAndContentForDialog.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
-		final ModalAlertWithOneButton errorModal = 
-				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
+		errorModal.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
+
 
 		if(finishActivityOnClose){
 			errorModal.finishActivityOnClose(activity);
 		}
 
-		oneButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+		errorModal.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				modalIsPresent = false;
@@ -246,24 +240,22 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	protected void showErrorModalForRegistration(final int titleText, final int bodyText, final boolean finishActivityOnClose) {
 		final Activity activity = this;
 
-		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(activity, null);
-		final ModalDefaultOneButtonBottomView oneButtonBottomView = new ModalDefaultOneButtonBottomView(activity, null);
+		final SimpleContentModal errorModal = new SimpleContentModal(activity);
 
-		titleAndContentForDialog.setTitle(activity.getResources().getString(titleText));
-		titleAndContentForDialog.setContent(activity.getResources().getString(bodyText));
+		errorModal.setTitle(activity.getResources().getString(titleText));
+		errorModal.setContent(activity.getResources().getString(bodyText));
 
-		titleAndContentForDialog.showErrorIcon(true);
-		oneButtonBottomView.setButtonText(R.string.close_text);
+		errorModal.showErrorIcon(true);
+		errorModal.setButtonText(R.string.close_text);
 
-		titleAndContentForDialog.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
-		final ModalAlertWithOneButton errorModal = 
-				new ModalAlertWithOneButton(activity, titleAndContentForDialog, oneButtonBottomView);
+		errorModal.getHelpFooter().setToDialNumberOnClick(R.string.need_help_number_text);
+
 
 		if(finishActivityOnClose){
 			errorModal.finishActivityOnClose(activity);
 		}
 
-		oneButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+		errorModal.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				modalIsPresent = false;
@@ -301,7 +293,7 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 	public void showCustomAlert(final AlertDialog alert) {
 		DiscoverModalManager.setActiveModal(alert);
 		DiscoverModalManager.setAlertShowing(true);
-		
+
 		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
@@ -404,17 +396,17 @@ public abstract class NotLoggedInRoboActivity extends SherlockActivity
 				}
 			}
 		} 
-		
+
 		return isReady();
 	}
-	
+
 	/**
 	 * Method utilize to unblock any thread blocking on waitForResume
 	 */
 	private void notifyResumed() {	
 		synchronized (lock) {
 			resumed = true;
-			
+
 			lock.notifyAll();
 		}
 	}

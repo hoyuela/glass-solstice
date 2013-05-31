@@ -11,8 +11,7 @@ import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 /**
  * Activity used to intercept intents raised with the scheme com.discover.mobile. Used for prompting a user with a modal
@@ -51,14 +50,14 @@ public final class BrowserNavigator extends BaseActivity {
 
 			final String url = data.toString().replace("com.discover.mobile", "https");
 
-			ModalAlertWithOneButton modal = null;
+			SimpleContentModal modal = null;
 
 			// Create a one button modal to notify the user that they are
 			// leaving the application
-			modal = new ModalAlertWithOneButton(this, R.string.bank_open_browser_title, R.string.bank_open_browser_text, R.string.continue_text);
+			modal = new SimpleContentModal(this, R.string.bank_open_browser_title, R.string.bank_open_browser_text, R.string.continue_text);
 
 			/** Needs to be final in order to dismiss in listener */
-			final ModalAlertWithOneButton modalParam = modal;
+			final SimpleContentModal modalParam = modal;
 			// Set the dismiss listener that will navigate the user to the
 			// browser
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
@@ -68,7 +67,7 @@ public final class BrowserNavigator extends BaseActivity {
 					final Intent i = new Intent(Intent.ACTION_VIEW);
 					i.setData(Uri.parse(url));
 					DiscoverActivityManager.getActiveActivity().startActivity(i);
-					
+
 				}
 			});
 
@@ -80,7 +79,7 @@ public final class BrowserNavigator extends BaseActivity {
 			});
 
 			/** Hide Need Help footer */
-			((ModalDefaultTopView) modal.getTop()).hideNeedHelpFooter();
+			modal.hideNeedHelpFooter();
 
 			showCustomAlert(modal);
 		}
@@ -88,7 +87,7 @@ public final class BrowserNavigator extends BaseActivity {
 
 	@Override
 	public ErrorHandler getErrorHandler() {
-	
+
 		return BankErrorHandler.getInstance();
 	}
 

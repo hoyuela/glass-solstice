@@ -64,9 +64,7 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.FastcheckUtil;
@@ -148,7 +146,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Should only be done at application start-up.
 	 */
 	private boolean preAuthHasRun = false;
-	
+
 	/**Set to true when the alu modal is showing*/
 	private boolean isAluModalShowing = false;
 
@@ -156,7 +154,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	/** The value of variable restoreToggle when we are not restoring based on orientation change */
 	private static final int NO_TOGGLE_TO_RESTORE = -1;
-	
+
 	/** Equal to an Account Type ordinal when we restored a toggle on orientation change 
 	 * (versus. restoring based on last login). */
 	private int restoreToggle = NO_TOGGLE_TO_RESTORE;
@@ -276,13 +274,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Check to see if the user just logged out, if the user just logged out show the message.
 	 */
 	private void maybeShowUserLoggedOut(){
-		final Intent intent = this.getIntent();
+		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				showLogoutSuccessful();
-				this.getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+				getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 				passField.getText().clear();
 			}
 		}
@@ -292,13 +290,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Check to see if the user's session expired
 	 */
 	private void maybeShowSessionExpired() {
-		final Intent intent = this.getIntent();
+		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
 		if(extras != null){
 			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
 				showSessionExpired();
-				this.getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
+				getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
 				passField.getText().clear();
 			}
 		}
@@ -308,14 +306,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Check to see if an error occurred which lead to the navigation to the Login Page
 	 */
 	private void maybeShowErrorMessage() {
-		final Intent intent = this.getIntent();
+		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
 		if(extras != null){
 			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
-				this.getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
+				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
 				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
 			}
 		}
@@ -360,7 +358,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	protected void onNewIntent(final Intent intent) {
 		super.onNewIntent(intent);
 
-		this.setIntent(intent);
+		setIntent(intent);
 	}
 
 	/**
@@ -369,7 +367,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	@Override
 	public void onResume(){
 		super.onResume();
-	
+
 
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
@@ -419,19 +417,19 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 
 		//Default to the last path user chose for login Card or Bank
-		this.setApplicationAccount();
+		setApplicationAccount();
 
 		/*
 		 * Check to see if pre-auth request is required; should be done at
 		 * application resumption, but not rotation change.
 		 */
-		if (this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
+		if (getIntent().hasCategory(Intent.CATEGORY_LAUNCHER)) {
 			startPreAuthCheck();
 		}
 
 		//Show splash screen while completing pre-auth, if pre-auth has not been done and
 		//application is be launched for the first time
-		if( !preAuthHasRun && this.getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
+		if( !preAuthHasRun && getIntent().hasCategory(Intent.CATEGORY_LAUNCHER) ) {
 			showSplashScreen(!preAuthHasRun);
 
 			/**Download links for Bank Application*/
@@ -439,14 +437,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			preAuthHasRun = true;
 		} else {
-			this.showLoginPane();
+			showLoginPane();
 		}
 
 		//If previous screen was Strong Auth Page then clear text fields and show text fields in red
 		//because that means the user did not login successfully
 		if( null != DiscoverActivityManager.getPreviousActiveActivity() &&
 				DiscoverActivityManager.getPreviousActiveActivity().equals(EnhancedAccountSecurityActivity.class)) {
-			this.getErrorHandler().showErrorsOnScreen(this, null);
+			getErrorHandler().showErrorsOnScreen(this, null);
 			DiscoverActivityManager.clearPreviousActiveActivity();
 		}
 
@@ -470,7 +468,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void onRestoreInstanceState(final Bundle bundle) {
 		super.onRestoreInstanceState(bundle);
 
-		this.restoreState(bundle);
+		restoreState(bundle);
 	}
 
 	/**
@@ -612,25 +610,25 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			@Override
 			public void onClick(final View v) {
-				final boolean isCard = (View.VISIBLE == cardCheckMark.getVisibility());
+				final boolean isCard = View.VISIBLE == cardCheckMark.getVisibility();
 				BankConductor.navigateToContactUs(ContactUsType.ALL, isCard);
 			}
 		});
 
 		provideFeedbackButton.setOnClickListener(new View.OnClickListener() {
-			 
-            @Override
-            public void onClick(final View v) {
-                    //Defect id 97126
-                if (View.VISIBLE == cardCheckMark.getVisibility()) {
-                    FacadeFactory.getCardFacade().navToProvideFeedback(
-                            LoginActivity.this);
-                } else {
-                    BankConductor.navigateToFeedback(true);
-                }
-                //Defect id 97126
-            }
-        });
+
+			@Override
+			public void onClick(final View v) {
+				//Defect id 97126
+				if (View.VISIBLE == cardCheckMark.getVisibility()) {
+					FacadeFactory.getCardFacade().navToProvideFeedback(
+							LoginActivity.this);
+				} else {
+					BankConductor.navigateToFeedback(true);
+				}
+				//Defect id 97126
+			}
+		});
 
 		registerOrAtmButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -695,13 +693,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		});
 	
 	}
-	
+
 	/**
-	  * Method used to determine whether the user is in the Card Login Page or
-	  * Bank Login Page.
-	  * 
-	  * @return True if in the Card login page, false otherwise.
-	  */
+	 * Method used to determine whether the user is in the Card Login Page or
+	 * Bank Login Page.
+	 * 
+	 * @return True if in the Card login page, false otherwise.
+	 */
 	public boolean isCardLogin() {
 	   return View.VISIBLE == cardCheckMark.getVisibility();
 	}
@@ -954,10 +952,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		goToCardButton
 		.setBackgroundResource(R.drawable.card_login_background_on);
 		goToCardButton.setPadding(
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad));
 
 		CommonUtils.setViewVisible(cardCheckMark);
 		CommonUtils.setViewInvisible(bankCheckMark);
@@ -966,10 +964,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		goToBankButton
 		.setBackgroundResource(R.drawable.bank_login_background_off);
 		goToBankButton.setPadding(
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(R.string.register_now);
 
@@ -990,10 +988,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		goToCardButton
 		.setBackgroundResource(R.drawable.card_login_background_off);
 		goToCardButton.setPadding(
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad));
 		CommonUtils.setViewInvisible(cardCheckMark);
 		CommonUtils.setViewVisible(bankCheckMark);
 
@@ -1001,10 +999,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		goToBankButton
 		.setBackgroundResource(R.drawable.bank_login_background_on);
 		goToBankButton.setPadding(
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad),
-				(int) this.getResources().getDimension(R.dimen.top_pad));
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad),
+				(int) getResources().getDimension(R.dimen.top_pad));
 		registerOrAtmButton.setText(R.string.atm_locator);
 
 		CommonUtils.setViewVisible(privacySecOrTermButtonBank);
@@ -1093,8 +1091,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			setCheckMark(false, true);
 			return true;
 		} else if(wasIdEmpty || wasPassEmpty) {
-			final String errorText = this.getResources().getString(R.string.login_error);
-			this.getErrorHandler().showErrorsOnScreen(this, errorText);
+			final String errorText = getResources().getString(R.string.login_error);
+			getErrorHandler().showErrorsOnScreen(this, errorText);
 			idField.clearFocus();
 			passField.clearFocus();
 			setCheckMark(false, true);
@@ -1158,9 +1156,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param show True hides all login views and toolbar, false hides progress bar and fades in login views.
 	 */
 	public void showSplashScreen(final boolean show) {
-		final ViewGroup loginStartLayout = (ViewGroup) this.findViewById( R.id.login_start_layout );
-		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
-		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
+		final ViewGroup loginStartLayout = (ViewGroup) findViewById( R.id.login_start_layout );
+		final ViewGroup loginPane = (ViewGroup) findViewById(R.id.login_pane);
+		final ViewGroup toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
 
 		//Verify loginStartLayout has a valid instance of ViewGroup
 		if( null != loginStartLayout && null != loginPane && null != toolbar ) {
@@ -1214,8 +1212,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Shows the login pane with credential text fields and the toolbar at the bottom of the page
 	 */
 	public void showLoginPane() {
-		final ViewGroup loginPane = (ViewGroup) this.findViewById(R.id.login_pane);
-		final ViewGroup toolbar = (ViewGroup)this.findViewById(R.id.login_bottom_button_row);
+		final ViewGroup loginPane = (ViewGroup) findViewById(R.id.login_pane);
+		final ViewGroup toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
 
 		splashProgress.setVisibility(View.GONE);
 		toolbar.setVisibility(View.VISIBLE);
@@ -1238,8 +1236,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		// splash screen is still up - let's init phone gap now before
 		// we take it down
 		if ( !phoneGapInitComplete ) {
-		    FacadeFactory.getCardFacade().initPhoneGap();
-		    
+			FacadeFactory.getCardFacade().initPhoneGap();
+
 			phoneGapInitComplete = true;
 		}
 		setInputFieldsDrawablesToDefault();
@@ -1274,17 +1272,16 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void showALUStatusModal(final BankLoginDetails credentials) {
 		//Set that an sso user is attempting to login
 		BankUser.instance().setSsoUser(false);
-		final ModalDefaultTopView aluModalTopView = new ModalDefaultTopView(this, null);
-		aluModalTopView.setTitle(R.string.skipsso_modal_title);
-		aluModalTopView.setContent(R.string.skipsso_modal_body);
-		aluModalTopView.getHelpFooter().setToDialNumberOnClick(R.string.skipsso_modal_number);
-		aluModalTopView.showErrorIcon(true);
 
-		final ModalDefaultOneButtonBottomView confirmModalButton = new ModalDefaultOneButtonBottomView(this, null);
-		confirmModalButton.setButtonText(R.string.skipsso_modal_button);
 
-		final ModalAlertWithOneButton aluModal = new ModalAlertWithOneButton(this, aluModalTopView, confirmModalButton);
-		confirmModalButton.getButton().setOnClickListener(new OnClickListener() {
+		final SimpleContentModal aluModal = new SimpleContentModal(this);
+		aluModal.setTitle(R.string.skipsso_modal_title);
+		aluModal.setContent(R.string.skipsso_modal_body);
+		aluModal.getHelpFooter().setToDialNumberOnClick(R.string.skipsso_modal_number);
+		aluModal.showErrorIcon(true);
+		aluModal.setButtonText(R.string.skipsso_modal_button);
+
+		aluModal.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {		
 				if (credentials == null) {
@@ -1295,9 +1292,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				aluModal.dismiss();		
 			}
 		});
-		
+
 		aluModal.setOnShowListener(new OnShowListener() {
-			
+
 			@Override
 			public void onShow(final DialogInterface dialog) {
 				isAluModalShowing = true;
@@ -1305,17 +1302,17 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		});
 
 		aluModal.setOnDismissListener(new OnDismissListener() {
-			
+
 			@Override
 			public void onDismiss(final DialogInterface dialog) {
 				isAluModalShowing = false;
-				
+
 			}
 		});
 		closeDialog();
 		showCustomAlert(aluModal);
 	}
-	
+
 	/**
 	 * Start an activity (this needs to be overwritten so that the ALU modal
 	 * can stay visible after the phone number is clicked)
@@ -1328,7 +1325,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			super.startActivity(intent);
 		}
 	}
-	
+
 	/**
 	 * Start an activity for result but dont clear the active moddal
 	 * (this needs to be overwritten so that the ALU modal

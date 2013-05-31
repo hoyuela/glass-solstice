@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 /**
  * Base class for all SherlockActivities for our app
@@ -27,7 +27,7 @@ import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
  *
  */
 public abstract class BaseActivity extends RoboActivity 
-	implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
+implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 
 	private static final String TAG = BaseActivity.class.getSimpleName();
 	/**
@@ -60,7 +60,7 @@ public abstract class BaseActivity extends RoboActivity
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
-	
+
 	/**
 	 * Used to handle user interaction across the application.
 	 * 
@@ -71,9 +71,9 @@ public abstract class BaseActivity extends RoboActivity
 	@Override
 	public boolean dispatchTouchEvent(final MotionEvent ev) {
 		super.dispatchTouchEvent(ev);
-		
+
 		KeepAlive.checkForRequiredSessionRefresh();
-		
+
 		return false;
 	}
 
@@ -88,7 +88,7 @@ public abstract class BaseActivity extends RoboActivity
 	 */
 	@Override
 	public void showOneButtonAlert(final int title, final int content, final int buttonText){    	
-		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+		showCustomAlert(new SimpleContentModal(this,title,content,buttonText));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public abstract class BaseActivity extends RoboActivity
 	 */
 	@Override
 	public void showDynamicOneButtonAlert(final int title, final String content, final int buttonText){    	
-		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+		showCustomAlert(new SimpleContentModal(this,title,content,buttonText));
 	}
 
 
@@ -166,7 +166,7 @@ public abstract class BaseActivity extends RoboActivity
 			DiscoverModalManager.getActiveModal().show();
 			DiscoverModalManager.setAlertShowing(true);
 		}
-		
+
 		/**
 		 * Unlocks any thread blocking on waitForResume() 
 		 */
@@ -180,7 +180,7 @@ public abstract class BaseActivity extends RoboActivity
 	public void onPause() {
 		/**Reset flag to detect if activity is in it's resumed state*/
 		resumed = false;
-		
+
 		super.onPause();
 
 		//Save all application and user preferences into persistent storage
@@ -201,18 +201,18 @@ public abstract class BaseActivity extends RoboActivity
 	public void onBackPressed() {
 		/**Clear any modal that may have been created during the life of this activity*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.onBackPressed();
 	}
-	
+
 	@Override
 	public void startActivity (final Intent intent) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivity(intent);
 	}
-	
+
 	/**
 	 * Start an activity but dont clear the active modal
 	 * @param intent - intent to start
@@ -225,10 +225,10 @@ public abstract class BaseActivity extends RoboActivity
 	public void startActivityForResult (final Intent intent, final int requestCode) {
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
-		
+
 		super.startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * Start an activity for result but dont clear the active modfal
 	 * @param intent - intent to start
@@ -237,7 +237,7 @@ public abstract class BaseActivity extends RoboActivity
 	public void startActivityForResultNoReset(final Intent intent, final int requestCode){
 		super.startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * To be implemented by the child class
 	 */
@@ -294,7 +294,7 @@ public abstract class BaseActivity extends RoboActivity
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean isReady() {
 		return resumed;
@@ -325,17 +325,17 @@ public abstract class BaseActivity extends RoboActivity
 				}
 			}
 		} 
-		
+
 		return isReady();
 	}
-	
+
 	/**
 	 * Method utilize to unblock any thread blocking on waitForResume
 	 */
 	private void notifyResumed() {	
 		synchronized (lock) {
 			resumed = true;
-			
+
 			lock.notifyAll();
 		}
 	}
