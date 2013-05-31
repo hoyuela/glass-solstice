@@ -84,6 +84,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 		
 		/**Setup footer*/
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setHelpNumber(getString(R.string.bank_deposit_need_help_number));
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.NEED_HELP);
 		
 		return view;

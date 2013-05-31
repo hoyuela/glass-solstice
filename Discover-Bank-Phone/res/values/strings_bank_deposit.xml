@@ -69,4 +69,6 @@
 	    We\'re sorry. 
 	    In order to use Mobile Check Deposit please use a device with a camera.
 	</string>
+	
+	<string name="bank_deposit_need_help_number">1&#8211;866&#8211;245&#8211;7419</string>
 </resources>
