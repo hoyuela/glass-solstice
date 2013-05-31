@@ -171,7 +171,8 @@
     <string name="E_1228">Make a Payment:We are unable to process your online payment today	because it is past the 5:00pm Eastern Time cut off and you have	no available payment dates. For assistance call 1-877-742-7822.</string>
     <string name="E_1229">Make a Payment:We’re unable to process your online payment because	it is past the 5:00pm Eastern Time cutoff time and you have no available payment dates for the selected bank account. You can make a payment by selecting a different bank account. For assistance call 1-877-742-7822.</string>
     <string name="E_1230">Make a Payment: You have missed the Eastern Time cut off for submitting a payment that will post today. Your next	available payment posting date is !~nextAvailableDate~!. If you would like to submit your payment of $!~payAmount~! using this date please Submitbelow.</string>
-    <string name="E_1231">Your bank account is problematic, provide valid bank short name.</string>
+    <string name="E_1231">Your bank account is problematic, provide valid bank short name.
+</string>
     <string name="E_1232">Make a PaymentSome of our website features are unavailable at this time resulting in limited access to functionality and can process payments for the current day only. If you would like to schedule a payment for a future date, please try again later. We	thank you for your patience.</string>
     <string name="E_1233">Make a PaymentSome of our website features are unavailable at this	time resulting in limited access to functionality.We can however,process payments for the current day only. If you would like to schedule a payment for a future date,please try again later. We thank you for your patience.</string>
     <string name="E_1234">Hashed account number required. Please enter a valid hashed account number.</string>

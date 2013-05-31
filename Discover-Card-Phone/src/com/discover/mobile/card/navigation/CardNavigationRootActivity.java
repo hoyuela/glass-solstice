@@ -151,6 +151,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             Utils.isSpinnerShow = true;
             Utils.isSpinnerAllowed = true;
             Utils.showSpinner(this, "Discover", "Loading...");
+            Utils.isSpinnerShow = false;
         }
     }
 
@@ -222,13 +223,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 }
             }
             if (redirect > 0) {
-                Editor editor = pushSharedPrefs.edit();
-                editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
-                editor.commit();
 
-                if (!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE,
-                        true)) {
-                    sendNavigationTextToPhoneGapInterface(getString(redirect));
+                if (!pushSharedPrefs.getBoolean(PushConstant.pref.PUSH_OFFLINE,true)) 
+                {
+                	 Editor editor = pushSharedPrefs.edit();
+                     editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
+                     editor.commit();
+                     sendNavigationTextToPhoneGapInterface(getString(redirect));
                 }
             } else {
                 if (pushStatus) {
@@ -814,30 +815,38 @@ public class CardNavigationRootActivity extends NavigationRootActivity
          * Precaution is better than cure. Added 5 sec delay for precaution
          * measure to load push navigated page.
          */
-        if (redirect > 0) {
+    	
+    	Utils.isSpinnerShow = false;
+    	
+        if (redirect > 0) 
+        {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
                     // TODO Auto-generated method stub
-                    Utils.hideSpinner();
+                	Utils.isSpinnerShow = true;
+                    //Utils.hideSpinner();
 
                     /*
                      * Check if this is offline push redirect to JQM pages.
                      */
-
                     SharedPreferences pushSharedPrefs = getSharedPreferences(
                             PushConstant.pref.PUSH_SHARED, // TODO: Push
                             Context.MODE_PRIVATE);
                     if (pushSharedPrefs.getBoolean(
                             PushConstant.pref.PUSH_OFFLINE, true)) {
+                    	
+                    	Editor editor = pushSharedPrefs.edit();
+                        editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
+                        editor.commit();
                         sendNavigationTextToPhoneGapInterface(getString(redirect));
                     }
-
                 }
-            }, 5000);
+            }, 1000);
         } else {
+        	Utils.isSpinnerShow = true;
             Utils.hideSpinner();
         }
     }
