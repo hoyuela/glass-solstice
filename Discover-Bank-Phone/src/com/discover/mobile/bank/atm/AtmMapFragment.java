@@ -620,7 +620,7 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
-			AtmModalFactory.getNoResultsModal(getActivity());
+			showCustomAlertDialog(AtmModalFactory.getNoResultsModal(getActivity()));
 			endIndex = 0;
 		}else if(endIndex > results.results.atms.size()){
 			endIndex = results.results.atms.size();

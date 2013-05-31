@@ -83,6 +83,10 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 			while(str.contains(":0")){
 				str = str.replaceAll(":0", ":");
 			}
+			
+			if(str.contains("{\"AtmResults\":\"\"}")){
+				str = "{\"AtmResults\": {\"Atm\": []}}";
+			}
 
 			//Create a new input stream for parsing
 			stream = new ByteArrayInputStream(str.getBytes());

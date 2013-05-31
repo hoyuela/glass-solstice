@@ -191,7 +191,12 @@ public final class AtmModalFactory{
 	 * the app to use their current location
 	 */
 	public static ModalAlertWithOneButton getNoResultsModal(final Context context){
-		return getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
+		ModalAlertWithOneButton modal = 
+				getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
+		ModalDefaultTopView top = (ModalDefaultTopView)modal.getTop();
+		top.showErrorIcon(true);
+		top.getHelpFooter().setToDialNumberOnClick(R.string.atm_no_results_number);
+		return modal;
 	}
 
 	/**
