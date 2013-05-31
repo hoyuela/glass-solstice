@@ -38,36 +38,39 @@ public abstract class NavigationMenuFragment extends RoboSherlockListFragment {
 
 		// Make sure that the mainIndex is a valid index in the list to collapse
 		// the current menu item selected
-		if (mainIndex >= 0 && getListView().getAdapter().getItem(mainIndex) instanceof GroupNavigationItem) {
-			final GroupNavigationItem currentGroup = (GroupNavigationItem) getListView().getAdapter().getItem(mainIndex);
-			currentGroup.collapse();
-		}
-
-		final int maxIndex = getListView().getAdapter().getCount();
-
-		// Make sure the new group being selected is within the boundaries of
-		// the list of menu groups
-		if (group >= 0 && group < maxIndex) {
-			// Set the new selected menu group
-			NavigationIndex.setIndex(group);
-
-			// Expand the new menu if it is a menu group with sections
-			if (getListView().getAdapter().getItem(group) instanceof GroupNavigationItem) {
-				final GroupNavigationItem newGroup = (GroupNavigationItem) getListView().getAdapter().getItem(group);
-				newGroup.expand();
-
-				// Set the new selected section in the menu
-				NavigationIndex.setSubIndex(subSection + group);
+		if(getView() != null) {
+			if (mainIndex >= 0 && getListView().getAdapter().getItem(mainIndex) instanceof GroupNavigationItem) {
+				final GroupNavigationItem currentGroup = (GroupNavigationItem) getListView().getAdapter().getItem(mainIndex);
+				currentGroup.collapse();
 			}
 			
-			//Defect ID:97724 by Cognizant
-			else if(getListView().getAdapter().getItem(group) instanceof FragmentNavigationItem)
-			{
-			    // This ElseIf Block written by Cognizant
-	            // Setting 0 as Sub Index if the Menu is not having sub section to fix HighLight issue for Card Side
-			    NavigationIndex.setSubIndex(0);
+	
+			final int maxIndex = getListView().getAdapter().getCount();
+	
+			// Make sure the new group being selected is within the boundaries of
+			// the list of menu groups
+			if (group >= 0 && group < maxIndex) {
+				// Set the new selected menu group
+				NavigationIndex.setIndex(group);
+	
+				// Expand the new menu if it is a menu group with sections
+				if (getListView().getAdapter().getItem(group) instanceof GroupNavigationItem) {
+					final GroupNavigationItem newGroup = (GroupNavigationItem) getListView().getAdapter().getItem(group);
+					newGroup.expand();
+	
+					// Set the new selected section in the menu
+					NavigationIndex.setSubIndex(subSection + group);
+				}
+				
+				//Defect ID:97724 by Cognizant
+				else if(getListView().getAdapter().getItem(group) instanceof FragmentNavigationItem)
+				{
+				    // This ElseIf Block written by Cognizant
+		            // Setting 0 as Sub Index if the Menu is not having sub section to fix HighLight issue for Card Side
+				    NavigationIndex.setSubIndex(0);
+				}
+				//Defect ID:97724
 			}
-			//Defect ID:97724
 		}
 	}
 	
