@@ -257,7 +257,7 @@ function noTitle(){
 function acHome(){
 	preventBack = true;
 	console.log("inside acHome and preventback is "+preventBack);
-	//navigation('../achome/cardHome',false);
+	navigation('../achome/cardHome',false);
 	activePage = "cardHome-pg";
 	currentActivePage = "cardHome-pg";
 }
