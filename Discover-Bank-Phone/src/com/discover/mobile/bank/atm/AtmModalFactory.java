@@ -6,18 +6,14 @@ package com.discover.mobile.bank.atm;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
-import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
 import com.discover.mobile.common.DiscoverApplication;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalBottomTwoButtonView;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 
