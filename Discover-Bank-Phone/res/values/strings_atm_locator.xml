@@ -8,7 +8,7 @@
         You will not be charged an ATM surcharge for cash withdrawals at ATMs with orange pins. 
 		For Discover Credit Card cash advances, your cash advance APR and cash advance fee will apply.
 		\n\nBy tapping the \"Allow\" button, you hereby agree that Discover may access and use your current location 
-		information to show you the nearest ATM. If you tap on the \"Don\'t Allow\" button you will only be able to 
+		information to show you the nearest ATM. If you tap \"Don\'t Allow\" you will only be able to 
 		search by address.  
     </string>
     <string name="atm_location_modal_allow">Allow</string>
