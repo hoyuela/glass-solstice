@@ -1232,7 +1232,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 		var bankName = stepOne.bankInfo[0].bankName;
 		var truncatedBankName=dfs.crd.pymt.truncateBankDetails(accountNumber,bankName);
 		dfs.crd.pymt.selectvar = (stepOne.bankInfo.length == 1) ? truncatedBankName["bankName"]+truncatedBankName["accountNumber"] : "- Select Bank Account -";
-		var fieldtext = '<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-hover-d ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD2" style="width:98%;">'
+		var fieldtext = '<div class="ui-select"><div data-theme="e" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-hover-e ui-btn-up-e"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD2" style="width:98%;">'
 			+ dfs.crd.pymt.selectvar
 			+ '</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span><select class="ui-select" name="BankStepOne" id="bankDropDownStepOne" onchange="dfs.crd.pymt.bankSelected(); ">';
 		fieldtext += "<option value='- Select Bank Account -'  selected='selected' >- Select Bank Account -</option>";
@@ -2365,6 +2365,7 @@ try {
                return;
                }
 						pmtWarnData = responseData;
+						console.log("pmtWarnData :"+JSON.stringify(pmtWarnData));
 						putDataToCache(pageId, pmtWarnData);
 					},
 					error : function(jqXHR, textStatus, errorThrown)
@@ -2398,19 +2399,21 @@ dfs.crd.pymt.populatePayWarningPage = function(payWarnData,showVariable){
 			if(showVariable){
 			$("#lateFeeWarningAmount").text(payWarnData.lateFeeWarningAmount);
 			$("#latePayAprRate").text(payWarnData.penaltyWarningMerchantAPR);
-				if(!payWarnData.isNegativeAmortization){
+				if(payWarnData.isNegativeAmortization){
 					$("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
-					$("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					$("#totalAmountToPay").text(numberWithCommas(payWarnData.totalAmountToPay));
 					$("#latePayWarnRow2").remove();
 				}else
 					{
 					 $("#totalMonthsOrYears").text(payWarnData.totalMonthsOrYears);
-					 $("#totalAmountToPay").text(payWarnData.totalAmountToPay);
+					 $("#totalAmountToPay").text(numberWithCommas(payWarnData.totalAmountToPay));
 					 if(payWarnData.needTwoRowWarning){						
 						$("#defaultTermsPaymentAmount").text(payWarnData.defaultTermsPaymentAmount);
 						$("#defaultTermYears").text(payWarnData.defaultTermYears);
-						$("#defaultTermTotalAmount").text(payWarnData.defaultTermTotalAmount);
-						$("#defaultTermSavingsAmount").text(payWarnData.defaultTermSavingsAmount);
+						$("#defaultTermTotalAmount").text(numberWithCommas(payWarnData.defaultTermTotalAmount));
+						$("#defaultTermSavingsAmount").text(numberWithCommas(payWarnData.defaultTermSavingsAmount));
+					}else{
+					$("#latePayWarnRow2").remove();
 					}
 				}
 			}else{
