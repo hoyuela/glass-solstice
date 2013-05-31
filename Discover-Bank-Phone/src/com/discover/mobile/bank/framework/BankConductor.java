@@ -88,7 +88,6 @@ import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.ui.fragments.BankWebViewFragment;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
@@ -104,9 +103,8 @@ import com.discover.mobile.common.framework.Conductor;
 import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
@@ -420,14 +418,14 @@ public final class BankConductor  extends Conductor {
 	public static AlertDialog navigateToBrowser(final int title, final int body, final String url) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		ModalAlertWithOneButton modal = null;
+		SimpleContentModal modal = null;
 
-		if((activity != null) && (activity instanceof NavigationRootActivity) ) {
+		if(activity != null && activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
-			modal = new ModalAlertWithOneButton(activity, title, body, R.string.continue_text);
+			modal = new SimpleContentModal(activity, title, body, R.string.continue_text);
 
 			/** Needs to be final in order to dismiss in listener */
-			final ModalAlertWithOneButton modalParam = modal;
+			final SimpleContentModal modalParam = modal;
 
 			//Set the dismiss listener that will navigate the user to the browser
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
@@ -441,7 +439,7 @@ public final class BankConductor  extends Conductor {
 			});
 
 			/**Hide Need Help footer*/
-			((ModalDefaultTopView)modal.getTop()).hideNeedHelpFooter();
+			modal.hideNeedHelpFooter();
 
 			((NavigationRootActivity)activity).showCustomAlert(modal);
 		}
@@ -543,16 +541,16 @@ public final class BankConductor  extends Conductor {
 				final BankNavigationRootActivity rootActivity = (BankNavigationRootActivity)activity;
 				//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 				if(rootActivity.popTillFragment(BankAccountActivityTable.class) ) {
-					
+
 					final BankAccountActivityTable accountActivityFragment = 
-												(BankAccountActivityTable)rootActivity.getCurrentContentFragment();
+							(BankAccountActivityTable)rootActivity.getCurrentContentFragment();
 
 					if(bundle.getBoolean(BankExtraKeys.DID_DELETE_PAYMENT, false)) {
 						accountActivityFragment.showDeletePaymentMessage();
 					}else {
 						accountActivityFragment.showStatusMessage();
 					}
-					
+
 					accountActivityFragment.handleReceivedData(bundle);
 					accountActivityFragment.saveDataInBundle();
 					bundle.remove(BankExtraKeys.CONFIRM_DELETE);
@@ -592,7 +590,7 @@ public final class BankConductor  extends Conductor {
 		((AlertDialogParent)activity).closeDialog();
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
-		} else if( (extras != null) && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
+		} else if( extras != null && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
 			/**Navigate user back to Manage Payee screen if they were in the middle of a delete*/
 			activity.popTillFragment(BankManagePayee.class);
 
@@ -659,7 +657,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		//Fetch the current activity
-		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 			call.setWasDeleted(true);
@@ -672,7 +670,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	/**
 	 * Navigate to the activity detail list after deleting a scheduled activity.
 	 * @param bundle
@@ -683,13 +681,13 @@ public final class BankConductor  extends Conductor {
 			//Clear dat cache/
 			BankUser.instance().setScheduled(null);
 			BankUser.instance().getCurrentAccount().scheduled = null;
-			
+
 			final GetActivityServerCall getActivityCall = BankServiceCallFactory.createGetActivityServerCall(
 					BankUser.instance().getCurrentAccount().getLink(
-					Account.LINKS_SCHEDULED_ACTIVITY), 
-					ActivityDetailType.Scheduled, 
-					true);
-			
+							Account.LINKS_SCHEDULED_ACTIVITY), 
+							ActivityDetailType.Scheduled, 
+							true);
+
 			getActivityCall.setDidDeletePayment(true);
 			getActivityCall.submit();
 		}
@@ -722,7 +720,7 @@ public final class BankConductor  extends Conductor {
 				activity.finish();
 			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
-			else if((currentActivity != null) && (currentActivity instanceof NavigationRootActivity)) {
+			else if(currentActivity != null && currentActivity instanceof NavigationRootActivity) {
 				final Fragment provideFeedback = new ProvideFeedbackFragment();
 				provideFeedback.setArguments(bundle);
 				((NavigationRootActivity) currentActivity).makeFragmentVisible(provideFeedback);
@@ -750,7 +748,7 @@ public final class BankConductor  extends Conductor {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 
 		// Create a one button modal to notify the user that they are leaving the application
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+		final SimpleContentModal modal = new SimpleContentModal(activity,
 				R.string.bank_delete_transaction_title,
 				R.string.bank_delete_transaction_text,
 				R.string.bank_yes_delete);
@@ -758,8 +756,7 @@ public final class BankConductor  extends Conductor {
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
-		topView.hideNeedHelpFooter();
+		modal.hideNeedHelpFooter();
 
 		//Set the click listener that will delete the payment
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
@@ -846,25 +843,21 @@ public final class BankConductor  extends Conductor {
 
 		// Create a one button modal to notify the user that they are leaving
 		// the application
-		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(activity,
-																		new ModalDefaultTopView(activity, null), 
-																		new ModalDefaultTwoButtonBottomView(activity, null));
+		final SimpleTwoButtonModal modal = new SimpleTwoButtonModal(activity);
 
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView) modal
-				.getTop();
-		topView.hideNeedHelpFooter();
+		modal.hideNeedHelpFooter();
 
 		//Set modal top view text
 		modal.getTop().setTitle(R.string.bank_payee_delete_title);
 		modal.getTop().setContent(R.string.bank_payee_delete_body);
-		
+
 		//Set modal button text
 		modal.getBottom().setOkButtonText(R.string.bank_payee_delete_action);
 		modal.getBottom().setCancelButtonText(R.string.bank_payee_delete_link);
-		
+
 		// Set the click listener that will delete the payment
 		modal.getBottom().getOkButton().setOnClickListener(new OnClickListener() {
 
@@ -876,18 +869,18 @@ public final class BankConductor  extends Conductor {
 					final PayeeDetail payee = (PayeeDetail) bundle
 							.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 					BankServiceCallFactory.createDeletePayeeServiceCall(payee)
-							.submit();
+					.submit();
 				}
 			}
 		});
-		
+
 		modal.getBottom().getCancelButton().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {
 				modal.dismiss();
 			}
-			
+
 		});
 
 		activity.showCustomAlert(modal);
@@ -1001,7 +994,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
@@ -1015,7 +1008,7 @@ public final class BankConductor  extends Conductor {
 				nextVisibleFragment = new BankTransferNotEligibleFragment();
 			}
 
-			if ((args != null) && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
+			if (args != null && args.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK)) {
 				navActivity.popTillFragment(BankTransferStepOneFragment.class);
 				navActivity.getSupportFragmentManager().popBackStack();
 				nextVisibleFragment = new BankTransferStepOneFragment();
@@ -1037,7 +1030,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
@@ -1060,7 +1053,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
 
@@ -1137,9 +1130,9 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( (activity != null) && (activity instanceof BankNavigationRootActivity) ) {
+		if( activity != null && activity instanceof BankNavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+			final SimpleContentModal modal = new SimpleContentModal(activity,
 					R.string.bank_callmodal_title,
 					R.string.bank_callmodal_msg,
 					R.string.bank_callmodal_action);
@@ -1156,8 +1149,7 @@ public final class BankConductor  extends Conductor {
 			/**
 			 * Hide the need help footer for the delete modal.
 			 */
-			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
-			topView.hideNeedHelpFooter();
+			modal.hideNeedHelpFooter();
 
 			((BankNavigationRootActivity) activity).showCustomAlert(modal);
 		}
@@ -1383,8 +1375,8 @@ public final class BankConductor  extends Conductor {
 		}
 
 		/** Launches Privacy & Terms Activity */
-		if ((activity instanceof LoginActivity) || (activity instanceof AtmLocatorActivity)
-				|| (activity instanceof EnhancedAccountSecurityActivity)) {
+		if (activity instanceof LoginActivity || activity instanceof AtmLocatorActivity
+				|| activity instanceof EnhancedAccountSecurityActivity) {
 			final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
 			final Bundle bundle = new Bundle();
 			bundle.putSerializable(BankInfoNavigationActivity.PRIVACY_AND_TERMS, type);
@@ -1411,10 +1403,10 @@ public final class BankConductor  extends Conductor {
 				 * or if user is already viewing privacy and terms,
 				 * they are not requesting to view the landing page again
 				 */
-				continueNavigation = ((fragment == null)
-						|| (fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP)
-						|| ((fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP)
-								&& (fragment instanceof TermsLandingPageFragment) && (type != PrivacyTermsType.LandingPage)));
+				continueNavigation = fragment == null
+						|| fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
+						|| fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
+						&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage;
 			}
 
 			if (continueNavigation) {
@@ -1503,13 +1495,13 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToCardFaq() {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		if((currentActivity instanceof NavigationRootActivity) && !(currentActivity instanceof AtmLocatorActivity)) {
+		if(currentActivity instanceof NavigationRootActivity && !(currentActivity instanceof AtmLocatorActivity)) {
 			final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 			final BaseFragment current = activity.getCurrentContentFragment();
 
 			/**Check if user is already viewing FAQ*/
-			if((current.getGroupMenuLocation() != BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP) &&
-					(current.getSectionMenuLocation() != BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)){
+			if(current.getGroupMenuLocation() != BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP &&
+					current.getSectionMenuLocation() != BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS){
 				activity.makeFragmentVisible(new CardFAQLandingPageFragment());
 			} else if(!(current instanceof FAQDetailFragment) && !(current instanceof FAQLandingPageFragment)) {
 				activity.makeFragmentVisible(new CardFAQLandingPageFragment());

@@ -56,6 +56,19 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 	/**
 	 * Constructor for the alert
 	 * @param context - activity context
+	 */
+	public ModalAlertWithTwoButtons(final Context context) {
+		super(context);
+		this.context = context;
+		top = null;
+		bottom = null;
+	}
+
+
+
+	/**
+	 * Constructor for the alert
+	 * @param context - activity context
 	 * @param top - top piece to be displayed
 	 * @param bottom - bottom piece to be displayed
 	 */
@@ -75,8 +88,11 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		initUI();
+	}
 
-		final View mainView = this.getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
+	protected void initUI() { 
+		final View mainView = getLayoutInflater().inflate(R.layout.modal_alert_layout, null);
 		this.setContentView(mainView);
 		linearLayout = (LinearLayout) mainView.findViewById(R.id.modal_linear_layout);
 	}
@@ -110,7 +126,7 @@ public class ModalAlertWithTwoButtons extends AlertDialog{
 	 * @return the orientation changed listener
 	 */
 	public OrientationEventListener createOrientationListener() {
-		final OrientationEventListener ret = new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+		final OrientationEventListener ret = new OrientationEventListener(getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
 			@Override
 			public void onOrientationChanged(final int arg0) {
 				if( orientation != context.getResources().getConfiguration().orientation ) {

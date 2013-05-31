@@ -27,8 +27,6 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.CustomOptionsMenu;
 
@@ -94,18 +92,18 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 				//recurring transfer we want to allow the user
 				//access to the "See Options" button so they can either delete the entire series or a single transfer.
 				final boolean isOneTime = ActivityDetail.FREQUENCY_ONE_TIME_TRANSFER.equalsIgnoreCase(item.frequency);
-				final Button deleteTransfersButton = (Button)((isOneTime) ? 
-													fragmentView.findViewById(R.id.delete_one_time_transfer_button) :
-					fragmentView.findViewById(R.id.delete_recurring_transfer_button));
+				final Button deleteTransfersButton = (Button)(isOneTime ? 
+						fragmentView.findViewById(R.id.delete_one_time_transfer_button) :
+							fragmentView.findViewById(R.id.delete_recurring_transfer_button));
 				final NavigationRootActivity activity = 
-												(NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+						(NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 
 				deleteTransfersButton.setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(final View v) {
 						if (isOneTime) {
 							showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ONE_TIME_TRANSFER,
-													   R.string.bank_delete_transfer_text);
+									R.string.bank_delete_transfer_text);
 						} else {
 							//In the case of a recurring transfer deletion we need to pop up 
 							//a menu allowing the user to decide if the
@@ -114,23 +112,23 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 							customOptionsMenu = new CustomOptionsMenu(activity, R.layout.delete_recurring_transfers_menu);
 
 							customOptionsMenu.addOnClickListener(R.id.delete_next_transfer_in_series_button, 
-																							new OnClickListener() {
+									new OnClickListener() {
 
 								@Override
 								public void onClick(final View v) {
 									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_NEXT_TRANSFER,
-															   R.string.bank_delete_transfer_text);
+											R.string.bank_delete_transfer_text);
 								}
 
 							});
 
 							customOptionsMenu.addOnClickListener(R.id.delete_entire_transfer_series_button, 
-																							new OnClickListener() {
+									new OnClickListener() {
 
 								@Override
 								public void onClick(final View v) {
 									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ALL_TRANSFERS,
-															   R.string.bank_delete_transfer_series_text);
+											R.string.bank_delete_transfer_series_text);
 								}
 
 							});
@@ -146,7 +144,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 
 
 							customOptionsMenu.addOnClickListener(R.id.delete_recurring_transfers_relative_layout, 
-																							new OnClickListener() {
+									new OnClickListener() {
 
 								@Override
 								public void onClick(final View v) {
@@ -180,10 +178,10 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	 * @param deleteType the type of transfer deletion.
 	 */
 	private void showDeleteTransactionModal(final NavigationRootActivity activity, final ActivityDetail item, 
-																		final TransferDeletionType deleteType,
-																		final int textBody) {
+			final TransferDeletionType deleteType,
+			final int textBody) {
 		// Create a one button modal to notify the user that they are leaving the application
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+		final SimpleContentModal modal = new SimpleContentModal(activity,
 				R.string.bank_delete_transfer_title,
 				textBody,
 				R.string.bank_yes_delete);
@@ -191,8 +189,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		/**
 		 * Hide the need help footer for the delete modal.
 		 */
-		final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
-		topView.hideNeedHelpFooter();
+		modal.hideNeedHelpFooter();
 
 		//Set the click listener that will delete the payment
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
@@ -228,7 +225,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 				for(final Object verb : supportedActions) {
 					canDelete |= verb.toString().equalsIgnoreCase(delete);
 				}
-				
+
 				//Show delete button
 				if(canDelete) {
 					final View button = fragmentView.findViewById(R.id.delete_button);
@@ -240,7 +237,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns a click listener for the delete payment button.
 	 * @param item the item that will be deleted by the modal.
@@ -255,7 +252,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			}
 		};
 	}
-	
+
 	/**
 	 * Presents the delete payment modal that is setup to delete the ActivityDetail item passed as
 	 * the parameter.
@@ -263,21 +260,21 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	 */
 	private void showDeletePaymentModal(final ActivityDetail item) {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		
+
 		if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
-			
+
 			final SimpleContentModal deleteModal = new SimpleContentModal(navActivity);
 			deleteModal.setTitle(R.string.bank_delete_transaction_title);
 			deleteModal.setContent(R.string.bank_delete_transaction_text);
 			deleteModal.getButton().setText(R.string.yes_delete);
 			deleteModal.getButton().setOnClickListener(getDeletePaymentListener(item));
 			deleteModal.hideNeedHelpFooter();
-			
+
 			navActivity.showCustomAlert(deleteModal);
 		}
 	}
-	
+
 	/**
 	 * Returns a click listener that will delete the provided ActivityDetail item
 	 * @param item an Activity Detail item that will be deleted on modal action.
@@ -285,7 +282,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	 */
 	private OnClickListener getDeletePaymentListener(final ActivityDetail item) {
 		return new OnClickListener() {
-			
+
 			@Override
 			public void onClick(final View v) {
 				final PaymentDetail paymentDetail = item.toPaymentDetail();
@@ -294,7 +291,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			}
 		};
 	}
-	
+
 	/**
 	 * Sets up this fragment do display standard Transaction data.
 	 * This data is data which has already been posted to the current account and is not scheduled.
@@ -308,7 +305,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		((TextView)contentTable.findViewById(R.id.amount_cell))
 		.setText(BankStringFormatter.convertCentsToDollars(item.amount.value));
 		((TextView)contentTable.findViewById(R.id.description_cell)).setText(item.description);
-		final TextView transactionId = ((TextView)contentTable.findViewById(R.id.transaction_id));
+		final TextView transactionId = (TextView)contentTable.findViewById(R.id.transaction_id);
 		if(!item.id.equals("0")){
 			transactionId.setText(item.id);
 		}else{

@@ -32,7 +32,7 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 /**
  * A base class for error response handling.
@@ -51,13 +51,13 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * The Parent RoboSlidingFragmentActvitiy that made the service call
 	 */
 	private ErrorHandlerUi errorHandlerUi = null;
-	
+
 	private ErrorHandler mErrorHandlerFactory = null;
-	
+
 	public ErrorHandlerUi getUi() {
 		return errorHandlerUi;
 	}
-	
+
 	/**
 	 * Private constructor to prevent construction without a fragment or
 	 * activity
@@ -95,79 +95,79 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 		String errorHandlingFailureMessage;
 		final Resources resources = errorHandlerUi.getContext().getResources();
-		
+
 		if (errorResponse instanceof JsonMessageErrorResponse) {
 
 			final JsonMessageErrorResponse messageErrorResponse = (JsonMessageErrorResponse) errorResponse;
-			
+
 			// FIRST we will try for common status code generic handling
 			switch (messageErrorResponse.getMessageStatusCode()) {
-				case UNSCHEDULED_MAINTENANCE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.temporary_outage));
-					return true;
-	
-				case SCHEDULED_MAINTENANCE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.planned_outage_one));
-					return true;
-	
-				case PLANNED_OUTAGE:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.planned_outage_one));
-					return true;
-	
-				case NO_DATA_FOUND:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.no_data_found));
-					return true;
-				
-				case EXCEEDED_LOGIN_ATTEMPTS:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.locked_account));
-					return true;
-					
-				case LAST_ATTEMPT_WARNING:
-					setErrorText(R.string.login_attempt_warning);
-					return true;
-					
-				case STRONG_AUTH_NOT_ENROLLED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.account_security_not_enrolled));
-					return true;
-				
-				case AUTH_BAD_ACCOUNT_STATUS:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.zluba_error));
-					return true;
-				
-				case ACCOUNT_NUMBER_REREGISTERED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.account_number_reregistered));
-					return true;
-					
-				case LOCKED_OUT_ACCOUNT:
-					TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.locked_account));
-					return true;
-					
-				case ACCOUNT_SETUP_PENDING:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.account_setup_pending));
-					return true;
-				
-				case ACCOUNT_NUMBER_CHANGED:
-					mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
-							resources.getString(R.string.account_number_changed));
-					return true;
-					
+			case UNSCHEDULED_MAINTENANCE:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.temporary_outage));
+				return true;
+
+			case SCHEDULED_MAINTENANCE:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.planned_outage_one));
+				return true;
+
+			case PLANNED_OUTAGE:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.planned_outage_one));
+				return true;
+
+			case NO_DATA_FOUND:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.no_data_found));
+				return true;
+
+			case EXCEEDED_LOGIN_ATTEMPTS:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.locked_account));
+				return true;
+
+			case LAST_ATTEMPT_WARNING:
+				setErrorText(R.string.login_attempt_warning);
+				return true;
+
+			case STRONG_AUTH_NOT_ENROLLED:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.account_security_not_enrolled));
+				return true;
+
+			case AUTH_BAD_ACCOUNT_STATUS:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.zluba_error));
+				return true;
+
+			case ACCOUNT_NUMBER_REREGISTERED:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.account_number_reregistered));
+				return true;
+
+			case LOCKED_OUT_ACCOUNT:
+				TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_LOCKED);
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.locked_account));
+				return true;
+
+			case ACCOUNT_SETUP_PENDING:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.account_setup_pending));
+				return true;
+
+			case ACCOUNT_NUMBER_CHANGED:
+				mErrorHandlerFactory.handleLockedOut(errorHandlerUi, 
+						resources.getString(R.string.account_number_changed));
+				return true;
+
 			}
 			// SECOND we try the JSON specific error code handling
 			if (handleJsonErrorCode(messageErrorResponse)) {
 				return true;
 			}
-			
+
 			// THIRD - If we get to this block of code, the JSON error code has
 			// not been handled properly. We alert the developer to let them
 			// know they have a condition to handle in the child class
@@ -214,7 +214,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 		}
 
 	}
-	
+
 	/**
 	 * Sets the last error code for the ErrorHandlerUi instance referenced
 	 * 
@@ -238,7 +238,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 	 * @return
 	 */
 	protected boolean handleJsonErrorCode(final JsonMessageErrorResponse messageErrorResponse) {
-		
+
 		return false;
 	}
 
@@ -275,7 +275,7 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 		return false;
 	}
 
-	
+
 
 	/**
 	 * A common method used to display a modal dialog with an error message
@@ -347,43 +347,43 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 
 
 	/**
-     * Show a custom modal alert dialog for the activity
-     * @param alert - the modal alert to be shown
-     */
-    public void showCustomAlert(final AlertDialog alert){
-    	alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	 * Show a custom modal alert dialog for the activity
+	 * @param alert - the modal alert to be shown
+	 */
+	public void showCustomAlert(final AlertDialog alert){
+		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		alert.show();
 		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-    }
-    
-    /**
-     * Show the default one-button alert with a custom title, content an button text
-     * 
-     * Uses the orange button
-     * 
-     * @param title - the resource id for title for the alert
-     * @param content - the resource id for content to display on the box
-     * @param buttonText - the resource id for button text to display on the button
-     */
-    public void showOneButtonAlert(final int title,final int content,final int buttonText){    	
-		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
-    }
-    
-    /**
-     * Show the default one-button alert with a custom title, content an button text
-     * 
-     * Uses the orange button
-     * 
-     * @param title - the resource id for title for the alert
-     * @param content - the resource id for content to display on the box
-     * @param buttonText - the resource id for button text to display on the button
-     */
-    public void showDynamicOneButtonAlert(final int title,final String content,final int buttonText){    	
-		showCustomAlert(new ModalAlertWithOneButton(getErrorFieldUi().getContext(),title,content,buttonText));
-    }
-    
-    
-    /**
+	}
+
+	/**
+	 * Show the default one-button alert with a custom title, content an button text
+	 * 
+	 * Uses the orange button
+	 * 
+	 * @param title - the resource id for title for the alert
+	 * @param content - the resource id for content to display on the box
+	 * @param buttonText - the resource id for button text to display on the button
+	 */
+	public void showOneButtonAlert(final int title,final int content,final int buttonText){    	
+		showCustomAlert(new SimpleContentModal(getErrorFieldUi().getContext(),title,content,buttonText));
+	}
+
+	/**
+	 * Show the default one-button alert with a custom title, content an button text
+	 * 
+	 * Uses the orange button
+	 * 
+	 * @param title - the resource id for title for the alert
+	 * @param content - the resource id for content to display on the box
+	 * @param buttonText - the resource id for button text to display on the button
+	 */
+	public void showDynamicOneButtonAlert(final int title,final String content,final int buttonText){    	
+		showCustomAlert(new SimpleContentModal(getErrorFieldUi().getContext(),title,content,buttonText));
+	}
+
+
+	/**
 	 * A common method used to forward user to error page with a given static
 	 * string text message
 	 * 
@@ -395,8 +395,8 @@ public class CardBaseErrorResponseHandler implements ErrorResponseHandler {
 		final AlertDialog dialog = handler.createErrorModal(context.getString(titleText), context.getString(errorText));
 		handler.showCustomAlert(dialog);
 	}
-	
-    /**
+
+	/**
 	 * A common method used to forward user to error page with a given static
 	 * string text message
 	 * 
