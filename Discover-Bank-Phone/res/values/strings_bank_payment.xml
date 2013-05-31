@@ -47,6 +47,7 @@
 	<string name="acceptance_text">By tapping on Accept, I agree to the Terms of Use.</string>
  	<string name="schedule_pay_payee">Payee</string>
  	<string name="schedule_pay_from">Pay From</string>
+ 	<string name="schedule_pay_from_account_ending">Pay From Account Ending in</string>
  	<string name="schedule_pay_amount">Amount</string>
  	<string name="schedule_pay_too_high">Too high (more than $25k)</string>
  	<string name="schedule_pay_too_low">Too low (less than $1)</string>

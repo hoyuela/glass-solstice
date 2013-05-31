@@ -59,6 +59,7 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.widgets.CalendarFragment;
 import com.discover.mobile.common.ui.widgets.CalendarListener;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 public class SchedulePaymentFragment extends BaseFragment 
@@ -91,6 +92,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private TextView amountError;
 	/** Text view for payment account choice */
 	private TextView paymentAccountText;
+	/** Text view for payment title */
+	private TextView paymentAccountTitle;
 	/** Text View for payment account error*/
 	private TextView paymentAccountError;
 	/** Text view for memo */
@@ -153,7 +156,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	/** boolean set to true when the fragment is in edit mode*/
 	private boolean editMode = false;
 
-
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
 	 * 2013-01-30T05:00:00.000+0000 - old 2013-01-30T05:00:00Z - new TODO
@@ -186,6 +188,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		paymentAccountSpinner = (Spinner) view
 				.findViewById(R.id.payment_acct_spinner);
 		paymentAccountError = (TextView)view.findViewById(R.id.payment_acct_error);
+		paymentAccountTitle = (TextView)view.findViewById(R.id.payment_acct_title);
 		amountEdit = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
@@ -432,6 +435,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
+			
+			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 		}
 		/**Check if page is displayed to edit a payment*/
 		else if( paymentDetail != null ) {
@@ -442,6 +447,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			memoEdit.setText(paymentDetail.memo);
 			
 			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
+			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
@@ -732,7 +738,9 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 									.getSelectedItem();
 							accountId = Integer.valueOf(a.id);
 							accountIndex = position;
+							
 							paymentAccountText.setText(a.nickname);
+							setSelectedAccountTitle(a);
 						}
 
 						@Override
@@ -814,6 +822,14 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 				}
 			}
 		});
+	}
+	
+	private void setSelectedAccountTitle(final Account account) {
+		if (null != account.accountNumber && null != account.accountNumber.ending) {
+			paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
+					  StringUtility.SPACE + 
+					  account.accountNumber.ending);
+		}
 	}
 
 	/**
