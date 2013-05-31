@@ -435,10 +435,13 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
-			paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
-												  StringUtility.SPACE + 
-												  BankUser.instance().getAccount(Integer.toString(accountId)).accountNumber
-												  														     .ending);
+			
+			Account selectedAccount = BankUser.instance().getAccount(Integer.toString(accountId));
+			if (null != selectedAccount.accountNumber && null != selectedAccount.accountNumber.ending) {
+				paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
+						  StringUtility.SPACE + 
+						  selectedAccount.accountNumber.ending);
+			}
 		}
 		/**Check if page is displayed to edit a payment*/
 		else if( paymentDetail != null ) {
@@ -447,12 +450,15 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
-			paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
-										StringUtility.SPACE + 
-									    BankUser.instance().getAccount(paymentDetail.paymentAccount.id).accountNumber
-									    															   .ending);
 			
 			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
+			
+			Account selectedAccount = BankUser.instance().getAccount(Integer.toString(accountId));
+			if (null != selectedAccount.accountNumber && null != selectedAccount.accountNumber.ending) {
+				paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
+						  StringUtility.SPACE + 
+						  selectedAccount.accountNumber.ending);
+			}
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
@@ -745,9 +751,12 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 							accountIndex = position;
 							
 							paymentAccountText.setText(a.nickname);
-							paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
-																  StringUtility.SPACE +
-																  a.accountNumber.ending);
+							
+							if (null != a.accountNumber && null != a.accountNumber.ending) {
+								paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
+										  StringUtility.SPACE + 
+										  a.accountNumber.ending);
+							}
 						}
 
 						@Override
