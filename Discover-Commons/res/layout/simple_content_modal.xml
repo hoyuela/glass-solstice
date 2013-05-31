@@ -3,7 +3,6 @@
     style="alert_modal_black_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:paddingBottom="@dimen/modal_bottom_padding"
     android:paddingTop="@dimen/modal_top_padding" >
 
@@ -11,78 +10,36 @@
         android:id="@+id/modal_linear_layout"
         style="@style/alert_modal_white_bg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/modal_orange_margin_bottom" >
+        android:layout_height="match_parent" >
 
-        <ScrollView
-            android:id="@+id/modal_scroll"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/modal_alert_divider"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/forms_inner_padding"
-            android:paddingRight="@dimen/forms_inner_padding" >
-
-            <RelativeLayout
-                android:id="@+id/scroll_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageView
-                    android:id="@+id/error_icon"
-                    style="@style/modal_error_image"
-                    android:layout_marginTop="@dimen/between_related_elements_padding"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/discover_copyright_text"
-                    android:src="@drawable/error_icon_red"
-                    android:layout_alignTop="@+id/modal_alert_title"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/modal_alert_title"
-                    style="@style/modal_title_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/error_icon"/>
-
-                <TextView
-                    android:id="@+id/modal_alert_text"
-                    style="@style/modal_content_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/modal_alert_title"/>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/modal_alert_text"
-                    android:layout_marginTop="@dimen/modal_footer_topmargin" >
-
-                    <include
-                        android:id="@+id/need_help_footer"
-                        layout="@layout/common_old_general_need_help_footer"/>
-                </RelativeLayout>
-            </RelativeLayout>
-        </ScrollView>
-
-        <View
-            android:id="@+id/modal_alert_divider"
-            android:layout_width="fill_parent"
-            android:layout_height="5dp"
-            android:layout_above="@+id/button"
-            android:background="@drawable/shadow_gradient"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/button"
-            style="@style/call_to_action_theme"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
-            android:layout_marginTop="@dimen/modal_orange_margin_top" />
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/modal_alert_divider" >
+
+            <include
+                android:id="@+id/top_view"
+                layout="@layout/title_content_top" />
+        </RelativeLayout>
+
+            <View
+                android:id="@+id/modal_alert_divider"
+                android:layout_width="fill_parent"
+                android:layout_height="5dp"
+                android:layout_above="@+id/button"
+                android:background="@drawable/shadow_gradient"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/button"
+                style="@style/call_to_action_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/modal_orange_margin_bottom"
+                android:layout_marginTop="@dimen/modal_orange_margin_top" />
     </RelativeLayout>
 
 </RelativeLayout>

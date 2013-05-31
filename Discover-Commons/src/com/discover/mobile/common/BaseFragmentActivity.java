@@ -36,7 +36,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.google.inject.Key;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -228,7 +228,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		hideSlidingMenuIfVisible();
 	}
-	
+
 	/**
 	 * Sets the fragment seen by the user
 	 * @param fragment - fragment to be shown
@@ -278,8 +278,8 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		DiscoverModalManager.clearActiveModal();
 
 		final FragmentManager mgr = getSupportFragmentManager();
-		
-		
+
+
 		if( mgr.getBackStackEntryCount() > 0 ) {
 			/**If back stack has fragments on it then use animations in transitions*/
 			setVisibleFragment(fragment);
@@ -287,7 +287,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 			/**If back stack has no fragments then use no animations on transition*/
 			setVisibleFragmentNoAnimation(fragment);
 		}
-		
+
 		hideSlidingMenuIfVisible();
 	}
 
@@ -297,15 +297,15 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 * @param fragment Reference to fragment that is being added to the back stack.
 	 */
 	public void makeFragmentVisibleNoAnimation(final Fragment fragment) {
-		
+
 		/**Clear any modal that may have been created during the life of the current fragment*/
 		DiscoverModalManager.clearActiveModal();
 
 		setVisibleFragmentNoAnimation(fragment);
-		
+
 		hideSlidingMenuIfVisible();
 	}
-	
+
 	/**
 	 * Make the fragment visible
 	 * @param fragment - fragment to be made visible
@@ -364,7 +364,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public void showOneButtonAlert(final int title, final int content, final int buttonText){
-		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+		showCustomAlert(new SimpleContentModal(this,title,content,buttonText));
 	}
 
 	/**
@@ -378,7 +378,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public void showDynamicOneButtonAlert(final int title, final String content, final int buttonText){
-		showCustomAlert(new ModalAlertWithOneButton(this,title,content,buttonText));
+		showCustomAlert(new SimpleContentModal(this,title,content,buttonText));
 	}
 
 
@@ -510,7 +510,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	public void printFragmentsInBackStack() {
 
-		final FragmentManager fragManager = this.getSupportFragmentManager();
+		final FragmentManager fragManager = getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
 		if (fragCount > 0) {
 			for (int i = 0; i < fragCount; i++) {

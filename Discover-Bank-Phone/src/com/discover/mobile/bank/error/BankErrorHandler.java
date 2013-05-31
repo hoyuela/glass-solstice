@@ -38,7 +38,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 import com.google.common.base.Strings;
 
@@ -135,7 +135,7 @@ public final class BankErrorHandler implements ErrorHandler {
 		if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
 			// Set Focus to first field in screen
 
-			for (int i = (errorHandlerUi.getInputFields().size() - 1); i >= 0; i--) {
+			for (int i = errorHandlerUi.getInputFields().size() - 1; i >= 0; i--) {
 				final EditText text = errorHandlerUi.getInputFields().get(i);
 				text.getText().clear();
 				text.setBackgroundResource(R.drawable.edit_text_default);
@@ -177,7 +177,7 @@ public final class BankErrorHandler implements ErrorHandler {
 		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_text;
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
+		final SimpleContentModal modal = new SimpleContentModal(activeActivity,
 				titleText, errorText, true, helpResId,R.string.ok);
 
 		/**Set modal Title and phone number if provided from server*/
@@ -214,7 +214,7 @@ public final class BankErrorHandler implements ErrorHandler {
 
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity,
+		final SimpleContentModal modal = new SimpleContentModal(activeActivity,
 				titleText, errorText, true, helpResId, R.string.ok);
 
 		/**Set modal Title and phone number if provided from server*/
@@ -238,10 +238,7 @@ public final class BankErrorHandler implements ErrorHandler {
 	 *
 	 * @param modal Reference to a modal that has not been shown.
 	 */
-	public void updateModalInfo(final ModalAlertWithOneButton modal) {
-
-		final ModalDefaultTopView modalTopView = (ModalDefaultTopView)modal.getTop();
-
+	public void updateModalInfo(final SimpleContentModal modal) {
 		/**Update footer in modal to use phone number provided in error response*/
 		final ErrorResponse<?> errorResponse = BankNetworkServiceCallManager.getInstance().getLastError();
 		if( errorResponse != null &&  errorResponse instanceof BankErrorResponse ) {
@@ -249,24 +246,24 @@ public final class BankErrorHandler implements ErrorHandler {
 			final String phoneNumber = bankErrorResponse.getPhoneNumber();
 			final String title = bankErrorResponse.getTitle();
 			final String message = bankErrorResponse.getErrorMessage();
-			
+
 			/**Set modal title with title sent from server*/
 			if( !Strings.isNullOrEmpty(title) ){
-				modalTopView.setTitle(title);
+				modal.setTitle(title);
 			}
 
 			/**Set body text with text sent from server*/
 			if( !Strings.isNullOrEmpty(message)) {
-				modalTopView.setContent(message);
+				modal.setContent(message);
 			}
-			
+
 			/**Set modal phonenumber with number sent from server*/
-			final NeedHelpFooter footer = modalTopView.getHelpFooter();
+			final NeedHelpFooter footer = modal.getHelpFooter();
 			if( !Strings.isNullOrEmpty(phoneNumber) && footer != null) {
 				footer.show(true);
 				footer.setToDialNumberOnClick(phoneNumber);
 			} else {
-				modalTopView.hideNeedHelpFooter();
+				modal.hideNeedHelpFooter();
 			}
 
 		}
@@ -306,7 +303,7 @@ public final class BankErrorHandler implements ErrorHandler {
 		showCustomAlert(modal);
 		return modal;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -324,13 +321,13 @@ public final class BankErrorHandler implements ErrorHandler {
 		final int helpResId = com.discover.mobile.bank.R.string.bank_need_help_number_to_card;
 
 		// Create a one button modal with text as per parameters provided
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activeActivity, 
+		final SimpleContentModal modal = new SimpleContentModal(activeActivity, 
 				resources.getString(R.string.error_403_title_request), 
 				resources.getString(R.string.invalid_bank_take_to_card), true, helpResId, R.string.ok);
-		
+
 		/**Set modal Title and phone number if provided from server*/
 		updateModalInfo(modal);
-		
+
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -338,7 +335,7 @@ public final class BankErrorHandler implements ErrorHandler {
 				FacadeFactory.getCardLoginFacade().toggleToCard(activeActivity);
 			}
 		});
-		
+
 		showCustomAlert(modal);
 		return modal;
 	}
@@ -409,8 +406,8 @@ public final class BankErrorHandler implements ErrorHandler {
 
 			/**Verify the user is currently in the check deposit work-flow*/
 			if ( lastCall instanceof GetAccountLimits ||
-				 (lastCall instanceof AcceptTermsService &&
-			     ((AcceptTermsService)lastCall).getEligibility().isDepositsEligibility())) {
+					lastCall instanceof AcceptTermsService &&
+					((AcceptTermsService)lastCall).getEligibility().isDepositsEligibility()) {
 
 				final Bundle bundle = new Bundle();
 				bundle.putString(BankDepositForbidden.KEY_ERROR_MESSAGE, msgErrResponse.getErrorMessage());
@@ -450,7 +447,7 @@ public final class BankErrorHandler implements ErrorHandler {
 				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
 
 				if( navActivity.getCurrentContentFragment() != null &&
-					navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
+						navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
 
 					final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
 
@@ -484,13 +481,13 @@ public final class BankErrorHandler implements ErrorHandler {
 	public void handleGenericError(final int httpErrorCode) {
 		final ModalAlertWithOneButton modal = createErrorModal(httpErrorCode, R.string.error_request_not_completed_title,
 				R.string.error_request_not_completed_msg);
-		
+
 		showCustomAlert(modal);
 
 		//If it is a screen with inline errors then clear the text fields on an error
 		if( DiscoverActivityManager.getActiveActivity() instanceof ErrorHandlerUi ) {
 			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
-			this.showErrorsOnScreen(currentUi, null);
+			showErrorsOnScreen(currentUi, null);
 		}
 	}
 
@@ -568,7 +565,7 @@ public final class BankErrorHandler implements ErrorHandler {
 
 		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 	}
-	
+
 	/**
 	 * Method used to show a No Connection - Retry modal. The modal will attempt to retransmit the
 	 * last NetworkServiceCall<?> that was sent by the application and was monitored by the BankNetworkServiceCallmanager.
@@ -576,14 +573,14 @@ public final class BankErrorHandler implements ErrorHandler {
 	 */
 	public void handleNoConnection() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-	
+
 		if( activity != null && activity instanceof ErrorHandlerUi ) {
 			// Create a one button modal to notify the user that they are leaving the application
-			final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity,
+			final SimpleContentModal modal = new SimpleContentModal(activity,
 					R.string.bank_network_connection_error_title,
 					R.string.bank_network_connection_error_body,
 					R.string.ok);
-	
+
 			//Set dismiss modal and will retransmit the service call when the user clicks on it
 			modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 				@Override
@@ -591,15 +588,14 @@ public final class BankErrorHandler implements ErrorHandler {
 					modal.dismiss();
 				}
 			});
-			
-			
+
+
 			/**
 			 * Hide the need help footer for the delete modal.
 			 */
-			final ModalDefaultTopView topView = (ModalDefaultTopView)modal.getTop();
-			topView.hideNeedHelpFooter();
-			topView.showErrorIcon(true);
-	
+			modal.hideNeedHelpFooter();
+			modal.showErrorIcon(true);
+
 			((ErrorHandlerUi) activity).showCustomAlert(modal);	
 		}
 	}

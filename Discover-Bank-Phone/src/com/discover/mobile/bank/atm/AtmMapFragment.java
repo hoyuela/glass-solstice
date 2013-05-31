@@ -36,12 +36,12 @@ import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -77,13 +77,13 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 	private static final String LEAVING_APP_MODAL = "leaveApp";
 
 	/**Modal that asks the user if the app can use their current location*/
-	private BankModalAlertWithTwoButtons locationModal;
+	private SimpleTwoButtonModal locationModal;
 
 	/**Modal that lets the user know that their location services are disabled*/
-	private BankModalAlertWithTwoButtons settingsModal;
+	private SimpleTwoButtonModal settingsModal;
 
 	/**Modal that lets the user know that getting of their location failed*/
-	private BankModalAlertWithTwoButtons locationFailureModal;
+	private SimpleTwoButtonModal locationFailureModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
