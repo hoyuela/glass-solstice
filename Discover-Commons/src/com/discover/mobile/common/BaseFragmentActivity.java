@@ -328,8 +328,8 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	public void hideSlidingMenuIfVisible() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
-		if(slidingMenu.isBehindShowing()) {
-			slidingMenu.showAbove();
+		if(slidingMenu.isMenuShowing()) {
+			slidingMenu.showContent();
 		}
 	}
 
