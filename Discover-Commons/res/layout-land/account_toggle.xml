@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/account_toggle_width"
     android:layout_height="wrap_content" >
 
     <RelativeLayout
@@ -38,6 +38,7 @@
                 android:paddingLeft="@dimen/toggle_x_left_pad"
                 android:paddingRight="@dimen/toggle_x_right_pad_l"
                 android:paddingTop="@dimen/toggle_x_top_pad"
+                android:contentDescription="@null"
                 android:src="@drawable/x_gray" />
         </RelativeLayout>
 
@@ -66,6 +67,7 @@
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
                 android:paddingLeft="@dimen/toggle_title_left_pad_l"
                 android:src="@drawable/black_check_mark"
+                android:contentDescription="@null"
                 android:visibility="invisible" />
 
             <TextView
@@ -91,6 +93,20 @@
                 android:paddingLeft="@dimen/toggle_text_left_pad"
                 android:paddingTop="@dimen/between_related_elements_padding"
                 android:text="acct ending in 1234" />
+            
+            <ImageView
+                android:id="@+id/card_gray_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null"
+                android:paddingBottom="@dimen/toggle_x_bottom_pad"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
+                android:src="@drawable/card_icon" />
+            
         </RelativeLayout>
 
         <View
@@ -118,6 +134,7 @@
                 android:layout_marginRight="@dimen/toggle_check_right_pad"
                 android:paddingBottom="@dimen/toggle_bottext_bottom_pad"
                 android:paddingLeft="@dimen/toggle_title_left_pad_l"
+                android:contentDescription="@null"
                 android:src="@drawable/black_check_mark" />
 
             <TextView
@@ -132,6 +149,20 @@
                 android:paddingTop="@dimen/toggle_bottext_bottom_pad"
                 android:text="Discover Bank"
                 android:textStyle="bold" />
+            
+            <ImageView
+                android:id="@+id/bank_gray_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/account_toggle_outside_padding"
+                android:paddingLeft="@dimen/toggle_x_left_pad"
+                android:paddingRight="@dimen/toggle_x_right_pad_p"
+                android:paddingTop="@dimen/toggle_x_top_pad"
+                android:contentDescription="@null"
+                android:src="@drawable/bank_gray_icon" />
+            
         </RelativeLayout>
     </RelativeLayout>
 
