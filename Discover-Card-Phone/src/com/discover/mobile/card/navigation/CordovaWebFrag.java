@@ -523,12 +523,11 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			else if (url.indexOf("http://maps.google.com/maps?")>-1 ||
 			        url.indexOf("facebook.com")>-1 || 
                     url.indexOf("linkedin.com")>-1 || 
-			        url.indexOf("twitter.com")>-1
+			        url.indexOf("twitter.com")>-1 || 
+                    (url.indexOf("www.discover.com/credit-cards")>-1 && url.indexOf("privacy-policies")>-1)
 			        )
             {
-                //cancelLoadUrl();
-                //cwv.goBack();
-                view.stopLoading();
+			    view.stopLoading();
                 showDialogForExternalLink(url);
             }
 

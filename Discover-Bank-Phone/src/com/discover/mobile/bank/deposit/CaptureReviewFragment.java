@@ -64,7 +64,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	/**
 	 * Key used to store in-line error for the image cell which shows the captured images for checks
 	 */
-	private final static String IMAGE_CELL_ERROR_KEY = "image" + KEY_ERROR_EXT;
+	private static final String IMAGE_CELL_ERROR_KEY = "image" + KEY_ERROR_EXT;
 
 	private int depositAmount = 0;
 	private Account account = null;

@@ -4,6 +4,7 @@ package com.discover.mobile.bank.help;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  * @author scottseward
  *
  */
-public class LoggedOutFAQActivity extends NavigationRootActivity{
+public class LoggedOutFAQActivity extends NavigationRootActivity {
 
 	/**
 	 * Create the activity
@@ -101,7 +102,7 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 		actionBar.setCustomView(getLayoutInflater().inflate(
 				R.layout.action_bar_menu_layout, null));
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
+		final ImageView navigationBackButton = (ImageView) findViewById(R.id.navigation_back_button);
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		navigationToggle = (ImageView) findViewById(R.id.navigation_button);
 		final Button logout = (Button) findViewById(R.id.logout_button);
@@ -109,7 +110,15 @@ public class LoggedOutFAQActivity extends NavigationRootActivity{
 
 		titleView.setVisibility(View.VISIBLE);
 		navigationToggle.setVisibility(View.INVISIBLE);
+		navigationBackButton.setVisibility(View.GONE);
 		logout.setVisibility(View.INVISIBLE);
 		titleView.setText(getResources().getString(R.string.faq_title));
+
+		backButtonX.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				onBackPressed();
+			}
+		});
 	}
 }

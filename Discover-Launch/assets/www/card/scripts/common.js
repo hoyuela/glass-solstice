@@ -212,6 +212,7 @@ function provideFeedBack () // Provide Feedback in Child Browser
         {
             customVar = vOne+"|"+dfsKey+"|DiscoverMobileVersion="+APPVER;
             opinionLabURL = shareURL+"&referer=https://mobileapp.discover.com/"+referer+"&custom_var="+customVar;
+            console.log("Provide FeedBack opinionLabURL:"+opinionLabURL);
         }
         else
         {
@@ -874,8 +875,10 @@ function showBottomMenu(ui,activeNav)
 function getMenuItems()
 {
 	try{
+	console.log("inside getMenuItems");
 		if (bottomNav.length < 1)
 		{
+		console.log("inside bottomNav.length < 1 is true"); 
 			var navArray = new Array();
 			
 			navArray = menuConfig["bottomnavitems"].split(",");
@@ -1322,15 +1325,21 @@ $('[data-role=page]').live('pageshow', function(e,data){
 			handleNativeFrame(activePage);		
 		}
 	}else if(isDeviceReady == true)
-		{      
-			if(activePage != "loadingPage-pg")
-        		HybridControl.prototype.dismissProgressBar(null,null);
-        }       
+	{      
+		if(activePage != "loadingPage-pg")
+        	HybridControl.prototype.dismissProgressBar(null,null);
+    }       
         
      if(activePage == "edoDetail")
      {
      	HybridControl.prototype.enableSlidingMenu(null,true);
      }
+     
+      if(activePage == "strongAuthLocked-Pg")
+     {
+     	console.log("strong auth locked page ....disabling menu button");
+     	HybridControl.prototype.disableMenuButton();
+     } 
 	                
     postSiteCatalyst(toPageName);		//site catalyst                           
 	}catch(err){
@@ -1393,6 +1402,7 @@ function moreLandingLoad(){
 
 function moreLandingRevisedLoad(){
 	try{
+		console.log("inside moreLandingRevisedLoad");
 		getMenuItems();
 		var moreHTML="";
 		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
@@ -1403,7 +1413,7 @@ function moreLandingRevisedLoad(){
 				}
 			} 
 		moreHTML+="</ul>";
-		$("#showMoreLinks").html(moreHTML);
+		$("#showMoreLinks_revised").html(moreHTML);
 		//$(".mnu_more").trigger("create");
 	}catch(err){
 		showSysException(err);

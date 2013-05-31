@@ -21,5 +21,5 @@ public interface BankErrorHandlerDelegate {
 	 * 
 	 * @return True if error was handled false otherwise.
 	 */
-	public boolean handleError(final BankErrorResponse msgErrResponse);
+	boolean handleError(final BankErrorResponse msgErrResponse);
 }

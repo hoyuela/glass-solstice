@@ -36,12 +36,12 @@ import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -77,13 +77,13 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 	private static final String LEAVING_APP_MODAL = "leaveApp";
 
 	/**Modal that asks the user if the app can use their current location*/
-	private ModalAlertWithTwoButtons locationModal;
+	private BankModalAlertWithTwoButtons locationModal;
 
 	/**Modal that lets the user know that their location services are disabled*/
-	private ModalAlertWithTwoButtons settingsModal;
+	private BankModalAlertWithTwoButtons settingsModal;
 
 	/**Modal that lets the user know that getting of their location failed*/
-	private ModalAlertWithTwoButtons locationFailureModal;
+	private BankModalAlertWithTwoButtons locationFailureModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
@@ -502,8 +502,8 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 		}
 	}
 
-	private final static String TEMP_RESULTS = "tr";
-	private final static String RESULT_END_INDEX = "ren";
+	private static final String TEMP_RESULTS = "tr";
+	private static final String RESULT_END_INDEX = "ren";
 
 	/**
 	 * Resume the state of the fragment

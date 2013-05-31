@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -34,7 +33,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * @author henryoyuela
  *
  */
-final public class BankPayConfirmFragment extends BankOneButtonFragment {
+public final class BankPayConfirmFragment extends BankOneButtonFragment {
 	/**
 	 * Holds list of content that is to be displayed in the contentTable linearLayout created by the
 	 * base class.
@@ -107,9 +106,6 @@ final public class BankPayConfirmFragment extends BankOneButtonFragment {
 	protected void onActionLinkClick() {
 		//Generate a url to download schedule payments
 		final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-		activity.popTillFragment(BankAccountSummaryFragment.class);
 
 		BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
 	}

@@ -440,6 +440,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
+			
+			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
@@ -661,11 +663,11 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private String formatPaymentDate(final String year, final String month,
 			final String day) {
 		final StringBuilder sb = new StringBuilder();
-		sb.append(month); // Month
+		sb.append(month);
 		sb.append('/');
-		sb.append(day); // Day
+		sb.append(day); 
 		sb.append('/');
-		sb.append(year); // Year
+		sb.append(year); 
 		return sb.toString();
 	}
 

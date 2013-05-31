@@ -33,12 +33,12 @@ public class BankAmountTextWatcher extends ValidatedInputFieldWatcher {
 	/**
 	 * Holds the maximum value that can be entered by the user in the input field.
 	 */
-	public final static double DEFAULT_MAX_VALUE = 99999.99;
+	public static final double DEFAULT_MAX_VALUE = 99999.99;
 	
-	private final static double SHIFT_ONE = 10.0;
-	private final static double SHIFT_TWO = 100.0;
-	private final static double SHIFT_THREE = 1000.0;
-
+	private static final double SHIFT_ONE = 10.0;
+	private static final double SHIFT_TWO = 100.0;
+	private static final double SHIFT_THREE = 1000.0;
+	
 	public BankAmountTextWatcher(ValidatedInputField inputField, final String startValue) {
 		super(inputField);
 		if( !Strings.isNullOrEmpty(startValue) ) {

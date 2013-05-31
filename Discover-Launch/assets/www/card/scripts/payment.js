@@ -102,10 +102,20 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 			var daysDelinquentVal=payDataObj.daysDelinquent;
 
 			var currentBalanceVal= !isEmpty(currentBalance) ? numberWithCommas(currentBalance) : defaultValue;
-			$("#paymentsSummary_currentBalance").text("$" + currentBalanceVal);		
+			/* To show negative balance format */
+			if(currentBalanceVal < 0){
+					$("#paymentsSummary_currentBalance").html("-$"+ splitNegativeBalance(currentBalanceVal));
+					}else{
+			$("#paymentsSummary_currentBalance").text("$" + currentBalanceVal);	
+			}			
 
 			var statementBalanceVal= !isEmpty(statementBalance) ? numberWithCommas(statementBalance) : defaultValue;
+			/* To show negative balance format */
+			if(statementBalanceVal < 0){
+					$("#paymentsSummary_statementBalance").html("-$"+ splitNegativeBalance(statementBalanceVal));
+					}else{
 			$("#paymentsSummary_statementBalance").text("$" + statementBalanceVal);
+			}
 
 			if((payDataObj.isHaMode)){
 				$("#paymentsSummaryScheduledPayments_Li").remove();
@@ -1222,7 +1232,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 		var bankName = stepOne.bankInfo[0].bankName;
 		var truncatedBankName=dfs.crd.pymt.truncateBankDetails(accountNumber,bankName);
 		dfs.crd.pymt.selectvar = (stepOne.bankInfo.length == 1) ? truncatedBankName["bankName"]+truncatedBankName["accountNumber"] : "- Select Bank Account -";
-		var fieldtext = '<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-hover-d ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD2" style="width:250px;">'
+		var fieldtext = '<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-hover-d ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="DD2" style="width:98%;">'
 			+ dfs.crd.pymt.selectvar
 			+ '</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span><select class="ui-select" name="BankStepOne" id="bankDropDownStepOne" onchange="dfs.crd.pymt.bankSelected(); ">';
 		fieldtext += "<option value='- Select Bank Account -'  selected='selected' >- Select Bank Account -</option>";

@@ -30,7 +30,8 @@ public class UpdatePaymentCall extends BankJsonResponseMappingNetworkServiceCall
 	
 	public UpdatePaymentCall(final Context context, final AsyncCallback<PaymentDetail> callback,
 			final CreatePaymentDetail payment, final String paymentId) {
-		super(context, new PostCallParams(getUrl(paymentId)){{ //$NON-NLS-1$
+		super(context, new PostCallParams(getUrl(paymentId)){{ 
+			//$NON-NLS-1$
 			requiresSessionForRequest = true;
 			sendDeviceIdentifiers = true;
 
