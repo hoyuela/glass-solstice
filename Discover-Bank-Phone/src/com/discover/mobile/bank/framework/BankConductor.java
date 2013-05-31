@@ -715,6 +715,8 @@ public final class BankConductor  extends Conductor {
 			/**Launch Provide Feedback Activity if user is not logged in*/
 			if (activity instanceof LoginActivity || activity instanceof DiscoverIntentListener) {
 				final Intent intent = new Intent(activity, BankInfoNavigationActivity.class);
+				bundle.putBoolean(BankInfoNavigationActivity.GO_BACK_TO_LOGIN, 
+						activity instanceof LoginActivity ? true : false);
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
 				activity.finish();
