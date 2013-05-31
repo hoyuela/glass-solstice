@@ -88,6 +88,7 @@ import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.ui.fragments.BankWebViewFragment;
+import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
@@ -104,7 +105,6 @@ import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -844,7 +844,7 @@ public final class BankConductor  extends Conductor {
 
 		// Create a one button modal to notify the user that they are leaving
 		// the application
-		final ModalAlertWithTwoButtons modal = new ModalAlertWithTwoButtons(activity, 
+		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(activity,
 																		new ModalDefaultTopView(activity, null), 
 																		new ModalDefaultTwoButtonBottomView(activity, null));
 
@@ -882,7 +882,7 @@ public final class BankConductor  extends Conductor {
 		modal.getBottom().getCancelButton().setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				modal.dismiss();
 			}
 			
