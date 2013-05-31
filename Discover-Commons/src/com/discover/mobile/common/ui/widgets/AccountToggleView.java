@@ -2,7 +2,6 @@ package com.discover.mobile.common.ui.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,6 +13,7 @@ import com.discover.mobile.common.R;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.CardInfoForToggle;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Widget that allows the user to toggle between accounts.
@@ -85,7 +85,7 @@ public class AccountToggleView extends RelativeLayout {
 				cardName.setText(cardInfo.getCardAccountName());
 				cardEnding.setText(context.getResources().getString(
 						R.string.account_ending_in)
-						+ " " +cardInfo.getCardEndingDigits());
+						+ StringUtility.SPACE +cardInfo.getCardEndingDigits());
 			}
 		}
 
@@ -107,7 +107,7 @@ public class AccountToggleView extends RelativeLayout {
 		cardName.setText(name);
 		cardEnding.setText(context.getResources().getString(
 				R.string.account_ending_in)
-				+ " " + endingDigits);
+				+ StringUtility.SPACE + endingDigits);
 	}
 
 	/**
@@ -125,15 +125,17 @@ public class AccountToggleView extends RelativeLayout {
 	 */
 	public void setIndicatorPosition(final int left, final int top, final int iconWidth,
 			final int iconHeight) {
+		final int three = 3;
+		final int five = 5;
 
-		indicator.setPadding(left + (iconWidth / 3),
-				top + (iconHeight / 3) + 5, 0, 0);
+		indicator.setPadding(left + (iconWidth / three),
+				top + (iconHeight / three) + five, 0, 0);
 
 		final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.BELOW, indicator.getId());
-		lp.setMargins(0, -3, 0, 0);
+		lp.setMargins(0, -three, 0, 0);
 		bubble.setLayoutParams(lp);
 
 		isIndicatorDrawn = true;

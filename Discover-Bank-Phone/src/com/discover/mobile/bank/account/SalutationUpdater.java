@@ -3,12 +3,12 @@ package com.discover.mobile.bank.account;
 import java.util.Calendar;
 import java.util.Locale;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -19,7 +19,7 @@ import com.google.common.base.Strings;
  * @author scottseward
  *
  */
-public class SalutationUpdater implements Runnable {
+public final class SalutationUpdater implements Runnable {
 	final static int MORNING_START = 0;
 	final static int MORNING_END = 12;
 	final static int AFTERNOON_START = MORNING_END;
@@ -28,11 +28,11 @@ public class SalutationUpdater implements Runnable {
 	final static int EVENING_END = 24;
 	
 	private TextView salutation = null;
-	private Context currentContext = null;
+	private BankAccountSummaryFragment currentContext = null;
 	private Handler uiHandler = null;
-	private String firstName = "";
+	private String firstName = StringUtility.EMPTY;
 	
-	public SalutationUpdater(final TextView salutation, final String firstName, final Context context) {
+	public SalutationUpdater(final TextView salutation, final String firstName, final BankAccountSummaryFragment context) {
 		uiHandler = new Handler(Looper.getMainLooper());
 		this.salutation = salutation;
 		this.currentContext = context;
@@ -54,7 +54,7 @@ public class SalutationUpdater implements Runnable {
 
 		if(greetingPrefix != null && !Strings.isNullOrEmpty(greetingSuffix)) {
 			greetingBuilder.append(String.format(greetingPrefix, greetingSuffix));
-			greetingBuilder.append(" ");
+			greetingBuilder.append(StringUtility.SPACE);
 		}
 		
 		if(!Strings.isNullOrEmpty(firstName)) {
@@ -66,6 +66,7 @@ public class SalutationUpdater implements Runnable {
 			public void run() {
 				if(salutation != null) {
 					salutation.setText(greetingBuilder.toString());
+					currentContext.updateDropdownPosition();
 				}
 			}
 		};
@@ -79,7 +80,7 @@ public class SalutationUpdater implements Runnable {
 	 * @return a String for the time of day, "morning", "evening", or "afternoon".
 	 */
 	private String getGreetingSuffixForHour(final int hourOfDayMilitary) {
-		String greetingSuffix = "";
+		String greetingSuffix = StringUtility.EMPTY;
 		int greetingResource = 0;
 		
 		if(isBetweenTime(MORNING_START, hourOfDayMilitary, MORNING_END)) {
@@ -110,7 +111,7 @@ public class SalutationUpdater implements Runnable {
 		return start <= hour && hour < end;
 	}
 	
-	public static final boolean shouldUpdateGreeting() {
+	public static boolean shouldUpdateGreeting() {
 		final int hourOfDayMilitary = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 		
 		boolean shouldUpdateGreeting = false;
