@@ -16,7 +16,7 @@ import com.google.common.base.Strings;
  * @author henryoyuela
  *
  */
-final public class BankUrlChanger extends BroadcastReceiver {
+public final class BankUrlChanger extends BroadcastReceiver {
 	private static final String TAG = BankUrlChanger.class.getSimpleName();
 
 	@Override

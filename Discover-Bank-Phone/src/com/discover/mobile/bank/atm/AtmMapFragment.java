@@ -502,8 +502,8 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 		}
 	}
 
-	private final static String TEMP_RESULTS = "tr";
-	private final static String RESULT_END_INDEX = "ren";
+	private static final String TEMP_RESULTS = "tr";
+	private static final String RESULT_END_INDEX = "ren";
 
 	/**
 	 * Resume the state of the fragment

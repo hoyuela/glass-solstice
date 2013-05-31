@@ -16,7 +16,7 @@ import com.discover.mobile.bank.services.account.AccountNumber;
  *
  */
 public class BankSelectAccountItem extends BankAccountView {
-	final private OnClickListener listener;
+	private final OnClickListener listener;
 	
 	public BankSelectAccountItem(final Context context, final Account account, final OnClickListener listener) {
 		super(context, account);

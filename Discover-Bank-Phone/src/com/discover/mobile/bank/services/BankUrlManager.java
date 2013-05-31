@@ -20,7 +20,8 @@ public final class BankUrlManager  {
 	private static String baseURL = BankBaseUrl.getString("BankUrlManager.0");
 	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
 
-	public static final double MAX_IDLE_TIME = 600; // 600 secs = 10 min
+	// 600 secs = 10 min
+	public static final double MAX_IDLE_TIME = 600; 
 
 	public static final String EMPTY = "";
 	private static final String BANK_LOGIN_URL = "https://www.discoverbank.com/bankac/loginreg/login";

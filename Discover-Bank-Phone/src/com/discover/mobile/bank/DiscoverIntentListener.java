@@ -17,7 +17,7 @@ import com.discover.mobile.common.error.ErrorHandler;
  * @author henryoyuela
  * 
  */
-final public class DiscoverIntentListener extends BaseActivity {
+public final class DiscoverIntentListener extends BaseActivity {
 	private static final String PROVIDE_FEEDBACK = "cardProvideFeedback";
 	private static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
 	public static String METHOD_SCHEME = "method";

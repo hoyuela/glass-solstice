@@ -23,7 +23,7 @@ import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
  * @author henryoyuela
  * 
  */
-final public class BrowserNavigator extends BaseActivity {
+public final class BrowserNavigator extends BaseActivity {
 	private static final String TAG = BrowserNavigator.class.getSimpleName();
 
 	@Override

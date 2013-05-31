@@ -91,7 +91,7 @@ import com.google.common.base.Strings;
  * @author henryoyuela
  *
  */
-final public class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, 
+public final class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, 
 																							  SuccessListener<Serializable>,
 ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
@@ -143,7 +143,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 *
 	 * @return Returns Singleton instance of NetworkServiceCallManager
 	 */
-	static public BankNetworkServiceCallManager getInstance() {
+	public static BankNetworkServiceCallManager getInstance() {
 
 		return instance;
 	}

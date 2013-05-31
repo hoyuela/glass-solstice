@@ -24,7 +24,7 @@ public class BankDepositForbidden extends BaseFragment {
 	/**
 	 * Key used to read error message from bundle passed to this fragment.
 	 */
-	public final static String KEY_ERROR_MESSAGE = "error-messgae";
+	public static final String KEY_ERROR_MESSAGE = "error-messgae";
 	/**
 	 * Reference to footer in layout
 	 */

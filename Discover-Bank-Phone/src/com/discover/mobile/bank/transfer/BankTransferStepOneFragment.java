@@ -75,7 +75,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	/**
 	 * Holds the number of days added to the next business day, used to determine the next valid re-occurring transfer date.
 	 */
-	private final static int REOCURRING_TRANSFER_OFFSET = 2;
+	private static final int REOCURRING_TRANSFER_OFFSET = 2;
 	
 	private BankErrorResponse lastErrorObject = null;
 	

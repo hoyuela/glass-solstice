@@ -137,7 +137,8 @@ public class BankAmountLimitValidatedField extends AmountValidatedEditField {
 			else if (limits.dailyDepositCount.remaining <= 0) {
 				errorLabel.setText(getErrorTextWithLimitCount(limits.dailyDepositCount));
 			} else {
-				ret = true; // Everything is valid
+				// Everything is valid
+				ret = true; 
 			}	
 		} else {
 			if (Log.isLoggable(TAG, Log.ERROR)) {

@@ -36,8 +36,9 @@ public class AmountValidatedEditField extends ValidatedInputField {
 	 */
 	private BankAmountTextWatcher textWatcher = null;
 	
-	/** True when Input Field is utilizing a text watcher */
-	private boolean isValidationEnabled = false; // false until the first BankAmountTextWatcher is created.
+	/** True when Input Field is utilizing a text watcher. The field is false until the first 
+	 *  BankAmountTextWatcher is created.*/
+	private boolean isValidationEnabled = false; 
 
 	public AmountValidatedEditField(final Context context) {
 		super(context);
@@ -71,7 +72,8 @@ public class AmountValidatedEditField extends ValidatedInputField {
 	 */
 	public void enableBankAmountTextWatcher(final boolean value) {
 		if (isValidationEnabled == value) {
-			return; // Nothing has changed.
+			// Nothing has changed.
+			return; 
 		}
 		
 		isValidationEnabled = value;
