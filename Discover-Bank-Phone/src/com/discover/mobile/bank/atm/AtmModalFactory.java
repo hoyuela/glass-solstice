@@ -113,9 +113,8 @@ public final class AtmModalFactory{
 	public static SimpleTwoButtonModal getLocationAcceptanceModal(final Context context, 
 			final LocationFragment fragment){
 		final SimpleTwoButtonModal modal = new SimpleTwoButtonModal(context);
-		final String content = context.getString(R.string.atm_location_modal_content);
 		modal.setTitle(R.string.atm_location_modal_title);
-		modal.setContent(Html.fromHtml(content));
+		modal.setContent(context.getString(R.string.atm_location_modal_content));
 		modal.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
 		modal.setOkButtonText(R.string.atm_location_modal_allow);
 		modal.setCancelButtonText(R.string.atm_location_modal_decline);
