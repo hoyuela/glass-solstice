@@ -13,24 +13,49 @@ end
 
 # Opens the menu, selects the specified category, and selects the subcategory
 # MENU SHOULD BE CLOSED AND CURRENT SCREEN SHOULD BE OF A DIFFERING CATEGORY
+# WILL NOT WORK IF subtitle AND title ARE THE SAME
 Given /^I (?:navigate|go) to "([^\"]*)" under "([^\"]*)"$/ do |subtitle, title|
 	macro 'I press the menu button'
 	macro %Q[I touch the "#{title}" text]
 	performAction('wait_for_text', "#{subtitle}")
-	performAction('click_on_text', "#{subtitle}")
+	
+	if subtitle == title
+		# TODO: Find way to differntiate the menu from the submenu if they have the same name
+		menus = query("textview text:'#{subtitle}'", 'id')
+		
+		# Finds the coordinates of the second occurance of "Pay Bills"
+		# & touches those coordinates, thus navigating to Pay Bills.
+		x = query("textview marked:'#{subtitle}'")[1]["rect"]["center_x"]
+		y = query("textview marked:'#{subtitle}'")[1]["rect"]["center_y"]
+		performAction("touch_coordinate", x, y)
+	else
+		performAction('click_on_text', "#{subtitle}")
+	end
 end
 
 # Enters a random dollar amount in a Discover (custom) currency input field
-Given /^I (?:put|enter) a random amount (?:in|into) field (?:number )?(\d+)$/ do |field|
-	amount = rand(9) + 1 # random number (1-9)
-
+Given /^I (?:put|enter) a random (?:number|amount) between (\d+) and (\d+) (?:in|into) field (?:number )?(\d+)$/ do |num1, num2, field|
+	num1 = num1.to_i
+	num2 = num2.to_i
+	amount = rand(num2) + num1 # random number (num1-num2)
+	puts amount
 	# Enter the random payment amount
 	# TODO: Find better workaround if possible...
 	# ISSUE: The first number you enter will show up in the 100th column (9 -> $0.09)
 	# Even a higher number will only enter one digit like above
 	# Need to add the number three times, which will move it over 3 decimals to reach $1 minimum
 	# Has something to do with the non-standard EditText being restricted to numbers
-	performAction('enter_text_into_numbered_field', amount, field)
-	performAction('enter_text_into_numbered_field', amount, field)
-	performAction('enter_text_into_numbered_field', amount, field)
+	if amount >= 10
+		amountFirstDigit = amount / 10
+		amountSecondDigit = amount % 10
+		performAction('enter_text_into_numbered_field', amountFirstDigit, field)
+		performAction('enter_text_into_numbered_field', amountSecondDigit, field)
+		performAction('enter_text_into_numbered_field', 0, field)
+		performAction('enter_text_into_numbered_field', 0, field)
+	else
+		performAction('enter_text_into_numbered_field', amount, field)
+		performAction('enter_text_into_numbered_field', 0, field)
+	end
+
+
 end
