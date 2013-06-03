@@ -13,7 +13,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 
 public class CardUrlManager {
 
-		private static final String BASE_URL = "https://asys.mapi.discovercard.com";
+	private static final String BASE_URL = DiscoverActivityManager.getString(R.string.card_base_url);;
 
 	/**
 	 * Pre Auth URL
