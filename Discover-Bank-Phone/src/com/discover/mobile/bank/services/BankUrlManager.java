@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.common.base.Strings;
 
 /**
@@ -17,8 +19,8 @@ import com.google.common.base.Strings;
  */
 public final class BankUrlManager  {
 
-	private static String baseURL = BankBaseUrl.getString("BankUrlManager.0");
-	private static final String DISCOVER_STRIPPED_URL = "http://asys.discoverbank.com";
+	private static String baseURL = DiscoverActivityManager.getString(R.string.bank_base_url);
+	private static final String DISCOVER_STRIPPED_URL = DiscoverActivityManager.getString(R.string.bank_stripped_url);
 
 	// 600 secs = 10 min
 	public static final double MAX_IDLE_TIME = 600; 
@@ -43,6 +45,8 @@ public final class BankUrlManager  {
 	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=http://android.discoverbank.com(null)&custom_var=DiscoverMobileVersion=5.0.0";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
+	private static final String STREET_VIEW_URL = "/api/content/atm/streetview.html?lat=%s&lng=%s";
+	private static final String PAY_BILLS_TERMS_URL = "/api/content/payments/terms.html";
 
 	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
 	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
@@ -174,7 +178,7 @@ public final class BankUrlManager  {
 	 * @return if the link is html/htm content.
 	 */
 	private static boolean looksLikeContent(final String link) {
-		return (link != null) && (link.endsWith("html") || link.endsWith("htm"));
+		return link != null && (link.endsWith("html") || link.endsWith("htm"));
 	}
 
 	/**
@@ -366,7 +370,7 @@ public final class BankUrlManager  {
 	 * @return Returns URL link that was stored in hashmap
 	 */
 	public static String getUrl( final Map<String, ReceivedUrl> urls, final String key) {
-		if( (urls != null) && urls.containsKey(key)  ) {
+		if( urls != null && urls.containsKey(key)  ) {
 			final String url = urls.get(key).url;
 			return getRelativePath(url);
 		} else {
@@ -419,6 +423,22 @@ public final class BankUrlManager  {
 	 */
 	public static String getCardGoogleTermsUrl() {
 		return CARD_GOOGLE_TERMS_URL;
+	}
+
+	/**
+	 * 
+	 * @return the street view url
+	 */
+	public static String getStreetViewUrl() {
+		return baseURL + STREET_VIEW_URL;
+	}
+
+	/**
+	 * 
+	 * @return the pay bills terms and conditions url
+	 */	
+	public static String getPayBillsTermsUrl() {
+		return baseURL + PAY_BILLS_TERMS_URL;
 	}
 
 }

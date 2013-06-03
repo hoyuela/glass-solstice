@@ -18,6 +18,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.BaseFragment;
 
@@ -34,9 +35,6 @@ import com.discover.mobile.common.BaseFragment;
 public class BankPayTerms extends BaseFragment{
 	/**We need an api call that is available in API11+ so this is defined to check against version numbers*/
 	private static final int API_ELEVEN = 11;
-	
-	/**The URL that provides the terms and conditions content for the URL */
-	private static final String TERMS_URL = "https://asys.discoverbank.com/api/content/payments/terms.html";
 
 	/**The default title text that will be used if for some reason one is not passed in the Bundle */
 	private int titleText = R.string.pay_a_bill_title;
@@ -92,7 +90,7 @@ public class BankPayTerms extends BaseFragment{
 	 */
 	@SuppressLint("NewApi")
 	private void setupWebView() {
-		termsWebView.loadUrl(TERMS_URL);
+		termsWebView.loadUrl(BankUrlManager.getPayBillsTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override

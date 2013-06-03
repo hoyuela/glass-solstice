@@ -8,6 +8,8 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.Size;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,6 +28,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -91,6 +95,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
+	private OrientationEventListener orientationListener = null;
 
 	/**
 	 * Setup the Activity. Loads all UI elements to local references and starts camera setup.
@@ -113,8 +118,52 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		setupButtons();
 		setupCameraForRetake();
 		cameraPreview.setOnClickListener(autoFocusClickListener);
+		orientationListener = createOrientationListener();
 	}
 
+	/**
+	 * Create the orientation changed listener, this will attempt to force the orientation into landscape mode
+	 * if the orientation of the activity is changed.
+	 * @return the orientation changed listener
+	 */
+	public OrientationEventListener createOrientationListener() {
+		final OrientationEventListener ret = 
+				new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+			@Override
+			public void onOrientationChanged(final int arg0) {
+				final int requestedOrientation = 
+						CheckDepositCaptureActivity.this.getResources().getConfiguration().orientation;
+				Log.e("orientation", "Attempted orientation change to: " + requestedOrientation);
+
+				if(!(requestedOrientation == 
+						Configuration.ORIENTATION_LANDSCAPE)) {
+					setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+				}
+			}
+		};
+
+		return ret;  
+	}
+	
+	/**
+	 * Start the listener for orientation change.
+	 */
+	private void startOrientationListener() {
+		if(orientationListener == null) {
+			orientationListener = createOrientationListener();
+		}
+		orientationListener.enable();
+	}
+	
+	/**
+	 * Stop the listener for orientation change.
+	 */
+	private void stopOrientationListener() {
+		if(orientationListener != null) {
+			orientationListener.disable();
+		}
+	}
 	/**
 	 * On resume of the Activity, get the camera ready to use.
 	 */
@@ -122,6 +171,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void onResume() {
 		isPaused = false;
 		super.onResume();
+		startOrientationListener();
 	}
 
 	/**
@@ -129,6 +179,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	@Override
 	public void onPause() {
+		stopOrientationListener();
+		orientationListener.disable();
+
 		isPaused = true;	
 		
 		//Check to see if onPause was called because the activity is being finished
@@ -141,7 +194,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				setupButtons();
 			}
 		}
-			
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		super.onPause();
 	}
 
@@ -887,7 +940,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	public void surfaceDestroyed(final SurfaceHolder holder) {
 		if(camera != null) {
 			camera.stopPreview();
-			camera.cancelAutoFocus();
 			camera.release();
 
 			//This is set to null so that we can check in the autofocus callback to see if the camera has been released

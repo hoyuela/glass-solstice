@@ -1,2 +1,5 @@
 <resources xmlns:tools="https://schemas.android.com/tools" tools:ignore="TypographyDashes">
+     <string name="card_tracking_rsid">discovercardmobiledev</string>
+     <string name="bank_tracking_rsid">discoverbankmobiledev</string>
+     <string name="tracking_server">smetrics.discover.com</string>
 </resources>

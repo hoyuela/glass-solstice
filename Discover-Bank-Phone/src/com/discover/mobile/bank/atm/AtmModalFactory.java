@@ -13,13 +13,10 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
-import com.discover.mobile.bank.ui.modals.ModalTwoButtonWhiteBottom;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalBottomTwoButtonView;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.modals.SimpleNoButtonModal;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 
 /**
  * Modal factory for the ATM locator features. Will create modals to the 
@@ -43,24 +40,22 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to enable
 	 * their location services
 	 */
-	public static BankModalAlertWithTwoButtons getSettingsModal(final Context context, final LocationFragment fragment){
-		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
-		final ModalBottomTwoButtonView bottom = new ModalDefaultTwoButtonBottomView(context, null);
-		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, bottom);
-		top.setTitle(R.string.atm_location_modal_service_title);
-		top.setContent(R.string.atm_location_modal_service_content);
-		top.showErrorIcon(false);
-		top.hideNeedHelpFooter();
-		bottom.setOkButtonText(R.string.atm_location_modal_settings);
-		bottom.setCancelButtonText(R.string.atm_location_modal_cancel);
-		bottom.getOkButton().setOnClickListener(new OnClickListener(){
+	public static SimpleTwoButtonModal getSettingsModal(final Context context, final LocationFragment fragment){
+		final SimpleTwoButtonModal modal = new SimpleTwoButtonModal(context);
+		modal.setTitle(R.string.atm_location_modal_service_title);
+		modal.setContent(R.string.atm_location_modal_service_content);
+		modal.showErrorIcon(false);
+		modal.hideNeedHelpFooter();
+		modal.setOkButtonText(R.string.atm_location_modal_settings);
+		modal.setCancelButtonText(R.string.atm_location_modal_cancel);
+		modal.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				fragment.launchSettings();
 				modal.dismiss();
 			}
 		});
-		bottom.getCancelButton().setOnClickListener(new OnClickListener(){
+		modal.getCancelButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				modal.dismiss();
@@ -80,18 +75,16 @@ public final class AtmModalFactory{
 	 * @param contentId - R String ID for the modal message
 	 * @return the modal that includes the location allow / decline buttons.
 	 */
-	private static BankModalAlertWithTwoButtons getLocationModal(final Context context, 
+	private static SimpleTwoButtonModal getLocationModal(final Context context, 
 			final LocationFragment fragment, final int titleId, final int contentId) {
-		final ModalDefaultTopView top = new ModalDefaultTopView(context, null);
-		final ModalTwoButtonWhiteBottom bottom = new ModalTwoButtonWhiteBottom(context, null);
-		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, bottom);
-		top.setTitle(titleId);
-		top.setContent(contentId);
-		top.showErrorIcon(false);
-		top.hideNeedHelpFooter();
-		bottom.setOkButtonText(R.string.atm_location_modal_allow);
-		bottom.setCancelButtonText(R.string.atm_location_modal_decline);
-		bottom.getOkButton().setOnClickListener(new OnClickListener(){
+		final SimpleTwoButtonModal modal = new SimpleTwoButtonModal(context);
+		modal.setTitle(titleId);
+		modal.setContent(contentId);
+		modal.showErrorIcon(false);
+		modal.hideNeedHelpFooter();
+		modal.setOkButtonText(R.string.atm_location_modal_allow);
+		modal.setCancelButtonText(R.string.atm_location_modal_decline);
+		modal.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				fragment.setLocationStatus(LocationFragment.SEARCHING);
@@ -99,7 +92,7 @@ public final class AtmModalFactory{
 				modal.dismiss();
 			}
 		});
-		bottom.getCancelButton().setOnClickListener(new OnClickListener(){
+		modal.getCancelButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				modal.dismiss();
@@ -117,14 +110,17 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static BankModalAlertWithTwoButtons getLocationAcceptanceModal(final Context context, 
+	public static SimpleTwoButtonModal getLocationAcceptanceModal(final Context context, 
 			final LocationFragment fragment){
-		final AtmGetLocationModal top = new AtmGetLocationModal(context, null);
-		final BankModalAlertWithTwoButtons modal = new BankModalAlertWithTwoButtons(context, top, null);
+		final SimpleTwoButtonModal modal = new SimpleTwoButtonModal(context);
 		final String content = context.getString(R.string.atm_location_modal_content);
-		top.getContentView().setText(Html.fromHtml(content));
-		top.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
-		top.getAllow().setOnClickListener(new OnClickListener(){
+		modal.setTitle(R.string.atm_location_modal_title);
+		modal.setContent(Html.fromHtml(content));
+		modal.getContentView().setMovementMethod(LinkMovementMethod.getInstance());
+		modal.setOkButtonText(R.string.atm_location_modal_allow);
+		modal.setCancelButtonText(R.string.atm_location_modal_decline);
+		modal.hideNeedHelpFooter();
+		modal.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				fragment.setLocationStatus(LocationFragment.SEARCHING);
@@ -132,7 +128,7 @@ public final class AtmModalFactory{
 				modal.dismiss();
 			}
 		});
-		top.getDontAllow().setOnClickListener(new OnClickListener(){
+		modal.getCancelButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				modal.dismiss();
@@ -148,7 +144,7 @@ public final class AtmModalFactory{
 	 * @param fragment - fragment using the modal
 	 * @return modal that will alert the user to failing to get the users current location and ask them to retry.
 	 */
-	public static BankModalAlertWithTwoButtons getCurrentLocationFailModal(final Context context, 
+	public static SimpleTwoButtonModal getCurrentLocationFailModal(final Context context, 
 			final LocationFragment fragment){
 		return getLocationModal(context, fragment, 
 				R.string.atm_location_timeout_title, R.string.atm_location_timeout_text);
@@ -162,17 +158,15 @@ public final class AtmModalFactory{
 	 * @param contentId - R String ID for the modal message
 	 * @return a one button modal that displays a message and simply dismisses.
 	 */
-	private static ModalAlertWithOneButton getSimpleResultsModal(final Context context, final int titleId, 
+	private static SimpleContentModal getSimpleResultsModal(final Context context, final int titleId, 
 			final int contentId) {
-		final ModalDefaultTopView top  = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(context, null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(context, top, bottom);
-		top.setTitle(titleId);
-		top.setContent(contentId);
-		top.showErrorIcon(false);
-		top.hideNeedHelpFooter();
-		bottom.getButton().setText(R.string.atm_no_results_button);
-		bottom.getButton().setOnClickListener(new OnClickListener(){
+		final SimpleContentModal modal = new SimpleContentModal(context);
+		modal.setTitle(titleId);
+		modal.setContent(contentId);
+		modal.showErrorIcon(false);
+		modal.hideNeedHelpFooter();
+		modal.getButton().setText(R.string.atm_no_results_button);
+		modal.getButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
 				modal.dismiss();
@@ -190,7 +184,23 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static ModalAlertWithOneButton getNoResultsModal(final Context context){
+	public static SimpleContentModal getNoResultsModal(final Context context){
+		final SimpleContentModal modal = 
+				getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
+		final ModalDefaultTopView top = (ModalDefaultTopView)modal.getTop();
+		top.showErrorIcon(true);
+		top.getHelpFooter().setToDialNumberOnClick(R.string.atm_no_results_number);
+		return modal;
+	}
+
+	/**
+	 * Get the modal that will inform the user that they have entered an invalid address
+	 * @param context - activity context
+	 * @param fragment - fragment using the modal
+	 * @return the modal that will ask the user if they would like to allow
+	 * the app to use their current location
+	 */
+	public static SimpleContentModal getInvalidAddressModal(final Context context){
 		return getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
 	}
 
@@ -201,20 +211,9 @@ public final class AtmModalFactory{
 	 * @return the modal that will ask the user if they would like to allow
 	 * the app to use their current location
 	 */
-	public static ModalAlertWithOneButton getInvalidAddressModal(final Context context){
-		return getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
-	}
-
-	/**
-	 * Get the modal that will inform the user that they have entered an invalid address
-	 * @param context - activity context
-	 * @param fragment - fragment using the modal
-	 * @return the modal that will ask the user if they would like to allow
-	 * the app to use their current location
-	 */
-	public static ModalAlertWithOneButton getAtmLocatorHelpModal(final AtmMapFragment fragment){
+	public static SimpleNoButtonModal getAtmLocatorHelpModal(final AtmMapFragment fragment){
 		final AtmLocatorHelpModalTop top  = new AtmLocatorHelpModalTop(fragment.getActivity(), null);
-		final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(fragment.getActivity(), top, null);
+		final SimpleNoButtonModal modal = new SimpleNoButtonModal(fragment.getActivity(), top);
 		modal.setOnDismissListener(new OnDismissListener(){
 			@Override
 			public void onDismiss(final DialogInterface dialog) {

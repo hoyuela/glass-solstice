@@ -17,7 +17,7 @@ import com.discover.mobile.common.facade.LoginActivityFacade;
 
 /**
  * 
- * ï¿½2013 Discover Bank
+ * ©2013 Discover Bank
  * 
  * handling errors and exceptions.
  * 
@@ -112,6 +112,7 @@ public final class CardErrorResponseHandler {
                 break;
             }
         }
+
 
     }
 

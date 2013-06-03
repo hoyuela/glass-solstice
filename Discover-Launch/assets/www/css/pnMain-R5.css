@@ -407,7 +407,7 @@ background-repeat: no-repeat;
     vertical-align:middle !important
 }
 .pn-page #addnumber .ui-grid-b .add-msg-dot-com{
-    width:51% !important;
+    width:50% !important;
     height:100%;
 	float:left;
 }
@@ -1224,7 +1224,7 @@ margin-top:3px;
 /* 12-jun-2012 */
 
 .pn-page .input_hightlight_error {
-    border:2px solid #fd0202 !important;
+border:2px solid #fd0202!important;
 }
 
 .pn-page .standard_error_msg { 
@@ -1544,10 +1544,11 @@ color: #576166;
 
 /*added styles  13.1 Changes */ 
 .hidden{display:none;}
-.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com, .pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{
+.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com/* , .pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com */{
     width:79.8%;
     float:left;
 }
+.pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{ width:72%; float:left;}
 .pn-page #changenumber .ui-grid-b .ui-block-b .at-rate, .pn-page #addnumber .ui-grid-b .add-msg-dot-com .at-rate{
     float:left;
     padding-top:16px;
@@ -1560,24 +1561,26 @@ color: #576166;
                 width:33% !important;
 }
 .pn-page #addnumber .ui-grid-b .otherInputWidth{
-                width:43.5% !important;
+		width:33% !important;
 }
 #custom-carrier{
                 height:20px;
 }
+#manageAlerts-pg #addnumber .add-msg-dot-com{ width:54% !important; float:right !important;}
+.pn-page #addnumber .ui-grid-b .add-msg-dot-com .at-rate{ padding-top:0 !important;}
 @media all and (orientation:landscape) {
 .pn-page #changenumber .ui-grid-b .otherInputWidth{
                 width:36.2% !important;
 }
-.pn-page #addnumber .ui-grid-b .otherInputWidth{
+/*.pn-page #addnumber .ui-grid-b .otherInputWidth{
                 width:46.5% !important;
-}
+}*/
 .pn-page #changenumber .ui-grid-b .ui-block-b .dot-com{
     width:82.2%;
 }
-.pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{
+/*.pn-page #addnumber .ui-grid-b .add-msg-dot-com .dot-com{
                 width:82%;
-}
+}*/
 #overlay_wraper_saveConfirm.overlay_wraper {width:60% !important}
 }
 /*added styles*/
@@ -1587,10 +1590,6 @@ color: #576166;
 display:inline-block;
 margin-right :6px;
 }
-
-
-
-
 #alertHistory-pg .deleted_messages{
     margin:10px 0 18px 0 !important;
 }

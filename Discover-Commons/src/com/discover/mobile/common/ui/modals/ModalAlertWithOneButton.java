@@ -54,7 +54,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 
 	/**An attached activity that will be closed if the dialog is dismissed with the back button*/
 	private Activity toClose;
-	
+
 	/** Used to hide the bottom View (of type ModalDefaultOneButtonBottomView) */
 	private boolean hideBottom = false;
 
@@ -64,7 +64,18 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	/**
 	 * Constructor for the alert
 	 * @param context - activity context
-	 * @param top - top piece to be displayed
+	 */
+	public ModalAlertWithOneButton(final Context context) {
+		super(context);
+		this.context = context;
+		top = null;
+		bottom = null;
+	}
+
+
+	/**
+	 * Constructor for the alert
+	 * @param context - athis.topvity contexthis.bottom@param top - top piece to be displayed
 	 * @param bottom - bottom piece to be displayed
 	 */
 	public ModalAlertWithOneButton(final Context context, 
@@ -234,18 +245,22 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		initUI();
+	}
 
-		final View mainView = this.getLayoutInflater().inflate(getMainLayout(), null);
+	protected void initUI() {
+		final View mainView = getLayoutInflater().inflate(getMainLayout(), null);
 		this.setContentView(mainView);
 		linearLayout = (LinearLayout) mainView.findViewById(getLinearLayout());		
 
-		this.createOrientationListener();
+		createOrientationListener();
 	}
-	
+
+
 	protected int getMainLayout() {
 		return R.layout.modal_alert_layout;
 	}
-	
+
 	protected int getLinearLayout() {
 		return R.id.modal_linear_layout;
 	}
@@ -299,7 +314,7 @@ public class ModalAlertWithOneButton extends AlertDialog{
 	 */
 	public OrientationEventListener createOrientationListener() {
 		final OrientationEventListener ret = 
-				new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+				new OrientationEventListener(getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
 			@Override
 			public void onOrientationChanged(final int arg0) {
 				if( orientation != context.getResources().getConfiguration().orientation ) {

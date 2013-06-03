@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
+    <dimen name="account_toggle_width">300dp</dimen>
     <dimen name="toggle_cell_height">50dp</dimen>
     <dimen name="toggle_x_top_pad">10dp</dimen>
     <dimen name="toggle_x_bottom_pad">10dp</dimen>

@@ -12,13 +12,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 
 
 /**
@@ -63,25 +60,22 @@ public final class PreAuthCallHelper  {
 	public static final void showOptionalUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi, final String message) {
 		final Context context = errorHandlerUi.getContext();
 
-		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
-		final ModalDefaultTwoButtonBottomView twoButtonBottomView = new ModalDefaultTwoButtonBottomView(context, null);
 
-		titleAndContentForDialog.hideNeedHelpFooter();
-		titleAndContentForDialog.setTitle(R.string.option_upgrade_dialog_title);
-		titleAndContentForDialog.setContent(R.string.optional_upgrade_dialog_body);
+		final SimpleTwoButtonModal optionalUpgradeDialog =  new SimpleTwoButtonModal(context);
 
-		twoButtonBottomView.setOkButtonText(R.string.upgrade_dialog_button_text);
-		twoButtonBottomView.setCancelButtonText(R.string.no_thanks);
+		optionalUpgradeDialog.hideNeedHelpFooter();
+		optionalUpgradeDialog.setTitle(R.string.option_upgrade_dialog_title);
+		optionalUpgradeDialog.setContent(R.string.optional_upgrade_dialog_body);
 
-		final BankModalAlertWithTwoButtons optionalUpgradeDialog = 
-				new BankModalAlertWithTwoButtons(context, titleAndContentForDialog, twoButtonBottomView);
+		optionalUpgradeDialog.setOkButtonText(R.string.upgrade_dialog_button_text);
+		optionalUpgradeDialog.setCancelButtonText(R.string.no_thanks);
 
-		twoButtonBottomView.getOkButton().setOnClickListener(new OnClickListener() {
+		optionalUpgradeDialog.getOkButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) { upgrade(context); }
 		});
 
-		twoButtonBottomView.getCancelButton().setOnClickListener(new OnClickListener() {
+		optionalUpgradeDialog.getCancelButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) { optionalUpgradeDialog.dismiss(); }
 		});
@@ -95,26 +89,19 @@ public final class PreAuthCallHelper  {
 	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
 	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
-	public static  final void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
+	public static void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
 		final Context context = errorHandlerUi.getContext();
-		final ModalDefaultTopView titleAndContentForDialog = new ModalDefaultTopView(context, null);
-		final ModalDefaultOneButtonBottomView singleButtonBottomView = new ModalDefaultOneButtonBottomView(context, null);
+		final SimpleContentModal modal = new SimpleContentModal(context, R.string.forced_upgrade_dialog_title, 
+				R.string.forced_upgrade_dialog_body, R.string.upgrade_dialog_button_text);
 
-		titleAndContentForDialog.hideNeedHelpFooter();
-		titleAndContentForDialog.setTitle(R.string.forced_upgrade_dialog_title);
-		titleAndContentForDialog.setContent(R.string.forced_upgrade_dialog_body);
-		titleAndContentForDialog.showErrorIcon(true);
+		modal.hideNeedHelpFooter();
+		modal.showErrorIcon();
 
-		singleButtonBottomView.setButtonText(R.string.upgrade_dialog_button_text);
-
-		final ModalAlertWithOneButton optionalUpgradeDialog = 
-				new ModalAlertWithOneButton(context, titleAndContentForDialog, singleButtonBottomView);
-
-		singleButtonBottomView.getButton().setOnClickListener(new OnClickListener() {
+		modal.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) { upgrade(context); }
 		});
-		optionalUpgradeDialog.setOnCancelListener(new DialogInterface.OnCancelListener(){
+		modal.setOnCancelListener(new DialogInterface.OnCancelListener(){
 			@Override
 			public void onCancel(final DialogInterface dialog) {
 				android.os.Process.killProcess(android.os.Process.myPid());
@@ -122,7 +109,7 @@ public final class PreAuthCallHelper  {
 		});	
 
 		if(!DiscoverModalManager.hasActiveModal()){
-			errorHandlerUi.showCustomAlert(optionalUpgradeDialog);
+			errorHandlerUi.showCustomAlert(modal);
 		}
 	}
 

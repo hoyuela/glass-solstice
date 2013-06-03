@@ -87,8 +87,9 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			} else if( bundle.containsKey(PROVIDE_FEEDBACK)) {
 				makeFragmentVisible(new ProvideFeedbackFragment());
 			}
-			goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 		}
+		
+		goBackToLogin = bundle.getBoolean(GO_BACK_TO_LOGIN, true);
 	}
 
 	/**

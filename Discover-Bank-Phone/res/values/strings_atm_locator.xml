@@ -25,8 +25,9 @@
     <string name="atm_location_hours">Hours</string>
     <string name="atm_location_services">Services</string>
     <string name="atm_location_no_results">There are no ATMs near the searched location.</string>
-    <string name="atm_no_results_title">We\'re Sorry!</string>
-    <string name="atm_no_results_content">There were no ATMs near the searched location.</string>
+    <string name="atm_no_results_title">No ATM Results</string>
+    <string name="atm_no_results_content">We\'re sorry we are unable to find any ATMs at this time.  Please try searching again.</string>
+    <string name="atm_no_results_number">1&#8211;800&#8211;290&#8211;2885</string>
     <string name="atm_no_results_button">OK</string>
     <string name="atm_email_directions">Driving Directions from %1$s to %2$s</string>
     
