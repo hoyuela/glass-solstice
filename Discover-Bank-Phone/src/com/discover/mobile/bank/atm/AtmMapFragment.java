@@ -44,6 +44,7 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -156,7 +157,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	private Location cameraLocation = null;
 
 	private static boolean needsToAnimateZoom = false;
-
+	
 	private AtmResults tempResults = null;
 	private int resultEndIndex = 0;
 
@@ -330,8 +331,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
 			break;
 		case ENABLED:
-			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
+			showLocationAcceptanceModal();
 			break;
 		case LOCATION_FAILED:
 			locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
@@ -346,6 +346,21 @@ public abstract class AtmMapFragment extends BaseFragment
 		default:
 			break;
 		}
+	}
+	
+	private void showLocationAcceptanceModal() {
+		if(DiscoverApplication.getLocationPreference().shouldShowModal()) {
+			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), 
+																		AtmMapFragment.this);
+			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
+		}else {
+			searchCurrentLocation();
+		}
+	}
+	
+	public final void searchCurrentLocation() {
+		this.setLocationStatus(LocationFragment.SEARCHING);
+		this.getLocation();
 	}
 
 	/**
@@ -401,12 +416,9 @@ public abstract class AtmMapFragment extends BaseFragment
 			locationStatus = ENABLED;
 			if(LOCKED_ON == locationStatus){
 				getLocation();
-			}else{
-				if(null == locationModal || !locationModal.isShowing()){
-					locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), this);
-					((NavigationRootActivity)getActivity()).showCustomAlert(locationModal);
-				}
-			} 
+			}else if(null == locationModal || !locationModal.isShowing()){
+				showLocationAcceptanceModal();	
+			} 	
 		}
 	}
 
@@ -967,7 +979,6 @@ public abstract class AtmMapFragment extends BaseFragment
 	 * 
 	 * @return True if fragment does not allow back press, false otherwise.
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isBackPressDisabled(){
 		if(isListLand){
@@ -1014,6 +1025,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 * Event callback for when the view tree for a view changes. In this class this callback is only called when the
 	 * visibility of the map view has changed during the processing of an onBackPress event.
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onGlobalLayout() {
 		/** Check if this event should be handled */
