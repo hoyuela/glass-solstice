@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -19,8 +20,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,6 +35,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
@@ -39,6 +44,7 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -55,8 +61,8 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
-implements LocationFragment, AtmMapSearchFragment,
-FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
+ implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
+		DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -159,6 +165,9 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
 
+
+	private boolean processingOnBackpress = false;
+	
 	/**
 	 * Flag used to determing if the modal used for leaving the application is
 	 * being shown
@@ -237,6 +246,7 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 		savedState = getArguments();
 
 		CommonUtils.fixBackgroundRepeat(navigationPanel);
+
 		return view;
 	}
 
@@ -269,6 +279,7 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 
 		if( fragment.getView() != null && fragment.getMap() != null ) {
 			setMapTransparent((ViewGroup)fragment.getView());
+
 		}
 
 		if(isHelpModalShowing()){
@@ -956,15 +967,72 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 	 * 
 	 * @return True if fragment does not allow back press, false otherwise.
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isBackPressDisabled(){
 		if(isListLand){
 			return true;
 		}else{
+
+			preProcessOnBackPress();
+
 			return shouldGoBack;
 		}
 	}
 
+	/**
+	 * Method used to handle the black out of the Map View during an animated transition of the hosting fragment. This
+	 * method is only meant to be handled when the active activity is a BankNavigationRootActivity. This method will
+	 * hide the map view if it is being displayed and once its visibility has been changed then it will continue with
+	 * processing the back press event.
+	 */
+	private void preProcessOnBackPress() {
+		/**
+		 * This method should only be handled if the active activity is a NavigationRootActivity
+		 */
+		if (DiscoverActivityManager.getActiveActivity() instanceof BankNavigationRootActivity) {
+			/**
+			 * If the fragment is displaying the map, then hide the map before navigating away. This is to overcome the
+			 * limitation of Google Map View v2 where the surface view turns black during the fragment transition.
+			 */
+			if (isOnMap && isMapVisible()) {
+				/** The shouldGoBack will be set as per request when the map view is hidden */
+				processingOnBackpress = !shouldGoBack;
+				shouldGoBack = true;
+
+				/** Listen for when the visibility of the map view changes */
+				final ViewTreeObserver vto = getView().getViewTreeObserver();
+				vto.addOnGlobalLayoutListener(this);
+
+				/** Hide Map View */
+				showMapView(false);
+			}
+		}
+	}
+
+	/**
+	 * Event callback for when the view tree for a view changes. In this class this callback is only called when the
+	 * visibility of the map view has changed during the processing of an onBackPress event.
+	 */
+	@Override
+	public void onGlobalLayout() {
+		/** Check if this event should be handled */
+		if (processingOnBackpress) {
+			getView().getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
+			/** Set flag to the value it was prior to this event being fired */
+			shouldGoBack = !processingOnBackpress;
+
+			/** Delay executing the back press to allow time for the map view to be hidden */
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					DiscoverActivityManager.getActiveActivity().onBackPressed();
+				}
+			}, 0);
+		}
+	}
+	
 	/**
 	 * @return the current location address string
 	 */
@@ -1030,5 +1098,39 @@ FragmentOnBackPressed, DynamicDataFragment, OnTouchListener {
 		/** Set flag to true so modal is displayed on rotation */
 		isLeavingModalShowing = true;
 
+	}
+
+	/**
+	 * Private method used to show or hide the map view.
+	 * 
+	 * @param value
+	 *            True to show the map view, false otherwise.
+	 */
+	private void showMapView(final boolean value) {
+		final FrameLayout mapLayout = (FrameLayout) this.getView().findViewById(R.id.discover_map);
+
+		if (value) {
+			mapLayout.setVisibility(View.VISIBLE);
+		} else {
+			getChildFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+
+			mapLayout.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * Private method used to check whether the map view is being displayed.
+	 * 
+	 * @return True if map view is being displayed, false otherwise.
+	 */
+	private boolean isMapVisible() {
+		boolean isVisible = false;
+
+		if (getView() != null) {
+			final FrameLayout mapLayout = (FrameLayout) getView().findViewById(R.id.discover_map);
+
+			isVisible = (mapLayout.getVisibility() == View.VISIBLE);
+		}
+		return isVisible;
 	}
 }
