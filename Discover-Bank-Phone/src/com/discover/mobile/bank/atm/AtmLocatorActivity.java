@@ -3,7 +3,6 @@
  */
 package com.discover.mobile.bank.atm;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -101,13 +100,11 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		 * Remove the fragment from the activity to avoid any leaks only if onPause is being called
 		 * because this Activity is being destroyed
 		 */
-		if(isFinishing() && mapFragment != null && getSupportFragmentManager().getBackStackEntryCount() > 0 ) {
-			getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
+		if (isFinishing() && mapFragment != null && getSupportFragmentManager().getBackStackEntryCount() > 0) {
 			mapFragment = null;
 		}
+
 	}
-	
-	
 
 	@Override
 	public ErrorHandler getErrorHandler() {
@@ -143,12 +140,10 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	@Override 
 	public void onBackPressed(){
 		if(!isBackPressDisabled()) {
-			final Intent intent = new Intent(this, LoginActivity.class);
-			startActivity(intent);
-			this.finish();
+			BankConductor.navigateToLoginPage(this, "", "");
 		}
 
-		if(isBackPressFragment()){
+		if (!isFinishing() && isBackPressFragment()) {
 			((FragmentOnBackPressed)mapFragment).onBackPressed();
 		}
 	}
