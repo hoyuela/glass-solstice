@@ -12,6 +12,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.common.DiscoverModalManager;
+import com.discover.mobile.common.error.ErrorHandlerUi;
+import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.modals.ModalAlertWithTwoButtons;
+import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
 
 
 /**

@@ -10,6 +10,10 @@ import android.os.Bundle;
 
 import com.discover.mobile.bank.login.LockOutUserActivity;
 import com.discover.mobile.bank.login.LoginActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.ScreenType;
+import com.discover.mobile.common.facade.LoginActivityFacade;
 
 /**
  * A facade for the Login Activity 
