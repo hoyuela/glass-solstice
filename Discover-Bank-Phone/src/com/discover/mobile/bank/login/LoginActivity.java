@@ -159,6 +159,9 @@ LoginActivityInterface {
 
 		loadResources();
 
+		// **Activity manager has to be set before using Track Helper*/
+		DiscoverActivityManager.setActiveActivity(this);
+
 		TrackingHelper.startActivity(this);
 		TrackingHelper.trackPageView(AnalyticsPage.STARTING);
 		TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);

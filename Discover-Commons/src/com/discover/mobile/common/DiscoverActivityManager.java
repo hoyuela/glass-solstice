@@ -5,6 +5,8 @@ import java.util.Observer;
 
 import android.app.Activity;
 
+import com.discover.mobile.common.utils.StringUtility;
+
 /**
  * Utility class used to keep a reference of the active activity for the application. Base classes such as 
  * BaseActivity, BaseFragmentActivity, and NotLoggedInRoboActivity all call setActiveActivity onResume(). 
@@ -95,4 +97,13 @@ public final class DiscoverActivityManager extends Observable {
 	public static void removeListener(final Observer o) {
 		instance.deleteObserver(o);
 	}
+
+	public static String getString(final int resourceID) {
+		if (getActiveActivity() == null) {
+			return StringUtility.SPACE;
+		} else {
+			return getActiveActivity().getString(resourceID);
+		}
+	}
+
 }
