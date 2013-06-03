@@ -14,8 +14,9 @@ import android.view.View.OnClickListener;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
 import com.discover.mobile.common.DiscoverApplication;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTwoButtonBottomView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.modals.SimpleNoButtonModal;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 
 /**
  * Modal factory for the ATM locator features. Will create modals to the 
@@ -139,7 +140,7 @@ public final class AtmModalFactory{
 		});
 		return modal;
 	}
-	
+
 	private static void saveUserChoice() {
 		DiscoverApplication.getLocationPreference().setUserAcceptedModal();
 	}
@@ -195,9 +196,8 @@ public final class AtmModalFactory{
 	public static ModalAlertWithOneButton getNoResultsModal(final Context context){
 		final ModalAlertWithOneButton modal = 
 				getSimpleResultsModal(context, R.string.atm_no_results_title, R.string.atm_no_results_content);
-		final ModalDefaultTopView top = (ModalDefaultTopView)modal.getTop();
-		top.showErrorIcon(true);
-		top.getHelpFooter().setToDialNumberOnClick(R.string.atm_no_results_number);
+		modal.showErrorIcon(true);
+		modal.getHelpFooter().setToDialNumberOnClick(R.string.atm_no_results_number);
 		return modal;
 	}
 
