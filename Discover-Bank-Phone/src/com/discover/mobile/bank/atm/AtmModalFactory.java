@@ -13,7 +13,7 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleNoButtonModal;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
