@@ -40,6 +40,7 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
 import com.discover.mobile.card.phonegap.plugins.HybridControlPlugin;
+import com.discover.mobile.card.push.register.OnDeviceReady;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.services.push.PushReadMessage;
 import com.discover.mobile.card.statement.StatementActivity;
@@ -93,6 +94,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             .getSimpleName();
     private int redirect;
     private boolean isTimeout = false;
+    private OnDeviceReady deviceReady;
+    public boolean onCordovaError = false;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -234,7 +237,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             } else {
                 if (pushStatus) {
                     pushStatus = false;
-                    makeFragmentVisible(new PushNowAvailableFragment(), false);
+                    PushNowAvailableFragment availableFragment = new PushNowAvailableFragment();
+                    makeFragmentVisible(availableFragment, false);
+                    
+                    /**
+                     * Initialize onDeviceReady listener so that once cordova is loaded,
+                     * we can tell calling fragment that it's ready. 
+                     */
+                    deviceReady = availableFragment;
                 }
             }
         }
@@ -328,7 +338,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
              * this.getSupportFragmentManager()
              * .findFragmentByTag("CordovaWebFrag");
              */
-            if (cordovaWebFrag != null) {
+            if (cordovaWebFrag != null && !onCordovaError) {
                 try {
                     Utils.isSpinnerAllowed = true;
                     Utils.isSpinnerShow = true;
@@ -690,8 +700,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
             }
         } else {
-            cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
-                    "javascript:acHome()");
+        	
+        	/**
+        	 * If cordova has error skip to call java script for cordova
+        	 */
+        	if(!onCordovaError)
+        	{
+	            cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+	                    "javascript:acHome()");
+        	}
             Fragment homeFragment = fragManager
                     .findFragmentByTag("HomeSummaryFragment");
             makeFragmentVisible(homeFragment, false);
@@ -813,12 +830,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      * This method will be called once PhoneGap is ready to take request.
      */
     public void isDeviceReady() {
-        /*
-         * Precaution is better than cure. Added 5 sec delay for precaution
-         * measure to load push navigated page.
-         */
+       
+    	/**
+    	 * If any fragment is listening for cordova to load,
+    	 * tell them we are ready to take cordova request.
+    	 */
+    	if(deviceReady != null)
+    	{
+    		deviceReady.onReady();
+    	}
     	
     	Utils.isSpinnerShow = false;
+    	
+    	 /*
+         * Precaution is better than cure. Added 1 sec delay for precaution
+         * measure to load push navigated page.
+         */
     	
         if (redirect > 0) 
         {
