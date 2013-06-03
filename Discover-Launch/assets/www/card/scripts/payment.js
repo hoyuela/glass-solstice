@@ -541,7 +541,9 @@ dfs.crd.pymt.populatePaymentHistoryPageDivs = function(paymentHistory, pageId)
 function paymentStep1Load()
 {
 	try {
-		
+	
+	
+			 
 		var validPriorPagesOfpayStep1 = new Array("paymentStep2",
 				"paymentsSummary", "paymentsLanding", "pendingPayments",
 				"paymentsHistory", "accountSummary", "cardHome","pageError","paymentStep3","confirmCancelPayment","paymentInformation","lateMinPayWarn1","lateMinPayWarnNoMinPay");
@@ -806,7 +808,6 @@ dfs.crd.pymt.populateMakePaymentOne = function(pageName)
 {
 	try {
 		var stepOne = dfs.crd.pymt.makePaymentStepOneAjaxCall(pageName);
-
 		if (!jQuery.isEmptyObject(stepOne))
 			dfs.crd.pymt.populateMakePaymentPageDivs(stepOne, pageName);
 
