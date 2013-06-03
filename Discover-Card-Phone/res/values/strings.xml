@@ -85,7 +85,15 @@
     <string name="PREFERENCES_FILE_NAME">RDCCameraPrefsFile</string>
     <string name="PREFERENCES_KEY_RELEASE_ALL_CAMERA_RESOURCES">releaseAllCameraResources</string>
     
-	<!-- Camera MSC End -->
+    <!-- Camera MSC End -->
+    
+    <!-- Fastcheck -->
+    <string name ="back_button_text">Back</string>
+	<string name="fast_check_token_key_in_ps">FastcheckToken</string>
+	<string name="fast_check_error_tech_diff">We\'re currently experiencing techincally difficult. We apologize for any incovenience.</string>
+	<string name="fast_check_error_cannot_access">Due to special condition related to your account, this page is not available.\n\nPlease contact customer service.</string>
+	<string name="fast_check_error_no_token">You recently requested to disable your quick view settings. If you\'d like to enable this option, plese login and navigate to
+						\"Quick View\" under Profile and Settings.</string>
 	
 	 <!-- CARD TYPE FOR TOOL TIP MENU -->
     <string name="card_type_more">More Card </string>

@@ -79,6 +79,7 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(int)
 	 */
+	@Override
 	public void setBehindContentView(final int id) {
 		setBehindContentView(getLayoutInflater().inflate(id, null));
 	}
@@ -86,6 +87,7 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View)
 	 */
+	@Override
 	public void setBehindContentView(final View v) {
 		setBehindContentView(v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
@@ -93,6 +95,7 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View, android.view.ViewGroup.LayoutParams)
 	 */
+	@Override
 	public void setBehindContentView(final View v, final LayoutParams params) {
 		mHelper.setBehindContentView(v, params);
 	}
@@ -100,6 +103,7 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#getSlidingMenu()
 	 */
+	@Override
 	public SlidingMenu getSlidingMenu() {
 		return mHelper.getSlidingMenu();
 	}
@@ -107,6 +111,7 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#toggle()
 	 */
+	@Override
 	public void toggle() {
 		mHelper.toggle();
 	}
@@ -114,20 +119,31 @@ public class SlidingFragmentActivity extends SherlockFragmentActivity implements
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#showAbove()
 	 */
-	public void showAbove() {
-		mHelper.showAbove();
+	@Override
+	public void showContent() {
+		mHelper.showContent();
 	}
 
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#showBehind()
 	 */
-	public void showBehind() {
-		mHelper.showBehind();
+	@Override
+	public void showMenu() {
+		mHelper.showMenu();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.slidingmenu.lib.app.SlidingActivityBase#showSecondaryMenu()
+	 */
+	@Override
+	public void showSecondaryMenu() {
+		mHelper.showSecondaryMenu();
 	}
 
 	/* (non-Javadoc)
 	 * @see com.slidingmenu.lib.app.SlidingActivityBase#setSlidingActionBarEnabled(boolean)
 	 */
+	@Override
 	public void setSlidingActionBarEnabled(final boolean b) {
 		mHelper.setSlidingActionBarEnabled(b);
 	}

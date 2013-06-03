@@ -171,7 +171,9 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
             BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
                     .getActiveActivity();
-            baseFragmentActivity.showAbove();
+            
+            // hlin0 20130530 integrate with new sliding menu
+            baseFragmentActivity.showContent();
 
         }
     }

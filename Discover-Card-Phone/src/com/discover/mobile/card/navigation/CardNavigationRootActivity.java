@@ -345,7 +345,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                this.showAbove();
+                // hlin0, 20130530, integrate with new slidingmenu
+                this.showContent();
+                
                 cordovaWebFrag.javascriptCall(text);
             }
         }

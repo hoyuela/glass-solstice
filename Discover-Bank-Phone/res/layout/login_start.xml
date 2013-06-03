@@ -52,11 +52,23 @@
                     android:id="@+id/discoverLogo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
+                    android:paddingLeft="@dimen/element_side_padding"
                     android:paddingTop="@dimen/element_top_padding"
                     android:src="@drawable/discover_blk_logo_login" />
+
+                <Button
+                    android:id="@+id/gotoFastcheck"
+                    style="@style/goto_fastcheck_button_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/element_side_padding"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/quick_view_button"
+                    android:text="Quick view" />
 
                 <TextView
                     android:id="@+id/error_text_view"
@@ -160,7 +172,7 @@
                     android:text="@string/register_now"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/blue"
-                    android:textSize="@dimen/light_text_size" />
+                    android:textSize="@dimen/light_text_size" />
                 -->
 
                 <Button
@@ -173,7 +185,7 @@
                     android:layout_marginBottom="20dp"
                     android:layout_marginTop="@dimen/orange_button_margin_top"
                     android:text="@string/login_button_text" />
-                
+
                 <!-- Link section - CARD -->
 
                 <LinearLayout
@@ -234,9 +246,9 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/between_related_elements_padding"
                     android:layout_alignParentBottom="true"
-                    android:layout_below="@id/privacy_and_security_button_bank" >
+                    android:layout_below="@id/privacy_and_security_button_bank"
+                    android:paddingTop="@dimen/between_related_elements_padding" >
 
                     <!-- Divider -->
 

@@ -89,7 +89,7 @@ public final class WSProxy {
      *         and response code.
      */
     public WSResponse invoke(final Context context,
-            final WSRequest requestDetail) {
+            final WSRequest requestDetail) throws IOException {
 
         Utils.log("WSResponse", "inside invoke : ulr" + requestDetail.getUrl());
         mcontext = context;
@@ -137,6 +137,7 @@ public final class WSProxy {
             }
         } catch (final IOException e) {
             e.printStackTrace();
+            if (e.getMessage().indexOf("Received authentication challenge is null") >=0 ) throw e;
         }
 
         return response;

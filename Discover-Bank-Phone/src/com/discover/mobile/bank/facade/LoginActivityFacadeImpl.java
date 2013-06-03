@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import com.discover.mobile.bank.login.LockOutUserActivity;
 import com.discover.mobile.bank.login.LoginActivity;
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.facade.LoginActivityFacade;
@@ -81,7 +81,7 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 	 * @see com.discover.mobile.common.delegates.LoginFacade#getLoginActivity()
 	 */
 	@Override
-	public BaseActivity getLoginActivity() {
+	public BaseFragmentActivity getLoginActivity() {
 		return new LoginActivity();
 	}
 
