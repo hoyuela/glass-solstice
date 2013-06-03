@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 
@@ -99,22 +98,22 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		holder.desc.setText(detail.description);
 		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
 		
-		if (((AccountActivityHeader)fragment.getHeader()).isPosted()) {
-			if(amount == 0.00){
-				holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-			} else if(amount < 0){
-				holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
-			}else{
-				/** All loan activity should be black */
-				if (!account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
-					holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
-				}
+		/** All loan activity should have a black description */
+		if (account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+			holder.desc.setTextColor(fragment.getResources().getColor(R.color.black));
+		}
 
-				holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
-			}
-		} else {
+		if(amount == 0.00){
+			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
+		} else if(amount < 0){
+			holder.amount.setText("-"+NumberFormat.getCurrencyInstance(Locale.US).format(amount*-1));
+		}else{
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
+		
+		if (((AccountActivityHeader) fragment.getHeader()).isPosted() && amount > 0) {
+			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+		} 
 		
 		view.setOnClickListener(getClickListener(holder.pos));
 		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);
