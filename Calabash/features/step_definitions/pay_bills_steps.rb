@@ -1,28 +1,5 @@
 # STEPS SPECIFIC TO THE "PAY BILLS" PAGES
 
-# Navigates to the Pay Bills screen
-# This is a special case since the navigation label matches the page name
-# (meaning there are two menu items called "Pay Bills")
-# Uses coordinates of second occurence of "Pay Bills"
-# MENU SHOULD BE CLOSED
-Given /^I (?:navigate|go) to Pay Bills from "([^\"]*)"$/ do |origin|
-	macro 'I press the menu button'
-
-	if origin != "Review Payments" && origin != "Manage Payees" then
-		performAction('click_on_text', "Pay Bills")
-	end
-
-	# Finds the coordinates of the second occurance of "Pay Bills"
-	# & touches those coordinates, thus navigating to Pay Bills.
-	x = query("textview marked:'Pay Bills'")[1]["rect"]["center_x"]
-	y = query("textview marked:'Pay Bills'")[1]["rect"]["center_y"]
-	performAction("touch_coordinate", x, y)
-end
-
-Given /^I (?:navigate|go) to Pay Bills$/ do
-	macro 'I navigate to Pay Bills from "?"'
-end
-
 # Selects the first payment from a list of payments
 Given /^I select a payment$/ do
 	# TEMPORARY WORKAROUND
@@ -60,7 +37,7 @@ end
 # Must already have a payment form open
 # Uses a random amount between $1.00 - $9.00
 Given /^I(?: can)? schedule a payment$/ do
-	macro 'I enter a random amount into field 1'
+	macro 'I enter a random amount between 1 and 9 into field 1'
 
 	# Schedule the payment & wait for the confirmation screen
 	#performAction("drag", 50, 50, 50, 0, 1) # Unfocus amount

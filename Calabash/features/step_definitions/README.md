@@ -17,13 +17,13 @@ Specifies any String (quotes required).
 Specifies any digit (non-decimal number)(no quotes).
 
     (one|two)
-Specifies the expected text at this point _must_ be "one" or "two" (quotes should be ommitted).
+Specifies the expected text at this point _must_ be "one" or "two" (quotes should be omitted). The chosen text is then passed as an argument.
 
     (?:the|a)
-Same as above, however, the ?: simply denotes that it doesn't really matter if you choose to use "the" or "a" (will not have any effect on the outcome), but one of them _must_ be specified.  
+Same as above, however, the ?: simply denotes that it does not matter if "the" or "a" is chosen since the chosen text will not be passed as an argument. However, one of them **must** be specified.  
 
     (?:the|a)?
-Same as above, but the entire group (within the parentheses) is optional (you can but do not have to use the words "the" or "a", nor will they effect the outcome of the step).
+Same as above, but the entire group (within the parentheses) is optional meaning you can use "the", "a", or nothing "" and the outcome of the step will not be affected.
 
     Then /^the users? should receive an email$/
 A step definition where the "s" in "users" is optional (can use "user" or "users")
@@ -63,11 +63,12 @@ Presses the orange button in the top/left corner of most Discover screens.  May 
 Presses the round, orange "help" button often found in the top/right corner of Discover screens.  Should display a list of help options.  You may select the proper help option by utilizing default Calabash steps (eg. "I touch the 'All FAQs' text").
 
     Given /^I (?:navigate|go) to "([^\"]*)" under "([^\"]*)"$/ do |subtitle, title|
-Attempts to press the specified menu items.  Opens the menyu presses the title, then the subtitle. (Note: Will not work for "Pay Bills". See Pay Bills steps below)  
+Attempts to press the specified menu items.  Opens the menu presses the title, then the subtitle.  
 ✓ Menu should be closed  
 ✓ You should not already be on the category level (eg. "Manage Payees" & "Review Payments" are both under category "Pay Bills" so you cannot go from one to the other with this call [Working on fixing this]. HOWEVER, if you know you are already in the category you need, open the menu & navigate with the default Calabash steps eg. "I touch the 'Review Payments' text")
 
-    Given /^I (?:put|enter) a random amount (?:in|into) field (?:number )?(\d+)$/ do |field|
+    Given /^I (?:put|enter) a random (?:number|amount) between (\d+) and (\d+) (?:in|into) field (?:number )?(\d+)$/ do |num1, num2, field|
+
 Enters a random dollar amount into a numerical field at the specified field index (eg. if it is the only input field on the screen, it is at field index = 1).
 
 Login steps
@@ -105,7 +106,7 @@ Toggles the "Remember Me" button on the Login screen.
 ✓ You must already be on the Login screen.  
 
     Given /^I see the (bank|card) greeting$/ do |which|
-Asserts the presence of the gretting "Hi, [first name]". Uses the bank or card default credentials from config.yml.  
+Asserts the presence of the greeting "greeting(based on time of day), [first name]". Uses the bank or card default credentials and the hours for greetings from config.yml.  
 ✓ You must already be on the Account screen.
 
     Then /^I (?:am logged|log) out$/
@@ -123,21 +124,13 @@ Selects the first account in a list of accouts.  You may instead select a specif
 Selects the first account transaction from a list of transactions.  
 ✓ Must already be on a screen with a list of account transactions.
 
-    Then /^I (?:select|toggle) account details?$/
+    Then /^I (?:select|toggle|open) account details?$/
 Selects the down arrow next to the Account name which toggles various details (eg. balance). You may accomplish the same task if you know the name of the Account (as you can click on the text using default steps).  
 ✓ Must already be on the "Account Activity" screen.
 
 Pay Bills Steps
 ---------------
 The following are steps meant to be used for the features corresponding to the menu category "Pay Bills".
-
-    Then /^I (?:navigate|go) to Pay Bills from "([^\"]*)"$/ do |origin|
-Navigates to the "Pay Bills" screen from anywhere within the application.  Must specify the name of your current screen as it would be found in the menu (eg. "Manage Payments") (case sensitive)  
-✓ Menu should be closed  
-
-    Then /^I (?:navigate|go) to Pay Bills$/ do
-Navigates to the "Pay Bills" screen from anywhere within the application that is NOT part of the "Pay Bills" category.  
-✓ Menu should be closed
 
     Then /^I select a payment$/ 
 Selects the first payment from a list.  
@@ -152,7 +145,7 @@ Selects the first Payee in a list ("Pay Bills", "Manage Payees" screens)
 ✓ You must already be on a screen with a list of payees.
 
     Given /^I(?: can)? schedule a payment$/
-Scheules a payment (of a random amount $1-$9), then verifies that it appears on the "Scheduled Payments" screen (matches the confirmation number).  
+Schedules a payment (of a random amount $1-$9), then verifies that it appears on the "Scheduled Payments" screen (matches the confirmation number).  
 ✓ Must already have a payment form open on the "Pay Bills" screen.  
 ✓ Must have at least $9 in the default/top bank account.  
 ✓ Must have at least one Payee  
@@ -161,5 +154,23 @@ Scheules a payment (of a random amount $1-$9), then verifies that it appears on 
 Verifies the existence of a specific payment based on a unique cofirmation number.  
 ✓ Must already be on the "Review Payments" screen.  
 ✓ Must already be on whichever tab the payment applies to (eg. scheduled, completed)  
+
+Transfer Steps
+--------------
+The following are steps meant to be used for the transfer feature
+
+    Given /^I select a (?:from|to)? account$/ do
+Selects the first account that is in the list of the users accounts which will be an external account if one exists. When used again the first account selected will be an internal account so that the From and To accounts are different.  
+✓ Must have at least one external and one internal account.  
+
+    Given /^I schedule a transfer$/ do
+Generates a random amount ($30 - $40) and saves in into @savedAmount. Then enters the amount into the input field and schedules the transaction.  
+✓ Must be able to transfer $40.00  
+
+    Given /^I verify (?:the)? transfer$/ do
+Verifies that the transfer amount appears under scheduled transactions by scrolling down until the amount is found.
+
+
+
 
 

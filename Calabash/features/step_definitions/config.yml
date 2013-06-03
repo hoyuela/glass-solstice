@@ -1,10 +1,25 @@
-:login:
+:default_bank_user:
     :bank:
         :username: "asystest506"
         :password: "pass123$"
         :name: "Charmayne"
+
     :card:
         :username: "TODO"
         :password: "TODO"
         :name: "TODO"
+
+:default_sso_user:
+    :bank:
+        :username: "asysssocred4"
+        :password: "pass123$"
+        :name: "A"
+
+    :card:
+        :username: "asysssocred4"
+        :password: "pass123$"
+        :name: "A"
+
 :securityAnswer: "test"
+:afternoon_hour: 12
+:evening_hour: 18
