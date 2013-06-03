@@ -44,6 +44,7 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.ui.modals.BankModalAlertWithTwoButtons;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.help.HelpWidget;
@@ -978,7 +979,6 @@ public abstract class AtmMapFragment extends BaseFragment
 	 * 
 	 * @return True if fragment does not allow back press, false otherwise.
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isBackPressDisabled(){
 		if(isListLand){
@@ -1025,6 +1025,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 * Event callback for when the view tree for a view changes. In this class this callback is only called when the
 	 * visibility of the map view has changed during the processing of an onBackPress event.
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onGlobalLayout() {
 		/** Check if this event should be handled */
