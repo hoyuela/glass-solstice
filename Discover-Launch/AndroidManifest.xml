@@ -25,6 +25,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-feature android:name="android.hardware.location.gps"
+    android:required="false" />
+    <uses-feature android:name="android.hardware.location"
+    android:required="false" />
 
     <!--  Google Maps API 2 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -54,7 +58,7 @@
         PROD Key - AIzaSyAOlmDvh7iLcvbLfBoRWsdzh6h1wGfah2w -->
  		<meta-data
  		    android:name="com.google.android.maps.v2.API_KEY"
- 		    android:value="AIzaSyB6pn6GmhEElZ6846XlAvbfJD7wsWx5MoE"/>
+ 		    android:value="AIzaSyAOlmDvh7iLcvbLfBoRWsdzh6h1wGfah2w"/>
  		
  		
  		<!--  End Google Maps API 2 -->
