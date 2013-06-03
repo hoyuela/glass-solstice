@@ -85,6 +85,8 @@ public final class CardMenuItemLocationIndex {
     public static final int MANAGE_ALERTS_SECTION = 1;
     public static final int ALERTS_HISTORY_SECTION = 2;
     public static final int CREATE_CASH_PIN_SECTION = 3;
+    //public static final int FASTCHECK_SECTION = 4;
+    
 
     /**
      * Customer Service indexes
@@ -183,6 +185,9 @@ public final class CardMenuItemLocationIndex {
         itemIdLocationMap.put(R.string.sub_section_title_create_cash_pin,
                 new Pair<Integer, Integer>(PROFILE_AND_SETTINGS_GROUP,
                         CREATE_CASH_PIN_SECTION));
+//        itemIdLocationMap.put(R.string.sub_section_title_maintain_fastcheck,
+//        		new Pair<Integer, Integer>(PROFILE_AND_SETTINGS_GROUP,
+//        				FASTCHECK_SECTION));
 
         itemIdLocationMap.put(R.string.sub_section_title_contact_us,
                 new Pair<Integer, Integer>(CUSTOMER_SERVICE_GROUP,

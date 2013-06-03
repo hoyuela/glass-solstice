@@ -21,5 +21,9 @@ public interface LoginActivityInterface extends ErrorHandlerUi {
 	 * @return Returns true if successful, false otherwise.
 	 */
 	public boolean updateAccountInformation(final AccountType account);
+	
+	public void hideFastcheck();
 
 }
+	
+	

@@ -3,7 +3,7 @@
  */
 package com.discover.mobile.card.facade;
 
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.facade.PushFacade;
 
 import com.discover.mobile.card.services.push.PushNotificationService;
@@ -16,15 +16,18 @@ import com.discover.mobile.card.services.push.PushNotificationService;
  */
 public class PushFacadeImpl implements PushFacade {
 
-    @Override
-    public void getXtifyRegistrationStatus(final BaseActivity callingActivity) {
+    
+	@Override
+    public void getXtifyRegistrationStatus(final BaseFragmentActivity callingActivity) {
 
     }
 
     @Override
-    public void startXtifySDK(final BaseActivity callingActivity) {
+    public void startXtifySDK(final BaseFragmentActivity callingActivity) {
         new PushNotificationService().start(callingActivity);
 
     }
+
+	
 
 }

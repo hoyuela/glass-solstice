@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\SlidingMenuActivity\res
+2
+6
+d:drawable-ldpi|2|0|0|0|dd501d718a47421ba5ca92375d34aa8d|0
+d:drawable-mdpi|2|0|0|0|a4bc90ee445245bb96185d05e8bfa4be|0
+6:layout|2|0|0|0|d6fe40430a1042f0bac117a0279c02c1|0
+d:drawable-hdpi|2|0|0|0|a00521ec8b6a444a919a0e8efa5cd1fe|0
+e:drawable-xhdpi|2|0|0|0|d2de7c8f57fd49f499dcd491cd56429b|0
+6:values|2|0|0|0|a3c0355090674a11b45fa8d2fbb0f60e|0

@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\SlidingMenuActivity\src\com\slidingmenu\lib\app
+2
+6
+14:SlidingActivity.java|1|13efbef4687|f9e|679c45b4|2581f7cdecf847cf86bc03b465953e8b|0
+1c:SlidingFragmentActivity.java|1|13efbef46a2|10c3|3c7af03|122648242d984299a0637436dcc0aa9a|0
+18:SlidingListActivity.java|1|13efbef46bd|103a|fe8b7b3f|52c87d460cbd48cf98a2b57e595f7b7b|0
+1e:SlidingPreferenceActivity.java|1|13efbef46ce|fc3|b951548e|e4137a3a338240d0871c3d6800ab77ae|0
+1a:SlidingActivityHelper.java|1|13efbef469a|180a|5f13fb0a|17f78e442cb84f988ec58c2a62773e42|0
+18:SlidingActivityBase.java|1|13efbef468e|948|d5911e25|83395f58ceb54ac5adb3e03935915df1|0

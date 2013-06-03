@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.ScreenType;
 
 /**
@@ -39,7 +39,7 @@ public interface LoginActivityFacade {
 	 * Returns a new login activity for consumption directly
 	 * @return
 	 */
-	public BaseActivity getLoginActivity();
+	public BaseFragmentActivity getLoginActivity();
 	/**
 	 * Allows a navigation direct to login, sporting a message in a bundle
 	 * @param currentActivity
