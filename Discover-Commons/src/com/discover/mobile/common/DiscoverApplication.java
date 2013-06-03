@@ -10,7 +10,10 @@ import android.app.Application;
 
 @ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {
-
+	
+	/**The cache object that maintains the most recent user's choice to use current location*/
+	private static LocationPreferenceCache locationPreference = new LocationPreferenceCache();
+	
 	Map<String, Object> globalData=new HashMap<String, Object>();
 	List<String>cookie;
 	
@@ -21,6 +24,19 @@ public class DiscoverApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+	}
+	
+	/**
+	 * 
+	 * @return a reference to the current locationPreference object for this instance of the application. Used for
+	 * caching user settings for the ATM Locator, use my location modal.
+	 */
+	public static final LocationPreferenceCache getLocationPreference() {
+		if(locationPreference == null) {
+			locationPreference = new LocationPreferenceCache();
+		}
+		
+		return locationPreference;
 	}
 
 	/**

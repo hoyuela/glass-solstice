@@ -49,6 +49,8 @@ implements OnPaymentCanceledListener {
 
 	private static final String BANK_USER_KEY = "bankUser";
 	private static final String BANK_SESSION_KEY = "session";
+	private static final String TRACKING_HELPER = "Tracking Helper";
+	private final static String PASSED_CLASS_NAME = "Passed class name: ";
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -62,17 +64,16 @@ implements OnPaymentCanceledListener {
 
 		compareLastTouchTimeAndUpdateSession();
 	}
-
 	@Override
 	public void makeFragmentVisible(final Fragment fragment){
-		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
+		Log.i(TRACKING_HELPER, PASSED_CLASS_NAME + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
 		super.makeFragmentVisible(fragment);
 	}
 
 	@Override
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory){
-		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
+		Log.i(TRACKING_HELPER, PASSED_CLASS_NAME + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
 		super.makeFragmentVisible(fragment, addToHistory);
 	}

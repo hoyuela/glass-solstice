@@ -13,6 +13,7 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.modals.AtmLocatorHelpModalTop;
+import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleNoButtonModal;
@@ -123,8 +124,10 @@ public final class AtmModalFactory{
 		modal.getOkButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				fragment.setLocationStatus(LocationFragment.SEARCHING);
-				fragment.getLocation();
+				if(fragment instanceof AtmMapFragment) {
+					((AtmMapFragment)fragment).searchCurrentLocation();
+				}
+				saveUserChoice();
 				modal.dismiss();
 			}
 		});
@@ -136,6 +139,10 @@ public final class AtmModalFactory{
 			}
 		});
 		return modal;
+	}
+	
+	private static void saveUserChoice() {
+		DiscoverApplication.getLocationPreference().setUserAcceptedModal();
 	}
 
 	/**

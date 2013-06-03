@@ -17,6 +17,7 @@ public final class StringUtility {
 	public static final String HASH = "#";
 	public static final String QUESTION_MARK = "?";
 	public static final String SLASH = "/";
+	public static final String PERIOD = ".";
 	
 	private StringUtility() {
 		throw new AssertionError();
