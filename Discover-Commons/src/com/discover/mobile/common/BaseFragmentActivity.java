@@ -563,4 +563,21 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 			lock.notifyAll();
 		}
 	}
+	
+	/**
+	 * Start an activity for result but dont clear the active modfal
+	 * @param intent - intent to start
+	 * @param requestCode - requestCode
+	 */
+	public void startActivityForResultNoReset(final Intent intent, final int requestCode){
+		super.startActivityForResult(intent, requestCode);
+	}
+	
+	/**
+	 * Start an activity but dont clear the active modal
+	 * @param intent - intent to start
+	 */
+	public void startActivityNoReset (final Intent intent) {
+		super.startActivity(intent);
+	}
 }

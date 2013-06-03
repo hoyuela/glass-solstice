@@ -3,8 +3,6 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xml.sax.ErrorHandler;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
@@ -60,6 +58,7 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;

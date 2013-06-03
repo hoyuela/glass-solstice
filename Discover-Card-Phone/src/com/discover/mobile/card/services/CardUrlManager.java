@@ -1,4 +1,8 @@
 package com.discover.mobile.card.services;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.common.DiscoverActivityManager;
+
 /**
  * This class is used for adding and getting URL's for card services. Any bank
  * URL's should go into the bank Url Manager class

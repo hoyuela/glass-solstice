@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.discover.mobile.card.error.CardBaseErrorResponseHandler;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.net.json.JsonMessageErrorResponse;
 
 /**
@@ -27,7 +27,7 @@ public class PushRegistrationStatusErrorHandler extends CardBaseErrorResponseHan
 	 * @param loginActivity
 	 *            - activity context
 	 */
-	public PushRegistrationStatusErrorHandler(final BaseActivity loginActivity) {
+	public PushRegistrationStatusErrorHandler(final BaseFragmentActivity loginActivity) {
 		super(loginActivity);
 		this.activity=loginActivity;
 	}
