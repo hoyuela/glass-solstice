@@ -24,10 +24,9 @@ end
 # Performs a basic login and completes the Enhanced Security Screen
 # Uses credentials from config.yml
 Given /^I am logged in as(?: a| the)? default (bank|card|sso) user on the (card|bank) tab$/ do |which, tab|	
-	
 	userType = "default_" + which + "_user"
 	service = which.to_sym
-	username = CONFIG[userType.to_sym][:bank][:username].to_s
+	username = CONFIG[userType.to_sym][:bank][:username]
 	password = CONFIG[userType.to_sym][:bank][:password]
 
 	macro 'The splash screen is finished'
@@ -68,17 +67,21 @@ Given /^I see the (bank|card) greeting for the default (bank|card|sso) user$/ do
 	user = "default_" + userType + "_user"
 	name = CONFIG[user.to_sym][which.to_sym][:name]
 	
-	currentHour = Time.new.hour
+	greeting = "Hi," + " " + name
 
-	if currentHour < CONFIG[:afternoon_hour]
-		salutation = "Good morning,"
-	elsif currentHour < CONFIG[:evening_hour]
-		salutation = "Good afternoon,"
-	else
-		salutation = "Good evening,"
+	# Check if bank because greetings are different
+	if which == "bank"
+		currentHour = Time.new.hour
+
+		if currentHour < CONFIG[:afternoon_hour]
+	   		salutation = "Good morning,"
+		elsif currentHour < CONFIG[:evening_hour]
+			salutation = "Good afternoon,"
+		else
+			salutation = "Good evening,"
+		end
+		greeting = salutation + " " + name
 	end
-
-	greeting = salutation + " " + name
 	performAction('wait_for_text', greeting)
 end
 

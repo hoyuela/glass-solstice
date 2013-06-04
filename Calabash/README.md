@@ -18,15 +18,15 @@ Please see the [Official Documentation](https://github.com/calabash/calabash-and
 3. Verify that you have a somewhat recent version of ruby installed (anything higher than 1.8.x)  
     `ruby -v`
 
-4. Place the .apk file you are using inside the Discover calabash folder.  
+4. Place the .apk file you are using inside the project's calabash folder.  
     
     If the .apk file was **NOT** built on your computer place the keystore that was used inside the Discover calabash folder. Then navigate to the Discover calabash folder and [Configure Calabash](https://github.com/akvo/akvo-flow/wiki/Calabash-testing#configuration) using the appropriate keystore settings.
 
-5. Navigate to the Discover Calabash folder and run: (apk file name may differ)  
+5. Navigate to the project calabash folder and run: (apk file name may differ)  
 `calabash-android run LoginActivity.apk`
 
 6. To run specific tagged scenarios run:  
-`calabash-android run LoginActivity.apk --tags @name_of_tag`  
+`calabash-android run LoginActivity.apk --tags @name_of_tag1,@name_of_tag2`  
 
 Scenarios, Steps, and Features  
 ------------------------------
@@ -36,9 +36,10 @@ Scenarios, Steps, and Features
 
 Testing Notes
 -------------
-* The .apk and .keystore (if needed) files just go inside the Discover calabash folder
+* The .apk and .keystore (if needed) files just go inside the project's calabash folder
 * App installation occurs before each .feature
 * App is fully restarted between each scenerio within a .feature
+* An end of file reached (EOFError) in the console often means that the app crashed
 
 Links
 -----
@@ -49,5 +50,6 @@ Links
 [Query Syntax](https://github.com/calabash/calabash-android/wiki/05-Query-Syntax)  
 [Cucumber Tags](https://github.com/cucumber/cucumber/wiki/Tags)  
 [Compartmentalization/Customization](http://fangmobile.com/2013/03/04/four-levels-of-customization-in-calabash-android/)  
+[Feature File Tips](http://docs.behat.org/guides/1.gherkin.html)  
 [Tips for writing Cucumber Steps](http://coryschires.com/ten-tips-for-writing-better-cucumber-steps/)  
 [Calabash-Android Google Group](https://groups.google.com/forum/?fromgroups#!forum/calabash-android)  
