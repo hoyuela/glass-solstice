@@ -20,8 +20,6 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	/**String to get modal state*/
 	private static final String MODAL_STATE = "modalState";
 
-	private static final String TAG = "Navigation";
-
 	/**Boolean to show the modal*/
 	protected boolean shouldShowModal = true;
 
@@ -123,6 +121,15 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	}
 
 	/**
+	 * Method used to invoke the base class onBackPress method. The onBackPressed() method prevents the base class
+	 * onBackPress method to be called when the fragment manager has less than 1 fragment on the backstack to avoid
+	 * exiting the application. This method allows a sub-class to call the base class onBackPress.
+	 */
+	protected void navigateBack() {
+		super.onBackPressed();
+	}
+
+	/**
 	 * Returns the current fragment in the content section,
 	 * {@code R.id.navigation_content}, of the Navigation activity.
 	 */
@@ -152,4 +159,5 @@ public abstract class NavigationRootActivity extends LoggedInRoboActivity implem
 	public void setMenu(final NavigationMenuFragment menu) {
 		this.menu = menu;
 	}
+
 }

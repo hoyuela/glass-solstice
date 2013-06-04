@@ -201,17 +201,21 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	/**
 	 * Shows the "X" in the action bar
 	 */
-	public void showBackX(){
-		backButtonX.setVisibility(View.VISIBLE);
-		navigationToggle.setVisibility(View.GONE);
+	public void showBackX() {
+		if (backButtonX != null) {
+			backButtonX.setVisibility(View.VISIBLE);
+			navigationToggle.setVisibility(View.GONE);
+		}
 	}
 
 	/**
 	 * Show menu button
 	 */
 	public void showMenuButton(){
-		backButtonX.setVisibility(View.GONE);
-		navigationToggle.setVisibility(View.VISIBLE);
+		if (backButtonX != null) {
+			backButtonX.setVisibility(View.GONE);
+			navigationToggle.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**

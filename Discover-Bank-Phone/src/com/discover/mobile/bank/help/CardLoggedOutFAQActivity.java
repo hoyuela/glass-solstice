@@ -116,8 +116,6 @@ public class CardLoggedOutFAQActivity extends NavigationRootActivity implements 
 		navigationToggle.setVisibility(View.INVISIBLE);
 		logout.setVisibility(View.INVISIBLE);
 		titleView.setText(getResources().getString(R.string.card_faq_title));
-
-		backButtonX.setOnClickListener(this);
 	}
 
 	@Override
