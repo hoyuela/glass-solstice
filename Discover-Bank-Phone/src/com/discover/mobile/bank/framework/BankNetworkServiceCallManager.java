@@ -63,6 +63,7 @@ import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
+import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -247,6 +248,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 
 		if( isGuiReady() ) {
+			//Check if the screen displaying is a table
+			if(activeActivity instanceof BankNavigationRootActivity && 
+					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
+					final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+					((BaseTable) fragment).refreshListener();
+			}
+			
 			//Check if the error is a Strong Auth Challenge
 			if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 				//Send request to Strong Auth web-service API
@@ -292,10 +300,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 */
 	@Override
 	public boolean handleFailure(final NetworkServiceCall<?> sender, final Throwable arg1) {
+		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		if( isGuiReady() ) {
+			//Check if the screen displaying is a table
+			if(activeActivity instanceof BankNavigationRootActivity && 
+					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
+					final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+					((BaseTable) fragment).refreshListener();
+			}
+			
 			if( !isBackgroundServiceCall(sender) ) {
-				final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-				activeActivity.closeDialog();
+				((AlertDialogParent)activeActivity).closeDialog();
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
