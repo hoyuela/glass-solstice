@@ -19,6 +19,7 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.BaseFragment;
@@ -72,7 +73,7 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 			link.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
-					BankConductor.navigateToBrowser("https://www.discover.com/credit-cards/help-center/faqs");
+					BankConductor.navigateToBrowser(BankUrlManager.getCardMoreFAQsUrl());
 				}
 			});
 		}

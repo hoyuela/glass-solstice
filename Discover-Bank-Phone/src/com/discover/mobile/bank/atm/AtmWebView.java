@@ -41,15 +41,6 @@ public class AtmWebView{
 	/**The ProgressBar that is shown while the web view loads its content */
 	private final ProgressBar loadingSpinner;
 
-	/**Url to show the report atm*/
-	private static final String REPORT_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&referer=http://android.discoverbank.com/m/accountcenter/atm-locator&custom_var=atmIdentifier={0}|DiscoverMobileVersion=5.0.0";
-
-	/**Url used for Google's terms*/
-	private static final String GOOGLE_PRIVACY = "http://www.google.com/intl/en-US_US/help/terms_maps.html";
-
-	/**Url used for reporting to google*/
-	private static final String GOOGLE_REPORT = "https://cbks0.googleapis.com/cbk?output=report";
-
 	/**Boolean used to indicate if the webview has street view or report atm*/
 	private boolean isReportingAtm;
 
@@ -92,7 +83,8 @@ public class AtmWebView{
 
 			@Override
 			public boolean shouldOverrideUrlLoading(final WebView  view, final String  url){
-				if(url.contains(GOOGLE_PRIVACY) || url.contains(GOOGLE_REPORT)) {
+				if(url.contains(BankUrlManager.getBankGoogleTermsUrl()) || 
+				   url.contains(BankUrlManager.getBankGoogleReportUrl())) {
 					BankConductor.navigateToBrowser(R.string.atm_browser_title, R.string.atm_browser_body, url);
 					return true;
 				}
@@ -114,7 +106,7 @@ public class AtmWebView{
 	public void reportAtm(final String id){
 		isReportingAtm = true;
 		atmID = id;
-		setupWebView(REPORT_URL.replace("{0}", atmID));
+		setupWebView(BankUrlManager.getBankAtmReportUrl().replace("{0}", atmID));
 		web.setVisibility(View.VISIBLE);
 		web.setBackgroundColor(Color.WHITE);
 	}
