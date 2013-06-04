@@ -2,14 +2,12 @@ package com.discover.mobile.card.common.net.error;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 
-import com.discover.mobile.common.DiscoverActivityManager;
-
 import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.facade.CardLoginFacadeImpl;
