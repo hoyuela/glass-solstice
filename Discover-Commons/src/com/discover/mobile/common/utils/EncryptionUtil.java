@@ -15,7 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 import android.content.Context;
 import android.util.Base64;
 
-public class FastcheckUtil {
+public class EncryptionUtil {
 	
 	private static final String DISCOVER_FS_TOKEN_FILENAME = "discoverFSToken";
 	private static final String DISCOVER_FS_DATA_FILENAME = "discoverFSData";

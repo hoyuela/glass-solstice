@@ -155,6 +155,9 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                 || text.equals(getString(R.string.sub_section_title_pay_with_cashback_bonus))
                 || text.equals(getString(R.string.sub_section_title_redemption_history))
                 || text.equals(getString(R.string.section_title_profile_and_settings))
+                // 13.3 fast view start
+				|| text.equals(getString(R.string.sub_section_title_fast_view))
+				// 13.3 fast view end                
                 || text.equals(getString(R.string.sub_section_title_manage_alerts))
                 || text.equals(getString(R.string.sub_section_title_alert_history))
                 || text.equals(getString(R.string.sub_section_title_create_cash_pin))
@@ -259,20 +262,60 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                 }
 
             }
-        }
+        
 
-        if (null == CARD_SECTION_LIST) {
-            // Added for the Other Card Types like Essential etc
-            CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                    .add(new HomeSectionInfo(true, countClickListenre))
-                    .add(new AccountSectionInfo())
-                    .add(new PaymentsSectionInfo())
-                    .add(new ProfileAndSettingsSectionInfo())
-                    .add(new CustomerServiceContactInfo()).build();
+            /* 13.3 Changes start */
+            if (null == CARD_SECTION_LIST) {
+                // Added for the Other Card Types like Essential etc
+                if (accData.cardProductGroupCode.equals(context
+                        .getString(R.string.card_product_group_code_essential))
+                        || accData.cardProductGroupCode
+                                .equals(context
+                                        .getString(R.string.card_product_group_code_business_cashback))
+                        || accData.cardProductGroupCode
+                                .equals(context
+                                        .getString(R.string.card_product_group_code_business_miles))
+                        || accData.cardProductGroupCode
+                                .equals(context
+                                        .getString(R.string.card_product_group_code_corp))
+                        || accData.cardProductGroupCode
+                                .equals(context
+                                        .getString(R.string.card_product_group_code_essential_without_fee))) {
+                    // Change Left Nav in case of Corporate card
+                    if (accData.cardType.equals("000002")) {
+                        CARD_SECTION_LIST = ImmutableList
+                                .<ComponentInfo> builder()
+                                .add(new HomeSectionInfo(true,
+                                        countClickListenre))
+                                .add(new AccountSectionInfo(true))
+                                .add(new PaymentsSectionInfo(true))
+                                .add(new ProfileAndSettingsSectionInfo())
+                                .add(new CustomerServiceContactInfo()).build();
+                    } else {
+                        CARD_SECTION_LIST = ImmutableList
+                                .<ComponentInfo> builder()
+                                .add(new HomeSectionInfo(true,
+                                        countClickListenre))
+                                .add(new AccountSectionInfo())
+                                .add(new PaymentsSectionInfo(true))
+                                .add(new ProfileAndSettingsSectionInfo())
+                                .add(new CustomerServiceContactInfo()).build();
+                    }
+                } else {
+                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
+                            .add(new HomeSectionInfo(true, countClickListenre))
+                            .add(new AccountSectionInfo())
+                            .add(new PaymentsSectionInfo())
+                            .add(new ProfileAndSettingsSectionInfo())
+                            .add(new CustomerServiceContactInfo()).build();
+                }
+            }
         }
+        /* 13.3 Changes end */
 
-        // onPushCountUpdate(pushUnReadCount);
     }
+        // onPushCountUpdate(pushUnReadCount);
+    
 
     /*
      * (non-Javadoc)

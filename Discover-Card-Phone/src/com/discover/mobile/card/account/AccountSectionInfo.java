@@ -42,6 +42,35 @@ public final class AccountSectionInfo extends GroupComponentInfo {
                     }
                 }));
     }
+    
+    /* 13.3 Changes start */
+    //Change Left Nav in case of Corporate card
+    public AccountSectionInfo(Boolean corporateCard) {
+        super(R.string.section_title_account,
+
+        new ClickComponentInfo(R.string.sub_section_title_account_summary,
+                false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+
+                    }
+                }), new ClickComponentInfo(
+                R.string.sub_section_title_recent_activity, false,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+
+                    }
+                }), new ClickComponentInfo(
+                R.string.sub_section_title_search_transaction, false,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+
+                    }
+                }));
+    }
+    /* 13.3 Changes end */
 
     class AccountComponentInfo extends ClickComponentInfo {
 

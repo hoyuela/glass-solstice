@@ -171,8 +171,7 @@
     <string name="E_1228">Make a Payment:We are unable to process your online payment today	because it is past the 5:00pm Eastern Time cut off and you have	no available payment dates. For assistance call 1-877-742-7822.</string>
     <string name="E_1229">Make a Payment:We’re unable to process your online payment because	it is past the 5:00pm Eastern Time cutoff time and you have no available payment dates for the selected bank account. You can make a payment by selecting a different bank account. For assistance call 1-877-742-7822.</string>
     <string name="E_1230">Make a Payment: You have missed the Eastern Time cut off for submitting a payment that will post today. Your next	available payment posting date is !~nextAvailableDate~!. If you would like to submit your payment of $!~payAmount~! using this date please Submitbelow.</string>
-    <string name="E_1231">Your bank account is problematic, provide valid bank short name.
-</string>
+    <string name="E_1231">Your bank account is problematic, provide valid bank short name.</string>
     <string name="E_1232">Make a PaymentSome of our website features are unavailable at this time resulting in limited access to functionality and can process payments for the current day only. If you would like to schedule a payment for a future date, please try again later. We	thank you for your patience.</string>
     <string name="E_1233">Make a PaymentSome of our website features are unavailable at this	time resulting in limited access to functionality.We can however,process payments for the current day only. If you would like to schedule a payment for a future date,please try again later. We thank you for your patience.</string>
     <string name="E_1234">Hashed account number required. Please enter a valid hashed account number.</string>
@@ -351,7 +350,11 @@
     <string name="E_4031928">Due to special conditions related to your account, we can\'t retrieve your User ID at this time."&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access.</string>
     <!-- DEFECT ID:97030 -->
     <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
-
+    <!-- 13.3 QuickView Biniding Service Start -->
+    <string name="E_409">Device is already bound</string>
+    <string name="E_404">Device is not bound</string>
+    <string name="E_4002201">Device Token Invalid</string>
+    <!-- 13.3 QuickView Biniding Service END -->
     <!-- need help footer and feedback -->
     <!-- 0 for hide need help footer and show feedback -->
     <!-- 1 for hide feedback link and show need help footer -->
@@ -362,6 +365,11 @@
     <string name="E_H_4031101">0</string>
     <string name="E_H_4031402">0</string>
     <string name="E_H_4031401_LOCKOUT">0</string>
+     <!-- 13.3 QuickView Biniding Service Start-->
+    <string name="E_H_4002201">0</string>
+    <string name="E_H_409">0</string>
+    <string name="E_H_404">0</string>
+    <!-- 13.3 QuickView Biniding Service END-->
     <string name="E_H_403">0</string>
     <string name="E_H_4031402_LOCKOUT">0</string>
     <string name="E_H_4031102">0</string>
@@ -389,5 +397,7 @@
     <string name="E_103">Bad Request!</string>
     <string name="E_T_104">Connection Problem!</string>
     <string name="E_104">Could not connect to the server!</string>
+    <string name="E_SA_SKIPPED_CONTENT">Some of our website features are unavailable at this time. We sincerely apologize for the inconvenience and are working to resolve the issue.</string>
+    <string name="E_SA_SKIPPED_TITLE">We\'re Sorry</string>
 
 </resources>

@@ -6,6 +6,14 @@
     <string name="card_cashback">Cashback</string>
     <string name="card_miles">Miles</string>
     <string name="card_sendmoney">SendMoney</string>
+    
+     <!--  13.3  Changes  -->
     <string name="card_product_group_code_esc">ESC</string>
+    <string name="card_product_group_code_business_miles">DBM</string>
+    <string name="card_product_group_code_business_cashback">DBC</string>
+    <string name="card_product_group_code_corp">CRP</string>
+    <string name="card_product_group_code_essential">ESF</string>
+    <string name="card_product_group_code_essential_without_fee">ESN</string>
+    <!--  13.3  Changes  -->
     
 </resources>

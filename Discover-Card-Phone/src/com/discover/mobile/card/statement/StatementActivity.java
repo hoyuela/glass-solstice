@@ -57,6 +57,8 @@ import android.widget.Toast;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.PDFObject;
 import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 /**
  * Displays cardmembers selected statement images in a scrollable view
@@ -112,6 +114,7 @@ public class StatementActivity extends DroidGap {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statement);
+        TrackingHelper.trackPageView(AnalyticsPage.STATEMENT_IMAGES);
 
         try {
             processBundle();

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - ContactUs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">      
+ <!-----------------    MOBILE DEPENDECIES       ------------------->
+    <script type="text/javascript">
+       
+        if (navigator.userAgent.match(/iPhone/i)) {
+            document.write('<script type="text/javascript" src="script/ios/cordova-1.7.0.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/LoadingView.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/ChildBrowser.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/CookieManager.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Contactsios.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/KeyValue.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/NetworkConnectivity.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/XtifyCordovaPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/clipboardPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/EmailComposer.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Print.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/Screenshot.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/PassKit.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/RenderStatement.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/ios/EventManager.js" ><\/script>');
+        } else {
+            document.write('<script type="text/javascript" src="script/android/Contactsand.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/CookieManager.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/cordova-1.7.0.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/RenderStatement.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/LoadingView.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/childbrowser.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/KeyValue.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/clearHistory.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/NetworkConnectivity.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/video.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/XtifyCordovaPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/clipboardPlugin.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/Screenshot.js" ><\/script>');
+            document.write('<script type="text/javascript" src="script/android/EventManager.js" ><\/script>');
+        }
+        </script>
+    <!--<link rel="stylesheet" href="jquery.mobile-1.1.min.css" />
+     <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+     -->
+    <link rel="stylesheet" href="../../../jquery.mobile-1.2.0.min.css" />
+    <script type="text/javascript" src="../../../jquery-1.7.2.min.js"></script>
+   
+    <script>
+        if (navigator.userAgent.match(/Android/)){
+            $(window.document).bind("mobileinit", function() {
+                                    $.mobile.pushStateEnabled = false;
+                                    });
+        }
+        </script>
+    <script type="text/javascript" src="../../../jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="../../../Sha256_Encryption.js"></script>
+    <script type="text/javascript" src="../../../jquery.mobile.simpledialog2.min.js"></script>
+    <script type="text/javascript" src="../../../jquery.ui.datepicker.js"></script>
+    <script type="text/javascript" src="../../../jquery-ui-1.8.20.custom.min.js"></script>
+    <script type="text/javascript" src="../../../jquery.ui.datepicker.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../jquery.mobile.simpledialog.min.css" />
+   
+    <!--script type="text/javascript" src="script/ios/XtifyCordovaPlugin.js"></script-->
+   
+    <script type="text/javascript" src="../../../jquery.easing.js"></script>
+    <script type="text/javascript" src="../../../jquery.jqtransform.js"></script>
+    <script type="text/javascript" src="../../../underscore-min.js"></script>
+   
+    <link rel="stylesheet" type="text/css" href="../../../jquery.mobile.simpledialog.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/jqmTransition.css" />
+    <!-----------------------------Scripts-------------------------->
+    <script type="text/javascript" src="../../../card/scripts/applicationConstants.js"></script>
+    <script>
+        if (window.location.host.match(/local.discovercard.com/) || window.location.host.match(/localhost.discovercard.com/)){
+            env.load("../../../../local-env.xml");
+            document.write('<script type="text/javascript" src="../../../../bypassPG.js"><\/script> ');
+        }else{
+            env.load("../../../env.xml");
+        }
+    </script>
+    <script type="text/javascript" src="../../../card/scripts/common.js"></script>
+	<script type="text/javascript" src="../../../../bypassPG.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/commonUI.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/commonJson.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/achome.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/loginLogout.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/shared/statementsShared.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/statements.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/util.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/errorCodeMap.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/redeemCBBEcert.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/rewards.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/shared/registrationShared.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/registration.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/strongAuth.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/redeemCBBCreditDirectDeposit.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/exploreDiscover.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/sendMoney.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/shared/profileShared.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/profile.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/redemption-R5.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/redeemEcertsAndGiftCards.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/redeemGiftCard.js"></script>
+    <script type="text/javascript" src="../../../jquery.mobile.fixedToolbar.js"></script>
+    <script type="text/javascript" src="../../../jqmTransition.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/payment.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/index.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/passbook.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/siteCatalystTags.js"></script>
+    <script language="JavaScript" type="text/javascript" src="../../../s_code.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/common-bypass-native.js"></script>
+   
+    <script type="text/javascript" src="../../../card/scripts/pushDiagonstic.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/pushTermsAndConditions.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/pushManageAlerts.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/pushAlertHistory.js"></script>
+    <script>
+        if (window.location.host.match(/local.discovercard.com/) || window.location.host.match(/localhost.discovercard.com/)){
+            document.write('<script type="text/javascript" src="../../../card/scripts/common-bypass-native.js"><\/script> ');
+        }
+    </script>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=geometry&sensor=true"></script>
+    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
+
+    <!--This file to be called before edo script-->
+    <script type="text/javascript" src="../../../card/scripts/edoExtras.js"></script>
+    <script type="text/javascript" src="../../../jquery.tinysort.min.js"></script>
+   
+    <script type="text/javascript" src="../../../jquery.mobile.stepper.js"></script>
+    <script type="text/javascript" src="../../../jquery.jqtransform.js"></script>
+    <script type="text/javascript" src="../../../card/scripts/referAFriend.js"></script>
+    <script type="text/javascript" src="../../../md5.js"></script>
+    <script type="text/javascript" src="../../../jquery.watermark.min.js"></script>
+    <script type="text/javascript" src="../../../jquery.dotdotdot-1.5.4-packed.js"></script>
+    <!-----------------------------CSS-------------------------->
+    <link rel="stylesheet" href="../../../css/discoverMain.css" />
+    <link rel="stylesheet" href="../../../card/css/discoverCard.css" />
+    <link rel="stylesheet" href="../../../card/css/discoverCardR4.css" />
+    <link rel="stylesheet" href="../../../css/pnMain-R5.css" />
+    <link rel="stylesheet" href="../../../css/jquery.mobile.fixedToolbar.polyfill.css" />    
+
+
+    <link rel="stylesheet" href="../../../card/css/redemption-R5.css" />
+    <link rel="stylesheet" href="../../../css/jquery.mobile.stepper.css" />
+    <link rel="stylesheet" href="../../../card/css/referAFriend.css" />
+    <link rel="stylesheet" href="../../../card/css/handset-R13.1.css" />
+    <link rel="stylesheet" href="../../../css/jqmTransition.css" />
+    <link rel="stylesheet" href="../../../css/jquery.iviewer.css" />
+    <link rel="stylesheet" href="../../../card/css/passbook.css" />
+    <link rel="stylesheet" href="../../../card/css/edo-R13.css"/>   
+    <script>
+        if (window.location.host.match(/local.discovercard.com/) || window.location.host.match(/localhost.discovercard.com/)){
+            env.load("../../../../local-env.xml");
+            document.write('<script type="text/javascript" src="../../../../bypassPG.js"><\/script> ');
+        }else{
+            env.load("../../../env.xml");
+        }
+        </script>
+ 
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="contactUs-pg" >
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+		<div class="wraper">           	
+				<!-- body text area star -->
+				<!--<h1>Contact Us</h1>-->
+				<h1>By Phone</h1>
+				<!--<ul data-role="listview" data-theme="d" data-inset="true" class="rounded-list-box-simple rounded-list-box-information plain">-->
+				<ul data-role="listview" data-theme="d" data-inset="true" class="whitebg-list-view">
+					<li>
+						<div>U.S. </div>
+						<div><a href='tel:18003472683' onClick='trackThis(); return true' class='bluelink'>1-800-347-2683</a></div>
+						<span>(English/Espa&#324;ol)</span>
+
+					</li>
+					<li>
+						<div>Outside U.S. </div>
+						<div><a href='tel:18019023100' onClick='trackThis(); return true' class='bluelink'>1-801-902-3100</a></div>
+						<span>(English/Espa&#324;ol)</span>
+
+					</li>
+					<li>
+						<div>TDD </div>
+						<div><a href='tel:18003477449' onClick='trackThis(); return true' class='bluelink'>1-800-347-7449</a></div>
+						<span></span>
+
+					</li>
+				</ul>	
+				
+			
+				
+ 				<h1>By Mail</h1>
+
+ 				<!--<ul data-role="listview" data-theme="d" data-inset="true" class="rounded-list-box-simple rounded-list-box-mail-info plain">-->
+				<ul data-role="listview" data-theme="d" data-inset="true" class="whitebg-list-view contactusCols">
+					<li>
+						<div>Payment Address</div>
+						<div class="col2">
+
+							Discover Financial Services<br />
+							P.O.Box 6013<br />
+							Carol Stream, IL<br />
+							60197-6103
+						</div>
+					</li>
+					<li>
+						<div>Customer Services</div>
+						<div class="col2">
+
+							Discover Financial Services<br />
+							P.O.Box 30943<br />
+							Salt Lake City, UT<br />
+							84130-0943
+						</div>
+					</li>
+				</ul>
+				
+				</div>
+				<!-- body text area end -->
+				
+				<div id="footnotes" class="footnotes" ></div>
+				
+			</div>
+
+				<!-- content end -->
+      <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+		</div>
+			</div>
+		<!--page end -->
+</body>
+</html>

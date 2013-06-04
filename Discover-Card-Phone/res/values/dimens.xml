@@ -60,5 +60,9 @@
    	 <!-- fastcheck -->
      <dimen name="login_bottom_button_height">50dp</dimen>
    	 
+	 <!-- whats new -->
+    <dimen name="default_circle_indicator_radius">9dp</dimen>
+    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+
    	 
 </resources>

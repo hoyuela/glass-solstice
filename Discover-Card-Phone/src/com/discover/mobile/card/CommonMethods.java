@@ -7,6 +7,10 @@ import com.discover.mobile.common.AccountCodes;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
 public final class CommonMethods {
+    
+    /* 13.3  Changes */
+    public static final String INCENTIVE_TYPE_DBC = "SBC";
+    /* 13.3  Changes */
     private final static String TAG = CommonMethods.class.getSimpleName();
 
     /**
@@ -49,12 +53,15 @@ public final class CommonMethods {
     public final static boolean isCashbackCard(
             final AccountDetails accountDetails) {
 
+        /* 13.3  Changes */
         if (accountDetails.incentiveTypeCode
-                .equalsIgnoreCase(AccountCodes.INCENTIVE_TYPE_CBB)) {
+                .equalsIgnoreCase(AccountCodes.INCENTIVE_TYPE_CBB)||accountDetails.incentiveTypeCode
+                .equalsIgnoreCase(INCENTIVE_TYPE_DBC)) {
             return true;
         } else {
             return false;
         }
+        /* 13.3  Changes */
     }
 
     /**
