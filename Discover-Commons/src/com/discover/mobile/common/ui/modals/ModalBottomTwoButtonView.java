@@ -4,9 +4,13 @@ import android.widget.Button;
 
 /**
 * Interface to bind to the bottom views with two buttons that will be placed in an alert modal
+* 
+* @deprecated use a SimpleTwoButtonModal instead - these modals wrap the current method calls at the moment.
+* 
 * @author jthornton
 *
 */
+@Deprecated
 public interface ModalBottomTwoButtonView{
 
 	/**

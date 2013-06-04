@@ -15,9 +15,12 @@ import com.discover.mobile.common.R;
  * This class is a modal alert with both a top view and a bottom view.  This view will only show a title and
  * some content text and a bottom with two buttons.
  * 
+ * @deprecated use a SimpleTwoButtonModal instead - these modals wrap the current method calls at the moment.
+ * 
  * @author jthornton
  *
  */
+@Deprecated
 public class ModalAlertWithTwoButtons extends AlertDialog{
 
 	/**Top view too be displayed*/

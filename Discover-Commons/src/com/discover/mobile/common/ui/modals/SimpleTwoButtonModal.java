@@ -12,6 +12,14 @@ import android.widget.TextView;
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
+/**
+ * Simple modal alert with two buttons.  This suppressed warngings to depricate classes
+ * so that it can wrap them.
+ * 
+ * @author jthornton
+ *
+ */
+@SuppressWarnings("deprecation")
 public class SimpleTwoButtonModal extends ModalAlertWithTwoButtons implements ModalTopView, ModalBottomTwoButtonView{
 
 	/**View of the modal*/
@@ -20,6 +28,10 @@ public class SimpleTwoButtonModal extends ModalAlertWithTwoButtons implements Mo
 	/** View that holds the footer text */
 	private final NeedHelpFooter helpFooter;
 
+	/**
+	 * Constuctor for the modal
+	 * @param context - activity context
+	 */
 	public SimpleTwoButtonModal(final Context context){
 		super(context);
 		view = getLayoutInflater().inflate(R.layout.simple_two_button_modal, null);
@@ -181,19 +193,29 @@ public class SimpleTwoButtonModal extends ModalAlertWithTwoButtons implements Mo
 		((Button) view.findViewById(R.id.modal_alert_cancel)).setText(text);
 	}
 
+	/**
+	 * Init the UI
+	 */
 	@Override
-	protected void initUI() { }
+	protected void initUI() { 
+		//Intentionally left empty to allow wrapping of the super class
+	}
 
 	/**
 	 * Create the orientation changed listener
 	 * @return the orientation changed listener
 	 */
 	@Override
-	public OrientationEventListener createOrientationListener() { return null; }
+	public OrientationEventListener createOrientationListener() { 
+		//Intentionally left empty to allow wrapping of the super class
+		return null; 
+	}
 
 	/**
 	 * Display the layout with the correct layout.
 	 */
 	@Override
-	public void display(){ }
+	public void display(){ 
+		//Intentionally left empty to allow wrapping of the super class
+	}
 }
