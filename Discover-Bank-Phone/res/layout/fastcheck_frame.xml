@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/OrangeTheme"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/fastcheck_frame_frag"
+        android:name="com.discover.mobile.card.fastcheck.FastcheckFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/fastcheck_bottom_button_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparentGray"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/fastcheck_privacy_terms_button"
+            style="@style/login_bottom_bar_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/privacy_and_security" />
+
+        <Button
+            android:id="@+id/fastcheck_provide_feedback_button"
+            style="@style/login_bottom_bar_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:text="@string/provide_feedback" />
+    </LinearLayout>
+
+</RelativeLayout>

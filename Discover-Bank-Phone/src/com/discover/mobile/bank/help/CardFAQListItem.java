@@ -51,6 +51,7 @@ public class CardFAQListItem extends FAQListItem{
 
 		if(titleLabel != null){
 			titleLabel.setText(Html.fromHtml(title));
+			titleLabel.setOnClickListener(expandClickListener);
 		}
 	}
 }

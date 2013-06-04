@@ -3,9 +3,7 @@
  */
 package com.discover.mobile.common.facade;
 
-
-
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 
 /**
  * A facade for handling customer service, which is a shared component, accessible via the nav bar
@@ -20,11 +18,11 @@ public interface PushFacade {
 	 * registered to this user.
 	 * @author jon thornton
 	 */
-	public void getXtifyRegistrationStatus(BaseActivity callingActivity);
+	public void getXtifyRegistrationStatus(BaseFragmentActivity callingActivity);
 	
 	/**
 	 * Starts the Xtify SDK using the correct app key and the correct Google Project ID specific to the environment
 	 * @param context - application context
 	 */
-	public void startXtifySDK(BaseActivity callingActivity);
+	public void startXtifySDK(BaseFragmentActivity callingActivity);
 }

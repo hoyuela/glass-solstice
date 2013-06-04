@@ -23,8 +23,6 @@ import android.widget.TextView;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -93,7 +91,6 @@ public class HomeSummaryFragment extends BaseFragment implements
     @Override
     public View onCreateView(final LayoutInflater inflater,
             final ViewGroup container, final Bundle savedInstanceState) {
-    	TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_SUMMARY);
         view = inflater.inflate(R.layout.section_account_summary_landing, null);
         provideFeedback = (TextView) view
                 .findViewById(R.id.provide_feedback_button);

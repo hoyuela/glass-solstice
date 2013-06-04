@@ -75,6 +75,9 @@
 	  <color name="blue_grey">#3d484d</color>    
     <color name="orange_from">#FFC053</color>
     <color name="orange_to">#FC510B</color>
+    
+    <!-- fastcheck -->
+    <color name="transparentGray">#50000000</color>
 	
     
 </resources>

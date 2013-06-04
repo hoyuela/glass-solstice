@@ -6,8 +6,9 @@ package com.discover.mobile.common.facade;
 import android.app.Activity;
 import android.content.Context;
 
-import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.CardInfoForToggle;
 
 
@@ -23,7 +24,9 @@ public interface CardFacade {
 	 * Navigates to the register activity
 	 * @param callingActivity
 	 */
-	public void navToRegister(BaseActivity callingActivity);
+	public void navToRegister(BaseFragmentActivity callingActivity);
+	
+	public boolean fastcheckTokenExists(NavigationRootActivity callingActivity);
 	
 	//Defect id 97126
 	   /**
@@ -36,7 +39,7 @@ public interface CardFacade {
 	 * Navigates to the forgot activity
 	 * @param callingActivity
 	 */
-	public void navToForgot(BaseActivity callingActivity);
+	public void navToForgot(BaseFragmentActivity callingActivity);
 
 	/**
 	 * Launches the card home fragment

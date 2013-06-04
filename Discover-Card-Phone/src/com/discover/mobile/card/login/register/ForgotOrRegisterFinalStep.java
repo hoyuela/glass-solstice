@@ -386,11 +386,7 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
             startActivity(lastScreen);
            
         } else {
-           // FacadeFactory.getLoginFacade().navToLogin(this);
-            final Bundle bundle = new Bundle();
-            bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-            bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-            FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+            FacadeFactory.getLoginFacade().navToLogin(this);
             
         }
         finish();

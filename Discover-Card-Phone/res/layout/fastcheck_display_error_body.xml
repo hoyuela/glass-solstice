@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/default_list_item"
+    android:paddingBottom="@dimen/table_inner_padding">
+
+    <Button 
+	    android:id="@+id/fastcheck_display_back_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/back_button_text"
+	    style="@style/back_button_style"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true" 
+	    android:background="@drawable/back_normal_btn"/>
+    
+    <!--<ImageButton
+        android:id="@+id/refresh_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+       	android:src="@drawable/refresh_btn"  
+       	android:background="#00000000" />-->
+    
+    <ImageView
+	    android:id="@+id/error_img"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:src="@drawable/error_img"
+		android:layout_below="@id/fastcheck_display_back_button"
+		android:layout_marginTop="20dp"/>
+    
+    <TextView
+        android:id="@+id/fastcheck_error_msg"
+    	style="@style/field_copy_small"
+    	android:layout_marginLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/error_img"
+        android:layout_below="@id/fastcheck_display_back_button"
+        android:layout_marginTop="20dp"/>
+    
+</RelativeLayout>

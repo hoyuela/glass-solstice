@@ -42,7 +42,7 @@ public final class ConnectionManager {
      * @return input stream containing the json response.
      */
     public static InputStream connect(final HttpURLConnection httpConn,
-            final Context context, final byte[] input) {
+            final Context context, final byte[] input) throws IOException {
         InputStream in = null;
 
         try {
@@ -69,6 +69,7 @@ public final class ConnectionManager {
         } catch (final IOException e) {
             in = httpConn.getErrorStream();
             Utils.log(context.getClass().getName(), e.getMessage(), e);
+            if (e.getMessage().indexOf("Received authentication challenge is null") >=0 ) throw e;
         } catch (final Exception e) {
             in = httpConn.getErrorStream();
             Utils.log(context.getClass().getName(), e.getMessage(), e);

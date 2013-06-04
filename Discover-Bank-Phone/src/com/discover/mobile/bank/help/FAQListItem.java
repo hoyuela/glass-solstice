@@ -75,7 +75,7 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 	/**
 	 * This is a click listener that allows the list items to expand and collapse upon clicking.
 	 */
-	private final OnClickListener expandClickListener = new OnClickListener() {
+	protected final OnClickListener expandClickListener = new OnClickListener() {
 
 		@Override
 		public void onClick(final View v) {

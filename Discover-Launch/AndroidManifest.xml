@@ -241,17 +241,6 @@
             </intent-filter>
         </receiver>
         
-         <!--Broadcast Receiver for Receiving Intents when navigating to browser  -->
-        <activity android:name="com.discover.mobile.bank.BrowserNavigator" 
-            	  android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-			    <category android:name="android.intent.category.DEFAULT" />
-			    <action android:name="android.intent.action.VIEW" />
-			    <data android:scheme="com.discover.mobile" />  
-			</intent-filter>
-        </activity>
-       
-
         <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         

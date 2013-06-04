@@ -464,6 +464,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, true);
 
 				BankConductor.navigateToManagePayee(bundle);
+
+				// Mark the scheduled payments dirty so that it is refreshed
+				BankUser.instance().setScheduled(null);
+
+				// Mark the cancelled payment dirty so that it is refreshed
+				BankUser.instance().setCancelled(null);
+
+				// Clear all account downloaded data
+				BankUser.instance().setAccountOutDated(true);
 			}
 			/**Check to see if the payees were downloaded because of an added payee call*/
 			else if( (prevCall instanceof AddPayeeServiceCall) &&

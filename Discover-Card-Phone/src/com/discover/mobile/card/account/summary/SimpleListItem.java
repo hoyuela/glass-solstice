@@ -15,20 +15,22 @@ import com.discover.mobile.card.R;
  * 
  * @author jthornton
  * 
+ * hlin0 May 2013 update - change attributes to protected not final for quickview
+ * 
  */
 public class SimpleListItem extends RelativeLayout {
 
     /** Label to be shown at the top of the cell */
-    private final TextView label;
+    protected TextView label;
 
     /** Value to be shown under the label */
-    private final TextView value;
+    protected TextView value;
 
     /** Action item to be shown if there is any action */
-    private final TextView action;
+    protected TextView action;
 
     /** Glass bar line shown next to the image line */
-    private final ImageView line;
+    protected ImageView line;
 
     /**
      * Constructor for the class

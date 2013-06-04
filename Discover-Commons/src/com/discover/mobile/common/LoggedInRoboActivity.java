@@ -27,7 +27,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	private static final float FADE = 0.35f;
 	/** Flag used to know when in the middle of a log out */
 	private static boolean pendingLogout = false;
-	protected ImageView navigationToggle;
+	protected  ImageView navigationToggle;
 	protected ImageView backButtonX;
 
 	/**
@@ -119,7 +119,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	/**
 	 * Set up and style the sliding menu
 	 */
-	private void setupSlidingMenu() {
+	protected void setupSlidingMenu() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setShadowWidthRes(R.dimen.nav_menu_shadow_width);
 		slidingMenu.setShadowDrawable(R.drawable.nav_menu_shadow);
@@ -201,17 +201,21 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	/**
 	 * Shows the "X" in the action bar
 	 */
-	public void showBackX(){
-		backButtonX.setVisibility(View.VISIBLE);
-		navigationToggle.setVisibility(View.GONE);
+	public void showBackX() {
+		if (backButtonX != null) {
+			backButtonX.setVisibility(View.VISIBLE);
+			navigationToggle.setVisibility(View.GONE);
+		}
 	}
 
 	/**
 	 * Show menu button
 	 */
 	public void showMenuButton(){
-		backButtonX.setVisibility(View.GONE);
-		navigationToggle.setVisibility(View.VISIBLE);
+		if (backButtonX != null) {
+			backButtonX.setVisibility(View.GONE);
+			navigationToggle.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -220,7 +224,7 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	 * @param show
 	 *            Displays logo if true, displays TextView otherwise.
 	 */
-	private void showActionBarLogo(final boolean show) {
+	protected void showActionBarLogo(final boolean show) {
 		final TextView titleView = (TextView) findViewById(R.id.title_view);
 		final ImageView titleImageView = (ImageView) findViewById(R.id.action_bar_discover_logo);
 

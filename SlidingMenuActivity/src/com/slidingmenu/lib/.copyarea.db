@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\SlidingMenuActivity\src\com\slidingmenu\lib
+2
+6
+15:CustomViewBehind.java|1|13efbef463c|300c|c0b7020|3663fa4f4c064730a742fdb5d0b4cece|0
+14:CustomViewAbove.java|1|13efbef461a|7494|2704e8bd|da96f03978e84e389c0d96fdcbe3042d|0
+12:MenuInterface.java|1|13efbef4678|462|c6348b40|4142c96bb828441f8e19dab11db71fce|0
+10:SlidingMenu.java|1|13efbef465b|6df6|aca8f709|6df1c8c33d064e9bb2c1edd12adc5b33|0
+3:app|2|0|0|0|8a1bd911808940bc909c9216f6d50f25|0
+1d:CanvasTransformerBuilder.java|1|13efbef4611|b73|fbd2a3|a30be914c47d4ec7b52a4696461066ce|0

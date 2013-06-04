@@ -79,4 +79,5 @@
     
     <dimen name="help_rounded_corner">6dp</dimen>
 
+    <dimen name="fastcheck_mainbox_padding">20dp</dimen>
 </resources>
