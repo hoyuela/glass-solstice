@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.discover.mobile.common.utils.FastcheckUtil;
+import com.discover.mobile.common.utils.EncryptionUtil;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
@@ -518,7 +518,7 @@ public final class Globals {
 		
 		if (!user.isEmpty()) {
 			try {
-				encryptedUser = FastcheckUtil.encrypt(user);
+				encryptedUser = EncryptionUtil.encrypt(user);
 			} catch (final Exception e) {
 				// Failed to encrypt user. Will not store on device.
 				return;
@@ -539,7 +539,7 @@ public final class Globals {
 		
 		if (!encryptedUser.isEmpty()) {
 			try {
-				user = FastcheckUtil.decrypt(encryptedUser);
+				user = EncryptionUtil.decrypt(encryptedUser);
 			} catch (final Exception e) { // Failed to decrypt user.
 				return StringUtility.EMPTY;
 			}
