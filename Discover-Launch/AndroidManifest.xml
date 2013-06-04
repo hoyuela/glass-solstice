@@ -238,13 +238,6 @@
 		android:windowSoftInputMode="adjustPan">
         </activity>
         
-        <!--Broadcast Receiver for changing Base URL for bank dynamically  -->
-        <receiver android:name="com.discover.mobile.bank.BankUrlChanger" >
-            <intent-filter android:priority="1" >
-                <action android:name="com.discover.mobile.CHANGE_URL_BROADCAST_INTENT" />
-            </intent-filter>
-        </receiver>
-
         <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         

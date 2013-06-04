@@ -45,7 +45,7 @@ public final class TrackingHelper {
 		if (measurement == null){
 			measurement = ADMS_Measurement.sharedInstance(activity);
 			measurement.setSSL(true);  // comment out if using Bloodhound
-			measurement.setDebugLogging(true);
+			measurement.setDebugLogging(false);
 		}
 	}
 
