@@ -18,6 +18,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 /**
  * This Fragment displays FAQ items for the user to review.
@@ -156,7 +157,7 @@ public class FAQDetailFragment extends BaseFragment {
 		//Clear items in list if any
 		faqItems.clear();
 
-		//The loop is incremented by 2 each time because we are grabbing data two values at a time.
+		//The loop is incremented by 2 each time because we are grabbing data in pairs.
 		for(int i = 0; i < listItemLength && (i + 1) < listItemLength; i += 2) {
 			final FAQListItem listItem = new FAQListItem(getActivity());
 
@@ -212,7 +213,7 @@ public class FAQDetailFragment extends BaseFragment {
 	 * @return the String value of the FAQ_TYPE that exists in the getArguments() bundle.
 	 */
 	private String getFAQTypeFromArgBundle() {
-		String faqType = "";
+		String faqType = StringUtility.EMPTY;
 		final Bundle args = getArguments();
 
 		if(args != null){

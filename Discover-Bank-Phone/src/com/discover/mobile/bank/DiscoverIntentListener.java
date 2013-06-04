@@ -14,6 +14,7 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Activity used to intercept intents raised with the scheme com.discover.mobile. Used for prompting a user with a modal
@@ -26,10 +27,8 @@ import com.discover.mobile.common.ui.modals.SimpleContentModal;
  */
 public final class DiscoverIntentListener extends BaseActivity {
 	private static final String PROVIDE_FEEDBACK = "cardProvideFeedback";
-	private static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
 	public static final String METHOD_SCHEME = "method";
-	public static final String BROWSER_SCHEME = "com.discover.mobile";
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -54,20 +53,20 @@ public final class DiscoverIntentListener extends BaseActivity {
 				final String method = data.getSchemeSpecificPart();
 				if (method.contains(PROVIDE_FEEDBACK)) {
 					BankConductor.navigateToFeedback(true);
-				} else if (method.contains(PRIVACY_STATEMENT)) {
+				} else if (method.contains(StringUtility.PRIVACY_STATEMENT)) {
 					this.finish();
-
+					final long halfSecond = 500;
 					new Handler().postDelayed(new Runnable() {
 						@Override
 						public void run() {
 							BankConductor.navigateToCardMobilePrivacy();
 						}
-					}, 500);
+					}, halfSecond);
 				}
 			}
 			// Browser scheme is used to prompt the user with a modal before navigating
 			// the user to the default browser
-			else if (data.getScheme().equalsIgnoreCase(BROWSER_SCHEME)) {
+			else if (data.getScheme().equalsIgnoreCase(StringUtility.BROWSER_SCHEME)) {
 				navigateToBrowser(data);
 			}
 			// Catch-all for all other intents
@@ -91,13 +90,16 @@ public final class DiscoverIntentListener extends BaseActivity {
 
 		if (data != null) {
 
-			final String url = data.toString().replace("com.discover.mobile", "https");
+			final String url = data.toString().replace(StringUtility.BROWSER_SCHEME, StringUtility.HTTPS);
 
 			SimpleContentModal modal = null;
 
 			// Create a one button modal to notify the user that they are
 			// leaving the application
-			modal = new SimpleContentModal(this, R.string.bank_open_browser_title, R.string.bank_open_browser_text, R.string.continue_text);
+			modal = new SimpleContentModal(this, 
+											R.string.bank_open_browser_title, 
+											R.string.bank_open_browser_text, 
+											R.string.continue_text);
 
 			/** Needs to be final in order to dismiss in listener */
 			final SimpleContentModal modalParam = modal;

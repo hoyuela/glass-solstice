@@ -19,6 +19,17 @@ public final class StringUtility {
 	public static final String SLASH = "/";
 	public static final String PERIOD = ".";
 	
+	public static final String HTTP = "http";
+	public static final String HTTPS = "https";
+	
+	public static final String TEL = "tel://";
+	public static final String MAILTO = "mailto:";
+	public static final String METHOD = "method://";
+	
+	public static final String BROWSER_SCHEME = "com.discover.mobile";
+	public static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
+
+	
 	private StringUtility() {
 		throw new AssertionError();
 	}
