@@ -186,6 +186,13 @@ public class AccountToggleView extends RelativeLayout {
 	public boolean hasIndicatorBeenDrawn() {
 		return isIndicatorDrawn;
 	}
+	
+	/**
+	 * Resets the hasIndicatorBeenDrawn boolean so that the indicator can be redrawn if needed.
+	 */
+	public final void setIndicatorReadyForUpdate() {
+		isIndicatorDrawn = false;
+	}
 
 	/**
 	 * Listener for Bank Section
