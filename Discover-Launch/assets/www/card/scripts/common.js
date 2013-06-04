@@ -52,6 +52,7 @@ var incentiveTypeSuffix="";
 var incentiveCodeSuffix = "";
 var globalOtherUser="";
 var rewardErrorFlag = false; //Fix for defect 96754
+var cardProductGroupCode="";
 var preventBack = false;
 /** **CONSTANTS and Global Variables End ** */
 
@@ -2275,6 +2276,9 @@ function populateGlobalCache()
 					// save card type and data in global variables
 					
 					incentiveCode = achomeData["incentiveCode"];                        
+					//13.3 changes-start
+					cardProductGroupCode=achomeData["cardProductGroupCode"]	
+					//13.3 changes-end
 					incentiveTypeCode = achomeData["incentiveTypeCode"];
 					optionCode =  achomeData["optionCode"];                        
 					cardType = achomeData["cardType"];                                              

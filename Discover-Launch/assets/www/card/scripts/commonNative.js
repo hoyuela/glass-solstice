@@ -213,13 +213,29 @@ function createCashPIN()
 function contactUs()
 {
 	preventBack = false;
-   navigation('../custormerService/contactUs');
+	//13.3 changes-start
+	populateGlobalCache();
+	if(cardProductGroupCode == "CRP"){
+		navigation('../custormerService/contactUsLoggedOut');
+	}else{
+		 navigation('../custormerService/contactUs');
+	}
+	//13.3 changes-end
 }
 
 function frequentlyAskedQuestions()
 {
 	preventBack = false;
-	navigation('../custormerService/customerServiceFaqs');
+	//13.3 changes-start
+	populateGlobalCache();
+	if(cardProductGroupCode == "DBC"){
+		navigation('../custormerService/faqDBC');
+	}else if(cardProductGroupCode == "CRP"){
+		navigation('../custormerService/faqCorp');
+	}else{
+		navigation('../custormerService/customerServiceFaqs');
+	}
+	//13.3 changes-end
 }
 
 function earnMoreMilesRewards()
@@ -283,3 +299,14 @@ console.log("home function is called");
 navigation('../common/dummy',false);
 }
 // Defect id 96085
+
+//13.3 quickview start
+function quickView()
+{
+console.log("quickView function is called");
+//navigation('../common/dummy',false);
+activePage = "dummy-pg";
+currentActivePage = "dummy-pg";
+isLhnNavigation = true;
+}
+//13.3 quickview end

@@ -1,28 +1,22 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.discoverfinancial.mobile"
-    android:versionCode="1"
-    android:versionName="5.0.0"  > <!-- DEFECT 96690 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.discoverfinancial.mobile" android:versionCode="1" android:versionName="5.1.0"> <!-- DEFECT 96690 -->
     
     
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="17" />
+    <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="17"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-    <permission
-        android:name="com.discoverfinancial.mobile.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
+    <permission android:name="com.discoverfinancial.mobile.permission.C2D_MESSAGE" android:protectionLevel="signature"/>
 
-    <uses-permission android:name="com.discoverfinancial.mobile.permission.C2D_MESSAGE" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.discoverfinancial.mobile.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-feature android:name="android.hardware.location.gps"
@@ -33,9 +27,7 @@
     <!--  Google Maps API 2 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <permission
-        android:name="com.discoverfinancial.mobile.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+    <permission android:name="com.discoverfinancial.mobile.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
 	<uses-permission android:name="com.discoverfinancial.mobile.permission.MAPS_RECEIVE"/>
 	<!--  End Google Maps API 2 -->
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -45,211 +37,124 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
  
-    <application
-        android:name="com.discover.mobile.common.DiscoverApplication"
-        android:allowBackup="false"
-        android:icon="@drawable/discove_mobile_icn"
-        android:label="@string/app_name"
-        android:hardwareAccelerated="true"
-        android:logo="@drawable/discover_logo_inset"
-        android:theme="@style/AppTheme" >
+    <application android:name="com.discover.mobile.common.DiscoverApplication" android:allowBackup="false" android:icon="@drawable/discove_mobile_icn" android:label="@string/app_name" android:hardwareAccelerated="true" android:logo="@drawable/discover_logo_inset" android:theme="@style/AppTheme">
         
         <!--  Google Maps API 2 DEV Key - AIzaSyB6pn6GmhEElZ6846XlAvbfJD7wsWx5MoE 
         PROD Key - AIzaSyAOlmDvh7iLcvbLfBoRWsdzh6h1wGfah2w -->
- 		<meta-data
- 		    android:name="com.google.android.maps.v2.API_KEY"
+ 		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyB6pn6GmhEElZ6846XlAvbfJD7wsWx5MoE"/>
  		    android:value="AIzaSyAOlmDvh7iLcvbLfBoRWsdzh6h1wGfah2w"/>
  		
  		
  		<!--  End Google Maps API 2 -->
  	
         <!-- Xtify Provider -->
-        <provider
-            android:name="com.xtify.sdk.db.Provider"
-            android:authorities="com.discoverfinancial.mobile.XTIFY_PROVIDER"
-            android:exported="false" />
+        <provider android:name="com.xtify.sdk.db.Provider" android:authorities="com.discoverfinancial.mobile.XTIFY_PROVIDER" android:exported="false"/>
         <!-- Xtify Provider -->
 
-        <activity
-            android:name="com.discover.mobile.bank.login.LoginActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoTitleBar"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan" >
+        <activity android:name="com.discover.mobile.bank.login.LoginActivity" android:label="@string/app_name" android:theme="@style/AppTheme.NoTitleBar" android:windowSoftInputMode="adjustPan">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         
-         <activity
-            android:name="org.apache.cordova.DroidGap"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name" >
+         <activity android:name="org.apache.cordova.DroidGap" android:configChanges="orientation|keyboardHidden" android:label="@string/app_name">
+            android:launchMode="singleTop"
             <intent-filter>
             </intent-filter>
         </activity>       
-    	<activity
-            android:name="com.discover.mobile.card.statement.StatementActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+    	<activity android:name="com.discover.mobile.card.statement.StatementActivity" android:configChanges="orientation|screenSize|keyboardHidden" android:theme="@android:style/Theme.Light.NoTitleBar">
         </activity>
         
-        <activity
-            android:name="com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+		<activity
+            android:name="com.discover.mobile.card.whatsnew.WhatsNewActivity"
+            >
+        </activity>
+		
+        <activity android:name="com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
  
-        <activity
-            android:name="com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
         
- 	    <activity
-            android:name="com.discover.mobile.bank.deposit.CheckDepositCaptureActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" 
-            android:screenOrientation="landscape">
+ 	    <activity android:name="com.discover.mobile.bank.deposit.CheckDepositCaptureActivity" android:label="@string/app_name" android:launchMode="standard" android:screenOrientation="landscape">
         </activity>
         
- 	    <activity
-            android:name="com.discover.mobile.bank.help.LoggedOutFAQActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+ 	    <activity android:name="com.discover.mobile.bank.help.LoggedOutFAQActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
         
- 		 <activity
-            android:name="com.discover.mobile.bank.deposit.DepositSubmissionActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard"
-            android:configChanges="orientation|keyboard|screenSize"/>
+ 		 <activity android:name="com.discover.mobile.bank.deposit.DepositSubmissionActivity" android:label="@string/app_name" android:launchMode="standard" android:configChanges="orientation|keyboard|screenSize"/>
         
-        <activity
-            android:name="com.discover.mobile.bank.login.LockOutUserActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!--DEFECT96936-->
-        <activity
-            android:name="com.discover.mobile.card.login.register.RegistrationAccountInformationActivity"
-            android:label="@string/app_name"
-            android:noHistory= "true"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.bank.login.LockOutUserActivity" android:label="@string/app_name" android:launchMode="singleTask" android:screenOrientation="portrait"/><!--DEFECT96936-->
+        <activity android:name="com.discover.mobile.card.login.register.RegistrationAccountInformationActivity" android:label="@string/app_name" android:noHistory="true" android:launchMode="standard">
         </activity>
-        <activity
-            android:name="com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity"
-            android:label="@string/app_name"
-            android:noHistory= "true"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity" android:label="@string/app_name" android:noHistory="true" android:launchMode="standard">
         </activity>
-        <activity
-            android:name="com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity"
-            android:label="@string/app_name"
-            android:noHistory= "true"
-            android:launchMode="standard" />
-        <!--DEFECT96936-->
-        <activity
-            android:name="com.discover.mobile.card.login.register.CreateLoginActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity" android:label="@string/app_name" android:noHistory="true" android:launchMode="standard"/><!--DEFECT96936-->
+        <activity android:name="com.discover.mobile.card.login.register.CreateLoginActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
-        <activity
-            android:name="com.discover.mobile.card.login.register.AccountInformationConfirmationActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" />
-        <activity
-            android:name="com.discover.mobile.card.login.register.StrengthBarHelpActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" />
-        <!--DEFECT96936-->
-        <activity
-            android:name="com.discover.mobile.card.login.register.ForgotCredentialsActivity"
-            android:label="@string/app_name"
-             android:noHistory= "true"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.login.register.AccountInformationConfirmationActivity" android:label="@string/app_name" android:launchMode="standard"/>
+        <activity android:name="com.discover.mobile.card.login.register.StrengthBarHelpActivity" android:label="@string/app_name" android:launchMode="standard"/><!--DEFECT96936-->
+        <activity android:name="com.discover.mobile.card.login.register.ForgotCredentialsActivity" android:label="@string/app_name" android:noHistory="true" android:launchMode="standard">
        
         
         </activity>
         
-        <activity
-            android:name="com.discover.mobile.card.login.register.ForgotUserIdActivity"
-            android:label="@string/app_name"
-            android:noHistory= "true"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.login.register.ForgotUserIdActivity" android:label="@string/app_name" android:noHistory="true" android:launchMode="standard">
             <!--DEFECT96936-->
         </activity>
-        <activity
-            android:name="com.discover.mobile.card.login.register.EnterNewPasswordActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.card.login.register.EnterNewPasswordActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
-        <activity
-            android:name="com.discover.mobile.bank.help.CustomerServiceContactsActivity"
-            android:label="@string/app_name"
-            android:launchMode="standard" >
+        <activity android:name="com.discover.mobile.bank.help.CustomerServiceContactsActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
-        <activity android:name="com.discover.mobile.common.nav.NavigationRootActivity" 
-           android:configChanges="orientation|screenSize"/>
+        <activity android:name="com.discover.mobile.common.nav.NavigationRootActivity" android:configChanges="orientation|screenSize"/>
 
         <!-- Xtify Setup -->
-        <receiver android:name="com.xtify.sdk.c2dm.C2DMBroadcastReceiver" >
-            <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.discoverfinancial.mobile" />
+        <receiver android:name="com.xtify.sdk.c2dm.C2DMBroadcastReceiver">
+            <intent-filter android:permission="com.google.android.c2dm.permission.SEND">
+                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+                <category android:name="com.discoverfinancial.mobile"/>
             </intent-filter>
-            <intent-filter android:permission="com.google.android.c2dm.permission.SEND" >
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="com.discoverfinancial.mobile" />
+            <intent-filter android:permission="com.google.android.c2dm.permission.SEND">
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <category android:name="com.discoverfinancial.mobile"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.discover.mobile.card.push.receive.XtifyNotifier" >
+        <receiver android:name="com.discover.mobile.card.push.receive.XtifyNotifier">
             <intent-filter>
-                <action android:name="com.xtify.sdk.NOTIFIER" />
+                <action android:name="com.xtify.sdk.NOTIFIER"/>
                <!--  <action android:name="com.xtify.sdk.EVENT_NCK" /> -->
             </intent-filter>
         </receiver>
-        <receiver android:name="com.discover.mobile.card.push.receive.XtifyEventReceiver" >
+        <receiver android:name="com.discover.mobile.card.push.receive.XtifyEventReceiver">
             <intent-filter>
-                <action android:name="com.xtify.sdk.EVENT_NCK" />
+                <action android:name="com.xtify.sdk.EVENT_NCK"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="com.xtify.sdk.NotifActionReceiver" />
-        <receiver android:name="com.xtify.sdk.wi.AlarmReceiver" >
+        <receiver android:name="com.xtify.sdk.NotifActionReceiver"/>
+        <receiver android:name="com.xtify.sdk.wi.AlarmReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
 
-        <service android:name="com.xtify.sdk.location.LocationUpdateService" />
-        <service android:name="com.xtify.sdk.c2dm.C2DMIntentService" />
-        <service android:name="com.xtify.sdk.alarm.MetricsIntentService" />
-        <service android:name="com.xtify.sdk.alarm.TagIntentService" />
-        <service android:name="com.xtify.sdk.alarm.RegistrationIntentService" />
-        <service android:name="com.xtify.sdk.alarm.LocationIntentService" />
+        <service android:name="com.xtify.sdk.location.LocationUpdateService"/>
+        <service android:name="com.xtify.sdk.c2dm.C2DMIntentService"/>
+        <service android:name="com.xtify.sdk.alarm.MetricsIntentService"/>
+        <service android:name="com.xtify.sdk.alarm.TagIntentService"/>
+        <service android:name="com.xtify.sdk.alarm.RegistrationIntentService"/>
+        <service android:name="com.xtify.sdk.alarm.LocationIntentService"/>
 
         <!-- End Xtify Setup -->
-        <activity android:name="com.discover.mobile.card.navigation.CardNavigationRootActivity"
-            android:configChanges="orientation|screenSize">
+        <activity android:name="com.discover.mobile.card.navigation.CardNavigationRootActivity" android:configChanges="orientation|screenSize">
         </activity>
-        <activity android:name="com.discover.mobile.bank.navigation.BankNavigationRootActivity"
-		android:windowSoftInputMode="adjustPan">
+        <activity android:name="com.discover.mobile.bank.navigation.BankNavigationRootActivity" android:windowSoftInputMode="adjustPan">
         </activity>
         
-        <!--Broadcast Receiver for changing Base URL for bank dynamically  -->
-        <receiver android:name="com.discover.mobile.bank.BankUrlChanger" >
-            <intent-filter android:priority="1" >
-                <action android:name="com.discover.mobile.CHANGE_URL_BROADCAST_INTENT" />
-            </intent-filter>
-        </receiver>
+        <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity" android:windowSoftInputMode="adjustPan"/>
         
-        <activity android:name="com.discover.mobile.bank.atm.AtmLocatorActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        
-         <activity android:name="com.discover.mobile.card.phonegap.plugins.ContactViewResult"
-            android:windowSoftInputMode="adjustPan"></activity>
+         <activity android:name="com.discover.mobile.card.phonegap.plugins.ContactViewResult" android:windowSoftInputMode="adjustPan"/>
 
         <!-- Broadcast Receiver to logout user out of the application -->
         <receiver android:name="com.discover.mobile.card.navigation.CardNavigationBroadcastReceiver">
@@ -257,27 +162,26 @@
                 <action android:name="com.discover.mobile.card.navigation.LogoutUser"/>
             </intent-filter>
         </receiver>
+    
         
-        <activity android:name="com.discover.mobile.bank.help.CardLoggedOutFAQActivity"></activity>
+        <activity android:name="com.discover.mobile.bank.help.CardLoggedOutFAQActivity"/>
         
-        <activity android:name=".card.phonegap.plugins.ContactViewResult" >
+        <activity android:name=".card.phonegap.plugins.ContactViewResult">
         </activity>
-         <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity"
-                   android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".bank.help.BankInfoNavigationActivity"></activity>
+         <activity android:name="com.discover.mobile.bank.help.BankInfoNavigationActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".bank.help.BankInfoNavigationActivity"/>
         
          <!--Broadcast Receiver for Receiving Intents when navigating to browser  -->
-        <activity android:name="com.discover.mobile.bank.DiscoverIntentListener" 
-            	  android:theme="@android:style/Theme.Translucent.NoTitleBar">
+        <activity android:name="com.discover.mobile.bank.DiscoverIntentListener" android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-			    <category android:name="android.intent.category.DEFAULT" />
-			    <action android:name="android.intent.action.VIEW" />
-			    <data android:scheme="com.discover.mobile" />  
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <data android:scheme="com.discover.mobile"/>  
 			</intent-filter>
 			<intent-filter>
-			    <category android:name="android.intent.category.DEFAULT" />
-			    <action android:name="android.intent.action.VIEW" />
-			    <data android:scheme="method" />  
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <data android:scheme="method"/>  
 			</intent-filter>      
         </activity>
     </application>
