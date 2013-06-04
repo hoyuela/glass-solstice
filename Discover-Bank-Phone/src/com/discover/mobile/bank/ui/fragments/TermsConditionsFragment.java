@@ -251,7 +251,15 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 *
 	 */
 	private class TermsAndConditionsWebViewClient extends WebViewClient {
+		private static final String HTTPS = "https";
+		private static final String HTTP = "http";
 		
+		private static final String TEL = "tel://";
+		private static final String MAILTO = "mailto:";
+		private static final String METHOD = "method://";
+		private static final String BROWSER_SCHEME = "com.discover.mobile";
+		private static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
+
 		@Override
 		public void onPageFinished(final WebView view, final String url) {
 			super.onPageFinished(view, url);
@@ -297,7 +305,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean willNavigate = false;
 
 			if(url != null) {
-				if(url.contains("navigateToMobilePrivacyStatement")) {
+				if(url.contains(PRIVACY_STATEMENT)) {
 					BankConductor.navigateToPrivacyTerms(PrivacyTermsType.MobilePrivacyStatement);
 					willNavigate = true;
 				}
@@ -333,7 +341,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean looksLikeNavigation = false;
 		
 			if(url != null) {
-				looksLikeNavigation = url.startsWith(StringUtility.METHOD);
+				looksLikeNavigation = url.startsWith(METHOD);
 			}
 			
 			return looksLikeNavigation;
@@ -348,10 +356,10 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		private String getDiscoverUrl(final String url) {
 			String result = StringUtility.EMPTY;
 			if(url != null) {
-				if(url.startsWith(StringUtility.HTTPS)) {
-					result = url.replaceAll(StringUtility.HTTPS, StringUtility.BROWSER_SCHEME);
-				}else if (url.startsWith(StringUtility.HTTP)) {
-					result = url.replaceAll(StringUtility.HTTP, StringUtility.BROWSER_SCHEME);
+				if(url.startsWith(HTTPS)) {
+					result = url.replaceAll(HTTPS, BROWSER_SCHEME);
+				}else if (url.startsWith(HTTP)) {
+					result = url.replaceAll(HTTP, BROWSER_SCHEME);
 				}
 			}
 			
@@ -367,7 +375,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean looksLikePage = false;
 			
 			if(url != null) {
-				looksLikePage = url.startsWith(StringUtility.HTTPS) || url.startsWith(StringUtility.HTTP);
+				looksLikePage = url.startsWith(HTTPS) || url.startsWith(HTTP);
 			}
 			return looksLikePage;
 		}
@@ -381,7 +389,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean looksLikePhoneNumber = false;
 			
 			if(url != null) {
-				looksLikePhoneNumber = url.startsWith(StringUtility.TEL);
+				looksLikePhoneNumber = url.startsWith(TEL);
 			}
 			
 			return looksLikePhoneNumber;
@@ -396,7 +404,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean looksLikeEmail = false;
 			
 			if(url != null) {
-				looksLikeEmail = url.startsWith(StringUtility.MAILTO);
+				looksLikeEmail = url.startsWith(MAILTO);
 			}
 			
 			return looksLikeEmail;

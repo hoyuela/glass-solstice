@@ -14,7 +14,6 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
-import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Activity used to intercept intents raised with the scheme com.discover.mobile. Used for prompting a user with a modal
@@ -28,6 +27,9 @@ import com.discover.mobile.common.utils.StringUtility;
 public final class DiscoverIntentListener extends BaseActivity {
 	private static final String PROVIDE_FEEDBACK = "cardProvideFeedback";
 	public static final String METHOD_SCHEME = "method";
+	private static final String BROWSER_SCHEME = "com.discover.mobile";
+	private static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
+	private static final String HTTPS = "https";
 	
 	@Override
 	public void onResume() {
@@ -53,7 +55,7 @@ public final class DiscoverIntentListener extends BaseActivity {
 				final String method = data.getSchemeSpecificPart();
 				if (method.contains(PROVIDE_FEEDBACK)) {
 					BankConductor.navigateToFeedback(true);
-				} else if (method.contains(StringUtility.PRIVACY_STATEMENT)) {
+				} else if (method.contains(PRIVACY_STATEMENT)) {
 					this.finish();
 					final long halfSecond = 500;
 					new Handler().postDelayed(new Runnable() {
@@ -66,7 +68,7 @@ public final class DiscoverIntentListener extends BaseActivity {
 			}
 			// Browser scheme is used to prompt the user with a modal before navigating
 			// the user to the default browser
-			else if (data.getScheme().equalsIgnoreCase(StringUtility.BROWSER_SCHEME)) {
+			else if (data.getScheme().equalsIgnoreCase(BROWSER_SCHEME)) {
 				navigateToBrowser(data);
 			}
 			// Catch-all for all other intents
@@ -90,7 +92,7 @@ public final class DiscoverIntentListener extends BaseActivity {
 
 		if (data != null) {
 
-			final String url = data.toString().replace(StringUtility.BROWSER_SCHEME, StringUtility.HTTPS);
+			final String url = data.toString().replace(BROWSER_SCHEME, HTTPS);
 
 			SimpleContentModal modal = null;
 
