@@ -1411,6 +1411,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	}
 	
+	@Override
+	public void onBackPressed() {
+		navigateBack();
+	}
+
 }	
 	
 	
