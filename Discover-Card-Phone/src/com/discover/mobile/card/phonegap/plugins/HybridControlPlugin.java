@@ -63,6 +63,7 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String checkForExternalBrowser = "checkForExternalBrowser";
     public static final String getDFSKey = "getDFSKey";
     public static final String getVOne = "getVOne";
+    public static final String disableMenuButton = "disableMenuButton";
 
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
@@ -96,7 +97,8 @@ public class HybridControlPlugin extends CordovaPlugin {
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //cnrAct.showBehind();
+                	//hlin0 20130531 integrate with new sliding menu
+                    cnrAct.showMenu();
                 }
             });
             final PluginResult pluginResult = new PluginResult(
@@ -110,7 +112,8 @@ public class HybridControlPlugin extends CordovaPlugin {
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //cnrAct.showAbove();
+                	//hlin0 20130531 integrate with new sliding menu
+                    cnrAct.showContent();
                 }
             });
             final PluginResult pluginResult = new PluginResult(
@@ -798,6 +801,23 @@ public class HybridControlPlugin extends CordovaPlugin {
             });
             final PluginResult pluginResult = new PluginResult(
                     PluginResult.Status.OK, showInBrowser);
+            pluginResult.setKeepCallback(true);
+            callbackContext.sendPluginResult(pluginResult);
+            return true;
+        } else if (action.equals("disableMenuButton")) {
+            Utils.log(TAG, "inside getVOne ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    cnrAct.disableMenuButton();
+                }
+            });
+
+            final PluginResult pluginResult = new PluginResult(
+                    PluginResult.Status.OK);
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;

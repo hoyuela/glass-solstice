@@ -31,6 +31,7 @@
     <string name="sub_section_title_redemption_history">Redemption History</string> 
     
     <string name="section_title_profile_and_settings">Profile &amp; Settings</string>
+    <string name="sub_section_title_fast_view">Quick View</string>
     <string name="sub_section_title_manage_alerts">Manage Text &amp; Alerts</string>
     <string name="sub_section_title_alert_history">Push Alerts History</string>
     <string name="sub_section_title_create_cash_pin">Create Cash PIN</string>

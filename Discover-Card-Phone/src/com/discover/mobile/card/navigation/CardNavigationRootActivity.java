@@ -38,8 +38,10 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
 import com.discover.mobile.card.phonegap.plugins.HybridControlPlugin;
+import com.discover.mobile.card.profile.quickview.QuickViewSetupFragment;
 import com.discover.mobile.card.push.register.OnDeviceReady;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.services.push.PushReadMessage;
@@ -156,6 +158,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             Utils.showSpinner(this, "Discover", "Loading...");
             Utils.isSpinnerShow = false;
         }
+    	// 13.3 changes start
+ 		mCardStoreData.addToAppCache("onBackPressed", false);
+ 		// 13.3 changes end        
     }
 
     @Override
@@ -238,8 +243,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 if (pushStatus) {
                     pushStatus = false;
                     PushNowAvailableFragment availableFragment = new PushNowAvailableFragment();
-                    makeFragmentVisible(availableFragment, false);
-                    
+					/* 13.3  Changes */
+                    //makeFragmentVisible(availableFragment, false);
+                    /* 13.3  Changes */
                     /**
                      * Initialize onDeviceReady listener so that once cordova is loaded,
                      * we can tell calling fragment that it's ready. 
@@ -330,6 +336,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 || text.equals(getString(R.string.section_title_earn_cashback_bonus))
                 || text.equals(getString(R.string.section_title_redeem_cashback_bonus))
                 || text.equals(getString(R.string.section_title_profile_and_settings))
+                // 13.3 fast view start
+				|| text.equals(getString(R.string.sub_section_title_fast_view))
+				// 13.3 fast view end
                 || text.equals(getString(R.string.section_title_customer_service))
                 || text.equals(getString(R.string.section_title_miles)) || text
                     .equals(getString(R.string.section_title_home)))) {
@@ -614,7 +623,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             getSupportFragmentManager().beginTransaction().remove(pushFrag)
                     .commit();
         }
-
+        
+        //13.3 QuickView Change Start
+        if (fragment.getClass().getSimpleName()
+				.equalsIgnoreCase("QuickViewSetupFragment")) {
+			cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+					"javascript:quickView()");
+		}
+        //13.3 QuickView Change End
+        
         hideSlidingMenuIfVisible();
     }
 
@@ -660,6 +677,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
         DiscoverModalManager.clearActiveModal();
+		// 13.3 changes start
+		mCardStoreData.addToAppCache("onBackPressed", true);
+		// 13.3 changes end        
         cordovaWebFrag.setTitle(null);
         cordovaWebFrag.setM_currentLoadedJavascript(null);
         final FragmentManager fragManager = this.getSupportFragmentManager();
@@ -674,13 +694,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             boolean isPopped = fragManager.popBackStackImmediate();
             Utils.log("CardNavigationRootActivity", "is fragment popped"
                     + isPopped);
+            //13.3 QuicView Changes Start
+            if (fragTag.equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName()) || fragTag.equalsIgnoreCase(QuickViewSetupFragment.class.getSimpleName())  ) {
 
-            if (fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
-
-                Fragment homeFragment = fragManager
-                        .findFragmentByTag("HomeSummaryFragment");
-                makeFragmentVisible(homeFragment, false);
-
+                Fragment fragment = fragManager
+                        .findFragmentByTag(fragTag);
+                makeFragmentVisible(fragment, false);
+                //13.3 QuicView Changes End
                 if (fragManager.getBackStackEntryCount() == 2) {
                     cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
                             "javascript:acHome()");
@@ -715,6 +735,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         }
         // }
+        
+		// 13.3 changes start
+		mCardStoreData.addToAppCache("onBackPressed", false);
+		// 13.3 changes end
     }
 
     /**

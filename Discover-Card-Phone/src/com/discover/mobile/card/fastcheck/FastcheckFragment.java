@@ -140,7 +140,8 @@ public class FastcheckFragment extends BaseFragment implements
 	}
 
 	private void getFastcheckData(boolean spinOnNoFetch) {
-
+		Context context = getActivity().getApplicationContext();
+		final Resources res = context.getResources();
 		if (!timeToMakeAnotherCall()) {
 			if (spinOnNoFetch) {
 				Utils.showSpinner(getActivity(), "Discover",
@@ -152,7 +153,7 @@ public class FastcheckFragment extends BaseFragment implements
 					}
 				}, 500);
 			}
-			showPreviousPage();
+			showPreviousPage(res);
 			return;
 		}
 		try {
@@ -162,12 +163,14 @@ public class FastcheckFragment extends BaseFragment implements
 				deviceToken = FastcheckUtil.decrypt(encryptedDeviceToken);
 			} catch (Exception e) {
 				Log.e(TAG, "getFastcheckData() gets IOException during FastcheckUtil.decrypt()" + e.getMessage());
-				showFastcheckTechDiff();
+				//showFastcheckTechDiff();
+				showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			}
 			
 			if (deviceToken == null || deviceToken.length() != 88) {
 				Log.e(TAG, "getFastcheckData(), token is NULL or length NOT 88" );
-				showFastcheckTechDiff();
+				//showFastcheckTechDiff();
+				showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			} else 
 				Log.d(TAG, "getFastcheckData(), token is " + deviceToken + ", length is " + deviceToken.length());
 			
@@ -201,19 +204,22 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			showFastcheckTechDiff();
+			//showFastcheckTechDiff();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		} catch (JsonMappingException e) {
 			Log.e(TAG, "getFastcheckData() gets JsonMappingException " + e.getMessage());
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			showFastcheckTechDiff();
+			//showFastcheckTechDiff();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		} catch (IOException e) {
 			Log.e(TAG, "getFastcheckData() gets IOException " + e.getMessage());
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			showFastcheckTechDiff();
+			//showFastcheckTechDiff();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 	}
 
@@ -283,75 +289,75 @@ public class FastcheckFragment extends BaseFragment implements
 		return item;
 	}
 
-	private void showFastcheckError() {
-
-		Context context = getActivity().getApplicationContext();
-		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-				.inflate(R.layout.fastcheck_display_error_body, null);
-		fastcheckErrorMsg = (TextView) layout
-				.findViewById(R.id.fastcheck_error_msg);
-		fastcheckErrorMsg
-				.setText("Due to special condition related to your account, this page is not available.\n\nPlease contact customer service.");
-		Button backButtonOnTechDiff = (Button) layout
-				.findViewById(R.id.fastcheck_display_back_button);
-		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				((NavigationRootActivity) getActivity()).getSlidingMenu()
-						.toggle();
-			}
-		});
-		fastcheckList.removeAllViews();
-		fastcheckList.addView(layout);
-	}
-
-	private void showFastcheckTechDiff() {
-
-		Context context = getActivity().getApplicationContext();
-		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-				.inflate(R.layout.fastcheck_display_error_body, null);
-		fastcheckErrorMsg = (TextView) layout
-				.findViewById(R.id.fastcheck_error_msg);
-		fastcheckErrorMsg
-				.setText("We're currently experiencing techincally difficult. We apologize for any incovenience.");
-		Button backButtonOnTechDiff = (Button) layout
-				.findViewById(R.id.fastcheck_display_back_button);
-		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				((NavigationRootActivity) getActivity()).getSlidingMenu()
-						.toggle();
-			}
-		});
-		fastcheckList.removeAllViews();
-		fastcheckList.addView(layout);
-	}
-	
-	private void showFastcheckNoTokenErrorPage() {
-
-		Context context = getActivity().getApplicationContext();
-		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-				.inflate(R.layout.fastcheck_display_error_body, null);
-		fastcheckErrorMsg = (TextView) layout
-				.findViewById(R.id.fastcheck_error_msg);
-		fastcheckErrorMsg
-				.setText("You recently requested to disable your quick view settings. If you'd like to enable this option, plese login and navigate to " +
-						"\"Quick View\" under Profile and Settings.");
-		Button backButtonOnTechDiff = (Button) layout
-				.findViewById(R.id.fastcheck_display_back_button);
-		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				((NavigationRootActivity) getActivity()).getSlidingMenu()
-						.toggle();
-			}
-		});
-		fastcheckList.removeAllViews();
-		fastcheckList.addView(layout);
-	}
+//	private void showFastcheckError() {
+//
+//		Context context = getActivity().getApplicationContext();
+//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
+//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
+//				.inflate(R.layout.fastcheck_display_error_body, null);
+//		fastcheckErrorMsg = (TextView) layout
+//				.findViewById(R.id.fastcheck_error_msg);
+//		fastcheckErrorMsg
+//				.setText("Due to special condition related to your account, this page is not available.\n\nPlease contact customer service.");
+//		Button backButtonOnTechDiff = (Button) layout
+//				.findViewById(R.id.fastcheck_display_back_button);
+//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				((NavigationRootActivity) getActivity()).getSlidingMenu()
+//						.toggle();
+//			}
+//		});
+//		fastcheckList.removeAllViews();
+//		fastcheckList.addView(layout);
+//	}
+//
+//	private void showFastcheckTechDiff() {
+//
+//		Context context = getActivity().getApplicationContext();
+//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
+//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
+//				.inflate(R.layout.fastcheck_display_error_body, null);
+//		fastcheckErrorMsg = (TextView) layout
+//				.findViewById(R.id.fastcheck_error_msg);
+//		fastcheckErrorMsg
+//				.setText("We're currently experiencing techincally difficult. We apologize for any incovenience.");
+//		Button backButtonOnTechDiff = (Button) layout
+//				.findViewById(R.id.fastcheck_display_back_button);
+//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				((NavigationRootActivity) getActivity()).getSlidingMenu()
+//						.toggle();
+//			}
+//		});
+//		fastcheckList.removeAllViews();
+//		fastcheckList.addView(layout);
+//	}
+//	
+//	private void showFastcheckNoTokenErrorPage() {
+//
+//		Context context = getActivity().getApplicationContext();
+//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
+//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
+//				.inflate(R.layout.fastcheck_display_error_body, null);
+//		fastcheckErrorMsg = (TextView) layout
+//				.findViewById(R.id.fastcheck_error_msg);
+//		fastcheckErrorMsg
+//				.setText("You recently requested to disable your quick view settings. If you'd like to enable this option, plese login and navigate to " +
+//						"\"Quick View\" under Profile and Settings.");
+//		Button backButtonOnTechDiff = (Button) layout
+//				.findViewById(R.id.fastcheck_display_back_button);
+//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View arg0) {
+//				((NavigationRootActivity) getActivity()).getSlidingMenu()
+//						.toggle();
+//			}
+//		});
+//		fastcheckList.removeAllViews();
+//		fastcheckList.addView(layout);
+//	}
 	
 	private void showFastcheckErrorPage(String errorMsg) {
 		Context context = getActivity().getApplicationContext();
@@ -423,25 +429,27 @@ public class FastcheckFragment extends BaseFragment implements
 		populateList();
 	}
 
-	private void showPreviousPage() {
+	private void showPreviousPage(Resources res) {
 		switch (resultPage) {
 		case NORMAL_RESULT_PAGE:
 			if (fastcheckDetail != null)
 				populateList();
 			else
-				showFastcheckTechDiff();
+				showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			break;
 		case CANNOT_ACCESS_RESULT_PAGE:
-			showFastcheckError();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
 			break;
 		case TECH_DIFF_RESULT_PAGE:
-			showFastcheckTechDiff();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			break;
 		}
 	}
 
 	@Override
 	public void OnError(Object data) {
+		Context context = getActivity().getApplicationContext();
+		final Resources res = context.getResources();
 		CardErrorBean cardErrorBean = (CardErrorBean) data;
 		Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
 		Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
@@ -450,12 +458,13 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			fastcheckDetail = null;
-			showFastcheckError();
+			//showFastcheckError();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
 		} else if ("429".equals(cardErrorBean.getErrorCode())) {
 			lastUpdateTimeCal = Calendar.getInstance();
 			if (resultPage == INITIAL_RESULT_PAGE)
 				resultPage = TECH_DIFF_RESULT_PAGE;
-			showPreviousPage();
+			showPreviousPage(res);
 		} else if (cardErrorBean.getErrorMessage().indexOf(
 				"Received authentication challenge is null") >= 0) {
 			Log.e(TAG, "OnError() gets 401 type of error msg " + cardErrorBean.getErrorMessage());
@@ -463,12 +472,14 @@ public class FastcheckFragment extends BaseFragment implements
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			fastcheckDetail = null;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
-			showFastcheckNoTokenErrorPage();
+			//showFastcheckNoTokenErrorPage();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_no_token));
 		} else {
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			showFastcheckTechDiff();
+			//showFastcheckTechDiff();
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 		
 
