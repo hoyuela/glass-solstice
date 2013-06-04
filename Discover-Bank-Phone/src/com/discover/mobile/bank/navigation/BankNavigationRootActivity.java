@@ -408,9 +408,14 @@ implements OnPaymentCanceledListener {
 	@Override
 	public void toggle(){
 		//Hide the keyboard
-		this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-		//Clear the focus from the view
-		this.getCurrentFocus().clearFocus();
+		if (this.getCurrentFocus() != null) {
+			if (this.getCurrentFocus().getWindowToken() != null) {
+				this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+			}
+
+			// Clear the focus from the view
+			this.getCurrentFocus().clearFocus();
+		}
 		//Toggle the menu
 		super.toggle();
 	}
