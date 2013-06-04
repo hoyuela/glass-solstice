@@ -568,7 +568,7 @@ public class LoginActivity extends BaseActivity implements
                     FacadeFactory.getCardFacade().navToProvideFeedback(
                             LoginActivity.this);
                 } else {
-                    BankConductor.navigateToFeedback(true);
+                    BankConductor.navigateToFeedback(false);
                 }
                 //Defect id 97126
             }
