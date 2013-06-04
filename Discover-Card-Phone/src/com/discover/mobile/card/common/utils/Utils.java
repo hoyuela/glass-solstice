@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -296,7 +297,7 @@ public class Utils {
                 {
                     progressBar.dismiss();
                 }
-                catch(final Exception e)
+                catch(Exception e)
                 {}
                 progressBar = null;
             } else {
