@@ -42,15 +42,13 @@ import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 public class BankNavigationRootActivity extends NavigationRootActivity
 implements OnPaymentCanceledListener {
 
-	/** Allows access to manual control of the soft keyboard. */
+	/** Allows access to and manual control of the soft keyboard. */
 	private InputMethodManager imm;
 	/** If a fragment error exists this will be set to true. */
 	private boolean fragmentErrorShown = false;
 
 	private static final String BANK_USER_KEY = "bankUser";
 	private static final String BANK_SESSION_KEY = "session";
-	private static final String TRACKING_HELPER = "Tracking Helper";
-	private final static String PASSED_CLASS_NAME = "Passed class name: ";
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -64,16 +62,17 @@ implements OnPaymentCanceledListener {
 
 		compareLastTouchTimeAndUpdateSession();
 	}
+
 	@Override
 	public void makeFragmentVisible(final Fragment fragment){
-		Log.i(TRACKING_HELPER, PASSED_CLASS_NAME + fragment.getClass().getSimpleName());
+		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
 		super.makeFragmentVisible(fragment);
 	}
 
 	@Override
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory){
-		Log.i(TRACKING_HELPER, PASSED_CLASS_NAME + fragment.getClass().getSimpleName());
+		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
 		super.makeFragmentVisible(fragment, addToHistory);
 	}
@@ -410,11 +409,11 @@ implements OnPaymentCanceledListener {
 		//Hide the keyboard
 		if (this.getCurrentFocus() != null) {
 			if (this.getCurrentFocus().getWindowToken() != null) {
-				this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+		this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
 			}
 
-			// Clear the focus from the view
-			this.getCurrentFocus().clearFocus();
+		//Clear the focus from the view
+		this.getCurrentFocus().clearFocus();
 		}
 		//Toggle the menu
 		super.toggle();
