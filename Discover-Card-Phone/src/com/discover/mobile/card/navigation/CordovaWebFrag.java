@@ -581,6 +581,12 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			Utils.isSpinnerAllowed = true;
 			Utils.isSpinnerForOfflinePush = false;
 			Utils.hideSpinner();
+			
+			if(getActivity() instanceof CardNavigationRootActivity)
+			{
+				CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
+				activity.onCordovaError = true;
+			}
 		}
 
 		/*

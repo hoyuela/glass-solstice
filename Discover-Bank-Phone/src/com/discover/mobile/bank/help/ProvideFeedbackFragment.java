@@ -26,7 +26,7 @@ import com.discover.mobile.common.utils.CommonUtils;
  */
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
 	/**URL for providing feedback for card when the user is not logged in*/
-	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=MFKupcjM&referer=https://mobileapp.discover.com/cardHome-pg&custom_var=DiscoverMobileVersion=5.0.0";
+	static final String CARD_PROVIDE_FEEDBACK = "https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo&referer=https://mobileapp.discover.com/cardHome-pg&custom_var=DiscoverMobileVersion=5.0.0";
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {

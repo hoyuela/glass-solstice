@@ -30,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -52,7 +51,7 @@ public class Utils {
 
     static ProgressDialog progressBar;
 
-    public static boolean enableLogging = true;
+    public static boolean enableLogging = false;
 
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
@@ -297,7 +296,7 @@ public class Utils {
                 {
                     progressBar.dismiss();
                 }
-                catch(Exception e)
+                catch(final Exception e)
                 {}
                 progressBar = null;
             } else {
@@ -532,7 +531,9 @@ public class Utils {
     }
 
     public static void log(final String strMessage) {
-        log("Discover", strMessage);
+    	if (enableLogging) {
+    		log("Discover", strMessage);
+    	}
     }
 
     public static void log(final String strTag, final String strMessage) {
