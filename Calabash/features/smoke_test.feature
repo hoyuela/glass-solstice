@@ -4,10 +4,10 @@ Feature: Android Bank Smoke Test
 	@greeting_and_faq
 	@strongauth
 	@accounts
+	@normal_user
 	Scenario: Greeting & FAQ
-		Given I am logged in as a default bank user
-		And I see the bank greeting for default bank user
-
+		Given I am logged in as a default bank user on the bank tab
+		And I see the bank greeting for the default bank user
 		Then I navigate to "Frequently Asked Questions" under "Customer Service"
 		# Need 1 second for the fragment animation
 		And I wait
@@ -26,8 +26,9 @@ Feature: Android Bank Smoke Test
 	@strongauth
 	@accounts
 	@account_activity
+	@normal_user
 	Scenario: Transaction Swipe
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		Then I select an account
 		And I wait for dialog to close
 
@@ -47,8 +48,9 @@ Feature: Android Bank Smoke Test
 	@external_browser_modal
 	@strongauth
 	@accounts
+	@normal_user
 	Scenario: External Browser Modal
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 
 		# Verify Menu items that link to browser
 		Then I press the menu button
@@ -90,8 +92,9 @@ Feature: Android Bank Smoke Test
 	@strongauth
 	@accounts
 	@review_payments
+	@normal_user
 	Scenario: Review Payments
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		And I navigate to "Review Payments" under "Pay Bills"
 		And I wait for dialog to close
 
@@ -108,8 +111,9 @@ Feature: Android Bank Smoke Test
 	@strongauth
 	@accounts
 	@manage_payees
+	@normal_user
 	Scenario: Swiping Through Payees
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		And I navigate to "Manage Payees" under "Pay Bills"
 		And I wait for dialog to close
 
@@ -126,8 +130,9 @@ Feature: Android Bank Smoke Test
 	@scheduling_a_payment
 	@strongauth
 	@pay_bills
+	@normal_user
 	Scenario: Scheduling A Payment
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		Then I navigate to "Pay Bills" under "Pay Bills"
 		And I select a payee
 		Then I can schedule a payment
@@ -135,8 +140,9 @@ Feature: Android Bank Smoke Test
 	#user must have transfer access
 	@transfer_money
 	@strongauth
+	@normal_user
 	Scenario: Transfer Money
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		Then I navigate to "Transfer Money" under "Transfer Money"
 		And I wait for "Select Account" to appear
 
@@ -156,8 +162,9 @@ Feature: Android Bank Smoke Test
 	@accounts
 	@transfer_money_screen
 	@pay_bills
+	@normal_user
 	Scenario: Test Calendar
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		Then I navigate to "Pay Bills" under "Pay Bills"
 		And I select a payee
 		#Then I verify the calendar
@@ -167,6 +174,7 @@ Feature: Android Bank Smoke Test
 
 	@atm_locator_logged_out
 	@atm_locator
+	@normal_user
 	Scenario: ATM Locator - Logged Out
 		Given The splash screen is finished
 		And I am on the bank tab
@@ -195,8 +203,9 @@ Feature: Android Bank Smoke Test
 	@strongauth
 	@accounts
 	@atm_locator
+	@normal_user
 	Scenario: ATM Locator - Logged In
-		Given I am logged in as default bank user
+		Given I am logged in as default bank user on the bank tab
 		Then I navigate to "Find Nearby" under "ATM Locator"
 
 		Then I wait for the "Allow" button to appear

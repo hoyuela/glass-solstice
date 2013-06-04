@@ -2,6 +2,7 @@
 
 # Toggles the main sliding menu
 Given /^I (?:press|touch) the menu button$/ do
+  	performAction('wait_for_view_by_id', 'navigation_button')
 	performAction('click_on_view_by_id', 'navigation_button')
 	macro 'I wait for a second' # Time for menu animation
 end
@@ -12,19 +13,15 @@ Given /^I (?:press|touch) the help button$/ do
 end
 
 # Opens the menu, selects the specified category, and selects the subcategory
-# MENU SHOULD BE CLOSED AND CURRENT SCREEN SHOULD BE OF A DIFFERING CATEGORY
-# WILL NOT WORK IF subtitle AND title ARE THE SAME
+# MENU SHOULD BE CLOSED
 Given /^I (?:navigate|go) to "([^\"]*)" under "([^\"]*)"$/ do |subtitle, title|
-	macro 'I press the menu button'
-	macro %Q[I touch the "#{title}" text]
-	performAction('wait_for_text', "#{subtitle}")
 	
+	macro 'I press the menu button'
+
 	if subtitle == title
-		# TODO: Find way to differntiate the menu from the submenu if they have the same name
 		menus = query("textview text:'#{subtitle}'", 'id')
 		
-		# Finds the coordinates of the second occurance of "Pay Bills"
-		# & touches those coordinates, thus navigating to Pay Bills.
+		# Finds the coordinates of the second occurance of "Pay Bills" and touches those coordinates
 		x = query("textview marked:'#{subtitle}'")[1]["rect"]["center_x"]
 		y = query("textview marked:'#{subtitle}'")[1]["rect"]["center_y"]
 		performAction("touch_coordinate", x, y)
