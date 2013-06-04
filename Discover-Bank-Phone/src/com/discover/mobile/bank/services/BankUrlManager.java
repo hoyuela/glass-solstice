@@ -42,7 +42,16 @@ public final class BankUrlManager  {
 	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
 	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
 	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
-	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=http://android.discoverbank.com(null)&custom_var=DiscoverMobileVersion=5.0.0";
+	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=" +
+												"http://android.discoverbank.com(null)&" +
+												"custom_var=DiscoverMobileVersion=5.0.0";
+	private static final String CARD_PROVIDE_FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=MFKupcjM&" +
+															"referer=https://mobileapp.discover.com/cardHome-pg&" +
+															"custom_var=DiscoverMobileVersion=5.0.0";
+	private static final String CARD_MORE_FAQ_URL = "https://www.discover.com/credit-cards/help-center/faqs";
+	private static final String ATM_REPORT_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=BesUXeQt&referer=" +
+											     "http://android.discoverbank.com/m/accountcenter/atm-locator&" +
+												 "custom_var=atmIdentifier={0}|DiscoverMobileVersion=5.0.0";
 	private static final String REFRESH_URL = "/api/auth/ping";
 	private static final String API_URL = "/api/";
 	private static final String STREET_VIEW_URL = "/api/content/atm/streetview.html?lat=%s&lng=%s";
@@ -50,8 +59,11 @@ public final class BankUrlManager  {
 
 	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
 	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
-
+	
 	private static final String CARD_GOOGLE_TERMS_URL = "https://www.google.com/intl/en-US_US/help/terms_maps.html";
+	private static final String BANK_GOOGLE_TERMS_URL = "http://www.google.com/intl/en-US_US/help/terms_maps.html";
+	private static final String BANK_GOOGLE_REPORT_URL = "https://cbks0.googleapis.com/cbk?output=report";
+	private static final String BANK_GOOGLE_MAP_URL = "http://maps.google.com/maps?";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -317,6 +329,20 @@ public final class BankUrlManager  {
 	}
 
 	/**
+	 * @return Returns the URL for providing feedback
+	 */
+	public static String getCardProvideFeedbackUrl() {
+		return CARD_PROVIDE_FEEDBACK_URL;
+	}
+	
+	/**
+	 * @return Returns the URL for more FAQs
+	 */
+	public static String getCardMoreFAQsUrl() {
+		return CARD_MORE_FAQ_URL;
+	}
+	
+	/**
 	 * 
 	 * @return Returns the URL for going to account statements
 	 */
@@ -423,6 +449,28 @@ public final class BankUrlManager  {
 	 */
 	public static String getCardGoogleTermsUrl() {
 		return CARD_GOOGLE_TERMS_URL;
+	}
+	
+	/**
+	 * @return the bankGoogleTermsUrl
+	 */
+	public static String getBankGoogleTermsUrl() {
+		return BANK_GOOGLE_TERMS_URL;
+	}
+	
+	/**
+	 * @return the bankGoogleReportUrl
+	 */
+	public static String getBankGoogleReportUrl() {
+		return BANK_GOOGLE_REPORT_URL;
+	}
+	
+	public static String getBankGoogleMapUrl() {
+		return BANK_GOOGLE_MAP_URL;
+	}
+	
+	public static String getBankAtmReportUrl() {
+		return ATM_REPORT_URL;
 	}
 
 	/**
