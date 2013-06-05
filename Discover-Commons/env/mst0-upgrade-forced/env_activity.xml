@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="disable_screenshots">true</string>
+    <string name="disable_screenshots">false</string>
 </resources>
