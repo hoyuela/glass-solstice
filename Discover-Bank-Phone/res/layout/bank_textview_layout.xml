@@ -7,8 +7,7 @@
     <RelativeLayout
         android:id="@+id/textViewLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/light_gray_bkgrd" >
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/header"

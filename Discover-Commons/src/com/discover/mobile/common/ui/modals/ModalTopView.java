@@ -4,9 +4,12 @@ package com.discover.mobile.common.ui.modals;
 * Interface to bind to the top views with a title and content view that will be placed in an 
 * alert modal
 * 
+* @deprecated use a SimpleContentModal instead - these modals wrap the current method calls at the moment.
+* 
 * @author jthornton
 *
 */
+@Deprecated
 public interface ModalTopView{
 
 	/**

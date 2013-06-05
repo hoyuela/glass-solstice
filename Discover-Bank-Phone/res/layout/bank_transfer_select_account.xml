@@ -3,7 +3,6 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd"
     android:fillViewport="true"
     android:focusable="true"
     android:focusableInTouchMode="true" >
@@ -37,7 +36,6 @@
                 style="@style/sub_copy_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/page_title"
                 android:text="@string/external_accounts" />
 
             <LinearLayout
@@ -81,14 +79,14 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
-	            android:id="@+id/bank_footer"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_below="@+id/content_table_internal_accounts"
-	            android:layout_marginTop="@dimen/groups_of_elements_padding" 
-	            android:layout_alignParentBottom="true"
-	            style="@style/bank_layout_footer_style"/>
+        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            style="@style/bank_layout_footer_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/content_table_internal_accounts"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" />
     </RelativeLayout>
 
 </ScrollView>

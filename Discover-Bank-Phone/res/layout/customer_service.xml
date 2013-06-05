@@ -7,8 +7,7 @@
     <RelativeLayout
         android:id="@+id/customer_service_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/light_gray_bkgrd" >
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"

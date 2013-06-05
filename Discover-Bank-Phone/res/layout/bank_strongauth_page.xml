@@ -4,7 +4,8 @@
     android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:background="@drawable/light_gray_bkgrd"
+    android:layerType="hardware" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -55,8 +56,8 @@
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:hint="@string/empty"
             android:imeOptions="actionDone"
-            android:maxLength="20"
             android:inputType="textNoSuggestions"
+            android:maxLength="20"
             android:textCursorDrawable="@null" />
 
         <TextView
@@ -144,11 +145,11 @@
                 style="@style/field_copy_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
                 android:button="@drawable/custom_radio_check"
                 android:checked="true"
                 android:paddingBottom="@dimen/forms_inner_padding"
                 android:paddingLeft="@dimen/radio_group_inner_padding"
-                android:layout_marginLeft="@dimen/forms_inner_padding"
                 android:paddingRight="@dimen/forms_inner_padding"
                 android:paddingTop="@dimen/forms_inner_padding"
                 android:text="@string/account_security_remember_me_text" />
@@ -163,11 +164,11 @@
                 style="@style/field_copy_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
                 android:layout_marginTop="4dp"
                 android:button="@drawable/custom_radio_check"
                 android:paddingBottom="@dimen/forms_inner_padding"
                 android:paddingLeft="@dimen/radio_group_inner_padding"
-                android:layout_marginLeft="@dimen/forms_inner_padding"
                 android:paddingRight="@dimen/forms_inner_padding"
                 android:paddingTop="@dimen/forms_inner_padding"
                 android:text="@string/account_security_dont_remember_me_text" />
@@ -184,15 +185,14 @@
             android:layout_marginTop="@dimen/orange_button_margin_top"
             android:onClick="submitSecurityInfo"
             android:text="@string/continue_text" />
-        
+
         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
             android:id="@+id/bank_footer"
+            style="@style/bank_layout_footer_style"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_continue_button"
-            style="@style/bank_layout_footer_style"
-            custom:footerType="1"/>
-        
+            custom:footerType="1" />
     </RelativeLayout>
 
 </ScrollView>

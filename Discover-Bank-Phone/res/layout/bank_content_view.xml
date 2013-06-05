@@ -2,17 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
-    
+
     <fragment
         android:id="@+id/status_bar"
         android:name="com.discover.mobile.common.nav.StatusBarFragment"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
-     <FrameLayout
+        android:layout_height="40dp" />
+
+    <FrameLayout
         android:id="@+id/navigation_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/status_bar"
-        android:background="@drawable/light_gray_bkgrd"/>
+        android:background="@drawable/light_gray_bkgrd"
+        android:layerType="hardware" />
 
 </RelativeLayout>

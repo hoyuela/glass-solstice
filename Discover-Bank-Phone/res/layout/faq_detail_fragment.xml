@@ -3,7 +3,6 @@
     android:id="@+id/scroll_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd"
     android:paddingLeft="@dimen/forms_inner_padding" >
 
     <RelativeLayout 

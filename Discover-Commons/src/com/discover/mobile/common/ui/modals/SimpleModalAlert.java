@@ -12,9 +12,12 @@ import com.discover.mobile.common.R;
  * This class is a modal alert with only a top view (no bottom buttons).  This view will only show a title and
  * some content text (or some other variation).
  * 
+ * @deprecated use a SimpleContentModal instead - these modals wrap the current method calls at the moment.
+ * 
  * @author jthornton
  *
  */
+@Deprecated
 public class SimpleModalAlert extends AlertDialog{
 	
 	/**Top view too be displayed*/
