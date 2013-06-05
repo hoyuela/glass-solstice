@@ -31,6 +31,7 @@ import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.CardAccountToggleView;
+import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
@@ -580,71 +581,27 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public int getActionBarTitle() {
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-        Log.v(TAG, "getActionBarTitle n title is " + m_title);
-        if (null != m_title) {
-            jqmResourceMapper = JQMResourceMapper.getInstance();
-
-            return jqmResourceMapper.getTitleStringId(m_title);
-        } else {
-            return -1;
-        }
+    	FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(((CardNavigationRootActivity) getActivity()));
+    	return barMenuTitleUtil.getActionBarTitle();
     }
 
+	/**
+	 * Return GrupMenuLocation 
+	 */
     @Override
     public int getGroupMenuLocation() {
         Utils.log(TAG, "inside getGroupMenuLocation ");
-        int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuGroupLocation(tempId);
-                }
-            }
-        }
-        return mCardMenuLocation.getMenuGroupLocation(tempId);
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil.getGroupMenuLocation(R.string.section_title_home);
     }
-
+    /**
+	 * Return selected Menu Location 
+	 */
     @Override
     public int getSectionMenuLocation() {
         Utils.log(TAG, "inside getSectionMenuLocation");
-        int tempId = getActionBarTitle();
-        final String m_title = ((CardNavigationRootActivity) getActivity())
-                .getActionBarTitle();
-
-        if (null != m_title) {
-
-            if (!m_title.equalsIgnoreCase(getResources().getString(
-                    R.string.section_title_home))
-                    && tempId == -1) {
-                if (null != cordovaWebFrag.getM_currentLoadedJavascript()) {
-
-                    Utils.log(TAG, "m_currentLoadedJavascript is "
-                            + cordovaWebFrag.getM_currentLoadedJavascript());
-                    jqmResourceMapper = JQMResourceMapper.getInstance();
-
-                    tempId = jqmResourceMapper.getTitleStringId(cordovaWebFrag
-                            .getM_currentLoadedJavascript());
-                    return mCardMenuLocation.getMenuSectionLocation(tempId);
-                }
-            }
-        }
-
-        return mCardMenuLocation.getMenuSectionLocation(tempId);
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil.getSectionMenuLocation(R.string.section_title_home);
     }
 
     /*
