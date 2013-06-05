@@ -213,6 +213,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		table.onRefreshComplete();
 		table.setShowViewWhileRefreshing(true);
 		table.getLoadingLayoutProxy().setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
+		footer.showDone();
 	}
 
 	/**
