@@ -20,7 +20,7 @@ Please see the [Official Documentation](https://github.com/calabash/calabash-and
 
 4. Place the .apk file you are using inside the project's calabash folder.  
     
-    If the .apk file was **NOT** built on your computer place the keystore that was used inside the Discover calabash folder. Then navigate to the Discover calabash folder and [Configure Calabash](https://github.com/akvo/akvo-flow/wiki/Calabash-testing#configuration) using the appropriate keystore settings.
+    If the .apk file was **NOT** built on your computer place the keystore that was used inside the Discover calabash folder. Then navigate to the project's calabash folder and [Configure Calabash](https://github.com/akvo/akvo-flow/wiki/Calabash-testing#configuration) using the appropriate keystore settings.
 
 5. Navigate to the project calabash folder and run: (apk file name may differ)  
 `calabash-android run LoginActivity.apk`

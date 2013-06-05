@@ -2,7 +2,6 @@ Feature: Android SSO Specific tests
 
 	# Tests logging in and then switching between card and bank
 	@greeting_and_faq
-	@strongauth
 	@accounts
 	@sso_user
 	Scenario: Switch Accounts

@@ -40,14 +40,10 @@ Given /^I(?: can)? schedule a payment$/ do
 	macro 'I enter a random amount between 1 and 9 into field 1'
 
 	# Schedule the payment & wait for the confirmation screen
-	#performAction("drag", 50, 50, 50, 0, 1) # Unfocus amount
-	#performAction("drag", 50, 50, 50, 0, 1) # Scroll down
 	
 	#press schedule payment button
 	performAction('click_on_view_by_id', "pay_now")
 
-	#performAction('wait_for_text', "Schedule Payment")
-	#performAction('click_on_text', "Schedule Payment")
 	performAction('wait_for_dialog_to_close')
 	performAction('wait', 2)
 	performAction("drag", 50, 50, 50, 0, 1) # Scroll down

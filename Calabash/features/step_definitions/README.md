@@ -87,19 +87,18 @@ Selects the card or bank tab.
  Enters a user ID and password into the two Login fields.  
 ✓ You must already be on the Login screen.
 
-    Given /^I am logged in as (card|bank) user "([^\"]*)", "([^\"]*)"$/ do |which, user, password|
-Performs a login on the card or bank tab with the specified credentials.  Fills-out the Enhanced Security screen as well, taking you to the home/Account screen.  
-✓ You must already be on the Login screen.  
-✓ Your phone/emulator should NOT be a personal device for the specified user (otherwise, enhanced security screen will not show and test will fail)  
-
     Given /^I am logged in as(?: a| the)? default (bank|card) user$/ do |which|
-Performs a login for the bank or card user specified in config.yml. Fills-out the Enhanced Security screen as well, taking you to the home/Account screen.  
+Performs a login for the bank or card user specified in config.yml. Fills-out the Enhanced Security screen as well if strongauth = true in the config.yml file.  
 ✓ You must already be on the Login screen.  
-✓ Your phone/emulator should NOT be a personal device for the specified user (otherwise, enhanced security screen will not show and test will fail)  
+ 
+
+    Given /^I am logged in as(?: a| the)? default sso user on the (card|bank) tab$/ do |which|
+Performs a login on the given tab for the sso user specified in config.yml. Fills-out the Enhanced Security screen as well if strongauth is specified in the config.yml file.
+✓ You must already be on the Login screen.  
 
     Given /^I am on a public device$/
 Completes the Enhanced Security Screen but does not save the device (specifies public device).  Retrieves the security answer from config.yml.  
-✓ You must already be in the process of loggining in (Login loading dialog) or already on the Enhanced Security screen.
+✓ You must already be in the process of logging in (Login loading dialog) or already on the Enhanced Security screen.
     
     Then /^I press remember me$/
 Toggles the "Remember Me" button on the Login screen.  
@@ -159,16 +158,16 @@ Transfer Steps
 --------------
 The following are steps meant to be used for the transfer feature
 
-    Given /^I select a (?:from|to)? account$/ do
-Selects the first account that is in the list of the users accounts which will be an external account if one exists. When used again the first account selected will be an internal account so that the From and To accounts are different.  
-✓ Must have at least one external and one internal account.  
+    Given /^I select a(?: from| to) and(?: to| from)? account$/ do
+Selects a From and To account for the transfer. Uses the caret imageview index to differentiate between the To and From accounts due to the textview not being queryable.  
+✓ Must have at least two accounts where at least one is internal.  
 
     Given /^I schedule a transfer$/ do
-Generates a random amount ($30 - $40) and saves in into @savedAmount. Then enters the amount into the input field and schedules the transaction.  
+Generates a random amount ($30 - $40) and inputs it into the amount field and completes the transfer. The transfer is then verified by looking at the account activity and verifying the amount in the most recent transaction.  
 ✓ Must be able to transfer $40.00  
 
     Given /^I verify (?:the)? transfer$/ do
-Verifies that the transfer amount appears under scheduled transactions by scrolling down until the amount is found.
+Verifies that the transfer amount appears in the most recent account transaction.
 
 
 
