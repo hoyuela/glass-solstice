@@ -21,24 +21,45 @@ Given /^I enter credentials "([^\"]*)", "([^\"]*)"$/ do |user, password|
 	performAction('enter_text_into_numbered_field', password, 2)
 end
 
-# Performs a basic login and completes the Enhanced Security Screen
+# Performs a basic login and completes the Enhanced Security Screen if needed
 # Uses credentials from config.yml
-Given /^I am logged in as(?: a| the)? default (bank|card|sso) user on the (card|bank) tab$/ do |which, tab|	
+Given /^I am logged in as(?: a| the)? default (bank|card) user$/ do |which|	
 	userType = "default_" + which + "_user"
-	service = which.to_sym
-	username = CONFIG[userType.to_sym][:bank][:username]
-	password = CONFIG[userType.to_sym][:bank][:password]
+
+	username = CONFIG[userType.to_sym][which.to_sym][:username]
+	password = CONFIG[userType.to_sym][which.to_sym][:password]
 
 	macro 'The splash screen is finished'
-	macro %Q[I am on the #{tab} tab]
+	macro %Q[I am on the #{which} tab]
 
 	macro %Q[I enter credentials "#{username}", "#{password}"]
 
 	performAction('click_on_view_by_id', "login_button") # Presess the "Login" Button
 	
-	macro 'I am on a public device' # Complete enhanced account security screen
+	# Check if strongauth will be shown
+	if CONFIG[userType.to_sym][:strongauth] == true
+		macro 'I am on a public device' # Complete enhanced account security screen
+	end
 
 	performAction('wait_for_screen', "BankNavigationRootActivity", DEFAULT_SERVICE_TIMEOUT) # Wait for the home screen. 	
+end
+
+#Login as sso user
+Given /^I am logged in as(?: a| the)? default sso user on the (card|bank) tab$/ do |which|
+	username = CONFIG[:default_sso_user][which.to_sym][:username]
+	password = CONFIG[:default_sso_user][which.to_sym][:password]
+
+	macro 'The splash screen is finished'
+	macro %Q[I am on the #{which} tab]
+
+	macro %Q[I enter credentials "#{username}", "#{password}"]
+
+	performAction('click_on_view_by_id', "login_button") # Press Login button
+
+	# Check if strongauth will be shown
+	if CONFIG[:default_sso_user][:strongauth] == true
+		macro 'I am on a public device' # Complete enhanced account security screen
+	end
 end
 
 # Completes the Enhanced Security Screen but does not save the device
