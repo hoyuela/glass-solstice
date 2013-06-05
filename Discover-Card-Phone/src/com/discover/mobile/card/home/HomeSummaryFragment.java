@@ -23,6 +23,8 @@ import android.widget.TextView;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -91,6 +93,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     @Override
     public View onCreateView(final LayoutInflater inflater,
             final ViewGroup container, final Bundle savedInstanceState) {
+    	TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_SUMMARY);
         view = inflater.inflate(R.layout.section_account_summary_landing, null);
         provideFeedback = (TextView) view
                 .findViewById(R.id.provide_feedback_button);
@@ -106,7 +109,10 @@ public class HomeSummaryFragment extends BaseFragment implements
         accountName = (TextView) statusBarView.findViewById(R.id.account_name);
         pushErrorTV = (TextView) view.findViewById(R.id.push_ac_home_errorTV);
 
-        mCardMenuLocation = CardMenuItemLocationIndex.getInstance();
+        /* 13.3  Changes */
+        mCardMenuLocation = CardMenuItemLocationIndex
+                .getInstance(callingActivity);
+        /* 13.3  Changes */
         cordovaWebFrag = ((CardNavigationRootActivity) getActivity())
                 .getCordovaWebFragInstance();
 
@@ -322,12 +328,14 @@ public class HomeSummaryFragment extends BaseFragment implements
         rewardsOffer.put("rewards_offer_CBB_000014", "cashBack Bonus Offer");
         rewardsOffer.put("rewards_offer_CBB_000015", "cashBack Bonus Offer");
         rewardsOffer.put("rewards_offer_CBB_000016", "cashBack Bonus Offer");
-        rewardsOffer.put("rewards_offer_MI2", " ");
-        rewardsOffer.put("rewards_offer_MIL", " ");
+        /* 13.3  Changes */
+        // rewardsOffer.put("rewards_offer_MI2", " ");
+        // rewardsOffer.put("rewards_offer_MIL", " ");
         rewardsOffer.put("rewards_offer_MI2_000002", "miles Rewards Offer");
-        rewardsOffer.put("rewards_offer_SBC", " ");
-        rewardsOffer.put("rewards_offer_CBB", " ");
-        rewardsOffer.put("rewards_offer_SML", " ");
+        // rewardsOffer.put("rewards_offer_SBC", " ");
+        // rewardsOffer.put("rewards_offer_CBB", " ");
+        // rewardsOffer.put("rewards_offer_SML", " ");
+        /* 13.3  Changes */
     }
 
     // This method will populate the rewardsInfo with combinations of
@@ -443,6 +451,14 @@ public class HomeSummaryFragment extends BaseFragment implements
 
         // main content & subsection
         isCashback = CommonMethods.isCashbackCard(accountDetails);
+        /* 13.3  Changes */
+        String escapeCardCode = callingActivity
+                .getString(R.string.card_product_group_code_esc);
+        String businessMilesCode = callingActivity
+                .getString(R.string.card_product_group_code_business_miles);
+        String businessCashbackCode = callingActivity
+                .getString(R.string.card_product_group_code_business_cashback);
+        /* 13.3  Changes */
 
         if (isCashback) {
 
@@ -480,6 +496,21 @@ public class HomeSummaryFragment extends BaseFragment implements
                 .findViewById(R.id.blue_button_text);
         redeemOption.setText(R.string.redeem_blue_button_text);
         bonusBalance.setOnClickListener(this);
+        // Redeem has been hide for Escape card , DBC Miles and DBC
+        /* 13.3  Changes */
+        if (accountDetails.cardProductGroupCode.equals(escapeCardCode)
+                || accountDetails.cardProductGroupCode
+                        .equals(businessMilesCode)
+                || accountDetails.cardProductGroupCode
+                        .equals(businessCashbackCode)) {
+            redeemOption.setVisibility(View.GONE);
+            ImageView rightArrow = (ImageView) bonusBalance
+                    .findViewById(R.id.general_Page_arrow);
+            rightArrow.setVisibility(View.GONE);
+            //Fix for Bug 13.3 - Defect 5 DBC CBB/DBC Miles 04/June/2013
+            bonusBalance.setEnabled(false);
+        }
+        /* 13.3  Changes */
 
     }
 
@@ -491,14 +522,17 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     private void setupBonusOffer(final AccountDetails accountDetails) {
         bonusOffer = (RelativeLayout) view.findViewById(R.id.home_bonus_offer);
-        final String strEscapeCardCode = getString(
-                R.string.card_product_group_code_esc).toLowerCase();
-        // In case of Escape Card SIGN UP option will be removed.
-        if (accountDetails.cardProductGroupCode.toLowerCase()
-                .compareToIgnoreCase(strEscapeCardCode) == 0) {
-            bonusOffer.setVisibility(View.GONE);
-            return;
-        }
+        /* 13.3  Changes */
+        // This is commented as this scenario has been handled
+        /*
+         * final String strEscapeCardCode = getString(
+         * R.string.card_product_group_code_esc).toLowerCase(); // In case of
+         * Escape Card SIGN UP option will be removed. if
+         * (accountDetails.cardProductGroupCode.toLowerCase()
+         * .compareToIgnoreCase(strEscapeCardCode) == 0) {
+         * bonusOffer.setVisibility(View.GONE); return; }
+         */
+        /* 13.3  Changes */
         // main content
         isCashback = CommonMethods.isCashbackCard(accountDetails);
         if (isCashback) {

@@ -67,7 +67,7 @@ import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
-import com.discover.mobile.common.utils.FastcheckUtil;
+import com.discover.mobile.common.utils.EncryptionUtil;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -589,7 +589,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				CommonUtils.setViewGone(errorTextView);
 				
 				try {
-					final String encryptedUsername = FastcheckUtil.encrypt(idField.getText().toString());
+					final String encryptedUsername = EncryptionUtil.encrypt(idField.getText().toString());
 					DiscoverApplication.getLocationPreference().setMostRecentUser(encryptedUsername);
 				} catch (final Exception e) {
 					Log.e(TAG, "Unable to cache last attempted login");

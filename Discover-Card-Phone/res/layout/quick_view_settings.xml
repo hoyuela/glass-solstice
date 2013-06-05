@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/qvsetup_scroll_view"
+    style="@style/WhiteTheme"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:clickable="true"
+    android:fillViewport="true"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.1"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <RelativeLayout
+                android:id="@+id/qvsetup_main_relative_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:focusable="true"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/quick_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/swipe_off" />
+
+                <TextView
+                    android:id="@+id/quick_view_info"
+                    style="@style/quick_view_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/quick_toggle"
+                    android:includeFontPadding="false"
+                    android:text="@string/quick_view_info" />
+
+                <TextView
+                    android:id="@+id/quick_view_faq"
+                    style="@style/quick_view_faq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/quick_view_info"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="16dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/quick_view_faq"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/faqimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/quick_view_faq"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/quickviewsetup" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/qvalready_main_relative_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="24dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:visibility="gone" >
+
+                <TextView
+                    android:id="@+id/quick_view_info_detail"
+                    style="@style/quick_view_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/quick_view_detail" />
+
+                <Button
+                    android:id="@+id/yes"
+                    style="@style/call_to_action_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/quick_view_info_detail"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/yes" />
+
+                <TextView
+                    android:id="@+id/thnks"
+                    style="@style/quick_view_faq"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/yes"
+                    android:layout_centerInParent="true"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/no_thank"
+                    android:textSize="17sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="0.9"
+        android:gravity="bottom"
+        android:overScrollMode="never" >
+
+        <include layout="@layout/card_fragment_footer" />
+    </RelativeLayout>
+
+</LinearLayout>

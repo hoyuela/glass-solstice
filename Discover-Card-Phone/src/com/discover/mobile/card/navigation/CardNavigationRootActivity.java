@@ -38,8 +38,11 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
 import com.discover.mobile.card.phonegap.plugins.HybridControlPlugin;
+import com.discover.mobile.card.profile.quickview.QuickViewSetupFragment;
+import com.discover.mobile.card.push.register.OnDeviceReady;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
 import com.discover.mobile.card.services.push.PushReadMessage;
 import com.discover.mobile.card.statement.StatementActivity;
@@ -93,6 +96,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             .getSimpleName();
     private int redirect;
     private boolean isTimeout = false;
+    private OnDeviceReady deviceReady;
+    public boolean onCordovaError = false;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -153,6 +158,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             Utils.showSpinner(this, "Discover", "Loading...");
             Utils.isSpinnerShow = false;
         }
+    	// 13.3 changes start
+ 		mCardStoreData.addToAppCache("onBackPressed", false);
+ 		// 13.3 changes end        
     }
 
     @Override
@@ -234,7 +242,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             } else {
                 if (pushStatus) {
                     pushStatus = false;
-                    makeFragmentVisible(new PushNowAvailableFragment(), false);
+                    PushNowAvailableFragment availableFragment = new PushNowAvailableFragment();
+					/* 13.3  Changes */
+                    //makeFragmentVisible(availableFragment, false);
+                    /* 13.3  Changes */
+                    /**
+                     * Initialize onDeviceReady listener so that once cordova is loaded,
+                     * we can tell calling fragment that it's ready. 
+                     */
+                    deviceReady = availableFragment;
                 }
             }
         }
@@ -320,6 +336,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 || text.equals(getString(R.string.section_title_earn_cashback_bonus))
                 || text.equals(getString(R.string.section_title_redeem_cashback_bonus))
                 || text.equals(getString(R.string.section_title_profile_and_settings))
+                // 13.3 fast view start
+				|| text.equals(getString(R.string.sub_section_title_fast_view))
+				// 13.3 fast view end
                 || text.equals(getString(R.string.section_title_customer_service))
                 || text.equals(getString(R.string.section_title_miles)) || text
                     .equals(getString(R.string.section_title_home)))) {
@@ -328,7 +347,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
              * this.getSupportFragmentManager()
              * .findFragmentByTag("CordovaWebFrag");
              */
-            if (cordovaWebFrag != null) {
+            if (cordovaWebFrag != null && !onCordovaError) {
                 try {
                     Utils.isSpinnerAllowed = true;
                     Utils.isSpinnerShow = true;
@@ -604,7 +623,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             getSupportFragmentManager().beginTransaction().remove(pushFrag)
                     .commit();
         }
-
+        
+        //13.3 QuickView Change Start
+        if (fragment.getClass().getSimpleName()
+				.equalsIgnoreCase("QuickViewSetupFragment")) {
+			cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+					"javascript:quickView()");
+		}
+        //13.3 QuickView Change End
+        
         hideSlidingMenuIfVisible();
     }
 
@@ -650,6 +677,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
         DiscoverModalManager.clearActiveModal();
+		// 13.3 changes start
+		mCardStoreData.addToAppCache("onBackPressed", true);
+		// 13.3 changes end        
         cordovaWebFrag.setTitle(null);
         cordovaWebFrag.setM_currentLoadedJavascript(null);
         final FragmentManager fragManager = this.getSupportFragmentManager();
@@ -664,13 +694,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             boolean isPopped = fragManager.popBackStackImmediate();
             Utils.log("CardNavigationRootActivity", "is fragment popped"
                     + isPopped);
+            //13.3 QuicView Changes Start
+            if (fragTag.equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName()) || fragTag.equalsIgnoreCase(QuickViewSetupFragment.class.getSimpleName())  ) {
 
-            if (fragTag.equalsIgnoreCase("HomeSummaryFragment")) {
-
-                Fragment homeFragment = fragManager
-                        .findFragmentByTag("HomeSummaryFragment");
-                makeFragmentVisible(homeFragment, false);
-
+                Fragment fragment = fragManager
+                        .findFragmentByTag(fragTag);
+                makeFragmentVisible(fragment, false);
+                //13.3 QuicView Changes End
                 if (fragManager.getBackStackEntryCount() == 2) {
                     cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
                             "javascript:acHome()");
@@ -690,14 +720,25 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
             }
         } else {
-            cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
-                    "javascript:acHome()");
+        	
+        	/**
+        	 * If cordova has error skip to call java script for cordova
+        	 */
+        	if(!onCordovaError)
+        	{
+	            cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+	                    "javascript:acHome()");
+        	}
             Fragment homeFragment = fragManager
                     .findFragmentByTag("HomeSummaryFragment");
             makeFragmentVisible(homeFragment, false);
 
         }
         // }
+        
+		// 13.3 changes start
+		mCardStoreData.addToAppCache("onBackPressed", false);
+		// 13.3 changes end
     }
 
     /**
@@ -813,12 +854,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      * This method will be called once PhoneGap is ready to take request.
      */
     public void isDeviceReady() {
-        /*
-         * Precaution is better than cure. Added 5 sec delay for precaution
-         * measure to load push navigated page.
-         */
+       
+    	/**
+    	 * If any fragment is listening for cordova to load,
+    	 * tell them we are ready to take cordova request.
+    	 */
+    	if(deviceReady != null)
+    	{
+    		deviceReady.onReady();
+    	}
     	
     	Utils.isSpinnerShow = false;
+    	
+    	 /*
+         * Precaution is better than cure. Added 1 sec delay for precaution
+         * measure to load push navigated page.
+         */
     	
         if (redirect > 0) 
         {

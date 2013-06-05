@@ -67,7 +67,42 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
                     }
                 }));
     }
+    
+    /* 13.3 Changes start */
+    /**
+     * Constructor
+     * 
+     */
+    public PaymentsSectionInfo(Boolean cardTypeDBC) {
+        super(R.string.section_title_payments,
 
+        new ClickComponentInfo(R.string.sub_section_title_make_a_payment,
+                false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }),
+
+        new ClickComponentInfo(R.string.sub_section_title_manage_payments,
+                false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }),
+
+        new ClickComponentInfo(
+                R.string.sub_section_title_manage_bank_information, true,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }));
+    }
+
+    /* 13.3 Changes end */
     class PaymentsComponentInfo extends ClickComponentInfo {
 
         public PaymentsComponentInfo(int titleResource, OnClickListener listener) {

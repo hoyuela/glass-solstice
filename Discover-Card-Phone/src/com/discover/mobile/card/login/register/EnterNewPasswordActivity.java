@@ -20,6 +20,8 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.HeaderProgressIndicator;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -87,6 +89,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_create_password);
+        TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_STEP2);
         loadAllViews();
         getPreviousScreenType();
         setupInputFields();

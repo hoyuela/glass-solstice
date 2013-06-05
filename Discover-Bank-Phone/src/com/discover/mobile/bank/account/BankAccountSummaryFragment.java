@@ -298,19 +298,25 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 	 */
 	private void setupAccountToggle() {
 		final ViewTreeObserver vto = accountToggleIcon.getViewTreeObserver();
-
-		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-			@Override
-			public void onGlobalLayout() {
-				if(!toggleView.hasIndicatorBeenDrawn()) {
-
-					toggleView.setIndicatorPosition(accountToggleSection.getLeft() - accountToggleIcon.getWidth() / 2,
-							accountToggleIcon.getTop(),
-							accountToggleIcon.getWidth(),
-							accountToggleIcon.getHeight());
+		if(!toggleView.hasIndicatorBeenDrawn()) {
+			vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					if(!toggleView.hasIndicatorBeenDrawn()) {
+	
+						toggleView.setIndicatorPosition(accountToggleSection.getLeft() - 
+																			accountToggleIcon.getWidth() / 2,
+								accountToggleIcon.getTop(),
+								accountToggleIcon.getWidth(),
+								accountToggleIcon.getHeight());
+					}
 				}
-			}
-		});
+			});
+		}else {
+			//Toggle has already been drawn before and so the layoutListener also exists, and should not be re-added
+			//So set the indicator ready for an update and let it update itself when onGlobalLayout is called.
+			toggleView.setIndicatorReadyForUpdate();
+		}
 
 		final ImageView accountToggleArrow = (ImageView) view
 				.findViewById(R.id.downArrow);

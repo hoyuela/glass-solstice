@@ -88,6 +88,7 @@ import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.ui.fragments.BankWebViewFragment;
+import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
@@ -1395,18 +1396,21 @@ public final class BankConductor  extends Conductor {
 			final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
 			BaseFragment fragment = navActivity.getCurrentContentFragment();
 			boolean continueNavigation = true;
-
+			boolean willLoopNavigation = false;
 			/** Check whether to continue with navigation to Privacy and terms or not  */
 			if (navActivity instanceof BankNavigationRootActivity) {
-				/**
-				 * Show requested page if no fragment is present, user is not already in privacy terms view,
-				 * or if user is already viewing privacy and terms,
-				 * they are not requesting to view the landing page again
-				 */
-				continueNavigation = fragment == null
-						|| fragment.getGroupMenuLocation() != BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
-						|| fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP
-						&& fragment instanceof TermsLandingPageFragment && type != PrivacyTermsType.LandingPage;
+
+				final boolean isAlreadyOnPrivacyAndTermsLandingPage = 
+						fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
+						fragment instanceof TermsLandingPageFragment &&
+						type == PrivacyTermsType.LandingPage;
+				
+				//If the user is already viewing a terms page and wants to go back to privacy and terms,
+				//we shouldn't let them loop their navigation and keep adding to the back stack.
+				willLoopNavigation = type == PrivacyTermsType.LandingPage &&
+											fragment instanceof TermsConditionsFragment;
+				
+				continueNavigation =  !isAlreadyOnPrivacyAndTermsLandingPage && !willLoopNavigation;
 			}
 
 			if (continueNavigation) {
@@ -1435,6 +1439,9 @@ public final class BankConductor  extends Conductor {
 					break;
 				}
 				navActivity.makeFragmentVisible(fragment);
+			}else if (willLoopNavigation) {
+				((BankNavigationRootActivity)navActivity).popTillFragment(TermsLandingPageFragment.class);
+				navActivity.getSlidingMenu().showContent(true);
 			} else {
 				navActivity.hideSlidingMenuIfVisible();
 			}

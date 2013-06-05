@@ -14,18 +14,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
-import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.facade.CardLoginFacade;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.facade.LoginActivityInterface;
-
+import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthHandler;
+import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -37,12 +35,10 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.card.common.ui.modals.ModalDefaultOneButtonBottomView;
+import com.discover.mobile.card.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.CardSessionContext;
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
@@ -52,8 +48,17 @@ import com.discover.mobile.card.services.auth.BankPayload;
 import com.discover.mobile.card.services.auth.SSOAuthenticate;
 import com.discover.mobile.card.services.push.GetPushData;
 import com.discover.mobile.card.services.push.GetPushRegistration;
-
-import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.whatsnew.WhatsNewActivity;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.BaseFragmentActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.facade.CardLoginFacade;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -272,24 +277,27 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
             @Override
             public void onStrongAuthSkipped(Object data) {
-                // TODO Auto-generated method stub
-                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                        CardLoginFacadeImpl.this);
-                cardErrorResHandler.handleCardError((CardErrorBean) data,
-                        new CardErrorCallbackListener() {
-
-                            @Override
-                            public void onButton2Pressed() {
-                                // TODO Auto-generated method stub
-
-                            }
-
-                            @Override
-                            public void onButton1Pressed() {
-                                // Go to AC Home
-                                getAcHome();
-                            }
-                        });
+            	final Activity activity = DiscoverActivityManager.getActiveActivity();
+            	final ModalDefaultTopView top = new ModalDefaultTopView(activity, null);
+            	final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(activity, null);
+            	final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity, top, bottom);
+            	top.setTitle(R.string.E_SA_SKIPPED_TITLE);
+            	top.setContent(R.string.E_SA_SKIPPED_CONTENT);
+            	top.showErrorIcon(true);
+            	top.hideFeedbackView();
+            	bottom.setButtonText(R.string.ok);
+            	bottom.getButton().setOnClickListener(new OnClickListener(){
+            		@Override
+            		public void onClick(final View v){
+            			getAcHome();
+            			modal.dismiss();
+            		}
+            	});
+               if(activity instanceof BaseFragmentActivity){
+            	   ((BaseFragmentActivity) activity).showCustomAlert(modal);
+               }else if(activity instanceof BaseActivity){
+            	   ((BaseActivity) activity).showCustomAlert(modal);
+               }
             }
 
             @Override
@@ -873,6 +881,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         authenticate.sendRequest(null, null);
     }
 
+private int convertStringToInt(String str) {
+		return Integer.parseInt(str.replace(".", ""));
+	}
     /**
      * Get account information from server and go to AC Home
      */
@@ -954,12 +965,36 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
      */
     public void doCardNormalFlow() {
         // Card normal flow
-        SharedPreferences pushSharedPrefs = context.getSharedPreferences(
-                PushConstant.pref.PUSH_SHARED, // TODO: Push
-                Context.MODE_PRIVATE);
-        final Editor editor = pushSharedPrefs.edit();
+/* 13.3 Changes */
+		SharedPreferences pushSharedPrefs = context.getSharedPreferences(
+				PushConstant.pref.PUSH_SHARED, // TODO: Push
+				Context.MODE_PRIVATE);
+		final Editor editor = pushSharedPrefs.edit();
+		SharedPreferences whatsNewSharedPrefs = context.getSharedPreferences(
+				context.getString(R.string.whats_new_sharedpref), // TODO: Push
+				Context.MODE_PRIVATE);
+		final Editor whatsNewEditor = whatsNewSharedPrefs.edit();
+		String appVersion = whatsNewSharedPrefs.getString(
+				context.getString(R.string.appVer), null);
 
-        vendorId = getVID();
+		vendorId = getVID();
+
+		int currentAppVersion = convertStringToInt(context
+				.getString(R.string.xApplicationVersion));
+		Utils.log("APPVERSION CURRENT", "VERSION---" + currentAppVersion);
+		Intent intent;
+		if (null == appVersion
+				|| (null != appVersion && convertStringToInt(appVersion) < currentAppVersion)) {
+			whatsNewEditor.putString(context.getString(R.string.appVer),
+					context.getString(R.string.xApplicationVersion));
+			whatsNewEditor.commit();
+			intent = new Intent(context, WhatsNewActivity.class);
+		} else {
+			intent = new Intent(context, CardNavigationRootActivity.class);
+
+		}
+		/* 13.3 Changes */
+		final Intent confirmationScreen = intent;
         if (vendorId != null && !vendorId.equalsIgnoreCase("")) {
             // Registration
             GetPushRegistration pushRegistration = new GetPushRegistration(
@@ -969,10 +1004,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                             // TODO Auto-generated method stub
                             GetPushData getPushData = (GetPushData) data;
                             Utils.log(LOG_TAG, "---Push status -- "
-                                    + getPushData.resultCode);
-
-                            final Intent confirmationScreen = new Intent(
-                                    context, CardNavigationRootActivity.class);
+                                    + getPushData.resultCode);                            
                             if (getPushData.resultCode.equalsIgnoreCase("F")) {
                                 confirmationScreen
                                         .putExtra(
@@ -1036,16 +1068,20 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             pushRegistration.sendRequest(XtifySDK.getXidKey(context
                     .getApplicationContext()));
         } else if (vendorId == null || vendorId.equalsIgnoreCase("")) {
-            final Intent confirmationScreen = new Intent(context,
-                    CardNavigationRootActivity.class);
+			/* 13.3 Changes */
+			// final Intent confirmationScreen = new Intent(context,
+			// CardNavigationRootActivity.class);
+			/* 13.3 Changes */
             confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
             TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
             context.startActivity(confirmationScreen);
             if (context instanceof Activity)
                 ((Activity) context).finish();
         } else {
-            final Intent confirmationScreen = new Intent(context,
-                    CardNavigationRootActivity.class);
+			/* 13.3 Changes */
+			// final Intent confirmationScreen = new Intent(context,
+			// CardNavigationRootActivity.class);
+			/* 13.3 Changes */
             confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
             TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
             context.startActivity(confirmationScreen);

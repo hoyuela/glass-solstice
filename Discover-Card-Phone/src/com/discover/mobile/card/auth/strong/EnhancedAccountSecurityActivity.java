@@ -32,6 +32,8 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -189,6 +191,7 @@ public class EnhancedAccountSecurityActivity extends
         setContentView(R.layout.strongauth_page);
         loadAllViews();
         setupRadioGroupListener();
+        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
         Utils.isSpinnerShow = true;
         Utils.hideSpinner();
         restoreState(savedInstanceState);

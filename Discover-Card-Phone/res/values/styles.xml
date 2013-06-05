@@ -1,14 +1,16 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    
+
     <!-- fastcheck display -->
-   <style name="OrangeTheme">
+    <style name="OrangeTheme">
         <item name="android:background">@drawable/splash_screen</item>
-   </style>
-   <!--<style name="login_white_pane">
+    </style>
+    <!--
+    <style name="login_white_pane">
         <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
         <item name="android:background">@drawable/login_white_panel</item>
-    </style>-->
+    </style>
+    -->
     <style name="login_bottom_bar_button">
         <item name="android:padding">@dimen/content_padding</item>
         <item name="android:textSize">@dimen/small_copy_min</item>
@@ -16,6 +18,7 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:height">@dimen/login_bottom_button_height</item>
     </style>
+
     <style name="forgot_credentials_title" parent="title_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/title</item>
@@ -23,22 +26,25 @@
         <item name="android:textStyle">bold</item>
         <item name="android:typeface">normal</item>
     </style>
+
     <style name="back_button_style">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/title</item>
     </style>
+
     <style name="field_copy_fastcheck_timestamp" parent="discover_text">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/field_copy</item>
     </style>
-	<style name="title_copy_fastcheck_salutation" parent="discover_text">
-       <item name="android:textSize">18sp</item>
+
+    <style name="title_copy_fastcheck_salutation" parent="discover_text">
+        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
- <!-- Confirmation Screen Styles -->
+
+    <!-- Confirmation Screen Styles -->
     <style name="confirmation_info_header_text">
         <item name="android:textColor">@color/field_copy</item>
         <item name="android:textSize">14dp</item>
@@ -49,25 +55,24 @@
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20dp</item>
-    </style>    
-    
+    </style>
+
     <!-- Style for strength level in help guide -->
     <style name="strength_help_level_message" parent="title_copy">
-        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>        
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
-    
+
     <!-- Style for action message in help guide -->
     <style name="action_message" parent="small_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-    
- 	<style name="special_push_orange_button" parent="call_to_action_theme">
+
+    <style name="special_push_orange_button" parent="call_to_action_theme">
         <item name="android:textSize">@dimen/small_copy_mid</item>
     </style>
-    
+
     <style name="push_toggle_box_default">
         <item name="android:padding">@dimen/between_related_elements_padding</item>
         <item name="android:layout_marginLeft">@dimen/between_related_elements_padding</item>
@@ -138,50 +143,50 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">18sp</item>
     </style>
-    
+
     <style name="discover_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
+
     <style name="blue_hyperlink_forgot">
         <item name="android:textColor">@color/darkgray</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="blue_hyperlink_Privacy">
         <item name="android:textColor">@color/darkgray</item>
         <item name="android:textSize">@dimen/body_copy_min</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-     <!-- <style name="title_copy" parent="discover_text">
+
+    <!--
+    <style name="title_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/title_min</item>
-    </style> -->
-    
-     
-     
-     <style name="discover_text">
+    </style>
+    -->
+
+    <style name="discover_text">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-    
-     <style name="body_copy" parent="discover_text">
+
+    <style name="body_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/darkgray</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-     <style name="title_copy" parent="discover_text">
+
+    <style name="title_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
+
     <style name="modal_title_text" parent="title_copy">
         <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
         <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
@@ -189,87 +194,87 @@
         <item name="android:textSize">@dimen/title_min</item>
         <item name="android:textColor">@color/title</item>
     </style>
-    
-      <style name="modal_content_text" parent="discover_text">
-          <item name="android:textColor">@color/sub_copy</item>
+
+    <style name="modal_content_text" parent="discover_text">
+        <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textSize">@dimen/alert_txt</item>
         <item name="android:textStyle">normal</item>
         <item name="android:layout_marginBottom">@dimen/modal_alert</item>
     </style>
-    
-      
-      <!-- NEED HELP? TEXT / #3d484d / 17ps font-size / centered / bold -->
+
+    <!-- NEED HELP? TEXT / #3d484d / 17ps font-size / centered / bold -->
     <style name="need_help_text" parent="body_copy">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textSize">@dimen/alert_footer</item>
-       <!--  <item name="android:textStyle">bold</item> -->
-       <item name="android:textStyle">normal</item>
+        <!-- <item name="android:textStyle">bold</item> -->
+        <item name="android:textStyle">normal</item>
         <item name="android:textColor">@color/darkgray</item>
     </style>
-    
-     <style name="modal_error_image">
+
+    <style name="modal_error_image">
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
         <item name="android:layout_marginTop">@dimen/image_top_padding</item>
     </style>
-               <!-- <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item> -->
-     
-       <!--  Blue Hyperlink styles -->
-       
-        <!-- 1-800-347-2683 NUMBER LINK / #0267b1/ #267bb1 / 17ps / regular -->
-       <style name="contact_no_hyperlink">
+    <!-- <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item> -->
+
+
+    <!-- Blue Hyperlink styles -->
+
+
+    <!-- 1-800-347-2683 NUMBER LINK / #0267b1/ #267bb1 / 17ps / regular -->
+    <style name="contact_no_hyperlink">
         <item name="android:textColor">@color/footer_link</item>
         <item name="android:textSize">@dimen/alert_footer</item>
-      <!--   <item name="android:textStyle">normal</item> -->
-           <item name="android:textStyle">bold</item>
+        <!-- <item name="android:textStyle">normal</item> -->
+        <item name="android:textStyle">bold</item>
     </style>
-    
-       
-      <style name="feedback_hyperlink">
+
+    <style name="feedback_hyperlink">
         <item name="android:textColor">@color/footer_link</item>
         <item name="android:textSize">@dimen/alert_feedback</item>
         <item name="android:textStyle">normal</item>
-      </style>
-    
-      <style name="smallest_copy" parent="discover_text">
+    </style>
+
+    <style name="smallest_copy" parent="discover_text">
         <item name="android:textSize">@dimen/small_copy_mid</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/sub_copy</item>
     </style>
-    
-       <style name="small_copy" parent="discover_text">
+
+    <style name="small_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/sub_copy</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-       <style name="orange_help_button">
+
+    <style name="orange_help_button">
         <item name="android:background">@drawable/transparent_square</item>
         <item name="android:src">@drawable/question_mark_icon</item>
         <item name="android:layout_width">40dp</item>
         <item name="android:layout_height">40dp</item>
     </style>
-    
-      <style name="card_error_label" parent="discover_text">
+
+    <style name="card_error_label" parent="discover_text">
         <item name="android:textColor">@color/error_indicator</item>
-        <item name="android:visibility">gone</item>     
-		<item name="android:textSize">@dimen/error_min</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textSize">@dimen/error_min</item>
     </style>
-    
-     <style name="card_strong_auth_field_copy" parent="discover_text">
+
+    <style name="card_strong_auth_field_copy" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/body_copy</item>
     </style>
-    
-     <style name="card_strong_auth_field_copy_small" parent="discover_text">
+
+    <style name="card_strong_auth_field_copy_small" parent="discover_text">
         <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
         <item name="android:textColor">@color/body_copy</item>
     </style>
-    
-      <style name="error_label" parent="discover_text">
+
+    <style name="error_label" parent="discover_text">
         <item name="android:textColor">@color/error_indicator</item>
-        <item name="android:visibility">gone</item>     
+        <item name="android:visibility">gone</item>
     </style>
-    
+
     <style name="call_to_action_theme">
         <item name="android:textColor">@drawable/call_to_action_text_color</item>
         <item name="android:textSize">@dimen/body_copy_max</item>
@@ -281,16 +286,28 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-      <style name="blue_hyperlink">
+
+    <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-      <!-- Strong auth -->
-      <style name="strongauth_ans_selection">
-          <item name="android:textColorHighlight">#3d484d</item>
-          <item name="android:textColor">#8a9499</item>
-          <item name="android:textSize">14sp</item>
-      </style>
+
+    <!-- Strong auth -->
+    <style name="strongauth_ans_selection">
+        <item name="android:textColorHighlight">#3d484d</item>
+        <item name="android:textColor">#8a9499</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!-- FastView/QuickView -->
+    <style name="quick_view_text">
+        <item name="android:textColor">#3d484d</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="quick_view_faq">
+        <item name="android:textColor">#267bb1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

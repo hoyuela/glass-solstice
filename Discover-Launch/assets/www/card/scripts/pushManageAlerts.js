@@ -914,7 +914,9 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         // Hide the Reward Expandable Block if there are no line items to be displayed for essential and corp card members
         if ($.inArray("5CBB",prefCategory)== -1 && $.inArray("SHPD",prefCategory)== -1 && $.inArray("MRRW",prefCategory)== -1 && $.inArray("MLRW",prefCategory)== -1)
         {
-            $("#rewards-block").hide();
+		//13.3 Change Defect Fix :97620
+            $("#conditionalRewardHide").hide();
+			//13.3 Change Defect Fix :97620
         }
    
 		if(rePopulateDivFlag)

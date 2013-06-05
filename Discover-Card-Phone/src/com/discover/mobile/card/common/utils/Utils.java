@@ -52,7 +52,7 @@ public class Utils {
 
     static ProgressDialog progressBar;
 
-    public static boolean enableLogging = true;
+    public static boolean enableLogging = false;
 
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
@@ -532,7 +532,9 @@ public class Utils {
     }
 
     public static void log(final String strMessage) {
-        log("Discover", strMessage);
+    	if (enableLogging) {
+    		log("Discover", strMessage);
+    	}
     }
 
     public static void log(final String strTag, final String strMessage) {

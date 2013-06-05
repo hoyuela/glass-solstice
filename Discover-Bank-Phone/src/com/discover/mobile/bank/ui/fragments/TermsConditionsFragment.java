@@ -1,7 +1,9 @@
 package com.discover.mobile.bank.ui.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,8 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.discover.mobile.common.utils.WebUtility;
 
 /**
@@ -109,30 +114,15 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		}
 		
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
-		termsWebView.setWebViewClient(new WebViewClient() {
-			@Override
-			public void onPageFinished(final WebView view, final String url) {
-				super.onPageFinished(view, url);
-				loadingSpinner.setVisibility(View.GONE);
-				showTerms();
-			}
-
-			@Override
-			public void onReceivedError(final WebView view, final int errorCode, 
-																final String description, final String failingUrl) {
-				super.onReceivedError(view, errorCode, description, failingUrl);
-				pageLoadSuccess = false;
-			}
-		});
+		termsWebView.setWebViewClient(new TermsAndConditionsWebViewClient());
 		
-
 		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
 		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 		}
 	}
-	
+
 	/**
 	 * Display the content of the web view.
 	 */
@@ -254,4 +244,171 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	 */
 	public abstract int getPageTitle();
 	
+	/**
+	 * This inner class defines the WebView behavior for loading, showing data, and handling link clicks.
+	 * 
+	 * @author scottseward
+	 *
+	 */
+	private class TermsAndConditionsWebViewClient extends WebViewClient {
+		private static final String HTTPS = "https";
+		private static final String HTTP = "http";
+		
+		private static final String TEL = "tel://";
+		private static final String MAILTO = "mailto:";
+		private static final String METHOD = "method://";
+		private static final String BROWSER_SCHEME = "com.discover.mobile";
+		private static final String PRIVACY_STATEMENT = "navigateToMobilePrivacyStatement";
+
+		@Override
+		public void onPageFinished(final WebView view, final String url) {
+			super.onPageFinished(view, url);
+			loadingSpinner.setVisibility(View.GONE);
+			showTerms();
+		}
+
+		@Override
+		public void onReceivedError(final WebView view, final int errorCode, 
+															final String description, final String failingUrl) {
+			super.onReceivedError(view, errorCode, description, failingUrl);
+			pageLoadSuccess = false;
+		}
+		
+		/**
+		 * This method handles custom hyperlink actions and enables us to launch a device browser when
+		 * a user presses a web link in one of our webviews, or dial a number, or send an email or
+		 * even make a navigation change in our app.
+		 */
+		@Override
+		public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+			boolean handledLink = false;
+			
+			if(looksLikeWebPage(url)) {
+				handledLink = startIntentFor(Intent.ACTION_VIEW, getDiscoverUrl(url));
+			}else if (looksLikePhoneNumber(url)) {
+				handledLink = startIntentFor(Intent.ACTION_DIAL, url);
+			}else if(looksLikeEmail(url)) {
+				handledLink = startIntentFor(Intent.ACTION_SENDTO, url);
+			}else if(looksLikeInAppNavigation(url)) {
+				handledLink = appNavigateToSection(url);
+			}
+			
+			return handledLink;
+		}
+		
+		/**
+		 * 
+		 * @param url
+		 * @return if the url provided can be handled by the BankConductor to navigate the app.
+		 */
+		private boolean appNavigateToSection(final String url) {
+			boolean willNavigate = false;
+
+			if(url != null) {
+				if(url.contains(PRIVACY_STATEMENT)) {
+					BankConductor.navigateToPrivacyTerms(PrivacyTermsType.MobilePrivacyStatement);
+					willNavigate = true;
+				}
+			}
+			
+			return willNavigate;
+		}
+		
+		/**
+		 * Starts an intent to handle a clicked link.
+		 * @param action the kind of Intent to launch.
+		 * @param url the URL to provide data to the intent.
+		 * @return if the intent was started.
+		 */
+		private boolean startIntentFor(final String action, final String url) {
+			boolean intentStarted = false;
+			
+			if(action != null && url != null) {
+				final Intent intent = new Intent(action, Uri.parse(url));
+				TermsConditionsFragment.this.startActivity(intent);
+				intentStarted = true;
+			}
+			
+			return intentStarted;
+		}
+		
+		/**
+		 * 
+		 * @param url
+		 * @return if the url should be treated like an in app navigation change that the BankConductor can handle.
+		 */
+		private boolean looksLikeInAppNavigation(final String url) {
+			boolean looksLikeNavigation = false;
+		
+			if(url != null) {
+				looksLikeNavigation = url.startsWith(METHOD);
+			}
+			
+			return looksLikeNavigation;
+		}
+
+		/**
+		 * Returns a String for the URL where the HTTP or HTTPS prefix is replaced by the com.discover.mobile prefix
+		 * that will allow our app to handle the intent.
+		 * @param url a web URL
+		 * @return a String that can be handled by the Discover Mobile app.
+		 */
+		private String getDiscoverUrl(final String url) {
+			String result = StringUtility.EMPTY;
+			if(url != null) {
+				if(url.startsWith(HTTPS)) {
+					result = url.replaceAll(HTTPS, BROWSER_SCHEME);
+				}else if (url.startsWith(HTTP)) {
+					result = url.replaceAll(HTTP, BROWSER_SCHEME);
+				}
+			}
+			
+			return result;
+		}
+		
+		/**
+		 * 
+		 * @param url
+		 * @return if the url should be treated as a web page.
+		 */
+		private boolean looksLikeWebPage(final String url) {
+			boolean looksLikePage = false;
+			
+			if(url != null) {
+				looksLikePage = url.startsWith(HTTPS) || url.startsWith(HTTP);
+			}
+			return looksLikePage;
+		}
+		
+		/**
+		 * 
+		 * @param url
+		 * @return if the url should be treated like a phone number
+		 */
+		private boolean looksLikePhoneNumber(final String url) {
+			boolean looksLikePhoneNumber = false;
+			
+			if(url != null) {
+				looksLikePhoneNumber = url.startsWith(TEL);
+			}
+			
+			return looksLikePhoneNumber;
+		}
+		
+		/**
+		 * 
+		 * @param url
+		 * @return if the url should be treated as an email address.
+		 */
+		private boolean looksLikeEmail(final String url) {
+			boolean looksLikeEmail = false;
+			
+			if(url != null) {
+				looksLikeEmail = url.startsWith(MAILTO);
+			}
+			
+			return looksLikeEmail;
+		}
+	
+	}
 }
