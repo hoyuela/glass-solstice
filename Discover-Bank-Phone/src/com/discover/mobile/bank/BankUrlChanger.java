@@ -21,30 +21,31 @@ public final class BankUrlChanger extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(final Context arg0, final Intent arg1) {
-		/**Key used to read new base url from Bundle passed via INTENT*/
-		final String NEW_BASE_URL = "NEW_BASE_URL";
-		/**Key used to return result to activity that sent Bundle with new base url via an INTENT*/
-		final String CHANGE_ACK	= "CHANGE_ACK";
 		
-		/**Read bundle from intent*/
-		final Bundle extras = getResultExtras(true);
+		//Check to see if the app has been configured for url changing. 
+		if ("true".equalsIgnoreCase(arg0.getString(R.string.bank_url_changer_enabled))) {
+			/**Key used to read new base url from Bundle passed via INTENT*/
+			final String NEW_BASE_URL = "NEW_BASE_URL";
+			/**Key used to return result to activity that sent Bundle with new base url via an INTENT*/
+			final String CHANGE_ACK	= "CHANGE_ACK";
+			
+			/**Read bundle from intent*/
+			final Bundle extras = getResultExtras(true);
 
-		/**Read new base url from bundle*/
-		final String newUrl = arg1.getStringExtra(NEW_BASE_URL);
-		
-		if( !Strings.isNullOrEmpty(newUrl) ) {
-			BankUrlManager.setBaseUrl(newUrl);
-			extras.putBoolean(CHANGE_ACK, true);
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.v(TAG, "Unable to update BASE URL, invalid value!");
+			/**Read new base url from bundle*/
+			final String newUrl = arg1.getStringExtra(NEW_BASE_URL);
+			
+			if( !Strings.isNullOrEmpty(newUrl) ) {
+				BankUrlManager.setBaseUrl(newUrl);
+				extras.putBoolean(CHANGE_ACK, true);
+			} else {
+				if( Log.isLoggable(TAG, Log.ERROR)) {
+					Log.v(TAG, "Unable to update BASE URL, invalid value!");
+				}
+				extras.putBoolean(CHANGE_ACK, false);
 			}
-			extras.putBoolean(CHANGE_ACK, false);
+
+			setResultExtras(extras);
 		}
-
-		
-		setResultExtras(extras);
-		
 	}
-
 }
