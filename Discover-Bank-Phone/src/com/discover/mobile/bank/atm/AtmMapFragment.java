@@ -285,6 +285,7 @@ public abstract class AtmMapFragment extends BaseFragment
 
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
+			setHelpModalShowing(true);
 		} else if (isLeavingModalShowing) {
 			showTerms();
 		}
@@ -787,6 +788,10 @@ public abstract class AtmMapFragment extends BaseFragment
 			settingsModal.dismiss();
 		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
 			locationFailureModal.dismiss();
+		} else if(isHelpModalShowing()){
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.clearActiveModal();
+			setHelpModalShowing(true);
 		}
 	}
 
@@ -962,7 +967,10 @@ public abstract class AtmMapFragment extends BaseFragment
 	 */
 	@Override
 	public void onBackPressed(){
-		if(shouldGoBack){
+		if(helpModalShowing){
+			DiscoverModalManager.getActiveModal().dismiss();
+			setHelpModalShowing(false);
+		}if(shouldGoBack){
 			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
@@ -981,7 +989,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 */
 	@Override
 	public boolean isBackPressDisabled(){
-		if(isListLand){
+		if(isListLand || isHelpModalShowing()){
 			return true;
 		}else{
 
