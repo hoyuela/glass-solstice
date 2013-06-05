@@ -5,8 +5,7 @@ package com.discover.mobile.bank.atm;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
-import android.text.Html;
+import android.content.DialogInterface.OnCancelListener;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -218,11 +217,10 @@ public final class AtmModalFactory{
 	public static SimpleNoButtonModal getAtmLocatorHelpModal(final AtmMapFragment fragment){
 		final AtmLocatorHelpModalTop top  = new AtmLocatorHelpModalTop(fragment.getActivity(), null);
 		final SimpleNoButtonModal modal = new SimpleNoButtonModal(fragment.getActivity(), top);
-		modal.setOnDismissListener(new OnDismissListener(){
+		modal.setOnCancelListener(new OnCancelListener(){
 			@Override
-			public void onDismiss(final DialogInterface dialog) {
+			public void onCancel(DialogInterface dialog) {
 				fragment.setHelpModalShowing(false);
-
 			}
 		});
 
