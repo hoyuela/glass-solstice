@@ -629,6 +629,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 				.equalsIgnoreCase("QuickViewSetupFragment")) {
 			cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
 					"javascript:quickView()");
+			mCardStoreData.addToAppCache("currentPageTitle", "Quick View");
 		}
         //13.3 QuickView Change End
         
@@ -657,6 +658,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         }
 
+      //13.3 QuickView Change Start
+        if (fragment.getClass().getSimpleName()
+				.equalsIgnoreCase("QuickViewSetupFragment")) {
+			cordovaWebFrag.getCordovaWebviewInstance().loadUrl(
+					"javascript:quickView()");
+			mCardStoreData.addToAppCache("currentPageTitle", "Quick View");
+		}
+        //13.3 QuickView Change End
+        
         PushNowAvailableFragment pushFrag = (PushNowAvailableFragment) this
                 .getSupportFragmentManager().findFragmentByTag(
                         "PushNowAvailableFragment");
