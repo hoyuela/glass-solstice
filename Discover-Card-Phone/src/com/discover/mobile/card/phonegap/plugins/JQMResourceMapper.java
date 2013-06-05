@@ -79,7 +79,7 @@ public class JQMResourceMapper {
                 R.string.sub_section_title_pay_with_cashback_bonus);
         temp.put("Redemption History",
                 R.string.sub_section_title_redemption_history);
-
+        temp.put("Quick View", R.string.sub_section_title_fast_view);
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
         temp.put("Push Alerts History",

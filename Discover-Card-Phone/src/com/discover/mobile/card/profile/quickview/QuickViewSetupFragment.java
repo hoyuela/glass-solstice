@@ -6,7 +6,10 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,10 +30,14 @@ import com.discover.mobile.card.common.net.service.WSConstant;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
+import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.net.HttpHeaders;
@@ -49,9 +56,13 @@ public class QuickViewSetupFragment extends BaseFragment {
 	private String new_token = "";
 	private View mainView;
 	private static final String REFERER = "cardHome-pg";
+	private static final String CBB = "CBB";
+	private static final String CASHBACK = "Cashback Bonus";
+	private static final String MILES = "Miles";
 
-	protected String LOG_TAG = "QuickViewSetupFragment";
+	protected final String LOG_TAG = "QuickViewSetupFragment";
 	private boolean quickviewOn;
+	private String TAG = this.getClass().getSimpleName();
 
 	/**
 	 * Create the view
@@ -70,6 +81,15 @@ public class QuickViewSetupFragment extends BaseFragment {
 		mainView = inflater.inflate(R.layout.quick_view_settings, null);
 
 		toggleImage = (ImageView) mainView.findViewById(R.id.quick_toggle);
+		
+		//Change CBB/MILES Texts
+		final ImageView faqImage = (ImageView) mainView.findViewById(R.id.faqimage);
+		final TextView qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
+		if(!getCardType().equalsIgnoreCase(CBB)){
+			qvinfoTextView.setText(qvinfoTextView.getText().toString().replace(CASHBACK, MILES));
+			faqImage.setBackgroundResource(R.drawable.quickviewsetupmile);
+		}
+			
 		toggleImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -77,7 +97,10 @@ public class QuickViewSetupFragment extends BaseFragment {
 				try {
 					updateQuickViewStatus();
 				} catch (Exception e) {
-					e.printStackTrace();
+					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+							(CardErrorHandlerUi) getActivity());
+					cardErrorResHandler.handleCardError((CardErrorBean) bean);
 				}
 			}
 		});
@@ -100,18 +123,26 @@ public class QuickViewSetupFragment extends BaseFragment {
 			try {
 				String save_token = FastcheckUtil
 						.readFastcheckToken(getActivity());
-				if (null != save_token) {
-					checkBindingStatus(save_token);
+
+				String decryptedToken = null;
+				if (save_token != null)
+					decryptedToken = FastcheckUtil.decrypt(save_token);
+
+				if (null != decryptedToken) {
+					checkBindingStatus(decryptedToken);
 				} else {
 					showQVwithOffState();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+						(CardErrorHandlerUi) getActivity());
+				cardErrorResHandler.handleCardError((CardErrorBean) bean);
 			}
 		} else
 			return null;
 
-		Button yesButton = (Button) mainView.findViewById(R.id.yes);
+		final Button yesButton = (Button) mainView.findViewById(R.id.yes);
 		yesButton.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -121,7 +152,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 			}
 		});
 
-		TextView nothanks = (TextView) mainView.findViewById(R.id.thnks);
+		final TextView nothanks = (TextView) mainView.findViewById(R.id.thnks);
 		nothanks.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -235,13 +266,11 @@ public class QuickViewSetupFragment extends BaseFragment {
 									@Override
 									public void onButton2Pressed() {
 										removeQVFragment();
-
 									}
 
 									@Override
 									public void onButton1Pressed() {
 										removeQVFragment();
-
 									}
 								});
 					}
@@ -251,19 +280,12 @@ public class QuickViewSetupFragment extends BaseFragment {
 	}
 
 	/***
-	 * Initialize and set action to Footer Items privacy menu & Term);s
-	 * conditcardErrorResHandler.handleCardError( (CardErrorBean) data, new
-	 * CardErrorCallbackListener() {
-	 * 
-	 * @Override public void onButton2Pressed() { removeQVFragment(); }
-	 * @Override public void onButton1Pressed() {
-	 *           DiscoverModalManager.clearActiveModal(); removeQVFragment(); }
-	 *           }ion
+	 * Initialize and set action to Footer Items privacy menu & Term condition
 	 * 
 	 * @param mainView
 	 */
 	private void setFooter(View mainView) {
-		TextView provideFeedback = (TextView) mainView
+		final TextView provideFeedback = (TextView) mainView
 				.findViewById(R.id.provide_feedback_button);
 		provideFeedback.setTextColor(getActivity().getResources().getColor(
 				R.color.footer_link));
@@ -275,7 +297,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 			}
 		});
-		TextView termsOfUse = (TextView) mainView
+		final TextView termsOfUse = (TextView) mainView
 				.findViewById(R.id.privacy_terms);
 		termsOfUse.setTextColor(getActivity().getResources().getColor(
 				R.color.footer_link));
@@ -311,12 +333,17 @@ public class QuickViewSetupFragment extends BaseFragment {
 				.getInstance(getActivity()).getSTRONGAUTHSVCS());
 		JSONObject obj = new JSONObject();
 		if (quickviewOn) {
-			URL = URL + "?"
-					+ getActivity().getString(R.string.quick_view_unbind);
+			StringBuffer urlStringBuffer = new StringBuffer();
+			urlStringBuffer.append(URL);
+			urlStringBuffer.append("?");
+			urlStringBuffer.append(getActivity().getString(
+					R.string.quick_view_unbind));
+
+			URL = urlStringBuffer.toString();
 			headers.put(HttpHeaders.XHttpMethodOveride,
 					WSConstant.METHOD_DELETE);
-			obj.put(WSConstant.DEVICETOKEN_COOKIE,
-					FastcheckUtil.readFastcheckToken(getActivity()));
+			obj.put(WSConstant.DEVICETOKEN_COOKIE, FastcheckUtil
+					.decrypt(FastcheckUtil.readFastcheckToken(getActivity())));
 		} else {
 			new_token = FastcheckUtil.genClientBindingToken();
 			obj.put(WSConstant.DEVICETOKEN_COOKIE, new_token);
@@ -339,10 +366,21 @@ public class QuickViewSetupFragment extends BaseFragment {
 							quickviewOn = false;
 
 						} else {
+
+							try {
+								FastcheckUtil.storeFastcheckToken(
+										getActivity(),
+										FastcheckUtil.encrypt(new_token));
+							} catch (Exception e) {
+								CardErrorBean bean = new CardErrorBean(e
+										.getMessage(), true);
+								CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+										(CardErrorHandlerUi) getActivity());
+								cardErrorResHandler
+										.handleCardError((CardErrorBean) bean);
+							}
 							toggleImage
 									.setBackgroundResource(R.drawable.swipe_on);
-							FastcheckUtil.storeFastcheckToken(getActivity(),
-									new_token);
 							quickviewOn = true;
 						}
 					}
@@ -361,27 +399,38 @@ public class QuickViewSetupFragment extends BaseFragment {
 	}
 
 	/**
-	 * set Fastview in title bar
+	 * Return the integer value of the string that needs to be displayed in the
+	 * title
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.sub_section_title_fast_view;
+		FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+				((CardNavigationRootActivity) getActivity()));
+		return barMenuTitleUtil.getActionBarTitle();
 	}
 
 	/**
-	 * return selected group menu
+	 * Return GrupMenuLocation
 	 */
 	@Override
 	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+		Utils.log(TAG, "inside getGroupMenuLocation ");
+		FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+				((CardNavigationRootActivity) getActivity()));
+		return barMenuTitleUtil
+				.getGroupMenuLocation(R.string.sub_section_title_fast_view);
 	}
 
 	/**
-	 * return selected index
+	 * Return selected Menu Location
 	 */
 	@Override
 	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.FAST_ACCESS_SECTION;
+		Utils.log(TAG, "inside getSectionMenuLocation");
+		FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+				((CardNavigationRootActivity) getActivity()));
+		return barMenuTitleUtil
+				.getSectionMenuLocation(R.string.sub_section_title_fast_view);
 	}
 
 	/**
@@ -396,4 +445,21 @@ public class QuickViewSetupFragment extends BaseFragment {
 		public String deviceBound;
 	}
 
+	/**
+	 * This method returns us the current card Type.
+	 * 
+	 * @return String Card Type.
+	 */
+	private String getCardType() {
+		String accType = null;
+		CardShareDataStore dataStore = CardShareDataStore
+				.getInstance(getActivity());
+		AccountDetails accData = (AccountDetails) dataStore
+				.getValueOfAppCache(getResources().getString(
+						R.string.account_details));
+		if (null != accData) {
+			accType = accData.incentiveTypeCode;
+		}
+		return accType;
+	}
 }

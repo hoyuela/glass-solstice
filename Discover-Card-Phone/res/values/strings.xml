@@ -115,10 +115,9 @@
     <string name="appVer">appVer</string>
     <string name="register_btn">Register Now</string>
      <!-- Quick information -->
-    <string name="quick_view_info">Turn on to view your current balance credit line available and <i>Cashback Bonus</i> balanace without having to log in. </string>
+    <string name="quick_view_info">Turn on to view your current balance credit line available and <i>Cashback Bonus</i> balance without having to log in. </string>
     <string name="quick_view_faq">Quick view FAQ</string>
     <string name="quick_view_detail">Another account has their settings enabled to view their account information without logging in on this device. Would you like to disable the settings for that account and enable them for this account?</string>
     <string name="no_thank">No thanks</string>
     <string name="yes">Yes</string>
-    <string name="fast_check_token_key_in_ps">fast_check_token_key_in_ps</string>
 </resources>

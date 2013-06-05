@@ -3,6 +3,7 @@
  */
 package com.discover.mobile.card.facade;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,7 @@ import com.discover.mobile.card.services.auth.BankPayload;
 import com.discover.mobile.card.services.auth.SSOAuthenticate;
 import com.discover.mobile.card.services.push.GetPushData;
 import com.discover.mobile.card.services.push.GetPushRegistration;
+import com.discover.mobile.card.services.push.PostPushRegistration;
 import com.discover.mobile.card.whatsnew.WhatsNewActivity;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseActivity;
@@ -59,6 +61,8 @@ import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.CardLoginFacade;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.xtify.sdk.api.XtifySDK;
 
 /**
@@ -995,78 +999,79 @@ private int convertStringToInt(String str) {
 		}
 		/* 13.3 Changes */
 		final Intent confirmationScreen = intent;
-        if (vendorId != null && !vendorId.equalsIgnoreCase("")) {
+        if (vendorId != null && !vendorId.equalsIgnoreCase(""))
+        {
             // Registration
-            GetPushRegistration pushRegistration = new GetPushRegistration(
-                    context, new CardEventListener() {
-                        @Override
-                        public void onSuccess(Object data) {
-                            // TODO Auto-generated method stub
-                            GetPushData getPushData = (GetPushData) data;
-                            Utils.log(LOG_TAG, "---Push status -- "
-                                    + getPushData.resultCode);                            
-                            if (getPushData.resultCode.equalsIgnoreCase("F")) {
-                                confirmationScreen
-                                        .putExtra(
-                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
-                                                true);
-                                editor.putBoolean(
-                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
-                                        false);
-                            } else if (getPushData.resultCode
-                                    .equalsIgnoreCase("o")) {
-                                // Setting other user flag to true so that JQM
-                                // can have this flag.
-                                String errorMsgForPush = context
-                                        .getString(R.string.E_Push_Other_Account);
-                                confirmationScreen.putExtra(
-                                        PushConstant.extras.PUSH_ERROR_AC_HOME,
-                                        errorMsgForPush);
-                                confirmationScreen
-                                        .putExtra(
-                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
-                                                false);
-                                editor.putBoolean(
-                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
-                                        true);
-                            } else {
-                                confirmationScreen
-                                        .putExtra(
-                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
-                                                false);
-                                editor.putBoolean(
-                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
-                                        false);
-                            }
-                            editor.commit();
-                            confirmationScreen.putExtra("showToggleFlag",
-                                    showToggleFlag);
-                            TrackingHelper
-                                    .trackPageView(AnalyticsPage.CARD_LOGIN);
-                            context.startActivity(confirmationScreen);
-                            if (context instanceof Activity)
-                                ((Activity) context).finish();
-                        }
-
-                        @Override
-                        public void OnError(Object data) {
-                            CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                                    CardLoginFacadeImpl.this);
-                            cardErrorResHandler
-                                    .handleCardError((CardErrorBean) data);
-                        }
-                    });
+            GetPushRegistration pushRegistration = new GetPushRegistration(context, new CardEventListener() 
+            {
+	            @Override
+	            public void onSuccess(Object data) 
+	            {
+	                // TODO Auto-generated method stub
+	                GetPushData getPushData = (GetPushData) data;
+	                Utils.log(LOG_TAG, "---Push status -- "+ getPushData.resultCode);                            
+	                if (getPushData.resultCode.equalsIgnoreCase("F")) 
+	                {
+	                	//Register user with server for push notification
+						//If this fails, we dont need to show error.
+						try
+						{
+							registerPush();
+						} 
+						catch (JsonGenerationException e) 
+						{
+							e.printStackTrace();
+						}
+						catch (JsonMappingException e) 
+						{
+							e.printStackTrace();
+						}
+						catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
+						catch (Exception e) 
+						{
+							e.printStackTrace();
+						}
+						
+	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,true);
+	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,false);
+	                } 
+	                else if (getPushData.resultCode.equalsIgnoreCase("o")) 
+	                {
+	                    // Setting other user flag to true so that JQM
+	                    // can have this flag.
+	                    String errorMsgForPush = context.getString(R.string.E_Push_Other_Account);
+	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_ERROR_AC_HOME,errorMsgForPush);
+	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,false);
+	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,true);
+	                } 
+	                else
+	                {
+	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,false);
+	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,false);
+	                }
+	                editor.commit();
+	                confirmationScreen.putExtra("showToggleFlag",showToggleFlag);
+	                TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+	                context.startActivity(confirmationScreen);
+	                if (context instanceof Activity)
+	                    ((Activity) context).finish();
+	            }
+	
+	            @Override
+	            public void OnError(Object data) {
+	                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
+	                cardErrorResHandler.handleCardError((CardErrorBean) data);
+	            }
+	        });
 
             editor.putString(PushConstant.pref.PUSH_XID,
                     XtifySDK.getXidKey(context.getApplicationContext()));
             Utils.log(LOG_TAG, "--1--" + vendorId);
-            Utils.log(
-                    LOG_TAG,
-                    "--2--"
-                            + XtifySDK.getXidKey(context
-                                    .getApplicationContext()));
-            pushRegistration.sendRequest(XtifySDK.getXidKey(context
-                    .getApplicationContext()));
+            Utils.log(LOG_TAG,"--2--"+ XtifySDK.getXidKey(context.getApplicationContext()));
+            pushRegistration.sendRequest(XtifySDK.getXidKey(context.getApplicationContext()));
         } else if (vendorId == null || vendorId.equalsIgnoreCase("")) {
 			/* 13.3 Changes */
 			// final Intent confirmationScreen = new Intent(context,
@@ -1090,4 +1095,35 @@ private int convertStringToInt(String str) {
         }
 
     }
+    
+    /**
+	 * This method will send sever XID with acceptance status so register user 
+	 * with server 
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 * @throws Exception
+	 */
+	public void registerPush() throws JsonGenerationException, JsonMappingException, IOException, Exception
+	{
+		PostPushRegistration postPushRegistration = new PostPushRegistration(context, new CardEventListener()
+		{
+			
+			@Override
+			public void onSuccess(Object data)
+			{
+				GetPushData data2 = (GetPushData) data;
+				Utils.log(LOG_TAG, "--Response Data -- "+data2.resultCode);
+			}
+			
+			@Override
+			public void OnError(Object data)
+			{
+				//Do nothing
+			}
+		});
+		
+		//Sending server to acceptance status with the XID
+		postPushRegistration.sendRequest(XtifySDK.getXidKey(context.getApplicationContext()), "Y");
+	}
 }

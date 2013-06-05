@@ -28,6 +28,7 @@ import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.facade.LoginActivityInterface;
@@ -66,10 +67,10 @@ public class FastcheckFragment extends BaseFragment implements
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		//TODO, comment out
-		try {
-			String tmp = FastcheckUtil.encrypt("cSlOmxS6f63tYWYWEomAI6YCcqXOlF+mw/0OwwX8yCSxfAmcOCaaeudPzdppqaFHTWsJCPlpuzg2oFRBiJ8aFg==");
-			FastcheckUtil.storeFastcheckToken(getActivity(), tmp);
-		} catch (Exception e) {}
+//		try {
+//			String tmp = FastcheckUtil.encrypt("cSlOmxS6f63tYWYWEomAI6YCcqXOlF+mw/0OwwX8yCSxfAmcOCaaeudPzdppqaFHTWsJCPlpuzg2oFRBiJ8aFg==");
+//			FastcheckUtil.storeFastcheckToken(getActivity(), tmp);
+//		} catch (Exception e) {}
 		
 	}
 
@@ -383,8 +384,14 @@ public class FastcheckFragment extends BaseFragment implements
 
 	private String formatMoney(String aString) {
 		double money = Double.parseDouble(aString);
-		DecimalFormat df = new DecimalFormat("###,###,##0.00");
+		DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
 		return "$" + df.format(money);
+	}
+	
+	private String formatMile(String aString) {
+		double mile = Double.parseDouble(aString);
+		DecimalFormat df = new DecimalFormat("###,###,###,##0");
+		return df.format(mile);
 	}
 
 	/**
@@ -417,7 +424,7 @@ public class FastcheckFragment extends BaseFragment implements
 		else if (MILES_CODE.equals(fastcheckDetail.getIncentiveTypeCode()))
 			fastcheckList.addView(SimpleListItemFactory.createItem(context,
 					res.getString(R.string.account_summary_miles_bonus),
-					fastcheckDetail.getEarnRewardAmount()));
+					formatMile(fastcheckDetail.getEarnRewardAmount())));
 
 	}
 

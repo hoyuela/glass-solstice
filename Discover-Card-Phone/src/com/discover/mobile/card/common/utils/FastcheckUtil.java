@@ -1,4 +1,4 @@
-package com.discover.mobile.card.profile.quickview;
+package com.discover.mobile.card.common.utils;
 
 import java.security.SecureRandom;
 
@@ -18,11 +18,6 @@ public class FastcheckUtil {
 
 	private static final String seed4KeyStr = "EoeBcwiahT5CxacQsaWI0e16p9lb+wQs0KFJdmzSTEo=";
 
-	public static String getFastcheckAuthString(String token) {
-		String concatenatedCreds = "fastcheck" + ": :" + token;
-		return concatenatedCreds;
-	}
-
 	private static byte[] getKey() throws Exception {
 		byte[] seedBytes = seed4KeyStr.getBytes();
 		KeyGenerator kgen = KeyGenerator.getInstance("AES");
@@ -35,8 +30,7 @@ public class FastcheckUtil {
 	}
 
 	public static void storeFastcheckToken(Activity activity, String token) {
-		SharedPreferences sharedPref = activity
-				.getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences sharedPref = activity.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putString(
 				activity.getResources().getString(
@@ -45,13 +39,14 @@ public class FastcheckUtil {
 	}
 
 	public static String readFastcheckToken(Activity activity) {
-		SharedPreferences sharedPref = activity
-				.getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences sharedPref = activity.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
 		String token = sharedPref.getString(
 				activity.getResources().getString(
 						R.string.fast_check_token_key_in_ps), null);
 		return token;
 	}
+	
+	
 
 	public static String genClientBindingToken() throws Exception {
 		SecureRandom scrRndm = new SecureRandom();
