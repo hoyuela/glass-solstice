@@ -136,6 +136,7 @@
     <string name="bank_delete_transaction_text">Are you sure you want to delete this scheduled payment?</string>
     <string name="bank_yes_delete">Yes, Delete</string>
     <string name="bank_delete_transfer_title">Delete Transaction?</string>
+    <string name="bank_delete_transfers_title">Delete Transactions?</string>
     <string name="bank_delete_transfer_text">Are you sure you want to delete this transaction?</string>
     <string name="bank_delete_transfer_series_text">Are you sure you want to delete this series of transactions?</string>
     <string name="bank_status_image_descr">Status Indicator</string>
