@@ -59,6 +59,8 @@ import com.google.common.base.Strings;
 public class BankTransferStepOneFragment extends BankTransferBaseFragment implements BankErrorHandlerDelegate {
 	private static final String TAG = BankTransferStepOneFragment.class.getSimpleName();
 	
+	private static final String DISPLAY_SENDON_CALENDAR = "sendon-calendar";
+	
 	/**Code of the frequency*/
 	private String frequencyCode = TransferDetail.ONE_TIME_TRANSFER;
 	private String frequencyText = "One Time";
@@ -417,6 +419,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			args.putString(DATE, dateTextView.getText().toString());
 		}
 		
+		args.putBoolean(DISPLAY_SENDON_CALENDAR, (calendarFragment != null));
+
 		saveLastErrorObjectToArgBundle(args);
 		
 		return args;
@@ -467,9 +471,11 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
+			
+			if (bundle.getBoolean(DISPLAY_SENDON_CALENDAR, false)) {
+				resetCalendarEventListener();
+			}
 		}
-		
-		resetCalendarEventListener();
 	}
 	
 	/**
@@ -1029,6 +1035,12 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				final long halfSecondDelay = 500;
 				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 			}
+
+			@Override
+			public void onCancel() {
+				/** Clear reference to calendar fragment so that it can be recreated and shown again */
+				calendarFragment = null;
+			}
 		};
 	
 		return calendarListener;
@@ -1045,6 +1057,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			public void run() {
 				if(calendarFragment != null){
 					calendarFragment.dismiss();
+					/** Clear reference to calendar fragment so that it can be recreated and shown again */
+					calendarFragment = null;
 				}
 			}
 		};
@@ -1071,36 +1085,36 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Method displays a calendar in a dialog form with the chosen date selected.
 	 */
 	public void showCalendar() {
-		calendarFragment = new CalendarFragment();
+		/** Verify a calendar is not being shown already */
+		if (null == calendarFragment) {
+			calendarFragment = new CalendarFragment();
 
-		/** The calendar will appear with the month and year in this Calendar instance */
-		Calendar displayedDate = Calendar.getInstance();
-		
-		
-		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
-		try{
-			final String[] selectedDate = dateTextView.getText().toString().split("[\\/]+");
+			/** The calendar will appear with the month and year in this Calendar instance */
+			Calendar displayedDate = Calendar.getInstance();
 			
-			/** The Calendar will appear with the date specified by this calendar instance selected*/
-			chosenPaymentDate.set( Integer.parseInt(selectedDate[2]),
-				      Integer.parseInt(selectedDate[0]) - 1,
-					  Integer.parseInt(selectedDate[1]));
 			
-			/**Check if restoring calendar selection date, -1 means it is initializing*/
-			displayedDate = chosenPaymentDate;
+			/** Convert stored in text field into chosen date, this will avoid issue on rotation */
+			try {
+				final String[] selectedDate = dateTextView.getText().toString().split("[\\/]+");
+
+				/** The Calendar will appear with the date specified by this calendar instance selected */
+				chosenPaymentDate.set(Integer.parseInt(selectedDate[2]), Integer.parseInt(selectedDate[0]) - 1, Integer.parseInt(selectedDate[1]));
+
+				/** Check if restoring calendar selection date, -1 means it is initializing */
+				displayedDate = chosenPaymentDate;
+
+			} catch (final NumberFormatException ex) {
+				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR), chosenPaymentDate.get(Calendar.MONTH),
+						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
+
+				displayedDate = chosenPaymentDate;
+			}
 			
-		} catch(final NumberFormatException ex){
-			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
-					chosenPaymentDate.get(Calendar.MONTH),
-					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-			
-			displayedDate = chosenPaymentDate;
+			/** Show calendar as a dialog */
+			calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), getResources()
+					.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
+					.getHolidays(), createCalendarListener());
 		}
-		
-		/**Show calendar as a dialog*/
-		calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), getResources()
-				.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance().getHolidays(),
-				createCalendarListener());
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -141,7 +143,7 @@ public class CalendarFragment extends CaldroidFragment {
 		
 		/**Create Calendar Header*/
 		createHeader(view, container, inflater);
-		
+
 		return view;
 	}
 	
@@ -205,6 +207,17 @@ public class CalendarFragment extends CaldroidFragment {
 		current.set(Calendar.YEAR, displayedYear);
 		this.moveToDate(current.getTime());
 		
+		/** Set a listener for when the dialog is cancelled to notify listeners */
+		getDialog().setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(final DialogInterface arg0) {
+				if (eventListener != null) {
+					eventListener.onCancel();
+				}
+			}
+		});
+
+
 		/**Set listener here to avoid updates while calendar is being initialized*/
 		setCaldroidListener(eventListener);
 	}

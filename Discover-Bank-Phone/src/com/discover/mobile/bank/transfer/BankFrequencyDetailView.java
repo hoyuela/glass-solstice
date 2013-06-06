@@ -48,6 +48,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private static final String DATE_VALUE = "dateValue";
 	private static final String TRANS_VALUE = "transValue";
 	private static final String AMOUNT_VALUE = "amountValue";
+	private static final String DISPLAY_CALENDAR = "display-calendar";
 	private static final int CANCELLED = 0;
 	private static final int DATE = 1;
 	private static final int TRANSACTION = 2;
@@ -158,7 +159,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		outState.putString(DATE_VALUE, dateValue.getText().toString());
 		outState.putString(TRANS_VALUE, transactionAmount.getText().toString());
 		outState.putString(AMOUNT_VALUE, dollarAmount.getText().toString());
-
+		outState.putBoolean(DISPLAY_CALENDAR, (calendarFragment != null));
 		
 		return outState;
 	}
@@ -181,11 +182,11 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			disableCancelled();
 			setRadioButtonState(index);
 			
-			/**Reset Calendar Event Listener*/
-			final Fragment fragment = 
-					((NavigationRootActivity)DiscoverActivityManager.getActiveActivity())
-					.getSupportFragmentManager().findFragmentByTag(CalendarFragment.TAG);
-			if( fragment != null && fragment instanceof CalendarFragment) {
+			/** Reset Calendar Event Listener */
+			final Fragment fragment = ((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager()
+					.findFragmentByTag(CalendarFragment.TAG);
+			/** Verify calendar was being shown before recreating listeners */
+			if (fragment != null && fragment instanceof CalendarFragment && bundle.getBoolean(DISPLAY_CALENDAR, false)) {
 				calendarFragment = (CalendarFragment) fragment;
 				calendarFragment.setCalendarListener(createCalendarListener());
 			}
@@ -440,41 +441,36 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 * Method displays a calendar in a dialog form with the chosen date selected.
 	 */
 	public void showCalendar() {
-		calendarFragment = new CalendarFragment();
+		/** Verify a calendar is not already being shown */
+		if (null == calendarFragment) {
+			calendarFragment = new CalendarFragment();
 
-		/** The calendar will appear with the month and year in this Calendar instance */
-		Calendar displayedDate = Calendar.getInstance();
-		
-		
-		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
-		try{
-			final String[] date = dateValue.getText().toString().split("[\\/]+");
+			/** The calendar will appear with the month and year in this Calendar instance */
+			Calendar displayedDate = Calendar.getInstance();
 			
-			/** The Calendar will appear with the date specified by this calendar instance selected*/
-			chosenPaymentDate.set( Integer.parseInt(date[2]),
-				      Integer.parseInt(date[0]) - 1,
-					  Integer.parseInt(date[1]));
 			
-			/**Check if restoring calendar selection date, -1 means it is initializing*/
-			displayedDate = chosenPaymentDate;
+			/** Convert stored in text field into chosen date, this will avoid issue on rotation */
+			try {
+				final String[] date = dateValue.getText().toString().split("[\\/]+");
+
+				/** The Calendar will appear with the date specified by this calendar instance selected */
+				chosenPaymentDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
+
+				/** Check if restoring calendar selection date, -1 means it is initializing */
+				displayedDate = chosenPaymentDate;
+
+			} catch (final Exception ex) {
+				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR), chosenPaymentDate.get(Calendar.MONTH),
+						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
+
+				displayedDate = chosenPaymentDate;
+			}
 			
-		}catch(final Exception ex){
-			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
-					chosenPaymentDate.get(Calendar.MONTH),
-					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-			
-			displayedDate = chosenPaymentDate;
+			/** Show calendar as a dialog */
+			calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), res
+					.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
+					.getHolidays(), createCalendarListener());
 		}
-		
-		/**Show calendar as a dialog*/
-		calendarFragment
-			.show(((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(),
-				res.getString(R.string.select_transfer_date),
-				displayedDate,
-			    chosenPaymentDate, 
-			    earliestPaymentDate,
-				BankUser.instance().getHolidays(),
-				createCalendarListener());
 	}
 
 	/**
@@ -496,6 +492,12 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				//Delay closing of calendar to be able to see the selection change
 				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 			}
+
+			@Override
+			public void onCancel() {
+				/** Clear reference to calendar fragment so that it can be recreated and shown again */
+				calendarFragment = null;
+			}
 		};
 		return calendarListener;
 	}
@@ -511,6 +513,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			public void run() {
 				if(calendarFragment != null){
 					calendarFragment.dismiss();
+
+					/** Clear reference to calendar fragment so that it can be recreated and shown again */
+					calendarFragment = null;
 				}
 			}
 		};
