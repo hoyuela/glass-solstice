@@ -50,4 +50,6 @@ public abstract class CalendarListener extends CaldroidListener implements Seria
 		calFrag.refreshView();
 	}
 	
+	public abstract void onCancel();
+
 }
