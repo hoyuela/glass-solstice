@@ -180,9 +180,13 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	private void showDeleteTransactionModal(final NavigationRootActivity activity, final ActivityDetail item, 
 			final TransferDeletionType deleteType,
 			final int textBody) {
+		
+		/** Decided the title of the modal based on the type of deletion being made */
+		final int title = (deleteType == TransferDeletionType.DELETE_ALL_TRANSFERS) ? 
+				R.string.bank_delete_transfers_title : R.string.bank_delete_transfer_title;
+		
 		// Create a one button modal to notify the user that they are leaving the application
-		final SimpleContentModal modal = new SimpleContentModal(activity,
-				R.string.bank_delete_transfer_title,
+		final SimpleContentModal modal = new SimpleContentModal(activity, title,
 				textBody,
 				R.string.bank_yes_delete);
 

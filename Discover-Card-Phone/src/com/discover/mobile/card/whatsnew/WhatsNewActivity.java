@@ -24,14 +24,12 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
-public class WhatsNewActivity extends Activity {
+public class WhatsNewActivity extends Activity implements WhatsNewConstants{
 	/** Called when the activity is first created. */
 	LinearLayout layout;
 	public Bundle extras;
 	public int noOfPages=0;
 	public String cardType=null;
-	public static int page1 = 1;
-	public static int page2 = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,7 @@ public class WhatsNewActivity extends Activity {
 	}
 	
 	/**
-	 * This method retuns us the current card Type.
+	 * This method returns us the current card Type.
 	 * @return String Card Type.
 	 */
 	private String getCardType() {
@@ -80,9 +78,7 @@ public class WhatsNewActivity extends Activity {
 		
 		if (null != accData) {
 			accType = accData.incentiveTypeCode;
-			System.out.println("WhatsNewActivity.getCardType() "+accType);
 		}
-		
 		return accType;
 	}
 
@@ -110,11 +106,7 @@ public class WhatsNewActivity extends Activity {
 
 		public MyPagerAdapter(Context context) {
 			views = new ArrayList<View>();
-			views.add(new WhatsNewAvailable(context, page1,cardType));
-			//views.add(new WhatsNewAvailable(context,page2));
-//			 views.add(new WhatsNewAvailable(context,page1));
-			// views.add(new TextViewPage(context));
-			// views.add(new Quickview(context));
+			views.add(new WhatsNewAvailable(context, QUICK_VIEW_INFO,cardType));
 			noOfPages = getCount();
 		}
 
