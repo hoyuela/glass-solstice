@@ -18,6 +18,9 @@ public class CardInfoForToggle implements Serializable{
 	/** Ending card digits (e.g. 1234) */
 	private String cardEndingDigits;
 	
+	/** Value indicating that the default  is used*/
+	private boolean defaultProps = true;
+	
 	/**
 	 * Constructor
 	 * 
@@ -42,6 +45,7 @@ public class CardInfoForToggle implements Serializable{
 	}
 
 	public void setCardAccountName(String cardAccountName) {
+		defaultProps = false;
 		this.cardAccountName = cardAccountName;
 	}
 
@@ -50,6 +54,15 @@ public class CardInfoForToggle implements Serializable{
 	}
 
 	public void setCardEndingDigits(String cardEndingDigits) {
+		defaultProps = false;
 		this.cardEndingDigits = cardEndingDigits;
+	}
+	
+	/**
+	 * Return if the info is still set to the defaults
+	 * @return if the info is still set to the defaults
+	 */
+	public boolean isDefaultProps(){
+		return defaultProps;
 	}
 }
