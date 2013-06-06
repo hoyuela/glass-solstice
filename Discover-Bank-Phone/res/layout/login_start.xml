@@ -3,7 +3,8 @@
     android:id="@+id/login_start_layout"
     style="@style/OrangeTheme"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:layerType="hardware" >
 
     <ImageView
         android:id="@+id/splash_logo"
@@ -159,22 +160,6 @@
                     android:onClick="toggleCheckBoxFromXml"
                     android:padding="5dip" />
 
-                <!--
-                     idk if this is coming back yet...
-                     <TextView
-                    android:id="@+id/register_text"
-                    android:layout_width="0dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:onClick="registerNewUser"
-                    android:text="@string/register_now"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/blue"
-                    android:textSize="@dimen/light_text_size" />
-                -->
-
                 <Button
                     android:id="@+id/login_button"
                     style="@style/call_to_action_theme"
@@ -256,7 +241,6 @@
                         android:id="@+id/login_horizontal_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_below="@+id/privacy_and_security_button_card"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/login_horizontal_divider" />
 

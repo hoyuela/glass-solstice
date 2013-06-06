@@ -17,9 +17,12 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
  * Default top view to be displayed in the alert modal.  This contains a title as well
  * as some content text to be displayed under the text view.
  * 
+ * @deprecated use a SimpleContentModal instead - these modals wrap the current method calls at the moment.
+ * 
  * @author jthornton
  *
  */
+@Deprecated
 public class ModalDefaultTopView extends ScrollView implements ModalTopView{
 	
 	/**Resources for showing strings*/

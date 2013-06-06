@@ -239,7 +239,7 @@ public final class CardMenuItemLocationIndex {
 			/* 13.3 Changes */
 			itemIdLocationMap.put(R.string.sub_section_title_fast_view,
 					new Pair<Integer, Integer>(
-							PROFILE_AND_SETTINGS_ESSENTIAL_GROUP,
+							PROFILE_AND_SETTINGS_GROUP,
 							FAST_ACCESS_SECTION));
 			/* 13.3 Changes */
 			itemIdLocationMap.put(R.string.sub_section_title_manage_alerts,

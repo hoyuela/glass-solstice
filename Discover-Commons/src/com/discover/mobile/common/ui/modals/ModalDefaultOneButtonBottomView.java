@@ -10,9 +10,13 @@ import com.discover.mobile.common.R;
 
 /**
  * Custom single bottom button for a modal view.
+ * 
+ * @deprecated use a SimpleContentModal instead - these modals wrap the current method calls at the moment.
+ * 
  * @author scottseward
  *
  */
+@Deprecated
 public class ModalDefaultOneButtonBottomView extends RelativeLayout implements ModalBottomOneButtonView{
 
 	/**The main call to action button in the bottom center of the dialog*/

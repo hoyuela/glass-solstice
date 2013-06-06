@@ -10,9 +10,13 @@ import com.discover.mobile.common.R;
 
 /**
  * Default two button bottom view for the modal
+ * 
+ * @deprecated use a SimpleTwoButtonModal instead - these modals wrap the current method calls at the moment.
+ * 
  * @author jthornton
  *
  */
+@Deprecated
 public class ModalDefaultTwoButtonBottomView extends RelativeLayout implements ModalBottomTwoButtonView{
 
 	/**The main call to action button in the bottom center of the dialog*/

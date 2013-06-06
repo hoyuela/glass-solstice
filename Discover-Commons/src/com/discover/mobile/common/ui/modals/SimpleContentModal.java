@@ -14,10 +14,13 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
 /**
  * Simple class for modals.  This will rotate without weights and
  * will still look like the other modals.
- * 
- * @author jthornton
  *
+ * For now this modal will suppress the warnings and can be used as a wrapper for the old
+ * modal system
+ *
+ * @author jthornton
  */
+@SuppressWarnings("deprecation")
 public class SimpleContentModal extends ModalAlertWithOneButton implements ModalBottomOneButtonView, ModalTopView{
 
 	/**View of the modal*/

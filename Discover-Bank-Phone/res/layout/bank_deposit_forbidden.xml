@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd"
     android:paddingBottom="@dimen/forms_inner_padding"
     android:paddingLeft="@dimen/forms_inner_padding" >
 
@@ -27,11 +26,11 @@
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
         android:text="@string/bank_deposit_forbidden_message" />
 
-     <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
-            android:id="@+id/bank_footer"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/top_note_text" 
-            style="@style/bank_layout_footer_style"/>
+    <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+        android:id="@+id/bank_footer"
+        style="@style/bank_layout_footer_style"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_note_text" />
 
 </RelativeLayout>

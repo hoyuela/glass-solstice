@@ -1005,6 +1005,9 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			@Override
 			public void run() {
 				calendarFragment.dismiss();
+
+				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
+				calendarFragment = null;
 			}
 		};
 
@@ -1022,6 +1025,12 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 				//Delay closing of calendar to be able to see the selection change
 				new Handler().postDelayed(closeCalendarRunnable, CALENDAR_DELAY);
 			}
+
+			@Override
+			public void onCancel() {
+				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
+				calendarFragment = null;
+			}
 		};
 
 
@@ -1032,38 +1041,42 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	 * Method displays a calendar in a dialog form with the chosen date selected.
 	 */
 	private void showCalendar() {
-		calendarFragment = new CalendarFragment();
+		/** Verify calendar hasn't already been created */
+		if (null == calendarFragment) {
+			calendarFragment = new CalendarFragment();
+	
+			/** The calendar will appear with the month and year in this Calendar instance */
+			Calendar displayedDate = Calendar.getInstance();
+	
+	
+			/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
+			try{
+				final String[] date = dateText.getText().toString().split("[\\/]+");
+	
+				/** The Calendar will appear with the date specified by this calendar instance selected*/
+				chosenPaymentDate.set( Integer.parseInt(date[2]),
+						Integer.parseInt(date[0]) - 1,
+						Integer.parseInt(date[1]));
+	
+				displayedDate = chosenPaymentDate;	
+			}catch(final NumberFormatException ex){
+				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
+						chosenPaymentDate.get(Calendar.MONTH),
+						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
+	
+				displayedDate = chosenPaymentDate;
+			}
+	
+			/**Show calendar as a dialog*/
+			calendarFragment.show(getFragmentManager(),
+					getString(R.string.schedule_pay_date_picker_title),
+					displayedDate,
+					chosenPaymentDate, 
+					earliestPaymentDate,
+					BankUser.instance().getHolidays(),
+					createCalendarListener());
 
-		/** The calendar will appear with the month and year in this Calendar instance */
-		Calendar displayedDate = Calendar.getInstance();
-
-
-		/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
-		try{
-			final String[] date = dateText.getText().toString().split("[\\/]+");
-
-			/** The Calendar will appear with the date specified by this calendar instance selected*/
-			chosenPaymentDate.set( Integer.parseInt(date[2]),
-					Integer.parseInt(date[0]) - 1,
-					Integer.parseInt(date[1]));
-
-			displayedDate = chosenPaymentDate;	
-		}catch(final NumberFormatException ex){
-			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
-					chosenPaymentDate.get(Calendar.MONTH),
-					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-
-			displayedDate = chosenPaymentDate;
 		}
-
-		/**Show calendar as a dialog*/
-		calendarFragment.show(getFragmentManager(),
-				getString(R.string.schedule_pay_date_picker_title),
-				displayedDate,
-				chosenPaymentDate, 
-				earliestPaymentDate,
-				BankUser.instance().getHolidays(),
-				createCalendarListener());
 	}
 
 	/**

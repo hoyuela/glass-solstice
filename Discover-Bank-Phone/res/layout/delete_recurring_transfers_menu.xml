@@ -4,71 +4,67 @@
     style="alert_modal_black_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center" 
-    android:paddingTop="@dimen/modal_top_padding"
-    android:clickable="true">
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:paddingTop="@dimen/modal_top_padding" >
 
     <LinearLayout
-	android:id="@+id/linearLayout2"
-	android:layout_width="match_parent"
-	android:layout_height="wrap_content"
-	android:background="#E2E6E7"
-	android:orientation="vertical"
-	android:layout_alignParentBottom="true" >
-	
-	<LinearLayout
-	   	android:orientation="horizontal" 
-	   	android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:weightSum="2"
-		android:padding="@dimen/forms_inner_padding"> 
-		
-	    <ImageButton
-	    	android:id="@+id/delete_next_transfer_in_series_button"
-	    	android:layout_width="0dp"
-	    	android:layout_weight="1"
-	    	android:layout_height="wrap_content"
-	    	android:layout_gravity="left"
-	    	android:paddingTop="23dp"
-	    	android:paddingBottom="23dp"
-	    	android:src="@drawable/actionsheet_delete_icon"
-	    	android:contentDescription="@string/delete_next_transfer_in_series_content_description"
-	        android:background="@drawable/white_button"
-	        android:layout_marginRight="@dimen/forms_inner_padding"
-	    />
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#E2E6E7"
+        android:orientation="vertical" >
 
-	    <ImageButton
-	        android:id="@+id/delete_entire_transfer_series_button"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:adjustViewBounds="true"
-	        android:paddingBottom="20.5dp"
-	        android:paddingTop="20.5dp"
-	        android:src="@drawable/actionsheet_delete_series_icon"
-	        android:contentDescription="@string/delete_entire_transfer_series_content_description"
-	        android:background="@drawable/white_button"
-		/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/forms_inner_padding"
+            android:weightSum="2" >
 
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:orientation="horizontal"
-	    android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:paddingLeft="12dp"
-		android:paddingRight="12dp"
-		android:paddingBottom="12dp" >
-	    
-	    <Button 
-	    	android:id="@+id/cancel_button"
-	    	android:text="@string/cancel_text"
-	    	android:layout_gravity="center"
-	    	android:layout_width="match_parent"
-	    	android:layout_height="wrap_content" 
-	    	android:background="@drawable/actionsheet_cancel" />
-	    
-	</LinearLayout>
-</LinearLayout>
-    
+            <ImageButton
+                android:id="@+id/delete_next_transfer_in_series_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginRight="@dimen/forms_inner_padding"
+                android:layout_weight="1"
+                android:background="@drawable/white_button"
+                android:contentDescription="@string/delete_next_transfer_in_series_content_description"
+                android:paddingBottom="23dp"
+                android:paddingTop="23dp"
+                android:src="@drawable/actionsheet_delete_icon" />
+
+            <ImageButton
+                android:id="@+id/delete_entire_transfer_series_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@drawable/white_button"
+                android:contentDescription="@string/delete_entire_transfer_series_content_description"
+                android:paddingBottom="20.5dp"
+                android:paddingTop="20.5dp"
+                android:src="@drawable/actionsheet_delete_series_icon" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" >
+
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/actionsheet_cancel"
+                android:text="@string/cancel_text" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>
