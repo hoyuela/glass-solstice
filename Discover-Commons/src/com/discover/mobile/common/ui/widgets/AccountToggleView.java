@@ -87,6 +87,12 @@ public class AccountToggleView extends RelativeLayout {
 						R.string.account_ending_in)
 						+ StringUtility.SPACE +cardInfo.getCardEndingDigits());
 			}
+			
+			if(cardInfo.isDefaultProps()){
+				cardEnding.setVisibility(View.GONE);
+			}else{
+				cardEnding.setVisibility(View.VISIBLE);
+			}
 		}
 
 		setAccountType();
