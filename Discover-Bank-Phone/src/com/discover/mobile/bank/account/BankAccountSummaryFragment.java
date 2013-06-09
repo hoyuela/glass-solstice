@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,9 +24,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.customer.Customer;
@@ -51,14 +48,13 @@ import com.discover.mobile.common.utils.StringUtility;
  * @author henryoyuela
  *
  */
-public class BankAccountSummaryFragment extends BaseFragment implements OnClickListener, FragmentOnBackPressed {
+public class BankAccountSummaryFragment extends BaseFragment implements FragmentOnBackPressed {
 
 	private static final String TAG = "AccountSummary";
 
 	private static final String SHOW_TOGGLE_KEY = "showToggle";
 
-	private LinearLayout accountSummary; 
-	private Button openAccount;
+	private LinearLayout accountSummary;
 	private AccountToggleView toggleView;
 	private View view;
 	private ImageView accountToggleIcon;
@@ -73,10 +69,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 
 		/**Fetch linear layout that will contain list of account groups*/
 		accountSummary = (LinearLayout)view.findViewById(R.id.bank_summary_list);
-
-		/**Button used to open a new account*/
-		openAccount = (Button)view.findViewById(R.id.openAccount);
-		openAccount.setOnClickListener(this);
 
 		/**Footer setup*/
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
@@ -157,7 +149,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		final TextView salutationLabel = (TextView) view.findViewById(R.id.account_name);
 		new Thread(new SalutationUpdater(salutationLabel, getFirstName(), this)).start();
 	}
-	
+
 	/**
 	 * Calculates the position of the SSO dropdown arrow based on the position of the bank logo.
 	 */
@@ -273,13 +265,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 		return BaseFragment.NO_TITLE;
 	}
 
-	@Override
-	public void onClick(final View sender) {
-		if( sender.equals(openAccount) ) {
-			BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());
-		}
-	}
-
 
 	@Override
 	public int getGroupMenuLocation() {
@@ -303,9 +288,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements OnClickL
 				@Override
 				public void onGlobalLayout() {
 					if(!toggleView.hasIndicatorBeenDrawn()) {
-	
+
 						toggleView.setIndicatorPosition(accountToggleSection.getLeft() - 
-																			accountToggleIcon.getWidth() / 2,
+								accountToggleIcon.getWidth() / 2,
 								accountToggleIcon.getTop(),
 								accountToggleIcon.getWidth(),
 								accountToggleIcon.getHeight());

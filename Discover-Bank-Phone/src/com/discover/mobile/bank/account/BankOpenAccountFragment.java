@@ -7,16 +7,13 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
-import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -31,7 +28,7 @@ import com.discover.mobile.common.ui.widgets.AccountToggleView;
  * @author henryoyuela
  *
  */
-public class BankOpenAccountFragment extends BaseFragment implements OnClickListener, FragmentOnBackPressed {
+public class BankOpenAccountFragment extends BaseFragment implements FragmentOnBackPressed {
 
 	private View view;
 
@@ -45,13 +42,9 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_open_account_view, null);
-		final Button openAccountBtn = (Button)view.findViewById(R.id.openAccount);
 
 		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
 		salutation.setText(setFirstName());
-
-		/**Set the fragment activity as the handler for the button click event*/
-		openAccountBtn.setOnClickListener(this);
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
@@ -87,11 +80,6 @@ public class BankOpenAccountFragment extends BaseFragment implements OnClickList
 	@Override
 	public int getActionBarTitle() {
 		return BaseFragment.NO_TITLE;
-	}
-
-	@Override
-	public void onClick(final View arg0) {
-		BankConductor.navigateToBrowser(BankUrlManager.getOpenAccountUrl());	
 	}
 
 	@Override
