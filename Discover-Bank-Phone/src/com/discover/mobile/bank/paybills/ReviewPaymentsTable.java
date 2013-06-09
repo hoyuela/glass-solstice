@@ -70,6 +70,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		super.refreshListener();
 		getLoadMoreFooter().showDone();
 		int category = bundle.getInt(BankExtraKeys.CATEGORY_SELECTED, ReviewPaymentsHeader.SCHEDULED_PAYMENTS);
+		final boolean isLoadingMore = bundle.getBoolean(BankExtraKeys.IS_LOADING_MORE);
 
 		if(NO_CHANGE == category){
 			category = header.getCurrentCategory();
@@ -89,7 +90,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		//The corresponding view list will be updated based on whether this method was called 
 		//to load more data or refresh the list because of a deleted item.
 		if (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) {
-			if (null == scheduled || dataDeleted) {
+			// Check whether the data has to be refreshed
+			if (null == scheduled || dataDeleted || !isLoadingMore) {
 				scheduled = list;
 
 				/** Update cached data */
@@ -100,7 +102,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 
 			updateAdapter(scheduled);
 		} else if (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) {
-			if (null == completed || dataDeleted) {
+			// Check whether the data has to be refreshed
+			if (null == completed || dataDeleted || !isLoadingMore) {
 				completed = list;
 
 				/** Update cached data */
@@ -110,7 +113,8 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			}
 			updateAdapter(completed);
 		} else {
-			if (null == canceled || dataDeleted) {
+			// Check whether the data has to be refreshed
+			if (null == canceled || dataDeleted || !isLoadingMore) {
 				canceled = list;
 
 				/** Update cached data */
@@ -221,6 +225,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		setIsLoadingMore(true);
 		final Bundle bundle = new Bundle();
 		bundle.putInt(BankExtraKeys.CATEGORY_SELECTED, NO_CHANGE);
+		bundle.putBoolean(BankExtraKeys.IS_LOADING_MORE, true);
 		final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 		call.setExtras(bundle);
 		call.submit();
@@ -314,8 +319,61 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public void onResume(){
 		super.onResume();
-//		header.getHelp().showHelpItems(HelpMenuListFactory.instance().getPayBillsHelpItems());
+
 		header.requestLayout();
+	}
+
+	/**
+	 * Method used to see if a data update is required. This method will check to see what category (Scheduled,
+	 * Cancelled, or Completed) is currently being displayed to the user and based on whether or not the current cache
+	 * has values will decide whether a new data download is required.
+	 * 
+	 * @return True if cache manager has cached data for the current category displayed, false otherwise.
+	 */
+	@Override
+	protected boolean isDataUpdateRequired() {
+		final int category = header.getCurrentCategory();
+		boolean isUpdateRequired = false;
+		
+		/**Set the resource identifier that should be displayed in the details screen*/
+		switch( category ) {
+		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
+			isUpdateRequired = (BankUser.instance().getScheduled() == null);
+			break;
+		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
+			isUpdateRequired = (BankUser.instance().getCompleted() == null);
+			break;
+		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
+			isUpdateRequired = (BankUser.instance().getCancelled() == null);
+			break;
+		}
+		
+		return isUpdateRequired;
+	}
+	
+	/**
+	 * Method used to send a request to update the current data being displayed. The request made will depend on whether
+	 * Scheduled, Completed or Cancelled category is being displayed.
+	 */
+	@Override
+	protected void updateData() {
+		final int category = header.getCurrentCategory();
+				
+		/**Set the resource identifier that should be displayed in the details screen*/
+		switch( category ) {
+		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
+			scheduled = null;
+			setupScheduledList();
+			break;
+		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
+			completed = null;
+			setupCompletedList();
+			break;
+		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
+			canceled = null;
+			setupCancelledList();
+			break;
+		}		
 	}
 
 	/**
@@ -448,8 +506,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @param list - activities to update the adapter with
 	 */
 	public void updateAdapter(final ListPaymentDetail list){
-		cacheCurrentList(list);
-		
 		adapter.clear();
 		adapter.setData(list.payments);
 		if(adapter.getCount() < 1){
@@ -469,21 +525,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.notifyDataSetChanged();
 	}
 
-	/**
-	 * Saves the passed list to the BankUser cache based on the currently selected category.
-	 * @param list
-	 */
-	private void cacheCurrentList(final ListPaymentDetail list) {
-		final int category = header.getCurrentCategory();
-		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && null == BankUser.instance().getScheduled()){
-			BankUser.instance().setScheduled(list);
-		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && null == BankUser.instance().getCompleted()){
-			BankUser.instance().setCompleted(list);
-		}else if(category == ReviewPaymentsHeader.CANCELED_PAYMENTS && null == BankUser.instance().getCancelled()){
-			BankUser.instance().setCancelled(list);
-		}
-	}
-	
 	/**
 	 * Get the string that should be shown in the empty list view
 	 * @return the string that should be show in the empty list view

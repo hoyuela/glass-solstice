@@ -79,7 +79,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	private final Animation expand;
 
 	/**Current Account*/
-	private final Account account;
+	private Account account;
 
 	/**Status Message View*/
 	private final StatusMessageView status;
@@ -384,5 +384,17 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public Account getAccount() {
 		return account;
+	}
+
+	/**
+	 * Method used to set the account data information that is to be displayed by this UI element.
+	 * 
+	 * @param account
+	 *            - Reference to an Account object.
+	 */
+	public void setAccount(final Account account) {
+		this.account = account;
+
+		addAccount();
 	}
 }

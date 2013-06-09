@@ -64,7 +64,6 @@ public class GetCustomerAccountsServerCall  extends BankUnamedListJsonResponseMa
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<AccountList> handler;
-
 	/**
 	 * 
 	 * @param context Reference to the context invoking the API
@@ -113,6 +112,9 @@ public class GetCustomerAccountsServerCall  extends BankUnamedListJsonResponseMa
 		//later by the application layer and other classes
 		BankUser.instance().setAccounts(accountList);
 		
+		// Set flag to false so that another download request is not made and cached accounts are used instead.
+		BankUser.instance().setAccountOutDated(false);
+
 		return accountList;
 	}
 

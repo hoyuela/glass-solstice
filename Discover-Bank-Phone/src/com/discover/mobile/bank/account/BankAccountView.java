@@ -18,6 +18,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountNumber;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
+import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.google.common.base.Strings;
@@ -188,16 +189,22 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void onClick(final View v) {
 		final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
 
+		// Get latest account information
+		account = BankUser.instance().getAccount(account.id);
+
 		//Set Current Account to be accessed by other objects in the application
 		BankUser.instance().setCurrentAccount(account);
 
 		//Send Request to download the current accounts posted activity
 		if(null != account.posted){
 			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankAccountActivityTable.ACCOUNT, account);
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}else{
-			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted, false).submit();
+			final GetActivityServerCall serverCall = BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted, false);
+			serverCall.getExtras().putSerializable(BankAccountActivityTable.ACCOUNT, account);
+			serverCall.submit();
 		}
 	}
 
