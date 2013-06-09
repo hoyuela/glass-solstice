@@ -123,12 +123,13 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 
 		/**
 		 * Cache newly downloaded Activity data. The activity downloaded should be for the current account set in the
-		 * BankUser. The user cannot access activity from any other account other than the account being viewed.
+		 * BankUser. The user cannot access activity from any other account other than the account being viewed. Only
+		 * the first download should be cached, any other activity downloaded should not be cached.
 		 */
 		if (BankUser.instance().getCurrentAccount() != null) {
-			if (ActivityDetailType.Posted == type) {
+			if (ActivityDetailType.Posted == type && BankUser.instance().getCurrentAccount().posted == null) {
 				BankUser.instance().getCurrentAccount().posted = details;
-			} else {
+			} else if (BankUser.instance().getCurrentAccount().scheduled == null) {
 				BankUser.instance().getCurrentAccount().scheduled = details;
 			}
 		}

@@ -93,9 +93,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			// Check whether the data has to be refreshed
 			if (null == scheduled || dataDeleted || !isLoadingMore) {
 				scheduled = list;
-
-				/** Update cached data */
-				BankUser.instance().setScheduled(scheduled);
 			} else {
 				scheduled = handleReceivedData(scheduled, list);
 			}
@@ -105,9 +102,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			// Check whether the data has to be refreshed
 			if (null == completed || dataDeleted || !isLoadingMore) {
 				completed = list;
-
-				/** Update cached data */
-				BankUser.instance().setCompleted(completed);
 			} else {
 				completed = handleReceivedData(completed, list);
 			}
@@ -116,9 +110,6 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			// Check whether the data has to be refreshed
 			if (null == canceled || dataDeleted || !isLoadingMore) {
 				canceled = list;
-
-				/** Update cached data */
-				BankUser.instance().setCancelled(canceled);
 			} else {
 				canceled = handleReceivedData(canceled, list);
 			}

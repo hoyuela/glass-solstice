@@ -170,19 +170,19 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 		/** Verify URL used for downloading payment details is not null */
 		if (details != null && null != queryURL) {
 			/** If the url used was for requesting scheduled payments, then cache as scheduled payments */
-			if (queryURL.equalsIgnoreCase(url)) {
+			if (queryURL.equalsIgnoreCase(url) && BankUser.instance().getScheduled() == null) {
 				BankUser.instance().setScheduled(details);
 			} else {
 				url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
 
 				/** If the url used was for requesting completed payments, then cache as completed payments */
-				if (queryURL.equalsIgnoreCase(url)) {
+				if (queryURL.equalsIgnoreCase(url) && BankUser.instance().getCompleted() == null) {
 					BankUser.instance().setCompleted(details);
 				} else {
 					url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
 
 					/** If the url used was for requesting cancelled payments, then cache as cancelled payments */
-					if (queryURL.equalsIgnoreCase(url)) {
+					if (queryURL.equalsIgnoreCase(url) && BankUser.instance().getCancelled() == null) {
 						BankUser.instance().setCancelled(details);
 					} else {
 						if (Log.isLoggable(TAG, Log.WARN)) {
