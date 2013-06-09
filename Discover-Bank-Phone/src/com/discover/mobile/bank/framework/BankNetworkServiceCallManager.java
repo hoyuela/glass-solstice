@@ -425,8 +425,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
-		else if( sender instanceof GetCustomerAccountsServerCall) {
-			BankConductor.navigateToHomePage();
+		else if (sender instanceof GetCustomerAccountsServerCall) {
+			/** Make sure the service call is not a background service call, indicating it should run silently */
+			if (!((GetCustomerAccountsServerCall) sender).isBackgroundCall()) {
+				BankConductor.navigateToHomePage();
+			}
 		}
 		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a 
 		//question or retansmit previous NetworkServiceCall<>
@@ -485,9 +488,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 				// Mark the cancelled payment dirty so that it is refreshed
 				BankUser.instance().setCancelled(null);
-
-				// Clear all account downloaded data
-				BankUser.instance().setAccountOutDated(true);
 			}
 			/**Check to see if the payees were downloaded because of an added payee call*/
 			else if( (prevCall instanceof AddPayeeServiceCall) &&
@@ -546,27 +546,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, ((GetActivityServerCall)sender).getDidDeleteActivity());
 			bundle.putBoolean(BankExtraKeys.DID_DELETE_PAYMENT, ((GetActivityServerCall)sender).getDidDeletePayment());
+			bundle.putAll(((GetActivityServerCall) sender).getExtras());
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}
 		//Delete Payment Successful, navigate to Review Payments Page
 		else if( sender instanceof DeletePaymentServiceCall ) {
 			final Bundle deletePaymentBundle = getDeletePaymentBundle(sender);
-			final PaymentDetail paymentDetail = ((DeletePaymentServiceCall)sender).getPaymentDetail();
-		
+
 			if(isCurrentFragmentActivityDetail()) {
 				BankConductor.navigateToActivityDetailFromDelete(deletePaymentBundle);
 			}else {
 				BankConductor.navigateToReviewPaymentsFromDelete(deletePaymentBundle);
-				//Mark the scheduled activity dirty so that it is refreshed
-				final Account account = BankUser.instance().getAccount(paymentDetail.paymentAccount.id);
-				if(null != account){
-					account.scheduled = null;
-				}
-				//Mark the scheduled payments dirty so that it is refreshed
-				BankUser.instance().setScheduled(null);
-	
-				//Mark the cancelled payment dirty so that it is refreshed
-				BankUser.instance().setCancelled(null);
 			}
 		} else if (sender instanceof DeleteTransferServiceCall) {
 			//Adds the Activity detail to the Bundle and navigates to the Account Activity page.
@@ -658,8 +648,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handler for Bank Delete Payee Service Call
 		else if( sender instanceof DeletePayeeServiceCall ) {
-			BankUser.instance().setScheduled(null);
-			
+			//Update bank account to update the balances
+			BankUser.instance().refreshBankAccounts();
+
 			//Update list of payees
 			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
 		}
@@ -971,10 +962,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	}
 
 	/**
-	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception
-	 * response to a network service call.
+	 * Enum used to specify whether a NetworkServiceCallAsyncArgs is for a successful, error or exception response to a
+	 * network service call.
+	 * 
 	 * @author henryoyuela
-	 *
+	 * 
 	 */
 	public enum Result { Success, Failure, Exception };
 

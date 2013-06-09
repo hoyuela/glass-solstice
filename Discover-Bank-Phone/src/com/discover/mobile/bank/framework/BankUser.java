@@ -3,11 +3,15 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -73,6 +77,54 @@ public final class BankUser extends CacheManager implements Serializable {
 
 	/**Boolean set to true when the account list needs to be updated*/
 	private boolean accountOutDated = false; 
+
+	/**
+	 * List of listeners notified when a change event occurs on BankUser
+	 */
+	@Nonnull
+	private final List<BankUserListener> listeners;
+
+	private BankUser() {
+		super();
+
+		listeners = new ArrayList<BankUserListener>();
+	}
+
+	/**
+	 * Method used to add a listener to the list of listeners that are notified when a data change event occurs. If the
+	 * listener already exists on the list then it is not added.
+	 * 
+	 * @param listener
+	 *            Reference to a BankUserListener subscribing for change events from this instance of BankUser.
+	 */
+	public void addListener(final BankUserListener listener) {
+		boolean found = false;
+
+		if (listener != null) {
+			for (final BankUserListener item : listeners) {
+				if (item == listener) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				listeners.add(listener);
+			}
+		}
+	}
+
+	/**
+	 * Method used to remove a listern from the list of listeners managed by this BankUser.
+	 * 
+	 * @param listener
+	 *            Reference to listener that is no longer interested in receiving data change events from BankUser.
+	 */
+	public void removeListener(final BankUserListener listener) {
+		if (listener != null) {
+			listeners.remove(listener);
+		}
+	}
 
 	/**
 	 * 
@@ -149,6 +201,16 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setAccounts(final AccountList accounts) {
 		accountList = accounts;
+		
+		if (accounts != null && accounts.accounts != null) {
+			for (final Account acct : accounts.accounts) {
+				if (currentAccount != null && acct.id.equalsIgnoreCase(currentAccount.id)) {
+					this.setCurrentAccount(acct);
+				}
+			}
+		}
+
+		BankUserVisitors.visitAccountChangeListeners(this, listeners, accounts);
 	}
 
 	/**
@@ -230,6 +292,8 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setCurrentAccount(final Account value) {
 		currentAccount = value;
+		
+		BankUserVisitors.visitCurrentAccountChangeListeners(this, listeners, value);
 	}
 
 	/**
@@ -344,5 +408,18 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public void setExternalAccounts(final AccountList externalAccounts) {
 		this.externalTransferAccounts = externalAccounts;
+	}
+
+	/**
+	 * Method used to refresh the Bank Account information for the current logged in user.
+	 * 
+	 */
+	public void refreshBankAccounts() {
+		BankUser.instance().setAccountOutDated(true);
+
+		// Refresh Account Information
+		final GetCustomerAccountsServerCall acctsDwnld = BankServiceCallFactory.createGetCustomerAccountsServerCall();
+		acctsDwnld.setIsBackgroundCall(true);
+		acctsDwnld.submit();
 	}
 }

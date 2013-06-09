@@ -7,8 +7,11 @@ import java.util.Map;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
@@ -90,6 +93,8 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  */
 public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListPaymentDetail, PaymentDetail> {
 
+	private static final String TAG = "GetPayments";
+
 	/**Reference handler for returning to the UI*/
 	private final TypedReferenceHandler<ListPaymentDetail> handler;
 
@@ -98,6 +103,9 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 
 	/**Bundle of data to pass after making the call*/
 	private Bundle extras;
+
+	/** Url used to make the service request */
+	private final String queryURL;
 
 	/**
 	 * 
@@ -122,6 +130,9 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 				errorResponseParser = BankErrorResponseParser.instance();
 			}
 		}, ListPaymentDetail.class, PaymentDetail.class);
+
+		queryURL = url;
+
 		handler = new SimpleReferenceHandler<ListPaymentDetail>(callback);
 	}
 
@@ -138,11 +149,53 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	protected ListPaymentDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, 
 			final InputStream body) throws IOException {
 
-
 		final ListPaymentDetail details = new ListPaymentDetail();
 		details.payments = super.parseUnamedList(body);
 		details.links = parseHeaderForLinks(headers);
+
+		cacheData(details);
+
 		return details;
+	}
+
+	/**
+	 * Method used to cache data received via this service call.
+	 * 
+	 * @param details
+	 *            Reference to the data that is to be cached in BankUser instance.
+	 */
+	private void cacheData(final ListPaymentDetail details) {
+		String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+		
+		/** Verify URL used for downloading payment details is not null */
+		if (details != null && null != queryURL) {
+			/** If the url used was for requesting scheduled payments, then cache as scheduled payments */
+			if (queryURL.equalsIgnoreCase(url)) {
+				BankUser.instance().setScheduled(details);
+			} else {
+				url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.COMPLETED);
+
+				/** If the url used was for requesting completed payments, then cache as completed payments */
+				if (queryURL.equalsIgnoreCase(url)) {
+					BankUser.instance().setCompleted(details);
+				} else {
+					url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.CANCELLED);
+
+					/** If the url used was for requesting cancelled payments, then cache as cancelled payments */
+					if (queryURL.equalsIgnoreCase(url)) {
+						BankUser.instance().setCancelled(details);
+					} else {
+						if (Log.isLoggable(TAG, Log.WARN)) {
+							Log.w(TAG, "Unable to cache payment results, unknown query!");
+						}
+					}
+				}
+			}
+		} else {
+			if (Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Unable to cache payment results, invalid query");
+			}
+		}
 	}
 
 	@Override
@@ -167,6 +220,7 @@ public class GetPaymentsServiceCall extends BankUnamedListJsonResponseMappingNet
 	/**
 	 * @return the extras
 	 */
+	@Override
 	public Bundle getExtras() {
 		return extras;
 	}

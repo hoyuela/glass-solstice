@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.ui.table;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,20 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	/**Boolean used to determine if the fragment is loading more*/
 	private boolean isLoadingMore = false;
 
+	protected boolean isViewCreated = false;
+
+	// A runnable that will dismiss the calendar fragment.
+	final Runnable asyncUpdateData = new Runnable() {
+		@Override
+		public void run() {
+			/** Verify if data update is required or not and only update date if view in foreground */
+			final boolean update = isDataUpdateRequired() && isViewCreated();
+			if (update) {
+				updateData();
+			}
+		}
+	};
+
 	/**
 	 * Create the view
 	 * @param inflater - inflater to inflate the layout
@@ -58,7 +73,21 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		setUpTable();
 		
 		CommonUtils.fixBackgroundRepeat(view);
+
+		isViewCreated = true;
 		return view;
+	}
+
+
+	public boolean isViewCreated() {
+		return isViewCreated;
+	}
+
+	@Override
+	public void onDestroyView() {
+		isViewCreated = false;
+
+		super.onDestroyView();
 	}
 
 	/**
@@ -106,6 +135,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		super.onResume();
 		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
+
+		new Handler().postDelayed(asyncUpdateData, 100);
 	}
 
 	/**
@@ -230,4 +261,15 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	protected PullToRefreshListView getTable() {
 		return table;
 	}
+
+	/**
+	 * Method used to see if a data update is required. This method will check to see what category (Scheduled,
+	 * Cancelled, or Completed) is currently being displayed to the user and based on whether or not the current cache
+	 * has values will decide whether a new data download is required.
+	 * 
+	 * @return True if cache manager has cached data for the current category displayed, false otherwise.
+	 */
+	abstract protected boolean isDataUpdateRequired();
+
+	abstract protected void updateData();
 }
