@@ -32,19 +32,6 @@
             android:layout_below="@+id/status_bar_layout"
             android:text="@string/bank_open_account_details" />
 
-        <Button
-            android:id="@+id/openAccount"
-            style="@style/call_to_action_theme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/openAccountDetails"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/modal_footer_topmargin"
-            android:drawablePadding="@dimen/between_related_elements_padding"
-            android:drawableRight="@drawable/external_link_icon_white"
-            android:text="@string/bank_open_account" />
-
         <com.discover.mobile.common.ui.widgets.AccountToggleView
             android:id="@+id/acct_toggle"
             android:layout_width="wrap_content"
