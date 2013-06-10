@@ -10,17 +10,21 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
@@ -46,6 +50,7 @@ import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.bank.ui.DiscoverToggleSwitch;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -68,6 +73,7 @@ import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.EncryptionUtil;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -86,7 +92,8 @@ import com.slidingmenu.lib.SlidingMenu;
 public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface, OnClickListener {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
-	
+	final long halfSecond = 500;
+	final int threeFifty = 350;
 	
 	/**
 	 * These are string values used when passing extras to the saved instance
@@ -106,18 +113,20 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * A state flag so that we don't run this twice.
 	 */
 	private static boolean phoneGapInitComplete = false;
+	
+	/**The number of pixels that is between the left and center positions of the Discover logo */
+	private static int cachedLogoOffset = 0;
 
 	// INPUT FIELDS
-
 	private NonEmptyEditText idField;
 	private NonEmptyEditText passField;
 
 	// BUTTONS
-
 	private Button loginButton;
-	private Button registerOrAtmButton;
+	private TextSwitcher registerOrAtmButton;
 	private Button customerServiceButton;
 	private Button provideFeedbackButton;
+	private DiscoverToggleSwitch saveUserIdToggleSwitch;
 		
 	private RelativeLayout goToBankButton;
 	private RelativeLayout goToCardButton;
@@ -139,7 +148,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	// IMAGES
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
-	private ImageView toggleImage;
 	private ProgressBar splashProgress;
 
 	/*Used to specify whether the pre-authenciation call has been made for the application.
@@ -173,8 +181,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_start);
-		//setBehindContentView(R.layout.fastcheck_frame);
+
 		loadResources();
+	    setupTextSwitcher();
 
 		// **Activity manager has to be set before using Track Helper*/
 		DiscoverActivityManager.setActiveActivity(this);
@@ -200,7 +209,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	    };
 	    getSlidingMenu().setOnClickListener(this);
 	    getSlidingMenu().setOnTouchListener(gestureListener);
-	    
 	 }
 	
 	@Override
@@ -212,13 +220,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	protected void setupSlidingMenu() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setMode(SlidingMenu.RIGHT);
-		//slidingMenu.setOnOpenListener(this);
-		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 	
-//	@Override
-//	public void onOpen() {}
 	
 	/**
 	 * This method is being called to prevent onResume calls for rotation
@@ -234,19 +237,22 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Assign local references to interface elements that we need to access in some way.
 	 */
 	private void loadResources() {
+		final int maxIdLength = 16;
+		final int maxPasswordLength = 32;
+		
 		final InputFilter[] filters = new InputFilter[1];
 		filters[0] = new InvalidCharacterFilter();
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
 		idField.setFilters(filters);
-		idField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(16)});
+		idField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxIdLength)});
 
 		passField = (NonEmptyEditText) findViewById(R.id.password_field);
 		passField.setFilters(filters);
-		passField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(32)});
+		passField.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxPasswordLength)});
 
 		provideFeedbackButton = (Button) findViewById(R.id.provide_feedback_button);
 		loginButton = (Button) findViewById(R.id.login_button);
-		registerOrAtmButton = (Button) findViewById(R.id.register_now_or_atm_button);
+		registerOrAtmButton = (TextSwitcher) findViewById(R.id.register_now_or_atm_button);
 		privacySecOrTermButtonBank = (TextView) findViewById(R.id.privacy_and_security_button_bank);
 		cardForgotAndPrivacySection = (LinearLayout) findViewById(R.id.card_forgot_and_privacy_section);
 		customerServiceButton = (Button) findViewById(R.id.customer_service_button);
@@ -261,13 +267,45 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
-		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button);
+		saveUserIdToggleSwitch = (DiscoverToggleSwitch) findViewById(R.id.remember_user_id_button);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
 		
 		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
 		fcPrivacyTermButton = (Button)findViewById(R.id.fastcheck_privacy_terms_button);
 		fcProvideFeedbackButton = (Button)findViewById(R.id.fastcheck_provide_feedback_button);
 
+	}
+	
+	
+	/**
+	 * Sets up the text switcher which will allow the register now / atm locator button to fade between text
+	 * when the Bank and Card login button is toggled.
+	 */
+	private void setupTextSwitcher() {
+		final AlphaAnimation inAnimation = new AlphaAnimation(0.0f, 1.0f);
+		inAnimation.setDuration(halfSecond);
+		
+		final AlphaAnimation outAnimation = new AlphaAnimation(1.0f, 0.0f);
+		outAnimation.setDuration(halfSecond);
+		
+		registerOrAtmButton.setInAnimation(inAnimation);
+		registerOrAtmButton.setOutAnimation(outAnimation);
+		
+		registerOrAtmButton.addView(getButtonBarTextView());
+		registerOrAtmButton.addView(getButtonBarTextView());
+
+	}
+	
+	/**
+	 * 
+	 * @return a TextView that has the same style as the other TextViews that are used in the bottom button bar.
+	 */
+	private TextView getButtonBarTextView() {
+		final TextView buttonBarTextView = new TextView(getContext());
+		buttonBarTextView.setGravity(Gravity.CENTER);
+
+		buttonBarTextView.setTextAppearance(getContext(), R.style.login_bottom_bar_button);
+		return buttonBarTextView;
 	}
 
 	/**
@@ -348,6 +386,61 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+	}
+	
+	private void startFadeOutAnimationForView(final View viewToFade,
+											  final long duration) {
+		startFadeOutAimationForView(viewToFade, duration, viewToFade.getVisibility());
+	}
+	
+	/**
+	 * Convenience method for the longer version of this.
+	 * @param viewToFade the view to apply the fade to.
+	 * @param duration the number of miliseconds that the animation will animate for.
+	 * @param endVisibility the visibility for the view after the animation completes.
+	 * @return
+	 */
+	private void startFadeOutAimationForView(final View viewToFade, 
+											 final long duration, 
+											 final int endVisibility){
+		
+		startFadeOutAnimationForView(viewToFade, duration, endVisibility, 0);
+	}
+	
+	/**
+	 * Starts a fade out animation on a given View with the passed parameters.
+	 * @param viewToFade the view to apply the fade to.
+	 * @param duration the number of miliseconds that the animation will animate for.
+	 * @param endVisibility the visibility for the view after the animation completes.
+	 * @param animationDelay the number of miliseconds that will elapse before the animation begins.
+	 */
+	private void startFadeOutAnimationForView(final View viewToFade, 
+														final long duration, 
+														final int endVisibility, 
+														final long animationDelay) {
+		if(viewToFade != null) {
+			final AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+			
+			fadeOut.setDuration(duration);
+			fadeOut.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(final Animation animation) {				
+				}
+				
+				@Override
+				public void onAnimationRepeat(final Animation animation) {				
+				}
+				
+				@Override
+				public void onAnimationEnd(final Animation animation) {
+					viewToFade.setVisibility(endVisibility);
+				}
+			});
+			fadeOut.setStartOffset(animationDelay);
+			
+			viewToFade.startAnimation(fadeOut);
+		}
 	}
 
 	/**
@@ -563,7 +656,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		final String savedId = Globals.getCurrentUser();
 		if(rememberIdCheckState) {
-			idField.setText(savedId );
+			idField.setText(savedId);
 			idField.clearFocus();
 			idField.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		} else {
@@ -634,11 +727,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			@Override
 			public void onClick(final View v) {
 
-				final String regOrAtmText = registerOrAtmButton.getText().toString();
-				final String regText = getResources().getString(R.string.register_now);
-
 				//Check if registerOrAtm button is displaying text for Card or Bank
-				if( regOrAtmText.equals(regText) ) {
+				if(isCardLogin()) {
 				 	FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
 				} else {
 					openAtmLocator();
@@ -827,10 +917,15 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void toggleSaveUserIdSwitch(final View view, final boolean cache) {
 
 		if (saveUserId) {
-			toggleImage.setBackgroundResource(R.drawable.swipe_off);
+			if(saveUserIdToggleSwitch.isChecked()){
+				saveUserIdToggleSwitch.toggle();
+			}
 			saveUserId = false;
+			
 		} else {
-			toggleImage.setBackgroundResource(R.drawable.swipe_on);
+			if(!saveUserIdToggleSwitch.isChecked()) {
+				saveUserIdToggleSwitch.toggle();
+			}
 			saveUserId = true;
 		}
 
@@ -856,8 +951,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void setApplicationAccount() {
 		/**
-		 * Used to remember the lastLoginAccount at startup of the application, in case the user toggles to a different account
-		 * and does not login. This variable will be used to revert the application back to the original last logged in account.
+		 * Used to remember the lastLoginAccount at startup of the application, in case the user 
+		 * toggles to a different account and does not login. This variable will be used to revert 
+		 * the application back to the original last logged in account.
 		 */
 		final AccountType lastLoginAcct = Globals.getCurrentAccount();
 		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
@@ -882,19 +978,17 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//See if we are toggling or not (the user didn't press the selection they are on again.)
 		if (v.equals(goToCardButton) && initialAccountType.equals(AccountType.CARD_ACCOUNT)) {
 			isTogglingCardOrBank = false;
-
 		}else if(v.equals(goToBankButton) && initialAccountType.equals(AccountType.BANK_ACCOUNT)){
 			isTogglingCardOrBank = false;
-		}
-		else{
+		}else{
 			isTogglingCardOrBank = true;
 		}
 
 		//Do Common setup between Bank and Card toggling
 		if(isTogglingCardOrBank){
 			clearInputs();
-			Globals.setCurrentUser("");
-			errorTextView.setText("");
+			Globals.setCurrentUser(StringUtility.EMPTY);
+			errorTextView.setText(StringUtility.EMPTY);
 			errorTextView.setVisibility(View.GONE);
 
 			//Delete saved use if toggle is made and save user ID is not checked.
@@ -904,10 +998,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			if(v.equals(goToCardButton)){
 				setLoginTypeToCard();
+				animateCardSetup();
 			}
 			//Setup Bank Login.
 			else {
 				setLoginTypeToBank();
+				animateBankSetup();
 				//Track that the bank toggle was selected
 				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
 			}
@@ -921,26 +1017,82 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			passField.clearFocus();
 
 			setInputFieldsDrawablesToDefault();
-			((ScrollView)findViewById(R.id.login_pane)).smoothScrollTo(0, 0);
+
 		}
 	}
-	
+
 	@Override
 	public void hideFastcheck() {
 		gotoFastcheckButton.setVisibility(View.GONE);
-		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);	
+		alignLogoLeft(false);
+	}
+	
+	/**
+	 * Returns the distance in pixels that the given view needs to move in order to be centered in the screen.
+	 * 
+	 * @param view
+	 * @return the number of pixels that view needs to move to reach the become centered in the screen.
+	 */
+	private int getXDistanceToCenterForView(final View view) {
+		int xDelta = 0;
+		final int[] coords = new int[] {0, 0};
+		view.getLocationInWindow(coords);
+		
+		final int viewWidth = view.getMeasuredWidth() / 2;	
+		
+		xDelta = getDisplayWidth() / 2;
+		xDelta -= viewWidth;
+		xDelta -= coords[0];
+		
+		return xDelta;
+	}
+	
+	/**
+	 * 
+	 * @return the width in pixels of the screen.
+	 */
+	private int getDisplayWidth() {
+		final DisplayMetrics dm = new DisplayMetrics();
+		
+		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+		return dm.widthPixels;
+	}
+
+	/**
+	 * Animates the Discover logo so that it will slide into its appropriate position based on 
+	 * if the login screen is setup for Card or Bank.
+	 */
+	private void animateLogoSlide() {
+		final View logo = findViewById(R.id.discoverLogo);
+		final int[] coords = new int[] {0, 0};
+		logo.getLocationInWindow(coords);
+		
+		TranslateAnimation translation = null;
+		if(isCardLogin()) {
+			translation = new TranslateAnimation(coords[0] - cachedLogoOffset, 0, 0, 0);
+		}else{
+			translation = new TranslateAnimation(-getXDistanceToCenterForView(logo), 0, 0, 0);
+		}
+					
+		translation.setDuration(halfSecond);
+
+		logo.startAnimation(translation);
 	}
 	
 	private void showFastcheckOnCondition() {
 		if (fastcheckTokenExists()) {
 			gotoFastcheckButton.setVisibility(View.VISIBLE);
 			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		} else hideFastcheck();
+		} else {
+			hideFastcheck();
+		}
 	}
 
 	private void deleteAndSaveCurrentUserPrefs() {
 		Globals.setRememberId(false);
-		Globals.setCurrentUser("");
+		Globals.setCurrentUser(StringUtility.EMPTY);
 		Globals.savePreferences(this);
 	}
 
@@ -969,7 +1121,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad),
 				(int) getResources().getDimension(R.dimen.top_pad));
 
-		registerOrAtmButton.setText(R.string.register_now);
+		registerOrAtmButton.setText(getResources().getString(R.string.register_now));
 
 		CommonUtils.setViewInvisible(privacySecOrTermButtonBank);
 		CommonUtils.setViewVisible(cardForgotAndPrivacySection);
@@ -977,7 +1129,63 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
 		
+		alignLogoLeft(true);
+
 		showFastcheckOnCondition();
+	}
+	
+	/**
+	 * Aligns the Discover logo on the login screen to it's parent left alignment if given 'true' as its parameter.
+	 * If 'false', it will align to center horizontal.
+	 * @param alignLeft will align the logo to its parent left if true, or centered horizontal if false.
+	 */
+	private void alignLogoLeft(final boolean alignLeft) {
+		final View logo = findViewById(R.id.discoverLogo);
+		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)logo.getLayoutParams();
+		
+		if(alignLeft) {
+	 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
+			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 1);
+		}else {
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
+			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
+			final int[] location = new int[2];
+			logo.getLocationOnScreen(location);
+			cachedLogoOffset = location[0];
+		}
+		
+		logo.setLayoutParams(params);
+	}
+	
+	/**
+	 * Animates the login screen into the card login state.
+	 */
+	private void animateCardSetup() {
+		final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+		fadeIn.setDuration(halfSecond);
+		forgotUserIdOrPassText.startAnimation(fadeIn);
+		cardPrivacyLink.startAnimation(AnimationUtils.loadAnimation(getContext(), 
+									   R.anim.to_center_from_left_of_center));
+		animateFastCheckIfNeeded();
+	}
+	
+	/**
+	 * If the fastcheck button should be visible, then this method will animate the discover logo sliding to 
+	 * the left and the button fading in.
+	 */
+	private void animateFastCheckIfNeeded() {
+		if(fastcheckTokenExists() && gotoFastcheckButton != null) {
+			if(isCardLogin()) {
+				animateLogoSlide();
+				final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+				fadeIn.setDuration(threeFifty);
+				gotoFastcheckButton.startAnimation(fadeIn);
+			}else if(!isCardLogin()) {
+				animateLogoSlide();
+				startFadeOutAnimationForView(gotoFastcheckButton, threeFifty);
+			}
+		}
+		
 	}
 
 	/**
@@ -1003,22 +1211,65 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad),
 				(int) getResources().getDimension(R.dimen.top_pad),
 				(int) getResources().getDimension(R.dimen.top_pad));
-		registerOrAtmButton.setText(R.string.atm_locator);
+
+		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+		hideFastcheck();
 
 		CommonUtils.setViewVisible(privacySecOrTermButtonBank);
 		CommonUtils.setViewInvisible(cardForgotAndPrivacySection);
 
+		alignLogoLeft(false);
+
+		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
 		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
+	}
+	
+	/**
+	 * Perform animations that will transition the login screen into a Bank state.
+	 */
+	private void animateBankSetup() {
+		animatePrivacyAndTermsSlideToBank();
+		animateFastCheckIfNeeded();
+	}
+	
+	/**
+	 * Animates the privacy and terms link for bank into the center of its row and fades out the
+	 * forgot password link.
+	 */
+	private void animatePrivacyAndTermsSlideToBank() {
+		CommonUtils.setViewVisible(cardForgotAndPrivacySection);
+		privacySecOrTermButtonBank.setVisibility(View.INVISIBLE);
+
+		final View forgotLink = cardForgotAndPrivacySection.findViewById(R.id.forgot_uid_or_pass_text);
+		final Animation translate = AnimationUtils.loadAnimation(getContext(), R.anim.slide_to_center);
+		translate.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(final Animation animation) {
+				startFadeOutAimationForView(forgotLink, threeFifty, View.INVISIBLE);
+			}
+			
+			@Override
+			public void onAnimationRepeat(final Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(final Animation animation) {
+				forgotLink.setVisibility(View.VISIBLE);
+				CommonUtils.setViewVisible(privacySecOrTermButtonBank);
+				CommonUtils.setViewInvisible(cardForgotAndPrivacySection);
+				privacySecOrTermButtonBank.setVisibility(View.VISIBLE);
+			}
+		});
 		
-		hideFastcheck();
+		cardPrivacyLink.startAnimation(translate);
 	}
 
 	/**
 	 * clearInputs() Removes any text in the login input fields.
 	 */
 	private void clearInputs() {
-
 		idField.getText().clear();
 		passField.getText().clear();
 		idField.clearFocus();
@@ -1034,7 +1285,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
 		saveUserId = !shouldBeChecked;
-		toggleSaveUserIdSwitch(toggleImage, cached);
+		toggleSaveUserIdSwitch(saveUserIdToggleSwitch, cached);
 	}
 
 	/**
@@ -1180,20 +1431,22 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 					final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
 					animationFadeIn.setAnimationListener(new AnimationListener() {
+						
 						@Override
-						public void onAnimationStart(final Animation anim)
-						{
-						};
-						@Override
-						public void onAnimationRepeat(final Animation anim)
-						{
-						};
-						@Override
-						public void onAnimationEnd(final Animation anim)
-						{
+						public void onAnimationStart(final Animation anim) {
+							final Animation translate = 
+									AnimationUtils.loadAnimation(getContext(), R.anim.slide_up_animation);
 							toolbar.setVisibility(View.VISIBLE);
+							toolbar.startAnimation(translate);
+						};
+						@Override
+						public void onAnimationRepeat(final Animation anim)  {
+						};
+						@Override
+						public void onAnimationEnd(final Animation anim) {
 						};
 					});
+					
 					loginPane.startAnimation(animationFadeIn);
 				} else {
 					if( Log.isLoggable(TAG, Log.WARN)) {
@@ -1362,7 +1615,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	@Override
 	public String getActionBarTitle() {
-		return "";
+		return StringUtility.EMPTY;
 	}
 	
 		
@@ -1417,12 +1670,4 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 }	
-	
-	
-	
-	
-	
-	
-	
-	
 	

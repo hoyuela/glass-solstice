@@ -68,8 +68,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/element_side_padding"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/quick_view_button"
-                    android:text="Quick view" />
+                    android:background="@drawable/white_button"
+                    android:paddingLeft="@dimen/forms_inner_padding"
+                    android:paddingRight="@dimen/forms_inner_padding"
+                    android:text="@string/quick_view_text" />
 
                 <TextView
                     android:id="@+id/error_text_view"
@@ -146,7 +148,7 @@
                     android:text="@string/remember_user_id"
                     android:textColor="#576166" />
 
-                <ImageView
+                <com.discover.mobile.bank.ui.DiscoverToggleSwitch
                     android:id="@+id/remember_user_id_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -155,10 +157,8 @@
                     android:layout_marginLeft="5dip"
                     android:layout_marginRight="@dimen/element_side_padding"
                     android:layout_marginTop="14dp"
-                    android:clickable="true"
-                    android:contentDescription="@string/remember_user_id"
-                    android:onClick="toggleCheckBoxFromXml"
-                    android:padding="5dip" />
+                    android:button="@null"
+                    android:onClick="toggleCheckBoxFromXml" />
 
                 <Button
                     android:id="@+id/login_button"
@@ -250,6 +250,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/login_horizontal_divider"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/bottom_pad"
                         android:paddingLeft="@dimen/left_pad"
@@ -288,6 +289,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@id/go_to_card_label"
+                                android:contentDescription="@null"
                                 android:src="@drawable/black_check_mark" />
                         </RelativeLayout>
 
@@ -324,6 +326,7 @@
                                 android:layout_centerVertical="true"
                                 android:layout_marginRight="3dp"
                                 android:layout_toLeftOf="@id/go_to_bank_label"
+                                android:contentDescription="@null"
                                 android:src="@drawable/black_check_mark" />
                         </RelativeLayout>
                     </LinearLayout>
@@ -363,7 +366,7 @@
             android:layout_weight="0.33"
             android:text="@string/provide_feedback" />
 
-        <Button
+        <TextSwitcher
             android:id="@+id/register_now_or_atm_button"
             style="@style/login_bottom_bar_button"
             android:layout_width="0dp"
