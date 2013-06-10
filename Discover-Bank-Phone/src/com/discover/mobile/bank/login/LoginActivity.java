@@ -909,26 +909,17 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/**
 	 * toggleSaveUserIdSwitch - This method handles the state of the save user id switch on the login screen.
 	 *
-	 * It changes its image and the state of the saveUserId value.
+	 * It changes the state of the saveUserId value.
 	 *
 	 * @param v Reference to view which contains the remember user id check
 	 * @param cache Specifies whether to remember the state change
 	 */
 	public void toggleSaveUserIdSwitch(final View view, final boolean cache) {
-
-		if (saveUserId) {
-			if(saveUserIdToggleSwitch.isChecked()){
-				saveUserIdToggleSwitch.toggle();
-			}
-			saveUserId = false;
-			
-		} else {
-			if(!saveUserIdToggleSwitch.isChecked()) {
-				saveUserIdToggleSwitch.toggle();
-			}
-			saveUserId = true;
+		if(saveUserId == saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
 		}
-
+		saveUserId = saveUserIdToggleSwitch.isChecked();
+		
 		//Check whether to save change in persistent storage
 		if(cache) {
 			Globals.setRememberId(saveUserId);
@@ -1213,7 +1204,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
-		hideFastcheck();
 
 		CommonUtils.setViewVisible(privacySecOrTermButtonBank);
 		CommonUtils.setViewInvisible(cardForgotAndPrivacySection);
@@ -1221,8 +1211,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		alignLogoLeft(false);
 
 		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
+		
 		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
+		
+		hideFastcheck();
 	}
 	
 	/**
@@ -1284,8 +1277,18 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param cached Sets whether the state change should be remembered
 	 */
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
-		saveUserId = !shouldBeChecked;
-		toggleSaveUserIdSwitch(saveUserIdToggleSwitch, cached);
+		if(shouldBeChecked && !saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
+		}else if (!shouldBeChecked && saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
+		}
+		
+		saveUserId = shouldBeChecked;
+		
+		//Check whether to save change in persistent storage
+		if(cached) {
+			Globals.setRememberId(saveUserId);
+		}	
 	}
 
 	/**
