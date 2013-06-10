@@ -665,6 +665,22 @@ public final class BankConductor  extends Conductor {
 			call.setExtras(bundle);
 			call.submit();
 
+			// Mark the scheduled activity dirty so that it is refreshed
+			final PaymentDetail paymentDetail = (PaymentDetail) bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+
+			final Account account = BankUser.instance().getAccount(paymentDetail.paymentAccount.id);
+			if (null != account) {
+				account.scheduled = null;
+			}
+
+			// Mark the scheduled payments dirty so that it is refreshed
+			BankUser.instance().setScheduled(null);
+
+			// Mark the cancelled payment dirty so that it is refreshed
+			BankUser.instance().setCancelled(null);
+
+			// Update bank account to update the balances
+			BankUser.instance().refreshBankAccounts();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Unable to get current Activity");
@@ -691,6 +707,9 @@ public final class BankConductor  extends Conductor {
 
 			getActivityCall.setDidDeletePayment(true);
 			getActivityCall.submit();
+
+			// Update bank account to update the balances
+			BankUser.instance().refreshBankAccounts();
 		}
 	}
 
@@ -913,15 +932,22 @@ public final class BankConductor  extends Conductor {
 		else if( bundle.containsKey(BankExtraKeys.CONFIRM_DELETE)) {
 			//Navigate back to Review Payments, the user should be on the Payment Detail page for the deleted Payment
 			if( activity.popTillFragment(ReviewPaymentsTable.class) ) {
-				final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable)activity.getCurrentContentFragment();
+				final Fragment curFragment = activity.getCurrentContentFragment();
+				if (activity.getCurrentContentFragment() instanceof ReviewPaymentsTable) {
+					final ReviewPaymentsTable revPmtFrag = (ReviewPaymentsTable) curFragment;
 
-				/**Update arguments bundle in fragment*/
-				final Bundle args = revPmtFrag.getArguments();
-				if( args != null) {
-					args.putAll(bundle);
+					/** Update arguments bundle in fragment */
+					final Bundle args = revPmtFrag.getArguments();
+					if (args != null) {
+						args.putAll(bundle);
+					}
+
+					revPmtFrag.handleReceivedData(bundle);
+				} else {
+					if (Log.isLoggable(TAG, Log.ERROR) && null != curFragment) {
+						Log.e(TAG, "Unable to navigate to review payments [Current=" + curFragment.toString() + "]");
+					}
 				}
-
-				revPmtFrag.handleReceivedData(bundle);
 			}
 		}
 		//Handle the first time user opens Review Payments page

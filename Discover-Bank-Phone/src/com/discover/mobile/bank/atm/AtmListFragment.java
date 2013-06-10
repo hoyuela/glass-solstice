@@ -238,4 +238,15 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	public boolean isBackPressDisabled() {
 		return observer.isBackPressDisabled();
 	}
+
+	@Override
+	protected boolean isDataUpdateRequired() {
+		// THIS METHOD IS NOT REQUIRED FOR ATM
+		return false;
+	}
+
+	@Override
+	protected void updateData() {
+		// THIS METHOD IS NOT REQUIRED FOR ATM
+	}
 }

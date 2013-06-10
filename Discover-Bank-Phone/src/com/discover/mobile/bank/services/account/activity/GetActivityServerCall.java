@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
@@ -119,6 +120,20 @@ public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetw
 		details.activities = super.parseUnamedList(body);
 		details.links = parseHeaderForLinks(headers);
 		details.type = this.type;
+
+		/**
+		 * Cache newly downloaded Activity data. The activity downloaded should be for the current account set in the
+		 * BankUser. The user cannot access activity from any other account other than the account being viewed. Only
+		 * the first download should be cached, any other activity downloaded should not be cached.
+		 */
+		if (BankUser.instance().getCurrentAccount() != null) {
+			if (ActivityDetailType.Posted == type && BankUser.instance().getCurrentAccount().posted == null) {
+				BankUser.instance().getCurrentAccount().posted = details;
+			} else if (BankUser.instance().getCurrentAccount().scheduled == null) {
+				BankUser.instance().getCurrentAccount().scheduled = details;
+			}
+		}
+
 		return details;
 	}
 
