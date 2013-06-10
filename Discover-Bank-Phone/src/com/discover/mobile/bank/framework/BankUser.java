@@ -115,7 +115,8 @@ public final class BankUser extends CacheManager implements Serializable {
 	}
 
 	/**
-	 * Method used to remove a listern from the list of listeners managed by this BankUser.
+	 * Method used to remove a listern from the list of listeners managed by this BankUser. If a listener is not removed
+	 * this may cause a memory leak or cause the application to crash.
 	 * 
 	 * @param listener
 	 *            Reference to listener that is no longer interested in receiving data change events from BankUser.

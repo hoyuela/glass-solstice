@@ -329,13 +329,13 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		/**Set the resource identifier that should be displayed in the details screen*/
 		switch( category ) {
 		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getScheduled() == null);
+			isUpdateRequired = (BankUser.instance().getScheduled() == null || scheduled == null);
 			break;
 		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getCompleted() == null);
+			isUpdateRequired = (BankUser.instance().getCompleted() == null || completed == null);
 			break;
 		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getCancelled() == null);
+			isUpdateRequired = (BankUser.instance().getCancelled() == null || canceled == null);
 			break;
 		}
 		

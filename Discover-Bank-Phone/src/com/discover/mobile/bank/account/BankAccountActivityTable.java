@@ -129,14 +129,6 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		
 	}
 	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-
-		/** Un-subcribe for events raised by the bank user for when data changes */
-		BankUser.instance().removeListener(this);
-	}
-
 	/**
 	 * Update the list to show scheduled activity.
 	 * @param list
