@@ -446,61 +446,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			viewToFade.startAnimation(fadeOut);
 		}
 	}
-	
-	private void startFadeOutAnimationForView(final View viewToFade,
-											  final long duration) {
-		startFadeOutAimationForView(viewToFade, duration, viewToFade.getVisibility());
-	}
-	
-	/**
-	 * Convenience method for the longer version of this.
-	 * @param viewToFade the view to apply the fade to.
-	 * @param duration the number of miliseconds that the animation will animate for.
-	 * @param endVisibility the visibility for the view after the animation completes.
-	 * @return
-	 */
-	private void startFadeOutAimationForView(final View viewToFade, 
-											 final long duration, 
-											 final int endVisibility){
-		
-		startFadeOutAnimationForView(viewToFade, duration, endVisibility, 0);
-	}
-	
-	/**
-	 * Starts a fade out animation on a given View with the passed parameters.
-	 * @param viewToFade the view to apply the fade to.
-	 * @param duration the number of miliseconds that the animation will animate for.
-	 * @param endVisibility the visibility for the view after the animation completes.
-	 * @param animationDelay the number of miliseconds that will elapse before the animation begins.
-	 */
-	private void startFadeOutAnimationForView(final View viewToFade, 
-														final long duration, 
-														final int endVisibility, 
-														final long animationDelay) {
-		if(viewToFade != null) {
-			final AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-			
-			fadeOut.setDuration(duration);
-			fadeOut.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(final Animation animation) {				
-				}
-				
-				@Override
-				public void onAnimationRepeat(final Animation animation) {				
-				}
-				
-				@Override
-				public void onAnimationEnd(final Animation animation) {
-					viewToFade.setVisibility(endVisibility);
-				}
-			});
-			fadeOut.setStartOffset(animationDelay);
-			
-			viewToFade.startAnimation(fadeOut);
-		}
-	}
 
 	/**
 	 * Called as a result of the activity's being brought to the front when
