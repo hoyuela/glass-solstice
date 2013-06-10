@@ -351,7 +351,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
-				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
+				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, StringUtility.EMPTY);
 				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
 			}
 		}
@@ -383,9 +383,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display succesful logout message at top of the screen
 	 */
 	public void showLogoutSuccessful() {
+		final long tenSeconds = 10000;
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+		
+		startFadeOutAnimationForView(errorTextView, halfSecond, View.GONE, tenSeconds);
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
@@ -425,7 +428,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			fadeOut.setAnimationListener(new AnimationListener() {
 				
 				@Override
-				public void onAnimationStart(final Animation animation) {				
+				public void onAnimationStart(final Animation animation) {
+					viewToFade.setVisibility(View.VISIBLE);
 				}
 				
 				@Override
