@@ -45,6 +45,7 @@
     <string name="user_id">
         User ID
     </string>
+    <string name="fdic_disclaimer_string">\@2013 Discover Bank, Member FDIC</string>
     <string name="vertical_separator">
         |
     </string>
