@@ -45,7 +45,8 @@
     <dimen name="table_inner_padding">15dp</dimen>
     <dimen name="white_button_left_right_padding">15dp</dimen>
     <dimen name="white_button_margin_top">15dp</dimen>
-     <dimen name="nav_footer_font_size">12sp</dimen>
+    <dimen name="nav_footer_font_size">12sp</dimen>
+    <dimen name="fdic_disclaimer_text_size">11sp</dimen>
 
     <!-- Navigation Menu -->
     <dimen name="nav_menu_shadow_width">15dp</dimen>
