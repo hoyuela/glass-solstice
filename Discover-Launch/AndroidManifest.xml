@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.discoverfinancial.mobile"
     android:versionCode="1"
-    android:versionName="5.1.0" > <!-- DEFECT 96690 -->
+    android:versionName="5.1.0" 
+    android:installLocation="preferExternal"> <!-- DEFECT 96690 -->
 
     <uses-feature
         android:glEsVersion="0x00020000"

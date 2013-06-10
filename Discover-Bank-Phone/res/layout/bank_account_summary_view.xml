@@ -40,17 +40,6 @@
                 android:layout_weight="0.875"
                 android:orientation="vertical" />
 
-            <Button
-                android:id="@+id/openAccount"
-                style="@style/call_to_action_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/modal_top_margin"
-                android:drawablePadding="@dimen/between_related_elements_padding"
-                android:drawableRight="@drawable/external_link_icon_white"
-                android:text="@string/bank_open_new_account" />
-
         </LinearLayout>
 
         <com.discover.mobile.common.ui.widgets.AccountToggleView

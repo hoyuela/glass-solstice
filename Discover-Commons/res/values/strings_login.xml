@@ -45,6 +45,9 @@
     <string name="user_id">
         User ID
     </string>
+    <string name="quick_view_text">
+        Quick view
+    </string>
     <string name="vertical_separator">
         |
     </string>
