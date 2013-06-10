@@ -1399,18 +1399,19 @@ public final class BankConductor  extends Conductor {
 			boolean willLoopNavigation = false;
 			/** Check whether to continue with navigation to Privacy and terms or not  */
 			if (navActivity instanceof BankNavigationRootActivity) {
+				if(!(fragment instanceof ProvideFeedbackFragment)){
+					final boolean isAlreadyOnPrivacyAndTermsLandingPage = 
+							fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
+							fragment instanceof TermsLandingPageFragment &&
+							type == PrivacyTermsType.LandingPage;
 
-				final boolean isAlreadyOnPrivacyAndTermsLandingPage = 
-						fragment.getGroupMenuLocation() == BankMenuItemLocationIndex.PRIVACY_AND_TERMS_GROUP &&
-						fragment instanceof TermsLandingPageFragment &&
-						type == PrivacyTermsType.LandingPage;
-				
-				//If the user is already viewing a terms page and wants to go back to privacy and terms,
-				//we shouldn't let them loop their navigation and keep adding to the back stack.
-				willLoopNavigation = type == PrivacyTermsType.LandingPage &&
-											fragment instanceof TermsConditionsFragment;
-				
-				continueNavigation =  !isAlreadyOnPrivacyAndTermsLandingPage && !willLoopNavigation;
+					//If the user is already viewing a terms page and wants to go back to privacy and terms,
+					//we shouldn't let them loop their navigation and keep adding to the back stack.
+					willLoopNavigation = type == PrivacyTermsType.LandingPage &&
+							fragment instanceof TermsConditionsFragment;
+
+					continueNavigation =  !isAlreadyOnPrivacyAndTermsLandingPage && !willLoopNavigation;
+				}
 			}
 
 			if (continueNavigation) {
