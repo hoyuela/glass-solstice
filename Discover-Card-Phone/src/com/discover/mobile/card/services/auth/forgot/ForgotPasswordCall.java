@@ -17,7 +17,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 
 public class ForgotPasswordCall extends CardNetworkServiceCall<Object> {
 	
-	private static final String TAG = ForgotPasswordCall.class.getSimpleName();
+	
 	
 	private final TypedReferenceHandler<Object> handler;
 

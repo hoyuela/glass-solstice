@@ -49,6 +49,8 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
     CardMenuInterface cardMenuInterface;
     public static ImmutableList<ComponentInfo> CARD_SECTION_LIST = null;
+    
+    private CardShareDataStore mCardStoreData;
 
     // Added For Push notification
     private int pushUnReadCount = 0;
@@ -102,6 +104,8 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
         NavigationItem.initializeAdapterWithSections(navigationItemAdapter,
                 CARD_SECTION_LIST, new HomeSummaryFragment());
+        mCardStoreData = CardShareDataStore.getInstance(getActivity());
+        mCardStoreData.addToAppCache("currentPageTitle", "Home");
         setListAdapter(navigationItemAdapter);
 
         privacy.setClickable(true);
@@ -119,10 +123,19 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     @Override
     public void onListItemClick(final ListView listView,
             final View clickedView, final int position, final long id) {
-        super.onListItemClick(listView, clickedView, position, id);
-
         TextView textView = (TextView) clickedView.findViewById(R.id.title);
         final String text = (String) textView.getText();
+    	if (text.equals(mCardStoreData.getValueOfAppCache("currentPageTitle")))
+    	{
+    		BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
+                    .getActiveActivity();
+            
+            // hlin0 20130530 integrate with new sliding menu
+            baseFragmentActivity.showContent();
+   			return;
+    	}
+
+    	super.onListItemClick(listView, clickedView, position, id);
 
         try {
 

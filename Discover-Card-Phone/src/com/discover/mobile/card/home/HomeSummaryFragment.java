@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,17 +32,12 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.CardAccountToggleView;
 import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CommonMethods;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.navigation.CordovaWebFrag;
-import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
 import com.discover.mobile.card.services.auth.AccountDetails;
-
 import com.discover.mobile.PushConstant;
 
 public class HomeSummaryFragment extends BaseFragment implements
@@ -83,13 +77,12 @@ public class HomeSummaryFragment extends BaseFragment implements
     private CardAccountToggleView toggleView = null;
     private boolean showToggleView = false;
     private ImageView accountToggleArrow = null;
-    private JQMResourceMapper jqmResourceMapper;
+    
     // Changes for Push Notification
     private String pushErrorMsg;
     private TextView pushErrorTV;
 
-    private CardMenuItemLocationIndex mCardMenuLocation;
-    private CordovaWebFrag cordovaWebFrag = null;
+    
 
     @Override
     public View onCreateView(final LayoutInflater inflater,
@@ -110,12 +103,7 @@ public class HomeSummaryFragment extends BaseFragment implements
         accountName = (TextView) statusBarView.findViewById(R.id.account_name);
         pushErrorTV = (TextView) view.findViewById(R.id.push_ac_home_errorTV);
 
-        /* 13.3  Changes */
-        mCardMenuLocation = CardMenuItemLocationIndex
-                .getInstance(callingActivity);
-        /* 13.3  Changes */
-        cordovaWebFrag = ((CardNavigationRootActivity) getActivity())
-                .getCordovaWebFragInstance();
+       
 
         // Get the boolean flag from extra
         final Bundle extras = getActivity().getIntent().getExtras();

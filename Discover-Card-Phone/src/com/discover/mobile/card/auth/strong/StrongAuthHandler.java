@@ -115,6 +115,7 @@ public class StrongAuthHandler {
 
                 Log.i(TAG, "In Strong auth --" + context.getClass());
                 if (authListener != null) {
+                	Utils.hideSpinner();
                     context.startActivity(strongAuth);
                     Log.i(TAG, "In Strong auth " + context.getClass());
                     if (context instanceof ForgotPasswordAccountInformationActivity
@@ -127,6 +128,7 @@ public class StrongAuthHandler {
                         activity.finish();
                     }
                 } else {
+                	Utils.hideSpinner();
                     ((Activity) context).startActivityForResult(strongAuth,
                             requestCode);
                 }

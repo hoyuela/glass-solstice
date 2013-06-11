@@ -114,8 +114,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         request.setPassword(password);
 
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new AccountDetails(), "Discover", "Authenticating...", this);
-
+                new AccountDetails(), "Discover", null, this);
+        Utils.isSpinnerAllowed = true;
+        Utils.showSpinner(context, "Discover", "Authenticating...");
         serviceCall.execute(request);
 
         listener = new StrongAuthListener() {
@@ -321,6 +322,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                             @Override
                             public void onButton1Pressed() {
                                 // Go to Big Browser
+                                Utils.hideSpinner();
                                 Intent browserIntent = new Intent(
                                         Intent.ACTION_VIEW,
                                         //Uri.parse("https://www.discover.com"));
@@ -471,7 +473,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
                 showToggleFlag = true;
                 confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-
                 context.startActivity(confirmationScreen);
 
                 // Close current activity
@@ -534,6 +535,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener() {
                     @Override
                     public void onButton1Pressed() {
+                    	Utils.hideSpinner();
                         // Register Button click flow - Big browser link
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
                                 //Uri.parse("https://www.discover.com"));
@@ -813,6 +815,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                         @Override
                         public void onButton1Pressed() {
                             // Big Broweser
+                        	Utils.hideSpinner();
                             Intent browserIntent = new Intent(
                                     Intent.ACTION_VIEW, 
                                    // Uri.parse("https://www.discover.com"));
@@ -942,7 +945,6 @@ private int convertStringToInt(String str) {
 	                final Intent confirmationScreen = new Intent(context,
 	                        CardNavigationRootActivity.class);
 	                TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-	
 	                context.startActivity(confirmationScreen);
 	
 	                // Close current activity

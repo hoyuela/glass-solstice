@@ -20,7 +20,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 
 public class StrongAuthAnswerCall extends CardNetworkServiceCall<StrongAuthAnswerDetails> {
 	
-	private static final String TAG = StrongAuthAnswerCall.class.getSimpleName();
+	
 	private static final String ID_PREFIX = "%&(()!12[";
 
 	private final TypedReferenceHandler<StrongAuthAnswerDetails> handler;

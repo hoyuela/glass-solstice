@@ -3,7 +3,7 @@ package com.discover.mobile.card.services.auth;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.util.Base64;
+
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
