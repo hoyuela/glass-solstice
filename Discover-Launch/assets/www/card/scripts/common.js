@@ -1902,7 +1902,7 @@ function getDataAsync(){
 
 function isCardProjectBeyond(incentiveCode,incentiveTypeCode,optionCode,cardType){
 	try{
-      if(incentiveCode == "000016" && incentiveTypeCode == "CBB" && cardType == "000001" && optionCode == ("31" || "32" || "33"))
+      if(incentiveCode == "000016" && incentiveTypeCode == "CBB" && cardType == "000001" && ( optionCode == "31" || optionCode == "32" || optionCode == "33"))
             return true;
 
       else 
