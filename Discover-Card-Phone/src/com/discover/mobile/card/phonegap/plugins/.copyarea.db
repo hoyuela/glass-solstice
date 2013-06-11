@@ -1,0 +1,15 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\phonegap\plugins
+2
+b
+17:ResourceDownloader.java|1|13f1a016f69|19e0|d9bf04cb|f5de50ca614249d4b970700626e4f372|0
+1b:PageSessionTimerPlugin.java|1|13f343d4a80|845|10b1cbac|40bce469710441d4b4696d7333b34353|0
+16:JQMResourceMapper.java|1|13f1a016dd3|1206|3f209688|f047d54a592d4685962037ea8bf97530|0
+1e:NetworkConnectivityPlugin.java|1|13f343d501f|7f3|83f4b96f|bad4f9e144b34af7870ca123c2e62d24|0
+16:ContactViewResult.java|1|13f1a016fc6|11f2|f88bf915|e7e9c278354e46539fc55d2b82fceed0|0
+15:ScreenshotPlugin.java|1|13f1a016f88|afb|e6326dd0|a352a9474e8146a68c270587c184a918|0
+17:EventManagerPlugin.java|1|13f1a016f49|32f2|27e85c93|af4607fa8d15407bab5c960f4b522334|0
+18:HybridControlPlugin.java|1|13f343d4a52|9584|95c60b96|e63aeaab6f0f49e0a884a71bc206abdd|0
+17:ContactsListPlugin.java|1|13f1a016fe5|1fa6|58382655|c7ba13156e914c37b521b3bcc9cad286|0
+11:ChildBrowser.java|1|13f343d5009|2d07|eb1f42e4|a67103d8263f49d58b132c0280830093|0
+14:StatementPlugin.java|1|13f1a016fa7|d1d|31823dec|0a78d61419ad43c5976d62fad1484dda|0

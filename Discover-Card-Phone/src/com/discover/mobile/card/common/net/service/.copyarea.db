@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\common\net\service
+2
+5
+14:WSAsyncCallTask.java|1|13f1a015ea7|2ae6|40ae4dbd|424e64faeb754a69b9341f9cb5bfb9cf|0
+f:WSResponse.java|1|13f1a015f33|6da|c15ceeea|ba119a2d84c24396bc81f793db9a08c8|0
+e:WSRequest.java|1|13f1a015f14|c10|640c8d59|237cac0a13a84d4e8725fcd08c393f04|0
+c:WSProxy.java|1|13f1a015ee5|3ff5|2642c1b2|6fc5cf6627164256bd6bdcf7d1e9d8f1|0
+f:WSConstant.java|1|13f1a015f43|1f7|44599e0a|899f1004d1a64828a368784c1760ec02|0

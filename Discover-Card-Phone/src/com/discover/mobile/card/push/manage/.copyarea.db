@@ -1,0 +1,18 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\push\manage
+2
+e
+19:PushManageHeaderItem.java|1|13f1a017396|a45|ae41700d|3f2715e1ffbd4695ad45afac7edf71a5|0
+20:GetPushPrefsSuccessListener.java|1|13f1a017348|516|c72ec7fa|f7cd70739515429a90bd284b4361c865|0
+23:PushTermsAndConditionsFragment.java|1|13f1a017490|6e0|36b83c6b|df89616692f34e16acb42d522f0dbebf|0
+17:PushManageSaveView.java|1|13f1a0173d5|597|e21df470|4d0969c5318b4536a18e036c138e4a85|0
+17:PushManageFragment.java|1|13f1a017387|5e95|d25442c|0560d82c29cf46a09618fbbb5f283e91|0
+1b:PushManageCategoryItem.java|1|13f1a017377|6c8|53a54471|ad74434c1f114f7b894541ee673748ff|0
+20:PushManageToogleItemSpinner.java|1|13f1a017442|2024|f2f8c5f8|abd6caf6744746b49f868f9a186b9814|0
+1a:PushManageItemFactory.java|1|13f1a0173c5|1827|b97e2fa6|d8fc5f647972432f9e82f6628062d837|0
+1d:BasePushManageToggleItem.java|1|13f1a01730a|15f6|fe5153c2|bb63a66ecd3d495fb964517e8a4ba08d|0
+1f:PushManageToogleItemSimple.java|1|13f1a017413|1344|69ea8087|1c086ae76e0b40c096e4f581f05ef2dd|0
+21:PushManageToggleItemEditText.java|1|13f1a0173e4|209f|ad52fd4d|65ee8e87d75b4dc0ac0b3296e643bef8|0
+25:GetPushPrefsErrorResponseHandler.java|1|13f1a017329|4a7|902f9f7f|c5da7211701448118157ce62e27cef4e|0
+1a:PushPrefsErrorHandler.java|1|13f1a017451|594|be86eebb|4edf7ae292df4632896361ca083db829|0
+1d:PostPrefsSuccessListener.java|1|13f1a017358|50b|279bc34c|52e5442b05e3411d95b52bff6dd6573c|0

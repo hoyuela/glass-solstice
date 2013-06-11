@@ -1,0 +1,26 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\deposit
+2
+16
+1f:BankDepositConfirmFragment.java|1|13f1f812e23|136e|1dbb9352|8ef5d41ecf9611e280710002f641af4c|0
+1c:BankDepositBaseFragment.java|1|13f1f812e14|ab2|67baa2f9|8bd5d3fecf9611e280710002f641af4c|0
+20:DuplicateCheckErrorFragment.java|1|13f1f812e52|872|8e2edce6|71f5d30ecf9611e280710002f641af4c|0
+1d:BankDepositListGenerator.java|1|13f1f812e23|1c30|d9c19129|7c25d36ecf9611e280710002f641af4c|0
+23:BankDepositNotEligibleFragment.java|1|13f1f812e23|95d|1952a98|7395d31ecf9611e280710002f641af4c|0
+1a:BankSelectAccountItem.java|1|13f1f812e42|56c|339fc7ba|9045d42ecf9611e280710002f641af4c|0
+20:BankSelectAccountComparable.java|1|13f1f812e42|705|c6393312|7ac5d35ecf9611e280710002f641af4c|0
+20:ReviewCheckDepositTableCell.java|1|13f1f812e62|1203|dd1af552|8265d3aecf9611e280710002f641af4c|0
+14:HowItWorksModal.java|1|13f1f812e62|da3|474794d9|7d95d37ecf9611e280710002f641af4c|0
+1e:DepositSubmissionActivity.java|1|13f1a0318bf|1a9f|e9a0023d|8024307ec81a11e280770002f641af4c|0
+1d:BankDepositTermsFragment.java|1|13f1f812e33|98b|e7c4374d|8d65d40ecf9611e280710002f641af4c|0
+16:CheckDepositModal.java|1|13f1f812e52|765|fa997426|7075d2fecf9611e280710002f641af4c|0
+13:BankAmountItem.java|1|13f1f812e14|5d6|a937eb11|7745d33ecf9611e280710002f641af4c|0
+22:BankAmountLimitValidatedField.java|1|13f1f812e14|1a2c|de99b121|8a65d3eecf9611e280710002f641af4c|0
+21:BankDepositChecksSectionInfo.java|1|13f1f812e14|1044|f853fc|9255d43ecf9611e280710002f641af4c|0
+20:CheckDepositCaptureActivity.java|1|13f1f812e52|7476|469e5b10|7545d32ecf9611e280710002f641af4c|0
+19:BankDepositForbidden.java|1|13f1f812e23|a38|ef4a68b0|84b5d3becf9611e280710002f641af4c|0
+1c:BankDepositSelectAmount.java|1|13f1f812e33|28b8|307d403e|88d5d3decf9611e280710002f641af4c|0
+1e:CheckDepositErrorFragment.java|1|13f1f812e52|700|4b7b53d3|8765d3cecf9611e280710002f641af4c|0
+1c:BankDepositWorkFlowStep.java|1|13f1f812e42|1c3|28469767|78d5d34ecf9611e280710002f641af4c|0
+1a:CaptureReviewFragment.java|1|13f1f812e42|452d|1219ac4b|7ef5d38ecf9611e280710002f641af4c|0
+1d:BankDepositSelectAccount.java|1|13f1f812e33|2329|94c78416|80e5d39ecf9611e280710002f641af4c|0

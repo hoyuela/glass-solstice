@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -52,7 +53,11 @@ public class FastcheckFragment extends BaseFragment implements
 	private static final int TECH_DIFF_RESULT_PAGE = 2;
 	private static final int NO_FASTCHECK_TOKEN_RESULT_PAGE = 3;
 	private static final int INITIAL_RESULT_PAGE = -1;
-
+	private static final String TIME_ONLY_DISPLAY_FORMAT = "hh:mm aa";
+	private static final String DATE_ONLY_DISPLAY_FORMAT = "MM/dd/yy";
+	private static final String CASH_REWARDS_FORMAT = "#,###,###,##0.00";
+	private static final String MILE_REWARDS_FORMAT = "###,###,###,##0";
+		
 	// data bean
 	private FastcheckDetail fastcheckDetail;
 	private Calendar lastUpdateTimeCal;
@@ -66,12 +71,6 @@ public class FastcheckFragment extends BaseFragment implements
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		//TODO, comment out
-//		try {
-//			String tmp = FastcheckUtil.encrypt("cSlOmxS6f63tYWYWEomAI6YCcqXOlF+mw/0OwwX8yCSxfAmcOCaaeudPzdppqaFHTWsJCPlpuzg2oFRBiJ8aFg==");
-//			FastcheckUtil.storeFastcheckToken(getActivity(), tmp);
-//		} catch (Exception e) {}
-		
 	}
 
 	@Override
@@ -145,8 +144,8 @@ public class FastcheckFragment extends BaseFragment implements
 		final Resources res = context.getResources();
 		if (!timeToMakeAnotherCall()) {
 			if (spinOnNoFetch) {
-				Utils.showSpinner(getActivity(), "Discover",
-						"Retrieving Quick view...");
+				Utils.showSpinner(getActivity(), res.getString(R.string.fast_check_spinner_msg_part1),
+						res.getString(R.string.fast_check_spinner_msg_part2));
 				Handler handler = new Handler();
 				handler.postDelayed(new Runnable() {
 					public void run() {
@@ -164,19 +163,15 @@ public class FastcheckFragment extends BaseFragment implements
 				deviceToken = FastcheckUtil.decrypt(encryptedDeviceToken);
 			} catch (Exception e) {
 				Log.e(TAG, "getFastcheckData() gets IOException during FastcheckUtil.decrypt()" + e.getMessage());
-				//showFastcheckTechDiff();
 				showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			}
 			
 			if (deviceToken == null || deviceToken.length() != 88) {
 				Log.e(TAG, "getFastcheckData(), token is NULL or length NOT 88" );
-				//showFastcheckTechDiff();
 				showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			} else 
 				Log.d(TAG, "getFastcheckData(), token is " + deviceToken + ", length is " + deviceToken.length());
 			
-			
-
 			// Setting the headers available for the service
 			WSRequest request = new WSRequest();
 			HashMap<String, String> headers = request.getHeaderValues();
@@ -196,8 +191,8 @@ public class FastcheckFragment extends BaseFragment implements
 
 			// Making the call
 			WSAsyncCallTask serviceCall = new WSAsyncCallTask(getActivity(),
-					new FastcheckDetail(), "Discover",
-					"Retrieving Quick view...", this);
+					new FastcheckDetail(), res.getString(R.string.fast_check_spinner_msg_part1),
+					res.getString(R.string.fast_check_spinner_msg_part2), this);
 			serviceCall.execute(request);
 			
 		} catch (JsonGenerationException e) {
@@ -205,30 +200,27 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			//showFastcheckTechDiff();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		} catch (JsonMappingException e) {
 			Log.e(TAG, "getFastcheckData() gets JsonMappingException " + e.getMessage());
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			//showFastcheckTechDiff();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		} catch (IOException e) {
 			Log.e(TAG, "getFastcheckData() gets IOException " + e.getMessage());
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			//showFastcheckTechDiff();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 	}
 
 	
 	private String formatTimeStamp() {
-		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa");
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_ONLY_DISPLAY_FORMAT, Locale.US);
 		String lastUpdateTimeStr = sdf.format(lastUpdateTimeCal.getTime());
-		sdf = new SimpleDateFormat("yyyyMMdd");
+		sdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
 		int lastUpdateDateInt = Integer.parseInt(sdf.format(lastUpdateTimeCal
 				.getTime()));
 		int todayInt = Integer.parseInt(sdf.format(Calendar.getInstance()
@@ -237,24 +229,23 @@ public class FastcheckFragment extends BaseFragment implements
 			return new StringBuffer("\nUpdated today at ").append(
 					lastUpdateTimeStr).toString();
 		} else {
-			sdf = new SimpleDateFormat("MM/dd/yy");
+			sdf = new SimpleDateFormat(DATE_ONLY_DISPLAY_FORMAT, Locale.US);
 			String lastUpdateDateStr = sdf.format(lastUpdateTimeCal.getTime());
 			return new StringBuffer("Updated ").append(lastUpdateDateStr)
 					.append(" at ").append(lastUpdateTimeStr).toString();
 		}
 	}
 
-	private String formatSalutation() {
-		StringBuffer sb = new StringBuffer("Good ");
+	private String formatSalutation(final Context context) {
+		final Resources res = context.getResources();
+		StringBuffer sb = new StringBuffer();
 		if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12)
-			sb.append("morning, ").append(
-					fastcheckDetail.getCardmemberFirstName());
+			sb.append(res.getString(R.string.fast_check_salutation_good_morning));
 		else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18)
-			sb.append("afternoon, ").append(
-					fastcheckDetail.getCardmemberFirstName());
+			sb.append(res.getString(R.string.fast_check_salutation_good_afternoon));
 		else
-			sb.append("evening, ").append(
-					fastcheckDetail.getCardmemberFirstName());
+			sb.append(res.getString(R.string.fast_check_salutation_good_evening));
+		sb.append(fastcheckDetail.getCardmemberFirstName());
 		return sb.toString();
 	}
 
@@ -262,7 +253,7 @@ public class FastcheckFragment extends BaseFragment implements
 		final DisplayFastcheckTitleListItem item = new DisplayFastcheckTitleListItem(
 				context, null);
 		item.setLabel(formatTimeStamp());
-		item.setValue(formatSalutation());
+		item.setValue(formatSalutation(context));
 		item.hideAction();
 		item.getBackButton().setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -282,83 +273,15 @@ public class FastcheckFragment extends BaseFragment implements
 	}
 
 	private SimpleListItem createFastcheckRewardListItem(final Context context) {
+		final Resources res = context.getResources();
 		final DisplayFastcheckRewardListItem item = new DisplayFastcheckRewardListItem(
 				context, null);
-		item.setLabel("Cashback Bonus cannot be updated at this time.");
+		item.setLabel(res.getString(R.string.fast_check_rewards_outage_msg));
 		item.hideAction();
 		item.hideValue();
 		return item;
 	}
 
-//	private void showFastcheckError() {
-//
-//		Context context = getActivity().getApplicationContext();
-//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-//				.inflate(R.layout.fastcheck_display_error_body, null);
-//		fastcheckErrorMsg = (TextView) layout
-//				.findViewById(R.id.fastcheck_error_msg);
-//		fastcheckErrorMsg
-//				.setText("Due to special condition related to your account, this page is not available.\n\nPlease contact customer service.");
-//		Button backButtonOnTechDiff = (Button) layout
-//				.findViewById(R.id.fastcheck_display_back_button);
-//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				((NavigationRootActivity) getActivity()).getSlidingMenu()
-//						.toggle();
-//			}
-//		});
-//		fastcheckList.removeAllViews();
-//		fastcheckList.addView(layout);
-//	}
-//
-//	private void showFastcheckTechDiff() {
-//
-//		Context context = getActivity().getApplicationContext();
-//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-//				.inflate(R.layout.fastcheck_display_error_body, null);
-//		fastcheckErrorMsg = (TextView) layout
-//				.findViewById(R.id.fastcheck_error_msg);
-//		fastcheckErrorMsg
-//				.setText("We're currently experiencing techincally difficult. We apologize for any incovenience.");
-//		Button backButtonOnTechDiff = (Button) layout
-//				.findViewById(R.id.fastcheck_display_back_button);
-//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				((NavigationRootActivity) getActivity()).getSlidingMenu()
-//						.toggle();
-//			}
-//		});
-//		fastcheckList.removeAllViews();
-//		fastcheckList.addView(layout);
-//	}
-//	
-//	private void showFastcheckNoTokenErrorPage() {
-//
-//		Context context = getActivity().getApplicationContext();
-//		fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
-//		RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
-//				.inflate(R.layout.fastcheck_display_error_body, null);
-//		fastcheckErrorMsg = (TextView) layout
-//				.findViewById(R.id.fastcheck_error_msg);
-//		fastcheckErrorMsg
-//				.setText("You recently requested to disable your quick view settings. If you'd like to enable this option, plese login and navigate to " +
-//						"\"Quick View\" under Profile and Settings.");
-//		Button backButtonOnTechDiff = (Button) layout
-//				.findViewById(R.id.fastcheck_display_back_button);
-//		backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View arg0) {
-//				((NavigationRootActivity) getActivity()).getSlidingMenu()
-//						.toggle();
-//			}
-//		});
-//		fastcheckList.removeAllViews();
-//		fastcheckList.addView(layout);
-//	}
 	
 	private void showFastcheckErrorPage(String errorMsg) {
 		Context context = getActivity().getApplicationContext();
@@ -384,13 +307,13 @@ public class FastcheckFragment extends BaseFragment implements
 
 	private String formatMoney(String aString) {
 		double money = Double.parseDouble(aString);
-		DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
+		DecimalFormat df = new DecimalFormat(CASH_REWARDS_FORMAT);
 		return "$" + df.format(money);
 	}
 	
 	private String formatMile(String aString) {
 		double mile = Double.parseDouble(aString);
-		DecimalFormat df = new DecimalFormat("###,###,###,##0");
+		DecimalFormat df = new DecimalFormat(MILE_REWARDS_FORMAT);
 		return df.format(mile);
 	}
 
@@ -465,7 +388,6 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			fastcheckDetail = null;
-			//showFastcheckError();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
 		} else if ("429".equals(cardErrorBean.getErrorCode())) {
 			lastUpdateTimeCal = Calendar.getInstance();
@@ -479,13 +401,11 @@ public class FastcheckFragment extends BaseFragment implements
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			fastcheckDetail = null;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
-			//showFastcheckNoTokenErrorPage();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_no_token));
 		} else {
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
-			//showFastcheckTechDiff();
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 		

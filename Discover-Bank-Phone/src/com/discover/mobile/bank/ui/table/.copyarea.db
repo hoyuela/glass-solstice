@@ -1,0 +1,12 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\ui\table
+2
+8
+e:BaseTable.java|1|13f1f81316d|19b7|25686363|7e75df2ecf9711e280710002f641af4c|0
+1f:ViewPagerListItemWithImage.java|1|13f1f81317d|478|d0cc7f70|7575debecf9711e280710002f641af4c|0
+1b:AdjustedAmountListItem.java|1|13f1f81316d|29b|c81be34d|76a5dececf9711e280710002f641af4c|0
+16:ViewPagerListItem.java|1|13f1f81317d|9d0|dc812d9d|7ab5defecf9711e280710002f641af4c|0
+16:ListItemGenerator.java|1|13f1f81316d|491e|fd0bc947|7cc5df1ecf9711e280710002f641af4c|0
+13:AmountListItem.java|1|13f1f81316d|628|bee71741|7965deeecf9711e280710002f641af4c|0
+18:TableLoadMoreFooter.java|1|13f1f81317d|c40|dde1fc94|7855dedecf9711e280710002f641af4c|0
+10:TableTitles.java|1|13f1f81317d|af2|a6437fff|7bc5df0ecf9711e280710002f641af4c|0

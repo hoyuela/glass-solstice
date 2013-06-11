@@ -1,0 +1,27 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Commons\res\values
+2
+17
+15:strings_help_menu.xml|1|13f1a024bd5|128|dd1d5e54|11a1aebac8d911e2807b0002f641af4c|0
+13:styles_calendar.xml|1|13f1a024be4|221|6421b455|53b997cabc9811e2802e0002f641af4c|0
+a:styles.xml|1|13f1a024b96|3d65|cf10d96c|88a98a1abc9611e2802e0002f641af4c|0
+20:strings_profile_and_settings.xml|1|13f1a024b0a|222|d7e6bf03|83f989fabc9611e2802e0002f641af4c|0
+18:strings_errors_mixed.xml|1|13f1a024adb|cd2|e1cb524a|822989eabc9611e2802e0002f641af4c|0
+16:strings_status_bar.xml|1|13f1a024b68|ae|1ba338e5|85a98a0abc9611e2802e0002f641af4c|0
+17:strings_alert_modal.xml|1|13f1a024a8d|231|ef7db865|7f1989d2bc9611e2802e0002f641af4c|0
+1b:styles_status_indicator.xml|1|13f1a024bc5|961|9e900b50|89898a22bc9611e2802e0002f641af4c|0
+11:dimens_toggle.xml|1|13f1f8131ea|384|8e61e12|1005e39acf9911e280710002f641af4c|0
+7:ids.xml|1|13f1a024a30|1fd|e7b4a3c7|7ab989b2bc9611e2802e0002f641af4c|0
+16:strings_action_bar.xml|1|13f1a024a8d|c8|5347410c|7de989cabc9611e2802e0002f641af4c|0
+14:strings_customui.xml|1|13f1a024aac|25f|4e2bcecf|52513a96c81011e280070002f641af4c|0
+9:color.xml|1|13f1a0249b3|df0|44cb59b8|7569898abc9611e2802e0002f641af4c|0
+11:env_analytics.xml|1|13f1a0249f1|138|abbc7158|4ee13a7ec81011e280070002f641af4c|0
+17:strings_strong_auth.xml|1|13f1a024b87|7c2|49afa953|87398a12bc9611e2802e0002f641af4c|0
+b:env_net.xml|1|13f2ebf2d47|1b5|414e9799|1415b012d1e511e280370002f641af4c|0
+b:strings.xml|1|13f1f8131ea|2919|c8a7f35c|1235e3bacf9911e280710002f641af4c|0
+c:env_push.xml|1|13f1a024a10|164|9da965dd|0736c340c95611e280220002f641af4c|0
+17:strings_errors_http.xml|1|13f1a024acc|489|87559426|80e989e2bc9611e2802e0002f641af4c|0
+a:dimens.xml|1|13f343d5888|dea|abdb89ba|a965ed16d2b211e280490002f641af4c|0
+c:integers.xml|1|13f1a024a4f|14a|2ca865bf|7bc989babc9611e2802e0002f641af4c|0
+11:strings_login.xml|1|13f1a024aeb|7e5|fe7a57af|82e989f2bc9611e2802e0002f641af4c|0
+1d:strings_push_notification.xml|1|13f1a024b29|5176|842f416b|313043f1c17f4830ad423322e0beeded|0

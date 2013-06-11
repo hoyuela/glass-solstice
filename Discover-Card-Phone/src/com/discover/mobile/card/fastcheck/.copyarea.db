@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\fastcheck
+2
+5
+22:DisplayFastcheckTitleListItem.java|1|13f1a0180ea|637|297027a8|ff9b26a424b343c79c6a74ff5931207e|0
+13:FastcheckToken.java|1|13f1a018158|1e6|a92c9a9f|9d4a781fbc2e4c90885b0c2242b9d13b|0
+14:FastcheckDetail.java|1|13f1a0180fa|980|a95630af|8906b36882b64f079c882ce13f519aa2|0
+16:FastcheckFragment.java|1|13f343d57b1|3c9b|55ddef04|abc5ed2ed2b211e280490002f641af4c|0
+23:DisplayFastcheckRewardListItem.java|1|13f1a0180db|4bc|5baea489|e8fa5ebb073e4943b3dda42bf1108e77|0

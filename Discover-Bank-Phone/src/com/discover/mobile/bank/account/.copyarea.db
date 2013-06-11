@@ -1,0 +1,18 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\account
+2
+e
+14:BankAccountView.java|1|13f1f812d97|2232|99f52934|3aa5d11ecf9611e280710002f641af4c|0
+1f:BankAccountSummaryFragment.java|1|13f2f8502e7|2f95|6ce5ba21|a72e34e8d20411e2803a0002f641af4c|0
+1b:ActivityDetailFragment.java|1|13f1f812d87|3320|b09de790|4695d19ecf9611e280710002f641af4c|0
+1b:BankAccountSectionInfo.java|1|13f1f812d97|695|f92d38bd|3dd5d13ecf9611e280710002f641af4c|0
+1d:BankAccountActivityTable.java|1|13f1f812d87|368e|5efca796|4505d18ecf9611e280710002f641af4c|0
+1c:BankOpenAccountFragment.java|1|13f2f8502ef|1531|ac5611a3|a96e34f8d20411e2803a0002f641af4c|0
+14:BankListAdapter.java|1|13f1f812d97|15ba|e35a126b|41e5d16ecf9611e280710002f641af4c|0
+19:TransferDeletionType.java|1|13f1f812da6|9f|c6af3197|3f35d14ecf9611e280710002f641af4c|0
+1a:AccountActivityHeader.java|1|13f1f812d78|2cd1|54d5ac92|4825d1aecf9611e280710002f641af4c|0
+16:SalutationUpdater.java|1|13f1f812da6|1159|85c4b609|4395d17ecf9611e280710002f641af4c|0
+1a:ListViewPagerListItem.java|1|13f1a030e63|1a1|ecb69048|0b398e32bc9711e2802e0002f641af4c|0
+1d:AccountActivityViewPager.java|1|13f1f812d87|2386|b1dec778|4095d15ecf9611e280710002f641af4c|0
+1a:BankAccountComparable.java|1|13f1a030caf|624|e541ea00|04898dfabc9711e2802e0002f641af4c|0
+19:BankAccountGroupView.java|1|13f1a030cbe|1c78|ac251f49|05698e02bc9711e2802e0002f641af4c|0

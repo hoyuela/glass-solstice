@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\account\recent
+2
+6
+1f:RecentActivityPeriodDetail.java|1|13f1a017683|2ca|b8eaf60e|c6741fdff4104e9dbfc0895a159fe9a0|0
+20:RecentActivityPeriodsDetail.java|1|13f1a017683|266|81b4d5d6|b00914193cf647da91d5855eb9af447e|0
+1a:GetTransactionDetails.java|1|13f1a017635|409|c645638e|80c8594ca0fc480997033cca56060a81|0
+17:GetActivityPeriods.java|1|13f1a017625|60f|71828d5|a152794c166241578f671f07583fe8d5|0
+16:TransactionDetail.java|1|13f1a0176a2|35b|b6952260|f534218cafbb4e7db9639d8e40852e29|0
+14:GetTransactions.java|1|13f1a017673|85c|cde27b|96e0d3706d3049db99c8cbd1ef9badc5|0

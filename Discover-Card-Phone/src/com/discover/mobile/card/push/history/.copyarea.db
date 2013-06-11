@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\push\history
+2
+6
+18:PushHistoryFragment.java|1|13f1a017193|1ec4|7ea8792a|41dd940fd75d499fa67b1412250a06f6|0
+14:PushHistoryItem.java|1|13f1a0171d2|1987|185f9a69|97d4f586d9e64a0d80c0036699dda245|0
+23:ReadNotificationSucessListener.java|1|13f1a0172ac|4de|589fb323|d518fc868a644412a90beca601e3552d|0
+1f:PushHistorySuccessListener.java|1|13f1a01724f|4fa|9e89c087|fdc04880f5b14edbaab42a19457e53b3|0
+21:ReadNotificationErrorHandler.java|1|13f1a0172ac|510|28d2c743|ec63d1907a6241ba9af8c2e49e6a150e|0
+1c:PushHistoryErrorHandler.java|1|13f1a017184|4f6|225abe5e|3864beec3c4644cfa5663bb19a5c265f|0

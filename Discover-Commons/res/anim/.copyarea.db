@@ -1,0 +1,12 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Commons\res\anim
+2
+8
+1a:fragment_slide_in_left.xml|1|13f1a024c71|170|c8d7068|5df99812bc9811e2802e0002f641af4c|0
+15:fade_in_animation.xml|1|13f1a024c13|1e2|50089026|58c997f2bc9811e2802e0002f641af4c|0
+1c:fragment_slide_out_right.xml|1|13f1a024ca0|16f|d21e703b|6139982abc9811e2802e0002f641af4c|0
+1b:fragment_slide_in_right.xml|1|13f1a024c71|16f|b162703b|5f09981abc9811e2802e0002f641af4c|0
+16:fade_out_animation.xml|1|13f1a024c52|1d1|ddc38b42|5ba99802bc9811e2802e0002f641af4c|0
+1b:fragment_slide_out_left.xml|1|13f1a024c90|170|3f7c7068|60499822bc9811e2802e0002f641af4c|0
+1b:fade_in_animation_large.xml|1|13f1a024c23|1e3|dadc9053|5a7997fabc9811e2802e0002f641af4c|0
+1c:fade_out_animation_large.xml|1|13f1a024c61|1d2|68a28b6f|5c99980abc9811e2802e0002f641af4c|0

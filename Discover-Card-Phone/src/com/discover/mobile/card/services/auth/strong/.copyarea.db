@@ -1,0 +1,15 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\auth\strong
+2
+b
+14:StrongAuthCheck.java|1|13f343d56b5|76d|a7237527|e5d1ec3eada14f709e5d1ec9fee95662|0
+22:StrongAuthErrorResponseParser.java|1|13f1a017989|5eb|d7a61206|8402432a2cfd4dd79b3cada4def07ecf|0
+1e:GetStrongAuthQuestionCall.java|1|13f1a01786f|4a4|98d9aec2|8d67b587c6da46f19992b1539c94b5ab|0
+18:StrongAuthCheckCall.java|1|13f1a01791a|7a7|3e97b849|70637e3b676b466a96f2536e1f0f190b|0
+13:StrongAuthCall.java|1|13f343d5668|4d0|613db55b|9edae6b97fee415ba6c2b788eacb0dcf|0
+19:StrongAuthAnswerCall.java|1|13f343d563c|b98|fc7f0812|00276f82e04e4435906ad3e86e742e0a|0
+1c:StrongAuthErrorResponse.java|1|13f1a017949|2b1|49adef6a|f50d539fc5814956980c6d0ff1aecb67|0
+1c:StrongAuthAnswerDetails.java|1|13f1a0178dc|1a5|7d7692d0|809df97b93d64555b7e55171dd915df5|0
+16:StrongAuthDetails.java|1|13f1a01792a|145|50a71e6|0ab73867b4f340a584013a3230139303|0
+12:StrongAuthAns.java|1|13f1a01798c|d50|56367923|7c54fc0a9fe549a1960a5d017f42a04b|0
+17:StrongAuthQuestion.java|1|13f343d56be|786|e367d0b|b80fb8172377444cb6a49359be12a454|0

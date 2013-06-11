@@ -1,0 +1,27 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services
+2
+17
+4:auth|2|0|0|0|b901b7c5a88743df9a2417c5b888c255|0
+1b:BankHolidayServiceCall.java|1|13f1f812fb9|986|98ea36f5|f5c5d82ecf9611e280710002f641af4c|0
+38:BankUnamedListJsonResponseMappingNetworkServiceCall.java|1|13f1a03203e|a9e|c6597bdb|08c1ae8ac8d911e2807b0002f641af4c|0
+17:AcceptTermsService.java|1|13f1a03200f|a48|fe867b0c|45a98ffabc9711e2802e0002f641af4c|0
+14:BankHttpHeaders.java|1|13f1f812fb9|1b3|fc669219|f735d83ecf9611e280710002f641af4c|0
+2e:BankJsonResponseMappingNetworkServiceCall.java|1|13f1a03201f|99b|24e1285d|06e1ae82c8d911e2807b0002f641af4c|0
+7:account|2|0|0|0|2cf300d7a5dc484fb4407e97878b6fa5|0
+13:BankUrlManager.java|1|13f1f812fc8|354a|8436df76|f865d84ecf9611e280710002f641af4c|0
+4:json|2|0|0|0|fd222710aa3d45f7856d664e84007d03|0
+6:logout|2|0|0|0|29a9871abc9511e2802e0002f641af4c|0
+3:atm|2|0|0|0|565294baa7e34c4da39d532f6afbcc79|0
+17:BankApiServiceCall.java|1|13f1f812fa9|a30|1c2e675c|f495d81ecf9611e280710002f641af4c|0
+1b:BankNetworkServiceCall.java|1|13f1a03202e|6b5|43d62bef|47d9900abc9711e2802e0002f641af4c|0
+11:BankApiLinks.java|1|13f1f812fa9|59c|8b1b88f4|fab5d86ecf9611e280710002f641af4c|0
+8:customer|2|0|0|0|61063f3d76de4faf9b5aafb07f249c61|0
+1a:BackgroundServiceCall.java|1|13f1f812fa9|314|483b030a|fbc5d87ecf9611e280710002f641af4c|0
+11:BankHolidays.java|1|13f1f812fb9|a94|b4bcc945|f9b5d85ecf9611e280710002f641af4c|0
+5:payee|2|0|0|0|42de2febed9247f08f65dd9bfaa2f28f|0
+1e:XHttpMethodOverrideValues.java|1|13f1f812fc8|ef|17ca4be4|f305d80ecf9611e280710002f641af4c|0
+7:deposit|2|0|0|0|1321ecb750fa476c9f9c3273ba7db270|0
+5:error|2|0|0|0|3a589b8eab644c14af83471360d01104|0
+7:payment|2|0|0|0|0415eb30900a40e18c106904124504de|0
+8:transfer|2|0|0|0|bf05c5eece5d11e280100002f641af4c|0

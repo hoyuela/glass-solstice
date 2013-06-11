@@ -1,0 +1,26 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\res\values
+2
+16
+15:strings_help_menu.xml|1|13f1a0150d2|fc|a825525d|f11b62772fdf43c7a36bffcf7e533a97|0
+18:strings_account_info.xml|1|13f1a014f2d|1585|d2eec1ce|c99bc53f37cf4f6282a1ab3b69020c43|0
+f:strings_url.xml|1|13f339dceb9|7d3|3684ad27|ff5bbafee39e43c184b175c19ce8b977|0
+a:styles.xml|1|13f1a015075|335d|cc89efb7|968863fdad424588bf8bb4a031df4b19|0
+12:strings_drawer.xml|1|13f1a014fc9|d83|7246c92b|a1163711aad743fa9a1455db63a5af13|0
+16:strings_status_bar.xml|1|13f1a0150f1|d2|836345a4|033d3d61650f4b058718713fd85aa19b|0
+24:strings_general_list_item_titles.xml|1|13f1a015036|3eb|f0515952|a93694ac22294af88f94106891f29e35|0
+11:dimens_toggle.xml|1|13f1a0150f1|3a5|80872eed|d052ed123d0b46b283b7bcf5dea47ef4|0
+1b:strings_forgot_register.xml|1|13f1a014ff8|3e4|10f05c3e|92fee39a217d40478a67841e82b34e57|0
+1d:strings_help_strength_bar.xml|1|13f1a015046|699|4ac55ad|5d5bb9a9c2b842b1ac9c67edaf7be51e|0
+f:styles_card.xml|1|13f1a015101|1ab|cb208816|091eb1e23f974bc5a195c33fc9347e97|0
+9:color.xml|1|13f1a014eef|df6|8ea878c5|c113a6887bad44519922bd2168d0118a|0
+1f:strings_detail_transactions.xml|1|13f1a014f8b|39d|9cfb334e|313825e30ac446fb874dca8ca2db4823|0
+12:strings_common.xml|1|13f1a0150b3|38a|87f72dad|4f741a62dc11494cb4f40a00392a9a9d|0
+1b:strings_fragment_titles.xml|1|13f1a015007|2f8|f1460cf9|bdaf3349789d4994a7b71ca612e40eb9|0
+18:strings_confirmation.xml|1|13f1a014f6b|9d2|73b8608a|ea904aa6efbc425393961083950afa0c|0
+16:strings_cache_keys.xml|1|13f1a0150a3|170|cea972e3|803e659c6c1347c1a8810d88e738aa49|0
+b:strings.xml|1|13f343cf453|21ae|df259db|ab25ed26d2b211e280490002f641af4c|0
+18:strings_transactions.xml|1|13f1a015055|45f|94207d4a|fa574973e75d4d8ba079a512a9423154|0
+16:error_code_mapping.xml|1|13f1a014f0e|b325|e7dfdcc3|5508f4eb8dea4dcba7a594f1d8d3292c|0
+a:dimens.xml|1|13f1a014efe|b83|7d69c84a|0efd6478f8504070afbdb6afa5d0cbdb|0
+1d:strings_whats_new_content.xml|1|13f1a015111|5b4|973ae5be|0add23f699bc49208433e5edd14f11c4|0

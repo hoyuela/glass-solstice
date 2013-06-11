@@ -1,0 +1,14 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\push\manage
+2
+a
+22:PushManageCategoryParamDetail.java|1|13f1a017bcc|297|c122e092|1067e301e4c14e5cb066f88cd3476288|0
+25:PushRemindersEnrollResultsDetail.java|1|13f1a017c6b|878|59b8dc0d|2ed114f22e8b47d0935c0df321d1cc3d|0
+12:PostPrefParam.java|1|13f1a017b5f|286|5a8fda58|2b206c71c6ed41a5a6b4f4f8472879f1|0
+28:PostPushPreferencesReferenceHandler.java|1|13f1a017b9d|389|1155322a|78e8870c55fb41c5880b5c6a1fff8976|0
+13:PostPrefDetail.java|1|13f1a017b4f|4ce|39e59b5e|c9a6d96f64ea48b187a5d0f0a0d6f1cc|0
+1a:PostPreferencesDetail.java|1|13f1a017b7e|85a|1223cf59|5189e587ad7647bbaa5bd938dd951b3e|0
+16:PreferencesDetail.java|1|13f1a017bcc|4c0|cd99890|e814bca1fc6e4507876e71bc3339dc76|0
+20:PushNotificationPrefsDetail.java|1|13f1a017c11|2fe|d8f20b62|595851c2506f49d1838a4a02341f62b5|0
+1f:GetNotificationPreferences.java|1|13f1a017b40|757|1698956e|b6ae2ef7fffc43ba94f6e799af080148|0
+20:PostNotificationPreferences.java|1|13f1a017b4f|676|be7445e4|6f1b37c41a60402189b30bdf35afcbd1|0

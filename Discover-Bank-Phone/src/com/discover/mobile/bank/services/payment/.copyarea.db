@@ -1,0 +1,15 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\payment
+2
+b
+25:PayBillsTermsAndConditionsDetail.java|1|13f1f8130e1|286|a1eeca33|5175dcdecf9711e280710002f641af4c|0
+1b:GetPaymentsServiceCall.java|1|13f1f8130e1|16c4|cd077fc5|4915dc6ecf9711e280710002f641af4c|0
+16:UpdatePaymentCall.java|1|13f1f8130f1|9d7|9da75df1|4a15dc7ecf9711e280710002f641af4c|0
+17:InterestRateDetail.java|1|13f1f8130e1|36e|8b980f8c|4825dc5ecf9711e280710002f641af4c|0
+16:CreatePaymentCall.java|1|13f1f8130d1|73c|82fe7e6c|4705dc4ecf9711e280710002f641af4c|0
+18:CreatePaymentDetail.java|1|13f1f8130d1|83d|f3627ddf|5385dceecf9711e280710002f641af4c|0
+15:PaymentQueryType.java|1|13f1f8130f1|218|4ad1b036|4e95dcbecf9711e280710002f641af4c|0
+26:GetPayBillsTermsAndConditionsCall.java|1|13f1f8130d1|5f5|3a1b15c4|5065dccecf9711e280710002f641af4c|0
+1d:DeletePaymentServiceCall.java|1|13f1f8130d1|e33|21f7cd39|4b15dc8ecf9711e280710002f641af4c|0
+12:PaymentDetail.java|1|13f1f8130f1|11d3|1074cbd1|4c95dc9ecf9711e280710002f641af4c|0
+16:ListPaymentDetail.java|1|13f1f8130e1|d35|9c1d92cf|4d95dcaecf9711e280710002f641af4c|0

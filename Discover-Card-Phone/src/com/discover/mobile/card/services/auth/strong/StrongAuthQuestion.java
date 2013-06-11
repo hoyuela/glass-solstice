@@ -13,7 +13,7 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-import com.discover.mobile.card.common.utils.Utils;
+
 
 /**
  * 
@@ -27,8 +27,7 @@ import com.discover.mobile.card.common.utils.Utils;
  */
 public class StrongAuthQuestion {
 
-	private Context context;
-	private final String TAG = StrongAuthCheck.class.getSimpleName();
+	private Context context;	
 	private CardEventListener listener;
 
 	/**
@@ -64,9 +63,8 @@ public class StrongAuthQuestion {
 
 		request.setUrl(url);
 		request.setHeaderValues(headers);
-		Utils.isSpinnerShow =false;
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-				new StrongAuthDetails(), "Discover", "Authenticating...",
+				new StrongAuthDetails(), "Discover", null,
 				listener);
 		serviceCall.execute(request);
 	}

@@ -1,0 +1,13 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\common\ui\modals
+2
+9
+1d:ModalBottomTwoButtonView.java|1|13f1a0160d9|37a|e68f0ab6|8ce1eba5b2ff4155872d4702e712deb9|0
+1c:ModalAlertWithOneButton.java|1|13f1a01608b|3049|29fd77e4|0611b27865044d019bc04125ae5904e7|0
+24:ModalDefaultTwoButtonBottomView.java|1|13f1a016107|8ff|a6afe108|bad54030b5394889bb178ea4912fdc2d|0
+11:ModalTopView.java|1|13f1a016117|3d9|38b122f9|315d46dccb3c421d8b7b2eec479c0f02|0
+1d:ModalAlertWithTwoButtons.java|1|13f1a0160aa|1bb9|31507d6c|066b59122d104883ae0399dc591113b7|0
+24:ModalDefaultOneButtonBottomView.java|1|13f1a0160d9|5d1|c655e8af|584615a217144ddabe49f31bd2808ba7|0
+15:SimpleModalAlert.java|1|13f1a016146|644|3ab1f998|dc2d3eda391940bcab374f3c52bea2c6|0
+18:ModalDefaultTopView.java|1|13f1a0160f8|1224|6ab49fb3|1ddbed23833f4bf19e365b12e78587b8|0
+1d:ModalBottomOneButtonView.java|1|13f1a0160c9|231|17aaacfd|e1743ae044244df7b8ce87b440d49b13|0

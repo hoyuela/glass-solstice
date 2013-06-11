@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\facade
+2
+5
+13:PushFacadeImpl.java|1|13f1a01656a|29d|528ae3eb|e945c929feaf43cea466c60c5d037a06|0
+18:CardLoginFacadeImpl.java|1|13f343d0d40|be6b|16a84c05|c21c12c5c69b4f55aa8b6d0e84d7813e|0
+13:CardFacadeImpl.java|1|13f1a01654b|1a52|e56529ef|750d48934a4647f0bdeb4bb1136318dc|0
+19:CardLogoutFacadeImpl.java|1|13f1a01655b|663|296914a1|61e277cd6656418d8fb0b69093e9a807|0
+1c:CardKeepAliveFacadeImpl.java|1|13f1a0165a9|222|4e77b169|9d73f5dcc911473998215d4c242bc5f4|0

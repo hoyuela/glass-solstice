@@ -1,0 +1,14 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\auth
+2
+a
+15:BankLoginDetails.java|1|13f1f813035|2ce|c7eeedfa|1bc5da1ecf9711e280710002f641af4c|0
+18:BankSSOLoginDetails.java|1|13f1f813045|239|7300b9ca|1ad5da0ecf9711e280710002f641af4c|0
+15:PreAuthCheckCall.java|1|13f1a032202|97c|d6473a0c|4fd9904abc9711e2802e0002f641af4c|0
+1b:CreateBankSSOLoginCall.java|1|13f1f813045|e0f|15dec771|1955d9fecf9711e280710002f641af4c|0
+f:BankSchema.java|1|13f1a0321d3|4c4|bc8a8990|4cf99032bc9711e2802e0002f641af4c|0
+12:BankLoginData.java|1|13f1a032166|30c|a1a00116|4b299022bc9711e2802e0002f641af4c|0
+6:strong|2|0|0|0|d45c7f0b8ffb4544bd818f128a09c4b6|0
+1b:RefreshBankSessionCall.java|1|13f1f813045|65f|53ad3025|1e05da3ecf9711e280710002f641af4c|0
+a:Links.java|1|13f1a032202|326|88cf06e5|4f099042bc9711e2802e0002f641af4c|0
+18:CreateBankLoginCall.java|1|13f1f813045|f66|c99b2553|1cc5da2ecf9711e280710002f641af4c|0

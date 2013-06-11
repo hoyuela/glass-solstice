@@ -1,0 +1,18 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\payee
+2
+e
+1b:SearchPayeeServiceCall.java|1|13f1f8130c2|14b3|81eec495|4455dc2ecf9711e280710002f641af4c|0
+18:AddPayeeServiceCall.java|1|13f1a032897|14ac|91fec8f1|5b7990aabc9711e2802e0002f641af4c|0
+10:PayeeDetail.java|1|13f1f8130c2|b10|f25b6103|41a5dc0ecf9711e280710002f641af4c|0
+1b:DeletePayeeServiceCall.java|1|13f1f8130b2|d61|1ef88495|3b35dbbecf9711e280710002f641af4c|0
+c:Address.java|1|13f1f8130b2|4e7|e3c48f86|3a05dbaecf9711e280710002f641af4c|0
+14:ListPayeeDetail.java|1|13f1f8130b2|9fa|2194d87e|4305dc1ecf9711e280710002f641af4c|0
+16:AddUnmanagedPayee.java|1|13f1f8130a3|d75|b30734a0|3f65dbeecf9711e280710002f641af4c|0
+18:GetPayeeServiceCall.java|1|13f1a0328f5|1744|4ff16436|5ea990c2bc9711e2802e0002f641af4c|0
+1b:ManagePayeeServiceCall.java|1|13f1f8130b2|295|1ab0e0d2|4555dc3ecf9711e280710002f641af4c|0
+13:AddPayeeDetail.java|1|13f1a032887|adf|2b666c74|5ab990a2bc9711e2802e0002f641af4c|0
+16:SearchPayeeResult.java|1|13f1f8130c2|5d5|3683d895|4085dbfecf9711e280710002f641af4c|0
+12:AddressDetail.java|1|13f1a0328c6|3ad|55171c19|5dc990babc9711e2802e0002f641af4c|0
+14:PayeeComparable.java|1|13f1f8130c2|1ab|afc18da9|3d05dbcecf9711e280710002f641af4c|0
+1a:SearchPayeeResultList.java|1|13f1f8130c2|3db|4eea31e9|3e35dbdecf9711e280710002f641af4c|0

@@ -1,0 +1,13 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\account\recent
+2
+9
+21:RecentActivityRotationHelper.java|1|13f1a015870|f83|f2a2da71|742a786163734613a6112b3fc7fee1e2|0
+22:AccountRecentActivityFragment.java|1|13f1a0157a5|367c|1c2f12d5|da0a07ef5dd24816abbf85ae549e9efa|0
+15:TransactionTable.java|1|13f1a01588f|1200|9dd0a1df|c4482c2d06194abb84449baf4245a2c5|0
+26:GetActivityPeriodsSuccessListener.java|1|13f1a015803|683|4dcc1eb3|acb62fa66f97463d870c70a5d1846d32|0
+14:TransactionItem.java|1|13f1a01588f|869|5558b5dd|5b1bd1e95ded454dae44ef2265e993c5|0
+23:GetTransactionsSuccessListener.java|1|13f1a015832|59b|8c17d38f|4442f06107a649e0aee3d518753004f6|0
+1c:ChooseDateRangeFragment.java|1|13f1a0157c4|165f|650ffb83|339cfda02f3f48e299bc8d7cabebd28c|0
+1f:RecentActivityErrorHandler.java|1|13f1a015841|cec|d4e0fe28|150819b4139248c99f6870243318e9a4|0
+15:ChoosePeriodItem.java|1|13f1a0157e4|603|4d20ee25|9f834d8219ec4b649409d03c90cf58a9|0

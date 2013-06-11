@@ -1,0 +1,15 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\LoginActivity\assets\www\card\html\registration
+2
+b
+14:forgotBothStep2.html|1|13f1a027fcf|1084|9b27d73c|70b50441cade434bbf061f70f7ded2c1|0
+14:forgotBothStep1.html|1|13f1a027f71|152c|4ba1e82b|bca5cef5763743989964b790fce5a37f|0
+18:forgotPasswordStep1.html|1|13f1a027fee|15f0|81b3118e|cb4b604030c844d892b6026a0b102094|0
+11:forgotUserId.html|1|13f1a027ffd|895|bd038590|6483496a9896431cac5309a8cbcda2b6|0
+1f:forgotPasswordConfirmation.html|1|13f1a027fde|78e|a4163cc3|bb8b3e827d9245c4b88cd1adbdace997|0
+18:forgotPasswordStep2.html|1|13f1a027ffd|a65|4a9011df|a670241156fa4a4f8c011b733ad8e2e0|0
+1a:passwordStrengthMeter.html|1|13f1a02801d|6ce|6ebc1983|2a66063b25c2414bbac1659b98faf930|0
+18:userIdStrengthMeter.html|1|13f1a02805b|6ac|4aa306d3|62c67309a54147639f76195a0dac2beb|0
+1f:forgotUserIdOrPasswordMenu.html|1|13f1a02800d|68a|18ccd888|84b564bf3c444d72a36893e1ec9055a2|0
+1d:forgotUserIdConfirmation.html|1|13f1a027ffd|6e2|7b02f943|9b6696eb78fe419dacfaf91c381e34a0|0
+1b:forgotBothConfirmation.html|1|13f1a027f61|825|3a56fcc|8c20d054bbe446f6a97649481129db67|0

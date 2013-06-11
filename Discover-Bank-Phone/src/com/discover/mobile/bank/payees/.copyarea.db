@@ -1,0 +1,24 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\payees
+2
+14
+20:BankAddManagedPayeeFragment.java|1|13f1a031f83|28ad|287677c2|925430e6c81a11e280770002f641af4c|0
+20:BankAddPayeeConfirmFragment.java|1|13f1f812f3c|18b4|7c9e27dc|ee35d7decf9611e280710002f641af4c|0
+18:PayeeDetailFragment.java|1|13f1a031f35|98f|fb0a440f|38d98f9abc9711e2802e0002f641af4c|0
+16:StateArrayAdapter.java|1|13f1f812fa9|545|8291c089|dcf5d72ecf9611e280710002f641af4c|0
+1c:PayeeValidatedEditField.java|1|13f1f812f99|22d8|524821e3|eb45d7becf9611e280710002f641af4c|0
+22:BankSearchSelectPayeeFragment.java|1|13f1f812f4c|1f6f|ad8534c|e7c5d79ecf9611e280710002f641af4c|0
+13:BankEditDetail.java|1|13f1a031ee7|23ce|113776e8|35398f7abc9711e2802e0002f641af4c|0
+19:PayeeDetailViewPager.java|1|13f1f812f8a|1446|fb71ae4d|ef95d7eecf9611e280710002f641af4c|0
+1d:PayeeDetailListGenerator.java|1|13f1f812f7a|3d85|69ee66f7|ece5d7cecf9611e280710002f641af4c|0
+14:BankPhoneDetail.java|1|13f1f812f4c|5fe|c95f0443|e2e5d76ecf9611e280710002f641af4c|0
+19:BankDeletePayeeModal.java|1|13f1f812f4c|f3c|b3971c96|f155d7fecf9611e280710002f641af4c|0
+1b:PhoneNumberTextWatcher.java|1|13f1f812f99|dd4|deb21aa0|de45d73ecf9611e280710002f641af4c|0
+14:BankManagePayee.java|1|13f1a031f06|14bb|1aaec8a1|37098f8abc9711e2802e0002f641af4c|0
+a:State.java|1|13f1f812f99|c86|b1e94e8|e975d7aecf9611e280710002f641af4c|0
+14:BankStateDetail.java|1|13f1f812f5b|100d|90b62506|dfb5d74ecf9611e280710002f641af4c|0
+19:BankAddPayeeFragment.java|1|13f1f812f3c|4637|10f333d0|e135d75ecf9611e280710002f641af4c|0
+16:PhoneNumberFilter.java|1|13f1f812f99|47e|19e161e1|e435d77ecf9611e280710002f641af4c|0
+22:BankAddUnmanagedPayeeFragment.java|1|13f1f812f3c|2361|f7086978|e5a5d78ecf9611e280710002f641af4c|0
+19:BankSimpleEditDetail.java|1|13f1f812f5b|bed|143ded4|d9d5d70ecf9611e280710002f641af4c|0
+1b:BankEnterPayeeFragment.java|1|13f1f812f4c|1a4f|aea98530|db85d71ecf9611e280710002f641af4c|0

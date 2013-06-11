@@ -1,0 +1,10 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\auth\strong
+2
+6
+1a:BankStrongAuthDetails.java|1|13f1a032379|7cf|27567a76|51b9905abc9711e2802e0002f641af4c|0
+22:StrongAuthErrorResponseParser.java|1|13f1f813055|63b|2e901c34|2025da5ecf9711e280710002f641af4c|0
+20:CreateStrongAuthRequestCall.java|1|13f1f813055|a83|57b19ac0|1f35da4ecf9711e280710002f641af4c|0
+20:BankStrongAuthAnswerDetails.java|1|13f1a03230b|72f|f3935883|50a99052bc9711e2802e0002f641af4c|0
+1c:StrongAuthErrorResponse.java|1|13f1a0324ef|2ce|4e9cf0e5|54c99072bc9711e2802e0002f641af4c|0
+16:StrongAuthDetails.java|1|13f1a032463|154|722372ab|5419906abc9711e2802e0002f641af4c|0

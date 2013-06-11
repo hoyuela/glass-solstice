@@ -1,0 +1,11 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\auth\forgot
+2
+7
+15:ForgotUserIdCall.java|1|13f1a0177fb|7f4|5bbcd0b4|487ee279b72244d098a0726baee52aa0|0
+17:ForgotPasswordCall.java|1|13f343d561f|5cb|70120ee3|accaa0a958c747589da8d442976ed0e7|0
+f:ForgotBoth.java|1|13f1a017831|a79|9b925de4|fdf38d2987c14da2a33ff3159ac3c14b|0
+13:ForgotPassword.java|1|13f1a017821|a7b|8a388c40|59490582597945d1aa8ef784479598a8|0
+1d:ForgotPasswordTwoDetails.java|1|13f1a0177f5|217|82d2c0cd|37dc956260084d0192a9f7bcb82eab4d|0
+1a:ForgotPasswordTwoCall.java|1|13f343d5630|560|65e5f7da|90a03360bd324d3e943f9f2b3f52384f|0
+12:UserIdDetails.java|1|13f1a017821|11d|b310618b|7cb8584ec3d941e1a41dc5d4a6c60cf7|0

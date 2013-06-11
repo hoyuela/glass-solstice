@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\account
+2
+5
+8:activity|2|0|0|0|2829870abc9511e2802e0002f641af4c|0
+22:GetCustomerAccountsServerCall.java|1|13f1a032109|1190|7b6ea17a|44e98ff2bc9711e2802e0002f641af4c|0
+12:AccountNumber.java|1|13f1f812fd8|452|4e035644|fcd5d88ecf9611e280710002f641af4c|0
+c:Account.java|1|13f1f812fd8|2e20|90780098|fdd5d89ecf9611e280710002f641af4c|0
+10:AccountList.java|1|13f1a0320e9|27a|5502d1e9|42198fe2bc9711e2802e0002f641af4c|0

@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\auth\registration
+2
+5
+24:RegistrationConfirmationDetails.java|1|13f1a01785f|166|ac1d7de7|b7e17dc8e6dd457389daf9427536c94e|0
+1b:AccountInformationCall.java|1|13f1a017840|57c|dffcf1af|0fd3c893c4dd4b269a9b75cef986a936|0
+1e:AccountInformationDetails.java|1|13f1a017850|3e2|f9bc4a1e|80e71beae14b4c608fa82d66c241fb2b|0
+14:CreateLoginCall.java|1|13f1a017850|785|4039a4b4|a23b0d34cee941dd8928bef9e17dd800|0
+17:CreateLoginDetails.java|1|13f1a017850|196|16008eff|9e2e9cc1cc8e4a4b9e0d679978ae9d10|0

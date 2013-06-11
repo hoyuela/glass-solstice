@@ -1,0 +1,12 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\navigation
+2
+8
+13:CordovaWebFrag.java|1|13f343d4a36|4aec|f0fbad8a|aac467c8d06343a8b11a73995a8e7485|0
+16:PhoneGapInterface.java|1|13f1a016be0|cf|2a1e47db|2ec5cf3f3af941a6b7cba79cb2d5c77b|0
+1f:CardNavigationRootActivity.java|1|13f343d49e9|7e50|bb79aef2|eb86a87d6a2242ab9d170a773c4d1f32|0
+16:CardMenuInterface.java|1|13f1a016b63|97|83eb374b|d70afcddf020436d9121eb2f8b8de22f|0
+1f:CardNavigationMenuFragment.java|1|13f2ebe1e91|4e59|1af1788c|cbb289098c454184a1f6245d2b576258|0
+14:CardMenuManager.java|1|13f1a016bf0|1279|40f31b2a|7669ae7363184f6788b5bef7f2ca53ea|0
+16:StatusBarFragment.java|1|13f1a016d56|c70|9d97f9d8|044456d26a6347a4995fbbdd11806818|0
+24:CardNavigationBroadcastReceiver.java|1|13f1a016c1e|45f|e0de64ac|ecc7437725b04eaeb82b22ec02cd4d7d|0

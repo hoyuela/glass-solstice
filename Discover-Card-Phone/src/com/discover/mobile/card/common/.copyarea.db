@@ -1,0 +1,17 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\common
+2
+d
+f:CardConfig.java|1|13f1a015ad0|137|c22e5b3b|c5a698a84fa0412780beac686b53c79c|0
+b:Common.java|1|13f1a015ae0|266|a395b89a|4926f0d0ac6d4f4f8dcb4dcf16dd62d1|0
+5:utils|2|0|0|0|d790a4a0561945f78cba97257bd4c929|0
+12:ErrorListener.java|1|13f1a015b0f|de|f768480d|9f42d341056d43199b4c68ac1eebc86d|0
+3:net|2|0|0|0|bfcc898890564c1b878f6efaa2bb3235|0
+c:sessiontimer|2|0|0|0|9079a3064d2c4424a50b8841dd6d1112|0
+9:sharedata|2|0|0|0|78d6f5c6980e4aaeaacd777bd351cf44|0
+8:uiwidget|2|0|0|0|d20f4ee5cf53418aa7d02fad688dfa61|0
+14:SuccessListener.java|1|13f1a015b5d|d1|f8d44353|2e24cf2faa49453586d1a4733fdc5de9|0
+19:SessionCookieManager.java|1|13f1a015b4d|1afe|1aef6c72|9bd86438c9a211e280070002f641af4c|0
+13:InputValidator.java|1|13f1a015b0f|1c26|4a2c3806|0b93008099914b3298345aa31ba58826|0
+16:CardEventListener.java|1|13f1a015bca|7e|69b92ccc|01c515bc0c3845dc9a7fb73eaf699746|0
+2:ui|2|0|0|0|7211d77c2eda4dc6b3695f69b1bcd63c|0

@@ -1,0 +1,15 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\login\register
+2
+b
+18:CreateLoginActivity.java|1|13f343d0d73|535c|2312f547|13e1f809cc3946788778ee8c492927ce|0
+1e:ForgotCredentialsActivity.java|1|13f343d0d94|1c34|7684c640|f82767fe4efd40ae94e8b3dcebec14d8|0
+1f:CredentialStrengthEditText.java|1|13f1a016674|58ac|d86799f7|f6654b0345ed455d8d6e565974cca984|0
+19:ForgotUserIdActivity.java|1|13f343d0d9d|4a6c|6ab9e841|12b9e991d9ac4729b4d19c86e29db8bc|0
+29:ForgotBothAccountInformationActivity.java|1|13f1a016876|1120|d3448462|11dd0c5bfba346a7a0951e83f1648d1e|0
+2d:ForgotPasswordAccountInformationActivity.java|1|13f1a016aa8|12d4|82fe1777|f6f3ff2408684ee581007b52c3d786ae|0
+1d:EnterNewPasswordActivity.java|1|13f343d0d84|3d95|16fe690f|ec7ccaeefebd42a9954a3f59e7f36728|0
+1e:ForgotOrRegisterFirstStep.java|1|13f1a016a1c|7f57|12b5ccc9|78769fe27c264fc7bbf7dd8f34437b53|0
+2b:RegistrationAccountInformationActivity.java|1|13f343d4995|151e|bf10c2e0|b49efbe85525484f8f818650a951208f|0
+1c:StrengthBarHelpActivity.java|1|13f1a016b34|2820|a9131a36|7d4762825e1c4ee39c7b085809a6695a|0
+1e:ForgotOrRegisterFinalStep.java|1|13f1a01698f|38e0|ce38c311|db05dd100aba48a6865d024349fa7c09|0

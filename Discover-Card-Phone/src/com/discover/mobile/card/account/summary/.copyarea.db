@@ -1,0 +1,11 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\account\summary
+2
+7
+26:LatePaymentWarningSuccessListener.java|1|13f1a0158fc|668|af0c185a|0ad193afa6d3487e957210b6eec061e5|0
+18:LatePaymentModalTop.java|1|13f1a0158ed|dc6|cc524c0f|7276dc29e9d04180a2487848757f1487|0
+1b:AccountSummaryFragment.java|1|13f1a0158be|3ecd|9d1450a2|d125914d85d84cfbb81a62003e67b543|0
+1a:SimpleListItemFactory.java|1|13f1a01596a|9a6|46f4dc9d|65bdc8126f584e20990a65152ad7ae8f|0
+2a:LatePaymentWarningTextSuccessListener.java|1|13f1a01590c|67d|993020e1|294d6e039a4d41a4bfca998187ad6f09|0
+1c:LatePaymentErrorHandler.java|1|13f1a0158dd|cee|dd020ea4|41b6d534d3784100bacac64ada3e8ebf|0
+13:SimpleListItem.java|1|13f1a01593b|ad6|39b85a00|3d76390da3da4b998992288a88d6c951|0

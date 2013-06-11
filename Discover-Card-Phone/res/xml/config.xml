@@ -30,8 +30,13 @@
     <access origin=".*"/>
 
     <log level="DEBUG"/>
+    <!-- increase load timeout to 60 seconds --> 
+	<preference name="loadUrlTimeoutValue" value="60000" />
+    
     <preference name="useBrowserHistory" value="true" />
     <preference name="exit-on-suspend" value="false" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
+    
 <plugins>
     <plugin name="App" value="org.apache.cordova.App"/>
     <plugin name="Geolocation" value="org.apache.cordova.GeoBroker"/>

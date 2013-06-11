@@ -1,0 +1,12 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\push\registration
+2
+8
+19:RegisterVenderIdCall.java|1|13f1a017cc8|5f9|f595206f|c0176ad652e4465db1c1c31471ffe5ba|0
+1e:GetPushRegistrationStatus.java|1|13f1a017ca9|595|fc8b031f|c3fa224402b74e028181bd33cdf0ca7d|0
+26:VidRegistrationsRefereanceHandler.java|1|13f1a017cf7|273|4451dda5|42dd1d03494847f1ad618f247306715b|0
+21:VidRegStatusReferenceHandler.java|1|13f1a017ce8|267|1705d921|62487430005c4cb19a9687c62d5d195a|0
+1d:DeviceRegistrationDetail.java|1|13f1a017ca9|856|8a3cbd4f|37ec8394ab214f9f9893cd2c6a68ebad|0
+18:VidReferanceHandler.java|1|13f1a017cd8|255|9ef8d1d5|e9dfb3707b2549879fd0c5a7275b1f91|0
+21:PushRegistrationStatusDetail.java|1|13f1a017cb9|5a3|6774e0a1|8df66f7483a3447c81231ca61f2c96fe|0
+21:VidRegisterRefereanceHandler.java|1|13f1a017ce8|279|6bbbde1e|c281e31fbc794024bedd9b3bcdf3f2a8|0

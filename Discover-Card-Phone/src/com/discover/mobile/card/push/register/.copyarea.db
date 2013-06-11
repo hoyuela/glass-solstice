@@ -1,0 +1,14 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\push\register
+2
+a
+1b:BasePushRegistrationUI.java|1|13f2ebe2666|bb5|401ea|1220fbfeb5bc47cc82f0c721ce8d9183|0
+20:PushRegisterSuccessListener.java|1|13f1a01755b|6c6|669f5c3d|fbb0d3da8d8943a288358fa221dee7e5|0
+2a:PushRegistrationStatusSuccessListener.java|1|13f1a01756a|75b|4c159dd4|313b94b41a2e40b3898023cca49b3f29|0
+27:PushRegistrationStatusErrorHandler.java|1|13f1a01755b|72b|fb877a22|0addd0a0433c436d89b9ea40d2ed4f6f|0
+12:OnDeviceReady.java|1|13f1a017589|a8|464f2f31|b9eb4f416fa946a5a3ae4422f7176e35|0
+17:PushRegistrationUI.java|1|13f1a01757a|2a6|3cefe2bb|115da8323fc74d0f93af33cc650cf20c|0
+14:PushPayLoadBean.java|1|13f1a017589|162|751b6960|63b2d08262dc4382ba30eff8bf8bbe4b|0
+1d:PushNowAvailableFragment.java|1|13f343d505b|181d|5b88f8eb|30ad283c8d9848178c3fa2d0c2eaf656|0
+1d:PushRegisterErrorHandler.java|1|13f1a01754b|69e|a9673c59|e645a52638a8434f85763ca9424d718e|0
+17:PushEnrollFragment.java|1|13f1a0174fd|cb4|3a160b70|785882cf6cd946a7a60e4ebe85c2532d|0

@@ -1,0 +1,11 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services
+2
+7
+4:push|2|0|0|0|6aa248b1b1394b9e9172145de8e9a081|0
+4:auth|2|0|0|0|4f368dfc5289493d9b86b2df7dd6a433|0
+7:account|2|0|0|0|31334750d3e7481090381380264147ac|0
+1b:CardNetworkServiceCall.java|1|13f1a0175a9|252|26dcd72|1e2a7e86d429440eb6fb1ccdf0e40217|0
+13:CardUrlManager.java|1|13f1a0175b8|1ab2|956bb31a|1df4fec503114822915316a129492fb1|0
+2e:CardJsonResponseMappingNetworkServiceCall.java|1|13f1a0175a9|327|895e1632|284e52e969634ffdb2fc0f9f25dd5b84|0
+6:logout|2|0|0|0|dd30ef32119a487c9d6e720b18ef45bd|0

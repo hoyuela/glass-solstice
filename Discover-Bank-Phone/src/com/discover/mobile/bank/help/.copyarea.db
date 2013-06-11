@@ -1,0 +1,23 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\help
+2
+13
+1b:FAQLandingPageFragment.java|1|13f1f812eb0|11ed|5776f784|b025d56ecf9611e280710002f641af4c|0
+10:FAQListItem.java|1|13f1f812eb0|f2d|f4910578|ad65d54ecf9611e280710002f641af4c|0
+14:CardFAQListItem.java|1|13f1f812ea0|6ca|a9b94168|aec5d55ecf9611e280710002f641af4c|0
+1f:BankInfoNavigationActivity.java|1|13f1f812e90|18ee|93a21cae|b7a5d5becf9611e280710002f641af4c|0
+1d:CardLoggedOutFAQActivity.java|1|13f1f812ea0|f33|1b8136f|a9c5d52ecf9611e280710002f641af4c|0
+1a:CardFAQDetailFragment.java|1|13f1a031ca6|24b1|78aa5739|e379d36abd7311e2800f0002f641af4c|0
+1c:ProvideFeedbackFragment.java|1|13f1f812ebf|1016|fc184c5e|a7c5d51ecf9611e280710002f641af4c|0
+1f:CardFAQLandingPageFragment.java|1|13f1a031c86|174c|bf2ff787|df29d33abd7311e2800f0002f641af4c|0
+17:TwoElementListItem.java|1|13f1a031b9c|f81|415c1270|1d398ec2bc9711e2802e0002f641af4c|0
+1d:TermsLandingPageFragment.java|1|13f1f812ebf|2620|95078e54|a4d5d4fecf9611e280710002f641af4c|0
+18:HelpMenuListFactory.java|1|13f1a031bcb|1b72|8cf04b10|d889d30abd7311e2800f0002f641af4c|0
+16:FAQDetailFragment.java|1|13f1f812eb0|1fae|fa3953d5|b485d59ecf9611e280710002f641af4c|0
+20:CustomerServiceContactLists.java|1|13f1a031b6e|1e25|3139617c|19e98eaabc9711e2802e0002f641af4c|0
+15:PrivacyTermsType.java|1|13f1f812ebf|1a0|cb378b18|b325d58ecf9611e280710002f641af4c|0
+12:ContactUsType.java|1|13f1f812ea0|137|2a9963a6|b625d5aecf9611e280710002f641af4c|0
+1d:BankPrivacyTermsFragment.java|1|13f1f812e90|b84|bd9ac48d|b1b5d57ecf9611e280710002f641af4c|0
+19:LoggedOutFAQActivity.java|1|13f1f812eb0|f73|c63d307e|aba5d53ecf9611e280710002f641af4c|0
+24:CustomerServiceContactsFragment.java|1|13f1f812ea0|1821|4ed80fe2|a655d50ecf9611e280710002f641af4c|0
+1f:CustomerServiceSectionInfo.java|1|13f1a031b8d|2d0|8887f9a9|1c498ebabc9711e2802e0002f641af4c|0

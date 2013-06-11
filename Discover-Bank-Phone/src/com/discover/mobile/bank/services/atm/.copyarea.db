@@ -1,0 +1,23 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\atm
+2
+13
+13:ListAtmDetails.java|1|13f1f813026|482|b7f3628b|1625d9cecf9711e280710002f641af4c|0
+f:AtmResults.java|1|13f1f812ff7|469|482a5862|1275d99ecf9711e280710002f641af4c|0
+1b:AddressComponentDetail.java|1|13f1f812ff7|3f5|ba172b21|0435d8eecf9711e280710002f641af4c|0
+10:PointDetail.java|1|13f1f813026|24e|7b79c22b|1725d9decf9711e280710002f641af4c|0
+10:RouteDetail.java|1|13f1f813035|45a|c78f6a01|13a5d9aecf9711e280710002f641af4c|0
+26:GetLocationFromAddressServiceCall.java|1|13f1f813016|1770|513b8300|0875d91ecf9711e280710002f641af4c|0
+14:TextValueDetail.java|1|13f1f813035|227|7e37af27|14b5d9becf9711e280710002f641af4c|0
+e:LegDetail.java|1|13f1f813026|454|f8b6818|0255d8decf9711e280710002f641af4c|0
+15:AtmServiceHelper.java|1|13f1f812ff7|1570|690fc1a6|0f15d97ecf9711e280710002f641af4c|0
+f:StepDetail.java|1|13f1f813035|42e|c0a05afd|1855d9eecf9711e280710002f641af4c|0
+22:AddressToLocationResultDetail.java|1|13f1f812ff7|8b0|b8b42876|0695d90ecf9711e280710002f641af4c|0
+1c:AddressToLocationDetail.java|1|13f1f812ff7|c5a|e4fab414|0585d8fecf9711e280710002f641af4c|0
+1d:GetDirectionsServiceCall.java|1|13f1f813016|1e14|9fb959cc|1165d98ecf9711e280710002f641af4c|0
+11:LatLngDetail.java|1|13f1f813016|22f|96fba66c|0975d92ecf9711e280710002f641af4c|0
+e:AtmDetail.java|1|13f1a032b93|15b7|f42d1009|75343046c81a11e280770002f641af4c|0
+11:BoundsDetail.java|1|13f1f813007|361|a55ce75e|0c95d95ecf9711e280710002f641af4c|0
+16:GetAtmDetailsCall.java|1|13f1f813016|10c5|43018a9a|0de5d96ecf9711e280710002f641af4c|0
+f:Directions.java|1|13f1f813007|15bf|287d78bb|0a65d93ecf9711e280710002f641af4c|0
+13:GeometryDetail.java|1|13f1f813007|6ba|da29a828|0b85d94ecf9711e280710002f641af4c|0

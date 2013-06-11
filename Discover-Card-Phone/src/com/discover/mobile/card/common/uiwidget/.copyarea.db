@@ -1,0 +1,20 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\common\uiwidget
+2
+10
+15:NonEmptyEditText.java|1|13f1a0161f1|33b|a9c00ba6|62c85f865ddb43848bb350bb491f73c1|0
+1b:CustomDatePickerDialog.java|1|13f1a016194|e0f|4c5b3b02|47715e0f78c444049decbc2f4ee8604e|0
+f:HelpWidget.java|1|13f1a0163b6|d6c|cfe734d8|2ef5bcbccdfe4b4482b024a402bc2813|0
+10:SsnEditText.java|1|13f1a016220|7e8|bc7a75e0|0292b1e353484e5ebf0eff2b3a096f37|0
+19:ConfirmationEditText.java|1|13f1a016175|1f00|77521f82|5de20f4867bc44d9b1266e7ae51d9e02|0
+12:EmailEditText.java|1|13f1a0161e2|2c4|fdc1edc4|0c7c06006c4a41aca936219feed1dddc|0
+10:HelpAdapter.java|1|13f1a01630a|129b|fda09226|3c643240814343c7b60a17eb4aa16413|0
+17:PushManageEditText.java|1|13f1a016201|18b5|db46019|d5ba604a1f194c1ea6428b5ca7f703c9|0
+18:ValidatedInputField.java|1|13f1a01629d|2e17|86a8c74f|17fcfba438cb48d99760e5d85914de11|0
+16:HelpItemGenerator.java|1|13f1a0163a6|867|84de8ffb|1be62a93d7b24c3db16677c1cd0a5843|0
+1a:CardAccountToggleView.java|1|13f1a0163c5|1cbe|b4dbb4a8|9a31b08a0e954ffca413b1f4d6607fbd|0
+18:ExtendingScrollView.java|1|13f1a0161f1|844|f963a71a|fa767eb99bfe42a194646424b80f717e|0
+1c:CustomDatePickerElement.java|1|13f1a0161a3|1ea2|e22d0944|2a4ae6218bee49e29dd242000589aab5|0
+24:UsernameOrAccountNumberEditText.java|1|13f1a016230|20b9|9179219c|2c0d1f2892014352a60ece481ea6a8e4|0
+1f:CardExpirationDateEditText.java|1|13f1a016165|9f0|33782457|b8db0689e6074030a83ac06ecf5fb8b5|0
+17:DatePickerEditText.java|1|13f1a0161b3|3f2|f86c4a45|e748eb87fe694e82b38cf6b353b854dc|0

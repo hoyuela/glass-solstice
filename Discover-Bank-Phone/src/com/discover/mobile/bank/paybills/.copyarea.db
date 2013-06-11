@@ -1,0 +1,17 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\paybills
+2
+d
+19:SimpleChooseListItem.java|1|13f1f812f2c|1710|83787c38|d195d6becf9611e280710002f641af4c|0
+14:BankSelectPayee.java|1|13f1f812eee|20e4|60f79fc8|d5d5d6eecf9611e280710002f641af4c|0
+1d:SchedulePaymentSingleton.java|1|13f1f812f1d|37f|d45c23bd|d005d6aecf9611e280710002f641af4c|0
+21:BankPayeeNotEligibleFragment.java|1|13f1f812eee|6e5|a14450c5|d885d6fecf9611e280710002f641af4c|0
+1c:SchedulePaymentFragment.java|1|13f1f812f0d|917e|3779bc4c|d305d6cecf9611e280710002f641af4c|0
+1c:BankPayBillsSectionInfo.java|1|13f1f812ede|1b55|e2550b60|cd15d68ecf9611e280710002f641af4c|0
+11:BankPayTerms.java|1|13f1f812eee|160b|89b45b2a|ceb5d69ecf9611e280710002f641af4c|0
+1c:PaymentDetailsViewPager.java|1|13f1f812efe|224f|13136d1b|c775d65ecf9611e280710002f641af4c|0
+19:ReviewPaymentsHeader.java|1|13f1f812efe|15da|ab645903|c9c5d66ecf9611e280710002f641af4c|0
+1a:ReviewPaymentsAdapter.java|1|13f1f812efe|15dd|213215b3|c355d63ecf9611e280710002f641af4c|0
+1a:PaymentDetailFragment.java|1|13f1f812efe|ad1|59dca411|c535d64ecf9611e280710002f641af4c|0
+18:ReviewPaymentsTable.java|1|13f1f812f0d|43a4|a8b0ebaf|cb75d67ecf9611e280710002f641af4c|0
+1b:BankPayConfirmFragment.java|1|13f1f812eee|145f|28d6f848|d475d6decf9611e280710002f641af4c|0

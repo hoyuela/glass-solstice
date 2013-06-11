@@ -1,0 +1,21 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\LoginActivity\assets\www\script\android
+2
+11
+b:KeyValue.js|1|13f1a02ecd1|39f|19f33d23|bd71a30eff7c4df49d74429851bb0828|0
+f:EventManager.js|1|13f1a02edf9|2e9|23f0926|3463d8141d544e01b8a1ae6c65440d99|0
+f:clearHistory.js|1|13f1a02ed3e|190|149c8b5a|325dba2d9bd8400fbb1942e90842ad92|0
+12:RenderStatement.js|1|13f1a02ee28|168|d6a97cc5|b8b76c095a4c446e8da5d046a2104d12|0
+10:cordova-1.7.0.js|1|13f1a02ed5d|2650d|ac7dc6f8|a922043d8dfd46e0a4f640cc6ff87f80|0
+d:Screenshot.js|1|13f1a02ecff|138|71a6ec3|3c401353a69a4fa6a9c35d72a9c9e2dd|0
+13:pageSessionTimer.js|1|13f1a02edca|24b|e95ca54|981e4e095277441792aab9ca2d4eb5e9|0
+e:LoadingView.js|1|13f1a02ece0|209|2cd5b855|bf38008609d0471f9f4b191487845d02|0
+10:CookieManager.js|1|13f1a02ecb1|27c|fdfed64f|9942c501883042afa4ae04d9f7202ff5|0
+10:HybridControl.js|1|13f1a02ecc1|16ce|b752ebb6|ebe04903527640b092e5dce839bb8eac|0
+8:video.js|1|13f1a02edf9|28c|b399cddd|f2491ee4b7f843db8cca8aa1c75a76dd|0
+12:clipboardPlugin.js|1|13f1a02ed4d|2cc|854df0cb|b71471ed9be14d958e2e860526c5ac34|0
+e:Contactsand.js|1|13f1a02ec83|425|d9a84afa|412c9a3c21d04e63ae6f2f378eb801b7|0
+f:childbrowser.js|1|13f1a02ed1f|b58|4a0fb46d|7af0e0a7d103422b8f98dc7f1a1934f7|0
+15:XtifyCordovaPlugin.js|1|13f1a02ed0f|232a|ca2ced7b|d20fb0920b754b07941d6b2ed9f7bbe4|0
+10:cordova-2.3.0.js|1|13f1a02ed8c|32698|cd1ef8b4|ccb59f377420426da737836a44727d3c|0
+16:NetworkConnectivity.js|1|13f1a02ecf0|19b|aea8a45|c0df212c2067486f97b10c01ff218cea|0

@@ -1,0 +1,20 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\LoginActivity\assets\www\script\ios
+2
+10
+b:KeyValue.js|1|13f1a02ee85|39f|19f33d23|8e6c4124c11949478800e6b72c7c54d0|0
+f:EventManager.js|1|13f1a02ef50|3d5|f38a5a4c|499d797fa5ae4abcae1a608e1d7a1579|0
+a:PassKit.js|1|13f1a02ef6f|283|1ad7c308|fd6d07e95c784fd4b72867e1e6458deb|0
+12:RenderStatement.js|1|13f1a02efcd|1b5|120998a6|8adbceb535724d4fab7cde6f9602ee2d|0
+10:cordova-1.7.0.js|1|13f1a02ef41|22d96|dcd31e41|09f5e431e09b460588f446e189c854a4|0
+20:discovercdvviewcontroller (1).js|1|13f1a02ef50|f3|6ec552e7|c22ad8cb71fe4cb3a8c0a8764a7c4d57|0
+d:Screenshot.js|1|13f1a02eec4|138|71a6ec3|3c10852e76404f30929dad5ac9cdb723|0
+e:LoadingView.js|1|13f1a02ee95|20a|413ab85f|7a7965b0a79c48a08b89f4fa714d20e5|0
+10:CookieManager.js|1|13f1a02ee66|153|97b8776d|69d37530748846038ae98606bdcd75f1|0
+8:Print.js|1|13f1a02eeb4|2b0|2a96e6a5|a2ede5fbd2764ccc94fccb6a5e7ac44e|0
+10:EmailComposer.js|1|13f1a02ee76|426|a0297559|96b22565551647e9a64b5bbeb9e2fec8|0
+e:Contactsios.js|1|13f1a02ee47|8dc|46706d46|08285f0f38a74e35bee3a6e136d6df64|0
+12:clipboardPlugin.js|1|13f1a02ef12|2b9|62b1ea8e|a41aeb94234045d18a9d925494a3f66b|0
+f:ChildBrowser.js|1|13f1a02ee37|798|10299d7e|0ce2aa8b423f4a67aab2053dbf3871ee|0
+15:XtifyCordovaPlugin.js|1|13f1a02eed3|1fd9|4be9689b|a41ce987608e44adaf521f01477db8db|0
+16:NetworkConnectivity.js|1|13f1a02eea5|19b|aea8a45|0b8de2789d5b4b809f490e71e64aa49e|0

@@ -1,0 +1,9 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\whatsnew
+2
+5
+16:WhatsNewAvailable.java|1|13f1a0181c5|889|1aafe1c9|ce07d633ca86475697dcd915f14fa8a5|0
+12:PageIndicator.java|1|13f1a0181b5|4ca|f6537e8f|5753669d9b754588bbb0f69deaefb2a0|0
+16:WhatsNewConstants.java|1|13f1a0181c5|af|36fd3a82|97820c0fad684d1aa011a3aa8499943e|0
+15:WhatsNewActivity.java|1|13f343d586a|fe8|dfe05fba|e2d00a19eaf5493e943caaab9add38ce|0
+18:CirclePageIndicator.java|1|13f343d57e9|4311|8bdcdc9c|a1647b3655c945d1b31fb31e09784db4|0

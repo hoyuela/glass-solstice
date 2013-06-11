@@ -1,0 +1,8 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\transfer
+2
+4
+1e:DeleteTransferServiceCall.java|1|13f1f8130f1|12dd|90f654c7|5495dcfecf9711e280710002f641af4c|0
+13:TransferDetail.java|1|13f1a032f6a|1af4|8a693b1f|94f430f6c81a11e280770002f641af4c|0
+24:GetExternalTransferAccountsCall.java|1|13f1f8130f1|7a7|cd27a613|5615dd0ecf9711e280710002f641af4c|0
+19:ScheduleTransferCall.java|1|13f1a032f5a|859|e0fbf9d8|938430eec81a11e280770002f641af4c|0

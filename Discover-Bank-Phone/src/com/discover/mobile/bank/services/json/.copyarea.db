@@ -1,0 +1,13 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\services\json
+2
+9
+f:Percentage.java|1|13f1f813093|364|3cc215b7|3685db7ecf9711e280710002f641af4c|0
+7:ID.java|1|13f1f813083|13f|f9986635|3095db2ecf9711e280710002f641af4c|0
+9:Name.java|1|13f1f813093|8d9|67617924|31f5db3ecf9711e280710002f641af4c|0
+9:Date.java|1|13f1f813083|4a7|9a927836|3585db6ecf9711e280710002f641af4c|0
+10:ReceivedUrl.java|1|13f1f8130a3|309|199ff814|3315db4ecf9711e280710002f641af4c|0
+a:Money.java|1|13f1f813093|426|633f4ef5|3475db5ecf9711e280710002f641af4c|0
+c:Address.java|1|13f1f813083|998|7284b9cd|2f15db1ecf9711e280710002f641af4c|0
+10:PhoneNumber.java|1|13f1f8130a3|3da|20943079|2e05db0ecf9711e280710002f641af4c|0
+a:Limit.java|1|13f1f813093|5bb|61daccf5|3785db8ecf9711e280710002f641af4c|0

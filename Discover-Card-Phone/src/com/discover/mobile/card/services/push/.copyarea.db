@@ -1,0 +1,17 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\services\push
+2
+d
+11:GetPushCount.java|1|13f1a017a56|55e|3c8dae20|7340426126904e08b198fbd9c4c74c6a|0
+19:PostPushRegistration.java|1|13f1a017a75|b6a|b8e4bd22|70f75ba1b3b04234a88e7148d690e986|0
+18:GetPushRegistration.java|1|13f343d5707|63b|cf71fafd|68882935b12049819ce8854f52c3322b|0
+10:GetPushData.java|1|13f1a017a65|11c|79905ac2|eaa25a6adc6a4c868c0c82276f3e95a9|0
+18:PushMessageReadBean.java|1|13f1a017a84|21e|e12a748|4637dfe632784279802142c1c5b3a258|0
+15:GetPushCountBean.java|1|13f1a017a56|134|21f85b3a|923b36692c9c4980b1bdd583001982ec|0
+7:history|2|0|0|0|30a5521dba1f4a91a3b11348a62c85b4|0
+1c:PushNotificationService.java|1|13f1a017a27|3f2|9f03643d|7169ec60157b43de9569e863886e7a49|0
+c:registration|2|0|0|0|cc01ea56e7754967bcdd026127c90e89|0
+6:manage|2|0|0|0|98eeb4f694b64fbaa9c3f5e1937d69d5|0
+26:GetPushPreferenceReferenceHandler.java|1|13f1a0179f8|25b|92b6d479|1fe6d15d900b45f8a73a7904b8092b0b|0
+1d:PostPushRegistrationBean.java|1|13f1a017a84|1a4|d2437fb5|01be60bdc4b8437e924210578c503c54|0
+14:PushReadMessage.java|1|13f1a017ab3|951|7890118|6bf0d3455f7547eb9a689baccb9d53b9|0

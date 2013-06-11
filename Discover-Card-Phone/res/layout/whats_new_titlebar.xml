@@ -30,6 +30,12 @@
         android:textSize="16sp"
         android:textStyle="bold" />
     
+     <View
+        android:id="@+id/whats_new_bottom_liner"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"       
+         android:layout_below="@+id/whats_new_titlebar"                            
+        android:background="@color/bottom_line" />
     
 
 </RelativeLayout>

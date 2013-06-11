@@ -1,0 +1,25 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\atm
+2
+15
+14:AtmModalFactory.java|1|13f1f812dd5|217d|321d45ac|5855d23ecf9611e280710002f641af4c|0
+f:AtmWebView.java|1|13f1f812dd5|149a|9246b49d|56e5d22ecf9611e280710002f641af4c|0
+22:DiscoverLocationMangerWrapper.java|1|13f1f812de5|861|e0f0d840|4d35d1decf9611e280710002f641af4c|0
+17:BankAtmLocatorInfo.java|1|13f1a030ec1|83e|5f96cc85|0c198e3abc9711e2802e0002f641af4c|0
+1c:AtmMarkerBalloonManager.java|1|13f1a0312e6|1bb2|79ec4ce0|7a74305ec81a11e280770002f641af4c|0
+1d:DiscoverLocationListener.java|1|13f1f812de5|43a|48a06cb5|53f5d20ecf9611e280710002f641af4c|0
+18:AtmGetLocationModal.java|1|13f1f812da6|6d6|73d14307|5eb5d26ecf9611e280710002f641af4c|0
+14:AtmListFragment.java|1|13f1f812db6|19ef|d356d8e|6155d27ecf9611e280710002f641af4c|0
+13:AtmMapFragment.java|1|13f1f812dc6|8ff7|31ea00ae|4bc5d1cecf9611e280710002f641af4c|0
+15:AutoZoomRunnable.java|1|13f1f812dd5|b1d|541cad1b|5565d21ecf9611e280710002f641af4c|0
+13:AtmListAdapter.java|1|13f1f812da6|2a82|af4bd0eb|6c15d2decf9611e280710002f641af4c|0
+17:AtmLocatorActivity.java|1|13f1f812db6|13c0|5ac85ca6|49f5d1becf9611e280710002f641af4c|0
+1b:AtmLocatorMapSearchBar.java|1|13f1f812db6|2442|b64db328|5055d1eecf9611e280710002f641af4c|0
+15:LocationFragment.java|1|13f1f812df4|c59|481ece88|59a5d24ecf9611e280710002f641af4c|0
+17:DiscoverMapWrapper.java|1|13f1f812df4|1e17|7e11ae63|68a5d2becf9611e280710002f641af4c|0
+1d:SearchByLocationFragment.java|1|13f1f812e04|410|bdb75b9c|62e5d28ecf9611e280710002f641af4c|0
+19:SearchNearbyFragment.java|1|13f1f812e04|28a|df12d63c|5245d1fecf9611e280710002f641af4c|0
+13:LocationObject.java|1|13f1f812df4|254|7c91c1c0|6a25d2cecf9611e280710002f641af4c|0
+1e:DiscoverGpsStatusListener.java|1|13f1f812de5|67f|e5291520|6735d2aecf9611e280710002f641af4c|0
+19:AtmMapSearchFragment.java|1|13f1f812dc6|1bd|4e84892f|6515d29ecf9611e280710002f641af4c|0
+1e:DiscoverInfoWindowAdapter.java|1|13f1f812de5|746|d9ed6370|5c15d25ecf9611e280710002f641af4c|0

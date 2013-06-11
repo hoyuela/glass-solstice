@@ -1,0 +1,18 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\LoginActivity\assets\www\card\html\payments
+2
+e
+14:pendingPayments.html|1|13f1a0277a4|570|ba00a419|41c5e6ecd3a947b19c99c72415fc71ec|0
+14:lateMinPayWarn1.html|1|13f1a0277d3|a15|581814d7|c9e5275eb4554ff28a6e0b3827cbea55|0
+13:lateMinPayWarn.html|1|13f1a0277b4|924|6a15beef|42563e72d2ba451d803f6968f12f775e|0
+19:confirmCancelPayment.html|1|13f1a027747|861|dbe77931|a421a13aa3604ef897ab2d43eb1dc566|0
+1a:manageBankInformation.html|1|13f1a027756|52e|2f4b8df2|7c657c0a0103484ea5ecc4627efb2737|0
+11:paymentStep1.html|1|13f1a027756|1cb6|5dcb2162|6ca18b1467ce43b99f529fe26d3e9b14|0
+1b:lateMinPayWarnNoMinPay.html|1|13f1a0277e3|4b2|8b1979d7|78f2a889c3884e36aad4d0d33ca8ef71|0
+17:paymentInformation.html|1|13f1a0277a4|367|9e14076e|8f43993295514be8ba778e41d54e69a8|0
+14:paymentsHistory.html|1|13f1a027785|52b|8f028dec|fe95d977e41342ada7026f88239110f2|0
+11:paymentStep2.html|1|13f1a027785|832|62471ce|375b723bd0f84c4594855759c37acbd5|0
+12:cancelPayment.html|1|13f1a027747|abf|16984dfb|abccb41982704494ab9e4b864e3a48d6|0
+14:paymentsLanding.html|1|13f1a027795|787|b8724896|28e6920682fa461bab77bdb8bde92d3d|0
+11:paymentStep3.html|1|13f1a027785|88c|a33f96ea|8acb361c9ffc4972b058f9c1c5de59cf|0
+14:paymentsSummary.html|1|13f1a027795|80b|b64589c6|09ecea6e2f284c4c8f9e3ee1201802b8|0

@@ -1,0 +1,8 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Card-Phone\src\com\discover\mobile\card\error
+2
+4
+21:CardBaseErrorResponseHandler.java|1|13f1a016490|405f|d541f8d9|dd14d0e10a024745b4fed93bb612474a|0
+13:CardErrHandler.java|1|13f1a0164ce|1ad2|bf48d7e|471fa0b78e344028ade3b4b82c03b1aa|0
+17:CardErrorHandlerUi.java|1|13f1a01651c|809|909a78e0|96a65403f09b415bbe5fa11bd9960f42|0
+15:CardErrorHandler.java|1|13f1a0164a0|304c|af5fc2c|3c6d692080214c53b920b5a35f8b35fc|0

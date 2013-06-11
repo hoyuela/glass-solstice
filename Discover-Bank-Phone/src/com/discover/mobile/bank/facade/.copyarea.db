@@ -1,0 +1,11 @@
+ClearCase CopyAreaDB|4
+vob\inet_apps_dev\andrdhndst\source\Discover-Bank-Phone\src\com\discover\mobile\bank\facade
+2
+7
+18:BankLoginFacadeImpl.java|1|13f1f812e71|2e3|9aedf509|9e65d4becf9611e280710002f641af4c|0
+1c:BankConductorFacadeImpl.java|1|13f1a0319c8|230|14aab5c3|12998e72bc9711e2802e0002f641af4c|0
+1c:LoginActivityFacadeImpl.java|1|13f1f812e81|c0c|6e6f0277|9a05d48ecf9611e280710002f641af4c|0
+19:BankLogoutFacadeImpl.java|1|13f1a0319d8|4cb|6e3ea4f6|13c98e7abc9711e2802e0002f641af4c|0
+1e:CustomerServiceFacadeImpl.java|1|13f1f812e81|28d|bb3dc8b|9bd5d49ecf9611e280710002f641af4c|0
+1c:BankKeepAliveFacadeImpl.java|1|13f1f812e71|1a6|93a09153|9d25d4aecf9611e280710002f641af4c|0
+13:BankFacadeImpl.java|1|13f1a031a07|13e|5a8471eb|76213b56c81011e280070002f641af4c|0
