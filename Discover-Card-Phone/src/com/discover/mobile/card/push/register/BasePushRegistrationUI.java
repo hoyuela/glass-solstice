@@ -19,7 +19,7 @@ import com.slidingmenu.lib.SlidingMenu;
  * @author jthornton
  *
  */
-public abstract class BasePushRegistrationUI extends BaseFragment implements PushRegistrationUI, OnDeviceReady{
+public abstract class BasePushRegistrationUI extends BaseFragment implements PushRegistrationUI{
 		
 	/**String representing that the user opted into the alerts*/
 	public static final String ACCEPT = "Y"; //$NON-NLS-1$
@@ -27,8 +27,6 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 	/**String representing that the user did not want to opt into the alerts*/
 	public static final String DECLINE = "P"; //$NON-NLS-1$
 	public final String LOG_TAG = BasePushRegistrationUI.class.getSimpleName();
-	private boolean isDeviceReady = false;
-	private boolean isBackPressed = false;
 
 	/**
 	 * Registers the device, user and vender id with Discover's server
@@ -73,47 +71,18 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 		}
 		else
 		{
-			
-			//Back is pressed. If cordova is ready then go back to home else wait till it's load 
-			isBackPressed = true;
-			
 			CardNavigationRootActivity activity = null;
 			if(getActivity() instanceof CardNavigationRootActivity)
 			{
 				 activity = (CardNavigationRootActivity) getActivity();
 			}
-			
-			if(activity != null && activity.onCordovaError)
+			if(activity != null)
 			{
 				getActivity().onBackPressed();
-			}
-			else if(isDeviceReady)
-			{
-				getActivity().onBackPressed();
-			}
-			else
-			{
-				Utils.showSpinner(getActivity(), "Discover", "Loading...");
 			}
 		}
 	}
 	public void changeToAcceptScreen(final String tag) {
 		this.makeFragmentVisible(new PushManageFragment());
-	}
-	
-	@Override
-	public void onReady() {
-		Utils.log(LOG_TAG, "Device is readyyy----->");
-		
-		//Make this true. So on click of no thanks, user should go back
-		isDeviceReady = true;
-		
-		/*If back is already pressed, and ondevice is called it means we have 
-		already stared spinner. Hide them and go back.*/
-		if(isBackPressed)
-		{
-			Utils.hideSpinner();
-			getActivity().onBackPressed();
-		}
 	}
 }

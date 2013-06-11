@@ -83,7 +83,6 @@ public final class CardErrorResponseHandler {
      */
     public void handleCardError(final CardErrorBean cardErrorHold,
             final CardErrorCallbackListener errorClickCallback) {
-        Utils.isSpinnerShow = true;
         Utils.hideSpinner();
         if (cardErrorHold.isAppError()) {
             handleAppError("Application Error", cardErrorHold.getErrorMessage());

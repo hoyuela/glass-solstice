@@ -37,8 +37,6 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	/**Text View First paragraph text*/
 	private final TextView dialogTitle;
 	
-	/**Text View First paragraph text*/
-    private final TextView securityText;
     
     /**Text View First paragraph text*/
     private final TextView firstParagraph;
@@ -66,8 +64,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 		userEmailLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_email_label);
 		userAcctNbrLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_account_label);
 		
-		dialogTitle = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);	
-		securityText = (TextView)mainView.findViewById(R.id.account_info_confirm_security_precaution_label);
+		dialogTitle = (TextView) mainView.findViewById(R.id.account_info_confirm_first_paragraph_label);		
 		firstParagraph = (TextView)mainView.findViewById(R.id.account_info_confirm_message_first);
 		secondParagraph = (TextView)mainView.findViewById(R.id.account_info_confirm_message_second);
 		

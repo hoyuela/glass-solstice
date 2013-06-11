@@ -3,7 +3,6 @@ package com.discover.mobile.card.push.register;
 import java.io.IOException;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,7 +15,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.navigation.CardMenuInterface;
-import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.common.LoggedInRoboActivity;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -44,7 +42,6 @@ public class PushNowAvailableFragment extends BasePushRegistrationUI{
 	public void onCreate(Bundle savedInstanceState) {
 	    // TODO Auto-generated method stub
 	    super.onCreate(savedInstanceState);
-	    Utils.isSpinnerShow = true;
         Utils.hideSpinner();
 	}
 	/**

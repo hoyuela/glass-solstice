@@ -12,13 +12,8 @@
         android:layout_height="521dp"
         android:background="@drawable/light_gray_bkgrd"
         android:focusable="true"
-        android:focusableInTouchMode="true" >
+        android:focusableInTouchMode="true" >       
         
-         <View
-            android:id="@+id/whats_new_bottom_liner"
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"                                   
-            android:background="@color/bottom_line" />
 
         <TextView
             android:id="@+id/whats_new_content_heading"
@@ -42,13 +37,14 @@
             android:paddingTop="16dp"
             android:textSize="14sp" />
 
-        <ImageView
+       <ImageView
             android:id="@+id/whats_new_image"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/whats_new_image"            
-            android:contentDescription="@string/desc"            
-             />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"            
+            android:contentDescription="@string/desc"
+            android:scaleType="center" />
 
         <TextView
             android:id="@+id/whats_new_label"

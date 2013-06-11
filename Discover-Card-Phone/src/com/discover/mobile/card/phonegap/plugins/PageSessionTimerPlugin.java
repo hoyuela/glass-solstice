@@ -20,7 +20,7 @@ public class PageSessionTimerPlugin extends CordovaPlugin {
 	public static final String keepSessionAlive = "keepSessionAlive";
 	public static final String updateLastRestCallTime = "updateLastRestCallTime";
 	public static final String TAG = "PageSessionTimerPlugin";
-	private PageTimeOutUtil pageTimeOutUtil;
+	
 
 	@Override
 	public boolean execute(final String action, final JSONArray args,
