@@ -6,6 +6,8 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -718,7 +720,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			/**Clear the current last error stored in the error handler*/
 			errorHandler.clearLastError();
-
+			
 			/**
 			 * Update prevCall only if it is a different service request from current call
 			 * or if current call is null
@@ -733,6 +735,19 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			/**Update current call*/
 			curCall = sender;
+			
+			/* Allows service calls to be cancelled */
+			if (curCall.isCancellable()) {
+				activeActivity.getDialog().setCancelable(true);
+				activeActivity.getDialog().setOnCancelListener(new OnCancelListener() {
+
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						activeActivity.closeDialog();
+						curCall.cancel();
+					}
+		        });
+			}
 		}
 	}
 	

@@ -77,7 +77,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	/**
 	 * Reference to the dialog currently being displayed on top of this activity. Is set using setDialog();
 	 */
-	private AlertDialog mActiveDialog;
+	//private AlertDialog mActiveDialog;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -128,16 +128,14 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		//If a modal was showing show the modal
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
-			DiscoverModalManager.getActiveModal().show();
+			this.startProgressDialog();
 			DiscoverModalManager.setAlertShowing(true);
 		}
-
+		
 		/**
 		 * Unlocks any thread blocking on waitForResume() 
 		 */
 		notifyResumed();
-
-
 	}
 
 	@Override
@@ -151,9 +149,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		Globals.savePreferences(this);
 
 		eventManager.fire(new OnPauseEvent());
-
-		closeDialog();
-
+		
 		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
 			DiscoverModalManager.getActiveModal().dismiss();
@@ -443,7 +439,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public AlertDialog getDialog() {
-		return mActiveDialog;
+		return DiscoverModalManager.getActiveModal();
 	}
 
 	/**
@@ -451,7 +447,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public void setDialog(final AlertDialog dialog) {
-		mActiveDialog = dialog;
+		DiscoverModalManager.setActiveModal(dialog);
 	}
 
 	/**
@@ -460,15 +456,13 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public void closeDialog() {
-		if( mActiveDialog != null && mActiveDialog.isShowing()) {
-			mActiveDialog.dismiss();
-			mActiveDialog = null;
+		if( DiscoverModalManager.hasActiveModal() && DiscoverModalManager.isAlertShowing()) {
+			DiscoverModalManager.clearActiveModal();
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );
 			}
 		}
-
 	}
 
 	/**
@@ -477,9 +471,10 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	@Override
 	public void startProgressDialog() {		
-		if( mActiveDialog == null ) {
-			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
-			setDialog(mActiveDialog);
+		if(!DiscoverModalManager.hasActiveModal()) {
+			DiscoverModalManager.setActiveModal(ProgressDialog.show(DiscoverActivityManager.getActiveActivity(), 
+												"Discover", "Loading...", true));
+			DiscoverModalManager.setAlertShowing(true);
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );

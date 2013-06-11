@@ -27,6 +27,7 @@ public class GetExternalTransferAccountsCall extends
 			{
 				requiresSessionForRequest = true;
 				errorResponseParser = BankErrorResponseParser.instance();
+				this.setCancellable(true);
 			}
 		},
 		AccountList.class, Account.class);
