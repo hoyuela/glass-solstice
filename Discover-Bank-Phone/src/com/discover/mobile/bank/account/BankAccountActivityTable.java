@@ -2,6 +2,7 @@ package com.discover.mobile.bank.account;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.framework.BankUserListener;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
@@ -29,7 +31,9 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
  * @author jthornton
  *
  */
-public class BankAccountActivityTable extends BaseTable{
+public class BankAccountActivityTable extends BaseTable implements BankUserListener {
+	/** Holds strings that will be used to set the account in the arguments of this fragment */
+	public static final String ACCOUNT = "acct-info";
 
 	/**List of posted activities in the table*/
 	private ListActivityDetail posted;
@@ -42,6 +46,59 @@ public class BankAccountActivityTable extends BaseTable{
 
 	/**Title view of the page*/
 	private AccountActivityHeader header;
+
+
+	@Override
+	public void onResume() {
+		/** Verify this fragment is being displayed */
+		if (isViewCreated()) {
+			/** Update the account information */
+			getAccountInfo(true);
+		}
+
+		/** Subscribe for event raised by the bank user for when data changes */
+		BankUser.instance().addListener(this);
+
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		/** Subscribe for event raised by the bank user for when data changes */
+		BankUser.instance().removeListener(this);
+	}
+
+	/**
+	 * Method used to update the account information used to display in the header and reference to the accont object
+	 * used to fetch posted/scheduled activity data.
+	 */
+	public Account getAccountInfo(final boolean refresh) {
+		Account account = null;
+
+		if (refresh) {
+			final Bundle bundle = getArguments();
+			if (bundle != null && getArguments().containsKey(ACCOUNT)) {
+				account = (Account) getArguments().getSerializable(ACCOUNT);
+
+				/** Get latest account information from cache */
+				if (account != null) {
+					account = BankUser.instance().getAccount(account.id);
+				}
+
+				/** Update reference in header */
+				header.setAccount(account);
+
+				/** Set current account */
+				BankUser.instance().setCurrentAccount(account);
+			}
+		} else {
+			account = header.getAccount();
+		}
+
+		return account;
+	}
 
 	/**
 	 * Handle the received data from the service call
@@ -118,8 +175,6 @@ public class BankAccountActivityTable extends BaseTable{
 		if(current != null && current.activities != null) {
 			adapter.setData(current.activities);
 			
-			updateBankUserCache(current);
-			
 			if(adapter.getCount() < 1){
 				header.setMessage(this.getEmptyStringText());
 				showNothingToLoad();
@@ -137,18 +192,6 @@ public class BankAccountActivityTable extends BaseTable{
 		}
 	}
 	
-	/**
-	 * Sets the bank user cache for posted or scheduled activity based on the state of the header.
-	 * @param list a ListActivityDetail object to save to the BankUser cache.
-	 */
-	private void updateBankUserCache(final ListActivityDetail list) {
-		if(null == BankUser.instance().getCurrentAccount().posted && header.isPosted()){
-			BankUser.instance().getCurrentAccount().posted = list;
-		} else if(null == BankUser.instance().getCurrentAccount().scheduled && !header.isPosted()){
-			BankUser.instance().getCurrentAccount().scheduled = list;
-		}
-	}
-
 	/**
 	 * @return the title to be displayed in the action bar
 	 */
@@ -199,21 +242,37 @@ public class BankAccountActivityTable extends BaseTable{
 	}
 	
 	private void loadPostedData() {
+		final Account account = getAccountInfo(false);
+
 		if (posted != null) {
 			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
 			updateAdapter(posted);
-		} else if (BankUser.instance().getCurrentAccount().posted != null) {
+		} else if (account.posted != null) {
 			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
-			posted = BankUser.instance().getCurrentAccount().posted;
+			posted = account.posted;
 			updateAdapter(posted);
 		} else {
 			// Both posted lists are null -- Generate service call
-			BankServiceCallFactory.createGetActivityServerCall(
-				BankUser.instance().getCurrentAccount().
-						getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted, false).submit();
+			BankServiceCallFactory.createGetActivityServerCall(account.getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted,
+					false).submit();
 		}
 	}
 
+	private void loadScheduledData() {
+		final Account account = getAccountInfo(false);
+
+		if (scheduled != null) {
+			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			updateAdapter(scheduled);
+		} else if (account.scheduled != null) {
+			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			posted = account.scheduled;
+			updateAdapter(scheduled);
+		} else {
+			getScheduledActivityServiceCall();
+		}
+	}
+	
 	/**
 	 * Get the scheduled button click listener
 	 * @return the scheduled button click listener
@@ -226,10 +285,10 @@ public class BankAccountActivityTable extends BaseTable{
 				if (isChecked) {
 					if (scheduled != null) {
 						loadLocalActivity();
-					} else if (BankUser.instance().getCurrentAccount().scheduled != null) {
+					} else if (getAccountInfo(false).scheduled != null) {
 						loadCachedActivity();
 					} else {
-						getActivityServiceCall();
+						getScheduledActivityServiceCall();
 					}
 				}
 			}
@@ -250,18 +309,20 @@ public class BankAccountActivityTable extends BaseTable{
 	 */
 	private void loadCachedActivity() {
 		header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
-		scheduled = BankUser.instance().getCurrentAccount().scheduled;
+		scheduled = getAccountInfo(false).scheduled;
 		updateAdapter(scheduled);
 	}
 	
 	/**
 	 * Retrieve scheduled activity from the server and cache it in the BankUser instance.
 	 */
-	private void getActivityServiceCall() {
+	private void getScheduledActivityServiceCall() {
+		final Account account = getAccountInfo(false);
+
 		// Both scheduled lists are null -- Generate service call
 		BankServiceCallFactory.createGetActivityServerCall(
-			BankUser.instance().getCurrentAccount().
-						getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false).submit();
+account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false)
+				.submit();
 	}
 
 	/**
@@ -459,5 +520,60 @@ public class BankAccountActivityTable extends BaseTable{
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
+	}
+
+	@Override
+	protected void updateData() {
+		/** Update the account information */
+		getAccountInfo(true);
+
+		// Empty current referenced data so when user toggles
+		// to either of the tabs the data is downloaded again
+		scheduled = null;
+		posted = null;
+
+		// Check whether the user is currently on the posted or scheduled view
+		// to make the respective service call
+		if (header.isPosted()) {
+			loadPostedData();
+		} else {
+			loadScheduledData();
+		}
+	}
+
+	@Override
+	protected boolean isDataUpdateRequired() {
+		boolean isActivityDownloadRequired = false;
+
+		/** Check if view is currently being displayed */
+		if (isViewCreated()) {
+
+			// Check whether the user is currently on the posted or scheduled view
+			// to make the respective service call
+			if (header.isPosted()) {
+				isActivityDownloadRequired = (header.getAccount().posted == null || posted == null);
+			} else {
+				isActivityDownloadRequired = (header.getAccount().scheduled == null || scheduled == null);
+			}
+		}
+
+		return isActivityDownloadRequired;
+	}
+
+	@Override
+	public void onAccountsUpdate(final BankUser sender, final List<Account> accounts) {
+		/** Check if view is currently being displayed */
+		if (isViewCreated()) {
+			updateData();
+		} else {
+			/** Mark referenced activity data dirty so it is refreshed in onResume() */
+			scheduled = null;
+			posted = null;
+		}
+	}
+
+	@Override
+	public void onCurrentAccountUpdate(final BankUser sender, final Account account) {
+		// This Event is not required to be handled
 	}
 }
