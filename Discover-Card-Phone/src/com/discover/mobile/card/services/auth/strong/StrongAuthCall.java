@@ -13,7 +13,7 @@ public class StrongAuthCall extends CardJsonResponseMappingNetworkServiceCall<St
 	/**
 	 * TAG used for printing logs into Android logcat
 	 */
-	private static final String TAG = StrongAuthCall.class.getSimpleName();
+	
 	
 	private final TypedReferenceHandler<StrongAuthDetails> handler;
 

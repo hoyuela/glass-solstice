@@ -48,9 +48,8 @@ public class GetPushRegistration
         request.setUrl(url);
         /*  String input = "vid="+vendroId;
         request.setInput(input.getBytes());*/
-        Utils.isSpinnerShow =false;
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new GetPushData(), "Discover", "Authenticating...", listener);
+                new GetPushData(), "Discover", null, listener);
         serviceCall.execute(request);
     }
 }

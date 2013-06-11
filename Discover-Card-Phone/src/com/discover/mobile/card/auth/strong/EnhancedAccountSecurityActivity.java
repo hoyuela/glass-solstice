@@ -17,15 +17,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.base.Strings;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.EnhanceSecurityConstant;
 import com.discover.mobile.common.facade.FacadeFactory;
@@ -85,8 +82,7 @@ public class EnhancedAccountSecurityActivity extends
      * an expandable menu that provides help to the user, this value is used to
      * define the number of vertical lines that the menu will occupy when it is
      * expanded. (When collapsed it is set to 0)
-     */
-    private static final int HELP_DROPDOWN_LINE_HEIGHT = 10;
+     */    
 
     private static final String TAG = EnhancedAccountSecurityActivity.class
             .getSimpleName();
@@ -102,13 +98,10 @@ public class EnhancedAccountSecurityActivity extends
      * method of this activity or via updateQuestion().
      */
 
-    private String questionId;
-    private Boolean isCard = true;
-    private RadioGroup securityRadioGroup;
-    private TextView detailHelpLabel;
-    private TextView statusIconLabel;
+    
+    private RadioGroup securityRadioGroup;    
     private TextView questionLabel;
-    private RelativeLayout whatsThisLayout;
+    
     /**
      * Holds reference to the button that triggers the NetworkServiceCall<> to
      * POST the answer in the TextView with id
@@ -118,7 +111,7 @@ public class EnhancedAccountSecurityActivity extends
 
     private String inputErrorText;
     private int inputErrorVisibility;
-    private String dropdownSymbol;
+    
 
     // INPUT FIELDS
     private NonEmptyEditText questionAnswerField;
@@ -140,7 +133,7 @@ public class EnhancedAccountSecurityActivity extends
     private static final String SERVER_ERROR_TEXT = "c";
     private static final String ANSWER_ERROR_VISIBILITY = "b";
     private static final String ANSWER_ERROR_TEXT = "d";
-    private static final String WHATS_THIS_STATE = "e";
+    
     /**
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
@@ -192,7 +185,6 @@ public class EnhancedAccountSecurityActivity extends
         loadAllViews();
         setupRadioGroupListener();
         TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
-        Utils.isSpinnerShow = true;
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
@@ -313,17 +305,11 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     private void restoreState(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            final String serverErrorText = savedInstanceState
-                    .getString(SERVER_ERROR_TEXT);
-            final int serverErrorVisibility = savedInstanceState
-                    .getInt(SERVER_ERROR_VISIBILITY);
+        if (savedInstanceState != null) {            
 
             inputErrorVisibility = savedInstanceState
                     .getInt(ANSWER_ERROR_VISIBILITY);
-            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
-
-            dropdownSymbol = savedInstanceState.getString(WHATS_THIS_STATE);
+            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);            
 
             errorMessage.setText(inputErrorText);
             errorMessage.setVisibility(inputErrorVisibility);
@@ -409,7 +395,7 @@ public class EnhancedAccountSecurityActivity extends
         if (extras != null) {
             // Determine if the activity was created from a Card or a Bank
             // logical path
-            isCard = extras.getBoolean(IntentExtraKey.IS_CARD_ACCOUNT, false);
+            
 
             // Check if activity was created via a Card or Bank logical path
 

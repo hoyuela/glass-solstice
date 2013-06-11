@@ -6,10 +6,7 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,7 +15,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
@@ -30,13 +26,12 @@ import com.discover.mobile.card.common.net.service.WSConstant;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -53,12 +48,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class QuickViewSetupFragment extends BaseFragment {
 
 	private ImageView toggleImage;
+	private TextView qvinfoTextView;
 	private String new_token = "";
 	private View mainView;
 	private static final String REFERER = "cardHome-pg";
 	private static final String CBB = "CBB";
-	private static final String CASHBACK = "Cashback Bonus";
-	private static final String MILES = "Miles";
+	
 
 	protected final String LOG_TAG = "QuickViewSetupFragment";
 	private boolean quickviewOn;
@@ -84,11 +79,11 @@ public class QuickViewSetupFragment extends BaseFragment {
 		
 		//Change CBB/MILES Texts
 		final ImageView faqImage = (ImageView) mainView.findViewById(R.id.faqimage);
-		final TextView qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
+		qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
 		if(!getCardType().equalsIgnoreCase(CBB)){
-			qvinfoTextView.setText(qvinfoTextView.getText().toString().replace(CASHBACK, MILES));
 			faqImage.setBackgroundResource(R.drawable.quickviewsetupmile);
 		}
+		setQVInfoText();
 			
 		toggleImage.setOnClickListener(new OnClickListener() {
 
@@ -165,6 +160,18 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 	}
 
+	
+	/**
+	 * Sets QuickView InfoText According to Card Type
+	 */
+	private void setQVInfoText(){
+		if(!getCardType().equalsIgnoreCase(CBB)){
+			qvinfoTextView.setText(R.string.quick_view_info_miles);
+		}else{
+			qvinfoTextView.setText(R.string.quick_view_info);
+		}
+	}
+	
 	/**
 	 * Remove QuickView Fragments from Application's Fragment History Stack
 	 */
@@ -185,6 +192,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 		mainView.findViewById(R.id.qvalready_main_relative_view).setVisibility(
 				View.GONE);
 		toggleImage.setBackgroundResource(R.drawable.swipe_off);
+		setQVInfoText();
 		quickviewOn = false;
 	}
 
@@ -239,6 +247,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 							quickviewOn = true;
 							toggleImage
 									.setBackgroundResource(R.drawable.swipe_on);
+							qvinfoTextView.setText(R.string.quick_view_info_on);
 						} else {
 							if ((mainView.findViewById(
 									R.id.qvsetup_main_relative_view)
@@ -363,6 +372,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 									.setBackgroundResource(R.drawable.swipe_off);
 							FastcheckUtil.storeFastcheckToken(getActivity(),
 									null);
+							setQVInfoText();
 							quickviewOn = false;
 
 						} else {
@@ -381,6 +391,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 							}
 							toggleImage
 									.setBackgroundResource(R.drawable.swipe_on);
+							qvinfoTextView.setText(R.string.quick_view_info_on);
 							quickviewOn = true;
 						}
 					}
