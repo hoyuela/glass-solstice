@@ -353,7 +353,7 @@
 			    android:layout_centerHorizontal="true"
 			    android:paddingBottom="@dimen/forms_inner_padding"
 			    android:layout_below="@+id/login_table"
-			    android:text="@string/fdic_disclaimer_string"
+			    android:text="@string/discover_copyright_text"
 			    android:textColor="@color/fdic_disclaimer_text_color"
 			    android:textSize="@dimen/fdic_disclaimer_text_size" />
 			
