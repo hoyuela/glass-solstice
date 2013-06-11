@@ -1,6 +1,6 @@
 package com.discover.mobile.card.common.utils;
 
-import android.util.Log;
+
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;

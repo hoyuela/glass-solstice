@@ -12,7 +12,7 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 
 public class ForgotPasswordTwoCall extends CardJsonResponseMappingNetworkServiceCall<RegistrationConfirmationDetails> {
 	
-	private static final String TAG = ForgotPasswordTwoCall.class.getSimpleName();
+	
 	
 	private final TypedReferenceHandler<RegistrationConfirmationDetails> handler;
 

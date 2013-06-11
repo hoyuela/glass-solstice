@@ -127,7 +127,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			cwv.clearCache(true);
 			cwv.clearHistory();
 
-			cwv.loadUrl("file:///android_asset/www/index.html", 60000);
+			cwv.loadUrl("file:///android_asset/www/index.html");
 
 			MyWebviewClient myWebViewClient = new MyWebviewClient(this, mContext);
 			myWebViewClient.setWebView(cwv);
@@ -578,15 +578,15 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 				String arg3) {
 			// TODO Auto-generated method stub
 			super.onReceivedError(arg0, arg1, arg2, arg3);
-			Utils.log(TAG, "on onReceivedError.... " + arg2);
+			
+			Utils.log(TAG, "on onReceivedError.... " + arg2 + ":" + arg1 + ":" + arg3 );
 			Utils.isSpinnerAllowed = true;
-			Utils.isSpinnerForOfflinePush = false;
 			Utils.hideSpinner();
 			
 			if(getActivity() instanceof CardNavigationRootActivity)
 			{
 				CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
-				activity.onCordovaError = true;
+				activity.onErrorOfCordovaLoading();
 			}
 		}
 

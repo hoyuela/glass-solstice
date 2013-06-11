@@ -1,13 +1,10 @@
 package com.discover.mobile.card.miles;
 
-import android.view.View.OnClickListener;
+
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.card.home.HomeSummaryFragment;
-import com.discover.mobile.common.nav.section.ClickComponentInfo;
-import com.discover.mobile.common.nav.section.ComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
-import com.discover.mobile.common.nav.section.GroupComponentInfo;
+
 
 /**
  * ©2013 Discover Bank

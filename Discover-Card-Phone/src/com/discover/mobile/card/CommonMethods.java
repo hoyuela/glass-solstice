@@ -10,8 +10,7 @@ public final class CommonMethods {
     
     /* 13.3  Changes */
     public static final String INCENTIVE_TYPE_DBC = "SBC";
-    /* 13.3  Changes */
-    private final static String TAG = CommonMethods.class.getSimpleName();
+    /* 13.3  Changes */    
 
     /**
      * Determines whether or not the current account's card type is a Miles
