@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -28,11 +29,11 @@ public final class SalutationUpdater implements Runnable {
 	final static int EVENING_END = 24;
 	
 	private TextView salutation = null;
-	private BankAccountSummaryFragment currentContext = null;
+	private Fragment currentContext = null;
 	private Handler uiHandler = null;
 	private String firstName = StringUtility.EMPTY;
 	
-	public SalutationUpdater(final TextView salutation, final String firstName, final BankAccountSummaryFragment context) {
+	public SalutationUpdater(final TextView salutation, final String firstName, final Fragment context) {
 		uiHandler = new Handler(Looper.getMainLooper());
 		this.salutation = salutation;
 		this.currentContext = context;
@@ -66,7 +67,11 @@ public final class SalutationUpdater implements Runnable {
 			public void run() {
 				if(salutation != null) {
 					salutation.setText(greetingBuilder.toString());
-					currentContext.updateDropdownPosition();
+					
+					// TODO uncouple BankAccountSummaryFragment from this class entirely.
+					if (currentContext instanceof BankAccountSummaryFragment) {
+						((BankAccountSummaryFragment) currentContext).updateDropdownPosition();
+					}
 				}
 			}
 		};

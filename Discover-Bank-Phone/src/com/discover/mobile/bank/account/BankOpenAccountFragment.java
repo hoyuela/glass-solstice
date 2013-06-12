@@ -1,5 +1,9 @@
 package com.discover.mobile.bank.account;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,8 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
+import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -43,8 +49,10 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_open_account_view, null);
 
-		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
-		salutation.setText(setFirstName());
+		updateGreeting();
+		
+		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
+		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK | FooterType.NEED_HELP);
 
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
@@ -66,15 +74,38 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 		return view;
 	}
 
+	private void updateGreeting() {
+		final TextView salutation = (TextView) view.findViewById(R.id.account_name);
+		new Thread(new SalutationUpdater(salutation, getFirstName(), this)).start();
+	}
+	
+	/**
+	 * A broadcast receiver that will call the update greeting method when the time changes
+	 * and if it determines that the time should be updated.
+	 * This broadcast is sent by the operating system every minute.
+	 */
+	private final BroadcastReceiver timeListener = new BroadcastReceiver() {
+		@Override
+		public void onReceive(final Context context, final Intent intent) {
+			if(intent != null) {
+				final String action = intent.getAction();
+				if(action.equalsIgnoreCase(Intent.ACTION_TIME_TICK)) {
+					if(SalutationUpdater.shouldUpdateGreeting()) {
+						updateGreeting();
+					}
+				}
+			}
+		}
+	};
 
 	/** Set the first name in the status bar. The first name can sometimes be 
 	 * returned in all caps and only the first letter should be capitalized. 
 	 */
-	private String setFirstName() {
+	private String getFirstName() {
 		final String firstName = BankUser.instance().getCustomerInfo().name.type;
 		final String name = firstName.toLowerCase();
 		final String upperString = name.substring(0,1).toUpperCase() + name.substring(1);
-		return "Hi, " + upperString;
+		return upperString;
 	}
 
 	@Override
@@ -90,6 +121,9 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();	
 		activity.enableSlidingMenu(false);
 		activity.showNavigationMenuButton(false);
+		
+		// Start broadcast receiver for greeting time
+		getActivity().registerReceiver(timeListener, new IntentFilter(Intent.ACTION_TIME_TICK));
 	}
 
 	@Override
@@ -103,6 +137,7 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().unregisterReceiver(timeListener);
 	}
 
 	@Override
