@@ -1,5 +1,4 @@
 <resources>
-    <string name="card_base_url">https://mst0.mapi.discovercard.com</string>
     <string name="bank_base_url">https://asys.discoverbank.com</string>
     <string name="bank_stripped_url">http://asys.discoverbank.com</string>
     <string name="xClientPlatform">Android</string>
