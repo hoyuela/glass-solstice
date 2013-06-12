@@ -25,6 +25,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -46,7 +47,6 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.CommonUtils;
@@ -62,8 +62,8 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 public abstract class AtmMapFragment extends BaseFragment 
- implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-		DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
+implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -150,14 +150,14 @@ public abstract class AtmMapFragment extends BaseFragment
 	private Bundle savedState;
 
 	/**Help Widget*/
-	private HelpWidget help;
+	private ImageButton help;
 
 	/**Location of the user*/
 	private Location location;
 	private Location cameraLocation = null;
 
 	private static boolean needsToAnimateZoom = false;
-	
+
 	private AtmResults tempResults = null;
 	private int resultEndIndex = 0;
 
@@ -168,7 +168,7 @@ public abstract class AtmMapFragment extends BaseFragment
 
 
 	private boolean processingOnBackpress = false;
-	
+
 	/**
 	 * Flag used to determing if the modal used for leaving the application is
 	 * being shown
@@ -230,8 +230,13 @@ public abstract class AtmMapFragment extends BaseFragment
 		streetView = new AtmWebView(web, bar);
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
-		help = (HelpWidget) view.findViewById(R.id.help);
-		help.showHelpItems(HelpMenuListFactory.instance().getAtmHelpItems(this));
+		help = (ImageButton) view.findViewById(R.id.help);
+		help.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				showHelpModal();				
+			}
+		});
 		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
 		streetView.hide();
 		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
@@ -249,6 +254,14 @@ public abstract class AtmMapFragment extends BaseFragment
 		CommonUtils.fixBackgroundRepeat(navigationPanel);
 
 		return view;
+	}
+
+	/**
+	 * Shows the help modal
+	 */
+	protected void showHelpModal(){
+		showCustomAlertDialog(AtmModalFactory.getAtmLocatorHelpModal(this));
+		setHelpModalShowing(true);
 	}
 
 
@@ -348,20 +361,20 @@ public abstract class AtmMapFragment extends BaseFragment
 			break;
 		}
 	}
-	
+
 	private void showLocationAcceptanceModal() {
 		if(DiscoverApplication.getLocationPreference().shouldShowModal()) {
 			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), 
-																		AtmMapFragment.this);
+					AtmMapFragment.this);
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 		}else {
 			searchCurrentLocation();
 		}
 	}
-	
+
 	public final void searchCurrentLocation() {
-		this.setLocationStatus(LocationFragment.SEARCHING);
-		this.getLocation();
+		setLocationStatus(LocationFragment.SEARCHING);
+		getLocation();
 	}
 
 	/**
@@ -1052,7 +1065,7 @@ public abstract class AtmMapFragment extends BaseFragment
 			}, 0);
 		}
 	}
-	
+
 	/**
 	 * @return the current location address string
 	 */
@@ -1127,7 +1140,7 @@ public abstract class AtmMapFragment extends BaseFragment
 	 *            True to show the map view, false otherwise.
 	 */
 	private void showMapView(final boolean value) {
-		final FrameLayout mapLayout = (FrameLayout) this.getView().findViewById(R.id.discover_map);
+		final FrameLayout mapLayout = (FrameLayout) getView().findViewById(R.id.discover_map);
 
 		if (value) {
 			mapLayout.setVisibility(View.VISIBLE);
@@ -1149,7 +1162,7 @@ public abstract class AtmMapFragment extends BaseFragment
 		if (getView() != null) {
 			final FrameLayout mapLayout = (FrameLayout) getView().findViewById(R.id.discover_map);
 
-			isVisible = (mapLayout.getVisibility() == View.VISIBLE);
+			isVisible = mapLayout.getVisibility() == View.VISIBLE;
 		}
 		return isVisible;
 	}
