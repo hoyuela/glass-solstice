@@ -1,5 +1,4 @@
 <resources>
-    <string name="card_base_url">https://mst0.m.discovercard.com</string>
     <string name="bank_base_url">https://asys.discoverbank.com</string>
     <string name="xClientPlatform">Android</string>
     <string name="xApplicationVersion">4.3.2</string>
