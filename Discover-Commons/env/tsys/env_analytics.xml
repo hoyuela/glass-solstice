@@ -1,2 +1,18 @@
 <resources xmlns:tools="https://schemas.android.com/tools" tools:ignore="TypographyDashes">
+     <string name="context_eds_prop">my.prop15</string>
+     <string name="context_eds_var">my.eVar15</string>
+     <string name="context_user_prop">my.prop6</string>
+     <string name="context_user_var">my.eVar6</string>
+     <string name="context_vstr_id_prop">my.prop 12</string>
+     <string name="context_vstr_id_var">my.eVar 12</string>
+     <string name="context_page_name">my.eVar22</string>
+     <string name="context_rsid">my.prop26</string>
+     <string name="customer">Customer</string>
+     <string name="prospect">Prospect</string>
+     <string name="context_app_name">my.eVar56</string>
+     <string name="discover_app_name">DiscoverCard:Native:Android</string>
+     <string name="bank_app_name">DiscoverBank:Native:Android</string>
+     <string name="sso_tag">s.eVar43</string>
+     <string name="account_tag">s.eVar41</string>
+     <string name="single_sign_on_value"><![CDATA[<Single Sign On>]]></string>
 </resources>

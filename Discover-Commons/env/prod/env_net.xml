@@ -1,5 +1,4 @@
 <resources>
-    <string name="card_base_url">https://mapi.discovercard.com</string>
     <string name="bank_base_url">https://www.discoverbank.com</string>
     <string name="bank_stripped_url">http://www.discoverbank.com</string>
     <string name="xClientPlatform">Android</string>

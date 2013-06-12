@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -85,6 +86,11 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		injector.injectMembersWithoutViews(this);
 		super.onCreate(savedInstanceState);
 		eventManager.fire(new OnCreateEvent(savedInstanceState));
+		
+		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB &&
+		   "TRUE".equals(DiscoverActivityManager.getString(R.string.disable_screenshots).toUpperCase())) {
+		    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+		}
 	}
 
 	/**

@@ -56,30 +56,30 @@ public final class TrackingHelper {
 		measurement.stopActivity();
 	}
 
-	private static final String CONTEXT_EDS_PROP = "my.prop15";
-	private static final String CONTEXT_EDS_VAR = "my.eVar15";
-	private static final String CONTEXT_USER_PROP = "my.prop6";
-	private static final String CONTEXT_USER_VAR = "my.eVar6";
-	private static final String CONTEXT_VSTR_ID_PROP = "my.prop 12"; 
-	private static final String CONTEXT_VSTR_ID_VAR = "my.eVar 12"; 
-	private static final String CONTEXT_PAGE_NAME = "my.eVar22";
-	private static final String CONTEXT_RSID = "my.prop26";	
-	private static final String CUSTOMER = "Customer";
-	private static final String PROSPECT = "Prospect";
-	private static final String CONTEXT_APP_NAME = "my.eVar56";
-	private static final String APP_NAME =  "DiscoverCard:Native:Android";
+	private static final String CONTEXT_EDS_PROP = DiscoverActivityManager.getString(R.string.context_eds_prop);
+	private static final String CONTEXT_EDS_VAR = DiscoverActivityManager.getString(R.string.context_eds_var);
+	private static final String CONTEXT_USER_PROP = DiscoverActivityManager.getString(R.string.context_user_prop);
+	private static final String CONTEXT_USER_VAR = DiscoverActivityManager.getString(R.string.context_user_var);
+	private static final String CONTEXT_VSTR_ID_PROP = DiscoverActivityManager.getString(R.string.context_vstr_id_prop); 
+	private static final String CONTEXT_VSTR_ID_VAR = DiscoverActivityManager.getString(R.string.context_vstr_id_var); 
+	private static final String CONTEXT_PAGE_NAME = DiscoverActivityManager.getString(R.string.context_page_name);
+	private static final String CONTEXT_RSID = DiscoverActivityManager.getString(R.string.context_rsid);	
+	private static final String CUSTOMER = DiscoverActivityManager.getString(R.string.customer);
+	private static final String PROSPECT = DiscoverActivityManager.getString(R.string.prospect);
+	private static final String CONTEXT_APP_NAME = DiscoverActivityManager.getString(R.string.context_app_name);
+	private static final String APP_NAME =  DiscoverActivityManager.getString(R.string.discover_app_name);
 
 	/**Bank Application Name*/
-	private static final String BANK_APP_NAME = "DiscoverBank:Native:Android";
+	private static final String BANK_APP_NAME = DiscoverActivityManager.getString(R.string.bank_app_name);
 
 	/**SSO detailed tag*/
-	public static final String SSO_TAG = "s.eVar43";
+	public static final String SSO_TAG = DiscoverActivityManager.getString(R.string.sso_tag);
 
 	/**Account types Detailed tag*/
-	public static final String ACCOUNT_TAG = "s.eVar41";
+	public static final String ACCOUNT_TAG = DiscoverActivityManager.getString(R.string.account_tag);
 
 	/**Single Sign on Value*/
-	public static final String SINGLE_SIGN_ON_VALUE = "<Single Sign On>";
+	public static final String SINGLE_SIGN_ON_VALUE = DiscoverActivityManager.getString(R.string.single_sign_on_value);
 
 	/**
 	 * Track a bank page
