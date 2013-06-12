@@ -7,6 +7,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
@@ -19,10 +21,9 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.error.BankErrorCodes;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
-import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.ErrorResponseHandler;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
@@ -127,30 +128,25 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 				mErrorHandler.handleLockedOut(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			} 
 			//SSO Fraud users must be handled here, because they are taken to Card home instead of doing nothing.
-			else if((sender instanceof CreateBankSSOLoginCall) && 
+			else if(sender instanceof CreateBankSSOLoginCall && 
 					(errCode.equals(BankErrorCodes.ERROR_INVALID_SSO_PAYLOAD) || 
 							errCode.equals(BankErrorCodes.ERROR_FRAUD_USER))) {
 
 				((BankErrorHandler) mErrorHandler).handleInvalidSSOPayloadErrorModal(mErrorHandlerUi);
 			} 
 			//Handle bad bank status but good card status
-			else if((sender instanceof CreateBankSSOLoginCall) && 
-					 errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
-				final Activity activity = DiscoverActivityManager.getActiveActivity();
-				if(activity instanceof BaseFragmentActivity){
-					((BaseFragmentActivity) activity).showCustomAlert(getBadBankStatusModal());
-				}else if(activity instanceof BaseActivity){
-					((BaseActivity) activity).showCustomAlert(getBadBankStatusModal());
-				}
+			else if(sender instanceof CreateBankSSOLoginCall && 
+					errCode.equalsIgnoreCase(BankErrorCodes.ERROR_SSO_BAD_BANK_STATUS)){
+				showCustomAlert(getBadBankStatusModal());
 			}
 			//Non-SSO Fraud users, and SSO (Card ALU) Fraud users are handled here, they stay at login page.
 			else if (errCode.equals(BankErrorCodes.ERROR_FRAUD_USER) || 
-					 errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
+					errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || 
-					 errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
+					errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
 				final BankStrongAuthDetails details = new BankStrongAuthDetails(msgErrResponse);
 
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
@@ -282,7 +278,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			mErrorHandler.handleGenericError(httpErrorCode);
 			return true;
 		case HttpURLConnection.HTTP_CONFLICT:
-			if((sender != null) && (sender instanceof CreatePaymentCall)) {
+			if(sender != null && sender instanceof CreatePaymentCall) {
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {
@@ -320,5 +316,17 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 */
 	public void clearLastError() {
 		lastErrorResponse = null;
+	}
+
+	/**
+	 * Show a custom modal alert dialog for the activity
+	 * @param alert - the modal alert to be shown
+	 */
+	public void showCustomAlert(final AlertDialog alert){
+		DiscoverModalManager.setActiveModal(alert);
+		DiscoverModalManager.setAlertShowing(true);
+		alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		alert.show();
+		alert.getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	}
 }
