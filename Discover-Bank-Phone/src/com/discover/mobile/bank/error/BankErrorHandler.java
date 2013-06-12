@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +34,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.error.ErrorHandlerUi;
-import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
@@ -540,7 +541,14 @@ public final class BankErrorHandler implements ErrorHandler {
 		}
 
 		// Navigate back to login
-		modal.setOnDismissListener(new NavigateToLoginOnDismiss(activeActivity));
+		modal.setOnCancelListener(new OnCancelListener(){
+			@Override
+			public void onCancel(final DialogInterface dialog) {
+				final Bundle bundle = new Bundle();
+				bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+				FacadeFactory.getLoginFacade().navToLoginWithMessage(activeActivity, bundle);
+			}
+		});
 
 		//Hide bottom view for locked out account
 		modal.hideBottomView();
