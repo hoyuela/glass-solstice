@@ -68,7 +68,9 @@ import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
+import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -736,17 +738,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			/**Update current call*/
 			curCall = sender;
 			
-			/* Allows service calls to be cancelled */
-			if (curCall.isCancellable()) {
-				activeActivity.getDialog().setCancelable(true);
-				activeActivity.getDialog().setOnCancelListener(new OnCancelListener() {
-
-					@Override
-					public void onCancel(DialogInterface dialog) {
-						activeActivity.closeDialog();
-						curCall.cancel();
-					}
-		        });
+			if (DiscoverActivityManager.getActiveActivity() instanceof BaseFragmentActivity) {
+				((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).
+									   setProgressDialogIsCancellable(curCall.isCancellable());	
 			}
 		}
 	}
@@ -974,6 +968,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 
 		return ret;
+	}
+	
+	public void cancelServiceCall() {
+		if(curCall.isCancellable()) {
+			curCall.cancel();
+		} 
 	}
 
 	/**

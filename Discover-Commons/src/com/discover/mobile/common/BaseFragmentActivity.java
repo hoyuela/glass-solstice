@@ -23,6 +23,8 @@ import roboguice.util.RoboContext;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -69,6 +71,9 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 * Flag used to determine if the activity is in resumed state
 	 */
 	private boolean resumed = false;
+	
+	private static boolean progressDialogIsCancellable = false;
+	
 	/**
 	 * lock used to synchronize with threads attempting to update activity
 	 */
@@ -86,7 +91,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		injector.injectMembersWithoutViews(this);
 		super.onCreate(savedInstanceState);
 		eventManager.fire(new OnCreateEvent(savedInstanceState));
-		
+
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB &&
 		   "TRUE".equals(DiscoverActivityManager.getString(R.string.disable_screenshots).toUpperCase())) {
 		    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -128,7 +133,11 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		//If a modal was showing show the modal
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
-			this.startProgressDialog();
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				startProgressDialog();
+			} else {
+				DiscoverModalManager.getActiveModal().show();
+			}
 			DiscoverModalManager.setAlertShowing(true);
 		}
 		
@@ -152,7 +161,11 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		
 		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
-			DiscoverModalManager.getActiveModal().dismiss();
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				DiscoverModalManager.getActiveModal().dismiss();
+			} else {
+				DiscoverModalManager.getActiveModal().hide();
+			}
 			DiscoverModalManager.setAlertShowing(true);
 		}else{
 			DiscoverModalManager.clearActiveModal();
@@ -269,6 +282,14 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	public void setCurrentFragment(final BaseFragment fragment){
 		currentFragment = fragment;
+	}
+	
+	public void setProgressDialogIsCancellable(boolean isCancellable) {
+		this.progressDialogIsCancellable = isCancellable;
+	}
+	
+	public boolean isProgressDialogCancellable() {
+		return this.progressDialogIsCancellable;
 	}
 
 	/**
@@ -474,6 +495,15 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		if(!DiscoverModalManager.hasActiveModal()) {
 			DiscoverModalManager.setActiveModal(ProgressDialog.show(DiscoverActivityManager.getActiveActivity(), 
 												"Discover", "Loading...", true));
+			DiscoverModalManager.getActiveModal().setCancelable(progressDialogIsCancellable);
+			DiscoverModalManager.getActiveModal().setCanceledOnTouchOutside(false);
+			DiscoverModalManager.getActiveModal().setOnCancelListener(new OnCancelListener() {
+
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					onCancelProgressDialog();
+				}
+			});
 			DiscoverModalManager.setAlertShowing(true);
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
@@ -580,5 +610,9 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	public void startActivityNoReset (final Intent intent) {
 		super.startActivity(intent);
+	}
+	
+	public void onCancelProgressDialog() {
+		
 	}
 }
