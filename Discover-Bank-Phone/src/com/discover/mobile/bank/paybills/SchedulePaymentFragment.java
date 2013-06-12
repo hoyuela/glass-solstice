@@ -937,6 +937,9 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 
 		/**Disable Text Watcher to support rotation*/
 		amountEdit.enableBankAmountTextWatcher(false);
+		/**hide the soft keyboard --fixes defect  DE6032 
+		   keyboard wasn't getting hidden due to reataining focus**/
+		amountEdit.clearFocus();
 	}
 
 	@Override

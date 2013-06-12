@@ -8,16 +8,16 @@
         android:id="@+id/discover_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/full_search_bar"
-        android:layout_alignParentBottom="true" 
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/full_search_bar" />
 
     <FrameLayout
         android:id="@+id/discover_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/full_search_bar"/>
+        android:layout_below="@+id/full_search_bar" />
 
     <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
         android:id="@+id/full_search_bar"
@@ -26,10 +26,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
 
-    <com.discover.mobile.common.help.HelpWidget
+    <ImageButton
         android:id="@+id/help"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        style="@style/orange_help_button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:id="@+id/map_navigation_panel"
@@ -63,8 +64,9 @@
     </LinearLayout>
 
     <!-- Layout Displays Google's Terms of Use -->
-	<include layout="@layout/google_terms_of_use_layout" />
-	
+
+    <include layout="@layout/google_terms_of_use_layout" />
+
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"

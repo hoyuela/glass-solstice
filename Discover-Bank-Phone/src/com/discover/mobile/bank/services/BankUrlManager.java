@@ -8,6 +8,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -24,34 +25,6 @@ public final class BankUrlManager  {
 
 	// 600 secs = 10 min
 	public static final double MAX_IDLE_TIME = 600; 
-
-	public static final String EMPTY = "";
-	private static final String BANK_LOGIN_URL = "https://www.discoverbank.com/bankac/loginreg/login";
-	private static final String API_CUSTOMERS_CURRENT = "/api/customers/current";
-	public static final String SLASH = "/";
-	private static final String AUTHENTICATE_CURRENT_CUSTOMER_URL = API_CUSTOMERS_CURRENT;
-	private static final String GET_TOKEN_URL = "/api/auth/token";
-	private static final String GET_SSO_TOKEN_URL = "/api/auth/token/sso";
-	private static final String STRONG_AUTH_URL = "/api/auth/strongauth";
-	private static final String CUSTOMER_SERVICE_URL = API_CUSTOMERS_CURRENT;
-	private static final String MANAGE_EXTERNAL_ACCOUNTS_URL = BANK_LOGIN_URL;
-	private static final String STATEMENTS_URL = BANK_LOGIN_URL;
-	private static final String OPEN_ACCOUNT_URL = "https://www.discover.com/online-banking/savings.html";
-	private static final String TERMS_AND_CONDITIONS_URL = "/api/content/payments/terms.js";
-	private static final String ACCEPT_PAY_BILLS_TERMS_URL = "/api/payments/terms";
-	private static final String ATM_LOCATOR_URL = "https://api.discover.com/api/atmLocator/SearchGeocodedLocation.xml";
-	private static final String ATM_DIRECTIONS_BASE_URL = "http://maps.googleapis.com/maps/api/directions/json";
-	private static final String ATM_ADDRESS_TO_LOCATION_BASE_URL = "http://maps.google.com/maps/api/geocode/json";
-	private static final String FEEDBACK_URL = "https://secure.opinionlab.com/ccc01/o.asp?id=WcvPUBHp&refer=http://android.discoverbank.com(null)&custom_var=DiscoverMobileVersion=5.0.0";
-	private static final String REFRESH_URL = "/api/auth/ping";
-	private static final String API_URL = "/api/";
-	private static final String STREET_VIEW_URL = "/api/content/atm/streetview.html?lat=%s&lng=%s";
-	private static final String PAY_BILLS_TERMS_URL = "/api/content/payments/terms.html";
-
-	private static final String TERMS_FAIL_SAFE_URL = "/api/content/terms-of-use.html";
-	private static final String PRIVACY_POLICY_FAIL_SAFE_URL = "/api/content/privacy-policy.html";
-
-	private static final String CARD_GOOGLE_TERMS_URL = "https://www.google.com/intl/en-US_US/help/terms_maps.html";
 
 	private static Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 
@@ -96,7 +69,6 @@ public final class BankUrlManager  {
 	 */
 	public static final String CANCEL_NEXT_TRANSFER = "?type=CNR";
 
-
 	/**
 	 * This is a utility class and should not have a public or default constructor.
 	 */
@@ -124,7 +96,7 @@ public final class BankUrlManager  {
 	 * @return the authenticateCurrentCustomerUrl
 	 */
 	public static String getAuthenticateCurrentCustomerUrl() {
-		return AUTHENTICATE_CURRENT_CUSTOMER_URL;
+		return DiscoverActivityManager.getString(R.string.api_customers_current);
 	}
 
 	/**
@@ -135,8 +107,8 @@ public final class BankUrlManager  {
 		String url = getUrl(CUSTOMER_URL_KEY);
 
 		/**Use Default hard coded URL if not found*/
-		if( Strings.isNullOrEmpty(url) || SLASH.equals(url)) {
-			url = CUSTOMER_SERVICE_URL;
+		if( Strings.isNullOrEmpty(url) || StringUtility.SLASH.equals(url)) {
+			url = DiscoverActivityManager.getString(R.string.api_customers_current);
 		}
 
 		return url;
@@ -209,9 +181,9 @@ public final class BankUrlManager  {
 		String url = "";
 
 		if(TERMS_OF_USE.equalsIgnoreCase(key)) {
-			url = TERMS_FAIL_SAFE_URL;
+			url = DiscoverActivityManager.getString(R.string.terms_fail_safe_url);
 		}else if(PRIVACY_POLICY_KEY.equalsIgnoreCase(key)) {
-			url = PRIVACY_POLICY_FAIL_SAFE_URL;
+			url = DiscoverActivityManager.getString(R.string.privacy_policy_fail_safe_url);
 		}
 
 		return url;
@@ -221,28 +193,28 @@ public final class BankUrlManager  {
 	 * @return the getTokenUrl
 	 */
 	public static String getGetTokenUrl() {
-		return GET_TOKEN_URL;
+		return DiscoverActivityManager.getString(R.string.get_token_url);
 	}
 
 	/**
 	 * @return the url for posting a token payload
 	 */
 	public static String getSSOTokenUrl() {
-		return GET_SSO_TOKEN_URL;
+		return DiscoverActivityManager.getString(R.string.get_sso_token_url);
 	}
 
 	/**
 	 * @return the strongAuthUrl
 	 */
 	public static String getStrongAuthUrl() {
-		return STRONG_AUTH_URL;
+		return DiscoverActivityManager.getString(R.string.strong_auth_url);
 	}
 
 	/**
 	 * @return Returns the the string for downloading API URLs from the Bank Server
 	 */
 	public static String getApiUrl() {
-		return API_URL;
+		return DiscoverActivityManager.getString(R.string.api_url);
 	}
 
 	/**
@@ -306,26 +278,40 @@ public final class BankUrlManager  {
 	 * @return Returns the URL for opening a new user account
 	 */
 	public static String getOpenAccountUrl() {
-		return OPEN_ACCOUNT_URL;
+		return DiscoverActivityManager.getString(R.string.open_account_url);
 	}
 
 	/**
 	 * @return Returns the URL for providing feedback
 	 */
 	public static String getProvideFeedbackUrl() {
-		return BankUrlManager.FEEDBACK_URL;
+		return DiscoverActivityManager.getString(R.string.feedback_url);
 	}
 
+	/**
+	 * @return Returns the URL for providing feedback
+	 */
+	public static String getCardProvideFeedbackUrl() {
+		return DiscoverActivityManager.getString(R.string.card_provide_feedback_url);
+	}
+	
+	/**
+	 * @return Returns the URL for more FAQs
+	 */
+	public static String getCardMoreFAQsUrl() {
+		return DiscoverActivityManager.getString(R.string.card_more_faq_url);
+	}
+	
 	/**
 	 * 
 	 * @return Returns the URL for going to account statements
 	 */
 	public static String getStatementsUrl() {
-		return STATEMENTS_URL;
+		return DiscoverActivityManager.getString(R.string.bank_login_url);
 	}
 
 	public static String getManageExternalAccountsUrl() {
-		return MANAGE_EXTERNAL_ACCOUNTS_URL;
+		return DiscoverActivityManager.getString(R.string.bank_login_url);
 	}
 
 	/**
@@ -333,7 +319,7 @@ public final class BankUrlManager  {
 	 * @return - the URL for retrieving the terms and conditions content for pay bills.
 	 */
 	public static String getTermsAndConditionsUrl() {
-		return TERMS_AND_CONDITIONS_URL;
+		return DiscoverActivityManager.getString(R.string.terms_and_conditions_url);
 	}
 
 	/**
@@ -341,7 +327,7 @@ public final class BankUrlManager  {
 	 * @return - the URL for POSTing user acceptance of the terms and conditions for pay bills.
 	 */
 	public static String getAcceptPayBillsTerms() {
-		return ACCEPT_PAY_BILLS_TERMS_URL;
+		return DiscoverActivityManager.getString(R.string.accept_pay_bills_terms_url);
 	}
 
 	/**
@@ -358,7 +344,7 @@ public final class BankUrlManager  {
 			return link.replaceAll(DISCOVER_STRIPPED_URL, "");
 		}else{
 			/**Return a "/" here to trigger an error response from server, since url is not available**/
-			return SLASH;
+			return StringUtility.SLASH;
 		}
 	}
 
@@ -375,7 +361,7 @@ public final class BankUrlManager  {
 			return getRelativePath(url);
 		} else {
 			/**Return a "/" here to trigger an error response from server, since url is not available**/
-			return SLASH;
+			return StringUtility.SLASH;
 		}
 	}
 
@@ -394,35 +380,57 @@ public final class BankUrlManager  {
 	 * @return the atmLocatorUrl
 	 */
 	public static String getAtmLocatorUrl() {
-		return ATM_LOCATOR_URL;
+		return DiscoverActivityManager.getString(R.string.atm_locator_url);
 	}
 
 	/**
 	 * @return the atmDirectionsBaseUrl
 	 */
 	public static String getAtmDirectionsBaseUrl() {
-		return ATM_DIRECTIONS_BASE_URL;
+		return DiscoverActivityManager.getString(R.string.atm_directions_base_url);
 	}
 
 	/**
 	 * @return the url to refresh a bank session.
 	 */
 	public static String getRefreshSessionUrl() {
-		return REFRESH_URL;
+		return DiscoverActivityManager.getString(R.string.refresh_url);
 	}
 
 	/**
 	 * @return the atmAddressToLocationBaseUrl
 	 */
 	public static String getAtmAddressToLocationBaseUrl() {
-		return ATM_ADDRESS_TO_LOCATION_BASE_URL;
+		return DiscoverActivityManager.getString(R.string.atm_address_to_location_base_url);
 	}
 
 	/**
 	 * @return the cardGoogleTermsUrl
 	 */
 	public static String getCardGoogleTermsUrl() {
-		return CARD_GOOGLE_TERMS_URL;
+		return DiscoverActivityManager.getString(R.string.card_google_terms_url);
+	}
+	
+	/**
+	 * @return the bankGoogleTermsUrl
+	 */
+	public static String getBankGoogleTermsUrl() {
+		return DiscoverActivityManager.getString(R.string.bank_google_terms_url);
+	}
+	
+	/**
+	 * @return the bankGoogleReportUrl
+	 */
+	public static String getBankGoogleReportUrl() {
+		return DiscoverActivityManager.getString(R.string.bank_google_report_url);
+	}
+	
+	public static String getBankGoogleMapUrl() {
+		return DiscoverActivityManager.getString(R.string.bank_google_map_url);
+	}
+	
+	public static String getBankAtmReportUrl() {
+		return DiscoverActivityManager.getString(R.string.atm_report_url);
 	}
 
 	/**
@@ -430,7 +438,7 @@ public final class BankUrlManager  {
 	 * @return the street view url
 	 */
 	public static String getStreetViewUrl() {
-		return baseURL + STREET_VIEW_URL;
+		return baseURL + DiscoverActivityManager.getString(R.string.street_view_url);
 	}
 
 	/**
@@ -438,7 +446,7 @@ public final class BankUrlManager  {
 	 * @return the pay bills terms and conditions url
 	 */	
 	public static String getPayBillsTermsUrl() {
-		return baseURL + PAY_BILLS_TERMS_URL;
+		return baseURL + DiscoverActivityManager.getString(R.string.pay_bills_terms_url);
 	}
 
 }
