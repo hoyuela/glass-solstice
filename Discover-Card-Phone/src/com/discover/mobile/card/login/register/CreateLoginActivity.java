@@ -37,7 +37,6 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
-import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.card.common.uiwidget.EmailEditText;
 import com.discover.mobile.card.common.utils.Utils;
@@ -70,9 +69,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     private static final String UPDATE_PASS_CONFIRM_STATE = "a";
     private static final String UPDATE_ID_CONFIRM_STATE = "b";
-    private static final String UPDATE_EMAIL = "c";
-    private static final String ERROR_1 = "d";
-    private static final String EROR_STRING_1 = "e";
+    private static final String UPDATE_EMAIL = "c";   
+    
     private static final String ERROR_2 = "f";
     private static final String ERROR_STRING_2 = "g";
     private static final String SERVER_ERROR = "h";
@@ -87,7 +85,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
     private TextView privacy_terms ;
 
     // ERROR LABELS
-    private TextView mainErrorMessageLabel;
+    
     private TextView mainErrorMessageLabelTwo;
     private TextView errorMessageLabel;
     private TextView idConfirmErrorLabel;
@@ -107,8 +105,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     private boolean idIsError = false;
     private boolean isPassError = false;
-    private boolean isEmailError = false;
-    private boolean isError1 = false;
+    private boolean isEmailError = false;    
     private boolean isError2 = false;
     private boolean isServerError = false;
 
@@ -124,7 +121,6 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
         setContentView(R.layout.register_create_credentials);
         loadAllViews();
-        Utils.isSpinnerShow =true;        
         Utils.hideSpinner();
         attachErrorLabelsToFields();
         mergeAccountDetails();
@@ -239,8 +235,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                     false);
             isPassError = savedInstanceState.getBoolean(
                     UPDATE_PASS_CONFIRM_STATE, false);
-            isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);
-            isError1 = savedInstanceState.getBoolean(ERROR_1, false);
+            isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);            
             isError2 = savedInstanceState.getBoolean(ERROR_2, false);
             isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
             //Defect id 95719

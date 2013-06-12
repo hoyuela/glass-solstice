@@ -29,7 +29,7 @@ dfs.crd.profile.addCancelHandler = function() {
 
 dfs.crd.profile.verifyPriorPageForStep1 = function() {
 	var passVerification = true;
-	var validPriorPagesOfStep1 = new Array("profileLanding", "strongAuthFirstQues");
+	var validPriorPagesOfStep1 = new Array("profileLanding", "strongAuthFirstQues","personalizeCashPin2");
 	try {
 		if ($.inArray(fromPageName, validPriorPagesOfStep1) < 0 && (!isLhnNavigation)) {
 			cpEvent.preventDefault();

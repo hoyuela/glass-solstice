@@ -30,7 +30,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -52,14 +51,11 @@ public class Utils {
 
     static ProgressDialog progressBar;
 
-    public static boolean enableLogging = true;
+    public static boolean enableLogging = false;
 
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
     public static boolean isSpinnerAllowed = true;
-    public static boolean isSpinnerForOfflinePush = false;
-
-    public static boolean isSpinnerShow = true;
 
     // CARD TYPE DEFINED TO SHOW ON TOGGLE VIEW TOOL TIP
     public static final String CARDTYPE_MORE = "MOR";
@@ -237,7 +233,7 @@ public class Utils {
      */
     public static void showSpinner(final Context context,
             final String strTitle, final String strMessage) {
-        if (isSpinnerAllowed && isSpinnerShow || isSpinnerForOfflinePush) {
+        if (isSpinnerAllowed) {
             if (null == progressBar) {
                 progressBar = new ProgressDialog(context);
                 progressBar.setCancelable(false);
@@ -291,7 +287,7 @@ public class Utils {
     }
 
     public static void hideSpinner() {
-        if (!isSpinnerForOfflinePush && isSpinnerShow) {
+        if (isSpinnerAllowed) {
             if (null != progressBar && progressBar.isShowing()) {
                 try
                 {

@@ -56,10 +56,12 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants{
 			@Override
 			public void onClick(View v) {
 				//This method has written generically
+				Utils.isSpinnerAllowed = true;
+				Utils.showSpinner(WhatsNewActivity.this, "Discover",
+						"Loading...");
 				navigateToRoot();
 			}
 		});
-		Utils.isSpinnerShow = true;
 		Utils.hideSpinner();
 	}
 	

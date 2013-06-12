@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,8 +54,7 @@ import com.discover.mobile.card.services.auth.registration.RegistrationConfirmat
 public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         implements CardEventListener, OnClickListener {
 
-    private static final String TAG = ForgotUserIdActivity.class
-            .getSimpleName();
+
     private static final String REFERER = "forgot-uid-pg";
     private static final String MAIN_ERROR_LABEL_TEXT_KEY = "a";
     private static final String SHOULD_UPDATE_PASS_APPEARANCE = "b";
@@ -537,7 +535,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-            //bank Code for privacy and terms
+            FacadeFactory.getBankFacade().navToCardPrivacyTerms();
         }
         //Defect id 95853
     }
