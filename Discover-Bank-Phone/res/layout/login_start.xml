@@ -345,18 +345,13 @@
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
-            
-			<TextView 
-			    android:id="@+id/fdic_disclaimer_view"
-			    android:layout_width="wrap_content"
-			    android:layout_height="match_parent"
-			    android:layout_centerHorizontal="true"
-			    android:paddingBottom="@dimen/forms_inner_padding"
-			    android:layout_below="@+id/login_table"
-			    android:text="@string/discover_copyright_text"
-			    android:textColor="@color/fdic_disclaimer_text_color"
-			    android:textSize="@dimen/fdic_disclaimer_text_size" />
-			
+
+            <View
+                android:id="@+id/padding_element_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/groups_of_elements_padding"
+                android:layout_below="@+id/login_table"
+                android:visibility="invisible" />
         </RelativeLayout>
     </com.discover.mobile.common.ui.widgets.NonFocusingScrollView>
 

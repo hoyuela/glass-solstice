@@ -22,6 +22,7 @@
 -dontwarn org.joda.convert.**
 -dontwarn com.xtremelabs.**
 -dontwarn org.junit.**
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
 
 -libraryjars <java.home>/lib/rt.jar
 -libraryjars ../ActionBarSherlock/bin/classes
