@@ -7,7 +7,7 @@
  */
 package com.discover.mobile.card.phonegap.plugins;
 
-import java.io.IOException;
+
 import java.io.InputStream;
 
 import org.apache.cordova.DroidGap;

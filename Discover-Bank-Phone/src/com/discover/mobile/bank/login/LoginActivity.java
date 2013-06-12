@@ -173,7 +173,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_start);
-		//setBehindContentView(R.layout.fastcheck_frame);
 		loadResources();
 
 		// **Activity manager has to be set before using Track Helper*/
@@ -672,7 +671,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		gotoFastcheckButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				//FacadeFactory.getCardFacade().navToFastcheck(LoginActivity.this);
 				getSlidingMenu().toggle();
 			}
 		});
@@ -1345,7 +1343,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	@Override
     public int getBehindContentView() {
-        // TODO Auto-generated method stub
         return R.layout.fastcheck_frame;
     }
 	

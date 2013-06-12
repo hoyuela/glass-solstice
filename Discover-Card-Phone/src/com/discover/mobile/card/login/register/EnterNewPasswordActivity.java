@@ -31,7 +31,6 @@ import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
-import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
 import com.discover.mobile.card.common.utils.Utils;
 
@@ -55,8 +54,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         implements CardErrorHandlerUi, OnClickListener,CardEventListener { //DEFECT 96936
 
-    private static final String TAG = EnterNewPasswordActivity.class
-            .getSimpleName();
+    
 
     private ForgotPasswordTwoDetails passTwoDetails;
 
@@ -96,7 +94,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         mergeAccountDetails();
         setupProgressHeader();
         setupHelpNumber();
-        Utils.isSpinnerShow =true;        
         Utils.hideSpinner();
         provideFeedback.setOnClickListener(this);
         //Defect id 95853

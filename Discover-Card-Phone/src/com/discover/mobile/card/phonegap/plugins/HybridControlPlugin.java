@@ -29,7 +29,6 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.navigation.CordovaWebFrag;
-import com.discover.mobile.card.navigation.StatusBarFragment;
 import com.discover.mobile.common.Globals;
 
 public class HybridControlPlugin extends CordovaPlugin {
@@ -257,10 +256,8 @@ public class HybridControlPlugin extends CordovaPlugin {
 
                 frag123 = cordovaFrag;
 
-                final StatusBarFragment statusBarFragment;
-                statusBarFragment = (StatusBarFragment) fragmentManager
-                        .findFragmentById(R.id.status_bar);
-
+                
+                
                 cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

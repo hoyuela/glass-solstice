@@ -43,7 +43,7 @@ public class RegistrationAccountInformationActivity extends
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountIdentifierField.setFieldAccountNumber();
-
+        Utils.hideSpinner();
     }
 
     public RegistrationAccountInformationActivity() {
