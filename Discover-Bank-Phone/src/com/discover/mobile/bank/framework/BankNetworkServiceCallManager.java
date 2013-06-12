@@ -718,7 +718,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		/* Service calls that do not show dialog must override functionality here */
 		if( !isBackgroundServiceCall(sender) ) {
-			activeActivity.startProgressDialog();
 
 			/**Clear the current last error stored in the error handler*/
 			errorHandler.clearLastError();
@@ -738,10 +737,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			/**Update current call*/
 			curCall = sender;
 			
-			if (DiscoverActivityManager.getActiveActivity() instanceof BaseFragmentActivity) {
-				((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).
-									   setProgressDialogIsCancellable(curCall.isCancellable());	
-			}
+			activeActivity.startProgressDialog(curCall.isCancellable());
 		}
 	}
 	

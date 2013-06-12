@@ -212,7 +212,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	}
 
 	@Override
-	public void startProgressDialog() {		
+	public void startProgressDialog(boolean isProgressDialogCancelable) {		
 		//do nothing
 	}
 

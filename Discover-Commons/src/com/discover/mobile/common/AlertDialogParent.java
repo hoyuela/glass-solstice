@@ -20,7 +20,7 @@ public interface AlertDialogParent {
 	 * Starts a progress dialog over the Activity implementing this method signature
 	 * and sets it as the active modal.
 	 */
-	void startProgressDialog(); 
+	void startProgressDialog(boolean isProgressDialogCancelable); 
 	/**
 	 * 
 	 * @param dialog Reference to the Dialog to be set as the active modal on the activity

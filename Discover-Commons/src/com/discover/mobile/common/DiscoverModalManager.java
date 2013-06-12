@@ -26,6 +26,8 @@ public final class DiscoverModalManager {
 	 * Boolean used to let the activity know if a modal needs to be shown on resume
 	 */
 	private static boolean alertShowing;
+	
+	private static boolean isProgressDialogCancelable;
 
 	/**
 	 * This constructor is not supported and throws an UnsupportedOperationException when called.
@@ -89,5 +91,21 @@ public final class DiscoverModalManager {
 	 */
 	public static boolean hasActiveModal() {
 		return (null != DiscoverModalManager.getActiveModal() && DiscoverModalManager.getActiveModal().isShowing());
+	}
+	
+	/**
+	 * 
+	 * @return returns true if you can cancel the progress dialog
+	 */
+	public static boolean isProgressDialogCancelable() {
+		return isProgressDialogCancelable;
+	}
+	
+	/*
+	 * Sets whether you can cancel the progress dialog or not.
+	 */
+	public static void setProgressDialogCancelable(boolean isProgressDialogCancelable) {
+		DiscoverModalManager.isProgressDialogCancelable = isProgressDialogCancelable;
+		DiscoverModalManager.getActiveModal().setCancelable(isProgressDialogCancelable);
 	}
 }

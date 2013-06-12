@@ -123,7 +123,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 	@Override
 	public void start(final NetworkServiceCall<?> sender) {
 		final AlertDialogParent activeActivity = (AlertDialogParent)DiscoverActivityManager.getActiveActivity();
-		activeActivity.startProgressDialog();
 
 		//Update curCall and prevCall it is a different service request
 		if( curCall == null || curCall.getClass() != sender.getClass() ) {
@@ -134,6 +133,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener {
 				Log.w(TAG, "Current NetworkServiceCall was not updated!");
 			}
 		}
+		
+		activeActivity.startProgressDialog(curCall.isCancellable());
 	}
 
 	/**

@@ -134,7 +134,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		//If a modal was showing show the modal
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
 			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
-				startProgressDialog();
+				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
 			} else {
 				DiscoverModalManager.getActiveModal().show();
 			}
@@ -282,14 +282,6 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	public void setCurrentFragment(final BaseFragment fragment){
 		currentFragment = fragment;
-	}
-	
-	public void setProgressDialogIsCancellable(boolean isCancellable) {
-		this.progressDialogIsCancellable = isCancellable;
-	}
-	
-	public boolean isProgressDialogCancellable() {
-		return this.progressDialogIsCancellable;
 	}
 
 	/**
@@ -491,11 +483,11 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {		
+	public void startProgressDialog(boolean progressDialogIsCancelable) {		
 		if(!DiscoverModalManager.hasActiveModal()) {
 			DiscoverModalManager.setActiveModal(ProgressDialog.show(DiscoverActivityManager.getActiveActivity(), 
 												"Discover", "Loading...", true));
-			DiscoverModalManager.getActiveModal().setCancelable(progressDialogIsCancellable);
+			DiscoverModalManager.setProgressDialogCancelable(progressDialogIsCancelable);
 			DiscoverModalManager.getActiveModal().setCanceledOnTouchOutside(false);
 			DiscoverModalManager.getActiveModal().setOnCancelListener(new OnCancelListener() {
 

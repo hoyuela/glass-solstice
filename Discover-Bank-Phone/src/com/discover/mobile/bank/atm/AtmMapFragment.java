@@ -443,7 +443,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 	@Override
 	public void performSearch(final String text) {		
 		isLoading = false;
-		((NavigationRootActivity)getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog(true);
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
 		BankServiceCallFactory.getLocationFromAddressCall(helper).submit();
 	}
@@ -720,7 +720,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		hasLoadedAtms = false;
 		mapWrapper.clear();
 		currentIndex = 0;
-		((NavigationRootActivity)getActivity()).startProgressDialog();
+		((NavigationRootActivity)getActivity()).startProgressDialog(true);
 		locationManagerWrapper.getLocation();
 	}
 
