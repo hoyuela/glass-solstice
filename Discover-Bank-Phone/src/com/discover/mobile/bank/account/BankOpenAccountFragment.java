@@ -57,21 +57,26 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 		accountToggleIcon = (ImageView) view.findViewById(R.id.cardBankIcon);
 		toggleView = (AccountToggleView) view.findViewById(R.id.acct_toggle);
 
-		//If card and bank are authenticated then show the down arrow, since we are here
-		//Bank must be authenticated already so we only need to check to see if the card is 
-		//authenticated.
-		if(BankUser.instance().isSsoUser()){
-			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
-			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
-			setupAccountToggle();
-		}
-
 		if (savedInstanceState != null
 				&& savedInstanceState.getBoolean(SHOW_TOGGLE_KEY, false)) {
 			toggleView.toggleVisibility();
 		}
 
 		return view;
+	}
+	
+	/**
+	 * Calculates the position of the SSO dropdown arrow based on the position of the bank logo.
+	 */
+	public final void updateDropdownPosition() {
+		//If card and bank are authenticated then show the down arrow, since we are here
+		//Bank must be authenticated already so we only need to check to see if the card is 
+		//authenticated.
+		if(BankUser.instance().isSsoUser() && view != null){
+			view.findViewById(R.id.downArrow).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.cardBankIcon).setVisibility(View.VISIBLE);
+			setupAccountToggle();
+		}
 	}
 
 	private void updateGreeting() {
@@ -161,7 +166,9 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 			@Override
 			public void onGlobalLayout() {
 				if(!toggleView.hasIndicatorBeenDrawn()) {
-					toggleView.setIndicatorPosition(accountToggleIcon.getLeft(),
+					View accountToggleSection = view.findViewById(R.id.account_toggle_layout);
+					toggleView.setIndicatorPosition(accountToggleSection.getLeft() - 
+							accountToggleIcon.getWidth() / 2,
 							accountToggleIcon.getTop(),
 							accountToggleIcon.getWidth(),
 							accountToggleIcon.getHeight());
@@ -174,7 +181,7 @@ public class BankOpenAccountFragment extends BaseFragment implements FragmentOnB
 		accountToggleArrow.setOnClickListener(new AccountToggleListener());
 		accountToggleIcon.setOnClickListener(new AccountToggleListener());
 	}
-
+	
 	/**
 	 * Listener associated with items that hide/show the Account Toggle Widget. 
 	 */

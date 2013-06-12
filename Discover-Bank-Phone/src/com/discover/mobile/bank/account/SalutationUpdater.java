@@ -71,6 +71,8 @@ public final class SalutationUpdater implements Runnable {
 					// TODO uncouple BankAccountSummaryFragment from this class entirely.
 					if (currentContext instanceof BankAccountSummaryFragment) {
 						((BankAccountSummaryFragment) currentContext).updateDropdownPosition();
+					} else if (currentContext instanceof BankOpenAccountFragment) {
+						((BankOpenAccountFragment) currentContext).updateDropdownPosition();
 					}
 				}
 			}
