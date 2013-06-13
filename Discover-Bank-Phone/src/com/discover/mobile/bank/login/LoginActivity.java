@@ -1498,8 +1498,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			phoneGapInitComplete = true;
 		}
-		setInputFieldsDrawablesToDefault();
-		CommonUtils.setViewGone(errorTextView);
+		
+		// Only need to reset login views if splash screen was visible
+		// (=> Login views already visible, don't reset any previous errors)
+		if (findViewById(R.id.login_pane).getVisibility() != View.VISIBLE) {
+			setInputFieldsDrawablesToDefault();
+			CommonUtils.setViewGone(errorTextView);
+		}
 		showSplashScreen(false);
 
 	}
