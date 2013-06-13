@@ -199,6 +199,7 @@ function manageTextAlerts()
 
 function pushAlertsHistory()
 {
+	populateGlobalCache();	
 	preventBack = false;
 	navigation('../pushNotification/alertHistory');
 }
