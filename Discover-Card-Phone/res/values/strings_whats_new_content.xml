@@ -17,6 +17,8 @@
 	<string name="quickview_content_description_mi">View your current balance, available credit and Miles
 	balance at anytime with just a quick tap or swipe of your finger.	
 	</string>
+	<string name="quickview_content_description_dbc_corp">View your current balance, available credit at anytime with just a quick tap or swipe of your finger.	
+	</string>
     <string name="quickview_gotolink">Go to Profile and settings to enable.</string>
    
    
