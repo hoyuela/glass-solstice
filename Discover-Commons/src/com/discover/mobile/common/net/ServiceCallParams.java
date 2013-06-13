@@ -33,7 +33,27 @@ public abstract class ServiceCallParams {
 	
 	public boolean sendDeviceIdentifiers = false;
 	
+	private boolean isCancellable = false;
 	
+	//------------------------------ ServiceCallParams class methods ------------------------------
+	
+		private ServiceCallParams(final String httpMethod, final String path) {
+			checkArgument(path != null && !path.isEmpty(), "path cannot be empty"); //$NON-NLS-1$
+			
+			this.httpMethod = httpMethod;
+			this.path = path;
+		}
+		
+		public boolean isCancellable() {
+			return this.isCancellable;
+		}
+		
+		public void setCancellable(final boolean cancellable) {
+			this.isCancellable = cancellable;
+		}
+	
+	//-------------------------------------- Inner Classes --------------------------------------	
+		
 	@Struct
 	public static class GetCallParams extends ServiceCallParams {
 		
@@ -74,13 +94,4 @@ public abstract class ServiceCallParams {
 			super("PUT", path); //$NON-NLS-1$
 		}		
 	}
-	
-	
-	private ServiceCallParams(final String httpMethod, final String path) {
-		checkArgument(path != null && !path.isEmpty(), "path cannot be empty"); //$NON-NLS-1$
-		
-		this.httpMethod = httpMethod;
-		this.path = path;
-	}
-	
 }

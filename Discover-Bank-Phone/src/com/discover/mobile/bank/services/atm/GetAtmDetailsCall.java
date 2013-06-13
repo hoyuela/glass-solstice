@@ -54,6 +54,8 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 				sendDeviceIdentifiers = true;
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
+				// Makes the service call cancellable
+				setCancellable(true);
 				//specifiy custom timeout
 				connectTimeoutSeconds = timeout;
 			}

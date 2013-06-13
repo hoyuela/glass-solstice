@@ -18,6 +18,7 @@ import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -453,9 +454,14 @@ implements OnPaymentCanceledListener {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {		
+	public void startProgressDialog(boolean isProgressDialogCancelable) {		
 		if(!isFragmentLoadingMore()){
-			super.startProgressDialog();
+			super.startProgressDialog(isProgressDialogCancelable);
 		}
+	}
+	
+	@Override
+	public void onCancelProgressDialog() {
+		BankNetworkServiceCallManager.getInstance().cancelServiceCall();
 	}
 }

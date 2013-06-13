@@ -172,6 +172,8 @@ public class GetDirectionsServiceCall extends BankJsonResponseMappingNetworkServ
 				sendDeviceIdentifiers = true;
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
+				// Makes the service call cancellable
+				setCancellable(true);
 			}
 		}, Directions.class, BankUrlManager.getAtmDirectionsBaseUrl());
 		this.helper = helper;

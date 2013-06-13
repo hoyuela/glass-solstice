@@ -71,8 +71,13 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 		DiscoverActivityManager.setActiveActivity(this);
 
 		//If a modal was showing show the modal
+		//If a modal was showing show the modal
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
-			DiscoverModalManager.getActiveModal().show();
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				startProgressDialog(false);
+			} else {
+				DiscoverModalManager.getActiveModal().show();
+			}
 			DiscoverModalManager.setAlertShowing(true);
 		}
 
@@ -88,11 +93,14 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 		resumed = false;
 
 		super.onPause();
-		closeDialog();
+		//closeDialog();
 
-		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
-			DiscoverModalManager.getActiveModal().dismiss();
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				DiscoverModalManager.getActiveModal().dismiss();
+			} else {
+				DiscoverModalManager.getActiveModal().hide();
+			}
 			DiscoverModalManager.setAlertShowing(true);
 		}else{
 			DiscoverModalManager.clearActiveModal();
@@ -334,14 +342,14 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 	 */
 	@Override
 	public AlertDialog getDialog() {
-		return mActiveDialog;
+		return DiscoverModalManager.getActiveModal();
 	}
 	/**
 	 * Allows to set the current dialog that is being displayed over this activity.
 	 */
 	@Override
 	public void setDialog(final AlertDialog dialog) {
-		mActiveDialog = dialog;
+		DiscoverModalManager.setActiveModal(dialog);
 	}
 	/**
 	 * Closes the current dialog this is being displayed over this activity. Requires
@@ -349,9 +357,12 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 	 */
 	@Override
 	public void closeDialog() {
-		if( mActiveDialog != null && mActiveDialog.isShowing()) {
-			mActiveDialog.dismiss();
-			mActiveDialog = null;
+		if( DiscoverModalManager.hasActiveModal() && DiscoverModalManager.isAlertShowing()) {
+			DiscoverModalManager.clearActiveModal();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
 		}
 	}
 	/**
@@ -359,10 +370,10 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {		
-		if( mActiveDialog == null ) {
-			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
-			setDialog(mActiveDialog);
+	public void startProgressDialog(boolean isProgressDialogCancelable) {		
+		if( !DiscoverModalManager.hasActiveModal() ) {
+			DiscoverModalManager.setActiveModal(ProgressDialog.show(this,"Discover", "Loading...", true));
+			DiscoverModalManager.setAlertShowing(true);
 		}
 	}
 

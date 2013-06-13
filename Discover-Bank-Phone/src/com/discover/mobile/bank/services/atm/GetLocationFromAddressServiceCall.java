@@ -132,6 +132,8 @@ public class GetLocationFromAddressServiceCall extends BankJsonResponseMappingNe
 				sendDeviceIdentifiers = true;
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
+				// Makes the service call cancellable
+				setCancellable(true);
 			}
 		}, AddressToLocationDetail.class, BankUrlManager.getAtmAddressToLocationBaseUrl());
 		this.helper = helper;

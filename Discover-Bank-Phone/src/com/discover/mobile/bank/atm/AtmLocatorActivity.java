@@ -176,9 +176,9 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {		
+	public void startProgressDialog(boolean isProgressDialogCancelable) {		
 		if(!isFragmentLoadingMore()){
-			super.startProgressDialog();
+			super.startProgressDialog(isProgressDialogCancelable);
 		}
 	}
 }

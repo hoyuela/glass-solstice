@@ -284,10 +284,11 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog() {		
+	public void startProgressDialog(boolean isProgressDialogCancelable) {		
 		if( mActiveDialog == null ) {
 			mActiveDialog = ProgressDialog.show(this,"Discover", "Loading...", true);	
 			setDialog(mActiveDialog);
+			mActiveDialog.setCancelable(isProgressDialogCancelable);
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "Activity does not have a dialog associated with it!" );
