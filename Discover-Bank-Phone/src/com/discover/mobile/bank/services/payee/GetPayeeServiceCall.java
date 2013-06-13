@@ -100,7 +100,10 @@ public class GetPayeeServiceCall extends BankUnamedListJsonResponseMappingNetwor
 
 				//This ensure the required device information is supplied in the Headers of the HTTP request
 				sendDeviceIdentifiers = true;
-
+				
+				//Sets the service call to be cancellable
+				this.setCancellable(true);
+				
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
 			}

@@ -82,6 +82,9 @@ public class GetCustomerAccountsServerCall  extends BankUnamedListJsonResponseMa
 
 				//This ensure the required device information is supplied in the Headers of the HTTP request
 				this.sendDeviceIdentifiers = true;
+				
+				//Sets the service call to be cancellable
+				this.setCancellable(true);
 
 				// Specify what error parser to use when receiving an error response is received
 				this.errorResponseParser = BankErrorResponseParser.instance();

@@ -161,6 +161,7 @@ public abstract class NetworkServiceCall<R> {
 	private final String baseURL;
 	private final String X_APP_VERSION;
 	private final String X_CLIENT_PLATFORM;
+	private boolean wasCancelled = false;
 
 	private Context context;
 	private HttpURLConnection conn;
@@ -186,9 +187,10 @@ public abstract class NetworkServiceCall<R> {
 		this.params = params;
 
 		baseURL = getBaseUrl();
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
-		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
-
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
+																com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, 
+																	com.discover.mobile.common.R.string.xClientPlatform);
 	}
 
 	/**
@@ -204,8 +206,10 @@ public abstract class NetworkServiceCall<R> {
 		this.params = params;
 
 		baseURL = url;
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xApplicationVersion);
-		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, com.discover.mobile.common.R.string.xClientPlatform);
+		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
+																com.discover.mobile.common.R.string.xApplicationVersion);
+		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, 
+																	com.discover.mobile.common.R.string.xClientPlatform);
 
 	}
 
@@ -216,7 +220,8 @@ public abstract class NetworkServiceCall<R> {
 
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
 
-		checkArgument(params.connectTimeoutSeconds > 0, "invalid params.connectTimeoutSeconds: " + params.connectTimeoutSeconds);
+		checkArgument(params.connectTimeoutSeconds > 0, "invalid params.connectTimeoutSeconds: " + 
+														params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
 
 		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
@@ -245,6 +250,13 @@ public abstract class NetworkServiceCall<R> {
 		}
 	}
 
+	public void cancel() {
+		if (params.isCancellable()) {
+			this.wasCancelled = true;
+			conn.disconnect();	
+		}
+	}
+	
 	/**
 	 * Resends the same request using the same information provided during
 	 * instantiation. It will not allow to retransmit if there is a transmission
@@ -278,7 +290,8 @@ public abstract class NetworkServiceCall<R> {
 	 * @return The parsed result from the response
 	 * @throws IOException
 	 */
-	protected abstract R parseSuccessResponse(int status, Map<String, List<String>> headers, InputStream body) throws IOException;
+	protected abstract R parseSuccessResponse(int status, Map<String, List<String>> headers, InputStream body) 
+			 	throws IOException;
 
 	/**
 	 * Submit the service call for asynchronous execution and call the callback
@@ -299,8 +312,10 @@ public abstract class NetworkServiceCall<R> {
 				try {
 					executeRequest();
 				} catch (final Exception e) {
-					Log.w(TAG, "caught exception during network call execution", e);
-					sendResultToHandler(e, RESULT_EXCEPTION);
+					if (!wasCancelled) {
+						Log.w(TAG, "caught exception during network call execution", e);
+						sendResultToHandler(e, RESULT_EXCEPTION);
+					}
 				}
 			}
 		});
@@ -324,7 +339,8 @@ public abstract class NetworkServiceCall<R> {
 			// executing on the main thread
 			assertMainThreadExecution(e);
 
-			sendResultToHandler(e, RESULT_EXCEPTION);
+			sendResultToHandler(e, RESULT_EXCEPTION);	
+				
 			return false;
 		} finally {
 			context = null; // allow context garbage collection no matter what
@@ -357,7 +373,8 @@ public abstract class NetworkServiceCall<R> {
 
 		deviceIdentifiers = new DeviceIdentifiers() {
 			{
-				final TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+				final TelephonyManager telephonyManager = (TelephonyManager) 
+														   context.getSystemService(Context.TELEPHONY_SERVICE);
 
 				did = telephonyManager.getDeviceId();
 				sid = telephonyManager.getSimSerialNumber();
@@ -385,7 +402,6 @@ public abstract class NetworkServiceCall<R> {
 
 			conn.connect();
 			try {
-
 				sendRequestBody();
 
 				final int statusCode = getResponseCode();
@@ -439,11 +455,13 @@ public abstract class NetworkServiceCall<R> {
 			}
 
 			@Override
-			public void checkClientTrusted(final X509Certificate[] chain, final String authType) throws CertificateException {
+			public void checkClientTrusted(final X509Certificate[] chain, final String authType) 
+				 throws CertificateException {
 			}
 
 			@Override
-			public void checkServerTrusted(final X509Certificate[] chain, final String authType) throws CertificateException {
+			public void checkServerTrusted(final X509Certificate[] chain, final String authType) 
+				 throws CertificateException {
 			}
 		} };
 
@@ -519,7 +537,8 @@ public abstract class NetworkServiceCall<R> {
 		final boolean foundToken = ServiceCallSessionManager.prepareWithSecurityToken(conn);
 
 		if (!foundToken && params.requiresSessionForRequest) {
-			throw new IOException("No session available when one was required for NetworkServiceCall to url: " + conn.getURL());
+			throw new IOException("No session available when one was required for NetworkServiceCall to url: " + 
+								  conn.getURL());
 		}
 	}
 
@@ -629,29 +648,31 @@ public abstract class NetworkServiceCall<R> {
 	 * @throws IOException
 	 */
 	private void parseResponseAndSendResult(final int statusCode) throws IOException {
-		if (DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
+		if (!wasCancelled) {
+			if (DelegatingErrorResponseParser.isErrorStatus(statusCode)) {
 
-			final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
+				final ErrorResponseParser<?> chosenErrorParser = getErrorResponseParser();
 
-			final ErrorResponse<?> errorResult;
-			final InputStream errorStream = getMarkSupportedErrorStream(conn);
-			try {
-				errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
-			} finally {
-				errorStream.close();
-			}
+				final ErrorResponse<?> errorResult;
+				final InputStream errorStream = getMarkSupportedErrorStream(conn);
+				try {
+					errorResult = chosenErrorParser.parseErrorResponse(statusCode, errorStream, conn);
+				} finally {
+					errorStream.close();
+				}
 
-			sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
+				sendResultToHandler(errorResult, RESULT_PARSED_ERROR);
 
-		} else {
-			final R result;
-			final InputStream in = conn.getInputStream();
-			try {
-				result = parseSuccessResponse(statusCode, conn.getHeaderFields(), in);
-			} finally {
-				in.close();
-			}
-			sendResultToHandler(result, RESULT_SUCCESS);
+			} else {
+				final R result;
+				final InputStream in = conn.getInputStream();
+				try {
+					result = parseSuccessResponse(statusCode, conn.getHeaderFields(), in);
+				} finally {
+					in.close();
+				}
+				sendResultToHandler(result, RESULT_SUCCESS);
+			}	
 		}
 	}
 
@@ -695,6 +716,10 @@ public abstract class NetworkServiceCall<R> {
 	 */
 	public boolean cacheResults(){
 		return cacheResult;
+	}
+	
+	public boolean isCancellable() {
+		return this.params.isCancellable();
 	}
 
 }
