@@ -9,15 +9,17 @@
         android:name="com.discover.mobile.card.fastcheck.FastcheckFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
-
+        android:layout_alignParentTop="true" 
+        android:layout_above="@+id/fastcheck_bottom_button_row"/> 
+            
     <LinearLayout
-        android:id="@+id/fastcheck_bottom_button_row"
+        android:id="@id/fastcheck_bottom_button_row"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/transparentGray"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        >
 
         <Button
             android:id="@+id/fastcheck_privacy_terms_button"

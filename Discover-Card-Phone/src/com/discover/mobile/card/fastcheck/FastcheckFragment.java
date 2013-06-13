@@ -13,12 +13,18 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
@@ -29,8 +35,10 @@ import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.login.register.ForgotUserIdActivity;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -42,7 +50,7 @@ import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
 public class FastcheckFragment extends BaseFragment implements
-		CardEventListener, OnOpenListener, OnCloseListener {
+		CardEventListener, OnOpenListener, OnCloseListener, OnClickListener {
 
 	private final String TAG = FastcheckFragment.class.getSimpleName();
 	private static final long explicitRefreshInterval = 10L * 1000L; // 10 seconds
@@ -66,7 +74,11 @@ public class FastcheckFragment extends BaseFragment implements
 	// ui elements
 	private LinearLayout fastcheckList;
 	private TextView fastcheckErrorMsg;
-	private RelativeLayout view;
+	private ScrollView view;
+	
+	// listeners
+	private GestureDetector gestureDetector;
+    private OnTouchListener gestureListener;
 
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
@@ -76,16 +88,26 @@ public class FastcheckFragment extends BaseFragment implements
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
-		view = (RelativeLayout) inflater.inflate(R.layout.fastcheck_fragment,
+			
+		view = (ScrollView) inflater.inflate(R.layout.fastcheck_fragment,
 				null);
 		
 		((NavigationRootActivity) getActivity()).getSlidingMenu()
 				.setOnOpenListener(this);
 		((NavigationRootActivity) getActivity()).getSlidingMenu()
 				.setOnCloseListener(this);
-		
+			
+		gestureDetector = new GestureDetector((NavigationRootActivity) getActivity(), new SwipeGestureDetector());
+		gestureListener = new OnTouchListener() {
+	        @Override
+			public boolean onTouch(final View v, final MotionEvent event) {
+	            return gestureDetector.onTouchEvent(event);
+	        }
+	    };
+	    view.setOnClickListener(this);
+	    view.setOnTouchListener(gestureListener);
+	
 		return view;
-
 	}
 
 	@Override
@@ -353,9 +375,19 @@ public class FastcheckFragment extends BaseFragment implements
 
 	@Override
 	public void onSuccess(Object data) {
+		
+		Context context = getActivity().getApplicationContext();
+		final Resources res = context.getResources();
+
 		lastUpdateTimeCal = Calendar.getInstance();
 		resultPage = NORMAL_RESULT_PAGE;
 		fastcheckDetail = ((FastcheckDetail) data);
+		
+		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+		cardShareDataStoreObj.addToAppCache(res
+                .getString(R.string.fast_check_detail_databean), fastcheckDetail);
+		
 		populateList();
 	}
 
@@ -380,6 +412,8 @@ public class FastcheckFragment extends BaseFragment implements
 	public void OnError(Object data) {
 		Context context = getActivity().getApplicationContext();
 		final Resources res = context.getResources();
+		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
 		CardErrorBean cardErrorBean = (CardErrorBean) data;
 		Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
 		Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
@@ -388,11 +422,20 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			fastcheckDetail = null;
+			cardShareDataStoreObj.addToAppCache(res
+                .getString(R.string.fast_check_detail_databean), null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
 		} else if ("429".equals(cardErrorBean.getErrorCode())) {
 			lastUpdateTimeCal = Calendar.getInstance();
-			if (resultPage == INITIAL_RESULT_PAGE)
-				resultPage = TECH_DIFF_RESULT_PAGE;
+			Log.d(TAG, "onError() 429, result page " + resultPage);
+			// orientation change fix begin
+			if (resultPage == INITIAL_RESULT_PAGE) {
+				fastcheckDetail = (FastcheckDetail)cardShareDataStoreObj
+						.getValueOfAppCache(res.getString(R.string.fast_check_detail_databean));
+				if (fastcheckDetail == null) resultPage = TECH_DIFF_RESULT_PAGE;
+				else resultPage = NORMAL_RESULT_PAGE;					
+			}
+			// orientation change fix end
 			showPreviousPage(res);
 		} else if (cardErrorBean.getErrorMessage().indexOf(
 				"Received authentication challenge is null") >= 0) {
@@ -400,16 +443,69 @@ public class FastcheckFragment extends BaseFragment implements
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			fastcheckDetail = null;
+			cardShareDataStoreObj.addToAppCache(res
+	                .getString(R.string.fast_check_detail_databean), null);
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_no_token));
 		} else {
 			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			fastcheckDetail = null;
+			cardShareDataStoreObj.addToAppCache(res
+	                .getString(R.string.fast_check_detail_databean), null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 		
 
+	}
+	
+	
+	public void onLeftSwipe() {}
+	
+	public void onRightSwipe() {
+		 ((NavigationRootActivity) getActivity()).getSlidingMenu().toggle();
+	}
+	
+	
+	
+	private class SwipeGestureDetector extends SimpleOnGestureListener {
+	    private static final int SWIPE_MIN_DISTANCE = 50;
+	    private static final int SWIPE_MAX_OFF_PATH = 200;
+	    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+	    @Override
+	    public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
+	            final float velocityY) {
+	        try {
+	            //Toast t = Toast.makeText(this, "Gesture detected", Toast.LENGTH_SHORT);
+	            //t.show();
+	            final float diffAbs = Math.abs(e1.getY() - e2.getY());
+	            final float diff = e1.getX() - e2.getX();
+
+	            if (diffAbs > SWIPE_MAX_OFF_PATH)
+	                return false;
+
+	            // Left swipe
+	            if (diff > SWIPE_MIN_DISTANCE
+	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	                onLeftSwipe();
+	            } 
+	            // Right swipe
+	            else if (-diff > SWIPE_MIN_DISTANCE
+	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+	                onRightSwipe();
+	            }
+	        } catch (final Exception e) {
+	            if (Log.isLoggable(TAG, Log.ERROR)) Log.e(TAG, "onFling() Error on gestures");
+	        }
+	        return false;
+	    }
+
+	}
+	
+	@Override
+	public void onClick(final View v) {
+		v.setSoundEffectsEnabled(false);
 	}
 
 }

@@ -352,7 +352,7 @@
     <string name="E_4031109"> Due to increased security requirements, you must create a new User ID to access your accounts. Please update your User ID at Discover.com.</string>
     <!-- 13.3 QuickView Biniding Service Start -->
     <string name="E_409">Device is already bound</string>
-    <string name="E_404">Device is not bound</string>
+    <string name="E_4042203">Device is not bound</string>
     <string name="E_4002201">Device Token Invalid</string>
     <!-- 13.3 QuickView Biniding Service END -->
     <!-- need help footer and feedback -->
@@ -368,7 +368,7 @@
      <!-- 13.3 QuickView Biniding Service Start-->
     <string name="E_H_4002201">0</string>
     <string name="E_H_409">0</string>
-    <string name="E_H_404">0</string>
+    <string name="E_H_4042203">0</string>
     <!-- 13.3 QuickView Biniding Service END-->
     <string name="E_H_403">0</string>
     <string name="E_H_4031402_LOCKOUT">0</string>

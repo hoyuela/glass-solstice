@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bank_login">accountlogin-pg</string>
+    <string name="bank_strong_auth">accountloginAuth-pg</string>
+    <string name="bank_account_summary">accountcenter_Summary-pg</string>
+    <string name="bank_transfer_confirmation">transfer_confirm-pg</string>
+    <string name="bank_deposit_confirmation">acknowledgement-pg</string>
+    <string name="bank_pay_bill_confirmation">payment_verify-pg</string>
+    <string name="bank_atm_locator_results">atmlocator_results-pg</string>
+    <string name="bank_transfer_start">transferfunds_begin-pg</string>
+    <string name="bank_select_account">select_account-pg</string>
+    <string name="bank_payment_start">payment_start-pg</string>
+    <string name="bank_atm_start">atmlocator_start-pg</string>
+    <string name="bank_deposit_amount_tracking">enter_amount-pg</string>
+    <string name="bank_capture_front">capture_front-pg</string>
+    <string name="bank_capture_back">capture_back-pg</string>
+    <string name="bank_capture_confirm">confirm_authorize-pg</string>
+    <string name="bank_capture_sending">transmitting_animation-pg</string>
+    <string name="bank_capture_acknowledge">acknowledgement-pg</string>
+</resources>
