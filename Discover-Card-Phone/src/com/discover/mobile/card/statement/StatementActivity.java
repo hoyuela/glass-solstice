@@ -89,13 +89,12 @@ public class StatementActivity extends DroidGap {
     private CountDownTimer mCountDownTimer;
 
     // page elements
-    private TextView mTextCycleDate;
-    private TextView titleView ; 
+    private TextView mTextCycleDate;     
     private WebView mWebView;
     private ImageButton mBtnPrev;
     private ImageButton mBtnNext;
     private Button mBtnDownloadPDF;
-    private Button logout;
+    
 
     private CharSequence mErrorMessage;
 
@@ -128,10 +127,7 @@ public class StatementActivity extends DroidGap {
         mWebView = (WebView) findViewById(R.id.statement_webView);
         mBtnDownloadPDF = (Button) findViewById(R.id.statement_btn_downloadPDF);
         mBtnPrev = (ImageButton) findViewById(R.id.statement_btn_prev);
-        mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);
-        logout = (Button) findViewById(R.id.logout_button);
-        titleView = (TextView)findViewById(R.id.title_view);
-
+        mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);        
         mFadeInAnimation = AnimationUtils.loadAnimation(StatementActivity.this,
                 R.anim.fadein);
 
