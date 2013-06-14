@@ -32,7 +32,7 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 
 	private void doSetup(final Context context) {
 		final RelativeLayout view = getInflatedLayout(context);
-
+		view.findViewById(R.id.faq_layout).setOnClickListener(expandClickListener);
 		addView(view);
 	}
 
@@ -68,7 +68,6 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 
 		if(titleLabel != null){
 			titleLabel.setText(title);
-			titleLabel.setOnClickListener(expandClickListener);
 		}
 	}
 
