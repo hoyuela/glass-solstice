@@ -285,6 +285,7 @@ public final class BankConductor  extends Conductor {
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
 			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
 			activity.startActivity(home);
 
 			//Close current activity

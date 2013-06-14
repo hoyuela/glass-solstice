@@ -245,8 +245,10 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	public void onDestroy() {
 		super.onDestroy();
 		Log.v(TAG, "onDestroy");
-		if (null != cwv)
+		if (null != cwv){
+			cwv.stopLoading();
 			cwv.handleDestroy();
+		}
 	}
 
 	/**

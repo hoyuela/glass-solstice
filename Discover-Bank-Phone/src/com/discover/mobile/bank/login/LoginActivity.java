@@ -89,7 +89,7 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 
-public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface, OnClickListener {
+public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 	final long halfSecond = 500;
@@ -149,6 +149,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
 	private ProgressBar splashProgress;
+	private ImageView discoverLogo;
 
 	/*Used to specify whether the pre-authenciation call has been made for the application.
 	 * Should only be done at application start-up.
@@ -174,8 +175,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
-	private GestureDetector gestureDetector;
-    private OnTouchListener gestureListener;
+	
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
@@ -199,21 +199,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		DiscoverActivityManager.setActiveActivity(this);
 				
-		gestureDetector = new GestureDetector(this, new SwipeGestureDetector());
-		gestureListener = new OnTouchListener() {
-	        @Override
-			public boolean onTouch(final View v, final MotionEvent event) {
-	            return gestureDetector.onTouchEvent(event);
-	        }
-	    };
-	    getSlidingMenu().setOnClickListener(this);
-	    getSlidingMenu().setOnTouchListener(gestureListener);
+		
+	    
 	 }
 	
-	@Override
-	public void onClick(final View v) {
-		v.setSoundEffectsEnabled(false);
-	}
+	
 
 	@Override
 	protected void setupSlidingMenu() {
@@ -272,6 +262,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
 		fcPrivacyTermButton = (Button)findViewById(R.id.fastcheck_privacy_terms_button);
 		fcProvideFeedbackButton = (Button)findViewById(R.id.fastcheck_provide_feedback_button);
+		
+		//hlin0, get a handle so that we can change position based on whether quickview (fastcheck) is enabled or not
+		discoverLogo = (ImageView)findViewById(R.id.discoverLogo);
 
 	}
 	
@@ -1498,8 +1491,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			phoneGapInitComplete = true;
 		}
-		setInputFieldsDrawablesToDefault();
-		CommonUtils.setViewGone(errorTextView);
+		
+		// Only need to reset login views if splash screen was visible
+		// (=> Login views already visible, don't reset any previous errors)
+		if (findViewById(R.id.login_pane).getVisibility() != View.VISIBLE) {
+			setInputFieldsDrawablesToDefault();
+			CommonUtils.setViewGone(errorTextView);
+		}
 		showSplashScreen(false);
 
 	}
@@ -1623,50 +1621,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 	
 		
-	public void onLeftSwipe() {
-	}
-	
-	public void onRightSwipe() {
-		if (Log.isLoggable(TAG, Log.DEBUG)) Log.d(TAG, "onRightSwipe");
-		getSlidingMenu().toggle();
-	}
-	
-	
-	
-	private class SwipeGestureDetector extends SimpleOnGestureListener {
-	    private static final int SWIPE_MIN_DISTANCE = 50;
-	    private static final int SWIPE_MAX_OFF_PATH = 200;
-	    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-	    @Override
-	    public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
-	            final float velocityY) {
-	        try {
-	            //Toast t = Toast.makeText(this, "Gesture detected", Toast.LENGTH_SHORT);
-	            //t.show();
-	            final float diffAbs = Math.abs(e1.getY() - e2.getY());
-	            final float diff = e1.getX() - e2.getX();
-
-	            if (diffAbs > SWIPE_MAX_OFF_PATH)
-	                return false;
-
-	            // Left swipe
-	            if (diff > SWIPE_MIN_DISTANCE
-	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-	                onLeftSwipe();
-	            } 
-	            // Right swipe
-	            else if (-diff > SWIPE_MIN_DISTANCE
-	                    && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-	                onRightSwipe();
-	            }
-	        } catch (final Exception e) {
-	            if (Log.isLoggable(TAG, Log.ERROR)) Log.e(TAG, "onFling() Error on gestures");
-	        }
-	        return false;
-	    }
-
-	}
 	
 	@Override
 	public void onBackPressed() {
