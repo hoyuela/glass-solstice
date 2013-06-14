@@ -38,7 +38,6 @@ import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.login.register.ForgotUserIdActivity;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
@@ -150,11 +149,22 @@ public class FastcheckFragment extends BaseFragment implements
 	}
 
 	
-	private boolean timeToMakeAnotherCall() {
-		if (lastUpdateTimeCal == null)
-			return true;
-		long currentMs = Calendar.getInstance().getTime().getTime();
-		long lastUpdateMs = lastUpdateTimeCal.getTime().getTime();
+	private boolean timeToMakeAnotherCall(Context context, Resources res) {
+		long lastUpdateMs = 0L;
+		if (lastUpdateTimeCal == null) {
+			CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+	                .getInstance(context);
+			Long cachedLastUpdateTimeInMS = (Long)cardShareDataStoreObj.getValueOfAppCache(res
+	                .getString(R.string.fast_check_last_retrieval_time_in_ms));
+			if (cachedLastUpdateTimeInMS == null) return true;
+			else {
+				lastUpdateMs = cachedLastUpdateTimeInMS.longValue();
+				lastUpdateTimeCal = Calendar.getInstance();
+				lastUpdateTimeCal.setTimeInMillis(lastUpdateMs);
+			}
+		} else lastUpdateMs = lastUpdateTimeCal.getTimeInMillis();
+		long currentMs = Calendar.getInstance().getTimeInMillis();
+		 
 		if ((currentMs - lastUpdateMs) <= explicitRefreshInterval)
 			return false;
 		else
@@ -164,7 +174,9 @@ public class FastcheckFragment extends BaseFragment implements
 	private void getFastcheckData(boolean spinOnNoFetch) {
 		Context context = getActivity().getApplicationContext();
 		final Resources res = context.getResources();
-		if (!timeToMakeAnotherCall()) {
+		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+		if (!timeToMakeAnotherCall(context, res)) {
 			if (spinOnNoFetch) {
 				Utils.showSpinner(getActivity(), res.getString(R.string.fast_check_spinner_msg_part1),
 						res.getString(R.string.fast_check_spinner_msg_part2));
@@ -175,6 +187,14 @@ public class FastcheckFragment extends BaseFragment implements
 					}
 				}, 500);
 			}
+			// orientation change fix begin
+			if (resultPage == INITIAL_RESULT_PAGE) {
+				fastcheckDetail = (FastcheckDetail)cardShareDataStoreObj
+							.getValueOfAppCache(res.getString(R.string.fast_check_detail_databean));
+				if (fastcheckDetail == null) resultPage = TECH_DIFF_RESULT_PAGE;
+				else resultPage = NORMAL_RESULT_PAGE;					
+			}
+			// orientation change fix end
 			showPreviousPage(res);
 			return;
 		}
@@ -338,6 +358,23 @@ public class FastcheckFragment extends BaseFragment implements
 		DecimalFormat df = new DecimalFormat(MILE_REWARDS_FORMAT);
 		return df.format(mile);
 	}
+	
+	private void updateCacheAndTimestamp(FastcheckDetail aFastcheckDetail) {
+		Context context = getActivity().getApplicationContext();
+		final Resources res = context.getResources();
+		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+		fastcheckDetail = aFastcheckDetail;
+		cardShareDataStoreObj.addToAppCache(res
+                .getString(R.string.fast_check_detail_databean), fastcheckDetail);
+		lastUpdateTimeCal = Calendar.getInstance();
+		Long tmpLastUpdateTimeInMS = Long.valueOf(lastUpdateTimeCal.getTimeInMillis());
+		cardShareDataStoreObj.addToAppCache(res
+                .getString(R.string.fast_check_last_retrieval_time_in_ms), tmpLastUpdateTimeInMS);
+		
+	}
+	
+	
 
 	/**
 	 * Populate the linear layout
@@ -376,18 +413,10 @@ public class FastcheckFragment extends BaseFragment implements
 	@Override
 	public void onSuccess(Object data) {
 		
-		Context context = getActivity().getApplicationContext();
-		final Resources res = context.getResources();
-
-		lastUpdateTimeCal = Calendar.getInstance();
+		
 		resultPage = NORMAL_RESULT_PAGE;
-		fastcheckDetail = ((FastcheckDetail) data);
-		
-		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                .getInstance(context);
-		cardShareDataStoreObj.addToAppCache(res
-                .getString(R.string.fast_check_detail_databean), fastcheckDetail);
-		
+		updateCacheAndTimestamp((FastcheckDetail)data);
+				
 		populateList();
 	}
 
@@ -419,14 +448,11 @@ public class FastcheckFragment extends BaseFragment implements
 		Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
 		
 		if ("403".equals(cardErrorBean.getErrorCode())) {
-			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
-			fastcheckDetail = null;
-			cardShareDataStoreObj.addToAppCache(res
-                .getString(R.string.fast_check_detail_databean), null);
+			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
 		} else if ("429".equals(cardErrorBean.getErrorCode())) {
-			lastUpdateTimeCal = Calendar.getInstance();
+			//updateTimestamp();
 			Log.d(TAG, "onError() 429, result page " + resultPage);
 			// orientation change fix begin
 			if (resultPage == INITIAL_RESULT_PAGE) {
@@ -440,19 +466,12 @@ public class FastcheckFragment extends BaseFragment implements
 		} else if (cardErrorBean.getErrorMessage().indexOf(
 				"Received authentication challenge is null") >= 0) {
 			Log.e(TAG, "OnError() gets 401 type of error msg " + cardErrorBean.getErrorMessage());
-			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
-			fastcheckDetail = null;
-			cardShareDataStoreObj.addToAppCache(res
-	                .getString(R.string.fast_check_detail_databean), null);
-			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
+			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_no_token));
 		} else {
-			lastUpdateTimeCal = Calendar.getInstance();
 			resultPage = TECH_DIFF_RESULT_PAGE;
-			fastcheckDetail = null;
-			cardShareDataStoreObj.addToAppCache(res
-	                .getString(R.string.fast_check_detail_databean), null);
+			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
 		

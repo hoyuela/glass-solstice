@@ -17,6 +17,7 @@ import com.discover.mobile.card.R;
 public class FastcheckUtil {
 
 	private static final String seed4KeyStr = "EoeBcwiahT5CxacQsaWI0e16p9lb+wQs0KFJdmzSTEo=";
+	private static final String DISCOVER_CARD_PREF = "DiscoverCardPref";
 
 	private static byte[] getKey() throws Exception {
 		byte[] seedBytes = seed4KeyStr.getBytes();
@@ -30,7 +31,7 @@ public class FastcheckUtil {
 	}
 
 	public static void storeFastcheckToken(Activity activity, String token) {
-		SharedPreferences sharedPref = activity.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+		SharedPreferences sharedPref = activity.getSharedPreferences(DISCOVER_CARD_PREF, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPref.edit();
 		editor.putString(
 				activity.getResources().getString(
@@ -39,7 +40,7 @@ public class FastcheckUtil {
 	}
 
 	public static String readFastcheckToken(Activity activity) {
-		SharedPreferences sharedPref = activity.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+		SharedPreferences sharedPref = activity.getSharedPreferences(DISCOVER_CARD_PREF, Context.MODE_PRIVATE);
 		String token = sharedPref.getString(
 				activity.getResources().getString(
 						R.string.fast_check_token_key_in_ps), null);
