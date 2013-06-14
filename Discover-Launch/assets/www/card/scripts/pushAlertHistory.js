@@ -130,13 +130,35 @@ try{
            viewLinkLabel =  v["customData"].split(",")[0].split("=")[1];
            break;
            }
+           //13.3 change defect fix 99469
+			var linkVar = '</span></div><div class="ui-block-d" id="no_wrap"><div class="right_arrow deactive_down_arrow"></div><span class="links boldtext" style="width:56%"><a href="#" onclick="dfs.crd.push.alert.pushHistoryMessageRedirect(\'' + pageID + '\',\'' + strDynamicId + '\')">' + viewLinkLabel.toUpperCase() + '</a></span></div></div></li>';
            
+           var removeRewardsLink = false;
+           var isMilOrCBBCard = true;
+           var isRewardsButtonText = false;
+           
+           
+           var cardProductGroupCodeArray= new Array("DBC","DBM","ESN","ESF","CRP");
+               if(jQuery.inArray(cardProductGroupCode, cardProductGroupCodeArray) > -1 ){
+                    isMilOrCBBCard = false;
+           }
+           
+           if(!isEmpty(viewLinkLabel)){
+               if(viewLinkLabel.toUpperCase() == "REDEEM" || viewLinkLabel.toUpperCase() == "SIGN UP"){
+                    isRewardsButtonText = true;
+               }
+           }
+           
+           if(!isMilOrCBBCard && isRewardsButtonText){
+                linkVar = "";
+           }
            if (v["msgReadInd"] == "Y") {
-           strList += '<li id="' + strDynamicId + '" class="' + cls + '"><div class="ui-grid-c" style="font-weight:normal"><div class="ui-block-a" style="font-weight:normal"><fieldset data-role="controlgroup"><input type="checkbox" class="chkbox custom" /></fieldset></div><div style="font-weight:normal" class="ui-block-b"><span>' + sentDate + '</span><br/><div>'+ sentTime +'</div> </div><div style="font-weight:normal" class="ui-block-c"><span class="cls_description">' + v["subject"] + '</span><br/><span id="sub_detail" style="display:none">'+ comment +'</span></div><div class="ui-block-d" id="no_wrap"><div class="right_arrow deactive_down_arrow"></div><span class="links boldtext" style="width:56%"><a href="#" onclick="dfs.crd.push.alert.pushHistoryMessageRedirect(\'' + pageID + '\',\'' + strDynamicId + '\')">' + viewLinkLabel.toUpperCase() + '</a></span></div></div></li>';
+           strList += '<li id="' + strDynamicId + '" class="' + cls + '"><div class="ui-grid-c" style="font-weight:normal"><div class="ui-block-a" style="font-weight:normal"><fieldset data-role="controlgroup"><input type="checkbox" class="chkbox custom" /></fieldset></div><div style="font-weight:normal" class="ui-block-b"><span>' + sentDate + '</span><br/><div>'+ sentTime +'</div> </div><div style="font-weight:normal" class="ui-block-c"><span class="cls_description">' + v["subject"] + '</span><br/><span id="sub_detail" style="display:none">'+ comment +linkVar;
            }
            else {
-           strList += '<li id="' + strDynamicId + '" class="' + cls + '"><div class="ui-grid-c"><div class="ui-block-a"><fieldset data-role="controlgroup"><input  type="checkbox" class="chkbox custom"/></fieldset></div><div class="ui-block-b"><span>' + sentDate + '</span><br/> <div>'+ sentTime +'</div> </div><div class="ui-block-c"><span class="cls_description">' + v["subject"] + '</span><br/><span id="sub_detail" style="display:none">'+ comment +'</span></div><div class="ui-block-d" id="no_wrap"><div class="right_arrow deactive_down_arrow"></div></span><span class="links boldtext" style="width:56%"><a href="#" onclick="dfs.crd.push.alert.pushHistoryMessageRedirect(\'' + pageID + '\',\'' + strDynamicId + '\')">' + viewLinkLabel.toUpperCase()  + '</a></span></div></div></li>';
+           strList += '<li id="' + strDynamicId + '" class="' + cls + '"><div class="ui-grid-c"><div class="ui-block-a"><fieldset data-role="controlgroup"><input  type="checkbox" class="chkbox custom"/></fieldset></div><div class="ui-block-b"><span>' + sentDate + '</span><br/> <div>'+ sentTime +'</div> </div><div class="ui-block-c"><span class="cls_description">' + v["subject"] + '</span><br/><span id="sub_detail" style="display:none">'+ comment +linkVar;
            }
+		   //13.3 change defect fix 99469
            });
 		return strList;
 		}

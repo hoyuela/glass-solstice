@@ -40,16 +40,15 @@
         style="@style/title_copy_fastcheck_salutation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/balance_label"
+        android:layout_alignLeft="@id/balance_label"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/fastcheck_display_back_button"
-        android:layout_marginTop="18dp"
-        android:layout_toLeftOf="@+id/action_text" />
+        android:layout_below="@id/fastcheck_display_back_button"
+        android:layout_marginTop="18dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/balance_value"
+        android:layout_alignBottom="@id/balance_value"
         android:layout_alignParentRight="true"
         android:gravity="bottom"
         android:orientation="horizontal" >

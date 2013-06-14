@@ -63,20 +63,20 @@ public class WhatsNewAvailable extends LinearLayout implements WhatsNewConstants
 		linkLabel = (TextView) findViewById(R.id.whats_new_label);
 
 		title.setText(R.string.quickview_content_heading);
-		
-		if(cardType.equalsIgnoreCase("CBB")){
-			contentDescription.setText(R.string.quickview_content_description_cbb);
-			linkLabel.setText(R.string.quickview_gotolink);
+		linkLabel.setText(R.string.quickview_gotolink);
+		if(cardType.equalsIgnoreCase("CBB") || cardType.equalsIgnoreCase("SBC")){
+			contentDescription.setText(R.string.quickview_content_description_cbb);			
 			imageView.setImageDrawable(getResources().getDrawable(
 					R.drawable.quick_view));
-		}
-		else{
+		}else if (cardType.equalsIgnoreCase("NOR")){			
+			contentDescription.setText(R.string.quickview_content_description_dbc_corp);			
+			imageView.setImageDrawable(getResources().getDrawable(
+					R.drawable.quickview_dbc_corp));
 
-			contentDescription.setText(R.string.quickview_content_description_mi);
-			linkLabel.setText(R.string.quickview_gotolink);
+		}else{
+			contentDescription.setText(R.string.quickview_content_description_mi);			
 			imageView.setImageDrawable(getResources().getDrawable(
 					R.drawable.quick_view_miles));
-			
 		}
 	}
 	

@@ -51,14 +51,14 @@ public class QuickViewSetupFragment extends BaseFragment {
 	private TextView qvinfoTextView;
 	private String new_token = "";
 	private View mainView;
-	private static final String REFERER = "cardHome-pg";
-	private static final String CBB = "CBB";
-	
-
+	private static final String REFERER = "cardHome-pg";	
+	private static final String MILES = "MI2";
+	private static final String NOR = "NOR";
+	private static final String SML = "SML";
 	protected final String LOG_TAG = "QuickViewSetupFragment";
 	private boolean quickviewOn;
 	private String TAG = this.getClass().getSimpleName();
-
+	
 	/**
 	 * Create the view
 	 * 
@@ -80,8 +80,10 @@ public class QuickViewSetupFragment extends BaseFragment {
 		//Change CBB/MILES Texts
 		final ImageView faqImage = (ImageView) mainView.findViewById(R.id.faqimage);
 		qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
-		if(!getCardType().equalsIgnoreCase(CBB)){
+		if(getCardType().equalsIgnoreCase(MILES)|| getCardType().equalsIgnoreCase(SML)){
 			faqImage.setBackgroundResource(R.drawable.quickviewsetupmile);
+		}else if(getCardType().equalsIgnoreCase(NOR)){
+			faqImage.setBackgroundResource(R.drawable.quickviewsetup_dbc_corp);
 		}
 		setQVInfoText();
 			
@@ -95,7 +97,21 @@ public class QuickViewSetupFragment extends BaseFragment {
 					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 							(CardErrorHandlerUi) getActivity());
-					cardErrorResHandler.handleCardError((CardErrorBean) bean);
+					cardErrorResHandler.handleCardError(
+							(CardErrorBean) bean,
+							new CardErrorCallbackListener() {
+
+								@Override
+								public void onButton2Pressed() {
+									removeQVFragment();
+								}
+
+								@Override
+								public void onButton1Pressed() {
+									removeQVFragment();
+								}
+							});
+
 				}
 			}
 		});
@@ -132,7 +148,20 @@ public class QuickViewSetupFragment extends BaseFragment {
 				CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 						(CardErrorHandlerUi) getActivity());
-				cardErrorResHandler.handleCardError((CardErrorBean) bean);
+				cardErrorResHandler.handleCardError(
+						(CardErrorBean) bean,
+						new CardErrorCallbackListener() {
+
+							@Override
+							public void onButton2Pressed() {
+								removeQVFragment();
+							}
+
+							@Override
+							public void onButton1Pressed() {
+								removeQVFragment();
+							}
+						});
 			}
 		} else
 			return null;
@@ -165,8 +194,10 @@ public class QuickViewSetupFragment extends BaseFragment {
 	 * Sets QuickView InfoText According to Card Type
 	 */
 	private void setQVInfoText(){
-		if(!getCardType().equalsIgnoreCase(CBB)){
+		if(getCardType().equalsIgnoreCase(MILES) || getCardType().equalsIgnoreCase(SML)){
 			qvinfoTextView.setText(R.string.quick_view_info_miles);
+		}else if(getCardType().equalsIgnoreCase(NOR)){
+			qvinfoTextView.setText(R.string.quick_view_info_dbc_corp);
 		}else{
 			qvinfoTextView.setText(R.string.quick_view_info);
 		}
