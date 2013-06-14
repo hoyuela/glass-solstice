@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -51,7 +50,6 @@ import com.google.common.base.Strings;
  * 
  */
 
-//@ContentView(R.layout.strongauth_page)
 public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 	/**
@@ -72,11 +70,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private TextView statusIconLabel;
 	private TextView questionLabel;
 	private RelativeLayout whatsThisLayout;
-	/**
-	 * Holds reference to the button that triggers the NetworkServiceCall<> to POST the 
-	 * answer in the TextView with id account_security_question_answer_field.
-	 */
-	private Button continueButton;
 
 	private String inputErrorText;
 	private int inputErrorVisibility;
@@ -103,10 +96,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	private static final String ANSWER_ERROR_VISIBILITY = "b";
 	private static final String ANSWER_ERROR_TEXT = "d";
 	private static final String WHATS_THIS_STATE = "e";
-	/**
-	 * Minimum string length allowed to be sent as an answer to a Strong Auth Challenge Question
-	 */
-	private static final int MIN_ANSWER_LENGTH = 2;
+	private static final String FIELD_ERROR = "f";
 	
 	/** String used to determine if the menu is closed. */
 	private static final String CLOSED_MENU = "+";
@@ -128,7 +118,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	public void onSaveInstanceState(final Bundle outState) {
 		outState.putInt(SERVER_ERROR_VISIBILITY, serverErrorLabel.getVisibility());
 		outState.putString(SERVER_ERROR_TEXT, serverErrorLabel.getText().toString());
-
+		outState.putBoolean(FIELD_ERROR, questionAnswerField.isInErrorState);
 		outState.putInt(ANSWER_ERROR_VISIBILITY, errorMessage.getVisibility());
 		outState.putString(ANSWER_ERROR_TEXT, errorMessage.getText().toString());
 
@@ -148,7 +138,7 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 
 			serverErrorLabel.setText(serverErrorText);
 			serverErrorLabel.setVisibility(serverErrorVisibility);
-			restoreInputField();
+			restoreInputField(savedInstanceState);
 
 			restoreExpandableHelpMenu();		
 		}	
@@ -167,7 +157,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 		radioButtonTwo = (RadioButton)securityRadioGroup.findViewById(R.id.account_security_choice_two_radio);
 		serverErrorLabel = (TextView)findViewById(R.id.account_security_server_error);
 		mainScrollView = (ScrollView)findViewById(R.id.scrollView1);
-		continueButton = (Button)findViewById(R.id.account_security_continue_button);
 		questionAnswerField.attachErrorLabel(errorMessage);
 	}
 
@@ -250,12 +239,25 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	 * Restore the sate of the input field based on its error label.
 	 * If the label is present, its in an error state and must be updated.
 	 */
-	private void restoreInputField() {
+	private void restoreInputField(final Bundle savedState) {
 		errorMessage.setText(inputErrorText);
 		errorMessage.setVisibility(inputErrorVisibility);
 
 		if(errorMessage.getVisibility() == View.VISIBLE) {
 			questionAnswerField.updateAppearanceForInput();
+		}
+		
+		/**
+		 * Restore the input field to an error if it was in error, but had no
+		 * error text beneath it.
+		 */
+		if(savedState != null && questionAnswerField != null) {
+			if(savedState.getBoolean(FIELD_ERROR)) {
+				questionAnswerField.setErrors();
+				if(Strings.isNullOrEmpty(inputErrorText)) {
+					errorMessage.setVisibility(View.GONE);
+				}
+			}
 		}
 
 	}
@@ -335,8 +337,8 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 			submitBankSecurityInfo(answer, (selectedIndex==0));
 
 		} else {
-			BankErrorHandler.getInstance().showErrorsOnScreen(
-					this, this.getResources().getString(R.string.error_strongauth_noanswer));
+			BankErrorHandler.getInstance().showErrorsOnScreen(this, null);
+			errorMessage.setVisibility(View.GONE);
 		}
 
 	}
@@ -391,22 +393,6 @@ public class EnhancedAccountSecurityActivity extends NotLoggedInRoboActivity {
 	@Override
 	public void goBack() {	
 		onBackPressed();
-	}
-
-
-	/**
-	 * Event handler for text change events on the TextView with id account_security_question_answer_field.
-	 * If no text is detected then the continue button at the bottom of the page is disabled, else it 
-	 * is enabled.
-	 * 
-	 * @param newText Text that is provided by the TextView whenever a change has been detected
-	 */
-	private void onTextChanged(final CharSequence newText) {
-		if( newText != null && newText.length() >= MIN_ANSWER_LENGTH ) {
-			continueButton.setEnabled(true);
-		} else {
-			continueButton.setEnabled(false);
-		}
 	}
 
 	/* (non-Javadoc)
