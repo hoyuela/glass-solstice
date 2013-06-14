@@ -101,6 +101,7 @@
 	<string name="fast_check_spinner_msg_part1">Discover</string>
 	<string name="fast_check_spinner_msg_part2">Retrieving Quick view&#8230;</string>
 	<string name="fast_check_error_img_desc">error</string>
+	<string name="fast_check_detail_databean">FastcheckDetailDataBean</string>
 	
 	 <!-- CARD TYPE FOR TOOL TIP MENU -->
     <string name="card_type_more">More Card </string>
@@ -124,6 +125,7 @@
      <!-- Quick information -->
     <string name="quick_view_info">Turn on to view your current balance, credit line available and <i>Cashback Bonus</i> balance without having to log in. </string>
     <string name="quick_view_info_miles">Turn on to view your current balance, credit line available and <i>Miles balance</i> without having to log in. </string>
+    <string name="quick_view_info_dbc_corp">Turn on to view your current balance, credit line available without having to log in. </string>
     <string name="quick_view_info_on">On the login screen tap the Quick view button, or swipe to see your account information.</string>
     <string name="quick_view_faq">Quick view FAQ</string>
     <string name="quick_view_detail">Another account has their settings enabled to view their account information without logging in on this device. Would you like to disable the settings for that account and enable them for this account?</string>

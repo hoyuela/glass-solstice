@@ -1536,8 +1536,8 @@ color: #576166;
 
 .boldtext{font-weight:bold !important;}
 
-#specialNotes{ 
-    clear:both; 
+#specialNotes,#alertHistory-pg .main_heading_paragraph{ 
+  /*  clear:both; */
     font-size:14px; 
     color:#474e55; 
 }
