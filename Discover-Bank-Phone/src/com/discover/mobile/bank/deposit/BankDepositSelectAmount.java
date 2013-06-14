@@ -48,72 +48,75 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	 * Reference to bundle provided in onCreateView or via getArguments() depending on what created the fragment.
 	 */
 	private Bundle bundle = null;
-	
+
 	private static final int CAPTURE_ACTIVITY = 1;
 	/** Time (ms) to delay keyboard display on resume. */
 	private static final int KEYBOARD_DELAY = 800;
-	
+
+	/**Keys for keeping the fragments error state*/
+	private static final String ERROR_STATE = "error_state";
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-		
+
 		/**Set bundle to data set via getArguments if saveInstanceState is null*/
-		bundle = (savedInstanceState == null)? this.getArguments() : savedInstanceState;
-		
+		bundle = savedInstanceState == null? getArguments() : savedInstanceState;
+
 		if( null != bundle &&  null != bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM)) {
 			account = (Account)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		}
-		
+
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
+
 		hideUnusedLabels(view);
-		
+
 		/**Show "Continue" text in single button on screen*/
 		setButtonText(R.string.continue_text);
 
 		getTable().setBackgroundResource(0);
-		
+
 		/**Listen when user taps on the layout to close the keyboard*/
 		view.findViewById(R.id.main_layout).setOnTouchListener(new OnTouchListener() {           
-	        @Override
+			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
-	         	amountItem.getEditableField().showKeyboard(false);
-	            return false;
-	        }
-	    });
-		
+				amountItem.getEditableField().showKeyboard(false);
+				return false;
+			}
+		});
+
 		/**Setup footer*/
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		footer.setHelpNumber(getString(R.string.bank_deposit_need_help_number));
 		footer.setFooterType(FooterType.PRIVACY_TERMS | FooterType.NEED_HELP);
-		
+
 		return view;
 	}
-	
+
 	/**Hide controls that are not needed*/
 	private void hideUnusedLabels(final View view) {
 		hideBottomNote();
 		getActionLink().setVisibility(View.GONE);
-		(view.findViewById(R.id.top_note_text)).setVisibility(View.GONE);
+		view.findViewById(R.id.top_note_text).setVisibility(View.GONE);
 	}
-	
+
 	/**
 	 * Method called by base class in onCreateView to determine what the title of the page should be.
 	 */
 	@Override
 	protected String getPageTitle() {
 		final StringBuilder titleBuilder = new StringBuilder("");
-		
+
 		if(account != null && !Strings.isNullOrEmpty(account.nickname)) {
 			titleBuilder.append(account.nickname);
 			final String ending = account.getShortDottedFormattedAccountNumber();
-			
+
 			if(!Strings.isNullOrEmpty(ending)) {
 				titleBuilder.append(" \n");
 				titleBuilder.append(ending);
 			}
 		}
-		
+
 		return titleBuilder.toString();
 	}
 
@@ -135,37 +138,37 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
-		
+
 		amountItem = new BankAmountItem(getActivity());
-		
+
 		/**Set the limits to use to verify if what the user has entered is valid*/
 		if( account != null  ) {
 			amountItem.getEditableField().setAccountLimits(account.limits);
 			amountItem.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		}
-			
+
 		/**Add item to the content list table*/
 		items.add( amountItem  );
-		
+
 		return items;
 	}
-	
+
 	@Override
 	protected void onActionButtonClick() {	
 		/**Clear focus to close keyboard*/
 		amountItem.getEditableField().clearFocus();
-		
+
 		if( amountItem.getEditableField().isValid() ) {
 			/**
 			 * Launch the check deposit capture activity when Continue is clicked and all limits are not exceeded
 			 */
 			final Bundle args = getArguments();
 			boolean reviewDepositOnFinish = false;
-			
+
 			if(args != null){
 				reviewDepositOnFinish = args.getBoolean(BankExtraKeys.REENTER_AMOUNT);
 			}
-			
+
 			if(reviewDepositOnFinish) {
 				//Reset the review deposit bundle boolean to prevent odd navigation issues later.
 				args.putBoolean(BankExtraKeys.REENTER_AMOUNT, false);
@@ -179,7 +182,7 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			amountItem.getEditableField().updateAppearanceForInput();
 		}
 	}
-	
+
 	/**
 	 * When the check capture activity finishes, navigate to the next step
 	 * in the process of check deposit.
@@ -201,12 +204,12 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	private void navigateToReviewDeposit() {
 		/**Remove everything but numbers so we have the value in cents.*/
 		final String amount = amountItem.getEditableField().getText().toString().
-												replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
+				replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
 		final Bundle arguments = getArguments();
 		arguments.putInt(BankExtraKeys.AMOUNT, Integer.parseInt(amount));
 		BankConductor.navigateToCheckDepositWorkFlow(arguments, BankDepositWorkFlowStep.ReviewDeposit);
 	}
-	
+
 	/**
 	 * Restore the amount field to a previous amount from the argument bundle.
 	 * This is needed if a user has come back to this Fragment from 
@@ -217,27 +220,27 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 			final double amount = bundle.getInt(BankExtraKeys.AMOUNT);	
 			/**Value is a string if read from savedInstanceState in onCreateView*/
 			final String amountString = bundle.getString(BankExtraKeys.AMOUNT);
-			
+
 			/**Set Text for editable field, this has to be called after super class onCreateView has been called*/
 			if(amountItem != null && !Strings.isNullOrEmpty(amountString)) {
 				amountItem.getEditableField().enableBankAmountTextWatcher(false);
 				amountItem.getEditableField().setText(amountString);
 				amountItem.getEditableField().enableBankAmountTextWatcher(true);
 			}
-			
+
 			/**Check if value is greater than 0*/
 			else if( amount > 0 ) {
 				final int centsPerDollar = 100;
 				final double doubleAmount = amount/centsPerDollar;
-				
+
 				String valueText = BankStringFormatter.convertStringFloatToDollars(Double.toString(doubleAmount));
 				valueText = valueText.replace("$", "");
-				
+
 				amountItem.getEditableField().setText(valueText);
 			}		
 		}
 	}
-	
+
 	@Override
 	protected void onActionLinkClick() {
 		//this is not used for this screen
@@ -246,58 +249,65 @@ public class BankDepositSelectAmount extends BankDepositBaseFragment {
 	@Override
 	public void onBackPressed() {
 		//this is not required for this screen
-		
+
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		/**Restore amount value stored when paused*/
 		setupAmountFieldValue();
-		
+
 		/**Enable text watcher which will format text in text field*/
 		amountItem.getEditableField().enableBankAmountTextWatcher(true);
-		
+
 		amountItem.getEditableField().requestFocus();
-		
+
 		/**Set cursor to the end of the end of the text*/
 		amountItem.getEditableField().setSelection(amountItem.getEditableField().getText().length());
-		
+
 		/**
 		 * Have to show keyboard asynchronously otherwise it doesn't open.
 		 */
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
+				if(null != bundle && bundle.getBoolean(ERROR_STATE, false)){
+					amountItem.getEditableField().isValid();
+					amountItem.getEditableField().updateAppearanceForInput();
+					amountItem.getEditableField().showKeyboard(true);
+				}
+
 				if( amountItem != null ) {
 					amountItem.getEditableField().showKeyboard(true);
 				}
 			}
 		}, KEYBOARD_DELAY);	
 	}
-	
+
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		super.onSaveInstanceState(outState);
-			
+
 		/**Saved data required for orientation change*/
 		if( amountItem != null ) {
 			outState.putString(BankExtraKeys.AMOUNT, amountItem.getEditableField().getText().toString());
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
+			outState.putBoolean(ERROR_STATE, amountItem.getEditableField().isInErrorState);
 		} 
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		/**Disable Text Watcher to support rotation*/
-		this.amountItem.getEditableField().enableBankAmountTextWatcher(false);
-		
+		amountItem.getEditableField().enableBankAmountTextWatcher(false);
+
 		/** Close the keyboard (will reopen after orientation change). */
 		if (amountItem != null && amountItem.getEditableField() != null) {
-			this.amountItem.getEditableField().showKeyboard(false);
+			amountItem.getEditableField().showKeyboard(false);
 		}
 	}
 
