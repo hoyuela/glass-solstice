@@ -17,13 +17,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/transparentGray"
-        android:orientation="horizontal" 
-        >
+        android:orientation="horizontal"  >
 
         <Button
             android:id="@+id/fastcheck_privacy_terms_button"
-            style="@style/login_bottom_bar_button"
+            style="@style/fastcheck_bottom_bar_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
@@ -31,7 +29,7 @@
 
         <Button
             android:id="@+id/fastcheck_provide_feedback_button"
-            style="@style/login_bottom_bar_button"
+            style="@style/fastcheck_bottom_bar_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
