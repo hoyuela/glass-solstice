@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bank_base_url">https://asys.discoverbank.com</string>
     <string name="bank_stripped_url">http://asys.discoverbank.com</string>
