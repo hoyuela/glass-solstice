@@ -285,7 +285,7 @@ public final class BankConductor  extends Conductor {
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
 			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+			home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			activity.startActivity(home);
 
 			//Close current activity
@@ -1345,7 +1345,11 @@ public final class BankConductor  extends Conductor {
 		BankUser.instance().clearSession();
 		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 		final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
-		FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+
+		/** Only log out the user from card if it is an sso user */
+		if (BankUser.instance().isSsoUser()) {
+			FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+		}
 	}
 
 	/**
