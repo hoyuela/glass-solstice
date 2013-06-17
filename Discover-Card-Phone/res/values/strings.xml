@@ -102,6 +102,7 @@
 	<string name="fast_check_spinner_msg_part2">Retrieving Quick view&#8230;</string>
 	<string name="fast_check_error_img_desc">error</string>
 	<string name="fast_check_detail_databean">FastcheckDetailDataBean</string>
+	<string name="fast_check_last_retrieval_time_in_ms">FastcheckLastRetrievalTimeInMS</string>
 	
 	 <!-- CARD TYPE FOR TOOL TIP MENU -->
     <string name="card_type_more">More Card </string>

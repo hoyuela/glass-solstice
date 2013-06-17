@@ -1,6 +1,7 @@
 package com.discover.mobile.card.navigation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.cordova.api.CordovaInterface;
@@ -98,11 +99,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     
     private String navToJQMPage=null;
     
+    private ArrayList<String> navigationlist;
+    
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cordovaState = CORDOVA_LOADING;
         navToJQMPage=null;
+        setNavigationList();
         statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.status_bar);
 
@@ -151,7 +155,23 @@ public class CardNavigationRootActivity extends NavigationRootActivity
  		// 13.3 changes end        
     }
 
-    @Override
+    private void setNavigationList() {
+    	navigationlist = new ArrayList<String>();
+    	navigationlist.add(getString(R.string.section_title_account));
+    	navigationlist.add(getString(R.string.section_title_payments));
+    	navigationlist.add(getString(R.string.section_title_earn_cashback_bonus));
+    	navigationlist.add(getString(R.string.section_title_redeem_cashback_bonus));
+    	navigationlist.add(getString(R.string.section_title_profile_and_settings));
+        // 13.3 fast view start
+    	navigationlist.add(getString(R.string.sub_section_title_fast_view));
+		// 13.3 fast view end
+    	navigationlist.add(getString(R.string.section_title_customer_service));
+    	navigationlist.add(getString(R.string.section_title_miles));
+    	navigationlist.add(getString(R.string.section_title_home));
+		
+	}
+
+	@Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -291,17 +311,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     @Override
     public void sendNavigationTextToPhoneGapInterface(final String text) {
     	
-        if (!(text.equals(getString(R.string.section_title_account))
-                || text.equals(getString(R.string.section_title_payments))
-                || text.equals(getString(R.string.section_title_earn_cashback_bonus))
-                || text.equals(getString(R.string.section_title_redeem_cashback_bonus))
-                || text.equals(getString(R.string.section_title_profile_and_settings))
-                // 13.3 fast view start
-				|| text.equals(getString(R.string.sub_section_title_fast_view))
-				// 13.3 fast view end
-                || text.equals(getString(R.string.section_title_customer_service))
-                || text.equals(getString(R.string.section_title_miles)) || text
-                    .equals(getString(R.string.section_title_home)))) {
+        if (!(navigationlist.contains(text))) {
             /*
              * cordovaWebFrag = (CordovaWebFrag)
              * this.getSupportFragmentManager()

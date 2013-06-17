@@ -283,9 +283,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 			else if( !isBackgroundServiceCall(sender) )  {
-				errorHandler.handleFailure(sender, error);
-
 				((AlertDialogParent)activeActivity).closeDialog();
+				
+				errorHandler.handleFailure(sender, error);
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

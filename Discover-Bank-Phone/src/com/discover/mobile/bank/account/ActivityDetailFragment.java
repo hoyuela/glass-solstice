@@ -199,12 +199,13 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		modal.getBottom().getButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType);
 				modal.dismiss();
 
 				if (deleteType != TransferDeletionType.DELETE_ONE_TIME_TRANSFER) {
 					customOptionsMenu.dismiss();
 				}
+
+				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType);
 			}
 		});
 
@@ -289,9 +290,9 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 
 			@Override
 			public void onClick(final View v) {
+				DiscoverModalManager.clearActiveModal();
 				final PaymentDetail paymentDetail = item.toPaymentDetail();
 				BankServiceCallFactory.createDeletePaymentServiceCall(paymentDetail).submit();
-				DiscoverModalManager.clearActiveModal();
 			}
 		};
 	}
