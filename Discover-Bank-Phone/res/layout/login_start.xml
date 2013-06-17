@@ -67,11 +67,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/element_side_padding"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/white_button"
-                    android:paddingLeft="@dimen/forms_inner_padding"
-                    android:paddingRight="@dimen/forms_inner_padding"
-                    android:text="@string/quick_view_text" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/quick_view_button"
+                    android:text="@string/gotoFastcheckBtnText" />
 
                 <TextView
                     android:id="@+id/error_text_view"
