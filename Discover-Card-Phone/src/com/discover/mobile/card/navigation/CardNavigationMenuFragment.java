@@ -144,55 +144,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!(text.equals(getString(R.string.section_title_home))
-                || text.equals(getString(R.string.section_title_account))
-                || text.equals(getString(R.string.sub_section_title_recent_activity))
-                || text.equals(getString(R.string.sub_section_title_search_transaction))
-                || text.equals(getString(R.string.sub_section_title_account_summary))
-                || text.equals(getString(R.string.sub_section_title_statements))
-                || text.equals(getString(R.string.section_title_payments))
-                || text.equals(getString(R.string.sub_section_title_make_a_payment))
-                || text.equals(getString(R.string.sub_section_title_manage_payments))
-                || text.equals(getString(R.string.sub_section_title_manage_bank_information))
-                || text.equals(getString(R.string.sub_section_title_send_money))
-                || text.equals(getString(R.string.sub_section_title_send_money_history))
-                || text.equals(getString(R.string.section_title_earn_cashback_bonus))
-                || text.equals(getString(R.string.sub_section_title_signup_for_2))
-                || text.equals(getString(R.string.sub_section_title_extras))
-                || text.equals(getString(R.string.sub_section_title_refer_a_friend))
-                || text.equals(getString(R.string.section_title_redeem_cashback_bonus))
-                || text.equals(getString(R.string.sub_section_title_partner_gift_cards))
-                || text.equals(getString(R.string.sub_section_title_discover_gift_cards))
-                || text.equals(getString(R.string.sub_section_title_statement_credit))
-                || text.equals(getString(R.string.sub_section_title_direct_deposit))
-                || text.equals(getString(R.string.sub_section_title_pay_with_cashback_bonus))
-                || text.equals(getString(R.string.sub_section_title_redemption_history))
-                || text.equals(getString(R.string.section_title_profile_and_settings))
-                // 13.3 fast view start
-				|| text.equals(getString(R.string.sub_section_title_fast_view))
-				// 13.3 fast view end                
-                || text.equals(getString(R.string.sub_section_title_manage_alerts))
-                || text.equals(getString(R.string.sub_section_title_alert_history))
-                || text.equals(getString(R.string.sub_section_title_create_cash_pin))
-                || text.equals(getString(R.string.section_title_customer_service))
-                || text.equals(getString(R.string.sub_section_title_contact_us))
-                || text.equals(getString(R.string.sub_section_title_faq))
-                || text.equals(getString(R.string.section_title_miles))
-                || text.equals(getString(R.string.sub_section_title_sign_up_for_miles))
-                || text.equals(getString(R.string.sub_section_title_miles_extras))
-                || text.equals(getString(R.string.sub_section_title_miles_refer_a_friend))
-                || text.equals(getString(R.string.section_title_redeem_miles))
-                || text.equals(getString(R.string.enhanced_account_security_title)) || text
-                    .equals(getString(R.string.redeem_cashback_bonus_landing)))) {
-
-            BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
-                    .getActiveActivity();
-            
-            // hlin0 20130530 integrate with new sliding menu
-            baseFragmentActivity.showContent();
-
-        }
-    }
+     }
 
     /**
      * Immutable list showing all the top level sections that are displayed in
