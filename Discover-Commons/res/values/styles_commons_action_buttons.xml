@@ -14,7 +14,7 @@
 	<style name="common_call_to_action_gray_theme">
 	    <item name="android:textColor">@drawable/call_to_action_text_color</item>
 	        <item name="android:textSize">@dimen/small_copy_max</item>
-	       	<item name="android:background">@drawable/common_action_button_gray</item>
+	       	<item name="android:background">@drawable/common_call_to_action_theme_gray</item>
 	        <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
 	        <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
 	        <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
