@@ -79,4 +79,7 @@
         Privacy &amp; Terms
     </string>
     
+	<!-- Fastcheck, aka QuickView -->
+	<string name="gotoFastcheckBtnText">Quick view</string>
+    
 </resources>
