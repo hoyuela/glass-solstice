@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="common_action_bar_square">
+        <item name="android:visibility">gone</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:background">@drawable/common_action_bar_theme_call</item>
+    </style>
+</resources>
