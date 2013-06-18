@@ -12,13 +12,9 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -211,6 +207,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		slidingMenu.setMode(SlidingMenu.RIGHT);
 	}
 	
+
 	
 	/**
 	 * This method is being called to prevent onResume calls for rotation
@@ -307,7 +304,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				showLogoutSuccessful();
 				getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
@@ -323,7 +321,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
 				showSessionExpired();
 				getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
@@ -339,7 +338,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);

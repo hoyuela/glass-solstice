@@ -171,7 +171,28 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 			@Override
 			public void onClick(View arg0) {
-				showQVwithOffState();
+				try {
+					showQVwithOnState();
+				} catch (Exception e) {
+					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+							(CardErrorHandlerUi) getActivity());
+					cardErrorResHandler.handleCardError(
+							(CardErrorBean) bean,
+							new CardErrorCallbackListener() {
+
+								@Override
+								public void onButton2Pressed() {
+									removeQVFragment();
+								}
+
+								@Override
+								public void onButton1Pressed() {
+									removeQVFragment();
+								}
+							});
+				}
+				
 
 			}
 		});
@@ -225,6 +246,22 @@ public class QuickViewSetupFragment extends BaseFragment {
 		toggleImage.setBackgroundResource(R.drawable.swipe_off);
 		setQVInfoText();
 		quickviewOn = false;
+	}
+	
+	/**
+	 * Loads quick view setup page with toggle button in off state
+	 * @throws Exception 
+	 */
+	private void showQVwithOnState() throws Exception {
+		mainView.findViewById(R.id.qvsetup_main_relative_view).setVisibility(
+				View.VISIBLE);
+		mainView.findViewById(R.id.qvalready_main_relative_view).setVisibility(
+				View.GONE);
+		toggleImage.setBackgroundResource(R.drawable.swipe_on);
+		setQVInfoText();
+		quickviewOn = false;
+		qvinfoTextView.setText(R.string.quick_view_info_on);
+		updateQuickViewStatus();
 	}
 
 	/**
@@ -431,8 +468,20 @@ public class QuickViewSetupFragment extends BaseFragment {
 					public void OnError(Object data) {
 						CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 								(CardErrorHandlerUi) getActivity());
-						cardErrorResHandler
-								.handleCardError((CardErrorBean) data);
+						cardErrorResHandler.handleCardError(
+								(CardErrorBean) data,
+								new CardErrorCallbackListener() {
+
+									@Override
+									public void onButton2Pressed() {
+										removeQVFragment();
+									}
+
+									@Override
+									public void onButton1Pressed() {
+										removeQVFragment();
+									}
+								});
 
 					}
 				});
