@@ -8,7 +8,7 @@
     
     <item android:bottom="2dp" android:right="2dp">
         <shape>
-            <solid android:color="#fe8738"/>
+            <solid android:color="@color/action_button_orange_pressed"/>
         </shape>
     </item>  
 
