@@ -39,6 +39,11 @@ public class DiscoverInfoWindowAdapter implements InfoWindowAdapter{
 		manager.addMarkerAndAtm(marker, object);
 	}
 	
+	/**
+	 * Adds the given ATM to a list of ATM objects to display on the map.
+	 * 
+	 * @param object
+	 */
 	public void addAtmToList(final LocationObject object){
 		manager.addAtmToList(object);
 	}
