@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="common_edittext_grey_line" parent="@android:style/Widget.EditText">
-        <item name="android:background">@drawable/edit_text_grey_line</item>
+        <item name="android:background">@drawable/common_edit_text_grey_line</item>
         <item name="android:height">@dimen/input_field_height</item>
         <item name="android:textColor">@color/field_copy</item>
     </style>
