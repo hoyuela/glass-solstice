@@ -4,6 +4,8 @@
 package com.discover.mobile.bank.atm;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,8 +28,8 @@ import com.discover.mobile.bank.services.atm.AtmDetail;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-
 /**
  * Info overlay balloon manager.  Creates and populates the view that will
  * be placed above the marker in the map.
@@ -38,7 +40,7 @@ public class AtmMarkerBalloonManager{
 
 	/**Map of markers and atm so that the atm*/
 	private final Map<Marker, AtmDetail> markerMap;
-
+	private ArrayList<AtmDetail> atmList;
 	/**Context used for rendering*/
 	private final Context context;
 
@@ -62,16 +64,55 @@ public class AtmMarkerBalloonManager{
 		this.fragment = fragment;
 		context = fragment.getActivity();
 		markerMap = new HashMap<Marker, AtmDetail>();
+		atmList = new ArrayList<AtmDetail>();
 	}
 
+	/**
+	 * Adds a LocationObject to the list of ATMs
+	 * 
+	 * @param object - LocationObject to add to the list of ATMs
+	 */
+	public void addAtmToList(LocationObject object){
+		atmList.add((AtmDetail) object);
+	}
+	
+	/**
+	 * Retrieves a specific ATM based on the Latitude and Longitude
+	 * 
+	 * @param markerPos - Marker Position to retrieve the specified ATM
+	 * @return AtmDetail of the specified ATM
+	 */
+	private AtmDetail retrieveAtm(final LatLng markerPos){
+		for(AtmDetail currentAtm : atmList){
+			if(sameLocation(markerPos, currentAtm.getLatitude(), currentAtm.getLongitude())){
+				return currentAtm;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Detects if the Latitude and Longitude is equivalent to the supplied marker position.
+	 * 
+	 * @param markerPos - Marker position to compare
+	 * @param atmLat - Latitude of ATM
+	 * @param atmLng - Longitude of ATM
+	 * @return boolean representing whether the ATM and Marker are in the same location or not.
+	 */
+	private boolean sameLocation(final LatLng markerPos, final double atmLat, final double atmLng ){
+		DecimalFormat format = new DecimalFormat("###.######");
+		double markerLat = Double.valueOf(format.format(markerPos.latitude));
+		double markerLng = Double.valueOf(format.format(markerPos.longitude));
+		return ((markerLat == atmLat) && (markerLng == atmLng));
+	}
+	
 	/**
 	 * Get the view that needs to be displayed above the marker
 	 * @param marker - marker that was clicked
 	 * @return the view that needs to be displayed above the marker
 	 */
 	public View getViewForMarker(final Marker marker){
-		final AtmDetail atm = markerMap.get(marker); 
-
+		final AtmDetail atm = retrieveAtm(marker.getPosition());
 		//Means it was the current location that was clicked.
 		if(null == atm){
 			return getCurrentLocationView();
@@ -153,7 +194,7 @@ public class AtmMarkerBalloonManager{
 		return new OnInfoWindowClickListener(){
 			@Override
 			public void onInfoWindowClick(final Marker marker) {
-				final AtmDetail atm = markerMap.get(marker); 
+				final AtmDetail atm = retrieveAtm(marker.getPosition()); 
 				//Means it was the current location that was clicked.
 				if(null != atm){
 					try {

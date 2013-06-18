@@ -677,6 +677,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle){
+		//Clears all markers on the map before redrawing them
+		mapWrapper.clear();
+		
+		//When clearing markers we want to make sure if the user allowed us to track their location to draw the user
+		//pin on the screen.
+		if (locationStatus == LOCKED_ON) {
+			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());	
+		}
+		
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
@@ -687,7 +696,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			endIndex = results.results.atms.size();
 		}
 
-		mapWrapper.addObjectsToMap(results.results.atms.subList(currentIndex, endIndex));
+		//We need to redraw all of the icons in order to handle new ATM locator icons being added through pull to load more
+		//and the change with grouping icons.
+		mapWrapper.addObjectsToMap(results.results.atms.subList(0, endIndex));
 		currentIndex = endIndex;
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		listFragment.handleReceivedData(bundle);
@@ -752,8 +763,10 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			locationManagerWrapper.stopGettingLocaiton();
 		}
 		locationStatus = LOCKED_ON;
-		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
+		
 		if(null == location){return;}
+		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
+		this.location = location;
 
 		zoomToLocation(location);
 
