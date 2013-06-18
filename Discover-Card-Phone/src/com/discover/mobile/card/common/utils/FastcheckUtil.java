@@ -3,8 +3,6 @@ package com.discover.mobile.card.common.utils;
 import java.security.SecureRandom;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import android.app.Activity;
@@ -16,18 +14,11 @@ import com.discover.mobile.card.R;
 
 public class FastcheckUtil {
 
-	private static final String seed4KeyStr = "EoeBcwiahT5CxacQsaWI0e16p9lb+wQs0KFJdmzSTEo=";
+	private static final String keyStr = "OQrav49fqkUSB4yYe9HhDg==";
 	private static final String DISCOVER_CARD_PREF = "DiscoverCardPref";
 
-	private static byte[] getKey() throws Exception {
-		byte[] seedBytes = seed4KeyStr.getBytes();
-		KeyGenerator kgen = KeyGenerator.getInstance("AES");
-		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-		sr.setSeed(seedBytes);
-		kgen.init(128, sr); // 192 and 256 bits may not be available
-		SecretKey skey = kgen.generateKey();
-		byte[] keyBytes = skey.getEncoded();
-		return keyBytes;
+	private static byte[] getKey() {
+		return Base64.decode(keyStr, Base64.DEFAULT);
 	}
 
 	public static void storeFastcheckToken(Activity activity, String token) {
