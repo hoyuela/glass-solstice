@@ -86,4 +86,11 @@
     <color name="caldroid_holo_blue_dark">#FD6C04</color>
     <!-- A really bright Holo shade of blue -->
     <color name="caldroid_sky_blue">#FD6C04</color>
+    
+    <!-- Action Button Colors -->
+    <color name="action_button_border">#000000</color>
+    <color name="action_button_gray">#D6D6D4</color>
+    <color name="action_button_gray_pressed">#a7abad</color>
+    <color name="action_button_orange">#fe8738</color>
+    <color name="action_button_orange_pressed">#ed4b0b</color>
 </resources>
