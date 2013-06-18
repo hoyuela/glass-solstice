@@ -6,16 +6,16 @@
 
     <ImageView
         android:id="@+id/navigation_button"
-        style="@style/orange_action_bar_buttons"
+        style="@style/common_action_bar_square"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/gradient_line"
         android:layout_alignParentLeft="true"
         android:src="@drawable/sliding_drawer_white_icons" />
 
     <ImageView
         android:id="@+id/navigation_back_button"
-        style="@style/orange_action_bar_buttons"
+        style="@style/common_action_bar_square"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/gradient_line"
