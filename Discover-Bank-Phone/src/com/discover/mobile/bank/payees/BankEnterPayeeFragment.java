@@ -59,7 +59,7 @@ public class BankEnterPayeeFragment extends BaseFragment implements OnClickListe
 	
 		/**Lookup EditText field used for searching for a payee**/
 		searchField = (PayeeValidatedEditField)view.findViewById(R.id.search_field);
-		searchField.setInvalidPattern(PayeeValidatedEditField.INVALID_CHARACTERS);
+		searchField.setInvalidPattern(PayeeValidatedEditField.NON_ALPHA_WITH_DASH);
 		searchField.setMinimum(2);
 		searchField.attachErrorLabel(errorLabel);
 

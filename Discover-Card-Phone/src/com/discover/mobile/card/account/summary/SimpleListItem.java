@@ -23,7 +23,11 @@ public class SimpleListItem extends RelativeLayout {
     /** Label to be shown at the top of the cell */
     protected TextView label;
 
-    /** Value to be shown under the label */
+    public TextView getLabel() {
+		return label;
+	}
+
+	/** Value to be shown under the label */
     protected TextView value;
 
     /** Action item to be shown if there is any action */

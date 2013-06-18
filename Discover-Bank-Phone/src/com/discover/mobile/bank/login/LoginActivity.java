@@ -11,12 +11,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -200,13 +196,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	protected void setupSlidingMenu() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setMode(SlidingMenu.RIGHT);
-		//slidingMenu.setOnOpenListener(this);
-		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-		//slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 	}
 	
-//	@Override
-//	public void onOpen() {}
+
 	
 	/**
 	 * This method is being called to prevent onResume calls for rotation
@@ -268,7 +260,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			if(extras.getBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false)){
 				showLogoutSuccessful();
 				getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
@@ -284,7 +277,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			if(extras.getBoolean(IntentExtraKey.SESSION_EXPIRED, false)){
 				showSessionExpired();
 				getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
@@ -300,7 +294,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		if(extras != null){
+		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
 			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
@@ -919,7 +914,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void hideFastcheck() {
 		gotoFastcheckButton.setVisibility(View.GONE);
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
-		RelativeLayout.LayoutParams params = 
+		final RelativeLayout.LayoutParams params = 
 			    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 			        RelativeLayout.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
@@ -930,7 +925,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (fastcheckTokenExists()) {
 			gotoFastcheckButton.setVisibility(View.VISIBLE);
 			getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-			RelativeLayout.LayoutParams params = 
+			final RelativeLayout.LayoutParams params = 
 				    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				        RelativeLayout.LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);

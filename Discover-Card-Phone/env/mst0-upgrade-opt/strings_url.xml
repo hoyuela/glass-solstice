@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="base_url_dev">https://mst0.m.discovercard.com</string>
+	
+	<string name="base_url_dev">https://mst0.m.discovercard.com</string>
     <string name="base_url_dev1">https://mst0.m.discovercard.com</string>
     <string name="url_in_use">https://mst0.m.discovercard.com</string>
     
@@ -17,6 +19,7 @@
     <string name="strongAuth_ans_url">strongauth/v1/authenticate</string>
     <string name="share_url">https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo&amp;referer=https://mobileapp.discover.com/</string>
     <string name="xApplicationVersion">5.0.0</string>
+    
     <!-- Bank SSO Login  -->
     <string name="sso_authenticate_url">acct/v1/tokensignin</string>
     <string name="sso_authenticate_bank_payload">acct/v1/refreshpayload</string>
