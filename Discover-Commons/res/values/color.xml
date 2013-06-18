@@ -15,6 +15,7 @@
 	<color name="gray">#CCCCCC</color>
 	<color name="lightRed">#1fff0000</color>
 	<color name="lightBlue">#d0025D96</color>
+	<color name="opaque">#FF000000</color>
 	
     <!-- Old -->
     <color name="primary">#00A8BF</color>
