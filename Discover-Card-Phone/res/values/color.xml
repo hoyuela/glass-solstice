@@ -89,4 +89,5 @@
     <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
     <color name="grey_background_color">#FAF7F8</color>
     <color name="bottom_line">#cc5200</color>
+    <color name="whatsnew_desc">#3d484d</color>
 </resources>
