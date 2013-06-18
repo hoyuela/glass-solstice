@@ -67,9 +67,21 @@ public class AtmMarkerBalloonManager{
 		atmList = new ArrayList<AtmDetail>();
 	}
 
+	/**
+	 * Adds a LocationObject to the list of ATMs
+	 * 
+	 * @param object - LocationObject to add to the list of ATMs
+	 */
 	public void addAtmToList(LocationObject object){
 		atmList.add((AtmDetail) object);
 	}
+	
+	/**
+	 * Retrieves a specific ATM based on the Latitude and Longitude
+	 * 
+	 * @param markerPos - Marker Position to retrieve the specified ATM
+	 * @return AtmDetail of the specified ATM
+	 */
 	private AtmDetail retrieveAtm(final LatLng markerPos){
 		for(AtmDetail currentAtm : atmList){
 			if(sameLocation(markerPos, currentAtm.getLatitude(), currentAtm.getLongitude())){
@@ -79,6 +91,14 @@ public class AtmMarkerBalloonManager{
 		return null;
 	}
 	
+	/**
+	 * Detects if the Latitude and Longitude is equivalent to the supplied marker position.
+	 * 
+	 * @param markerPos - Marker position to compare
+	 * @param atmLat - Latitude of ATM
+	 * @param atmLng - Longitude of ATM
+	 * @return boolean representing whether the ATM and Marker are in the same location or not.
+	 */
 	private boolean sameLocation(final LatLng markerPos, final double atmLat, final double atmLng ){
 		DecimalFormat format = new DecimalFormat("###.######");
 		double markerLat = Double.valueOf(format.format(markerPos.latitude));
@@ -174,7 +194,6 @@ public class AtmMarkerBalloonManager{
 		return new OnInfoWindowClickListener(){
 			@Override
 			public void onInfoWindowClick(final Marker marker) {
-				Log.d("Julian Log", "ATM Balloon ON CLICK");
 				final AtmDetail atm = retrieveAtm(marker.getPosition()); 
 				//Means it was the current location that was clicked.
 				if(null != atm){

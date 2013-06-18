@@ -17,14 +17,24 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.twotoasters.clusterkraf.ClusterPoint;
 import com.twotoasters.clusterkraf.MarkerOptionsChooser;
 
+
+/**
+ * This class is used to draw the cluster icon on the map and perform actions when the cluster marker is selected.
+ * 
+ * @author stephenfarr
+ *
+ */
 public class AtmClusterMarker extends MarkerOptionsChooser{
 
 	private Context context;
 	private Resources resources;
 	
 	private final int ALPHA_VALUE = 255;
+	
+	/* This int is used to compare the size of the cluster size and see if it is a double digit or single digit value */
 	private final int MINIMUM_DOUBLE_DIGIT_VALUE = 10;
 	
+	/* These offsets shift the X and Y position of the text within the cluster icons */
 	private final float DOUBLE_DIGIT_WIDTH_OFFSET = 0.2f;
 	private final float SINGLE_DIGIT_WIDTH_OFFSET = 0.32f;
 	private final float SINGLE_DIGIT_HEIGHT_OFFSET = 0.7f;
@@ -35,6 +45,9 @@ public class AtmClusterMarker extends MarkerOptionsChooser{
 		this.resources = context.getResources();
 	}
 	
+	/**
+	 * Chooses whether to use the cluster marker or the single ATM marker on the map.
+	 */
 	@Override
 	public void choose(MarkerOptions markerOptions, ClusterPoint clusterPoint) {
 		BitmapDescriptor icon;
@@ -48,17 +61,27 @@ public class AtmClusterMarker extends MarkerOptionsChooser{
 		markerOptions.icon(icon);
 	}
 
+	/**
+	 * Returns the icon representing the the cluster of ATMs
+	 * 
+	 * @param clusterSize - Number of ATMs represented by the grouping icon
+	 * @return Bitmap of the group icon
+	 */
 	@SuppressLint("NewApi")
 	public Bitmap getClusterMarker(int clusterSize){
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			options.inMutable = true;
 		}
+		
+		//Gets the grouping icon and adds it to the canvas.
 		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.atm_pin_grouping_icon, options);
 		if(!bitmap.isMutable()) {
 			bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 		}
 		Canvas canvas = new Canvas(bitmap);
+		
+		//The paint creates the value drawn into the grouping icon representing the number of ATMS.
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setAlpha(ALPHA_VALUE);
@@ -74,6 +97,8 @@ public class AtmClusterMarker extends MarkerOptionsChooser{
 			offsetHeight = bitmap.getHeight() * SINGLE_DIGIT_HEIGHT_OFFSET;
 			paint.setTextSize(resources.getDimension(R.dimen.map_single_digit_text_size));
 		}
+		
+		//Draws the text onto the canvas with the specific offsets on the icon
 		canvas.drawText(String.valueOf(clusterSize), offsetWidth, offsetHeight, paint);
 		return bitmap;
 	}
