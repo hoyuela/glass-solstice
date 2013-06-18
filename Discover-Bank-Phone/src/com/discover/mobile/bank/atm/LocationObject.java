@@ -3,6 +3,8 @@
  */
 package com.discover.mobile.bank.atm;
 
+import com.twotoasters.clusterkraf.InputPoint;
+
 /**
  * Object the classes should extend to use the map wrapper
  * @author jthornton

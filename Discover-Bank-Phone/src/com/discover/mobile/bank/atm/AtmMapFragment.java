@@ -677,6 +677,12 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle){
+		mapWrapper.clear();
+		
+		if (locationStatus == LOCKED_ON) {
+			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());	
+		}
+		
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
@@ -687,7 +693,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			endIndex = results.results.atms.size();
 		}
 
-		mapWrapper.addObjectsToMap(results.results.atms.subList(currentIndex, endIndex));
+		mapWrapper.addObjectsToMap(results.results.atms.subList(0, endIndex));
 		currentIndex = endIndex;
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		listFragment.handleReceivedData(bundle);
@@ -752,8 +758,10 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			locationManagerWrapper.stopGettingLocaiton();
 		}
 		locationStatus = LOCKED_ON;
-		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
+		
 		if(null == location){return;}
+		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
+		this.location = location;
 
 		zoomToLocation(location);
 

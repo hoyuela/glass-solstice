@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,7 +12,11 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +25,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.twotoasters.clusterkraf.Clusterkraf;
+import com.twotoasters.clusterkraf.InputPoint;
+import com.twotoasters.clusterkraf.Options;
 
 /**
  * Wrapper to go around maps so that the funcationality can be ecapsulated from the UI.
@@ -46,6 +54,9 @@ public class DiscoverMapWrapper {
 	/**Address of the users current location*/
 	private static String addressString;
 
+	/**Clustering library reference**/
+	private Clusterkraf clusterkraf;
+	
 	/**
 	 * 
 	 * @param map - map to be used
@@ -81,6 +92,10 @@ public class DiscoverMapWrapper {
 	public void clear(){
 		if(null != map){
 			map.clear();
+		}
+		if (null != clusterkraf){
+			clusterkraf.clear();
+			clusterkraf = null;
 		}
 	}
 
@@ -138,13 +153,32 @@ public class DiscoverMapWrapper {
 	 */
 	public void addObjectsToMap(final List<? extends LocationObject> objects){
 		if(null != map){
+			//clusterkraf options
+			Options options = new Options();
+			options.setTransitionInterpolator(new OvershootInterpolator());
+			options.setMarkerOptionsChooser(new AtmClusterMarker(DiscoverActivityManager.getActiveActivity().getApplicationContext()));
+			options.setPixelDistanceToJoinCluster(convertToDensityIndependentPixels());
+			ArrayList<InputPoint> list = new ArrayList<InputPoint>();
 			for(final LocationObject object : objects){
 				object.setDistanceFromUser(getDistanceFromUser(object));
-				adapter.addMarkerAndAtm(map.addMarker(createMapMarker(object)), object);
+				list.add(new InputPoint(new LatLng(object.getLatitude(), object.getLongitude()), object));
+				adapter.addAtmToList(object);
 			}
+			clusterkraf = new Clusterkraf(map, options, list);
+			map.setOnInfoWindowClickListener(adapter.getInfoWindowClickListener());
 		}
 	}
 
+	/**
+	 * converts the pixel calculation to density independent 
+	 * pixels.  used for clustering 
+	 */
+	private int convertToDensityIndependentPixels(){
+		DisplayMetrics disMetrics = new DisplayMetrics();
+		WindowManager windowManager = (WindowManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.WINDOW_SERVICE);
+		windowManager.getDefaultDisplay().getMetrics(disMetrics);
+		return Math.round(disMetrics.density * 100);
+	}
 	/**
 	 * Get the distance of an object from the user
 	 * @param detail - detail to get distance to

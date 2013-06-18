@@ -10,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
+
 /**
  * Info window adatper.  Used when a marker is clicked and the info window needs
  * to be displayed above the marker
@@ -37,7 +38,10 @@ public class DiscoverInfoWindowAdapter implements InfoWindowAdapter{
 	public void addMarkerAndAtm(final Marker marker, final LocationObject object){
 		manager.addMarkerAndAtm(marker, object);
 	}
-
+	
+	public void addAtmToList(final LocationObject object){
+		manager.addAtmToList(object);
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see com.google.android.gms.maps.GoogleMap.InfoWindowAdapter#getInfoContents(com.google.android.gms.maps.model.Marker)
@@ -55,6 +59,7 @@ public class DiscoverInfoWindowAdapter implements InfoWindowAdapter{
 		return null;
 	}
 
+	
 	/**
 	 * Get the click listener for the info window
 	 */
