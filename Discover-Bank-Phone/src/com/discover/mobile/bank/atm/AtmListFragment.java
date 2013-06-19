@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.location.Address;
@@ -67,6 +68,9 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 			showNothingToLoad();
 			header.setMessage(this.getString(R.string.atm_location_no_results));
 			footer.hideAll();
+			//When there are no results, make sure that the list is empty from any past results.
+			adapter.setData(new ArrayList<AtmDetail>(0));
+			adapter.notifyDataSetChanged();
 			return;
 		}else{
 			header.hideMessage();
