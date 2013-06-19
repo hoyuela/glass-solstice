@@ -11,6 +11,9 @@ import android.widget.LinearLayout;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
+import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
@@ -23,6 +26,8 @@ public class PaymentDetailFragment extends DetailFragment{
 	protected int getFragmentLayout() {
 		return R.layout.payment_detail;
 	}
+	
+	
 
 	/**
 	 * Insert the appropriate data into the layout to be displayed.
@@ -30,9 +35,9 @@ public class PaymentDetailFragment extends DetailFragment{
 	@Override
 	protected void setupFragmentLayout(final View fragmentView) {
 		final Bundle argumentBundle = getArguments();
-		item = (PaymentDetail)argumentBundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		item = (PaymentDetail) argumentBundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		final ListItemGenerator generator = new ListItemGenerator(getActivity());
-		final List<ViewPagerListItem>elementList = generator.getScheduledPaymentDetailList(item);
+		final List<ViewPagerListItem> elementList = generator.getScheduledPaymentDetailList(item);
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 
 		for(final ViewPagerListItem element : elementList) {
@@ -72,11 +77,35 @@ public class PaymentDetailFragment extends DetailFragment{
 
 				@Override
 				public void onClick(final View v) {
-					final Bundle bundle = getArguments();
-					bundle.putBoolean(BankExtraKeys.EDIT_MODE, true);
-					BankConductor.navigateToPayBillStepTwo(bundle);
+					editPayment();
 				}
 			});
+		}
+	}
+
+	/**
+	 * This method will trigger a service call to download payees if they are not cached. If payees are already cached
+	 * the application navigates to the edit payment screen.
+	 * 
+	 */
+	public void editPayment() {
+		/**
+		 * Specify edit mode in the bundle so upon receiving the response the handler will have context as to why this
+		 * service call was made and handle it appropriately.
+		 */
+		final Bundle bundle = getArguments();
+		bundle.putBoolean(BankExtraKeys.EDIT_MODE, true);
+
+		/**
+		 * Check if payees are cached otherwise download payees to fetch the earliest payment date for the payment being
+		 * edited.
+		 */
+		if (BankUser.instance().hasPayees()) {
+			BankConductor.navigateToPayBillStepTwo(bundle);
+		} else {
+			final GetPayeeServiceCall payeeService = BankServiceCallFactory.createGetPayeeServiceRequest();
+			payeeService.getExtras().putAll(bundle);
+			payeeService.submit();
 		}
 	}
 }

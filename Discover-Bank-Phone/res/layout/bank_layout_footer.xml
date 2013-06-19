@@ -8,12 +8,11 @@
 
     <include
         android:id="@+id/need_help_footer"
-        layout="@layout/new_general_need_help_footer" />
+        layout="@layout/bank_need_help_footer" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/forms_inner_padding" 
  		android:gravity="center_horizontal|bottom">
 
         <Button
