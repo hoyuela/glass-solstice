@@ -176,6 +176,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		preventDuplicateLoginScreens();
+		
 		setContentView(R.layout.login_start);
 		loadResources();
 	    setupTextSwitcher();
@@ -195,11 +197,27 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		DiscoverActivityManager.setActiveActivity(this);
 				
-		
-	    
 	 }
 	
-	
+	/**
+	 * This method fixes an issue where, in a signed build, when the app
+	 * is resumed, LoginActivity can be re-created when not needed, and
+	 * appear above a current non-LoginActivity.
+	 * 
+	 * This is a workaround for a bug in Android, see link for more info.
+	 * 
+	 * http://code.google.com/p/android/issues/detail?id=2373#c21
+	 */
+	private void preventDuplicateLoginScreens() {
+		if (!isTaskRoot()) {
+		    final Intent intent = getIntent();
+		    final String intentAction = intent.getAction();
+		    if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
+		            intentAction != null && intentAction.equals(Intent.ACTION_MAIN)) {
+		        finish();
+		    }
+		}
+	}
 
 	@Override
 	protected void setupSlidingMenu() {
