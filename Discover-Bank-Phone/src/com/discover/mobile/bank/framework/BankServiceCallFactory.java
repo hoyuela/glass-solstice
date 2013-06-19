@@ -276,22 +276,6 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 	/**
-	 * Create the service call to get the payees for a user
-	 * @return the service call to get the payees for a user
-	 */
-	public static GetPayeeServiceCall createGetPayeeServiceRequest(final boolean isChainCall) {
-
-		final Activity activity = DiscoverActivityManager.getActiveActivity();
-
-		final AsyncCallback<ListPayeeDetail>  callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListPayeeDetail.class,
-						activity, (ErrorHandlerUi) activity)
-						.build();
-
-		return new GetPayeeServiceCall(activity, callback, isChainCall);
-	}
-
-	/**
 	 * Create a POST request to tell the Bank APIs that the user has accepted a terms and conditions
 	 * that was presented to them.
 	 * @param Eligibility object with the link to use to enroll for a specific service.

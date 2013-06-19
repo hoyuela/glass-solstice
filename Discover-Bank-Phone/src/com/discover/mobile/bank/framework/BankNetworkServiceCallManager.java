@@ -531,11 +531,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		}
 		//Handle the payee success call
 		else if( sender instanceof GetPayeeServiceCall){
-			if(((GetPayeeServiceCall)sender).isChainCall()){
-				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-			} else {
-				final Bundle bundle = new Bundle();
+			Bundle bundle = ((GetPayeeServiceCall) sender).getExtras();
+
+			/** Check if the payees was downloaded to edit a payment */
+			if (bundle != null && bundle.containsKey(BankExtraKeys.EDIT_MODE)) {
+				/** close the progress dialog currently being displayed */
+				((AlertDialogParent) DiscoverActivityManager.getActiveActivity()).closeDialog();
+
+				BankConductor.navigateToPayBillStepTwo(bundle);
+			}
+			/** Download Payee to schedule a payment */
+			else {
+				bundle = new Bundle();
 				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 				BankConductor.navigateToSelectPayee(bundle);
 			}
