@@ -148,6 +148,9 @@ public final class BankExtraKeys {
 	public static final String FROM_ADDRESS = "from";
 	public static final String TO_ADDRESS = "to";
 
+	/** Key used for managing loading of a view pager inner fragment */
+	public static final String POSITION = "position";
+
 	/**
 	 * NOT INSTANTIABLE
 	 */
