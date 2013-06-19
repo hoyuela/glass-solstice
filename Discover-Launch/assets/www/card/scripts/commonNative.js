@@ -310,4 +310,13 @@ activePage = "dummy-pg";
 currentActivePage = "dummy-pg";
 isLhnNavigation = true;
 }
+function qvFaq()
+{
+preventBack = false;
+populateGlobalCache();
+console.log("quickView function is called");
+navigation('../custormerService/faqQuickView');
+}
 //13.3 quickview end
+
+
