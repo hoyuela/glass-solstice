@@ -34,9 +34,7 @@ public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler im
 	 * Notifies Login Activity that Pre-Authentication failed with an HTTP error response.
 	 */
 	@Override
-	protected boolean handleHTTPErrorCode(final int httpErrorCode)  {
-		final boolean ret = super.handleHTTPErrorCode(httpErrorCode);
-		
+	protected boolean handleHTTPErrorCode(final int httpErrorCode)  {		
 		final LoginActivity loginActivity = (LoginActivity)getErrorFieldUi();
 		
 		if( null != loginActivity ) {
@@ -44,7 +42,7 @@ public class PreAuthErrorResponseHandler extends CardBaseErrorResponseHandler im
 			loginActivity.preAuthComplete(false);
 		}
 		
-		return ret;
+		return true;
 	}
 	
 	/**

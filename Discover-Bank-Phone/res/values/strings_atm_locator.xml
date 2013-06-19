@@ -42,6 +42,8 @@
     <string name="atm_help_surcharge_free_text">Displays surcharge-free ATMs.</string>
     <string name="atm_help_non_surcharge_free_title">Non Surcharge-free Pin</string>
     <string name="atm_help_non_surcharge_free_text">Displays non surcharge-free ATMs.</string>
+    <string name="atm_help_multiple_pin_icon_title">Multiple Pin Icon</string>
+    <string name="atm_help_multiple_pin_icon_text">Displays location of several ATMs.</string>
     <string name="atm_help_start_icon_title">Starting Point Pin</string>
     <string name="atm_help_start_icon_text">Displays the address you searched.</string>
     <string name="atm_help_current_icon_title">Current Location Pin</string>

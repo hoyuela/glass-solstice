@@ -18,21 +18,21 @@
 	        android:layout_marginTop="10dp"
 	        android:src="@drawable/error_icon_red" 
 	        android:visibility="gone"
-	        style="@style/modal_error_image"/>
+	        style="@style/commons_modal_error_image"/>
 	    
 	   	<TextView 
 	        android:id="@+id/modal_alert_title"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@+id/error_icon"
-	        style="@style/modal_title_text"/>
+	        style="@style/commons_modal_title_text"/>
 	   	
 	    <TextView
 	        android:id="@+id/modal_alert_text"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@+id/modal_alert_title"
-	        style="@style/modal_content_text"/>
+	        style="@style/commons_modal_content_text"/>
 	    
 	  <RelativeLayout
                 android:layout_width="fill_parent"

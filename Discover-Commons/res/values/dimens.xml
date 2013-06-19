@@ -4,7 +4,7 @@
     <dimen name="edit_text_corner_radius">5dp</dimen>
     <dimen name="edit_text_stroke_width">1dp</dimen>
     <dimen name="input_field_height">38dp</dimen>
-    <dimen name="modal_orange_margin_bottom">15dp</dimen>
+    <dimen name="modal_orange_margin_bottom">0dp</dimen>
     <dimen name="modal_orange_margin_top">17dp</dimen>
     <dimen name="modal_top_padding">45dp</dimen>
     <dimen name="modal_right_padding">17dp</dimen>

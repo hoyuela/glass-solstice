@@ -131,6 +131,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 			handler.postDelayed(new Runnable() { 
 				@Override
 				public void run() { 
+					
 					observer.loadMoreData(); 
 				} 
 			}, DELAY); 

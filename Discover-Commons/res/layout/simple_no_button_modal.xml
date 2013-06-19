@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="alert_modal_black_bg"
+    style="@style/commons_modal_black_bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/modal_bottom_padding"
@@ -8,7 +8,7 @@
 
     <RelativeLayout
         android:id="@+id/modal_linear_layout"
-        style="@style/alert_modal_white_bg"
+        style="@style/commons_modal_white_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
@@ -17,6 +17,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"/>
     </RelativeLayout>
 </RelativeLayout>
