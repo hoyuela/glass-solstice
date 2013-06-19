@@ -117,6 +117,12 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 			pageFragment = new PaymentDetailFragment();
 			final PaymentDetail payment = detailList.payments.get(position);
 			final Bundle bundle = new Bundle();
+
+			/**
+			 * specify what position the newly inner fragment is. This parameter is used for managing the loading of
+			 * this pageFragment.
+			 */
+			bundle.putInt(BankExtraKeys.POSITION, position);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, payment);
 			pageFragment.setArguments(bundle);
 		}else {

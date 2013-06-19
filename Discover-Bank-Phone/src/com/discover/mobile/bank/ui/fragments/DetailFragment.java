@@ -2,12 +2,14 @@ package com.discover.mobile.bank.ui.fragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 
 /**
@@ -21,6 +23,13 @@ import com.discover.mobile.bank.R;
 public abstract class DetailFragment extends Fragment {
 	private View mainView;
 	private LayoutCreatorTask creatorTask;
+	/** Reference to the handler which was created to load the content during the creation of this fragment */
+	private Handler handler;
+	/**
+	 * Reference to the runnable provided to the handler data member used to load the content asynchronously during the
+	 * creation of this fragment
+	 */
+	private Runnable runnable;
 
 	/**
 	 * Returns the layout to be used by the current Fragment.
@@ -45,11 +54,57 @@ public abstract class DetailFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		mainView = inflater.inflate(R.layout.spinner_layout, null);
 		
-		creatorTask = new LayoutCreatorTask();
-		creatorTask.execute();
+		loadContent(getDelay());
+
 		return mainView;
 	}
 	
+	/**
+	 * Method used to calculate the delay to use to load the content displayed in this fragment. The delay is based off
+	 * of the position of this fragment within the view pager. This method depends on the POSITION key being provided
+	 * via the bundle provided via getArguments().
+	 * 
+	 * @return Returns the delay to be used for loading this fragment in the hosting view pager.
+	 */
+	private int getDelay() {
+		final Bundle bundle = getArguments();
+		int delay = 200;
+
+		if( bundle != null ) {
+			delay *= (bundle.getInt(BankExtraKeys.POSITION, 1) + 1);
+		}
+		
+		return delay;
+	}
+	
+	/**
+	 * Method used to display the content on this fragment.
+	 * 
+	 * @param delay
+	 *            The delay specified is used to determine how long to wait before the content is displayed. If 0
+	 *            displays immediately.
+	 */
+	private void loadContent(final int delay) {
+		if (delay > 0) {
+			/**
+			 * A reference of handler and runnable are held such to be cancellable when the fragment is being stopped
+			 * during rotation or when being destroyed.
+			 */
+			handler = new Handler();
+			runnable = new Runnable() {
+				@Override
+				public void run() {
+					creatorTask = new LayoutCreatorTask();
+					creatorTask.execute();
+				}
+			};
+			handler.postDelayed(runnable, delay);
+		} else {
+			creatorTask = new LayoutCreatorTask();
+			creatorTask.execute();
+		}
+	}
+
 	/**
 	 * If the async task has not completed when the Fragment gets stopped, we need to cancel it.
 	 */
@@ -57,6 +112,10 @@ public abstract class DetailFragment extends Fragment {
 	public void onStop() {
 		super.onStop();
 		
+		/** Stop loader threads / async task used to load the content of this fragment */
+		if (handler != null && runnable != null) {
+			handler.removeCallbacks(runnable);
+		}
 		if(creatorTask != null){
 			creatorTask.cancel(true);
 		}

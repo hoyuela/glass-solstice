@@ -452,8 +452,10 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
 
-			final PayeeDetail currentPayee = paymentDetail.payee;
-			if( (currentPayee != null) && (null != currentPayee.paymentDate)) {
+			/** Update the earliest payment based on what is provided via the payee list */
+			PayeeDetail currentPayee = paymentDetail.payee;
+			if (currentPayee != null && BankUser.instance().hasPayees()) {
+				currentPayee = BankUser.instance().getPayees().getPayeeFromId(currentPayee.id);
 				updateEarliestPaymentDate(currentPayee.paymentDate);
 			}
 		}
