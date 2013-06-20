@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.apache.cordova.api.LOG;
-
 import android.util.Log;
 
 import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
@@ -181,7 +179,7 @@ public final class BankUser extends CacheManager implements Serializable {
 				}
 			}
 		} else {
-			if (LOG.isLoggable(Log.ERROR)) {
+			if (Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Account list empty");
 			}
 		}
