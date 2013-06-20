@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false" >
+
+    <TextView
+        android:id="@+id/button_text"
+        style="@style/common_tab_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        android:clickable="false" />
+
+    <View
+        android:id="@+id/selected"
+        android:layout_width="wrap_content"
+        android:layout_height="4dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/button_text"
+        android:background="@color/orange"
+        android:clickable="false" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/selected"
+        android:layout_alignBottom="@+id/button_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/button_text"
+        android:alpha=".5"
+        android:background="@color/field_copy"
+        android:clickable="false" />
+
+</RelativeLayout>
