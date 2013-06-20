@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
@@ -24,14 +22,22 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.common.ui.table.TableHeaderButton;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
- * View that allows the user to view posted and scheduled activities for an account
+ * View that allows the user to view posted and scheduled activities for an account.
+ * 
+ * This class implements the OnClickListener so it can be notified that the buttons
+ * in the header were clicked.  When the fragment is paused it should make sure to
+ * have the buttons no longer reference it.  With that being said, when resuming the
+ * fragment the fragment should make sure that it registers itself with the buttons.
+ * 
  * @author jthornton
  *
  */
-public class BankAccountActivityTable extends BaseTable implements BankUserListener {
+public class BankAccountActivityTable extends BaseTable implements BankUserListener, OnClickListener {
+
 	/** Holds strings that will be used to set the account in the arguments of this fragment */
 	public static final String ACCOUNT = "acct-info";
 
@@ -60,6 +66,9 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		BankUser.instance().addListener(this);
 
 		super.onResume();
+
+		/** Attach the listener to the buttons */
+		header.setGroupObserver(this);
 	}
 
 	@Override
@@ -68,6 +77,9 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 
 		/** Subscribe for event raised by the bank user for when data changes */
 		BankUser.instance().removeListener(this);
+
+		/** Remove the listeners from the buttons */
+		header.removeListeners();
 	}
 
 	/**
@@ -112,8 +124,8 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 
 		// Toggle between scheduled/posted if incoming list type does not match view
-		if ((list.type == ActivityDetailType.Posted && !header.isPosted())
-				|| (list.type == ActivityDetailType.Scheduled && header.isPosted())) {
+		if (list.type == ActivityDetailType.Posted && !header.isPosted()
+				|| list.type == ActivityDetailType.Scheduled && header.isPosted()) {
 			header.setSelectedCategory(!header.isPosted());
 		}
 
@@ -126,14 +138,15 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		if(null == url){
 			showNothingToLoad();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Update the list to show scheduled activity.
 	 * @param list
 	 */
 	private void updateListForPostedData(final ListActivityDetail list) {
+		header.setSelectedCategory(true);
 		if(null == posted){
 			posted = new ListActivityDetail();
 			posted.activities  = new ArrayList<ActivityDetail>();
@@ -141,12 +154,13 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		}
 		handleReceivedData(posted, list);
 	}
-	
+
 	/**
 	 * Update the list to show scheduled activity.
 	 * @param list
 	 */
 	private void updateListForScheduledData(final ListActivityDetail list) {
+		header.setSelectedCategory(false);
 		if(null == scheduled){
 			scheduled = new ListActivityDetail();
 			scheduled.activities  = new ArrayList<ActivityDetail>();
@@ -174,9 +188,9 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 	public void updateAdapter(final ListActivityDetail current){
 		if(current != null && current.activities != null) {
 			adapter.setData(current.activities);
-			
+
 			if(adapter.getCount() < 1){
-				header.setMessage(this.getEmptyStringText());
+				header.setMessage(getEmptyStringText());
 				showNothingToLoad();
 				getLoadMoreFooter().hideAll();
 			} else {
@@ -191,7 +205,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 			}
 		}
 	}
-	
+
 	/**
 	 * @return the title to be displayed in the action bar
 	 */
@@ -205,7 +219,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 	 * @return the string that should be show in the empty list view
 	 */
 	public String getEmptyStringText(){
-		return getResources().getString((header.isPosted()) ? R.string.activity_no_posted : R.string.activity_no_scheduled); 
+		return getResources().getString(header.isPosted() ? R.string.activity_no_posted : R.string.activity_no_scheduled); 
 	}
 
 
@@ -226,93 +240,61 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 	}
 
 	/**
-	 * Get the posted button click listener
-	 * @return the posted button click listener
+	 * Load the posted data.  This method determines if we need to load data and which data set to load.
 	 */
-	public OnCheckedChangeListener getPostedListener(){
-		return new OnCheckedChangeListener(){
-
-			@Override
-			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-				if (isChecked) {
-					loadPostedData();
-				}	
-			}
-		};
-	}
-	
 	private void loadPostedData() {
 		final Account account = getAccountInfo(false);
 
 		if (posted != null) {
-			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			header.setSelectedCategory(true);
 			updateAdapter(posted);
 		} else if (account.posted != null) {
-			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			header.setSelectedCategory(true);
 			posted = account.posted;
 			updateAdapter(posted);
 		} else {
 			// Both posted lists are null -- Generate service call
-			BankServiceCallFactory.createGetActivityServerCall(account.getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted,
-					false).submit();
+			BankServiceCallFactory.createGetActivityServerCall(
+					account.getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted, false).submit();
 		}
 	}
 
+	/**
+	 * Load the scheduled data.  This method determines if we need to load data and which data set to load.
+	 */
 	private void loadScheduledData() {
 		final Account account = getAccountInfo(false);
 
 		if (scheduled != null) {
-			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			header.setSelectedCategory(false);
 			updateAdapter(scheduled);
 		} else if (account.scheduled != null) {
-			header.toggleButton(header.getPostedButton(), header.getScheduledButton(), true);
+			header.setSelectedCategory(false);
 			posted = account.scheduled;
 			updateAdapter(scheduled);
 		} else {
 			getScheduledActivityServiceCall();
 		}
 	}
-	
-	/**
-	 * Get the scheduled button click listener
-	 * @return the scheduled button click listener
-	 */
-	public OnCheckedChangeListener getScheduledListener(){
-		return new OnCheckedChangeListener(){
 
-			@Override 
-			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-				if (isChecked) {
-					if (scheduled != null) {
-						loadLocalActivity();
-					} else if (getAccountInfo(false).scheduled != null) {
-						loadCachedActivity();
-					} else {
-						getScheduledActivityServiceCall();
-					}
-				}
-			}
-		};
-	}
-	
 	/**
 	 * Load the list adapter with data that is stored in the member variable for scheduled
 	 * activity.
 	 */
 	private void loadLocalActivity() {
-		header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+		header.setSelectedCategory(false);
 		updateAdapter(scheduled);
 	}
-	
+
 	/**
 	 * Load scheduled activity from the BankUser instance.
 	 */
 	private void loadCachedActivity() {
-		header.toggleButton(header.getScheduledButton(), header.getPostedButton(), false);
+		header.setSelectedCategory(false);
 		scheduled = getAccountInfo(false).scheduled;
 		updateAdapter(scheduled);
 	}
-	
+
 	/**
 	 * Retrieve scheduled activity from the server and cache it in the BankUser instance.
 	 */
@@ -321,7 +303,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 
 		// Both scheduled lists are null -- Generate service call
 		BankServiceCallFactory.createGetActivityServerCall(
-account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false)
+				account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false)
 				.submit();
 	}
 
@@ -345,7 +327,7 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	 * Get the load more URL
 	 */
 	private ReceivedUrl getLoadMoreUrl(){
-		return (header.isPosted()) ? 
+		return header.isPosted() ? 
 				posted.links.get(ListActivityDetail.NEXT) : scheduled.links.get(ListActivityDetail.NEXT);
 	}
 
@@ -354,7 +336,7 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	 */
 	public void loadMore(final String url){
 		setIsLoadingMore(true);
-		
+
 		if( header.isPosted() ) {
 			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted, false).submit();
 		} else {
@@ -416,16 +398,16 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	@Override
 	public void loadDataFromBundle(final Bundle bundle) {
 		if(null == bundle){return;}
-		
+
 		/**Read Activity list from bundle*/
 		final ListActivityDetail current = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);	
-		
+
 		/**Set flag to true if passed list has Posted Activities*/
-		final boolean isPostedList = (current.type == ActivityDetailType.Posted);
-		
-		/**Set Header to Posted or Scheduled depenting on the type of list*/
+		final boolean isPostedList = current.type == ActivityDetailType.Posted;
+
+		/**Set Header to Posted or Scheduled depending on the type of list*/
 		header.setSelectedCategory(bundle.getBoolean(BankExtraKeys.CATEGORY_SELECTED, isPostedList));
-		
+
 		final ListActivityDetail other = (ListActivityDetail)bundle.getSerializable(BankExtraKeys.SECOND_DATA_LIST);
 		if(header.isPosted()){
 			posted = current;
@@ -437,7 +419,7 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 		header.setSortOrder(bundle.getInt(BankExtraKeys.SORT_ORDER, BankExtraKeys.SORT_DATE_DESC));
 		header.setHeaderExpanded(bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false));
 		if(null != current){
-			this.updateAdapter(current);
+			updateAdapter(current);
 
 			final ReceivedUrl url = getLoadMoreUrl();
 			if(null == url){
@@ -458,9 +440,36 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	 */
 	@Override
 	public void setupHeader() {
-		header = new AccountActivityHeader(this.getActivity(), null);
-		header.getPostedButton().setOnCheckedChangeListener(this.getPostedListener());
-		header.getScheduledButton().setOnCheckedChangeListener(this.getScheduledListener());
+		header = new AccountActivityHeader(getActivity(), null);
+	}
+
+	/**
+	 * This is called when one of the buttons is pressed in the header.
+	 * The buttons in the header need to have this attached, to do that call header.setGroupObserver(this).
+	 * @param view - view that is triggering this on click event 
+	 */
+	@Override
+	public void onClick(final View view) {
+		final TableHeaderButton clicked = (TableHeaderButton)view;
+
+		if(header.getPostedButton().getText().equals(clicked.getText()) && !header.isPostedSelected()){
+			loadPostedData();
+		}else if(header.getScheduledButton().getText().equals(clicked.getText()) && header.isPostedSelected()){
+			loadScheduledActivity();
+		}
+	}
+
+	/**
+	 * Load the scheduled activity
+	 */
+	private void loadScheduledActivity(){
+		if (scheduled != null) {
+			loadLocalActivity();
+		} else if (getAccountInfo(false).scheduled != null) {
+			loadCachedActivity();
+		} else {
+			getScheduledActivityServiceCall();
+		}
 	}
 
 	/**
@@ -482,7 +491,7 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	 */
 	@Override
 	public void setupAdapter() {
-		adapter = new BankListAdapter(this.getActivity(), header.getAccount(), R.layout.bank_table_item, this);
+		adapter = new BankListAdapter(getActivity(), header.getAccount(), R.layout.bank_table_item, this);
 
 	}
 
@@ -493,11 +502,11 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 	public void createDefaultLists() {
 		//This does not need to be done
 	}
-	
+
 	public void showStatusMessage() {
 		header.showStatusMessage(R.string.account_activity_scheduled_transfer_deleted);
 	}
-	
+
 	public final void showDeletePaymentMessage() {
 		header.showStatusMessage(R.string.review_payments_scheduled_deleted);
 	}
@@ -551,9 +560,9 @@ account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled,
 			// Check whether the user is currently on the posted or scheduled view
 			// to make the respective service call
 			if (header.isPosted()) {
-				isActivityDownloadRequired = (header.getAccount().posted == null || posted == null);
+				isActivityDownloadRequired = header.getAccount().posted == null || posted == null;
 			} else {
-				isActivityDownloadRequired = (header.getAccount().scheduled == null || scheduled == null);
+				isActivityDownloadRequired = header.getAccount().scheduled == null || scheduled == null;
 			}
 		}
 

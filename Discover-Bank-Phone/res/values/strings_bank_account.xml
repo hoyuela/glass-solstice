@@ -23,8 +23,6 @@
     <string name="activity_online_checking">Online Checking:</string>
     <string name="activity_available_balance">Available Balance:</string>
     <string name="activity_current_balance">Current Balance:</string>
-    <string name="activity_posted_button">Activity</string>
-    <string name="activity_scheduled_button">Scheduled</string>
     <string name="activity_no_scheduled">You have no scheduled transactions.</string>
     <string name="activity_no_posted">You have no account activity.</string>
     <string name="activity_table_name">Transactions</string>
@@ -34,6 +32,12 @@
     <string name="account_activity_scheduled_transfer_deleted">Scheduled Transfer Deleted</string>
     <string name="delete_next_transfer_in_series_content_description">Delete the next transfer in the series</string>
     <string name="delete_entire_transfer_series_content_description">Delete the entire series of transfers</string>
+    
+    <!-- String array contianing all the labels of the button that will be in the accoutn activity table -->
+    <string-array name="account_activity_buttons">
+        <item>Activity</item>
+        <item>Scheduled</item>
+    </string-array>
 
     <!-- Account - Skipped SSO Signin -->
     <string name="skipsso_modal_title">We\'re Sorry</string>
