@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.common"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -13,9 +14,9 @@
         android:layout_marginBottom="@dimen/table_inner_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
         android:layout_marginRight="@dimen/help_widget_width"
-        android:paddingRight="@dimen/help_widget_width"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:gravity="left"
+        android:paddingRight="@dimen/help_widget_width"
         android:text="@string/activity_title" />
 
     <RelativeLayout
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/title_text"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/activity_online_checking" />
 
@@ -41,8 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lable1"
             android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:layout_alignTop="@+id/lable1"
-            android:layout_below="@+id/title_text"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable2"
             android:gravity="right" />
@@ -68,9 +69,9 @@
             android:layout_below="@+id/lable1"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable2"
+            android:gravity="right"
             android:singleLine="true"
-            android:textIsSelectable="false"
-            android:gravity="right" />
+            android:textIsSelectable="false" />
 
         <TextView
             android:id="@+id/lable3"
@@ -93,53 +94,19 @@
             android:layout_below="@+id/lable2"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_toRightOf="@+id/lable3"
+            android:gravity="right"
             android:singleLine="true"
-            android:textIsSelectable="false"
-            android:gravity="right" />
+            android:textIsSelectable="false" />
     </RelativeLayout>
 
-    <LinearLayout
+    <com.discover.mobile.common.ui.table.TableButtonGroup
         android:id="@+id/buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_labels"
         android:layout_marginBottom="@dimen/table_inner_padding"
-        android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/forms_inner_padding"
         android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:orientation="horizontal"
-        android:weightSum="2" >
-
-        <ToggleButton
-            android:id="@+id/posted_button"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/toggle_button_height"
-            android:layout_weight="1"
-            android:background="@drawable/toggle_left_on"
-            android:checked="true"
-            android:paddingBottom="@dimen/between_related_elements_padding"
-            android:paddingTop="@dimen/between_related_elements_padding"
-            android:textColor="@color/white"
-            android:textOff="@string/activity_posted_button"
-            android:textOn="@string/activity_posted_button"
-            android:textSize="@dimen/small_copy_min"
-            android:textStyle="bold" />
-
-        <ToggleButton
-            android:id="@+id/scheduled_button"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/toggle_button_height"
-            android:layout_weight="1"
-            android:background="@drawable/toggle_right_off"
-            android:checked="false"
-            android:paddingBottom="@dimen/between_related_elements_padding"
-            android:paddingTop="@dimen/between_related_elements_padding"
-            android:textColor="@color/body_copy"
-            android:textOff="@string/activity_scheduled_button"
-            android:textOn="@string/activity_scheduled_button"
-            android:textSize="@dimen/small_copy_min"
-            android:textStyle="bold" />
-    </LinearLayout>
+        custom:resourceArry="@array/account_activity_buttons" />
 
     <TextView
         android:id="@+id/table_title"
@@ -154,14 +121,14 @@
         android:text="@string/activity_table_name"
         android:textStyle="bold" />
 
-   	<com.discover.mobile.bank.ui.widgets.StatusMessageView
-            android:id="@+id/status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/table_title"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding" />
-    
+    <com.discover.mobile.bank.ui.widgets.StatusMessageView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/table_title"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding" />
+
     <com.discover.mobile.bank.ui.table.TableTitles
         android:id="@+id/table_titles"
         android:layout_width="match_parent"

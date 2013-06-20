@@ -84,7 +84,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}else{
 			holder = (ItemViewHolder) view.getTag();
 		}
-		
+
 		if (detail == null) {
 			return view;
 		}
@@ -96,8 +96,8 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}
 		holder.date.setText(convertDate(date));
 		holder.desc.setText(detail.description);
-		final double amount = ((double)detail.amount.value)/DOLLAR_CONVERSION;
-		
+		final double amount = (double)detail.amount.value/DOLLAR_CONVERSION;
+
 		/** All loan activity should have a black description */
 		if (account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
 			holder.desc.setTextColor(fragment.getResources().getColor(R.color.black));
@@ -110,13 +110,16 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		}else{
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
-		
+
 		if (((AccountActivityHeader) fragment.getHeader()).isPosted() && amount > 0) {
 			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
 		} 
-		
+
 		view.setOnClickListener(getClickListener(holder.pos));
-		view.setBackgroundResource((holder.pos%2 == 0) ? R.color.white : R.color.transaction_table_stripe);
+		view.setBackgroundResource(holder.pos%2 == 0 ? 
+				R.drawable.common_table_list_item_selector: 
+					R.drawable.common_table_list_item_gray_selector);
+		view.setClickable(true);
 		return view;
 	}
 
