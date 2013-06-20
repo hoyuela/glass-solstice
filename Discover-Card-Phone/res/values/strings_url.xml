@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="base_url_dev">https://mst0.m.discovercard.com</string>
-    <string name="base_url_dev1">https://mst0.m.discovercard.com</string>
-    <string name="url_in_use">https://mst0.m.discovercard.com</string>
+    <string name="base_url_dev">https://mst0.mapi.discovercard.com</string>
+    <string name="base_url_dev1">https://mst0.mapi.discovercard.com</string>
+    <string name="url_in_use">https://mst0.mapi.discovercard.com</string>
 
     
     <string name="discover_url">/cardsvcs/acs/</string>
