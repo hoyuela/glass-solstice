@@ -15,7 +15,7 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.HttpHeaders;
-import com.discover.mobile.common.net.ServiceCallParams.DeleteCallParams;
+import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
 import com.discover.mobile.common.utils.StringUtility;
@@ -39,7 +39,7 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	 */
 	public DeleteTransferServiceCall(final Context context, final AsyncCallback<ActivityDetail> callback, 
 									final ActivityDetail activityDetail, final TransferDeletionType deletionType) {
-		super(context, new DeleteCallParams(generateUrl(activityDetail, getDeleteType(deletionType))) {
+		super(context, new PostCallParams(generateUrl(activityDetail, getDeleteType(deletionType))) {
 			{
 				//This service call is made after authenticating and receiving a token,
 				//therefore the session should not be cleared otherwise the token will be wiped out
