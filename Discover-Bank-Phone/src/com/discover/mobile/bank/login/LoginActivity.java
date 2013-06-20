@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -64,6 +65,7 @@ import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.EncryptionUtil;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -83,7 +85,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 	
-	
+	private final long halfSecond = 500;
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
@@ -187,7 +189,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
-				
+		
 	 }
 	
 	/**
@@ -317,7 +319,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			if( !Strings.isNullOrEmpty(errorMessage) ){
 				showErrorMessage(errorMessage);
-				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, "");
+				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, StringUtility.EMPTY);
 				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
 			}
 		}
@@ -349,9 +351,49 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display succesful logout message at top of the screen
 	 */
 	public void showLogoutSuccessful() {
+		final long tenSeconds = 10000;
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+		
+		startFadeOutAnimationForView(errorTextView, halfSecond, View.GONE, tenSeconds);
+	}
+	
+	/**
+	 * Starts a fade out animation on a given View with the passed parameters.
+	 * @param viewToFade the view to apply the fade to.
+	 * @param duration the number of miliseconds that the animation will animate for.
+	 * @param endVisibility the visibility for the view after the animation completes.
+	 * @param animationDelay the number of miliseconds that will elapse before the animation begins.
+	 */
+	private void startFadeOutAnimationForView(final View viewToFade, 
+														final long duration, 
+														final int endVisibility, 
+														final long animationDelay) {
+		if(viewToFade != null) {
+			final AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+			
+			fadeOut.setDuration(duration);
+			fadeOut.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(final Animation animation) {
+					viewToFade.setVisibility(View.VISIBLE);
+				}
+				
+				@Override
+				public void onAnimationRepeat(final Animation animation) {				
+				}
+				
+				@Override
+				public void onAnimationEnd(final Animation animation) {
+					viewToFade.setVisibility(endVisibility);
+				}
+			});
+			fadeOut.setStartOffset(animationDelay);
+			
+			viewToFade.startAnimation(fadeOut);
+		}
 	}
 
 	/**
@@ -590,6 +632,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
+				errorTextView.setText(StringUtility.EMPTY);
 				CommonUtils.setViewGone(errorTextView);
 				
 				try {
@@ -896,8 +939,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//Do Common setup between Bank and Card toggling
 		if(isTogglingCardOrBank){
 			clearInputs();
-			Globals.setCurrentUser("");
-			errorTextView.setText("");
+			Globals.setCurrentUser(StringUtility.EMPTY);
+			errorTextView.setText(StringUtility.EMPTY);
 			errorTextView.setVisibility(View.GONE);
 
 			//Delete saved use if toggle is made and save user ID is not checked.
@@ -953,7 +996,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	private void deleteAndSaveCurrentUserPrefs() {
 		Globals.setRememberId(false);
-		Globals.setCurrentUser("");
+		Globals.setCurrentUser(StringUtility.EMPTY);
 		Globals.savePreferences(this);
 	}
 
@@ -1379,7 +1422,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	@Override
 	public String getActionBarTitle() {
-		return "";
+		return StringUtility.EMPTY;
 	}
 	
 		
