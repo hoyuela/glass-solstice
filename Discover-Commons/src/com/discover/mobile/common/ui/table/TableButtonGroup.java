@@ -121,11 +121,22 @@ public class TableButtonGroup extends LinearLayout{
 			views = new ArrayList<TableHeaderButton>();
 		}
 
+		/**
+		 * Linear layout for the buttons.  This will default to one so that the buttons srtetch to
+		 * fill the layout in both portrait and landscape.
+		 */
 		final LinearLayout.LayoutParams params = 
 				new LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT, 1.0f);
 
+		/**
+		 * Set the weight of this to be the number of buttons that will be in the layout.
+		 * This allows the buttons to all have the same size.
+		 */
 		setWeightSum(labels.length);
 
+		/**
+		 * Iterate through the list so that we can add all the buttons
+		 */
 		for(int i = 0; i < labels.length; i++){
 			final TableHeaderButton button = new TableHeaderButton(context, labels[i]);
 			button.setUnselected();
