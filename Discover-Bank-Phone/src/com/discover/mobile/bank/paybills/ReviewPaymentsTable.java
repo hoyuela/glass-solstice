@@ -23,6 +23,7 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.ui.table.BaseTable;
+import com.discover.mobile.common.ui.table.TableHeaderButton;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
@@ -30,10 +31,15 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
  * categories scheduled, completed and canceled.  When an items is clicked 
  * be sent the detail fragment. 
  * 
+ * This class implements the OnClickListener so it can be notified that the buttons
+ * in the header were clicked.  When the fragment is paused it should make sure to
+ * have the buttons no longer reference it.  With that being said, when resuming the
+ * fragment the fragment should make sure that it registers itself with the buttons
+ * 
  * @author jthornton
  *
  */
-public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragment{
+public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragment, OnClickListener{
 
 	/**List of completed payment details*/
 	private ListPaymentDetail completed;
@@ -85,7 +91,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			list.payments = new ArrayList<PaymentDetail>();
 			list.links = new HashMap<String, ReceivedUrl>();
 		} 
-		
+
 		//Check what view the user is currently is in Scheduled, Completed or Cancelled.
 		//The corresponding view list will be updated based on whether this method was called 
 		//to load more data or refresh the list because of a deleted item.
@@ -156,7 +162,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void setupAdapter() {
-		adapter = new ReviewPaymentsAdapter(this.getActivity(), R.layout.bank_table_item, this);
+		adapter = new ReviewPaymentsAdapter(getActivity(), R.layout.bank_table_item, this);
 	}
 
 	/**
@@ -227,28 +233,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 */
 	@Override
 	public void setupHeader() {
-		header = new ReviewPaymentsHeader(this.getActivity(), null);
-
-		header.getScheduled().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				setupScheduledList();
-			}
-		});
-
-		header.getCompleted().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				setupCompletedList();
-			}
-		});
-
-		header.getCanceled().setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(final View v) {
-				setupCancelledList();
-			}
-		});
+		header = new ReviewPaymentsHeader(getActivity(), null);
 	}
 
 	private void setupScheduledList() {
@@ -269,7 +254,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			call.submit();
 		}
 	}
-	
+
 	private void setupCompletedList() {
 		if (completed != null) {
 			header.setCurrentCategory(ReviewPaymentsHeader.COMPLETED_PAYMENTS);	
@@ -288,7 +273,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			call.submit();
 		}
 	}
-	
+
 	private void setupCancelledList() {
 		if (canceled != null) {
 			header.setCurrentCategory(ReviewPaymentsHeader.CANCELED_PAYMENTS);
@@ -307,11 +292,23 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 			call.submit();
 		}
 	}
+
 	@Override
 	public void onResume(){
 		super.onResume();
 
 		header.requestLayout();
+
+		/** Set this as the observer for the buttons to register their click event*/
+		header.setGroupObserver(this);
+	}
+
+	@Override
+	public void onPause(){
+		super.onPause();
+
+		/** Remove this a observer to their events to prevent a memory leak */
+		header.removeListeners();
 	}
 
 	/**
@@ -325,23 +322,23 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	protected boolean isDataUpdateRequired() {
 		final int category = header.getCurrentCategory();
 		boolean isUpdateRequired = false;
-		
+
 		/**Set the resource identifier that should be displayed in the details screen*/
 		switch( category ) {
 		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getScheduled() == null || scheduled == null);
+			isUpdateRequired = BankUser.instance().getScheduled() == null || scheduled == null;
 			break;
 		case ReviewPaymentsHeader.COMPLETED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getCompleted() == null || completed == null);
+			isUpdateRequired = BankUser.instance().getCompleted() == null || completed == null;
 			break;
 		case ReviewPaymentsHeader.CANCELED_PAYMENTS:
-			isUpdateRequired = (BankUser.instance().getCancelled() == null || canceled == null);
+			isUpdateRequired = BankUser.instance().getCancelled() == null || canceled == null;
 			break;
 		}
-		
+
 		return isUpdateRequired;
 	}
-	
+
 	/**
 	 * Method used to send a request to update the current data being displayed. The request made will depend on whether
 	 * Scheduled, Completed or Cancelled category is being displayed.
@@ -349,7 +346,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	protected void updateData() {
 		final int category = header.getCurrentCategory();
-				
+
 		/**Set the resource identifier that should be displayed in the details screen*/
 		switch( category ) {
 		case ReviewPaymentsHeader.SCHEDULED_PAYMENTS:
@@ -460,11 +457,11 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		createDefaultLists();	
 
 		if(category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS && scheduled != null){
-			this.updateAdapter(scheduled);
+			updateAdapter(scheduled);
 		}else if(category == ReviewPaymentsHeader.COMPLETED_PAYMENTS && completed != null){
-			this.updateAdapter(completed);
+			updateAdapter(completed);
 		}else if (canceled != null){
-			this.updateAdapter(canceled);
+			updateAdapter(canceled);
 		}
 	}
 
@@ -472,7 +469,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @return the schedule key that will be used in the bundle
 	 */
 	private String getScheduleKey(final int category){
-		return (category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS) ? 
+		return category == ReviewPaymentsHeader.SCHEDULED_PAYMENTS ? 
 				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.SCHEDULED_LIST;
 	}
 
@@ -480,7 +477,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @return the completed key that will be used in the bundle
 	 */
 	private String getCompletedKey(final int category){
-		return (category == ReviewPaymentsHeader.COMPLETED_PAYMENTS) ? 
+		return category == ReviewPaymentsHeader.COMPLETED_PAYMENTS ? 
 				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.COMPLETED_LIST;
 	}
 
@@ -488,7 +485,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	 * @return the canceled key that will be used in the bundle
 	 */
 	private String getCanceledKey(final int category){
-		return (category == ReviewPaymentsHeader.CANCELED_PAYMENTS) ? 
+		return category == ReviewPaymentsHeader.CANCELED_PAYMENTS ? 
 				BankExtraKeys.PRIMARY_LIST : BankExtraKeys.CANCELED_LIST;
 	}
 
@@ -500,7 +497,7 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 		adapter.clear();
 		adapter.setData(list.payments);
 		if(adapter.getCount() < 1){
-			header.setMessage(this.getEmptyStringText());
+			header.setMessage(getEmptyStringText());
 			showNothingToLoad();
 			getLoadMoreFooter().hideAll();
 		}else{
@@ -548,5 +545,23 @@ public class ReviewPaymentsTable extends BaseTable implements DynamicDataFragmen
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.REVIEW_PAYEMENTS_SECTION;
+	}
+
+	/**
+	 * This is called when one of the buttons is pressed in the header.
+	 * The buttons in the header need to have this attached, to do that call header.setGroupObserver(this).
+	 * @param v - view that is triggering this on click event 
+	 */
+	@Override
+	public void onClick(final View view) {
+		final TableHeaderButton clicked = (TableHeaderButton)view;
+
+		if(header.getScheduled().getText().equals(clicked.getText())){
+			setupScheduledList();
+		}else if(header.getCompleted().getText().equals(clicked.getText())){
+			setupCompletedList();
+		}else if(header.getCanceled().getText().equals(clicked.getText())){
+			setupCancelledList();
+		}
 	}
 }
