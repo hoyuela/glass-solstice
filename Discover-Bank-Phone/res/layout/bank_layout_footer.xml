@@ -4,7 +4,8 @@
     android:id="@+id/footer_layout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/modal_footer_topmargin">
 
     <include
         android:id="@+id/need_help_footer"
@@ -13,7 +14,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
- 		android:gravity="center_horizontal|bottom">
+ 		android:gravity="center_horizontal|bottom"		
+        android:layout_marginTop="@dimen/modal_footer_topmargin">
 
         <Button
             android:id="@+id/privacy_terms"
