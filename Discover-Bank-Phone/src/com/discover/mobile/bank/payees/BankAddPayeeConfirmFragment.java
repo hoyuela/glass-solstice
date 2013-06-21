@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
@@ -109,11 +108,6 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	@Override
 	protected void onActionButtonClick()  {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
-			final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-
-			//Pop everything out of the stack till we get to AccountSummary
-			activity.popTillFragment(BankAccountSummaryFragment.class);
-
 			//Navigate user to schedule a payment fragment
 			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 		}
