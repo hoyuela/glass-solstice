@@ -35,7 +35,7 @@
         <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
     </style>
 
-    <style name="common_modal_orange_button" parent="commons_call_to_action_theme">
+    <style name="common_modal_orange_button" parent="common_call_to_action_theme">
         <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
         <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
         <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
@@ -43,7 +43,7 @@
         <item name="android:background">@drawable/common_modal_orange_button_selector</item>
     </style>
     
-    <style name="common_modal_gray_button" parent="commons_call_to_action_gray_theme">
+    <style name="common_modal_gray_button" parent="common_call_to_action_gray_theme">
         <item name="android:background">@drawable/common_modal_gray_button_selector</item>
         <item name="android:textColor">@color/title</item>
     </style>
