@@ -149,7 +149,7 @@ public class GetActivityServerCall
 	}
 	
 	public boolean getDidDeleteActivity() {
-		return deletionType != null;
+		return deletionType != null || this.didDeletePayment;
 	}
 	
 	public boolean getDidDeletePayment() {
