@@ -32,6 +32,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 
+    <com.discover.mobile.bank.atm.AtmTapAndHoldCoachOverlay
+        android:id="@+id/tap_and_hold_coach"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/full_search_bar"
+        android:focusable="true"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/map_navigation_panel"
         android:layout_width="wrap_content"

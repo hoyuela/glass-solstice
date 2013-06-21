@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
+    
     <FrameLayout
         android:id="@+id/discover_map"
         android:layout_width="match_parent"
@@ -10,14 +10,16 @@
         android:layout_above="@+id/drop_shadow"
         android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true" 
-        android:visibility="invisible"/>
-
+        android:visibility="invisible" />
+    
     <FrameLayout
         android:id="@+id/discover_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/drop_shadow"
-        android:layout_below="@+id/full_search_bar" />
+        android:layout_below="@+id/full_search_bar">
+        
+   	</FrameLayout>
 
     <com.discover.mobile.bank.atm.AtmLocatorMapSearchBar
         android:id="@+id/full_search_bar"
@@ -25,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true" />
-
+    
     <ImageButton
         android:id="@+id/help"
         style="@style/orange_help_button"
@@ -72,8 +74,9 @@
             android:layout_marginLeft="@dimen/between_related_elements_padding"
             android:layout_weight="1"
             android:background="@drawable/atm_pinview_button_ds" />
+         
     </LinearLayout>
-
+    
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
@@ -89,4 +92,13 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
+    <com.discover.mobile.bank.atm.AtmTapAndHoldCoachOverlay
+    	android:id="@+id/tap_and_hold_coach"
+    	android:layout_height="match_parent"
+    	android:layout_width="match_parent"
+    	android:layout_below="@+id/full_search_bar"
+    	android:layout_above="@+id/map_navigation_panel"
+    	android:focusable="true"
+    	android:visibility="gone" />
+    
 </RelativeLayout>
