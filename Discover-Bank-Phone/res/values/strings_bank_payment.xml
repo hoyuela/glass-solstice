@@ -37,6 +37,13 @@
 	<string name="review_payments_canceled_payments_empty">You have no cancelled payments.</string>
 	<string name="review_payments_scheduled_deleted">Scheduled Payment Deleted</string>
 	
+	<!-- Labels that will be used in the review payments table -->
+	<string-array name="review_payments_buttons">
+	    <item>Scheduled\nPayments</item>
+	    <item>Completed\nPayments</item>
+	    <item>Cancelled\nPayments</item>
+	</string-array>
+	
 	<!-- Manage Payees Strings  -->
 	<string name="payee">Payee</string>
 	<string name="manage_payees_welcome">Welcome to\nManage Payees</string>

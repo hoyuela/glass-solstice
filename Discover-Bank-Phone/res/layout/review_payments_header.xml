@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.common"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -8,57 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
+        <com.discover.mobile.common.ui.table.TableButtonGroup
             android:id="@+id/buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginBottom="@dimen/table_inner_padding"
             android:layout_marginTop="52dp"
-            android:weightSum="3" >
-
-            <ToggleButton
-                android:id="@+id/toggle_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_left_on"
-                android:checked="true"
-                android:paddingBottom="@dimen/between_related_elements_padding"
-                android:paddingTop="@dimen/between_related_elements_padding"
-                android:textColor="@color/white"
-                android:textOff="@string/review_payments_scheduled_payments"
-                android:textOn="@string/review_payments_scheduled_payments"
-                android:textSize="14sp" />
-
-            <ToggleButton
-                android:id="@+id/toggle_middle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_mid_off"
-                android:checked="false"
-                android:paddingBottom="@dimen/between_related_elements_padding"
-                android:paddingTop="@dimen/between_related_elements_padding"
-                android:textColor="@color/body_copy"
-                android:textOff="@string/review_payments_completed_payments"
-                android:textOn="@string/review_payments_completed_payments"
-                android:textSize="14sp" />
-
-            <ToggleButton
-                android:id="@+id/toggle_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/toggle_right_off"
-                android:checked="false"
-                android:paddingBottom="@dimen/between_related_elements_padding"
-                android:paddingTop="@dimen/between_related_elements_padding"
-                android:textColor="@color/body_copy"
-                android:textOff="@string/review_payments_canceled_payments"
-                android:textOn="@string/review_payments_canceled_payments"
-                android:textSize="14sp" />
-        </LinearLayout>
+            custom:resourceArry="@array/review_payments_buttons" />
 
         <com.discover.mobile.bank.ui.widgets.StatusMessageView
             android:id="@+id/status"

@@ -71,7 +71,7 @@ public class AccountToggleView extends RelativeLayout {
 		indicator.setId(ID_INDICATOR);
 		isShown = false;
 
-		this.setVisibility(View.INVISIBLE);
+		setVisibility(View.INVISIBLE);
 
 		if(KeepAlive.getCardAuthenticated()){
 			CardInfoForToggle cardInfo;
@@ -87,7 +87,7 @@ public class AccountToggleView extends RelativeLayout {
 						R.string.account_ending_in)
 						+ StringUtility.SPACE +cardInfo.getCardEndingDigits());
 			}
-			
+
 			if(cardInfo.isDefaultProps()){
 				cardEnding.setVisibility(View.GONE);
 			}else{
@@ -134,8 +134,8 @@ public class AccountToggleView extends RelativeLayout {
 		final int three = 3;
 		final int five = 5;
 
-		indicator.setPadding(left + (iconWidth / three),
-				top + (iconHeight / three) + five, 0, 0);
+		indicator.setPadding(left + iconWidth / three,
+				top + iconHeight / three + five, 0, 0);
 
 		final RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -152,10 +152,10 @@ public class AccountToggleView extends RelativeLayout {
 	 */
 	public void toggleVisibility() {
 		if (!isShown) {
-			this.setVisibility(View.VISIBLE);
+			setVisibility(View.VISIBLE);
 			isShown = true;
 		} else {
-			this.setVisibility(View.INVISIBLE);
+			setVisibility(View.INVISIBLE);
 			isShown = false;
 		}
 	}
@@ -186,13 +186,29 @@ public class AccountToggleView extends RelativeLayout {
 	}
 
 	/**
+	 * Sets the checkmarks based on the account type.
+	 */
+	public void setAccountType(final AccountType type) {
+		// Bank Account
+		if (type.equals(AccountType.BANK_ACCOUNT)) {
+			bankCheck.setVisibility(View.VISIBLE);
+			cardCheck.setVisibility(View.INVISIBLE);
+		}
+		// Card Account
+		else {
+			bankCheck.setVisibility(View.INVISIBLE);
+			cardCheck.setVisibility(View.VISIBLE);
+		}
+	}
+
+	/**
 	 * Once the indicator is placed and drawn, there is no need to redraw it.
 	 * @return true if indicator is drawn, false otherwise.
 	 */
 	public boolean hasIndicatorBeenDrawn() {
 		return isIndicatorDrawn;
 	}
-	
+
 	/**
 	 * Resets the hasIndicatorBeenDrawn boolean so that the indicator can be redrawn if needed.
 	 */

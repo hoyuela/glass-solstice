@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Radio Button styles inherit a text style and set the button drawables. -->
+    
+    <!--  This is the minimum style needed to utilize the common radio button. 
+    	  Use this as a guide for other radio button styles which should inherit from your text style. -->
+    <style name="common_radio">
+        <item name="android:button">@drawable/common_radio_orange</item>
+    </style>
+    
+    <!-- Common radio button drawables with field_copy text style. -->
+    <style name="common_radio_field_copy" parent="field_copy">
+        <item name="android:button">@drawable/common_radio_orange</item>
+    </style>
+    
+    <!-- Common radio button drawables with field_copy_small text style. -->
+    <style name="common_radio_field_copy_small" parent="field_copy_small">
+        <item name="android:button">@drawable/common_radio_orange</item>
+    </style>
+    
+</resources>
