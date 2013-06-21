@@ -55,7 +55,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
-                    android:paddingLeft="@dimen/element_side_padding"
+                    android:layout_marginLeft="@dimen/element_side_padding"
                     android:paddingTop="@dimen/element_top_padding"
                     android:src="@drawable/discover_blk_logo_login" />
 
