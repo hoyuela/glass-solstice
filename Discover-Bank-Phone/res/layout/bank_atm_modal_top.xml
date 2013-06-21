@@ -13,7 +13,7 @@
 
         <TextView
             android:id="@+id/modal_alert_title"
-            style="@style/commons_modal_title_text"
+            style="@style/common_modal_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/modal_alert_title"
