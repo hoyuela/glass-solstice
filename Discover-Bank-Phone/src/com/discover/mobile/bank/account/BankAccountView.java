@@ -203,7 +203,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 				bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
 				BankConductor.navigateToAccountActivityPage(bundle);
 			} else {
-				final GetActivityServerCall serverCall = BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted, false);
+				final GetActivityServerCall serverCall = BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted);
 				serverCall.getExtras().putSerializable(BankAccountActivityTable.ACCOUNT, account);
 				serverCall.submit();
 			}
