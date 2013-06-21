@@ -54,6 +54,13 @@ public interface AnalyticsPage {
 	
 	/**Analytic for going to the enroll profile screen*/
 	static final String PROFILE_ENROLL = "profileEnroll-pg";
+	
+	/**Analytic for viewing quickview*/
+	static final String QUICKVIEW_VIEW ="loginscreenQuickView-pg";
+
+	/**Analytic for viewing Quick View Stup*/
+	static final String QUICKVIEW_SETUP_ON = "QuickView-SetUp_ON-pg";
+	static final String  QUICKVIEW_SETUP_OFF = "QuickView-SetUp_OFF-pg";
 
 	
 	//not used yet
