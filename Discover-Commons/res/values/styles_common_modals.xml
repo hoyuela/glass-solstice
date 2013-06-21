@@ -45,7 +45,7 @@
     
     <style name="common_modal_gray_button" parent="common_call_to_action_gray_theme">
         <item name="android:background">@drawable/common_modal_gray_button_selector</item>
-        <item name="android:textColor">@color/title</item>
+        <item name="android:textColor">@color/sub_copy</item>
     </style>
 
     <!-- Below here is intentionally left here for card compatability -->
