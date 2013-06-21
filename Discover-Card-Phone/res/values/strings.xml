@@ -90,7 +90,7 @@
     <!-- Fastcheck  Viewing Prior to Login -->
     <string name ="back_button_text">Back</string>
 	<string name="fast_check_token_key_in_ps">FastcheckToken</string>
-	<string name="fast_check_error_tech_diff">We\'re currently experiencing techincal difficult. We apologize for any incovenience.</string>
+	<string name="fast_check_error_tech_diff">We\'re currently experiencing techincal difficulties. We apologize for any incovenience.</string>
 	<string name="fast_check_error_cannot_access">Due to special conditions related to your account, this page is not available.\n\nPlease contact customer service at <a href='tel:18777427822'>1&#8211;800&#8211;347&#8211;2683</a> for assistance.</string>
 	<string name="fast_check_error_no_token">You recently requested to disable your quick view settings. If you\'d like to enable this option, plese login and navigate to
 						\"Quick View\" under Profile and Settings.</string>
