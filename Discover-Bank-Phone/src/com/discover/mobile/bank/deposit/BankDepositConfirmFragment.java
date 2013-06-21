@@ -115,7 +115,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 			BankUser.instance().setCurrentAccount(account);
 
 			//Send Request to download the current accounts posted activity
-			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled, false).submit();
+			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled).submit();
 		}
 	}
 
