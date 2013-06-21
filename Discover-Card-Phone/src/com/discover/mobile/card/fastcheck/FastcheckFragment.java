@@ -465,11 +465,11 @@ public class FastcheckFragment extends BaseFragment implements
 			 Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
 		 }
 		
-		if ("403".equals(cardErrorBean.getErrorCode())) {
+		if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("403")) {
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
-		} else if ("429".equals(cardErrorBean.getErrorCode())) {
+		} else if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("429")) {
 			if (Log.isLoggable(TAG, Log.DEBUG)) Log.d(TAG, "onError() 429, result page " + resultPage);
 			// orientation change fix begin
 			if (resultPage == INITIAL_RESULT_PAGE) {
@@ -480,8 +480,7 @@ public class FastcheckFragment extends BaseFragment implements
 			}
 			// orientation change fix end
 			showPreviousPage(res);
-		} else if (cardErrorBean.getErrorMessage().indexOf(
-				"Received authentication challenge is null") >= 0) {
+		} else if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("401")) {
 			if (Log.isLoggable(TAG, Log.ERROR)) Log.e(TAG, "OnError() gets 401 type of error msg " + cardErrorBean.getErrorMessage());
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
