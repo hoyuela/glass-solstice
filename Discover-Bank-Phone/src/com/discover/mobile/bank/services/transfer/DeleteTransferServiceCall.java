@@ -26,6 +26,7 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	private final ActivityDetail activityDetail;
 	private final TypedReferenceHandler<ActivityDetail> handler;
 	private static final int TWO_MINUTES_SECONDS = 120;
+	private final TransferDeletionType deletionType;
 
 	/**
 	 * Performs a deletion call to the server in order to delete a given scheduled transfer.  The service
@@ -64,7 +65,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 
 			}
 		});
-		
+		this.deletionType = deletionType;
+
 		//Hold a reference to payment details for providing context to call backs
 		this.activityDetail = activityDetail;
 
@@ -103,6 +105,10 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 		url.append(activityDetail.id);
 		url.append(deletionType);
 		return url.toString();
+	}
+	
+	public TransferDeletionType getDeletionType() {
+		return deletionType;
 	}
 
 	private static String getDeleteType(final TransferDeletionType recurringDeletionType) {
