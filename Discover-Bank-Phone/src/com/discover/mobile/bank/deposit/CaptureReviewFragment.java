@@ -32,6 +32,7 @@ import com.discover.mobile.bank.ui.modals.AreYouSureGoBackModal;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -67,6 +68,10 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	private static final String IMAGE_CELL_ERROR_KEY = "image" + KEY_ERROR_EXT;
 
 	private int depositAmount = 0;
+	
+	/**The identifier for  the check deposit capture acitivty during a retake.*/
+	private final int RETAKE_ACTION = 1;
+
 	private Account account = null;
 
 	/**
@@ -324,7 +329,40 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 	public void retake(final int type) {
 		final Intent retakePic = new Intent(getActivity(), CheckDepositCaptureActivity.class);
 		retakePic.putExtra(BankExtraKeys.RETAKE_PICTURE, type);
-		startActivity(retakePic);
+		startActivityForResult(retakePic, RETAKE_ACTION);
+	}
+
+	/**
+	 * On result of the capture activity we may need to clear any errors that are on screen.
+	 */
+	@Override
+	public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		if(requestCode == RETAKE_ACTION) {
+			if(resultCode == Activity.RESULT_OK) {
+					
+				final String key = 
+						(amountDetail != null) ? 
+								amountDetail.getTopLabel().getText().toString() : StringUtility.EMPTY;
+				final Bundle args = getArguments();
+				/*
+				 * Reset all errors in both bundles in case this method is called and a rotation
+				 * occurs immediately, before onResume can finish.
+				 */
+				if(args != null) {
+					args.putString(key + KEY_ERROR_EXT, StringUtility.EMPTY);
+					args.putString(IMAGE_CELL_ERROR_KEY, StringUtility.EMPTY);		
+				}
+				//Clear the bundle that is used to restore error states after rotation.
+				if(bundle != null) {
+					bundle.putString(key + KEY_ERROR_EXT, StringUtility.EMPTY);
+					bundle.putString(IMAGE_CELL_ERROR_KEY, StringUtility.EMPTY);
+				}
+				//Clear the error text that is in text labels on the screen before hiding them.
+				showAmountError(StringUtility.EMPTY);
+				showImageError(StringUtility.EMPTY);
+				clearErrors();						
+			}
+		}
 	}
 
 	@Override
