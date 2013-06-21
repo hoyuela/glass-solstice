@@ -22,6 +22,13 @@ public class SearchByLocationFragment extends AtmMapFragment{
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View v = super.onCreateView(inflater, container, savedInstanceState);
 		super.setLocationStatus(NOT_USING_LOCATION);
+		
+		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
+			overlay = (AtmTapAndHoldCoachOverlay)v.findViewById(R.id.tap_and_hold_coach);
+			overlay.setDelegate(this);
+			overlay.showCoach();	
+		}
+		
 		return v;
 	}
 

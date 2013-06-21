@@ -373,6 +373,42 @@
             android:layout_toRightOf="@+id/directions_icon"
             android:text="@string/atm_help_direction_icon_text" />
         
+		<ImageView
+            android:id="@+id/line10"
+            style="@style/atm_line"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/directions_text"
+            android:src="@drawable/table_solid_line" />
+
+        <ImageView
+            android:id="@+id/tap_and_hold_to_search_icon"
+            android:layout_width="@dimen/atm_modal_pin_width"
+            android:layout_height="@dimen/atm_modal_pin_height"
+            android:layout_below="@+id/line10"
+            android:paddingTop="@dimen/atm_modal_icon_padding"
+            android:src="@drawable/atm_tap_new_search" />
+
+        <TextView
+            android:id="@+id/tap_and_hold_to_search_title"
+            style="@style/atm_normal_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/line10"
+            android:layout_toRightOf="@+id/directions_icon"
+            android:text="@string/atm_help_tap_and_hold_to_search_title" />
+
+        <TextView
+            android:id="@+id/tap_and_hold_to_search_text"
+            style="@style/atm_normal_static_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_title"
+            android:layout_below="@+id/tap_and_hold_to_search_title"
+            android:layout_toRightOf="@+id/tap_and_hold_to_search_icon"
+            android:text="@string/atm_help_tap_and_hold_to_search_text" />
+        
     </RelativeLayout>
 
 </ScrollView>

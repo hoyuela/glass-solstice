@@ -89,5 +89,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
+    
+	
+	<com.discover.mobile.bank.atm.AtmTapAndHoldCoachOverlay
+    	android:id="@+id/tap_and_hold_coach"
+    	android:layout_height="match_parent"
+    	android:layout_width="match_parent"
+    	android:layout_below="@+id/full_search_bar"
+    	android:layout_above="@+id/map_navigation_panel"
+    	android:focusable="true"
+    	android:visibility="gone" />
 
 </RelativeLayout>

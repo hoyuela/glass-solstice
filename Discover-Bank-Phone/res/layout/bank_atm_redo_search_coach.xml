@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    			android:id="@+id/atm_redo_search_coach"
+    			android:layout_width="match_parent"
+    			android:layout_height="match_parent"
+    			android:background="@color/commons_modal_black_overlay"
+    			android:clickable="true" >
+    
+    <ImageButton 
+        android:id="@+id/atm_tap_new_search_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding"
+        android:contentDescription="@string/tap_to_search_exit_button_content_discription"
+        android:src="@drawable/atm_tap_new_search_x"
+        android:background="@android:color/transparent" />
+    
+	<TextView
+        android:id="@+id/atm_tap_new_search_text" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:drawableTop="@drawable/atm_tap_new_search"
+        android:drawablePadding="@dimen/content_padding"
+		android:layout_centerInParent="true"
+      	android:text="@string/tap_to_search_text"
+      	android:textColor="#FFFFFF" 
+      	android:fontFamily="Verdana"
+      	android:textSize="16sp"
+      	android:shadowColor="#000000"
+      	android:shadowDx="2"
+      	android:shadowDy="2"
+      	android:shadowRadius="2"/>
+    
+    <!-- 	
+    	In order to force the layout to stretch all the way to the bottom of the mapview I use this aligned to the bottom
+     	so that a blank unit is there. 
+    -->
+    <View
+        android:id="@+id/blank_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

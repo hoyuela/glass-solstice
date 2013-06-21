@@ -131,7 +131,7 @@ public final class AtmModalFactory{
 		modal.getCancelButton().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
-				modal.dismiss();
+				modal.cancel();
 				fragment.setLocationStatus(LocationFragment.NOT_USING_LOCATION);
 			}
 		});
