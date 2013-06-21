@@ -86,7 +86,7 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	 * Show the status message
 	 */
 	public void showStatusMessage(){
-		status.setText(R.string.review_payments_scheduled_deleted);
+		status.setText(getResources().getString(R.string.review_payments_scheduled_deleted));
 		status.showAndHide(DURATION);
 	}
 

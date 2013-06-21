@@ -18,6 +18,7 @@ import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
+import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
@@ -557,6 +558,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, ((GetActivityServerCall)sender).getDidDeleteActivity());
 			bundle.putBoolean(BankExtraKeys.DID_DELETE_PAYMENT, ((GetActivityServerCall)sender).getDidDeletePayment());
+			bundle.putSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE, 
+									((GetActivityServerCall) sender).getDeletionType());
 			bundle.putAll(((GetActivityServerCall) sender).getExtras());
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}
@@ -586,10 +589,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 			BankUser.instance().getCurrentAccount().scheduled = null;
 			BankUser.instance().setScheduled(null);
-
+			
+			final TransferDeletionType deletionType = ((DeleteTransferServiceCall) sender).getDeletionType();
 			//Calls to re-get the activity data because it has been modified.
 			final String link = BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY);
-			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled, true).submit();
+			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled, deletionType).submit();
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
