@@ -936,6 +936,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 			        RelativeLayout.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+
+		/** Adjust positioning of the logo to the center */
+		final float paddingTop = getResources().getDimension(R.dimen.element_top_padding);
+		discoverLogo.setPadding(0, (int) paddingTop, 0, 0);
+		params.leftMargin = (int) getResources().getDimension(R.dimen.element_side_padding);
+		params.topMargin = (int) getResources().getDimension(R.dimen.table_inner_padding);
 		discoverLogo.setLayoutParams(params);
 	}
 	
@@ -947,6 +953,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				    new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
 				        RelativeLayout.LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+			
+			/** Adjust positioning of the logo to the left */
+			final float offset = getResources().getDimension(R.dimen.element_side_padding);
+			final float paddingTop = getResources().getDimension(R.dimen.element_top_padding);
+			discoverLogo.setPadding((int) offset, (int)paddingTop, 0, 0);
+			params.leftMargin = 0;
+			params.topMargin = (int) getResources().getDimension(R.dimen.table_inner_padding);
 			discoverLogo.setLayoutParams(params);
 		} else hideFastcheck();
 	}
