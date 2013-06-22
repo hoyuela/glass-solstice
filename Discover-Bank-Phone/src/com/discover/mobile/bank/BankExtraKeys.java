@@ -49,6 +49,9 @@ public final class BankExtraKeys {
 	/**Used to notify a fragment that a transaction item has been deleted from its list*/
 	public static final String CONFIRM_DELETE = "delete";
 	
+	/**Used to identify the kind of transaction that was deleted */
+	public static final String DELETED_TRANSACTION_TYPE = "dtt";
+	
 	/**Used to notify a fragment that a payment has been deleted from its list of payments*/
 	public static final String DID_DELETE_PAYMENT = "ddp";
 
