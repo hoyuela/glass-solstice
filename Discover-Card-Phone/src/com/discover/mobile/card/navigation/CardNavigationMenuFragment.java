@@ -30,17 +30,20 @@ import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.miles.MilesForESCCards;
 import com.discover.mobile.card.miles.MilesInfo;
 import com.discover.mobile.card.miles.RedeemMilesInfo;
+import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.payments.PaymentsSectionInfo;
 import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.card.redeemcashbackbonus.RedeemCashbackBonusInfo;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.GetPushCount;
 import com.discover.mobile.card.services.push.GetPushCountBean;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
 import com.discover.mobile.common.nav.section.ComponentInfo;
+import com.discover.mobile.common.utils.PasscodeUtils;
 import com.google.common.collect.ImmutableList;
 import com.xtify.sdk.api.XtifySDK;
 
@@ -102,8 +105,10 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         final CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
         activity.setMenu(this);
 
+        BaseFragment landingFragment = getDeeplinkPage();
+        
         NavigationItem.initializeAdapterWithSections(navigationItemAdapter,
-                CARD_SECTION_LIST, new HomeSummaryFragment());
+                CARD_SECTION_LIST, landingFragment);
         mCardStoreData = CardShareDataStore.getInstance(getActivity());
         mCardStoreData.addToAppCache("currentPageTitle", "Home");
         setListAdapter(navigationItemAdapter);
@@ -366,6 +371,22 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
             pushUnReadCount = pushSharedPrefs.getInt(
                     PushConstant.pref.PUSH_COUNT, 0);
         }
+    }
+    
+    /**
+     * sgoff0
+     * Dynamic deeplinking. 
+     * @return Fragment to navigate directly to upon login
+     */
+    private BaseFragment getDeeplinkPage() {
+    	BaseFragment retVal;
+        PasscodeUtils pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
+        if (pUtils.isForgotPasscode()) {
+        	retVal = new PasscodeLandingFragment();
+        } else {
+        	retVal = new HomeSummaryFragment();
+        }
+        return retVal;
     }
 
 }

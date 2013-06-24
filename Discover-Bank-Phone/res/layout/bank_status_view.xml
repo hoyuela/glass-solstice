@@ -14,7 +14,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:src="@drawable/red_x_circle" 
-        style="@style/modal_error_image"/>
+        style="@style/common_modal_error_image"/>
 
     <TextView
         android:id="@+id/status_text"

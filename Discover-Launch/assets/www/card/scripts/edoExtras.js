@@ -363,7 +363,7 @@ edoMaps.initialize2 = function() {
 	}
 };
 
-$("#edo-faqs,#customerServiceFaqs-pg,#sendMoneyFAQ-pg, #rd-faqs,#updateEmail-pg,#personalizeCashPin1-pg").live('pageshow',function(event) {
+$("#edo-faqs,#customerServiceFaqs-pg,#qvFaqs-pg, #sendMoneyFAQ-pg, #rd-faqs,#updateEmail-pg,#personalizeCashPin1-pg").live('pageshow',function(event) {
 	try{
 //		Hide all the Answers of all Questions
 		$(".rdfaq-hidden-element").hide();

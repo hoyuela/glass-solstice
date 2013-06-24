@@ -80,6 +80,7 @@ public class JQMResourceMapper {
         temp.put("Redemption History",
                 R.string.sub_section_title_redemption_history);
         temp.put("Quick View", R.string.sub_section_title_fast_view);
+        temp.put("Qv Faq",R.string.sub_section_title_fast_view);
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
         temp.put("Push Alerts History",

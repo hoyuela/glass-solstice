@@ -54,6 +54,13 @@ public interface AnalyticsPage {
 	
 	/**Analytic for going to the enroll profile screen*/
 	static final String PROFILE_ENROLL = "profileEnroll-pg";
+	
+	/**Analytic for viewing quickview*/
+	static final String QUICKVIEW_VIEW ="loginscreenQuickView-pg";
+
+	/**Analytic for viewing Quick View Stup*/
+	static final String QUICKVIEW_SETUP_ON = "QuickView-SetUp_ON-pg";
+	static final String  QUICKVIEW_SETUP_OFF = "QuickView-SetUp_OFF-pg";
 
 	
 	//not used yet
@@ -63,5 +70,20 @@ public interface AnalyticsPage {
 	static final String CARD_HOME_ESSENTIAL_CARD = "cardHomeEssencialCard-pg";
 	static final String CORPORATE_DBC_L = "corporateDBC_L-pg";
 	static final String CORPORATE_DBCL = "corporateDBCL-pg";
+	
+	//passcode pages
+	static final String PASSCODE_MENU = "passcode-menu-pg";
+	static final String PASSCODE_SETUP_STEP1 = "passcode-setup-step1-pg";
+	static final String PASSCODE_SETUP_STEP2 = "passcode-setup-step2-pg";
+	static final String PASSCODE_UPDATE_STEP1 = "passcode-update-step1-pg";
+	static final String PASSCODE_UPDATE_STEP2 = "passcode-update-step2-pg";
+	static final String PASSCODE_UPDATE_STEP3 = "passcode-update-step3-pg";
+	static final String PASSCODE_REMOVE = "passcode-remove-pg";
+	static final String PASSCODE_DISABLE = "passcode-disable-pg";
+	static final String PASSCODE_ENABLE_STEP1 = "passcode-enable-step1-pg";
+	static final String PASSCODE_ENABLE_STEP2 = "passcode-enable-step2-pg";
+	static final String PASSCODE_FORGOT_STEP1 = "passcode-forgot-step1-pg";
+	static final String PASSCODE_FORGOT_STEP2 = "passcode-forgot-step2-pg";
+	
 	
 }

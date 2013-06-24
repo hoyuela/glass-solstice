@@ -5,11 +5,12 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.ToggleButton;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
+import com.discover.mobile.common.ui.table.TableButtonGroup;
+import com.discover.mobile.common.ui.table.TableHeaderButton;
 
 /**
  * Header for the review payments list.  This contains the controls for the buttons.
@@ -30,17 +31,11 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**Duration the message to show*/
 	public static final int DURATION = 5000;
 
-	/**Scheduled toggle button*/
-	private final ToggleButton scheduled;
-
-	/**Completed toggle button*/
-	private final ToggleButton completed;
-
-	/**Cancelled toggle button*/
-	private final ToggleButton canceled;
-
 	/**Table titles in the view*/
 	private final TableTitles titles;
+
+	/**Group holding the buttons*/
+	final TableButtonGroup group;
 
 	/**Current category being displayed*/
 	private int currentCategory;
@@ -57,16 +52,12 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 		super(context, attrs);
 
 		final View view = LayoutInflater.from(context).inflate(R.layout.review_payments_header, null);
-
-		scheduled = (ToggleButton) view.findViewById(R.id.toggle_left);
-		completed = (ToggleButton) view.findViewById(R.id.toggle_middle);
-		canceled  = (ToggleButton) view.findViewById(R.id.toggle_right);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
 		status = (StatusMessageView) view.findViewById(R.id.status);
-
-		titles.setLabel1(this.getResources().getString(R.string.review_payments_filter_one));
-		titles.setLabel2(this.getResources().getString(R.string.review_payments_filter_two));
-		titles.setLabel3(this.getResources().getString(R.string.review_payments_filter_three));
+		group = (TableButtonGroup) view.findViewById(R.id.buttons);
+		titles.setLabel1(getResources().getString(R.string.review_payments_filter_one));
+		titles.setLabel2(getResources().getString(R.string.review_payments_filter_two));
+		titles.setLabel3(getResources().getString(R.string.review_payments_filter_three));
 		addView(view);
 	}
 
@@ -74,43 +65,28 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	 * Set the scheduled button selected and unselect the other buttons
 	 */
 	public void selectScheduledButton(){
-		scheduled.setTextColor(getResources().getColor(R.color.white));
-		completed.setTextColor(getResources().getColor(R.color.body_copy));
-		canceled.setTextColor(getResources().getColor(R.color.body_copy));
-		scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_on));
-		completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_off));
-		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
+		group.setButtonSelected(SCHEDULED_PAYMENTS);
 	}
 
 	/**
 	 * Set the completed button selected and unselect the other buttons
 	 */
 	public void selectCompletedButton(){
-		scheduled.setTextColor(getResources().getColor(R.color.body_copy));
-		completed.setTextColor(getResources().getColor(R.color.white));
-		canceled.setTextColor(getResources().getColor(R.color.body_copy));
-		scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
-		completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_on));
-		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
+		group.setButtonSelected(COMPLETED_PAYMENTS);
 	}
 
 	/**
 	 * Set the canceled button selected and unselect the other buttons
 	 */
 	public void selectCanceledButton(){
-		scheduled.setTextColor(getResources().getColor(R.color.body_copy));
-		completed.setTextColor(getResources().getColor(R.color.body_copy));
-		canceled.setTextColor(getResources().getColor(R.color.white));
-		scheduled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
-		completed.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_mid_off));
-		canceled.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
+		group.setButtonSelected(CANCELED_PAYMENTS);
 	}
 
 	/**
 	 * Show the status message
 	 */
 	public void showStatusMessage(){
-		status.setText(R.string.review_payments_scheduled_deleted);
+		status.setText(getResources().getString(R.string.review_payments_scheduled_deleted));
 		status.showAndHide(DURATION);
 	}
 
@@ -138,22 +114,22 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	/**
 	 * @return the scheduled
 	 */
-	public ToggleButton getScheduled() {
-		return scheduled;
+	public TableHeaderButton getScheduled() {
+		return group.getButton(SCHEDULED_PAYMENTS);
 	}
 
 	/**
 	 * @return the completed
 	 */
-	public ToggleButton getCompleted() {
-		return completed;
+	public TableHeaderButton getCompleted() {
+		return group.getButton(COMPLETED_PAYMENTS);
 	}
 
 	/**
 	 * @return the canceled
 	 */
-	public ToggleButton getCanceled() {
-		return canceled;
+	public TableHeaderButton getCanceled() {
+		return group.getButton(CANCELED_PAYMENTS);
 	}
 
 	/**
@@ -169,6 +145,22 @@ public class ReviewPaymentsHeader extends RelativeLayout{
 	 */
 	public void clearMessage(){
 		titles.hideMessage();
+	}
+
+	/**
+	 * Set the observers to the group
+	 * @param observer - observer of the buttons
+	 */
+	public void setGroupObserver(final OnClickListener observer){
+		group.addObserver(observer);
+	}
+
+	/**
+	 * Remove the listeners attached to the buttons.  Essentially relay the message to the
+	 * group to unregister the observer.
+	 */
+	public void removeListeners(){
+		group.removeObserver();
 	}
 
 }

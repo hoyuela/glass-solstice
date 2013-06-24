@@ -301,7 +301,7 @@
     <!-- FastView/QuickView -->
     <style name="quick_view_text">
         <item name="android:textColor">#3d484d</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
     </style>
 
@@ -310,4 +310,90 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="whatsnew_small_copy" parent="discover_text">
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textColor">@color/whatsnew_desc</item>
+        <item name="android:textStyle">normal</item>                
+    </style>
+      
+          <!-- Passcode Styles start -->
+    <style name="PasscodeDigit">
+        <item name="android:textSize">@dimen/passcode_digit_text</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">false</item>
+        <item name="android:longClickable">false</item>
+        <item name="android:layout_width">@dimen/passcode_digit_width</item>
+        <item name="android:layout_height">@dimen/passcode_digit_height</item>
+        <item name="android:layout_marginLeft">@dimen/passcode_digit_hpad</item>
+        <item name="android:layout_marginRight">@dimen/passcode_digit_hpad</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:digits">0123456789</item>
+        <item name="android:keepScreenOn">true</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:imeOptions">actionNone|flagNoExtractUi|flagNoAccessoryAction|flagNoEnterAction</item>
+    </style>
+
+    <style name="PasscodeGuidelines">
+        <item name="android:textSize">@dimen/passcode_message_text</item>
+        <item name="android:textColor">@color/passcodeBlue</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:text">@string/nomatch_pass</item>
+    </style>
+
+    <style name="ScreenRoot">
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
+    <style name="Spacer">
+        <item name="android:layout_width">1.0px</item>
+        <item name="android:layout_height">1.0px</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
+    <style name="PasscodeDigitParent">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/passcode_vpad</item>
+    </style>
+
+    <style name="PasscodeOverlay">
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+    </style>
+
+    <style name="PasscodeOverlayTitle">
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/passcodeBlack</item>
+    </style>
+
+    <style name="PasscodeOverlayParagraph">
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/passcodeBlack</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="PasscodeHR">
+        <item name="android:background">#9C9C9C</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+    
+    <!-- Passcode Styles end -->
 </resources>

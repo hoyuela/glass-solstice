@@ -213,6 +213,7 @@ public class EnhancedAccountSecurityActivity extends
                 if (authListener != null) {
                     authListener.onStrongAuthSucess(data);
                 }
+                finish();
                 // activityResult = RESULT_OK;
                 // finish();
             }

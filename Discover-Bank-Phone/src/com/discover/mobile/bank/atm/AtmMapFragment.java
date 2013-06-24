@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.animation.AlphaAnimation;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -305,6 +306,24 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 		restoreCameraView();
 		adjustMapZoomIfNeeded();
+		
+		fadeInMap();
+	}
+	
+	/**
+	 * Performs an animation on the map fragment to fade it in and avoid
+	 * showing a black area for the map.
+	 */
+	private void fadeInMap() {
+		final View mapView = getView().findViewById(R.id.discover_map);
+		
+		if(mapView != null) {
+			final int halfSecond = 500;
+			final AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
+			fadeIn.setDuration(halfSecond);
+			mapView.startAnimation(fadeIn);
+			mapView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**

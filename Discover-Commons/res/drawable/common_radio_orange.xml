@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 13.6 ELEMENTS : RADIO BUTTONS -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:state_window_focused="false"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_on_orange" />
+    <item android:state_checked="false" android:state_window_focused="false"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_off_orange" />
+          
+    <item android:state_checked="true" android:state_pressed="true"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_on_pressed_orange" />
+    <item android:state_checked="false" android:state_pressed="true"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_off_pressed_orange" />
+
+    <item android:state_checked="true" android:state_focused="true"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_on_focused_orange" />
+    <item android:state_checked="false" android:state_focused="true"
+          android:state_enabled="true"
+          android:drawable="@drawable/common_radio_off_focused_orange" />
+
+    <item android:state_checked="false" android:state_enabled="true"
+          android:drawable="@drawable/common_radio_off_orange" />
+    <item android:state_checked="true" android:state_enabled="true"
+          android:drawable="@drawable/common_radio_on_orange" />
+
+    <!-- Disabled states -->
+
+    <item android:state_checked="true" android:state_window_focused="false"
+          android:drawable="@drawable/common_radio_on_disabled_orange" />
+    <item android:state_checked="false" android:state_window_focused="false"
+          android:drawable="@drawable/common_radio_off_disabled_orange" />
+
+    <item android:state_checked="true" android:state_focused="true"
+          android:drawable="@drawable/common_radio_on_disabled_focused_orange" />
+    <item android:state_checked="false" android:state_focused="true"
+          android:drawable="@drawable/common_radio_off_disabled_focused_orange" />
+
+    <item android:state_checked="false" android:drawable="@drawable/common_radio_off_disabled_orange" />
+    <item android:state_checked="true" android:drawable="@drawable/common_radio_on_disabled_orange" />
+
+</selector>

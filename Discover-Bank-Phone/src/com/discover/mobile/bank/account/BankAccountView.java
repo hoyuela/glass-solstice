@@ -187,24 +187,28 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	 */
 	@Override
 	public void onClick(final View v) {
-		final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
+		if (account != null) {
+			final String link = account.getLink(Account.LINKS_POSTED_ACTIVITY);
 
-		// Get latest account information
-		account = BankUser.instance().getAccount(account.id);
+			// Get latest account information
+			account = BankUser.instance().getAccount(account.id);
 
-		//Set Current Account to be accessed by other objects in the application
-		BankUser.instance().setCurrentAccount(account);
+			// Set Current Account to be accessed by other objects in the application
+			BankUser.instance().setCurrentAccount(account);
 
-		//Send Request to download the current accounts posted activity
-		if(null != account.posted){
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankAccountActivityTable.ACCOUNT, account);
-			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
-			BankConductor.navigateToAccountActivityPage(bundle);
-		}else{
-			final GetActivityServerCall serverCall = BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted, false);
-			serverCall.getExtras().putSerializable(BankAccountActivityTable.ACCOUNT, account);
-			serverCall.submit();
+			// Send Request to download the current accounts posted activity
+			if (null != account.posted) {
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankAccountActivityTable.ACCOUNT, account);
+				bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, account.posted);
+				BankConductor.navigateToAccountActivityPage(bundle);
+			} else {
+				final GetActivityServerCall serverCall = BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Posted);
+				serverCall.getExtras().putSerializable(BankAccountActivityTable.ACCOUNT, account);
+				serverCall.submit();
+			}
+		} else {
+			BankUser.instance().refreshBankAccounts();
 		}
 	}
 

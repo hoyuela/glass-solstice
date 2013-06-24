@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/drop_shadow"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true" 
+        android:visibility="invisible"/>
 
     <FrameLayout
         android:id="@+id/discover_list"

@@ -9,7 +9,10 @@
         android:name="com.discover.mobile.card.fastcheck.FastcheckFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" 
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="18dp"
+        android:layout_alignParentTop="true"
         android:layout_above="@+id/fastcheck_bottom_button_row"/> 
             
     <LinearLayout
@@ -33,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.50"
-            android:text="@string/provide_feedback" />
+            android:text="@string/feedback_text" />
     </LinearLayout>
 
 </RelativeLayout>

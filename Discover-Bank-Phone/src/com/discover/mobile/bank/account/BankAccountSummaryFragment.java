@@ -32,6 +32,7 @@ import com.discover.mobile.bank.services.json.Name;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.facade.FacadeFactory;
@@ -95,6 +96,9 @@ public class BankAccountSummaryFragment extends BaseFragment implements Fragment
 		super.onResume();
 		getActivity().registerReceiver(timeListener, new IntentFilter(Intent.ACTION_TIME_TICK));
 		updateGreeting();
+
+		//Make sure the bank view is checked because we are in bank
+		toggleView.setAccountType(AccountType.BANK_ACCOUNT);
 	}
 
 	@Override

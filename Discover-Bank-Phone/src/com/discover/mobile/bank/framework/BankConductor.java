@@ -285,7 +285,7 @@ public final class BankConductor  extends Conductor {
 		if( activity.getClass() != BankNavigationRootActivity.class ) {
 			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
 			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+			home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			activity.startActivity(home);
 
 			//Close current activity
@@ -550,7 +550,9 @@ public final class BankConductor  extends Conductor {
 					if(bundle.getBoolean(BankExtraKeys.DID_DELETE_PAYMENT, false)) {
 						accountActivityFragment.showDeletePaymentMessage();
 					}else {
-						accountActivityFragment.showStatusMessage();
+						final TransferDeletionType type = 
+											(TransferDeletionType)bundle.getSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE);
+						accountActivityFragment.showTransferDeletedMessage(type);
 					}
 
 					accountActivityFragment.handleReceivedData(bundle);
@@ -703,8 +705,7 @@ public final class BankConductor  extends Conductor {
 			final GetActivityServerCall getActivityCall = BankServiceCallFactory.createGetActivityServerCall(
 					BankUser.instance().getCurrentAccount().getLink(
 							Account.LINKS_SCHEDULED_ACTIVITY), 
-							ActivityDetailType.Scheduled, 
-							true);
+							ActivityDetailType.Scheduled);
 
 			getActivityCall.setDidDeletePayment(true);
 			getActivityCall.submit();
@@ -1345,7 +1346,11 @@ public final class BankConductor  extends Conductor {
 		BankUser.instance().clearSession();
 		BankConductor.navigateToLoginPage(activeActivity, IntentExtraKey.SESSION_EXPIRED, null);
 		final ErrorHandlerUi uiHandler = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
-		FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+
+		/** Only log out the user from card if it is an sso user */
+		if (BankUser.instance().isSsoUser()) {
+			FacadeFactory.getCardLogoutFacade().logout(activeActivity, uiHandler);
+		}
 	}
 
 	/**

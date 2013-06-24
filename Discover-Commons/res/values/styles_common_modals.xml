@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="common_modal_black_bg">
+        <item name="android:background">@color/commons_modal_black_overlay</item>
+    </style>
+
+    <style name="common_modal_white_bg">
+        <item name="android:background">@drawable/modal_white_background</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+
+    <style name="common_modal_content_error_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textColor">@color/error_indicator</item>
+    </style>
+
+    <style name="common_modal_title_text" parent="title_copy">
+        <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
+        <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
+        <item name="android:textSize">@dimen/title_min</item>
+    </style>
+
+    <style name="common_modal_content_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+    </style>
+
+    <style name="common_modal_body_copy_content_text" parent="body_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+
+    <style name="common_modal_error_image">
+        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+    </style>
+
+    <style name="common_modal_orange_button" parent="common_call_to_action_theme">
+        <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
+        <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
+        <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
+        <item name="android:paddingBottom">@dimen/small_call_to_actions_padding</item>
+        <item name="android:background">@drawable/common_modal_orange_button_selector</item>
+    </style>
+    
+    <style name="common_modal_gray_button" parent="common_call_to_action_gray_theme">
+        <item name="android:background">@drawable/common_modal_gray_button_selector</item>
+        <item name="android:textColor">@color/sub_copy</item>
+    </style>
+
+    <!-- Below here is intentionally left here for card compatability -->
+    <style name="modal_body_copy_content_text" parent="body_copy">
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+
+    <style name="modal_content_error_text" parent="sub_copy">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textColor">@color/error_indicator</item>
+    </style>
+
+</resources>

@@ -10,7 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -19,6 +18,8 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
+import com.discover.mobile.common.ui.table.TableButtonGroup;
+import com.discover.mobile.common.ui.table.TableHeaderButton;
 
 /**
  * Header displayed at the top of the activity table view screen
@@ -26,6 +27,10 @@ import com.discover.mobile.bank.ui.widgets.StatusMessageView;
  *
  */
 public class AccountActivityHeader extends RelativeLayout{
+
+	/**Integer values representing the locations of the buttons in the group*/
+	private static final int ACTIVITY_BUTTON = 0;
+	private static final int SCHEDULED_BUTTON = 1;
 
 	/**Layout view*/
 	private final View view;
@@ -35,7 +40,7 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Value holding the available balance*/
 	private final TextView availableBalance;
-	
+
 	/**Available balance Label*/
 	private final TextView availableBalanceLabel;
 
@@ -44,18 +49,15 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Current Balance Label*/
 	private final TextView currentBalanceLabel;
-	
+
 	/**Value holding the current balance*/
 	private final TextView currentBalance;
 
 	/**Title of the header*/
 	private final TextView title;
 
-	/**Posted activity toggle button*/
-	private final ToggleButton postedButton;
-
-	/**Scheduled activity toggle button*/
-	private final ToggleButton scheduledButton;
+	/**Group holding the buttons*/
+	final TableButtonGroup group;
 
 	/**Boolean set to true if the user id viewing posted activity*/
 	private boolean isPosted = true;
@@ -83,7 +85,7 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Status Message View*/
 	private final StatusMessageView status;
-	
+
 	/**Duration of the status message*/
 	private final int STATUS_MESSAGE_DURATION = 5000;
 
@@ -102,16 +104,15 @@ public class AccountActivityHeader extends RelativeLayout{
 		currentBalanceLabel = (TextView)view.findViewById(R.id.lable3);
 		currentBalance = (TextView)view.findViewById(R.id.value3);
 		title = (TextView) view.findViewById(R.id.title_text);
-		postedButton = (ToggleButton) view.findViewById(R.id.posted_button);
-		scheduledButton = (ToggleButton) view.findViewById(R.id.scheduled_button);
+		group = (TableButtonGroup) view.findViewById(R.id.buttons);
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
 		type = (TextView)view.findViewById(R.id.lable1);
 		titles = (TableTitles) view.findViewById(R.id.table_titles);
 		status = (StatusMessageView) view.findViewById(R.id.status);
 
-		titles.setLabel1(this.getResources().getString(R.string.recent_activity_date));
-		titles.setLabel2(this.getResources().getString(R.string.recent_activity_description));
-		titles.setLabel3(this.getResources().getString(R.string.recent_activity_amount));
+		titles.setLabel1(getResources().getString(R.string.recent_activity_date));
+		titles.setLabel2(getResources().getString(R.string.recent_activity_description));
+		titles.setLabel3(getResources().getString(R.string.recent_activity_amount));
 
 		collapse = Animator.collapse(labels);
 		expand = Animator.expand(labels);
@@ -161,12 +162,12 @@ public class AccountActivityHeader extends RelativeLayout{
 	 */
 	public final void addAccount(){
 		if(null == account){return;}
-		
+
 		type.setText(account.getFormattedName());
 		title.setText(account.nickname);
 		checking.setText(account.accountNumber.formatted);	
 		setSpan(R.drawable.drk_blue_arrow_down);
-		
+
 		/**If current balance is not provided do not show*/
 		if( null != account.currentBalance ) {
 			currentBalance.setText(account.currentBalance.formatted);
@@ -174,7 +175,7 @@ public class AccountActivityHeader extends RelativeLayout{
 			currentBalance.setVisibility(View.GONE);
 			currentBalanceLabel.setVisibility(View.GONE);
 		}
-		
+
 		/** Available Balance Should be hidden for CDs and Personal Loans. */
 		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) && !account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			availableBalance.setText(account.balance.formatted);
@@ -190,7 +191,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Set the image span
 	 */
 	private void setSpan(final int res){
-		final ImageSpan imagespan = new ImageSpan(this.getContext(), res, ImageSpan.ALIGN_BASELINE); 
+		final ImageSpan imagespan = new ImageSpan(getContext(), res, ImageSpan.ALIGN_BASELINE); 
 		final SpannableString text = new SpannableString("  " +account.nickname);
 		text.setSpan(imagespan, 0, 1, SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
 		title.setText(text);
@@ -226,7 +227,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		view.findViewById(R.id.lable1).setVisibility(visibility);
 		view.findViewById(R.id.lable3).setVisibility(visibility);
 		checking.setVisibility(visibility);
-		
+
 		/**If current balance is not provided do not show*/
 		if( null != account.currentBalance ) {
 			currentBalance.setVisibility(visibility);
@@ -235,7 +236,7 @@ public class AccountActivityHeader extends RelativeLayout{
 			currentBalance.setVisibility(View.GONE);
 			currentBalanceLabel.setVisibility(View.GONE);
 		}
-		
+
 		/** Available Balance Should be hidden for CDs and Personal Loans. */
 		if( account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) || account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			view.findViewById(R.id.lable2).setVisibility(View.GONE);
@@ -247,37 +248,17 @@ public class AccountActivityHeader extends RelativeLayout{
 	}
 
 	/**
-	 * Toggle the buttons look and feel
-	 * @param checked - toggle button that is checked
-	 * @param notChecke - toggle button that is not checked
-	 * @param isPosted - boolean to set is posted equal to
-	 */
-	public final void toggleButton(final ToggleButton checked, final ToggleButton notChecked, final boolean isPosted){
-		checked.setTextColor(getResources().getColor(R.color.white));
-		notChecked.setTextColor(getResources().getColor(R.color.body_copy));
-		if(isPosted){
-			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_off));
-			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_on));
-		}else{
-			notChecked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_left_off));
-			checked.setBackgroundDrawable(getResources().getDrawable(R.drawable.toggle_right_on));
-		}
-		notChecked.setChecked(false);
-		this.setPosted(isPosted);
-	}
-
-	/**
 	 * @return the postedButton
 	 */
-	public ToggleButton getPostedButton() {
-		return postedButton;
+	public TableHeaderButton getPostedButton() {
+		return group.getButton(ACTIVITY_BUTTON);
 	}
 
 	/**
 	 * @return the scheduledButton
 	 */
-	public ToggleButton getScheduledButton() {
-		return scheduledButton;
+	public TableHeaderButton getScheduledButton() {
+		return group.getButton(SCHEDULED_BUTTON);
 	}
 
 	/**
@@ -359,21 +340,21 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * @param the selected category
 	 */
 	public final void setSelectedCategory(final boolean isPosted) {
-		this.isPosted = isPosted;
+		setPosted(isPosted);
 		if(isPosted){
-			toggleButton(postedButton, scheduledButton, isPosted);
+			group.setButtonSelected(ACTIVITY_BUTTON);
 		}else{
-			toggleButton(scheduledButton, postedButton, isPosted);			
+			group.setButtonSelected(SCHEDULED_BUTTON);
 		}
 	}
-	
+
 	/**
-	 * Shows the supplied strings file string.
+	 * Displays a message and animates it away.
 	 * 
-	 * @param deleteMessageToShow	- ID to the strings file string.
+	 * @param messageToDisplay - the String to display.
 	 */
-	public void showStatusMessage(final int deleteMessageToShow){
-		status.setText(deleteMessageToShow);
+	public void showStatusMessage(final String messageToDisplay){
+		status.setText(messageToDisplay);
 		status.showAndHide(STATUS_MESSAGE_DURATION);
 	}
 
@@ -396,5 +377,29 @@ public class AccountActivityHeader extends RelativeLayout{
 		this.account = account;
 
 		addAccount();
+	}
+
+	/**
+	 * Set the observers to the group
+	 * @param observer - observer of the buttons
+	 */
+	public void setGroupObserver(final OnClickListener observer){
+		group.addObserver(observer);
+	}
+
+	/**
+	 * Check to see if the posted button is currently selected
+	 * @return if the posted button is currently selected
+	 */
+	public boolean isPostedSelected(){
+		return getPostedButton().isSelected();
+	}
+
+	/**
+	 * Notify the group of buttons that the current
+	 * observer should be removed. This helps prevent memory leaks.
+	 */
+	public void removeListeners(){
+		group.removeObserver();
 	}
 }

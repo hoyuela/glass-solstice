@@ -48,17 +48,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class QuickViewSetupFragment extends BaseFragment {
 
 	private ImageView toggleImage;
-	private TextView qvinfoTextView;
+	private TextView qvinfoTextView, qvfaqTextView;
 	private String new_token = "";
 	private View mainView;
-	private static final String REFERER = "cardHome-pg";	
+	private static final String REFERER = "cardHome-pg";
 	private static final String MILES = "MI2";
 	private static final String NOR = "NOR";
 	private static final String SML = "SML";
 	protected final String LOG_TAG = "QuickViewSetupFragment";
 	private boolean quickviewOn;
 	private String TAG = this.getClass().getSimpleName();
-	
+
 	/**
 	 * Create the view
 	 * 
@@ -76,17 +76,20 @@ public class QuickViewSetupFragment extends BaseFragment {
 		mainView = inflater.inflate(R.layout.quick_view_settings, null);
 
 		toggleImage = (ImageView) mainView.findViewById(R.id.quick_toggle);
-		
-		//Change CBB/MILES Texts
-		final ImageView faqImage = (ImageView) mainView.findViewById(R.id.faqimage);
+
+		// Change CBB/MILES Texts
+		final ImageView faqImage = (ImageView) mainView
+				.findViewById(R.id.faqimage);
 		qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
-		if(getCardType().equalsIgnoreCase(MILES)|| getCardType().equalsIgnoreCase(SML)){
+		qvfaqTextView = (TextView) mainView.findViewById(R.id.quick_view_faq);
+		if (getCardType().equalsIgnoreCase(MILES)
+				|| getCardType().equalsIgnoreCase(SML)) {
 			faqImage.setBackgroundResource(R.drawable.quickviewsetupmile);
-		}else if(getCardType().equalsIgnoreCase(NOR)){
+		} else if (getCardType().equalsIgnoreCase(NOR)) {
 			faqImage.setBackgroundResource(R.drawable.quickviewsetup_dbc_corp);
 		}
 		setQVInfoText();
-			
+
 		toggleImage.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -97,8 +100,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 							(CardErrorHandlerUi) getActivity());
-					cardErrorResHandler.handleCardError(
-							(CardErrorBean) bean,
+					cardErrorResHandler.handleCardError((CardErrorBean) bean,
 							new CardErrorCallbackListener() {
 
 								@Override
@@ -113,6 +115,15 @@ public class QuickViewSetupFragment extends BaseFragment {
 							});
 
 				}
+			}
+		});
+
+		qvfaqTextView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				((CardMenuInterface) getActivity())
+						.sendNavigationTextToPhoneGapInterface("Qv Faq");
 			}
 		});
 		CardShareDataStore mCardStoreData = CardShareDataStore.getInstance(this
@@ -137,7 +148,31 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 				String decryptedToken = null;
 				if (save_token != null)
-					decryptedToken = FastcheckUtil.decrypt(save_token);
+					try {
+						decryptedToken = FastcheckUtil.decrypt(save_token);
+					} catch (Exception e) {
+						FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify
+																				// invalid
+																				// token
+						CardErrorBean bean = new CardErrorBean(
+								getString(R.string.fast_check_error_tech_diff),
+								true);
+						CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+								(CardErrorHandlerUi) getActivity());
+						cardErrorResHandler.handleCardError(
+								(CardErrorBean) bean,
+								new CardErrorCallbackListener() {
+									@Override
+									public void onButton2Pressed() {
+										removeQVFragment();
+									}
+
+									@Override
+									public void onButton1Pressed() {
+										removeQVFragment();
+									}
+								});
+					}
 
 				if (null != decryptedToken) {
 					checkBindingStatus(decryptedToken);
@@ -148,8 +183,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 				CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 						(CardErrorHandlerUi) getActivity());
-				cardErrorResHandler.handleCardError(
-						(CardErrorBean) bean,
+				cardErrorResHandler.handleCardError((CardErrorBean) bean,
 						new CardErrorCallbackListener() {
 
 							@Override
@@ -171,7 +205,26 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 			@Override
 			public void onClick(View arg0) {
-				showQVwithOffState();
+				try {
+					showQVwithOnState();
+				} catch (Exception e) {
+					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+							(CardErrorHandlerUi) getActivity());
+					cardErrorResHandler.handleCardError((CardErrorBean) bean,
+							new CardErrorCallbackListener() {
+
+								@Override
+								public void onButton2Pressed() {
+									removeQVFragment();
+								}
+
+								@Override
+								public void onButton1Pressed() {
+									removeQVFragment();
+								}
+							});
+				}
 
 			}
 		});
@@ -189,20 +242,20 @@ public class QuickViewSetupFragment extends BaseFragment {
 
 	}
 
-	
 	/**
 	 * Sets QuickView InfoText According to Card Type
 	 */
-	private void setQVInfoText(){
-		if(getCardType().equalsIgnoreCase(MILES) || getCardType().equalsIgnoreCase(SML)){
+	private void setQVInfoText() {
+		if (getCardType().equalsIgnoreCase(MILES)
+				|| getCardType().equalsIgnoreCase(SML)) {
 			qvinfoTextView.setText(R.string.quick_view_info_miles);
-		}else if(getCardType().equalsIgnoreCase(NOR)){
+		} else if (getCardType().equalsIgnoreCase(NOR)) {
 			qvinfoTextView.setText(R.string.quick_view_info_dbc_corp);
-		}else{
+		} else {
 			qvinfoTextView.setText(R.string.quick_view_info);
 		}
 	}
-	
+
 	/**
 	 * Remove QuickView Fragments from Application's Fragment History Stack
 	 */
@@ -225,6 +278,23 @@ public class QuickViewSetupFragment extends BaseFragment {
 		toggleImage.setBackgroundResource(R.drawable.swipe_off);
 		setQVInfoText();
 		quickviewOn = false;
+	}
+
+	/**
+	 * Loads quick view setup page with toggle button in off state
+	 * 
+	 * @throws Exception
+	 */
+	private void showQVwithOnState() throws Exception {
+		mainView.findViewById(R.id.qvsetup_main_relative_view).setVisibility(
+				View.VISIBLE);
+		mainView.findViewById(R.id.qvalready_main_relative_view).setVisibility(
+				View.GONE);
+		toggleImage.setBackgroundResource(R.drawable.swipe_on);
+		setQVInfoText();
+		quickviewOn = false;
+		qvinfoTextView.setText(R.string.quick_view_info_on);
+		updateQuickViewStatus();
 	}
 
 	/**
@@ -431,8 +501,20 @@ public class QuickViewSetupFragment extends BaseFragment {
 					public void OnError(Object data) {
 						CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 								(CardErrorHandlerUi) getActivity());
-						cardErrorResHandler
-								.handleCardError((CardErrorBean) data);
+						cardErrorResHandler.handleCardError(
+								(CardErrorBean) data,
+								new CardErrorCallbackListener() {
+
+									@Override
+									public void onButton2Pressed() {
+										removeQVFragment();
+									}
+
+									@Override
+									public void onButton1Pressed() {
+										removeQVFragment();
+									}
+								});
 
 					}
 				});

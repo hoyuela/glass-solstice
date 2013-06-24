@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PasscodeOverlay" >
+
+    <TextView
+        style="@style/PasscodeOverlayTitle"
+        android:text="@string/passcode_dialog_enabled_title"
+        android:textColor="@color/orange"
+        />
+
+    <TextView
+        style="@style/PasscodeOverlayParagraph"
+        android:text="@string/passcode_dialog_enabled_paragraph_1" />
+
+</LinearLayout>

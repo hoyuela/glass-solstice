@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import android.util.Log;
+
 import com.discover.mobile.bank.deposit.CheckDepositCaptureActivity;
 import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
@@ -33,6 +35,7 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * Serialized!
 	 */
 	private static final long serialVersionUID = -8534001018414145158L;
+	private static final String TAG = BankUser.class.getSimpleName();
 	/**
 	 * Singleton instance of this class
 	 */
@@ -169,9 +172,15 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * @return Account or {@code null} if not found.
 	 */
 	public Account getAccount(final String accountId) {
-		for (final Account a : accountList.accounts) {
-			if (a.id.equals(accountId)) {
-				return a;
+		if (accountList != null) {
+			for (final Account a : accountList.accounts) {
+				if (a.id.equals(accountId)) {
+					return a;
+				}
+			}
+		} else {
+			if (Log.isLoggable(TAG, Log.ERROR)) {
+				Log.e(TAG, "Account list empty");
 			}
 		}
 		return null;
@@ -222,6 +231,15 @@ public final class BankUser extends CacheManager implements Serializable {
 		return (accountList != null && !accountList.accounts.isEmpty());
 	}
 
+
+	/**
+	 * 
+	 * @return Returns True if user has Bank Payees, false otherwise.
+	 */
+	public boolean hasPayees() {
+		final ListPayeeDetail payees = this.getPayees();
+		return (payees != null && !payees.payees.isEmpty());
+	}
 
 	/**
 	 * 

@@ -26,41 +26,6 @@
         <item name="android:padding">@dimen/forms_inner_padding</item>
     </style>
     
-    
-    <style name="alert_modal_black_bg">
-        <item name="android:background">#50000000</item>
-    </style>
-
-    <style name="alert_modal_white_bg">
-        <item name="android:background">@drawable/rounded_white_background</item>
-        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
-        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
-    </style>
-    
-    <style name="call_to_action_theme">
-        <item name="android:textColor">@drawable/call_to_action_text_color</item>
-        <item name="android:textSize">@dimen/body_copy_max</item>
-        <item name="android:paddingLeft">@dimen/orange_button_left_right_padding</item>
-        <item name="android:paddingRight">@dimen/orange_button_left_right_padding</item>
-        <item name="android:background">@drawable/call_to_action_button</item>
-        <item name="android:paddingTop">@dimen/call_to_actions_padding</item>
-        <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    
-        <style name="small_call_to_action_theme">
-        <item name="android:textColor">@drawable/call_to_action_text_color</item>
-        <item name="android:textSize">@dimen/small_copy_max</item>
-        <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
-        <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
-        <item name="android:background">@drawable/call_to_action_button</item>
-        <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
-        <item name="android:paddingBottom">@dimen/small_call_to_actions_padding</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    
     <!--  Blue Hyperlink styles -->
     <style name="blue_hyperlink">
         <item name="android:textColor">@color/blue_link</item>
@@ -105,11 +70,6 @@
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textColor">@color/title</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="modal_content_error_text" parent="sub_copy">
-        <item name="android:textSize">@dimen/small_copy_max</item>
-        <item name="android:textColor">@color/error_indicator</item>
     </style>
     
 
@@ -199,25 +159,6 @@
     <style name="field_copy_medium">
         <item name="android:textColor">@color/field_copy</item>
         <item name="android:textSize">@dimen/small_copy_mid</item>
-    </style>
-    
-    <style name="modal_title_text" parent="title_copy">
-        <item name="android:layout_marginTop">@dimen/modal_text_padding</item>
-        <item name="android:layout_marginBottom">@dimen/modal_text_padding</item>
-        <item name="android:textSize">@dimen/title_min</item>
-    </style>
-
-    <style name="modal_content_text" parent="sub_copy">
-        <item name="android:textSize">@dimen/small_copy_max</item>
-    </style>
-    
-    <style name="modal_body_copy_content_text" parent="body_copy">
-        <item name="android:textSize">@dimen/body_copy_min</item>
-    </style>
-
-    <style name="modal_error_image">
-        <item name="android:layout_marginTop">@dimen/between_related_elements_padding</item>
-        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
     </style>
 
     <style name="orange_action_bar_buttons" parent = "action_bar_theme">

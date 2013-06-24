@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+        
+    <!--  Custom Attributes for the table buttons -->
+    <declare-styleable name="com.discover.mobile.common.ui.table.TableButtonGroup">
+        <attr name="resourceArry" format="integer"/>
+    </declare-styleable>
+    
+</resources>
