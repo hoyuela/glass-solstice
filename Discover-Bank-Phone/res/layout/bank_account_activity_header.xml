@@ -97,6 +97,37 @@
             android:gravity="right"
             android:singleLine="true"
             android:textIsSelectable="false" />
+        
+        <!-- Interest text label -->
+        <TextView 
+            android:id="@+id/lable4"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/lable3"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:text="@string/activity_interest_rate"
+            
+            />
+        
+        <!-- Interest value text view -->
+        <TextView 
+            android:id="@+id/value4"
+            style="@style/plain_body_copy_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lable4"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/lable4"
+            android:layout_below="@+id/lable3"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_toRightOf="@+id/lable4"
+            android:gravity="right"
+            android:singleLine="true"
+            android:textIsSelectable="false"
+            
+            />
     </RelativeLayout>
 
     <com.discover.mobile.common.ui.table.TableButtonGroup
