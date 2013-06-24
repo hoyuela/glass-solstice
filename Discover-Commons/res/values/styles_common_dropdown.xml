@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="common_spinner_dropdown" parent="@android:style/Widget.Spinner">
+    <style name="common_spinner_dropdown" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
         <item name="android:background">@drawable/common_dropdown</item>
+        <item name="android:dropDownHorizontalOffset">18dp</item>
+        
     </style>
-
+    
 </resources>
