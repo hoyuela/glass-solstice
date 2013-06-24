@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--  This must be left with hyphens.  Xtify will not register if they are not in here. -->
-    <string name="push_key">35143b88-c85f-4212-a076-279d31792380</string> <!-- 35143b88-c85f-4212-a076-279d31792380 -->
-    <string name="push_id">252127776628</string> <!-- 1056872694046 -->
-</resources>
