@@ -183,11 +183,13 @@ public class DiscoverToggleSwitch extends CompoundButton {
         // Refresh display with current params
         refreshDrawableState();
         setChecked(isChecked());
+        /*
+         * This on click listener is required for making the animations work.
+         * not sure why it has to be here - julian
+         */
         this.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-	
-				
 			}
 		});
     }
