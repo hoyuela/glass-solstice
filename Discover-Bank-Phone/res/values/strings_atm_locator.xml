@@ -54,8 +54,15 @@
     <string name="atm_help_street_icon_text">Shows street view of location.</string>
     <string name="atm_help_direction_icon_title">Directions Icon</string>
     <string name="atm_help_direction_icon_text">Displays step-by-step directions.</string>
+    <string name="atm_help_tap_and_hold_to_search_title">Redo Search</string>
+    <string name="atm_help_tap_and_hold_to_search_text">Tap and hold to search in a\nnew location</string>
     <string name="atm_location_timeout_title">Cannot Retrieve Current Location</string>
     <string name="atm_location_timeout_text">We\'re sorry, we are unable to find your location at this time. Please allow us to search for your location again.</string>
+    
+    <!-- Tap and hold to search coach -->
+    <string name="tap_to_search_exit_button_content_discription">Close dialog</string>
+    <string name="tap_to_search_icon_content_discription">Tap and hold to redo search</string>
+    <string name="tap_to_search_text">Tap and hold to search.</string>
     
     <!-- Leaving Application Modal Text  -->
     <string name="atm_browser_title">You\'re Leaving This Application</string>

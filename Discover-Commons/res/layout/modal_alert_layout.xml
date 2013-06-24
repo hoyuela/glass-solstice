@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/modal_linear_layout"
-        style="@style/commons_modal_white_bg"
+        style="@style/common_modal_white_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

@@ -150,7 +150,7 @@ public class BankManagePayee extends BankSelectPayee implements OnClickListener{
 	 */
 	public void showDeleteConfirmation() {
 		if( statusView != null ) {
-			statusView.setText(R.string.bank_payee_delete_confirm);
+			statusView.setText(getResources().getString(R.string.bank_payee_delete_confirm));
 			statusView.showAndHide(DURATION);
 		}
 	}

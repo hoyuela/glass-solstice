@@ -41,6 +41,6 @@
 	<color name="weak_indicator">#ffdb11</color>
 	<color name="blue_link">#0267b1</color>
 	
-	
+	<color name="text_shadow">#7F000000</color>
 	
 </resources>

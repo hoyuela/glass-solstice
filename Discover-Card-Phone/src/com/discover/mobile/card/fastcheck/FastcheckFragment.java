@@ -40,6 +40,8 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.json.JacksonObjectMapperHolder;
@@ -113,18 +115,11 @@ public class FastcheckFragment extends BaseFragment implements
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		boolean isFastcheckHidden = (((NavigationRootActivity) getActivity())
-				.getSlidingMenu().getTouchModeAbove() == SlidingMenu.TOUCHMODE_NONE);
-		 if (Log.isLoggable(TAG, Log.DEBUG)) Log.d(TAG, "onStart() invoked, isFastcheckHidden " + isFastcheckHidden);
-	}
-
-	@Override
 	public void onOpen() {
 		boolean isFastcheckHidden = (((NavigationRootActivity) getActivity())
 				.getSlidingMenu().getTouchModeAbove() == SlidingMenu.TOUCHMODE_NONE);
 		if (!isFastcheckHidden) {
+			TrackingHelper.trackPageView(AnalyticsPage.QUICKVIEW_VIEW);
 			getFastcheckData(false);
 		}
 	}
@@ -209,7 +204,7 @@ public class FastcheckFragment extends BaseFragment implements
 			deviceToken = FastcheckUtil.decrypt(encryptedDeviceToken);
 		} catch (Exception e) {
 			 if (Log.isLoggable(TAG, Log.ERROR))
-				 Log.e(TAG, "getFastcheckData() gets IOException during FastcheckUtil.decrypt()" + e.getMessage());
+				 Log.e(TAG, "getFastcheckData() gets Exception during FastcheckUtil.decrypt()" + e.getMessage());
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
@@ -218,13 +213,11 @@ public class FastcheckFragment extends BaseFragment implements
 			
 		if (deviceToken == null || deviceToken.length() != 88) {
 			 if (Log.isLoggable(TAG, Log.ERROR))
-				 Log.e(TAG, "getFastcheckData(), token is NULL or length NOT 88" );
+				 Log.e(TAG, "getFastcheckData(), token is NULL or length is not proper" );
 			if (deviceToken != null) FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token that is not long in 88
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			return;
-		} else 
-			 if (Log.isLoggable(TAG, Log.DEBUG))
-				 Log.d(TAG, "getFastcheckData(), token is " + deviceToken + ", length is " + deviceToken.length());
+		} 
 			
 		// Setting the headers available for the service
 		WSRequest request = new WSRequest();
@@ -460,17 +453,21 @@ public class FastcheckFragment extends BaseFragment implements
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(context);
 		CardErrorBean cardErrorBean = (CardErrorBean) data;
-		 if (Log.isLoggable(TAG, Log.DEBUG)) {
-			 Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
-			 Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
-		 }
 		
-		if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("403")) {
+		if (cardErrorBean != null && Log.isLoggable(TAG, Log.ERROR)) {
+			Log.e(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
+			Log.e(TAG, "onError() error msg is " + cardErrorBean.getErrorMessage());
+		}
+		
+		if (cardErrorBean == null || cardErrorBean.getErrorCode() == null) {
+			resultPage = TECH_DIFF_RESULT_PAGE;
+			updateCacheAndTimestamp(null);
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
+		} else if (cardErrorBean.getErrorCode().startsWith("403")) {
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
-		} else if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("429")) {
-			if (Log.isLoggable(TAG, Log.DEBUG)) Log.d(TAG, "onError() 429, result page " + resultPage);
+		} else if (cardErrorBean.getErrorCode().startsWith("429")) {
 			// orientation change fix begin
 			if (resultPage == INITIAL_RESULT_PAGE) {
 				fastcheckDetail = (FastcheckDetail)cardShareDataStoreObj
@@ -480,8 +477,8 @@ public class FastcheckFragment extends BaseFragment implements
 			}
 			// orientation change fix end
 			showPreviousPage(res);
-		} else if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("401")) {
-			if (Log.isLoggable(TAG, Log.ERROR)) Log.e(TAG, "OnError() gets 401 type of error msg " + cardErrorBean.getErrorMessage());
+		} else if ( cardErrorBean.getErrorCode().startsWith("401")
+					|| (cardErrorBean.getErrorMessage()!=null && cardErrorBean.getErrorMessage().indexOf("Received authentication challenge is null")>=0) ){
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
 			updateCacheAndTimestamp(null);

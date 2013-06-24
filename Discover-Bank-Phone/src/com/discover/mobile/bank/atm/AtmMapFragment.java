@@ -5,6 +5,7 @@ package com.discover.mobile.bank.atm;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -43,6 +44,7 @@ import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.FrozenUI;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -64,7 +66,7 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 public abstract class AtmMapFragment extends BaseFragment 
 implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
@@ -152,6 +154,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 	/**Help Widget*/
 	private ImageButton help;
+	
+	/** Overlay for the Tap and Hold Coach */
+	protected AtmTapAndHoldCoachOverlay overlay;
 
 	/**Location of the user*/
 	private Location location;
@@ -167,15 +172,17 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
 
-
 	private boolean processingOnBackpress = false;
 
 	/**
-	 * Flag used to determing if the modal used for leaving the application is
+	 * Flag used to determining if the modal used for leaving the application is
 	 * being shown
 	 */
 	private boolean isLeavingModalShowing = false;
 
+	/** Bundle key to say if the overlay is showing */
+	private final String OVERLAY_SHOWING = "overlay_showing";
+	
 	/**
 	 * Holds reference to layout that displays Google Logo and Terms of Use Link
 	 */
@@ -232,6 +239,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageButton) view.findViewById(R.id.help);
+		
 		help.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
@@ -254,6 +262,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 		CommonUtils.fixBackgroundRepeat(navigationPanel);
 
+		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
+		overlay.setDelegate(this);
+		
 		return view;
 	}
 
@@ -284,7 +295,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		 * Verify that the bundle used to populate the map fragment has data.
 		 */
 		resumeStateOfFragment(savedState);
-
+		
+		Bundle bundle = getArguments();
+		if (bundle.containsKey(this.OVERLAY_SHOWING) && bundle.getBoolean(this.OVERLAY_SHOWING)) {
+			overlay.showCoach();
+		}
 
 		determineNavigationStatus();
 
@@ -359,25 +374,25 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		}
 
 		switch(locationStatus){
-		case NOT_ENABLED:
-			settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
-			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
-			break;
-		case ENABLED:
-			showLocationAcceptanceModal();
-			break;
-		case LOCATION_FAILED:
-			locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
-			((NavigationRootActivity) getActivity()).showCustomAlert(locationFailureModal);
-			break;
-		case SEARCHING:
-			getLocation();
-			break;
-		case LOCKED_ON:
-			setUserLocation(mapWrapper.getCurrentLocation());
-			break;
-		default:
-			break;
+			case NOT_ENABLED:
+				settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
+				((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
+				break;
+			case ENABLED:
+				showLocationAcceptanceModal();
+				break;
+			case LOCATION_FAILED:
+				locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
+				((NavigationRootActivity) getActivity()).showCustomAlert(locationFailureModal);
+				break;
+			case SEARCHING:
+				getLocation();
+				break;
+			case LOCKED_ON:
+				setUserLocation(mapWrapper.getCurrentLocation());
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -385,6 +400,16 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		if(DiscoverApplication.getLocationPreference().shouldShowModal()) {
 			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), 
 					AtmMapFragment.this);
+			locationModal.setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
+						overlay.showCoach();	
+					}
+				}
+			});
+			
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 		}else {
 			searchCurrentLocation();
@@ -445,7 +470,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		if(!locationManagerWrapper.areProvidersenabled()){
 			settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
 			((NavigationRootActivity)getActivity()).showCustomAlert(settingsModal);
-		}else{
+		} else {
 			locationStatus = ENABLED;
 			if(LOCKED_ON == locationStatus){
 				getLocation();
@@ -508,7 +533,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		mapButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(!isOnMap) {
+				if(!isOnMap && overlay.getVisibility() != View.VISIBLE) {
 					toggleButton();
 				}
 			}
@@ -517,7 +542,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 		listButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(isOnMap) {
+				if(isOnMap  && overlay.getVisibility() != View.VISIBLE) {
 					toggleButton();
 				}
 			}
@@ -686,6 +711,12 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());	
 		}
 		
+		//When a service call is completed we want to show the coach overlay if it has been 90 days since the last showing
+		//or the first time the current user has gone to this screen.
+		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
+			overlay.showCoach();
+		}
+		
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
@@ -846,6 +877,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
+		getArguments().putBoolean(this.OVERLAY_SHOWING, overlay.isShowing());
 
 		/**
 		 * Save the state of this fragment in the argument bundle provided
@@ -1197,5 +1229,27 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener {
 			isVisible = mapLayout.getVisibility() == View.VISIBLE;
 		}
 		return isVisible;
+	}
+	
+	/**
+	 * Enables the Atm Map Fragment UI 
+	 */
+	@Override
+	public void enableUI() {
+		listButton.setEnabled(true);
+		mapButton.setEnabled(true);
+		searchBar.enableSearchBar();
+		help.setEnabled(true);
+	}
+
+	/*
+	 * Disables the Atm Map Fragment UI
+	 */
+	@Override
+	public void disableUI() {
+		listButton.setEnabled(false);
+		mapButton.setEnabled(false);
+		searchBar.disableSearchBar();
+		help.setEnabled(false);
 	}
 }

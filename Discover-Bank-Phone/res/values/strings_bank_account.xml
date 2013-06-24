@@ -29,7 +29,9 @@
     <string name="activity_go_to_top">Back to Top</string>
     <string name="table_pull_load_more">Pull to load more&#8230;</string>
     <string name="table_release_to_update">Release to update&#8230;</string>
-    <string name="account_activity_scheduled_transfer_deleted">Scheduled Transfer Deleted</string>
+    <string name="account_activity_scheduled_transfer_deleted">Scheduled %s Deleted</string>
+    <string name="transfer">Transfer</string>
+    
     <string name="delete_next_transfer_in_series_content_description">Delete the next transfer in the series</string>
     <string name="delete_entire_transfer_series_content_description">Delete the entire series of transfers</string>
     

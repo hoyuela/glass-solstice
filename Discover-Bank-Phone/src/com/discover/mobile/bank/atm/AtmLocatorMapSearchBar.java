@@ -309,4 +309,16 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	public void setSearchExpanded(final boolean isSearchExpanded) {
 		this.isSearchExpanded = isSearchExpanded;
 	}
+	
+	public void disableSearchBar() {
+		this.show.setEnabled(false);
+		this.hide.setEnabled(false);
+		this.searchBox.setEnabled(false);
+	}
+	
+	public void enableSearchBar() {
+		this.show.setEnabled(true);
+		this.hide.setEnabled(true);
+		this.searchBox.setEnabled(true);
+	}
 }

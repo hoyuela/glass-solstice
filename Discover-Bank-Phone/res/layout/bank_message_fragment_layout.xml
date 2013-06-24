@@ -21,7 +21,7 @@
 		        android:layout_marginTop="@dimen/forms_inner_padding"
 		        android:paddingTop="4dp"
 		        android:src="@drawable/error_icon_red" 
-		        style="@style/commons_modal_error_image"/>
+		        style="@style/common_modal_error_image"/>
 		   
 		    <TextView
 		        android:id="@+id/page_title"
