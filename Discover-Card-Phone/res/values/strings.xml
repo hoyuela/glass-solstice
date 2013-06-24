@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, DiscoverMobileActivity!</string>
-    <string name="app_name">Discover</string>
     <string name="discover_url_to_enroll_strong">https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT</string>
     
 	<string-array name="allowed_prefixes">

@@ -55,7 +55,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
-                    android:layout_marginLeft="@dimen/element_side_padding"
+                    android:paddingLeft="@dimen/element_side_padding"
                     android:paddingTop="@dimen/element_top_padding"
                     android:src="@drawable/discover_blk_logo_login" />
 
@@ -151,19 +151,18 @@
                         android:text="@string/remember_user_id"
                         android:textColor="#576166" />
 
-                    <ImageView
-                        android:id="@+id/remember_user_id_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/password_field"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="@dimen/element_side_padding"
-                        android:layout_marginTop="14dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/remember_user_id"
-                        android:onClick="toggleCheckBoxFromXml"
-                        android:padding="5dip" />
+                   <com.discover.mobile.bank.ui.DiscoverToggleSwitch
+	                    android:id="@+id/remember_user_id_button"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_alignParentRight="true"
+	                    android:layout_below="@+id/password_field"
+	                    android:layout_marginLeft="5dip"
+	                    android:layout_marginRight="@dimen/element_side_padding"
+	                    android:layout_marginTop="14dp"
+	                    android:button="@null"
+	                    android:onClick="toggleCheckBoxFromXml" />
+
 
                     <Button
                         android:id="@+id/login_button"
@@ -460,7 +459,7 @@
 			    android:text="@string/discover_copyright_text"
 			    android:textColor="@color/fdic_disclaimer_text_color"
 			    android:textSize="@dimen/fdic_disclaimer_text_size" />
-			
+
         </RelativeLayout>
     </com.discover.mobile.common.ui.widgets.NonFocusingScrollView>
 
@@ -488,7 +487,7 @@
             android:layout_weight="0.33"
             android:text="@string/provide_feedback" />
 
-        <Button
+        <TextSwitcher
             android:id="@+id/register_now_or_atm_button"
             style="@style/login_bottom_bar_button"
             android:layout_width="0dp"
@@ -497,5 +496,4 @@
             android:text="@string/register_now" />
     </LinearLayout>
 
->>>>>>> 1431eaf... US7225 - 13.4 elements code merge - Bank Project
 </RelativeLayout>
