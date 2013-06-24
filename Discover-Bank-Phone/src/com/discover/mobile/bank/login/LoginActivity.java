@@ -28,6 +28,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +71,7 @@ import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.EncryptionUtil;
@@ -123,7 +125,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private NonEmptyEditText passField;
 
 	// BUTTONS
-
+	private DiscoverToggleSwitch saveUserIdToggleSwitch;
 	private Button loginButton;
 	private Button registerOrAtmButton;
 	private Button customerServiceButton;
@@ -166,7 +168,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	// IMAGES
 	private ImageView cardCheckMark;
 	private ImageView bankCheckMark;
-	private ImageView toggleImage;
 	private ProgressBar splashProgress;
 	private ImageView discoverLogo;
 
@@ -290,7 +291,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
-		toggleImage = (ImageView) findViewById(R.id.remember_user_id_button);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
 		
 		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
@@ -317,6 +317,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		passcodeCardPrivacyLink = (TextView) findViewById(R.id.passcode_privacy_and_security_button_card);
 		passcodeUserIDLogin = (TextView) findViewById(R.id.passcode_user_id_login);
 		setupPasscode();
+
+
+		saveUserIdToggleSwitch = (DiscoverToggleSwitch) findViewById(R.id.remember_user_id_toggle);
 
 	}
 
@@ -707,6 +710,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
+		saveUserIdToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			      @Override
+			      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			        toggleSaveUserIdSwitch(buttonView, true);
+			      }
+			    });
+		
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -981,14 +991,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param cache Specifies whether to remember the state change
 	 */
 	public void toggleSaveUserIdSwitch(final View view, final boolean cache) {
-
-		if (saveUserId) {
-			toggleImage.setBackgroundResource(R.drawable.swipe_off);
-			saveUserId = false;
-		} else {
-			toggleImage.setBackgroundResource(R.drawable.swipe_on);
-			saveUserId = true;
+		if(saveUserId == saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
 		}
+		saveUserId = saveUserIdToggleSwitch.isChecked();
 
 		//Check whether to save change in persistent storage
 		if(cache) {
@@ -996,16 +1002,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 
-	/**
-	 * Calls toggleCheckBox(v, true)
-	 * This method allows us to call toggleCheckBox from XML, we always want to save the state of the button
-	 * so we always pass true as the second argument.
-	 *
-	 * @param v the calling view.
-	 */
-	public void toggleCheckBoxFromXml(final View v) {
-		toggleSaveUserIdSwitch(v, true);
-	}
+	
 
 	/**
 	 * Updates the view based on the application account selected by the user. Called by application at start-up.
@@ -1215,8 +1212,18 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param cached Sets whether the state change should be remembered
 	 */
 	private void setCheckMark(final boolean shouldBeChecked, final boolean cached) {
-		saveUserId = !shouldBeChecked;
-		toggleSaveUserIdSwitch(toggleImage, cached);
+		if(shouldBeChecked && !saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
+		}else if (!shouldBeChecked && saveUserIdToggleSwitch.isChecked()) {
+			saveUserIdToggleSwitch.toggle();
+		}
+
+		saveUserId = shouldBeChecked;
+
+		//Check whether to save change in persistent storage
+		if(cached) {
+			Globals.setRememberId(saveUserId);
+		}	
 	}
 
 	/**
