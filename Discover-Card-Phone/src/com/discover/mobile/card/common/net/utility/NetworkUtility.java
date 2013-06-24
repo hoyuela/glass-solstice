@@ -73,7 +73,22 @@ public final class NetworkUtility {
                 + Base64.encodeToString(concatenatedCreds.getBytes(),
                         Base64.NO_WRAP);
     }
-
+    
+    /**
+     * Creates the authorization string (used in Authorization header) using the 
+     * passcode scheme and device token and passcode as credentials.
+     * @param deviceToken
+     * @param passcode Authorization string
+     * @return
+     */
+    public static String getPasscodeAuthorizationString(final String deviceToken,
+            final String passcode) {
+        final String concatenatedCreds = deviceToken + ": :" + passcode;
+        return "DCRDPasscode "
+                + Base64.encodeToString(concatenatedCreds.getBytes(),
+                        Base64.NO_WRAP);
+    }
+    
     /**
      * get the Webservice url for the given String id
      * 

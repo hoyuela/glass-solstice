@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/passcode_enable_step1_paragraph_1"
+        android:textColor="@color/passcodeBlack"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/passcode_enable_step1_paragraph_2"
+        android:textColor="@color/passcodeBlack"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/buttonYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/orange_button"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:text="@string/passcode_enable_step1_button_yes" />
+
+    <TextView
+        android:id="@+id/linkNoThanks"
+        style="@style/PasscodeGuidelines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/passcode_enable_step1_link_no_thanks"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="bottom" 
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy &amp; Terms"
+            android:textColor="@color/passcodeBlue" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" | "
+            android:textColor="@color/passcodeBlack" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Provide Feedback"
+            android:textColor="@color/passcodeBlue" />
+    </LinearLayout>
+
+</LinearLayout>
