@@ -13,17 +13,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
-<<<<<<< HEAD
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-=======
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
->>>>>>> 1431eaf... US7225 - 13.4 elements code merge - Bank Project
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
