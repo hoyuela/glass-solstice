@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/PasscodeOverlay" >
+
+    <ImageView 
+        android:id="@+id/esclamation_red"
+        android:src="@drawable/esclamation_red_img"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        />
+
+    <TextView
+        android:id="@+id/header"
+        android:layout_toRightOf="@+id/esclamation_red"
+        style="@style/PasscodeOverlayTitle"
+        android:text="@string/passcode_dialog_lockout_passcode_title"
+        />
+
+    <TextView
+        android:id="@+id/paragraph_1"
+        android:layout_below="@+id/header"
+        style="@style/PasscodeOverlayParagraph"
+        android:text="@string/passcode_dialog_lockout_passcode_paragraph_1" />
+
+    <TextView
+        android:layout_below="@+id/paragraph_1"
+        style="@style/PasscodeOverlayParagraph"
+        android:autoLink="all"
+        android:text="@string/passcode_dialog_lockout_passcode_paragraph_2" />
+
+</RelativeLayout>

@@ -5,6 +5,7 @@ import android.view.View.OnClickListener;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.profile.quickview.QuickViewSetupFragment;
+import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
@@ -53,7 +54,12 @@ public class ProfileAndSettingsSectionInfo extends GroupComponentInfo {
 							public void onClick(View v) {
 
 							}
-						}));
+						}),
+
+				new FragmentComponentInfo(
+                       				 R.string.sub_section_title_passcode,
+                        				//TODO sgoff0 update this to update where navigation happens
+                        				PasscodeLandingFragment.class));    
 
 	}
 
