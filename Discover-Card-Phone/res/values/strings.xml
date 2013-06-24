@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, DiscoverMobileActivity!</string>
+    <string name="app_name">Discover</string>
     <string name="discover_url_to_enroll_strong">https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT</string>
     
 	<string-array name="allowed_prefixes">
@@ -89,14 +90,14 @@
     <!-- Fastcheck  Viewing Prior to Login -->
     <string name ="back_button_text">Back</string>
 	<string name="fast_check_token_key_in_ps">FastcheckToken</string>
-	<string name="fast_check_error_tech_diff">We\'re currently experiencing techincal difficult. We apologize for any incovenience.</string>
-	<string name="fast_check_error_cannot_access">Due to special conditions related to your account, this page is not available.\n\nPlease contact customer service at <a href='tel:18777427822'>1&#8211;800&#8211;347&#8211;2683</a> for assistance.</string>
+	<string name="fast_check_error_tech_diff">We\'re currently experiencing technical difficulties. We apologize for any incovenience.</string>
+	<string name="fast_check_error_cannot_access">Due to special conditions related to your account, this page is not available.\n\nPlease contact customer service at <a href='tel:18003472683'>1&#8211;800&#8211;347&#8211;2683</a> for assistance.</string>
 	<string name="fast_check_error_no_token">You recently requested to disable your quick view settings. If you\'d like to enable this option, plese login and navigate to
 						\"Quick View\" under Profile and Settings.</string>
 	<string name="fast_check_rewards_outage_msg">Rewards Balance cannot be updated at this time.</string>
-	<string name="fast_check_salutation_good_morning">Good morning,  </string>
-	<string name="fast_check_salutation_good_afternoon">Good afternoon,  </string>
-	<string name="fast_check_salutation_good_evening">Good evening,  </string>
+	<string name="fast_check_salutation_good_morning">Good morning,</string>
+	<string name="fast_check_salutation_good_afternoon">Good afternoon,</string>
+	<string name="fast_check_salutation_good_evening">Good evening,</string>
 	<string name="fast_check_spinner_msg_part1">Discover</string>
 	<string name="fast_check_spinner_msg_part2">Retrieving Quick view&#8230;</string>
 	<string name="fast_check_error_img_desc">error</string>
@@ -131,6 +132,6 @@
     <string name="quick_view_info_on">On the login screen tap the Quick view button, or swipe to see your account information.</string>
     <string name="quick_view_faq">Quick view FAQ</string>
     <string name="quick_view_detail">Another account has their settings enabled to view their account information without logging in on this device. Would you like to disable the settings for that account and enable them for this account?</string>
-    <string name="no_thank">No thanks</string>
+    <string name="no_thank">No,thanks</string>
     <string name="yes">Yes</string>
 </resources>
