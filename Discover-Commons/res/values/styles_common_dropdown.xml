@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="common_spinner_dropdown" parent="@android:style/Widget.Spinner">
+        <item name="android:background">@drawable/common_dropdown</item>
+    </style>
+
+</resources>
