@@ -296,6 +296,7 @@ public class FastcheckFragment extends BaseFragment implements
 			sb.append(res.getString(R.string.fast_check_salutation_good_evening));
 		String tmp = fastcheckDetail.getCardmemberFirstName();
 		if (tmp != null) tmp = tmp.substring(0, 1) + tmp.substring(1).toLowerCase(Locale.US);
+		sb.append(" ");
 		sb.append(tmp);
 		return sb.toString();
 	}
@@ -463,6 +464,8 @@ public class FastcheckFragment extends BaseFragment implements
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
+		} else if (cardErrorBean.getErrorCode().startsWith("100")) {
+			showFastcheckErrorPage(res.getString(R.string.E_100));
 		} else if (cardErrorBean.getErrorCode().startsWith("403")) {
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			updateCacheAndTimestamp(null);
