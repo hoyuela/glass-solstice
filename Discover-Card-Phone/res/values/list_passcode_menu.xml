@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="passcode_menu">
+        <item>Change Passcode</item>
+        <item>Disable Passcode</item>
+    </string-array>
+</resources>

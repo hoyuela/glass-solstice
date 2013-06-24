@@ -95,10 +95,31 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
     @Override
     public void login(final LoginActivityInterface callingActivity,
-            final String username, final String password) {
+            final String username, final String password)
+    {
+        String authString = NetworkUtility.getAuthorizationString(username, password);
+        loginHelper(callingActivity, authString, username, password);
+    }
+    
+    /**
+     * Authenticates the user using the passcode based authorization scheme and credentials.
+     */
+    @Override
+    public void loginWithPasscode(LoginActivityInterface callingActivity, String deviceToken,
+			String passcode){
+        String authString = NetworkUtility.getPasscodeAuthorizationString(deviceToken, passcode);
+        loginHelper(callingActivity, authString, deviceToken, passcode);
+    }
+    
+    
+    /**
+     * Authenticates using the given authString.
+     * @param callingActivity
+     * @param authString
+     */
+    private void loginHelper(final LoginActivityInterface callingActivity,
+            final String authString, String username, String password) {
         request = new WSRequest();
-        final String authString = NetworkUtility.getAuthorizationString(
-                username, password);
         context = callingActivity.getContext();
 
         // Setting the headers available for the service
@@ -110,6 +131,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 R.string.login_url);
         request.setUrl(url);
         request.setHeaderValues(headers);
+        //TODO sgoff0 - why is this needed?
         request.setUsername(username);
         request.setPassword(password);
 
@@ -158,6 +180,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             }
         };
     }
+    
 
     @Override
     public void loginWithPayload(final LoginActivityInterface callingActivity,
