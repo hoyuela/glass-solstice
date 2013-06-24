@@ -78,6 +78,12 @@ public abstract class BaseFragment extends SherlockFragment {
 				.getActivity();
 		activity.makeFragmentVisible(fragment);
 	}
+	
+	public void makeFragmentVisible(final BaseFragment fragment, final boolean addToHistory) {
+		final NavigationRootActivity activity = (NavigationRootActivity) this
+				.getActivity();
+		activity.makeFragmentVisible(fragment, addToHistory);
+	}
 
 	/**
 	 * Set the title in the action bar for display

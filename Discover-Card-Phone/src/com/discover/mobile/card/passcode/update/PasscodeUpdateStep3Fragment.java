@@ -21,7 +21,8 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	private static String TAG = "PasscodeUpdateStep3Fragment";
 	private static String mStep2Answer;
 	 
-	public boolean onKey(View paramView, int paramInt, KeyEvent paramKeyEvent) {
+	@Override
+	public boolean onKey(final View paramView, final int paramInt, final KeyEvent paramKeyEvent) {
 		Log.v(TAG, "Calling onKey from step 3(" + paramView + ", " + paramInt + ")");
 		Log.v(TAG, "Before back");
 		printFragmentsInBackStack();
@@ -43,7 +44,8 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 		return super.onKey(paramView, paramInt, paramKeyEvent);
 	}
 
-	public void onCreate(Bundle paramBundle) {
+	@Override
+	public void onCreate(final Bundle paramBundle) {
 		super.onCreate(paramBundle);
 		mStep2Answer = getArguments().getString("passcode");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_UPDATE_STEP3);
@@ -52,7 +54,7 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
-		View view = super.onCreateView(inflater, container, savedInstanceState);
+		final View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_update_step3_header);
 		return view;
 	}
@@ -67,8 +69,8 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSubmitEvent() {
-		boolean isMatch = this.getPasscodeString().equals(mStep2Answer);
-		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
+		final boolean isMatch = this.getPasscodeString().equals(mStep2Answer);
+		final boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isMatch && isValid) {
 			new UpdatePasscodeRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new UpdatePasscodeRequestListener());
 		} else {
@@ -84,14 +86,14 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	
 	private final class UpdatePasscodeRequestListener implements CardEventListener {
 		@Override
-		public void OnError(Object data) {
+		public void OnError(final Object data) {
 			// TODO Auto-generated method stub
 			Log.v(TAG, "Error");
 			passcodeResponse(false);
 		}
 
 		@Override
-		public void onSuccess(Object data) {
+		public void onSuccess(final Object data) {
 			//TODO make this result accurate from the service call
 			Log.v(TAG, "Success!");
 			storeFirstName();

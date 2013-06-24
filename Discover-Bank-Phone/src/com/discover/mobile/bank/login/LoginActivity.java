@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -80,8 +81,8 @@ import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.EncryptionUtil;
-import com.discover.mobile.common.utils.StringUtility;
 import com.discover.mobile.common.utils.PasscodeUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
 
@@ -447,7 +448,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	public void showSessionExpired() {
 		//TODO passcode sgoff0 - show dialog as well
-		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+		final Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
 //		Builder builder = new AlertDialog.Builder(getActivity());
 //		builder.setView(view)
@@ -864,7 +865,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		passcodeUserIDLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				isUserIDLogin = true;
 				displayActiveLoginMode();
 			}
@@ -1619,7 +1620,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			showPasscodeLogin();
 			hideUserPassLogin();
 			Log.v(TAG, "Show passcode keyboard");
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(fieldTVs[0], InputMethodManager.SHOW_IMPLICIT);
 		} else {
 			hidePasscodeLogin();
@@ -1643,6 +1644,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		validationIV.setVisibility(View.VISIBLE);
 		
 		new Handler().postDelayed(new Runnable() {
+			@Override
 			public void run() {
 				clearAllFields();
 				guiValidationReset();
@@ -1696,7 +1698,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		setupSubmit();
 	}
 	
-	private void clearField(TextView paramTextView) {
+	private void clearField(final TextView paramTextView) {
 		paramTextView.setText("");
 	}
 
@@ -1720,7 +1722,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	// advances input to next field
-	private TextView advanceInput(int currentIndex) {
+	private TextView advanceInput(final int currentIndex) {
 		if (currentIndex < fieldTVs.length - 1) {
 			return fieldTVs[currentIndex + 1];
 		} else if (currentIndex < 0) {
@@ -1730,8 +1732,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 	
-	private boolean validatePasscodeField(int paramInt, Editable paramEditable) {
-		EditText et = fieldTVs[paramInt];
+	private boolean validatePasscodeField(final int paramInt, final Editable paramEditable) {
+		final EditText et = fieldTVs[paramInt];
 		// validate input is exactly 1 character and 0-9
 		if (PasscodeUtils.isCharNumeric(paramEditable)) {
 			advanceInput(paramInt).requestFocus();
@@ -1747,24 +1749,27 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 	
 	private void setupPasscodeField(final int fieldInt) {
-		EditText et = fieldTVs[fieldInt];
+		final EditText et = fieldTVs[fieldInt];
 		et.setOnKeyListener(new MyPasscodeKeyListener());
 		et.setTransformationMethod(PasswordTransformationMethod.getInstance());
 		et.addTextChangedListener(new TextWatcher() {
 			// Logic to mask input and go to next item
-			public void afterTextChanged(Editable paramAnonymousEditable) {
+			@Override
+			public void afterTextChanged(final Editable paramAnonymousEditable) {
 				validatePasscodeField(fieldInt, paramAnonymousEditable);
 			}
 			// REQUIRED EVEN THOUGHT LEFT EMPTY
+			@Override
 			public void beforeTextChanged(
-					CharSequence paramAnonymousCharSequence,
-					int paramAnonymousInt1, int paramAnonymousInt2,
-					int paramAnonymousInt3) {
+					final CharSequence paramAnonymousCharSequence,
+					final int paramAnonymousInt1, final int paramAnonymousInt2,
+					final int paramAnonymousInt3) {
 			}
 			// REQUIRED EVEN THOUGHT LEFT EMPTY
-			public void onTextChanged(CharSequence paramAnonymousCharSequence,
-					int paramAnonymousInt1, int paramAnonymousInt2,
-					int paramAnonymousInt3) {
+			@Override
+			public void onTextChanged(final CharSequence paramAnonymousCharSequence,
+					final int paramAnonymousInt1, final int paramAnonymousInt2,
+					final int paramAnonymousInt3) {
 			}
 		});
 	}
@@ -1772,7 +1777,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private class MyPasscodeKeyListener implements View.OnKeyListener {
 		public static final int KEY_DELETE = 67;
 		@Override
-		public boolean onKey(View v, int keyCode, KeyEvent event) {
+		public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
 			if (event.getAction() == 0) {
 				return false;
 			}
@@ -1792,12 +1797,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	private void setupSubmit() {
-		EditText et = fieldTVs[3];
+		final EditText et = fieldTVs[3];
 		// for hardware keys
 		et.setOnKeyListener(new MyPasscodeKeyListener());
 		et.setTransformationMethod(PasswordTransformationMethod.getInstance());
 		et.addTextChangedListener(new TextWatcher() {
-			public void afterTextChanged(Editable paramAnonymousEditable) {
+			@Override
+			public void afterTextChanged(final Editable paramAnonymousEditable) {
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
@@ -1807,16 +1813,18 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 
 			// REQUIRED EVEN THOUGHT LEFT EMPTY
+			@Override
 			public void beforeTextChanged(
-					CharSequence paramAnonymousCharSequence,
-					int paramAnonymousInt1, int paramAnonymousInt2,
-					int paramAnonymousInt3) {
+					final CharSequence paramAnonymousCharSequence,
+					final int paramAnonymousInt1, final int paramAnonymousInt2,
+					final int paramAnonymousInt3) {
 			}
 
 			// REQUIRED EVEN THOUGHT LEFT EMPTY
-			public void onTextChanged(CharSequence paramAnonymousCharSequence,
-					int paramAnonymousInt1, int paramAnonymousInt2,
-					int paramAnonymousInt3) {
+			@Override
+			public void onTextChanged(final CharSequence paramAnonymousCharSequence,
+					final int paramAnonymousInt1, final int paramAnonymousInt2,
+					final int paramAnonymousInt3) {
 			}
 
 		});

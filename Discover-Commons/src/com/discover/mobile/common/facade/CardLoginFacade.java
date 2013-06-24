@@ -45,4 +45,13 @@ public interface CardLoginFacade {
 	 *            a context from the AccountToggleView, if needed.
 	 */
 	public void toggleToCard(Context context);
+	
+    /**
+     * Authenticates the user using the passcode based authorization scheme and credentials.
+     * @param calling activity - activity calling this method
+     * @param deviceToken 
+     * @param passcode
+     */
+    public void loginWithPasscode(LoginActivityInterface callingActivity, String deviceToken,
+			String passcode);
 }
