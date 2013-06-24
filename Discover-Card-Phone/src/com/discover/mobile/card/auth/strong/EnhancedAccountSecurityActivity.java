@@ -213,6 +213,7 @@ public class EnhancedAccountSecurityActivity extends
                 if (authListener != null) {
                     authListener.onStrongAuthSucess(data);
                 }
+                finish();
                 // activityResult = RESULT_OK;
                 // finish();
             }
@@ -660,16 +661,12 @@ public class EnhancedAccountSecurityActivity extends
             strongAuthAns.sendRequest(answer, strongAuthQuestionId,
                     selectedIndex);
         } catch (JsonGenerationException e) {
-        	e.printStackTrace();
-            //handleError(e);
+            handleError(e);
         } catch (NoSuchAlgorithmException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            handleError(e);
         } catch (IOException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            handleError(e);
         } catch (Exception e) {
-        	e.printStackTrace();
             handleError(e);
         }
     }

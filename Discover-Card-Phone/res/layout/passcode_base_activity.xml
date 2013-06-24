@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:longClickable="false"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/headerTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="10dp"
+        android:text=""
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/passcodeBlack"
+        android:textSize="20sp"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <EditText
+            android:id="@+id/passcode01"
+            style="@style/PasscodeDigit"
+            android:background="@drawable/rectangle"
+            android:ems="10"
+            android:inputType="phone" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/passcode02"
+            style="@style/PasscodeDigit"
+            android:background="@drawable/rectangle"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/passcode03"
+            style="@style/PasscodeDigit"
+            android:background="@drawable/rectangle"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/passcode04"
+            style="@style/PasscodeDigit"
+            android:background="@drawable/rectangle"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="phone" />
+
+        <ImageView
+            android:id="@+id/validation"
+            android:src="@drawable/tick_green"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="3dp"
+             />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/holdFocus"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:inputType="phone" />
+
+    <TextView
+        android:id="@+id/passcodeGuidelines"
+        style="@style/PasscodeGuidelines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:paddingLeft="12dp"
+        android:paddingTop="12dp"
+        android:text="@string/passcode_guidelines_link"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="bottom" 
+        android:layout_marginBottom="12dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy &amp; Terms"
+            android:textColor="@color/passcodeBlue" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" | "
+            android:textColor="@color/passcodeBlack" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Provide Feedback"
+            android:textColor="@color/passcodeBlue" />
+    </LinearLayout>
+
+</LinearLayout>
