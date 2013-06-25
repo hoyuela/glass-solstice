@@ -255,6 +255,12 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		}, LIFESPAN);
 	}
 	
+	
+	/**
+	 * Returns the key to store/get the data from the SharedPreferences
+	 * 
+	 * @return key to use.
+	 */
 	private static String getLastUseKey() {
 		String key = LAST_USED_KEY;
 		if (Globals.isLoggedIn()) {
