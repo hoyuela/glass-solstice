@@ -47,6 +47,12 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**VAlue holding the type of account in header*/
 	private final TextView type;
 
+	/**Label to show interest rate**/
+	private final TextView interestRateLabel;
+	
+	/**Value of current interest rate*/
+	private final TextView interestRateValue;
+	
 	/**Current Balance Label*/
 	private final TextView currentBalanceLabel;
 
@@ -89,6 +95,8 @@ public class AccountActivityHeader extends RelativeLayout{
 	/**Duration of the status message*/
 	private final int STATUS_MESSAGE_DURATION = 5000;
 
+
+	
 	/**
 	 * Constructor of the class
 	 * @param context - activity context
@@ -103,6 +111,8 @@ public class AccountActivityHeader extends RelativeLayout{
 		availableBalanceLabel = (TextView)view.findViewById(R.id.lable2);
 		currentBalanceLabel = (TextView)view.findViewById(R.id.lable3);
 		currentBalance = (TextView)view.findViewById(R.id.value3);
+		interestRateValue = (TextView) view.findViewById(R.id.value4);
+		interestRateLabel = (TextView) view.findViewById(R.id.lable4);
 		title = (TextView) view.findViewById(R.id.title_text);
 		group = (TableButtonGroup) view.findViewById(R.id.buttons);
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
@@ -179,11 +189,22 @@ public class AccountActivityHeader extends RelativeLayout{
 		/** Available Balance Should be hidden for CDs and Personal Loans. */
 		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) && !account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			availableBalance.setText(account.balance.formatted);
-			availableBalance.setVisibility(View.GONE);
+			availableBalance.setVisibility(View.VISIBLE);
 			availableBalanceLabel.setVisibility(View.VISIBLE);
 		} else {			
 			availableBalance.setVisibility(View.GONE);
 			availableBalanceLabel.setVisibility(View.GONE);
+		}
+		
+		//set the interest rate and label to visible if the account is mma, saving, or cd
+		interestRateLabel.setVisibility(View.GONE);
+		interestRateValue.setVisibility(View.GONE);
+		if(account.type != null && account.interestRate != null && account.interestRate.formatted != null) {
+			if( account.type.equalsIgnoreCase(Account.ACCOUNT_CD) || account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) || account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ) {
+				interestRateValue.setText(account.interestRate.formatted);
+				interestRateLabel.setVisibility(View.VISIBLE);
+				interestRateValue.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
