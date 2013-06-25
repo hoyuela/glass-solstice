@@ -89,6 +89,7 @@
                     android:layout_below="@+id/error_text_view"
                     android:visibility="visible" >
 
+
                     <TextView
                         android:id="@+id/user_id_label"
                         style="@style/body_copy"
@@ -141,36 +142,29 @@
                         android:maxLength="32"
                         android:textCursorDrawable="@null" />
 
-                    <TextView
-                        android:id="@+id/remember_user_id_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/password_field"
-                        android:layout_marginTop="17dp"
-                        android:layout_toLeftOf="@+id/remember_user_id_button"
-                        android:text="@string/remember_user_id"
-                        android:textColor="#576166" />
+                <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
+                    android:id="@+id/remember_user_id_toggle"
+                    android:layout_below="@+id/password_field"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="@style/common_switch_light"
+                    android:text="@string/remember_user_id"
+                    android:layout_marginRight="@dimen/element_side_padding"
+                    />
 
-                    <ImageView
-                        android:id="@+id/remember_user_id_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/password_field"
-                        android:layout_marginLeft="5dip"
-                        android:layout_marginRight="@dimen/element_side_padding"
-                        android:layout_marginTop="14dp"
-                        android:clickable="true"
-                        android:contentDescription="@string/remember_user_id"
-                        android:onClick="toggleCheckBoxFromXml"
-                        android:padding="5dip" />
+               
+
+                
+
+                  
 
                     <Button
                         android:id="@+id/login_button"
                         style="@style/call_to_action_theme"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/remember_user_id_button"
+                        android:layout_below="@+id/remember_user_id_toggle"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
