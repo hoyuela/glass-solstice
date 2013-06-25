@@ -161,7 +161,7 @@
 
                     <Button
                         android:id="@+id/login_button"
-                        style="@style/call_to_action_theme"
+                        style="@style/common_call_to_action_theme_orange"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/remember_user_id_toggle"
