@@ -31,6 +31,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
@@ -54,7 +56,6 @@ import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
-import com.discover.mobile.bank.ui.DiscoverToggleSwitch;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -81,6 +82,7 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
+import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 
 
 /**
@@ -300,7 +302,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		cardCheckMark = (ImageView) findViewById(R.id.card_check_mark);
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
-		saveUserIdToggleSwitch = (DiscoverToggleSwitch) findViewById(R.id.remember_user_id_button);
+		saveUserIdToggleSwitch = (DiscoverToggleSwitch) findViewById(R.id.remember_user_id_toggle);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
 		
 		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
@@ -768,6 +770,16 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
+		/**This method is put in place of the last toggle's on click method.  Calls the 
+		 *  toggleSaveUserIdSwitch the same way the previous implementation had.
+		 */
+		saveUserIdToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				toggleSaveUserIdSwitch(buttonView, true);
+			}
+		});
+				
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -1049,16 +1061,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 
-	/**
-	 * Calls toggleCheckBox(v, true)
-	 * This method allows us to call toggleCheckBox from XML, we always want to save the state of the button
-	 * so we always pass true as the second argument.
-	 *
-	 * @param v the calling view.
-	 */
-	public void toggleCheckBoxFromXml(final View v) {
-		toggleSaveUserIdSwitch(v, true);
-	}
+	
 
 	/**
 	 * Updates the view based on the application account selected by the user. Called by application at start-up.
