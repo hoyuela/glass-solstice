@@ -1,9 +1,18 @@
 package com.discover.mobile.bank.atm;
 
+import java.util.Date;
+
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.ui.FrozenUI;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverApplication;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.LocationPreferenceCache;
+import com.discover.mobile.common.utils.StringUtility;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +40,18 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 	/** Animation Duration */
 	private final int ANIMATIONDURATION = 1000;
 	
+	/** Milliseconds in a 90 day period */
+	private final static long MILLISECONDS_IN_NINETY_DAYS = 7776000000L;
+	
 	/** Holds a flag to whether or not the view is shown. */
 	private boolean isShowing = false;
 	
 	/** Reference to the UI to be frozen */
 	private FrozenUI delegate;
+	
+	/* Persistent storage keys for the tap and hold feature to keep track of the last time it was used/coach was shown */
+	private static final String PREFS_FILE = "UpdatePreferences";
+	private static final String LAST_USED_KEY = "TAP_AND_HOLD_LAST_USED";
 	
 	/* ------------------------------ Constructors ------------------------------ */
 	
@@ -76,7 +92,7 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		this.initializeTapAndHoldCoach(context);
 	}
 	
-	/* ------------------------------ Publicly Exposed Methods ------------------------------ */
+	/* ------------------------------ Public Static Methods ------------------------------ */
 	
 	/**
 	 * Determines if it has been 90 days since the user has used this feature.
@@ -84,8 +100,31 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 	 * @return boolean representing whether or not its been 90 days since last use of feature.
 	 */
 	public static boolean shouldShowCoachOverlay() {
-		return true;
+		//Grabs the stored data in the shared preferences related to the last time the tap and hold feature was used or
+		//the coach was seen
+		final SharedPreferences prefs = DiscoverActivityManager.getActiveActivity().
+																getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+		final long lastUsedDate = prefs.getLong(AtmTapAndHoldCoachOverlay.getLastUseKey(), MILLISECONDS_IN_NINETY_DAYS + 1);
+		
+		//Checks to see if the time between today and the last used date is greater than the number of milliseconds in a
+		//90 day period.
+		return (MILLISECONDS_IN_NINETY_DAYS < new Date().getTime() - lastUsedDate);
 	}
+	
+	/**
+	 * Sets the last used date as todays date.
+	 */
+	public static void setFeatureWasUsed() {
+		//Stores the last time the tap and hold feature was accessed.
+		final SharedPreferences prefs = DiscoverActivityManager.getActiveActivity().
+																getSharedPreferences(PREFS_FILE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		editor.putLong(AtmTapAndHoldCoachOverlay.getLastUseKey(), new Date().getTime());
+		editor.commit();
+	}
+	
+	/* ------------------------------ Publicly Exposed Methods ------------------------------ */
 	
 	/**
 	 * Returns whether the view is showing or not.
@@ -139,10 +178,12 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 	 * @param context
 	 */
 	private void initializeTapAndHoldCoach(Context context) {
-		view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bank_atm_redo_search_coach, null);
-		
-		this.addClickListenerToXButton();
-		this.addView(view);
+		if (shouldShowCoachOverlay()) {
+			view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bank_atm_redo_search_coach, null);
+			
+			this.addClickListenerToXButton();
+			this.addView(view);	
+		}
 	}
 	
 	
@@ -169,6 +210,7 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 			public void onAnimationEnd(Animation animation) {
 				setVisibility(View.GONE);
 				delegate.enableUI();
+				AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
 			}
 
 			@Override
@@ -211,5 +253,13 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 				}	
 			}
 		}, LIFESPAN);
+	}
+	
+	private static String getLastUseKey() {
+		String key = LAST_USED_KEY;
+		if (Globals.isLoggedIn()) {
+			key = DiscoverApplication.getLocationPreference().getMostRecentUser() + LAST_USED_KEY;
+		}
+		return key;
 	}
 }
