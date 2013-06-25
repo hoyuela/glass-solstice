@@ -70,4 +70,13 @@ public final class LocationPreferenceCache {
 		
 		return shouldShowModal;
 	}
+	
+	/**
+	 * Returns a reference to the encrypted name of the last logged in user.
+	 * 
+	 * @return returns the most recent logged in user
+	 */
+	public String getMostRecentUser() {
+		return mostRecentUser;
+	}
 }
