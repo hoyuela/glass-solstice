@@ -108,7 +108,6 @@
             android:layout_below="@+id/lable3"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/activity_interest_rate"
-            
             />
         
         <!-- Interest value text view -->
@@ -126,7 +125,6 @@
             android:gravity="right"
             android:singleLine="true"
             android:textIsSelectable="false"
-            
             />
     </RelativeLayout>
 

@@ -189,22 +189,22 @@ public class AccountActivityHeader extends RelativeLayout{
 		/** Available Balance Should be hidden for CDs and Personal Loans. */
 		if( !account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN) && !account.type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
 			availableBalance.setText(account.balance.formatted);
-			availableBalance.setVisibility(View.GONE);
+			availableBalance.setVisibility(View.VISIBLE);
 			availableBalanceLabel.setVisibility(View.VISIBLE);
-		} else {
-			
+		} else {			
 			availableBalance.setVisibility(View.GONE);
 			availableBalanceLabel.setVisibility(View.GONE);
 		}
+		
 		//set the interest rate and label to visible if the account is mma, saving, or cd
-		if( account.type.equalsIgnoreCase(Account.ACCOUNT_CD) || account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) || account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ) {
-			interestRateValue.setText(account.interestRate.formatted);
-			interestRateLabel.setVisibility(View.VISIBLE);
-			interestRateValue.setVisibility(View.VISIBLE);
-			//Log.d("Julian", "Account is of right type");
-		} else {
-			interestRateLabel.setVisibility(View.GONE);
-			interestRateValue.setVisibility(View.GONE);
+		interestRateLabel.setVisibility(View.GONE);
+		interestRateValue.setVisibility(View.GONE);
+		if(account.type != null && account.interestRate != null && account.interestRate.formatted != null) {
+			if( account.type.equalsIgnoreCase(Account.ACCOUNT_CD) || account.type.equalsIgnoreCase(Account.ACCOUNT_MMA) || account.type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) ) {
+				interestRateValue.setText(account.interestRate.formatted);
+				interestRateLabel.setVisibility(View.VISIBLE);
+				interestRateValue.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
