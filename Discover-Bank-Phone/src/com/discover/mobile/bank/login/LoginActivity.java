@@ -770,7 +770,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * execute the specified functionality in onClick when they are clicked...
 	 */
 	private void setupButtons() {
-		
+		/**This method is put in place of the last toggle's on click method.  Calls the 
+		 *  toggleSaveUserIdSwitch the same way the previous implementation had.
+		 */
 		saveUserIdToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

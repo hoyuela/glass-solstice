@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 package com.discover.mobile.common.ui.toggle;
-import com.discover.mobile.common.ui.toggle.TransformationMethodCompat;
+import android.text.method.TransformationMethod;
+
 
 
 /**
@@ -23,7 +24,7 @@ import com.discover.mobile.common.ui.toggle.TransformationMethodCompat;
  *
  * @hide
  */
-public interface TransformationMethod2 extends TransformationMethodCompat {
+public interface TransformationMethod2 extends TransformationMethod {
     /**
      * Relax the contract of TransformationMethod to allow length changes,
      * or revert to the length-restricted behavior.
