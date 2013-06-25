@@ -303,6 +303,7 @@ public class FastcheckFragment extends BaseFragment implements
 			sb.append(res.getString(R.string.fast_check_salutation_good_evening));
 		String tmp = fastcheckDetail.getCardmemberFirstName();
 		if (tmp != null) tmp = tmp.substring(0, 1) + tmp.substring(1).toLowerCase(Locale.US);
+		sb.append(" ");
 		sb.append(tmp);
 		return sb.toString();
 	}
@@ -465,7 +466,18 @@ public class FastcheckFragment extends BaseFragment implements
 			 Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorMessage());
 		 }
 		
-		if (cardErrorBean.getErrorCode()!=null && cardErrorBean.getErrorCode().startsWith("403")) {
+		if (cardErrorBean != null && Log.isLoggable(TAG, Log.ERROR)) {
+			Log.e(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
+			Log.e(TAG, "onError() error msg is " + cardErrorBean.getErrorMessage());
+		}
+		
+		if (cardErrorBean == null || cardErrorBean.getErrorCode() == null) {
+			resultPage = TECH_DIFF_RESULT_PAGE;
+			updateCacheAndTimestamp(null);
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
+		} else if (cardErrorBean.getErrorCode().startsWith("100")) {
+			showFastcheckErrorPage(res.getString(R.string.E_100));
+		} else if (cardErrorBean.getErrorCode().startsWith("403")) {
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
 			updateCacheAndTimestamp(null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));

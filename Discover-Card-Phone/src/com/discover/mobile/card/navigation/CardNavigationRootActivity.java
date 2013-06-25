@@ -736,6 +736,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		mCardStoreData.addToAppCache("onBackPressed", true);
 		// 13.3 changes end        
         cordovaWebFrag.setTitle(null);
+        mCardStoreData.addToAppCache("currentPageTitle", null);
         cordovaWebFrag.setM_currentLoadedJavascript(null);
         final FragmentManager fragManager = this.getSupportFragmentManager();
         final int fragCount = fragManager.getBackStackEntryCount();
