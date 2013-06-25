@@ -63,10 +63,10 @@
                     android:id="@+id/gotoFastcheck"
                     style="@style/goto_fastcheck_button_style"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/element_side_padding"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/table_inner_padding"
                     android:background="@drawable/quick_view_button"
                     android:text="@string/gotoFastcheckBtnText" />
 

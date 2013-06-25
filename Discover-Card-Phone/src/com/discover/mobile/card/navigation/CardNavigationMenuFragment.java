@@ -247,16 +247,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                                 .equals(context
                                         .getString(R.string.card_product_group_code_essential_without_fee))) {
                     // Change Left Nav in case of Corporate card
-                    if (accData.cardType.equals("000002")) {
-                        CARD_SECTION_LIST = ImmutableList
-                                .<ComponentInfo> builder()
-                                .add(new HomeSectionInfo(true,
-                                        countClickListenre))
-                                .add(new AccountSectionInfo(true))
-                                .add(new PaymentsSectionInfo(true))
-                                .add(new ProfileAndSettingsSectionInfo())
-                                .add(new CustomerServiceContactInfo()).build();
-                    } else {
+                    
                         CARD_SECTION_LIST = ImmutableList
                                 .<ComponentInfo> builder()
                                 .add(new HomeSectionInfo(true,
@@ -265,7 +256,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                                 .add(new PaymentsSectionInfo(true))
                                 .add(new ProfileAndSettingsSectionInfo())
                                 .add(new CustomerServiceContactInfo()).build();
-                    }
+                    
                 } else {
                     CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
                             .add(new HomeSectionInfo(true, countClickListenre))
