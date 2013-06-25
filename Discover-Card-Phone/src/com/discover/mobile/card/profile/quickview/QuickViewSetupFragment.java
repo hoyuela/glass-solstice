@@ -35,8 +35,6 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -99,8 +97,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 				try {
 					updateQuickViewStatus();
 				} catch (Exception e) {
-					CardErrorBean bean = new CardErrorBean(QuickViewSetupFragment.this.
-							getString(R.string.fast_check_error_tech_diff), true);
+					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 							(CardErrorHandlerUi) getActivity());
 					cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -158,8 +155,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 																				// invalid
 																				// token
 						CardErrorBean bean = new CardErrorBean(
-								QuickViewSetupFragment.this
-										.getString(R.string.fast_check_error_tech_diff),
+								getString(R.string.fast_check_error_tech_diff),
 								true);
 						CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 								(CardErrorHandlerUi) getActivity());
@@ -181,14 +177,10 @@ public class QuickViewSetupFragment extends BaseFragment {
 				if (null != decryptedToken) {
 					checkBindingStatus(decryptedToken);
 				} else {
-					// analytics code
-					TrackingHelper
-							.trackPageView(AnalyticsPage.QUICKVIEW_SETUP_OFF);
 					showQVwithOffState();
 				}
 			} catch (Exception e) {
-				CardErrorBean bean = new CardErrorBean(QuickViewSetupFragment.this.
-						getString(R.string.fast_check_error_tech_diff), true);
+				CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 						(CardErrorHandlerUi) getActivity());
 				cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -216,8 +208,7 @@ public class QuickViewSetupFragment extends BaseFragment {
 				try {
 					showQVwithOnState();
 				} catch (Exception e) {
-					CardErrorBean bean = new CardErrorBean(QuickViewSetupFragment.this.
-							getString(R.string.fast_check_error_tech_diff), true);
+					CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
 					CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
 							(CardErrorHandlerUi) getActivity());
 					cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -358,9 +349,6 @@ public class QuickViewSetupFragment extends BaseFragment {
 							toggleImage
 									.setBackgroundResource(R.drawable.swipe_on);
 							qvinfoTextView.setText(R.string.quick_view_info_on);
-							// analytics code
-							TrackingHelper
-									.trackPageView(AnalyticsPage.QUICKVIEW_SETUP_ON);
 						} else {
 							if ((mainView.findViewById(
 									R.id.qvsetup_main_relative_view)
@@ -464,30 +452,8 @@ public class QuickViewSetupFragment extends BaseFragment {
 			URL = urlStringBuffer.toString();
 			headers.put(HttpHeaders.XHttpMethodOveride,
 					WSConstant.METHOD_DELETE);
-			try {
-				obj.put(WSConstant.DEVICETOKEN_COOKIE, FastcheckUtil
-						.decrypt(FastcheckUtil
-								.readFastcheckToken(getActivity())));
-			} catch (Exception e) {
-				CardErrorBean bean = new CardErrorBean(
-						QuickViewSetupFragment.this
-								.getString(R.string.fast_check_error_tech_diff),
-						true);
-				CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-						(CardErrorHandlerUi) getActivity());
-				cardErrorResHandler.handleCardError((CardErrorBean) bean,
-						new CardErrorCallbackListener() {
-							@Override
-							public void onButton2Pressed() {
-								removeQVFragment();
-							}
-
-							@Override
-							public void onButton1Pressed() {
-								removeQVFragment();
-							}
-						});
-			}
+			obj.put(WSConstant.DEVICETOKEN_COOKIE, FastcheckUtil
+					.decrypt(FastcheckUtil.readFastcheckToken(getActivity())));
 		} else {
 			new_token = FastcheckUtil.genClientBindingToken();
 			obj.put(WSConstant.DEVICETOKEN_COOKIE, new_token);

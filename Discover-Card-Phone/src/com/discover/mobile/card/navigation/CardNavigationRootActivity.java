@@ -39,6 +39,16 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
+import com.discover.mobile.card.passcode.disable.PasscodeDisableStep1Fragment;
+import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
+import com.discover.mobile.card.passcode.enable.PasscodeEnableStep2Fragment;
+import com.discover.mobile.card.passcode.menu.PasscodeMenuFragment;
+import com.discover.mobile.card.passcode.remove.PasscodeRemoveFragment;
+import com.discover.mobile.card.passcode.setup.PasscodeSetupStep1Fragment;
+import com.discover.mobile.card.passcode.setup.PasscodeSetupStep2Fragment;
+import com.discover.mobile.card.passcode.update.PasscodeUpdateStep1Fragment;
+import com.discover.mobile.card.passcode.update.PasscodeUpdateStep2Fragment;
+import com.discover.mobile.card.passcode.update.PasscodeUpdateStep3Fragment;
 import com.discover.mobile.card.phonegap.plugins.HybridControlPlugin;
 import com.discover.mobile.card.profile.quickview.QuickViewSetupFragment;
 import com.discover.mobile.card.push.register.PushNowAvailableFragment;
@@ -100,6 +110,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     private String navToJQMPage=null;
     
     private ArrayList<String> navigationlist;
+    private ArrayList<String> nativeList;
     
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -107,6 +118,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         cordovaState = CORDOVA_LOADING;
         navToJQMPage=null;
         setNavigationList();
+        setNativeList();
         statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.status_bar);
 
@@ -155,6 +167,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
  		// 13.3 changes end        
     }
 
+    private void setNativeList() {
+    	nativeList = new ArrayList<String>();
+    	nativeList.add(HomeSummaryFragment.class.getSimpleName());
+    	nativeList.add(QuickViewSetupFragment.class.getSimpleName());
+    	nativeList.add(PasscodeDisableStep1Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeEnableStep1Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeEnableStep2Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeMenuFragment.class.getSimpleName());
+    	nativeList.add(PasscodeRemoveFragment.class.getSimpleName());
+    	nativeList.add(PasscodeSetupStep1Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeSetupStep2Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeUpdateStep1Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeUpdateStep2Fragment.class.getSimpleName());
+    	nativeList.add(PasscodeUpdateStep3Fragment.class.getSimpleName());
+	}
+
     private void setNavigationList() {
     	navigationlist = new ArrayList<String>();
     	navigationlist.add(getString(R.string.section_title_account));
@@ -168,6 +196,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     	navigationlist.add(getString(R.string.section_title_customer_service));
     	navigationlist.add(getString(R.string.section_title_miles));
     	navigationlist.add(getString(R.string.section_title_home));
+    	//13.4 passcode
+    	navigationlist.add(getString(R.string.sub_section_title_passcode));
 		
 	}
 
@@ -306,6 +336,20 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public ErrorHandler getErrorHandler() {
         // return CardErrorHandler.getInstance();
         return null;
+    }
+    
+    //TODO passcode sgoff - optimize
+    public boolean isNative(String text) {
+    	return (text.equals(PasscodeDisableStep1Fragment.class.getSimpleName())
+				|| text.equals(PasscodeEnableStep1Fragment.class.getSimpleName())
+				|| text.equals(PasscodeEnableStep2Fragment.class.getSimpleName())
+				|| text.equals(PasscodeMenuFragment.class.getSimpleName())
+				|| text.equals(PasscodeRemoveFragment.class.getSimpleName())
+				|| text.equals(PasscodeSetupStep1Fragment.class.getSimpleName())
+				|| text.equals(PasscodeSetupStep2Fragment.class.getSimpleName())
+				|| text.equals(PasscodeUpdateStep1Fragment.class.getSimpleName())
+				|| text.equals(PasscodeUpdateStep2Fragment.class.getSimpleName())
+				|| text.equals(PasscodeUpdateStep3Fragment.class.getSimpleName()));
     }
 
     @Override
@@ -598,8 +642,17 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         } else if (fragment.getClass().getSimpleName()
                 .equalsIgnoreCase("RedeemMilesFragment")) {
             return;
+        } else if (fragment.getClass().getSimpleName().equalsIgnoreCase("PasscodeLandingFragment")) {
+        	//TODO sgoff0 - is there a cleaner way to handle this?
+        	//don't keep this fragment in back stack
+        	Log.v("CardNavigationRootActivity", "navigate passcode landing fragment without backstack");
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(fragment)
+                    .add(R.id.navigation_content, fragment,
+                            fragment.getClass().getSimpleName())
+                    .commit();
         } else {
-
             getSupportFragmentManager()
                     .beginTransaction()
                     .remove(fragment)
@@ -607,7 +660,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                             fragment.getClass().getSimpleName())
                     // Adds the class name and fragment to the back stack
                     .addToBackStack(fragment.getClass().getSimpleName())
-                    .commit();
+                    .commitAllowingStateLoss();
         }
 
         PushNowAvailableFragment pushFrag = (PushNowAvailableFragment) this
@@ -683,6 +736,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 		mCardStoreData.addToAppCache("onBackPressed", true);
 		// 13.3 changes end        
         cordovaWebFrag.setTitle(null);
+        mCardStoreData.addToAppCache("currentPageTitle", null);
         cordovaWebFrag.setM_currentLoadedJavascript(null);
         final FragmentManager fragManager = this.getSupportFragmentManager();
         final int fragCount = fragManager.getBackStackEntryCount();
@@ -697,8 +751,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             Utils.log("CardNavigationRootActivity", "is fragment popped"
                     + isPopped);
             //13.3 QuicView Changes Start
-            if (fragTag.equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName()) || fragTag.equalsIgnoreCase(QuickViewSetupFragment.class.getSimpleName())  ) {
-
+            if (nativeList.contains(fragTag)) {
                 Fragment fragment = fragManager
                         .findFragmentByTag(fragTag);
                 makeFragmentVisible(fragment, false);

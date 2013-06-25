@@ -154,7 +154,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 	/**Help Widget*/
 	private ImageButton help;
-	
+
 	/** Overlay for the Tap and Hold Coach */
 	protected AtmTapAndHoldCoachOverlay overlay;
 
@@ -182,7 +182,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 	/** Bundle key to say if the overlay is showing */
 	private final String OVERLAY_SHOWING = "overlay_showing";
-	
+
 	/**
 	 * Holds reference to layout that displays Google Logo and Terms of Use Link
 	 */
@@ -239,7 +239,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		mapButton = (Button) view.findViewById(R.id.map_nav);
 		listButton = (Button) view .findViewById(R.id.list_nav);
 		help = (ImageButton) view.findViewById(R.id.help);
-		
+
 		help.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
@@ -264,7 +264,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
 		overlay.setDelegate(this);
-		
+
 		return view;
 	}
 
@@ -295,9 +295,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		 * Verify that the bundle used to populate the map fragment has data.
 		 */
 		resumeStateOfFragment(savedState);
-		
-		Bundle bundle = getArguments();
-		if (bundle.containsKey(this.OVERLAY_SHOWING) && bundle.getBoolean(this.OVERLAY_SHOWING)) {
+
+		final Bundle bundle = getArguments();
+		if (bundle.containsKey(OVERLAY_SHOWING) && bundle.getBoolean(OVERLAY_SHOWING)) {
 			overlay.showCoach();
 		}
 
@@ -321,17 +321,17 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 		restoreCameraView();
 		adjustMapZoomIfNeeded();
-		
+
 		fadeInMap();
 	}
-	
+
 	/**
 	 * Performs an animation on the map fragment to fade it in and avoid
 	 * showing a black area for the map.
 	 */
 	private void fadeInMap() {
 		final View mapView = getView().findViewById(R.id.discover_map);
-		
+
 		if(mapView != null) {
 			final int halfSecond = 500;
 			final AlphaAnimation fadeIn = new AlphaAnimation(0f, 1f);
@@ -374,25 +374,25 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		}
 
 		switch(locationStatus){
-			case NOT_ENABLED:
-				settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
-				((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
-				break;
-			case ENABLED:
-				showLocationAcceptanceModal();
-				break;
-			case LOCATION_FAILED:
-				locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
-				((NavigationRootActivity) getActivity()).showCustomAlert(locationFailureModal);
-				break;
-			case SEARCHING:
-				getLocation();
-				break;
-			case LOCKED_ON:
-				setUserLocation(mapWrapper.getCurrentLocation());
-				break;
-			default:
-				break;
+		case NOT_ENABLED:
+			settingsModal = AtmModalFactory.getSettingsModal(getActivity(), this);
+			((NavigationRootActivity) getActivity()).showCustomAlert(settingsModal);
+			break;
+		case ENABLED:
+			showLocationAcceptanceModal();
+			break;
+		case LOCATION_FAILED:
+			locationFailureModal = AtmModalFactory.getCurrentLocationFailModal(getActivity(), this);
+			((NavigationRootActivity) getActivity()).showCustomAlert(locationFailureModal);
+			break;
+		case SEARCHING:
+			getLocation();
+			break;
+		case LOCKED_ON:
+			setUserLocation(mapWrapper.getCurrentLocation());
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -401,15 +401,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			locationModal = AtmModalFactory.getLocationAcceptanceModal(getActivity(), 
 					AtmMapFragment.this);
 			locationModal.setOnCancelListener(new OnCancelListener() {
-				
+
 				@Override
-				public void onCancel(DialogInterface dialog) {
+				public void onCancel(final DialogInterface dialog) {
 					if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
 						overlay.showCoach();	
 					}
 				}
 			});
-			
+
 			((NavigationRootActivity) getActivity()).showCustomAlert(locationModal);
 		}else {
 			searchCurrentLocation();
@@ -704,19 +704,19 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 	public void handleReceivedData(final Bundle bundle){
 		//Clears all markers on the map before redrawing them
 		mapWrapper.clear();
-		
+
 		//When clearing markers we want to make sure if the user allowed us to track their location to draw the user
 		//pin on the screen.
 		if (locationStatus == LOCKED_ON) {
 			mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());	
 		}
-		
+
 		//When a service call is completed we want to show the coach overlay if it has been 90 days since the last showing
 		//or the first time the current user has gone to this screen.
 		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
 			overlay.showCoach();
 		}
-		
+
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
@@ -794,14 +794,14 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			locationManagerWrapper.stopGettingLocaiton();
 		}
 		locationStatus = LOCKED_ON;
-		
+
 		if(null == location){return;}
 		mapWrapper.setUsersCurrentLocation(location, R.drawable.atm_starting_point_pin, getActivity());
 		this.location = location;
 
 		zoomToLocation(location);
 
-		if(!hasLoadedAtms){
+		if(null != location && !hasLoadedAtms){
 			getAtms(location);
 			hasLoadedAtms = true;
 		}
@@ -877,7 +877,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
-		getArguments().putBoolean(this.OVERLAY_SHOWING, overlay.isShowing());
+		getArguments().putBoolean(OVERLAY_SHOWING, overlay.isShowing());
 
 		/**
 		 * Save the state of this fragment in the argument bundle provided
@@ -1230,7 +1230,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		}
 		return isVisible;
 	}
-	
+
 	/**
 	 * Enables the Atm Map Fragment UI 
 	 */

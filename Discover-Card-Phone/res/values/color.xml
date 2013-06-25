@@ -78,6 +78,13 @@
     
     <!-- fastcheck -->
     <color name="transparentGray">#50000000</color>
+    
+    <!-- Passcode -->
+	<color name="passcodeBlack">#293033</color>
+	<color name="passcodeBlue">#2d79b3</color>
+	<color name="passcodeOrange">#F56000</color>
+	<color name="passcodeGray">#D7E6E9</color>
+
 	
     <color name="title_selector_color">#FD6C04</color>
    <color name="title_selector_text_color">#FFFFFF</color>

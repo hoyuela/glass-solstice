@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.discover.mobile.common.R;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+import com.discover.mobile.common.ui.widgets.ValidatedInputField;
 
 /**
  * FIXME - analyze this class and fix 
@@ -64,7 +65,7 @@ public abstract class BaseErrorHandler implements ErrorHandler {
 			for (int i = (errorHandlerUi.getInputFields().size() - 1); i >= 0; i--) {
 				final EditText text = errorHandlerUi.getInputFields().get(i);
 				text.setText("");
-				text.setBackgroundResource(R.drawable.edit_text_default);
+				text.setBackgroundResource(ValidatedInputField.FIELD_DEFAULT_APPEARANCE);
 			}
 		}
 	}

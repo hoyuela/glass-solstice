@@ -36,6 +36,7 @@
     <string name="sub_section_title_alert_history">Push Alerts History</string>
     <string name="sub_section_title_create_cash_pin">Create Cash PIN</string>
     <!--<string name="sub_section_title_maintain_fastcheck">Quick Look</string>-->
+    <string name="sub_section_title_passcode">Passcode</string>
         
     
     <string name="section_title_customer_service">Customer Service</string>
