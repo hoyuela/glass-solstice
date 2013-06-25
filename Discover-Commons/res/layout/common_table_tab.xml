@@ -12,7 +12,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
         android:layout_marginTop="@dimen/forms_inner_padding"
-        android:clickable="false" />
+        android:clickable="false"
+        android:gravity="center_horizontal" />
 
     <View
         android:id="@+id/selected"
