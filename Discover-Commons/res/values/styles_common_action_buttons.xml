@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-	<style name="common_call_to_action_theme">
+	<style name="common_call_to_action_theme_orange">
 	        <item name="android:textColor">@drawable/call_to_action_text_color</item>
 	        <item name="android:textSize">@dimen/body_copy_max</item>
 	        <item name="android:paddingLeft">@dimen/orange_button_left_right_padding</item>
-	        <item name="android:background">@drawable/common_call_to_action_button</item>
+	        <item name="android:background">@drawable/common_call_to_action_theme_orange</item>
 	        <item name="android:paddingRight">@dimen/orange_button_left_right_padding</item>
 	        <item name="android:paddingTop">@dimen/call_to_actions_padding</item>
 	        <item name="android:paddingBottom">@dimen/call_to_actions_padding</item>
@@ -29,7 +29,7 @@
 	        <item name="android:textSize">@dimen/small_copy_max</item>
 	        <item name="android:paddingLeft">@dimen/small_orange_button_left_right_padding</item>
 	        <item name="android:paddingRight">@dimen/small_orange_button_left_right_padding</item>
-	        <item name="android:background">@drawable/common_call_to_action_button</item>
+	        <item name="android:background">@drawable/common_call_to_action_theme_orange</item>
 	        <item name="android:paddingTop">@dimen/small_call_to_actions_padding</item>
 	        <item name="android:paddingBottom">@dimen/small_call_to_actions_padding</item>
 	        <item name="android:layout_gravity">center_horizontal</item>
