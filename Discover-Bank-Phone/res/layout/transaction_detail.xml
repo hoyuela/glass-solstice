@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:fillViewport="true" >
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/forms_inner_padding" >
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding" 
+        android:layout_marginTop="@dimen/between_related_elements_padding" >
 
         <LinearLayout
             android:id="@+id/content_table"
             style="@style/customer_service_table"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -35,8 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@string/edit"
-                    android:textStyle="bold" />
+                    android:text="@string/edit" />
             </LinearLayout>
 
             <View
@@ -64,8 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@string/edit"
-                    android:textStyle="bold" />
+                    android:text="@string/edit" />
 
                 <TextView
                     android:id="@+id/transaction_id"
@@ -101,8 +101,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@string/edit"
-                    android:textStyle="bold" />
+                    android:text="@string/edit" />
             </LinearLayout>
 
             <View
@@ -130,8 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:text="@string/edit"
-                    android:textStyle="bold" />
+                    android:text="@string/edit" />
             </LinearLayout>
         </LinearLayout>
 
@@ -172,7 +170,6 @@
                 style="@style/blue_hyperlink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/content_table"
                 android:layout_centerHorizontal="true"
                 android:background="@null"
                 android:text="@string/delete_payment"
