@@ -141,35 +141,22 @@
                         android:maxLength="32"
                         android:textCursorDrawable="@null" />
 
-                    <TextView
-                        android:id="@+id/remember_user_id_label"
+                    <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
+                        android:id="@+id/remember_user_id_toggle"
+                        style="@style/common_switch_light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
                         android:layout_below="@+id/password_field"
-                        android:layout_marginTop="17dp"
-                        android:layout_toLeftOf="@+id/remember_user_id_button"
-                        android:text="@string/remember_user_id"
-                        android:textColor="#576166" />
-
-                   <com.discover.mobile.bank.ui.DiscoverToggleSwitch
-	                    android:id="@+id/remember_user_id_button"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_alignParentRight="true"
-	                    android:layout_below="@+id/password_field"
-	                    android:layout_marginLeft="5dip"
-	                    android:layout_marginRight="@dimen/element_side_padding"
-	                    android:layout_marginTop="14dp"
-	                    android:button="@null"
-	                    android:onClick="toggleCheckBoxFromXml" />
-
+                        android:layout_marginRight="@dimen/element_side_padding"
+                        android:text="@string/remember_user_id" />
 
                     <Button
                         android:id="@+id/login_button"
-                        style="@style/call_to_action_theme"
+                        style="@style/common_call_to_action_theme_orange"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/remember_user_id_button"
+                        android:layout_below="@+id/remember_user_id_toggle"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
@@ -258,24 +245,24 @@
 
                         <EditText
                             android:id="@+id/passcode01"
-                            android:inputType="phone"
-                            style="@style/PasscodeDigit" >
+                            style="@style/PasscodeDigit"
+                            android:inputType="phone" >
                         </EditText>
 
                         <EditText
                             android:id="@+id/passcode02"
-                            android:inputType="phone"
-                            style="@style/PasscodeDigit" />
+                            style="@style/PasscodeDigit"
+                            android:inputType="phone" />
 
                         <EditText
                             android:id="@+id/passcode03"
-                            android:inputType="phone"
-                            style="@style/PasscodeDigit" />
+                            style="@style/PasscodeDigit"
+                            android:inputType="phone" />
 
                         <EditText
                             android:id="@+id/passcode04"
-                            android:inputType="phone"
-                            style="@style/PasscodeDigit" />
+                            style="@style/PasscodeDigit"
+                            android:inputType="phone" />
 
                         <ImageView
                             android:id="@+id/validation"
@@ -448,18 +435,17 @@
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
-            
-			<TextView 
-			    android:id="@+id/fdic_disclaimer_view"
-			    android:layout_width="wrap_content"
-			    android:layout_height="match_parent"
-			    android:layout_centerHorizontal="true"
-			    android:paddingBottom="@dimen/forms_inner_padding"
-			    android:layout_below="@+id/login_table"
-			    android:text="@string/discover_copyright_text"
-			    android:textColor="@color/fdic_disclaimer_text_color"
-			    android:textSize="@dimen/fdic_disclaimer_text_size" />
 
+            <TextView
+                android:id="@+id/fdic_disclaimer_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/login_table"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="@dimen/forms_inner_padding"
+                android:text="@string/discover_copyright_text"
+                android:textColor="@color/fdic_disclaimer_text_color"
+                android:textSize="@dimen/fdic_disclaimer_text_size" />
         </RelativeLayout>
     </com.discover.mobile.common.ui.widgets.NonFocusingScrollView>
 
@@ -495,5 +481,6 @@
             android:layout_weight="0.34"
             android:text="@string/register_now" />
     </LinearLayout>
+
 
 </RelativeLayout>

@@ -54,7 +54,9 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -134,7 +136,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 	/**Support map fragment*/
 	private AtmListFragment  listFragment;
 
-	/**Street view framgent*/
+	/**Street view fragment*/
 	private AtmWebView streetView;
 
 	/**Boolean that is false if the app should allow the back button press*/
@@ -438,6 +440,25 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			mapWrapper.setCurrentLocation(location);
 			setUserLocation(mapWrapper.getCurrentLocation());
 		}
+		
+		mapWrapper.getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
+			@Override
+			public void onMapLongClick(LatLng locationOfLongClick) {
+				//Says the feature was used today
+				AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
+				
+				//Creates a new location based on the long pressed location
+				final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+				newLocation.setLatitude(locationOfLongClick.latitude);
+				newLocation.setLongitude(locationOfLongClick.longitude);
+
+				//Clears the map than prepares for and performs for the new service call
+				mapWrapper.clear();
+				hasLoadedAtms = false;
+				isLoading = false;
+				setUserLocation(newLocation);
+			}
+		});
 	}
 
 	/**
@@ -713,7 +734,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 		//When a service call is completed we want to show the coach overlay if it has been 90 days since the last showing
 		//or the first time the current user has gone to this screen.
-		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
+		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay() && isOnMap) {
 			overlay.showCoach();
 		}
 
