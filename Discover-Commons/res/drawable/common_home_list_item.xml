@@ -13,8 +13,9 @@
             <solid android:color="@color/white" />
         </shape>
     </item>
+    
     <!-- Bottom Shadow -->
-    <item
+    <!-- <item
         android:bottom="1dp"
         android:left="1dp"
         android:right="1dp"
@@ -28,6 +29,6 @@
                 android:startColor="#FFF7F7F7" >
             </gradient>
         </shape>
-    </item>
+    </item> -->
 
 </layer-list>
