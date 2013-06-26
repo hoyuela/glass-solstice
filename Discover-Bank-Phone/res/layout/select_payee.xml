@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding" >
+         >
 
          <LinearLayout
               android:id="@+id/page_header"
@@ -19,7 +19,8 @@
               android:layout_alignParentTop="true"
               android:layout_marginBottom="@dimen/table_inner_padding"
               android:layout_marginRight="@dimen/forms_inner_padding"
-              android:layout_marginTop="@dimen/groups_of_elements_padding">
+              android:layout_marginTop="@dimen/groups_of_elements_padding"
+              android:paddingLeft="@dimen/forms_inner_padding">
              
               <com.discover.mobile.bank.ui.widgets.StatusMessageView
 	            android:id="@+id/status"
@@ -41,7 +42,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/page_header"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            >
             
             <TextView
             android:id="@+id/payee_error_text"
@@ -50,6 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/schedule_pay_canceled"
             android:paddingBottom="@dimen/between_related_elements_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
             android:visibility="gone" />
 
             <TextView
@@ -59,19 +62,21 @@
                 android:layout_height="wrap_content"
                 android:text="@string/select_payee_empty"
                 android:paddingRight="@dimen/forms_inner_padding"
-                android:visibility="gone" />
+                android:visibility="gone" 
+                android:paddingLeft="@dimen/forms_inner_padding"/>
 
             <LinearLayout
                 android:id="@+id/payee_list"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingRight="@dimen/forms_inner_padding" />
+                
+                 />
         </LinearLayout>
 
         <Button
             android:id="@+id/add_payee"
-            style="@style/call_to_action_theme"
+            style="@style/common_call_to_action_theme_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/orange_button_margin_top"
