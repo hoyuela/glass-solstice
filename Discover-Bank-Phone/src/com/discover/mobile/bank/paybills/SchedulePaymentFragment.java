@@ -250,7 +250,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 				@Override
 				public void run() {
 					final BankNavigationRootActivity activity = 
-													(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+							(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
 					InputMethodManager imm = activity.getInputMethodManager();
 					amountEdit.requestFocus();
 					imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
@@ -435,7 +435,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
 			paymentAccountText.setText(defaultPaymentAccount());
-			
+
 			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 		}
 		/**Check if page is displayed to edit a payment*/
@@ -445,7 +445,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
-			
+
 			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
 			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 
@@ -456,7 +456,10 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			PayeeDetail currentPayee = paymentDetail.payee;
 			if (currentPayee != null && BankUser.instance().hasPayees()) {
 				currentPayee = BankUser.instance().getPayees().getPayeeFromId(currentPayee.id);
-				updateEarliestPaymentDate(currentPayee.paymentDate);
+
+				if (currentPayee != null && currentPayee.paymentDate != null) {
+					updateEarliestPaymentDate(currentPayee.paymentDate);
+				}
 			}
 		}
 
@@ -697,31 +700,26 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			}
 		});
 
-		if(!editMode){
-			memoItem.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(final View arg0) {
-					if (memoText.getVisibility() == View.VISIBLE) {
-						flipMemoElements(true);
-					}
+		memoItem.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View arg0) {
+				if (memoText.getVisibility() == View.VISIBLE) {
+					flipMemoElements(true);
 				}
-			});
+			}
+		});
 
-			memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(final View v, final boolean hasFocus) {
-					if (!hasFocus) {
-						flipMemoElements(false);
-					}
+		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(final View v, final boolean hasFocus) {
+				if (!hasFocus) {
+					flipMemoElements(false);
 				}
-			});
+			}
+		});
 
-			/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
-			memoEdit.setOnEditorActionListener(this);
-		}else{
-			memoItem.setVisibility(View.GONE);
-
-		}
+		/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
+		memoEdit.setOnEditorActionListener(this);
 
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
@@ -740,7 +738,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 									.getSelectedItem();
 							accountId = Integer.valueOf(a.id);
 							accountIndex = position;
-							
+
 							paymentAccountText.setText(a.nickname);
 							setSelectedAccountTitle(a);
 						}
@@ -825,12 +823,12 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			}
 		});
 	}
-	
+
 	private void setSelectedAccountTitle(final Account account) {
 		if (null != account.accountNumber && null != account.accountNumber.ending) {
 			paymentAccountTitle.setText(getString(R.string.schedule_pay_from_account_ending) + 
-					  StringUtility.SPACE + 
-					  account.accountNumber.ending);
+					StringUtility.SPACE + 
+					account.accountNumber.ending);
 		}
 	}
 
@@ -1049,29 +1047,29 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		/** Verify calendar hasn't already been created */
 		if (null == calendarFragment) {
 			calendarFragment = new CalendarFragment();
-	
+
 			/** The calendar will appear with the month and year in this Calendar instance */
 			Calendar displayedDate = Calendar.getInstance();
-	
-	
+
+
 			/**Convert stored in text field into chosen date, this will avoid issue on rotation*/
 			try{
 				final String[] date = dateText.getText().toString().split("[\\/]+");
-	
+
 				/** The Calendar will appear with the date specified by this calendar instance selected*/
 				chosenPaymentDate.set( Integer.parseInt(date[2]),
 						Integer.parseInt(date[0]) - 1,
 						Integer.parseInt(date[1]));
-	
+
 				displayedDate = chosenPaymentDate;	
 			}catch(final NumberFormatException ex){
 				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR),
 						chosenPaymentDate.get(Calendar.MONTH),
 						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-	
+
 				displayedDate = chosenPaymentDate;
 			}
-	
+
 			/**Show calendar as a dialog*/
 			calendarFragment.show(getFragmentManager(),
 					getString(R.string.schedule_pay_date_picker_title),

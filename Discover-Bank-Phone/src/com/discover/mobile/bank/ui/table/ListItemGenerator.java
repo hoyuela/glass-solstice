@@ -294,6 +294,10 @@ public class ListItemGenerator {
 			items.add(getStatusCell( BankStringFormatter.capitalize(item.status)));
 		}
 		items.add(getConfirmationCell(item.confirmationNumber));
+		
+		if (item.memo != null && !Strings.isNullOrEmpty(item.memo.trim())) {
+			items.add(getMemoItemCell(item.memo));
+		}
 
 		hideDivider(items);
 		return items;
@@ -318,7 +322,7 @@ public class ListItemGenerator {
 			items.add(getAddressCell(item.address.formattedAddress));
 
 			/** only show memo field if it is provided */
-			if (!Strings.isNullOrEmpty(item.memo)) {
+			if (item.memo != null && !Strings.isNullOrEmpty(item.memo.trim())) {
 				items.add(getUnmanagedPayeeMemoCell(item.memo));
 			}
 		}
