@@ -141,10 +141,9 @@
 
             <RadioButton
                 android:id="@+id/account_security_choice_one_radio"
-                style="@style/field_copy_small"
+                style="@style/common_radio_field_copy_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:button="@drawable/custom_radio_check"
                 android:checked="true"
                 android:paddingBottom="@dimen/forms_inner_padding"
                 android:paddingLeft="@dimen/radio_group_inner_padding"
@@ -160,11 +159,10 @@
 
             <RadioButton
                 android:id="@+id/account_security_choice_two_radio"
-                style="@style/field_copy_small"
+                style="@style/common_radio_field_copy_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:button="@drawable/custom_radio_check"
                 android:paddingBottom="@dimen/forms_inner_padding"
                 android:paddingLeft="@dimen/radio_group_inner_padding"
                 android:layout_marginLeft="@dimen/forms_inner_padding"
@@ -175,7 +173,7 @@
 
         <Button
             android:id="@+id/account_security_continue_button"
-            style="@style/call_to_action_theme"
+            style="@style/common_call_to_action_theme_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_whats_this_relative_layout"
