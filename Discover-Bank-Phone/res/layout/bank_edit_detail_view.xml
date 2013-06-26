@@ -9,7 +9,7 @@
         android:id="@+id/divider_line"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@drawable/table_solid_line" />
+         />
 
     <RelativeLayout
         android:id="@+id/list_item"
@@ -39,18 +39,17 @@
             android:layout_alignLeft="@+id/top_label"
             android:layout_below="@+id/top_label"
             android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:layout_toLeftOf="@+id/caret"
+            
             android:singleLine="true"
             android:text="@string/edit" />
 
         <com.discover.mobile.bank.payees.PayeeValidatedEditField
             android:id="@+id/editable_field"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/input_field_height"
             android:layout_alignLeft="@+id/top_label"
             android:layout_below="@+id/middle_label"
             android:layout_marginRight="@dimen/between_related_elements_padding"
-            android:layout_toLeftOf="@+id/caret"
             android:imeOptions="flagNoExtractUi|actionDone"
             android:inputType="textNoSuggestions"
             android:singleLine="true"
@@ -66,15 +65,7 @@
             android:layout_below="@+id/editable_field"
             android:text="@string/bank_invalid_characters" />
 
-        <ImageView
-            android:id="@+id/caret"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingRight="@dimen/between_related_elements_padding"
-            android:contentDescription="@string/caret_description"
-            android:src="@drawable/blue_arrow_right" />
+        
     </RelativeLayout>
 
 </RelativeLayout>
