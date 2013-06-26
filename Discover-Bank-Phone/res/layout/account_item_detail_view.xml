@@ -9,42 +9,43 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/between_related_elements_padding"
-        android:padding="@dimen/forms_inner_padding" >
+        android:padding="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/groups_of_elements_padding" >
 
         <TextView
             android:id="@+id/title"
             style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/previous_button"
             android:layout_alignParentLeft="true"
             android:layout_marginRight="@dimen/groups_of_elements_padding"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/previous_button"
-            android:text="Scheduled Payment"
+            android:text="@string/empty"
             android:textSize="@dimen/title_max" />
 
         <ImageView
             android:id="@+id/previous_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:layout_width="@dimen/min_touch_region"
+            android:layout_height="@dimen/min_touch_region"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/next_button"
-            android:contentDescription="@string/empty"
             android:background="@drawable/page_control_background"
-            android:padding="5dp"
-            android:src="@drawable/left_page_control_arrow"/>
+            android:contentDescription="@string/empty"
+            android:padding="@dimen/min_button_padding"
+            android:src="@drawable/left_page_control_arrow" />
 
         <ImageView
             android:id="@+id/next_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/min_touch_region"
+            android:layout_height="@dimen/min_touch_region"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/forms_inner_padding"
-            android:contentDescription="@string/empty"
+            android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:background="@drawable/page_control_background"
-            android:padding="5dp"
+            android:contentDescription="@string/empty"
+            android:padding="@dimen/min_button_padding"
             android:src="@drawable/right_page_control_arrow" />
 
         <TextView
