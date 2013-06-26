@@ -56,7 +56,16 @@ final class GroupNavigationItem extends NavigationItem {
 		}
 
 		adapter.setSelectedItem(null);
+
+		// Save the current group section being highlighted
+		final int mainIndex = NavigationIndex.getMainIndex();
+
+		// Set Index to -1 to store the current state of the menu into the previous state of the menu
+		// So when the menu is expanded it will be restored to the previous state.
 		NavigationIndex.setIndex(-1);
+
+		// Set the mainIndex so the group section is still highlighted when collapsed
+		NavigationIndex.setIndex(mainIndex);
 		expanded = false;
 	}
 
