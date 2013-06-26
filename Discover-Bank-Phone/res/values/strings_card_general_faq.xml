@@ -10,7 +10,7 @@
     </string-array>
     
     <string name="card_general_title_one">Is the Discover Mobile App as secure as Discover.com?</string>
-    <string name="card_general_content_one">The Discover Mobile App uses the same security standards as Discover.com. We ensure a high security level by never showing your account number, timing out each section after a period of inactivity, and by using your existing User ID and Password, which only you know.</string>
+    <string name="card_general_content_one">The Discover Mobile App uses the same security standards as Discover.com. We ensure a high security level by never showing your account number, timing out each session after a period of inactivity, and by using your existing User ID and Password, which only you know.</string>
     <string name="card_general_title_two">What do I need to log into the Discover Mobile App?</string>
     <string name="card_general_content_two">To log in, you can use the same user ID and password that you have set up at Discover.com. If you do not have a user ID and password, tap on “Register Now” on the login screen.</string>
     
