@@ -112,13 +112,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return view;
 	}
 	
-	/**
-	 * @return the 
-	 *
-	public View getCaret() {
-		return caret;
-	}
-*/
+	
 	public BankEditDetail getNextDetail() {
 		return nextDetail;
 	}
