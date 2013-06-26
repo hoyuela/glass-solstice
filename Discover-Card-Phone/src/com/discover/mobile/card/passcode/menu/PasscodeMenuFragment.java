@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,8 +24,11 @@ import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.request.DeletePasscodeRequest;
 import com.discover.mobile.card.passcode.update.PasscodeUpdateStep1Fragment;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeMenuFragment extends BaseFragment {
@@ -158,6 +162,9 @@ public class PasscodeMenuFragment extends BaseFragment {
 	      return true;
 	    }
 	  }
+	
+	private final void showDisableModal(){
+	}
 
 	private final class DisableRequestListener implements CardEventListener {
 		@Override
@@ -170,7 +177,21 @@ public class PasscodeMenuFragment extends BaseFragment {
 		public void onSuccess(Object data) {
 			PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
 			pUtils.deletePasscodeToken();
-			pUtils.dialogHelper(getActivity(), MODAL_PASSCODE_DISABLED, "Home", true, new NavigateACHomeAction(), new NavigateACHomeAction());
+//			pUtils.dialogHelper(getActivity(), MODAL_PASSCODE_DISABLED, "Home", true, new NavigateACHomeAction(), new NavigateACHomeAction());
+//			showDisableModal();
+			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+			final SimpleContentModal modal = new SimpleContentModal(activeActivity, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_paragraph_1, R.string.home_text);
+			modal.hideNeedHelpFooter();
+			modal.getBottom().getButton()
+//			modal.getButton()
+			.setOnClickListener(new View.OnClickListener(){
+				@Override
+				public void onClick(final View v){
+					Log.v(TAG, "On click of okay, should nav home");
+					new NavigateACHomeAction();
+				}
+			});
+			((NavigationRootActivity)activeActivity).showCustomAlert(modal);
 		}
 	};
 }
