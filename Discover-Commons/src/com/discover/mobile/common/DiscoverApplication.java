@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.acra.annotation.ReportsCrashes;
-
 import android.app.Application;
 
-@ReportsCrashes(formKey = "dDAzM3VJakhEcHpvV2dsZlpJcXZqOGc6MQ")
 public class DiscoverApplication extends Application {
 	
 	/**The cache object that maintains the most recent user's choice to use current location*/
