@@ -7,13 +7,15 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/forms_inner_padding" >
+        android:paddingTop="@dimen/forms_inner_padding" 
+        android:paddingBottom="@dimen/forms_inner_padding">
 
         <LinearLayout
             android:id="@+id/content_table"
             style="@style/customer_service_table"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:orientation="vertical">
         </LinearLayout>
 
         <Button
