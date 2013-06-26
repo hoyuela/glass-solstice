@@ -12,11 +12,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.apache.cordova.DroidGap;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,11 +27,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -44,8 +39,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -55,6 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.utils.PDFObject;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -154,6 +149,37 @@ public class StatementActivity extends DroidGap {
         loadWebView(mStatementInfo);
         configureWebView();
     }
+
+    private final class HealthCheckListener implements CardEventListener {
+    	private String TAG = "HealthCheckListener";
+    	
+		@Override
+		public void OnError(Object data) {
+			Log.v(TAG, "Error: ");
+			CardErrorBean cardErrorBean = (CardErrorBean) data;
+			Log.v(TAG, "CardErrorBean: " + cardErrorBean.toString());
+			Log.v(TAG, "CardErrorBean Error code: " + cardErrorBean.getErrorCode());
+			//TODO get status code out of data
+			if (cardErrorBean.getErrorCode() == null) {
+				// cannot connect to URL, probably no internet
+				alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+			} else if (cardErrorBean.getErrorCode().startsWith("401")) {
+				alertCloseActivity(getText(R.string.common_sessionExpired_message));
+			} else if (cardErrorBean.getErrorCode().startsWith("503")) {
+				setResult(MAINT_EXPIRE_SESSION);
+				finish();
+			} else {
+				// another error
+				finish();
+			}
+		}
+
+		@Override
+		public void onSuccess(Object data) {
+			//do nothing
+			Log.v(TAG, "Success");
+		}
+	};
 
     /**
      * Configures settings for specified webview
@@ -429,7 +455,9 @@ public class StatementActivity extends DroidGap {
         long currentTime = new Date().getTime();
         if (currentTime - sLastHealthCheck > (sHealthCheckThreshold)) {
             Utils.log(LOG_TAG, "Performing healthcheck");
-            new StatementHealthCheck().execute();
+//            new StatementHealthCheck().execute();
+            Log.v(TAG, "About to call healthCheck");
+            new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
             sLastHealthCheck = currentTime;
         }
     }
@@ -553,10 +581,15 @@ public class StatementActivity extends DroidGap {
                     .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)))) {
                 alertCloseActivity(getText(R.string.common_noInternetConnection_message));
             } else {
-                new StatementHealthCheck().execute();
+//                new StatementHealthCheck().execute();
+            	Log.v(TAG, "About to call healthCheck");
+                new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
             }
         }
     }
+
+
+	
 
     /**
      * Checks health of user's session. On no internet connection or non 200
@@ -565,59 +598,59 @@ public class StatementActivity extends DroidGap {
      * @author sgoff0
      * 
      */
-    private class StatementHealthCheck extends AsyncTask<Void, Void, Integer> {
-        @Override
-        protected Integer doInBackground(Void... arg0) {
-            final HttpClient client = new DefaultHttpClient();
-            final HttpGet getRequest = new HttpGet(sBaseUrl + "/healthCheck");
-            CookieSyncManager.getInstance().sync();
-            String domain = sBaseUrl.substring(0, sBaseUrl.indexOf(".com") + 4);
-            String cookies = CookieManager.getInstance().getCookie(domain);
-            getRequest.setHeader("Cookie", cookies);
-            Integer status = -1;
-            try {
-                HttpResponse response = client.execute(getRequest);
-                final int statusCode = response.getStatusLine().getStatusCode();
-                status = statusCode;
-            } catch (IllegalStateException e) {
-                Utils.log(LOG_TAG, "ISE: " + e.getMessage(), e);
-                getRequest.abort();
-                mStatementInfo.setError(true);
-            } catch (Exception e) {
-                Utils.log(LOG_TAG, "E: " + e.getMessage(), e);
-                getRequest.abort();
-                mStatementInfo.setError(true);
-            } finally {
-                if ((client instanceof AndroidHttpClient)) {
-                    ((AndroidHttpClient) client).close();
-                }
-            }
-
-            return status;
-        }
-
-        @Override
-        protected void onPostExecute(Integer statusCode) {
-            if (statusCode != HttpStatus.SC_OK) {
-                Utils.log("StatementHealthCheck", "Error " + statusCode
-                        + " while calling healthcheck " + sBaseUrl
-                        + "/healthCheck");
-                if (statusCode == -1) {
-                    // cannot connect to URL, probably no internet
-                    alertCloseActivity(getText(R.string.common_noInternetConnection_message));
-                } else if (statusCode == 401) {
-                    // session expired
-                    alertCloseActivity(getText(R.string.common_sessionExpired_message));
-                } else if (statusCode == 503) {
-                    setResult(MAINT_EXPIRE_SESSION);
-                    finish();
-                } else {
-                    // another error
-                    finish();
-                }
-            }
-        }
-    }
+//    private class StatementHealthCheck extends AsyncTask<Void, Void, Integer> {
+//        @Override
+//        protected Integer doInBackground(Void... arg0) {
+//            final HttpClient client = new DefaultHttpClient();
+//            final HttpGet getRequest = new HttpGet(sBaseUrl + "/healthCheck");
+//            CookieSyncManager.getInstance().sync();
+//            String domain = sBaseUrl.substring(0, sBaseUrl.indexOf(".com") + 4);
+//            String cookies = CookieManager.getInstance().getCookie(domain);
+//            getRequest.setHeader("Cookie", cookies);
+//            Integer status = -1;
+//            try {
+//                HttpResponse response = client.execute(getRequest);
+//                final int statusCode = response.getStatusLine().getStatusCode();
+//                status = statusCode;
+//            } catch (IllegalStateException e) {
+//                Utils.log(LOG_TAG, "ISE: " + e.getMessage(), e);
+//                getRequest.abort();
+//                mStatementInfo.setError(true);
+//            } catch (Exception e) {
+//                Utils.log(LOG_TAG, "E: " + e.getMessage(), e);
+//                getRequest.abort();
+//                mStatementInfo.setError(true);
+//            } finally {
+//                if ((client instanceof AndroidHttpClient)) {
+//                    ((AndroidHttpClient) client).close();
+//                }
+//            }
+//
+//            return status;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Integer statusCode) {
+//            if (statusCode != HttpStatus.SC_OK) {
+//                Utils.log("StatementHealthCheck", "Error " + statusCode
+//                        + " while calling healthcheck " + sBaseUrl
+//                        + "/healthCheck");
+//                if (statusCode == -1) {
+//                    // cannot connect to URL, probably no internet
+//                    alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+//                } else if (statusCode == 401) {
+//                    // session expired
+//                    alertCloseActivity(getText(R.string.common_sessionExpired_message));
+//                } else if (statusCode == 503) {
+//                    setResult(MAINT_EXPIRE_SESSION);
+//                    finish();
+//                } else {
+//                    // another error
+//                    finish();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Displays alert and closes activity
