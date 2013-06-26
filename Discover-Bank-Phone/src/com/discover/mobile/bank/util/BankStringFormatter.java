@@ -158,16 +158,18 @@ public final class BankStringFormatter {
 	 */
 	public static String convertToAccountEnding(final String value){
 		if(!Strings.isNullOrEmpty(value)){
-			final int startPosition = 0;
-			final int fourthCharacter = 3;
+			//final int startPosition = 0;
+			//final int fourthCharacter = 3;
 			
-			final StringBuilder strBuilder = new StringBuilder();
+			/*final StringBuilder strBuilder = new StringBuilder();
 			strBuilder.append("(");
 			strBuilder.append(value.substring(startPosition, fourthCharacter));
 			strBuilder.append(NEGATIVE);
 			strBuilder.append(value.substring(fourthCharacter));
 			strBuilder.append(")");
-			return strBuilder.toString();
+			return strBuilder.toString();*/
+			final String formattedEnding = "(..." + value + ")";
+			return formattedEnding;
 		} else{
 			return "";
 		}

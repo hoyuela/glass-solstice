@@ -221,8 +221,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void drawBottomStroke(final Context context) {
 		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
-		lastView.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.home_list_item_dash));
+		lastView.setBackgroundResource(R.drawable.home_list_item_no_bottom_dash);
 		lastView.setPadding(
 				(int)context.getResources()
 				.getDimension(R.dimen.forms_inner_padding), 0,
@@ -241,8 +240,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void drawTopStroke(final Context context) {
 		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
-		lastView.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.home_list_item_no_bottom_stroke));
+		lastView.setBackgroundResource(R.drawable.home_list_item_no_bottom_stroke);
 		lastView.setPadding(
 				(int)context.getResources()
 				.getDimension(R.dimen.forms_inner_padding), 0,
@@ -261,8 +259,7 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 	public void drawAllStrokes(final Context context) {
 		final RelativeLayout lastView = (RelativeLayout) this
 				.getChildAt(0);
-		lastView.setBackgroundDrawable(context.getResources().getDrawable(
-				R.drawable.common_home_list_item));
+		lastView.setBackgroundResource(R.drawable.common_home_list_item);
 		lastView.setPadding(
 				(int)context.getResources()
 				.getDimension(R.dimen.forms_inner_padding), 0,

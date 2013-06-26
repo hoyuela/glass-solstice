@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
    
     <!-- Sides & Top -->
-    <item>
+    <item android:left="-1dp" android:right="-1dp">
         <shape
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle" >
@@ -11,10 +11,12 @@
                 android:color="@color/field_stroke" />
 
             <solid android:color="@color/white" />
+            
         </shape>
     </item>
+    
     <!-- Bottom Shadow -->
-    <item
+    <!-- <item
         android:left="1dp"
         android:right="1dp"
         android:top="1dp">
@@ -27,5 +29,6 @@
                 android:startColor="#FFF7F7F7" >
             </gradient>
         </shape>
-    </item>
+    </item> -->
+    
 </layer-list>
