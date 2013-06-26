@@ -8,40 +8,44 @@
         android:id="@+id/nav_buttons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/between_related_elements_padding" 
-        android:padding="@dimen/forms_inner_padding">
+        android:layout_marginBottom="@dimen/between_related_elements_padding"
+        android:padding="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/title"
             style="@style/title_copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/previous_button"
             android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/previous_button"
             android:layout_marginRight="@dimen/groups_of_elements_padding"
             android:layout_toLeftOf="@+id/previous_button"
-            android:text="@string/empty" 
-            android:textSize="@dimen/title_max"/>
+            android:text="Scheduled Payment"
+            android:textSize="@dimen/title_max" />
 
         <ImageView
             android:id="@+id/previous_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginTop="@dimen/forms_inner_padding"
             android:layout_toLeftOf="@+id/next_button"
             android:contentDescription="@string/empty"
-            android:src="@drawable/left_page_control" />
+            android:background="@drawable/page_control_background"
+            android:padding="5dp"
+            android:src="@drawable/left_page_control_arrow"/>
 
         <ImageView
             android:id="@+id/next_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/forms_inner_padding"
             android:contentDescription="@string/empty"
-            android:src="@drawable/right_page_control" />
+            android:background="@drawable/page_control_background"
+            android:padding="5dp"
+            android:src="@drawable/right_page_control_arrow" />
 
         <TextView
             android:id="@+id/joint_account_warning_label"
@@ -58,6 +62,6 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/nav_buttons"/>
+        android:layout_below="@+id/nav_buttons" />
 
 </RelativeLayout>
