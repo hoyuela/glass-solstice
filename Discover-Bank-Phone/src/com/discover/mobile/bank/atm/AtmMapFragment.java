@@ -324,9 +324,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		adjustMapZoomIfNeeded();
 
 		fadeInMap();
-
-		//TODO: Remove this
-		enableUI();
 	}
 
 	/**
