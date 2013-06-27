@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item >
+    <item>
         <shape>
-            <solid android:color="#000000"/>
-        </shape>
-    </item>
-    
-    <item android:bottom="2dp">
-        <shape>
-            <solid android:color="#ed4b0b"/>
+            <solid android:color="@color/orange_link_idicator"/>
         </shape>
     </item>  
 </layer-list>
