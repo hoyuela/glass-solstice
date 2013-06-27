@@ -320,28 +320,14 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 		return new GetPayBillsTermsAndConditionsCall(activity, callback);
 	}
-	
-	/**
-	 * Create the service call to get the account activity.
-	 * @param url - URL to be used to get the activity
-	 * @param type - specfies what type of activity will be downloaded
-	 * @return the service call to get the account activity
-	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url, 
-			final ActivityDetailType type){
-		return createGetActivityServerCall(url, type, null);
-	}
 
 	/**
 	 * Create the service call to get the account activity.
 	 * @param url - URL to be used to get the activity
 	 * @param type - specfies what type of activity will be downloaded
-	 * @param deletionType - the kind of delete that is taking place
 	 * @return the service call to get the account activity
 	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url, 
-																	final ActivityDetailType type, 
-																	final TransferDeletionType deletionType){
+	public static GetActivityServerCall createGetActivityServerCall(final String url, final ActivityDetailType type, final boolean didDeleteActivity){
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListActivityDetail>  callback =
@@ -349,7 +335,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 
-		return new GetActivityServerCall(activity, callback, url, type, deletionType);
+		return new GetActivityServerCall(activity, callback, url, type, didDeleteActivity);
 	}
 
 	/**

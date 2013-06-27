@@ -76,11 +76,9 @@ public class StatusMessageView extends RelativeLayout {
 	 * 
 	 * @param text Resource identifier for the string that is to be displayed in the Status view
 	 */
-	public void setText(final String text) {
+	public void setText(final int text) {
 		final TextView statusText = (TextView)this.findViewById(R.id.status_text);
-		if(statusText != null) {
-			statusText.setText(text);
-		}
+		statusText.setText(this.getResources().getString(text));
 	}
 	
 	/**
