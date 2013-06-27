@@ -25,6 +25,8 @@ import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthListener;
+import com.discover.mobile.card.auth.strong.StrongAuthUtil;
+
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -603,6 +605,14 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 "" + HttpURLConnection.HTTP_UNAUTHORIZED)
                 && cache != null && cache.contains("skipped")) {
             listener.onStrongAuthSkipped(bean);
+            /*       13.4 Changes Start*/
+        }else if (bean.getErrorCode().contains(
+                "" + HttpURLConnection.HTTP_UNAUTHORIZED)
+                && cache != null && cache.contains("createuser")) {
+
+            StrongAuthUtil strongAuthUtil = new StrongAuthUtil(context);
+            strongAuthUtil.createUser(CardLoginFacadeImpl.this);
+            /*       13.4 Changes End*/
         } else if (bean.getErrorCode().contains(
                 "" + HttpURLConnection.HTTP_FORBIDDEN)
                 && bean.getErrorCode().contains("" + SA_LOCKED)

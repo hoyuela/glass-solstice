@@ -51,7 +51,10 @@ public final class CardMenuItemLocationIndex {
 	public static final int PAYMENT_GROUP = 2;
 	public static final int MAKE_A_PAYMENT_SECTION = 1;
 	public static final int MANAGE_PAYMENTS_SECTION = 2;
-	public static final int MANAGE_BANK_INFO_SECTION = 3;
+	/* 13.4 change start */
+	//public static final int MANAGE_BANK_INFO_SECTION = 3;
+	public static final int MANAGE_BANK_ACCOUNTS_SECTION = 3;
+	/* 13.4 change end */
 	public static final int SEND_MONEY_SECTION = 4;
 	public static final int SEND_MONEY_HISTORY_SECTION = 5;
 
@@ -96,7 +99,7 @@ public final class CardMenuItemLocationIndex {
 	public static final int MANAGE_ALERTS_SECTION = 2;
 	public static final int ALERTS_HISTORY_SECTION = 3;
 	public static final int CREATE_CASH_PIN_SECTION = 4;
-    	public static final int PASSCODE_SECTION = 5;
+	   public static final int PASSCODE_SECTION = 5;
 
 	/**
 	 * Customer Service indexes
@@ -283,16 +286,22 @@ public final class CardMenuItemLocationIndex {
 		itemIdLocationMap.put(R.string.sub_section_title_manage_payments,
 				new Pair<Integer, Integer>(PAYMENT_GROUP,
 						MANAGE_PAYMENTS_SECTION));
-		itemIdLocationMap.put(
+		/* 13.4 change start */
+		/*itemIdLocationMap.put(
 				R.string.sub_section_title_manage_bank_information,
 				new Pair<Integer, Integer>(PAYMENT_GROUP,
-						MANAGE_BANK_INFO_SECTION));
+						MANAGE_BANK_INFO_SECTION));*/
+		itemIdLocationMap.put(
+				R.string.sub_section_title_manage_bank_accounts,
+				new Pair<Integer, Integer>(PAYMENT_GROUP,
+						MANAGE_BANK_ACCOUNTS_SECTION));
+		/* 13.4 change end */
 		itemIdLocationMap.put(R.string.sub_section_title_send_money,
 				new Pair<Integer, Integer>(PAYMENT_GROUP, SEND_MONEY_SECTION));
 		itemIdLocationMap.put(R.string.sub_section_title_send_money_history,
 				new Pair<Integer, Integer>(PAYMENT_GROUP,
 						SEND_MONEY_HISTORY_SECTION));
-
+		
 		itemIdLocationMap.put(R.string.sub_section_title_signup_for_2,
 				new Pair<Integer, Integer>(EARN_CASHBACK_BONUS_GROUP,
 						SIGN_UP_SECTION));
