@@ -24,7 +24,6 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.BaseTable;
-import com.discover.mobile.common.utils.StringUtility;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
 /**
@@ -254,8 +253,8 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 			updateAdapter(posted);
 		} else {
 			// Both posted lists are null -- Generate service call
-			BankServiceCallFactory.createGetActivityServerCall(
-					account.getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted).submit();
+			BankServiceCallFactory.createGetActivityServerCall(account.getLink(Account.LINKS_POSTED_ACTIVITY), ActivityDetailType.Posted,
+					false).submit();
 		}
 	}
 
@@ -322,7 +321,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 
 		// Both scheduled lists are null -- Generate service call
 		BankServiceCallFactory.createGetActivityServerCall(
-				account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled)
+account.getLink(Account.LINKS_SCHEDULED_ACTIVITY), ActivityDetailType.Scheduled, false)
 				.submit();
 	}
 
@@ -357,9 +356,9 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		setIsLoadingMore(true);
 		
 		if( header.isPosted() ) {
-			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted).submit();
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Posted, false).submit();
 		} else {
-			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Scheduled).submit();
+			BankServiceCallFactory.createGetActivityServerCall(url, ActivityDetailType.Scheduled, false).submit();
 		}
 	}
 
@@ -494,37 +493,13 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 	public void createDefaultLists() {
 		//This does not need to be done
 	}
-
-	/**
-	 * Shows a Transfer deleted message on the table header for a given
-	 * TransferDeletionType
-	 * 
-	 * @param deletionType the type of transfer that was deleted.
-	 */
-	public void showTransferDeletedMessage(final TransferDeletionType deletionType) {
-		final String rawText = getResources().getString(R.string.account_activity_scheduled_transfer_deleted);
-		StringBuilder transfer = new StringBuilder(getResources().getString(R.string.transfer));
-		String messageToDisplay = StringUtility.EMPTY;
-		
-		//Pluralizes the transfer type.
-		switch(deletionType) {
-		case DELETE_ALL_TRANSFERS:
-			transfer = transfer.append("s");
-			break;
-		default:
-			break;
-		}
-		
-		messageToDisplay = String.format(rawText, transfer.toString());
-		header.showStatusMessage(messageToDisplay);
+	
+	public void showStatusMessage() {
+		header.showStatusMessage(R.string.account_activity_scheduled_transfer_deleted);
 	}
-
-	/**
-	 * Display the delete payment message in the table's header.
-	 * The message will fade out after some amount of time.
-	 */
+	
 	public final void showDeletePaymentMessage() {
-		header.showStatusMessage(getResources().getString(R.string.review_payments_scheduled_deleted));
+		header.showStatusMessage(R.string.review_payments_scheduled_deleted);
 	}
 
 	/**

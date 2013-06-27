@@ -230,7 +230,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 		if(!getIsLoadingMore()) {
 			setIsLoadingMore(true);
 
-			BankServiceCallFactory.createGetActivityServerCall(url, activityItems.type).submit();		
+			BankServiceCallFactory.createGetActivityServerCall(url, activityItems.type, false).submit();		
 		}
 	}
 

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
@@ -55,16 +54,15 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  * @author jthornton
  *
  */
-public class GetActivityServerCall 
-					extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
+public class GetActivityServerCall extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
 
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListActivityDetail> handler;
 
 	private final ActivityDetailType type;
-	private static final int TWO_MINUTES = 120;
+	
 	/**Retains a reference to whether we deleted an activity before calling this service*/
-	private final TransferDeletionType deletionType;
+	private final boolean didDeleteActivity;
 	private boolean didDeleteTransfer;
 	private boolean didDeletePayment;
 	
@@ -76,14 +74,16 @@ public class GetActivityServerCall
 	 * @param url to get the activity from
 	 */
 	public GetActivityServerCall(final Context context,
-									final AsyncCallback<ListActivityDetail> callback, final String url, 
-									final ActivityDetailType type, 
-									final TransferDeletionType deletionType) {
+			final AsyncCallback<ListActivityDetail> callback, final String url, final ActivityDetailType type, final boolean didDeleteActivity) {
 
 		super(context, new GetCallParams(url) {
 			{
+				//This service call is made after authenticating and receiving a token,
+				//therefore the session should not be cleared otherwise the token will be wiped out
+				clearsSessionBeforeRequest = false;
+
 				/**Set timeout to receive response to two minutes*/
-				this.readTimeoutSeconds = TWO_MINUTES;
+				this.readTimeoutSeconds = 120;
 				
 				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
 				requiresSessionForRequest = true;
@@ -93,11 +93,12 @@ public class GetActivityServerCall
 
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
+
 			}
 		}, ListActivityDetail.class, ActivityDetail.class);
 
 		this.type = type;
-		this.deletionType = deletionType;
+		this.didDeleteActivity = didDeleteActivity;
 		
 		handler = new SimpleReferenceHandler<ListActivityDetail>(callback);
 	}
@@ -144,12 +145,8 @@ public class GetActivityServerCall
 		return handler;
 	}
 	
-	public TransferDeletionType getDeletionType() {
-		return deletionType;
-	}
-	
 	public boolean getDidDeleteActivity() {
-		return deletionType != null || this.didDeletePayment;
+		return this.didDeleteActivity;
 	}
 	
 	public boolean getDidDeletePayment() {

@@ -133,6 +133,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			public void onOrientationChanged(final int arg0) {
 				final int requestedOrientation = 
 						CheckDepositCaptureActivity.this.getResources().getConfiguration().orientation;
+				Log.e("orientation", "Attempted orientation change to: " + requestedOrientation);
 
 				if(!(requestedOrientation == 
 						Configuration.ORIENTATION_LANDSCAPE)) {
@@ -315,7 +316,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			public void onClick(final View v) {
 				if(!isStepOneChecked() || !isStepTwoChecked()) {
 					clearImageCacheIfNotRetaking();
-					 setResult(RESULT_CANCELED);    
 					finish();
 				}
 			}

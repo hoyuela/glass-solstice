@@ -550,9 +550,7 @@ public final class BankConductor  extends Conductor {
 					if(bundle.getBoolean(BankExtraKeys.DID_DELETE_PAYMENT, false)) {
 						accountActivityFragment.showDeletePaymentMessage();
 					}else {
-						final TransferDeletionType type = 
-											(TransferDeletionType)bundle.getSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE);
-						accountActivityFragment.showTransferDeletedMessage(type);
+						accountActivityFragment.showStatusMessage();
 					}
 
 					accountActivityFragment.handleReceivedData(bundle);
@@ -705,7 +703,8 @@ public final class BankConductor  extends Conductor {
 			final GetActivityServerCall getActivityCall = BankServiceCallFactory.createGetActivityServerCall(
 					BankUser.instance().getCurrentAccount().getLink(
 							Account.LINKS_SCHEDULED_ACTIVITY), 
-							ActivityDetailType.Scheduled);
+							ActivityDetailType.Scheduled, 
+							true);
 
 			getActivityCall.setDidDeletePayment(true);
 			getActivityCall.submit();

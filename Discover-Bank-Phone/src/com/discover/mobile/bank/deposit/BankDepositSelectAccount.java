@@ -145,7 +145,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			
 			/**Verify account reference is not null*/
 			if( null != account ) {
-				getAccountLimitsAndNavigate(account, getArguments());
+				getAccountLimitsAndNavigate(account);
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unable to retreive account limits");
@@ -160,7 +160,8 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * shows an error on screen.
 	 * @param account an Account to check the limits of.
 	 */
-	private void getAccountLimitsAndNavigate(final Account account, final Bundle args) {
+	private void getAccountLimitsAndNavigate(final Account account) {
+		final Bundle args = getArguments();
 		int depositAmount = 0;
 		boolean reviewDepositOnFinish = false;
 		if(args != null) {
@@ -191,7 +192,6 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 				bundle.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, true);
 				bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, account);
 				bundle.putInt(BankExtraKeys.AMOUNT, depositAmount);
-				bundle.putAll(args);
 				current.getIntent().putExtras(bundle);
 			}
 			/**
