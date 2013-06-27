@@ -137,34 +137,47 @@
                         android:layout_below="@+id/password_label"
                         android:layout_marginLeft="@dimen/element_side_padding"
                         android:layout_marginRight="@dimen/element_side_padding"
+                        android:layout_marginBottom="20dp"
                         android:hint="@string/empty"
                         android:inputType="textPassword"
                         android:maxLength="32"
                         android:textCursorDrawable="@null" />
-
-                <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
-                    android:id="@+id/remember_user_id_toggle"
-                    android:layout_below="@+id/password_field"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    style="@style/common_switch_light"
-                    android:text="@string/remember_user_id"
-                    android:layout_marginRight="@dimen/element_side_padding"
-                    />
-
-               
-
-                
-
-                  
-
+					
+					<!-- toggle switch label and compound button -->
+					<RelativeLayout
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+					    android:orientation="horizontal"
+					    android:layout_below="@+id/password_field"
+					    android:id="@+id/toggle_switch_wrapper">
+						<TextView 
+						    android:id="@+id/remember_user_text"
+						    android:layout_width="wrap_content"
+						    android:layout_height="wrap_content"
+						    android:layout_marginRight="@dimen/between_related_elements_padding"
+						    android:text="@string/remember_user_id"
+						    android:textSize="16sp"
+						    android:textColor="@color/field_copy"
+						    android:layout_toLeftOf="@+id/remember_user_id_toggle"
+						    android:paddingRight="@dimen/between_related_elements_padding"
+						    android:layout_centerVertical="true"/>
+						
+	                    <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
+	                        android:id="@+id/remember_user_id_toggle"
+	                        style="@style/common_switch_light"
+	                        android:layout_width="wrap_content"
+	                        android:layout_height="wrap_content"
+	                        android:layout_marginRight="@dimen/element_side_padding"
+	                        android:layout_alignParentRight="true"
+	                         />
+                    </RelativeLayout>
+					<!--  end of remember user toggle  -->
                     <Button
                         android:id="@+id/login_button"
                         style="@style/common_call_to_action_theme_orange"
-                        android:layout_width="200dp"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/remember_user_id_toggle"
+                        android:layout_below="@+id/toggle_switch_wrapper"
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
@@ -264,8 +277,8 @@
 
                         <EditText
                             android:id="@+id/passcode03"
-                            android:inputType="phone"
-                            style="@style/PasscodeDigit" />
+                            style="@style/PasscodeDigit"
+                            android:inputType="phone" />
 
                         <EditText
                             android:id="@+id/passcode04"
@@ -443,18 +456,17 @@
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
-            
-			<TextView 
-			    android:id="@+id/fdic_disclaimer_view"
-			    android:layout_width="wrap_content"
-			    android:layout_height="match_parent"
-			    android:layout_centerHorizontal="true"
-			    android:paddingBottom="@dimen/forms_inner_padding"
-			    android:layout_below="@+id/login_table"
-			    android:text="@string/discover_copyright_text"
-			    android:textColor="@color/fdic_disclaimer_text_color"
-			    android:textSize="@dimen/fdic_disclaimer_text_size" />
-			
+
+            <TextView
+                android:id="@+id/fdic_disclaimer_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/login_table"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="@dimen/forms_inner_padding"
+                android:text="@string/discover_copyright_text"
+                android:textColor="@color/fdic_disclaimer_text_color"
+                android:textSize="@dimen/fdic_disclaimer_text_size" />
         </RelativeLayout>
     </com.discover.mobile.common.ui.widgets.NonFocusingScrollView>
 
