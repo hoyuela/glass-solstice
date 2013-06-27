@@ -11,6 +11,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 /**
  * This class creates and shows a modal dialog for when a user is canceling a workflow.
  * @author scottseward
@@ -54,25 +55,18 @@ public class CancelThisActionModal implements BaseFragmentModal {
 		
 		if(currentActivity != null) {
 			final String questionMark = "?";
-			final ModalDefaultTopView top = new ModalDefaultTopView(currentActivity, null);
-			final ModalDefaultOneButtonBottomView bottom = 
-									new ModalDefaultOneButtonBottomView(currentActivity, null);
-			
-			bottom.setButtonText(buttonText);
-		
-			top.hideNeedHelpFooter();
+			final SimpleContentModal cancelModal = new SimpleContentModal(currentActivity);
 			String title = currentActivity.getResources().getString(titleText);
 			
 			if(!title.endsWith(questionMark)) {
 				title += questionMark;
 			}
+			cancelModal.hideNeedHelpFooter();
+			cancelModal.setTitle(title);
+			cancelModal.setContent(bodyText);
+			cancelModal.setButtonText(buttonText);
 			
-			top.setTitle(title);
-			top.setContent(bodyText);
-			
-			final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(currentActivity, top, bottom);
-			
-			bottom.getButton().setOnClickListener(new OnClickListener() {
+			cancelModal.getButton().setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(final View v) {
