@@ -3,6 +3,7 @@
  */
 package com.discover.mobile.bank.atm;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.ActionBar;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 
@@ -90,6 +93,16 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		}
 		
 		setMapFragment(mapFragment);
+		
+		//If a modal was showing show the modal
+		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
+			} else {
+				DiscoverModalManager.getActiveModal().show();
+			}
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
 	
 	@Override
@@ -103,7 +116,11 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		if (isFinishing() && mapFragment != null && getSupportFragmentManager().getBackStackEntryCount() > 0) {
 			mapFragment = null;
 		}
-
+		
+		if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
 
 	@Override
@@ -132,7 +149,6 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	public boolean isBackPressDisabled() {
 		return ( isBackPressFragment() && ((FragmentOnBackPressed)mapFragment).isBackPressDisabled());
 	}
-
 
 	/**
 	 * Handles the back press of the activity
@@ -176,9 +192,13 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {		
-		if(!isFragmentLoadingMore()){
-			super.startProgressDialog(isProgressDialogCancelable);
+	public void startProgressDialog(boolean isProgressDialogCancelable) {
+		//Prevent a second modal from appearing if this method is recalled.
+		if (!DiscoverModalManager.hasActiveModal()) {
+			DiscoverModalManager.setActiveModal(new AtmSearchingForAtmsModal(getContext(), false, null));
+			DiscoverModalManager.setProgressDialogCancelable(false);
+			DiscoverModalManager.setAlertShowing(true);
+			DiscoverModalManager.getActiveModal().show();	
 		}
 	}
 }
