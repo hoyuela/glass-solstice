@@ -1,7 +1,6 @@
 package com.discover.mobile.card.account.summary;
 
 import android.content.Context;
-import android.text.Spanned;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,10 +73,6 @@ public class SimpleListItem extends RelativeLayout {
      */
     public void setLabel(final String label) {
         this.label.setText(label);
-    }
-    
-    public void setLabel(final Spanned label) {
-    	this.label.setText(label);
     }
 
     /**

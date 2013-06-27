@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/body_color"
+    android:orientation="horizontal" >
+
+    <CheckedTextView
+        android:id="@+id/checkedTextView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/custom_radio_check"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="14dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="14dp"
+        android:textColor="#3d484d"
+        android:textSize="14sp" />
+
+</LinearLayout>

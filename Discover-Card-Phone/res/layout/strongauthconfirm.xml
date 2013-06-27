@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/sa_success"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="18dp"
+        android:includeFontPadding="false"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/sa_success_title"
+        android:textColor="#ff6600"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sa_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sa_success"
+        android:layout_marginTop="14dp"
+        android:includeFontPadding="false"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="@string/sa_confirm_text"
+        android:textColor="@color/darkgray"
+        android:textSize="18dp"
+        android:textStyle="normal" />
+
+    <Button
+        android:id="@+id/sa_done"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/call_to_sa_done_button"
+        android:text="@string/sa_confirm_done"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
