@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:padding="@dimen/forms_inner_padding" >
+         >
 
         <TextView
             android:id="@+id/page_title"
@@ -23,6 +23,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding"
             android:text="@string/edit" />
 
         <RelativeLayout
@@ -37,8 +39,9 @@
                 style="@style/sub_copy_medium"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/page_title"
-                android:text="@string/external_accounts" />
+                android:text="@string/external_accounts"
+                android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding" />
 
             <LinearLayout
                 android:id="@+id/content_table_external_accounts"
@@ -59,7 +62,9 @@
                 android:layout_below="@+id/content_table_external_accounts"
                 android:layout_marginTop="@dimen/between_related_elements_padding"
                 android:text="@string/empty"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding" />
         </RelativeLayout>
 
         <TextView
@@ -68,7 +73,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/external_accounts_layout"
-            android:text="@string/internal_accounts" />
+            android:text="@string/internal_accounts"
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding" />
 
         <LinearLayout
             android:id="@+id/content_table_internal_accounts"
@@ -81,14 +88,14 @@
             android:orientation="vertical" >
         </LinearLayout>
 
-         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
-	            android:id="@+id/bank_footer"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_below="@+id/content_table_internal_accounts"
-	            android:layout_marginTop="@dimen/groups_of_elements_padding" 
-	            android:layout_alignParentBottom="true"
-	            style="@style/bank_layout_footer_style"/>
+        <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+            android:id="@+id/bank_footer"
+            style="@style/bank_layout_footer_style"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/content_table_internal_accounts"
+            android:layout_marginTop="@dimen/groups_of_elements_padding" />
     </RelativeLayout>
 
 </ScrollView>

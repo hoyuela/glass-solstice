@@ -11,6 +11,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 /**
  * This modal is used when a user is pressing the back button during a workflow that has a lot of user inputted data.
  * It accepts an OnClickListener in the constructor that will be called when the modal's continue button is pressed.
@@ -118,24 +119,20 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		
 		if(currentActivity != null) {
-			final ModalDefaultTopView top = new ModalDefaultTopView(currentActivity, null);
-			final ModalDefaultOneButtonBottomView bottom = 
-									new ModalDefaultOneButtonBottomView(currentActivity, null);
+			final SimpleContentModal goBackModal = new SimpleContentModal(currentActivity);
+			goBackModal.setButtonText(buttonText);
 			
-			bottom.setButtonText(buttonText);
-			
-			top.hideNeedHelpFooter();
+			goBackModal.hideNeedHelpFooter();
 			String title = currentActivity.getResources().getString(titleText);
 			if(!title.endsWith(questionMark)) {
 				title += questionMark;
 			}
 			
-			top.setTitle(title);
-			top.setContent(bodyText);
+			goBackModal.setTitle(title);
+			goBackModal.setContent(bodyText);
 			
-			final ModalAlertWithOneButton cancelModal = new ModalAlertWithOneButton(currentActivity, top, bottom);
 			
-			bottom.getButton().setOnClickListener(new OnClickListener() {
+			goBackModal.getButton().setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(final View v) {
@@ -143,11 +140,11 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 						userClickAction.onClick(v);
 					}
 					
-					cancelModal.dismiss();
+					goBackModal.dismiss();
 					performBackstackPopping();
 				}
 			});
-			baseFragment.showCustomAlertDialog(cancelModal);
+			baseFragment.showCustomAlertDialog(goBackModal);
 		}
 	}
 	
