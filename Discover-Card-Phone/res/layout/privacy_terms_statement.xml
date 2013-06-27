@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.bank"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/textViewLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/light_gray_bkgrd" >
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/between_related_elements_padding"
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingTop="@dimen/forms_inner_padding" >
+
+            <TextView
+                android:id="@+id/page_title"
+                style="@style/page_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/content_text_view"
+            style="@style/small_copy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:layout_marginLeft="@dimen/between_related_elements_padding"
+            android:layout_marginRight="@dimen/between_related_elements_padding" />
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/content_text_view"
+            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:gravity="center_horizontal|bottom" >
+
+            <TextView
+                android:id="@+id/provide_feedback_button"
+                style="@style/card_blue_hyperlink_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingBottom="18dp"
+                android:text="@string/feedback_text"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

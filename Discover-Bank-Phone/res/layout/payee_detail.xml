@@ -7,18 +7,19 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/forms_inner_padding" >
+         >
 
         <LinearLayout
             android:id="@+id/content_table"
             style="@style/customer_service_table"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
         </LinearLayout>
         
         <Button
             android:id="@+id/edit_payee_button"
-            style="@style/call_to_action_theme"
+            style="@style/common_call_to_action_theme_orange"
             android:layout_width="wrap_content"
             android:minWidth="@dimen/action_button_min_width"
             android:layout_height="wrap_content"

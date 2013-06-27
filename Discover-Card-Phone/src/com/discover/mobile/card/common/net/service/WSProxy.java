@@ -170,7 +170,6 @@ public final class WSProxy {
 
             // connection timeout to 10 secs
             connection.setConnectTimeout(requestDetail.getConnectionTimeOut());
-            connection.setReadTimeout(requestDetail.getConnectionReadTimeOut());
             // Setting method type
             if (requestDetail.getMethodtype() != null
                     && requestDetail.getMethodtype().length() > 0) {

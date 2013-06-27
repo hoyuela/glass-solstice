@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Labels -->
+    <string name="security_question">Security Question 1</string>
+    <string name="security_question_second">Security Question 2</string>
+    <string name="security_question_third">Security Question 3</string>
+    <string name="answer">Answer</string>
+    <string name="confirm_answer">Confirm Answer</string>
+    <string name="question_label">Question 1</string>
+    <string name="answer_label">Answer 1</string>
+    <string name="edit_label">Edit</string>
+
+    <!-- Welcome text for Strong auth enter info -->
+    <string name="strong_auth_enter_info_welcometext">To help you maintain the security of your account , Discover 
+        requires you to choose three questions and answers that will verify your identity when your account is being accessed online.</string>
+    <string name="strong_auth_enter_info_welcometext_Cont">All fields are required. Use letters and numbers only. No special characters or punctuation.</string>
+
+    <!-- Strong auth header text -->
+    <string name="strong_auth_enter_info">Enter Info</string>
+    <string name="strong_auth_review">Review</string>
+    <string name="my_spinner">Select a Question</string>
+
+    <!-- Error Text -->
+    <!-- No answers for question. -->
+    <!-- Answer not retyped. -->
+    <string name="question_1_notselected">No question selected.</string>
+    <string name="answer_not_entered"></string>
+    <string name="special_characters_entered">Please use letters and numbers only.</string>
+    <string name="answer_not_match">Your answers don\'t match up yet.</string>
+    <string name="space_entered">You need to retype your security answer.</string>
+    <string name="confirm_answer_nottyped"></string>
+
+    <!-- Confirm dialog text -->
+    <string name="sa_success_title">Success!</string>
+    <string name="sa_confirm_text">Your security questions and answers have been successfully set.</string>
+    <string name="sa_confirm_done">Done</string>
+    
+    <string name="sa_question_answer_list">questionanswers</string>
+    <string name="sa_submit">Submit</string>
+    <string name="option_select">Select a Question</string>
+    <string name="sa_title">Enhanced Account Security</string>
+    
+
+</resources>

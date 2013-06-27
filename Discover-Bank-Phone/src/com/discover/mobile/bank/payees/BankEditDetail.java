@@ -59,7 +59,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	
 	protected void loadViews() {
 		view = findViewById(R.id.list_item);
-		caret = findViewById(R.id.caret);
 		topLabel = (TextView)findViewById(R.id.top_label);
 		middleLabel = (TextView)findViewById(R.id.middle_label);
 		errorLabel = (TextView)findViewById(R.id.error_label);	
@@ -113,12 +112,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		return view;
 	}
 	
-	/**
-	 * @return the caret
-	 */
-	public View getCaret() {
-		return caret;
-	}
 
 	public BankEditDetail getNextDetail() {
 		return nextDetail;
@@ -143,19 +136,12 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	
 	/**
 	 * Method used to enable or disable the editing capability of this view. If
-	 * false hides the caret and edit label.
+	 * false hides the  and edit label.
 	 * 
 	 * @param value True to allow the user to edit the editableField, false otherwise.
 	 */
 	public void enableEditing(final boolean value) {
 		editableField.setEnabled(value);
-		
-		if( value ) {
-			caret.setVisibility(View.VISIBLE);			
-		} else {
-			caret.setVisibility(View.GONE);
-		}
-		
 	}
 	
 	/**
@@ -302,6 +288,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	 * @return
 	 */
 	public boolean isEditable() {
-		return (caret.getVisibility() == View.VISIBLE && this.getEditableField().isEnabled());
+		return this.getEditableField().isEnabled();
 	}
 }

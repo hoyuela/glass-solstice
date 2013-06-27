@@ -88,7 +88,7 @@ public final class NetworkUtility {
                 + Base64.encodeToString(concatenatedCreds.getBytes(),
                         Base64.NO_WRAP);
     }
-    
+
     /**
      * get the Webservice url for the given String id
      * 

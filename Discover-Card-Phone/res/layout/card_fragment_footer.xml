@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:layout_marginTop="@dimen/forms_inner_padding"
     android:gravity="center_horizontal|bottom" >
-
+<!-- 13.4 Changes start -->
     <TextView
         android:id="@+id/privacy_terms"
         style="@style/card_blue_hyperlink_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/privacy_terms_title"
-        android:textSize="11sp"
-        android:textStyle="bold" />
+        android:textSize="12sp"
+        />
 
     <TextView
         android:id="@+id/divider"
@@ -23,8 +23,8 @@
         android:layout_marginRight="@dimen/between_related_elements_padding"
         android:layout_toRightOf="@+id/privacy_terms"
         android:text="@string/card_divider"
-        android:textSize="11sp"
-        android:textStyle="bold" />
+        android:textSize="12sp"
+         />
 
     <TextView
         android:id="@+id/provide_feedback_button"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/divider"
         android:text="@string/feedback_text"
-        android:textSize="11sp"
-        android:textStyle="bold" />
-
+        android:textSize="12sp"
+     />
+    <!-- 13.4 Changes End -->
 </RelativeLayout>

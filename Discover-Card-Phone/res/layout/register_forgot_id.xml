@@ -20,16 +20,14 @@
 
             <TextView
                 android:id="@+id/forgot_id_title_label"
-                style="@style/title_copy"
+                android:textColor="#293033"
+                android:textStyle = "normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
                 android:text="@string/forgot_id_title_text"
-                android:textSize="24dp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/forgot_id_submission_error_label"
@@ -45,16 +43,16 @@
 
             <TextView
                 android:id="@+id/forgot_id_account_num_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#8a9499" 
                 android:layout_below="@+id/forgot_id_submission_error_label"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
                 android:text="@string/account_info_label_one"
-                android:textSize="16dp" />
+                android:textStyle="normal"
+                android:textSize="14dp" />
 
             <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/forgot_id_id_field"
@@ -77,28 +75,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_id_error_label"
+                android:textColor="#8a9499" 
                 android:layout_marginBottom="2dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="6dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
                 android:text="@string/account_info_input_restrictions_label"
-                android:textColor="@color/sub_copy"
                 android:textSize="14dp"
                 android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/forgot_id_password_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_information_input_info_label"
-                android:layout_marginBottom="2dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
+                android:paddingTop="16dp"
+                android:textColor="#8a9499" 
                 android:text="@string/forgot_id_password_text"
-                android:textSize="16dp" />
+                android:textSize="14dp" />
 
             <com.discover.mobile.card.common.uiwidget.NonEmptyEditText
                 android:id="@+id/forgot_id_password_field"
@@ -125,8 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_password_field"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="40dp"
                 android:text="@string/submit_text" />
 
             <TextView
@@ -139,8 +132,7 @@
                 android:layout_marginBottom="44dp"
                 android:clickable="true"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
+                android:paddingTop="16dp"
                 android:text="@string/cancel_text"
                 android:textSize="17dp" />
 
@@ -148,8 +140,9 @@
                 android:id="@+id/footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="46dp"
                 android:layout_below="@+id/account_info_cancel_label" >
-
+                
                 <include layout="@layout/old_general_need_help_footer" />
             </RelativeLayout>
             <!-- Defect id 95853 -->
@@ -175,7 +168,8 @@
 
                 <include
                     android:id="@+id/home_footer"
-                    layout="@layout/card_fragment_footer" />
+                    layout="@layout/card_fragment_footer"
+                    android:paddingBottom="20dp" />
             </RelativeLayout>
             <!-- Defect id 95853 -->
         </RelativeLayout>

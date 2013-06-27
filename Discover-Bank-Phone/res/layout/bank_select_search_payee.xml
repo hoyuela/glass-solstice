@@ -9,8 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding" >
+         >
 
         <TextView
             android:id="@+id/select_payee_title"
@@ -20,7 +19,8 @@
             android:layout_alignParentLeft="true"         
             android:layout_marginTop="@dimen/groups_of_elements_padding"
             android:layout_marginBottom="@dimen/table_inner_padding"
-            android:text="@string/select_payee_title" />
+            android:text="@string/select_payee_title" 
+            android:paddingLeft="@dimen/forms_inner_padding"/>
 
         <TextView
             android:id="@+id/search_name"
@@ -29,7 +29,8 @@
             android:singleLine="false"
             android:layout_below="@+id/select_payee_title"
             android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:text="@string/bank_connie_smith" />
+            android:text="@string/bank_connie_smith" 
+            android:paddingLeft="@dimen/forms_inner_padding"/>
 
         <LinearLayout
             android:id="@+id/payee_list"
@@ -46,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/table_inner_padding"
-            android:text="@string/bank_payee_none" />
+            android:text="@string/bank_payee_none" 
+            android:paddingLeft="@dimen/forms_inner_padding"/>
          
         <com.discover.mobile.bank.paybills.SimpleChooseListItem
             android:id="@+id/enter_payee_details"

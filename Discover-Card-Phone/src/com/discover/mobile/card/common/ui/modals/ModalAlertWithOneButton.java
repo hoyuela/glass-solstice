@@ -376,6 +376,14 @@ public class ModalAlertWithOneButton extends AlertDialog {
         ret.enable();
         return ret;
     }
+    
+    /*13.4 Changes Start */
+    public LinearLayout getLinearLayout()
+    {
+        return linearLayout;
+        
+    }
+    /*13.4 Changes End */
 
     /**
      * Display the layout with the correct layout.

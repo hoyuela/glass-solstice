@@ -89,22 +89,22 @@
     
     <!-- Fastcheck  Viewing Prior to Login -->
     <string name ="back_button_text">Back</string>
-	<string name="fast_check_token_key_in_ps">FastcheckToken</string>
+	<string name="fast_check_token_key_in_ps">FastcheckToken1.0</string>
 	<string name="fast_check_error_tech_diff">We\'re currently experiencing techincal difficult. We apologize for any incovenience.</string>
-	<string name="fast_check_error_cannot_access">Due to special conditions related to your account, this page is not available.\n\nPlease contact customer service at <a href='tel:18777427822'>1&#8211;800&#8211;347&#8211;2683</a> for assistance.</string>
+	<string name="fast_check_error_cannot_access">Due to special condition related to your account, this page is not available.\n\nPlease contact customer service.</string>
 	<string name="fast_check_error_no_token">You recently requested to disable your quick view settings. If you\'d like to enable this option, plese login and navigate to
 						\"Quick View\" under Profile and Settings.</string>
 	<string name="fast_check_rewards_outage_msg">Rewards Balance cannot be updated at this time.</string>
-	<string name="fast_check_salutation_good_morning">Good morning,  </string>
-	<string name="fast_check_salutation_good_afternoon">Good afternoon,  </string>
-	<string name="fast_check_salutation_good_evening">Good evening,  </string>
+	<string name="fast_check_salutation_good_morning">Good morning, </string>
+	<string name="fast_check_salutation_good_afternoon">Good afternoon, </string>
+	<string name="fast_check_salutation_good_evening">Good evening, </string>
 	<string name="fast_check_spinner_msg_part1">Discover</string>
 	<string name="fast_check_spinner_msg_part2">Retrieving Quick view&#8230;</string>
 	<string name="fast_check_error_img_desc">error</string>
 	<string name="fast_check_detail_databean">FastcheckDetailDataBean</string>
 	<string name="fast_check_last_retrieval_time_in_ms">FastcheckLastRetrievalTimeInMS</string>
 	<string name="fast_check_credit_line_available">Credit Line Available</string>
-	<string name="fast_check_cashback_bonus">Cashback Bonus Balance</string>
+	<string name="fast_check_cashback_bonus"><i>Cashback Bonus</i></string>
 	
 	 <!-- CARD TYPE FOR TOOL TIP MENU -->
     <string name="card_type_more">More Card </string>
