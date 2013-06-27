@@ -368,12 +368,12 @@ public class AccountActivityHeader extends RelativeLayout{
 	}
 	
 	/**
-	 * Displays a message and animates it away.
+	 * Shows the supplied strings file string.
 	 * 
-	 * @param messageToDisplay - the String to display.
+	 * @param deleteMessageToShow	- ID to the strings file string.
 	 */
-	public void showStatusMessage(final String messageToDisplay){
-		status.setText(messageToDisplay);
+	public void showStatusMessage(final int deleteMessageToShow){
+		status.setText(deleteMessageToShow);
 		status.showAndHide(STATUS_MESSAGE_DURATION);
 	}
 
