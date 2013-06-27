@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="bank_switch_light" parent="common_switch_light">
+        <item name="thumbTextPadding">12dip</item>
+        <item name="switchMinWidth">50dip</item>
+        <item name="switchPadding">0dip</item>
+        <item name="android:textColor">@color/field_copy</item>
+        <item name="switchTextAppearance">@style/bank_text_appearance</item>
+    </style>
+    
+    <style name="bank_text_appearance" parent="common_text_appearance">
+        <item name="textColor">@color/field_copy</item>
+        <item name="textColorHighlight">?android:attr/textColorHighlight</item>
+        <item name="textColorHint">@color/field_copy</item>
+        <item name="textColorLink">?android:attr/textColorLink</item>
+        <item name="textSize">12sp</item>
+    </style>
+    
+</resources>

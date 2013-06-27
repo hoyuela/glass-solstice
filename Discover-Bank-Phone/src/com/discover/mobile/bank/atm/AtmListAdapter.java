@@ -44,7 +44,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 	private final Context context;
 
 	/**
-	 * Constuctor for the adapter
+	 * Constructor for the adapter
 	 * @param context - activity context
 	 * @param textViewResourceId - resource
 	 * @param items - items to set in the adapter
@@ -75,7 +75,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 			holder = new ItemViewHolder();
 			convertedView = inflater.inflate(getLayout(detail), null);
 			holder = updateViewHolder(holder, convertedView);
-			
+
 			/**Else reuse the old one*/
 		} else {
 			convertedView = view;
@@ -120,7 +120,7 @@ public class AtmListAdapter  extends ArrayAdapter<List<AtmDetail>>{
 		holder.address.setText(detail.address1);
 		holder.address2.setText(detail.city + ", " + detail.state + " " + detail.postalCode);
 		final String distance = String.format(Locale.US, "%.2f", detail.distanceFromUser);
-		holder.distance.setText(distance + " M");
+		holder.distance.setText(distance + " Miles");
 
 		if(detail.hasHours()){
 			holder.hours.setText(detail.atmHrs.replace("Sat", "\nSat"));

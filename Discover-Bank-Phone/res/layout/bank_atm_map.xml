@@ -51,7 +51,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/light_gray_bkgrd"
+        android:background="@drawable/atm_search_bar_background"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingLeft="@dimen/forms_inner_padding"
@@ -59,21 +59,25 @@
         android:paddingTop="@dimen/forms_inner_padding"
         android:weightSum="2" >
 
-        <Button
+        <ImageButton
             android:id="@+id/list_nav"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginRight="@dimen/between_related_elements_padding"
             android:layout_weight="1"
-            android:background="@drawable/atm_list_view_button" />
+            android:padding="@dimen/min_button_padding"
+            android:background="@drawable/common_atm_button_selector"
+            android:src="@drawable/atm_list" />
 
-        <Button
+        <ImageButton
             android:id="@+id/map_nav"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="@dimen/between_related_elements_padding"
             android:layout_weight="1"
-            android:background="@drawable/atm_pinview_button_ds" />
+            android:padding="@dimen/min_button_padding"
+            android:background="@drawable/common_atm_button_selector"
+            android:src="@drawable/atm_pin_icon_selected" />
          
     </LinearLayout>
     
