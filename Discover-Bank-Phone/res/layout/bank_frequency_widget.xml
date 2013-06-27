@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding" >
+        >
 
         <LinearLayout
             android:id="@+id/page_header"
@@ -20,7 +20,9 @@
             android:layout_marginBottom="@dimen/table_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/groups_of_elements_padding"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding">
 
             <TextView
                 android:id="@+id/page_title"
@@ -36,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/page_header"
             android:orientation="vertical"
-            android:paddingRight="@dimen/forms_inner_padding" />
+             />
 
          <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
             android:id="@+id/bank_footer"

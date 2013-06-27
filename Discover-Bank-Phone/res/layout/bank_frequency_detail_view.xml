@@ -52,9 +52,10 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".65"
-            android:button="@drawable/make_payment_radio_button_ds"
             android:checked="true"
-            android:clickable="false" />
+            style="@style/common_radio"
+            android:clickable="false"
+             />
 
         <TextView
             android:id="@+id/canceled_label"
@@ -97,8 +98,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".5"
-            android:button="@drawable/make_payment_radio_button"
-            android:clickable="false"  />
+            style="@style/common_radio"
+            android:clickable="false"
+             />
 
         <LinearLayout
             android:id="@+id/inner_date_layout"
@@ -183,8 +185,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight=".5"
-            android:button="@drawable/make_payment_radio_button"
-            android:clickable="false" />
+            style="@style/common_radio"
+            android:clickable="false"
+            />
 
         <TextView
             android:id="@+id/transactions_label"
@@ -212,7 +215,7 @@
         style="@style/inline_error_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/cancelled_button"
+        android:layout_alignLeft="@+id/cancelled_layout"
         android:layout_below="@+id/transaction_layout"
         android:layout_marginBottom="@dimen/forms_inner_padding"
         android:paddingLeft="@dimen/forms_inner_padding"
@@ -248,8 +251,9 @@
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_weight="0.5"
-            android:button="@drawable/make_payment_radio_button"
-            android:clickable="false" />
+            style="@style/common_radio"
+            android:clickable="false"
+            />
 
         <TextView
             android:id="@+id/dollar_label"
