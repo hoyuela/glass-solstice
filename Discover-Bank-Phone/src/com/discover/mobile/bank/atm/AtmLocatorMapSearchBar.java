@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.Animator;
+import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 
 /**
  * View holding the search bar for the map view of ATM locator
@@ -36,10 +37,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	private final LinearLayout filterLayout;
 
 	/**Filter toggle view*/
-	private final ImageView filterToggle;
-
-	/**Boolean determining if the filter is on*/
-	private boolean isFilterOn = true;
+	private final DiscoverToggleSwitch filterToggle;
 
 	/**Imageview that when clicked will hide the search bar*/
 	private final ImageView hide;
@@ -82,9 +80,8 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		show = (ImageView) view.findViewById(R.id.search_expand);
 		filterLayout = (LinearLayout) view.findViewById(R.id.filter_bar);
 		searchBox = (EditText)view.findViewById(R.id.search_box);
-		filterToggle = (ImageView) view.findViewById(R.id.filter_enable);
+		filterToggle = (DiscoverToggleSwitch) view.findViewById(R.id.filter_enable);
 		searchDummy = (ImageView) view.findViewById(R.id.help_dummy);
-
 
 		setupToggles(context);
 		setupSearchBox(context);
@@ -95,6 +92,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 * Setup the toggles
 	 */
 	private void setupToggles(final Context context){
+		filterToggle.setChecked(true);
 		hide.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -118,22 +116,6 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 					searchLayout.setVisibility(View.VISIBLE);
 					show.setVisibility(View.GONE);
 				}
-			}
-
-		});
-
-		filterToggle.setOnClickListener(new OnClickListener(){
-
-			@Override
-			public void onClick(final View v) {
-				if(isFilterOn){
-					filterToggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_off));
-					isFilterOn = false;
-				}else{
-					filterToggle.setBackgroundDrawable(getResources().getDrawable(R.drawable.swipe_on));
-					isFilterOn = true;
-				}
-
 			}
 
 		});
@@ -243,14 +225,14 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 * @return the isFilterOn
 	 */
 	public boolean isFilterOn() {
-		return isFilterOn;
+		return filterToggle.isChecked();
 	}
 
 	/**
 	 * Save all the data in a bundle
 	 */
 	public void saveState(final Bundle outState){
-		outState.putBoolean(FILTER_STATE, isFilterOn);
+		outState.putBoolean(FILTER_STATE, filterToggle.isChecked());
 		outState.putBoolean(SEARCH_BOX_STATE, isSearchExpanded);
 		outState.putBoolean(SEARCH_BOX_FOCUSED, searchBox.isFocused());
 		outState.putString(SEARCH_TEXT, searchBox.getText().toString());
@@ -260,9 +242,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 * Restore the state of the view
 	 */
 	public void restoreState(final Bundle bundle){
-		isFilterOn = bundle.getBoolean(FILTER_STATE, true);		
-		filterToggle.setBackgroundDrawable(getResources().getDrawable(
-				isFilterOn ? R.drawable.swipe_on : R.drawable.swipe_off));
+		filterToggle.setChecked(bundle.getBoolean(FILTER_STATE, true));		
 		isSearchExpanded = bundle.getBoolean(SEARCH_BOX_STATE, true);
 		if(isSearchExpanded){
 			show.setVisibility(View.GONE);
