@@ -10,7 +10,7 @@
     </style>
     
     <style name="bank_text_appearance" parent="common_text_appearance">
-        <item name="textColor">@color/field_copy</item>
+        <item name="textColor">@color/white</item>
         <item name="textColorHighlight">?android:attr/textColorHighlight</item>
         <item name="textColorHint">@color/field_copy</item>
         <item name="textColorLink">?android:attr/textColorLink</item>
