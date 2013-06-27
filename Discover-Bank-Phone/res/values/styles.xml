@@ -49,13 +49,20 @@
     
     <style name="schedule_pay_list_element">
         <item name="android:paddingTop">@dimen/forms_inner_padding</item>
-        <item name="android:paddingBottom">7dp</item>
-        <item name="android:paddingLeft">@dimen/forms_inner_padding</item>
-        <item name="android:paddingRight">@dimen/forms_inner_padding</item>
+        <item name="android:paddingBottom">@dimen/forms_inner_padding</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">@dimen/listview_vertical_height</item>
+    </style>
+    
+    <!--  Includes gradient 3D-like background and padding values used before 13.6 -->
+    <style name="schedule_pay_list_element_gradient" parent="schedule_pay_list_element" >
         <item name="android:background">@drawable/home_list_item_no_stroke_padding</item>
+        <item name="android:paddingBottom">7dp</item>
+        <item name="android:paddingLeft">@dimen/forms_inner_padding</item>
+        <item name="android:paddingRight">@dimen/forms_inner_padding</item>
     </style>
         
     <style name="login_white_pane">

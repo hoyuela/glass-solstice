@@ -139,7 +139,7 @@ public final class BankErrorHandler implements ErrorHandler {
 			for (int i = errorHandlerUi.getInputFields().size() - 1; i >= 0; i--) {
 				final EditText text = errorHandlerUi.getInputFields().get(i);
 				text.getText().clear();
-				text.setBackgroundResource(R.drawable.edit_text_default);
+				text.setBackgroundResource(ValidatedInputField.FIELD_DEFAULT_APPEARANCE);
 				text.clearFocus();
 				text.setCompoundDrawables(null, null, null, null);
 			}
