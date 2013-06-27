@@ -25,7 +25,6 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AlphaAnimation;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -113,10 +112,10 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 	private AtmResults results;
 
 	/**Button that is used to show the map view*/
-	private Button mapButton;
+	private ImageButton mapButton;
 
 	/**Button that is used to show the list view*/
-	private Button listButton;
+	private ImageButton listButton;
 
 	/**Boolean that is true if the map is showing*/
 	private boolean isOnMap = true;
@@ -238,8 +237,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		final WebView web = (WebView) view.findViewById(R.id.web_view);
 		final ProgressBar bar = (ProgressBar) view.findViewById(R.id.progress_bar);
 		streetView = new AtmWebView(web, bar);
-		mapButton = (Button) view.findViewById(R.id.map_nav);
-		listButton = (Button) view .findViewById(R.id.list_nav);
+		mapButton = (ImageButton) view.findViewById(R.id.map_nav);
+		listButton = (ImageButton) view .findViewById(R.id.list_nav);
 		help = (ImageButton) view.findViewById(R.id.help);
 
 		help.setOnClickListener(new OnClickListener(){
@@ -440,13 +439,13 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			mapWrapper.setCurrentLocation(location);
 			setUserLocation(mapWrapper.getCurrentLocation());
 		}
-		
+
 		mapWrapper.getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
 			@Override
-			public void onMapLongClick(LatLng locationOfLongClick) {
+			public void onMapLongClick(final LatLng locationOfLongClick) {
 				//Says the feature was used today
 				AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
-				
+
 				//Creates a new location based on the long pressed location
 				final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
 				newLocation.setLatitude(locationOfLongClick.latitude);
@@ -574,20 +573,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 	 * Toggle Between the buttons
 	 */
 	private void toggleButton(){
-		final boolean isLandscape = getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
 		if(isOnMap){
 			showList();
-			mapButton.setBackgroundResource(isLandscape ? 
-					R.drawable.atm_pinview_button_landscape : R.drawable.atm_pinview_button);
-			listButton.setBackgroundResource(isLandscape ? 
-					R.drawable.atm_listview_button_ds_landscape : R.drawable.atm_listview_button_ds);
+			mapButton.setImageResource(R.drawable.atm_pin_icon);
+			listButton.setImageResource(R.drawable.atm_list_selected);
 			isOnMap = false;
 		}else{
 			showMap();
-			mapButton.setBackgroundResource(isLandscape ? 
-					R.drawable.atm_pinview_button_ds_landscape : R.drawable.atm_pinview_button_ds);
-			listButton.setBackgroundResource(isLandscape ? 
-					R.drawable.atm_listview_button_landscape : R.drawable.atm_list_view_button);
+			mapButton.setImageResource(R.drawable.atm_pin_icon_selected);
+			listButton.setImageResource(R.drawable.atm_list);
 			isOnMap = true;	
 			adjustMapZoomIfNeeded();
 		}

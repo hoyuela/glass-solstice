@@ -8,6 +8,7 @@
         android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/common_table_list_item_white"
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingTop="@dimen/forms_inner_padding" >
 
@@ -20,6 +21,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:contentDescription="@string/empty"
             android:src="@drawable/atm_expand_icon" />
 
         <TextView
@@ -38,7 +40,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/title"
-            android:layout_below="@+id/title" />
+            android:layout_below="@+id/title"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/address2"
@@ -47,17 +50,22 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_marginLeft="1dp"
-            android:layout_toRightOf="@+id/address" />
+            android:layout_toRightOf="@+id/address"
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/distance"
             style="@style/atm_large_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/directions"
+            android:layout_alignTop="@+id/directions"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toLeftOf="@+id/directions" />
+            android:layout_toLeftOf="@+id/directions"
+            android:gravity="center_vertical"
+            android:textColor="@color/blue_link" />
 
         <ImageView
             android:id="@+id/directions"
@@ -67,6 +75,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
+            android:contentDescription="@string/empty"
             android:src="@drawable/atm_directional_arrows" />
     </RelativeLayout>
 
@@ -148,7 +157,7 @@
             android:layout_below="@+id/services"
             android:paddingBottom="@dimen/forms_inner_padding"
             android:visibility="invisible" />
-        
+
         <Button
             android:id="@+id/email"
             style="@style/small_call_to_action_theme"
@@ -159,35 +168,37 @@
             android:layout_marginRight="@dimen/forms_inner_padding"
             android:text="@string/atm_location_email"
             android:visibility="gone" />
-        
-         <ImageView
+
+        <ImageView
             android:id="@+id/street_view"
             android:layout_width="30dp"
             android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/report"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/report"
-            android:background="@drawable/atm_street_view_icon_sm" />
+            android:background="@drawable/atm_street_view_icon_sm"
+            android:contentDescription="@string/empty" />
 
         <TextView
             android:id="@+id/report"
             style="@style/blue_hyperlink_extra_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/service5"
             android:layout_alignParentLeft="true"
+            android:layout_below="@+id/service5"
             android:layout_marginLeft="@dimen/forms_inner_padding"
             android:paddingBottom="@dimen/forms_inner_padding"
-            android:textSize="@dimen/small_copy_mid"
-            android:text="@string/atm_location_report" />
+            android:text="@string/atm_location_report"
+            android:textSize="@dimen/small_copy_mid" />
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@drawable/table_solid_line" />
+        android:background="@drawable/table_solid_line"
+        android:contentDescription="@string/empty" />
 
 </LinearLayout>
