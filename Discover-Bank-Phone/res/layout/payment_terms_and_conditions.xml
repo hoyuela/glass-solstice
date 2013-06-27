@@ -50,7 +50,7 @@
 
         <Button
             android:id="@+id/accept_button"
-            style="@style/call_to_action_theme"
+            style="@style/common_call_to_action_theme_orange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

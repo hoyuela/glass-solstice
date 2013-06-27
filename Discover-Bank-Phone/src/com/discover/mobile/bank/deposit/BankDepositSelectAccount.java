@@ -224,9 +224,11 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	public static void showHowItWorksModal() {
 			final BankNavigationRootActivity currentActivity = 
 					(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+			
 			final HowItWorksModalTop top = new HowItWorksModalTop(currentActivity, null);
 			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
 			final HowItWorksModal modal = new HowItWorksModal(currentActivity, top, bottom);
+
 			
 			bottom.setButtonText(R.string.ok);
 			bottom.getButton().setOnClickListener(new OnClickListener() {
