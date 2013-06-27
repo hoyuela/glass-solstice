@@ -315,7 +315,11 @@ final public class PayeeDetailListGenerator  {
 			items.add(createNickName(context, item.nickName, false));
 			items.add(createPhoneNumber(context, item.phone.formatted, false));
 			items.add(createAddress(context, item.address.formattedAddress));
-			items.add(createMemo(context, item.memo, false));
+			
+			if (item.memo != null && !Strings.isNullOrEmpty(item.memo.trim())) {
+				
+				items.add(createMemo(context, item.memo, false));	
+			}
 		}
 		
 		return items;

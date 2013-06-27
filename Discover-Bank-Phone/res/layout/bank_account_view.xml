@@ -37,7 +37,7 @@
         android:layout_below="@+id/acct_nickname"
         android:paddingBottom="@dimen/between_related_elements_padding"
         android:text="@string/acct_balance_str"
-        style="@style/page_title"/>
+        style="@style/page_title_no_bold"/>
 	 
 	  <ImageView
         android:id="@+id/acct_carat"
@@ -45,5 +45,5 @@
         android:layout_height="wrap_content"
        	android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/blue_arrow_right"/>
+        android:background="@drawable/gray_right_arrow"/>
 </RelativeLayout>

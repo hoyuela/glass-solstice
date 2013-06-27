@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
              android:focusable="true"
     		android:focusableInTouchMode="true"
-            android:padding="@dimen/forms_inner_padding" >
+            >
             
              <TextView
 	            android:id="@+id/page_title"
@@ -47,6 +47,8 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentTop="true"
 	            android:layout_marginBottom="@dimen/forms_inner_padding"
+	            android:paddingRight="@dimen/forms_inner_padding"
+	            android:paddingLeft="@dimen/forms_inner_padding"
 	            android:text="@string/page_title" />
 
              <TextView 
@@ -56,7 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/page_title"
                 android:text="@string/note_title"
-                style="@style/field_copy"/>
+                style="@style/field_copy"
+                android:paddingLeft="@dimen/forms_inner_padding"
+                android:paddingRight="@dimen/forms_inner_padding"/>
              
              
              <TextView 
@@ -67,7 +71,8 @@
                 android:layout_below="@+id/top_note_text"
                 android:visibility="gone"
                 android:text="@null"
-                style="@style/field_copy_big"/>
+                style="@style/field_copy_big"
+                android:paddingRight="@dimen/forms_inner_padding"/>
                
                                
               <TextView
@@ -111,7 +116,7 @@
             <!-- Action Button  -->
             <Button
                 android:id="@+id/actionButton"
-                style="@style/call_to_action_theme"
+                style="@style/common_call_to_action_theme_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="@dimen/action_button_min_width"
