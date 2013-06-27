@@ -103,6 +103,9 @@ class ClustersBuilder {
 			for (InputPoint point : relevantInputPointsList) {
 				boolean addedToExistingCluster = false;
 				for (ClusterPoint clusterPoint : clusteredPoints) {
+					
+					//In order to prevent some of the icons from never separating at a zoom level of 20.5 (higher the number
+					//the farther zoomed in you are) clustering is prevented from functioning at all.
 					if (clusterPoint.getPixelDistanceFrom(point) <= options.getPixelDistanceToJoinCluster() &&
 						this.zoomLevel <= 20.5f) {
 						clusterPoint.add(point);
