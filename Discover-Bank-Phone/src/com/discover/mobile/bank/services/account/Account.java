@@ -419,5 +419,17 @@ public class Account implements Serializable {
 		return formattedName;
 	}
 
-
+	@Override
+	public String toString() {
+		
+		if (nickname != null) {
+			return nickname;
+		} else if (name != null) {
+			return name;
+		}
+		
+		// Use default toString implementation
+		return getClass().getName() + "@" + Integer.toHexString(hashCode());
+	}
+	
 }

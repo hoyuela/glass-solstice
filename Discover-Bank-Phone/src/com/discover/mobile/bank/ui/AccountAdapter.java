@@ -32,29 +32,28 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 	@Override
 	public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
 		View row = convertView;
+		
 		if (row == null) {
+			// Inflate default dropdown background
 			final LayoutInflater inflater = context.getLayoutInflater();
-			row = inflater
-					.inflate(R.layout.spinner_account_view, parent, false);
+			row = inflater.inflate(R.layout.common_dropdown_item, parent, false);
 		}
 
 		final Account item = data.get(position);
 
-		if (item != null ) {
-			final TextView accountNumber = (TextView) row
-					.findViewById(R.id.account_number_list);
-			final TextView accountName = (TextView) row
-					.findViewById(R.id.account_name_list);
-			final String accountNumberPrefix = context
-					.getString(R.string.schedule_pay_spinner_body);
+		if (item != null) {
+			final TextView accountName = (TextView) row.findViewById(R.id.common_dropdown_item_title);
+			final TextView accountNumber = (TextView) row.findViewById(R.id.common_dropdown_item_subtitle);
+			final String accountNumberPrefix = context.getString(R.string.schedule_pay_spinner_body);
 
-			if (accountNumber != null && item.accountNumber != null
-					&& !item.accountNumber.ending.equals("")) {
-				accountNumber.setText(accountNumberPrefix + " "
-						+ item.accountNumber.ending);
-			}
+			// Display Account name
 			if (accountName != null && item.nickname != null) {
 				accountName.setText(item.nickname);
+			}
+			
+			// Display Account number
+			if (accountNumber != null && item.accountNumber != null && !item.accountNumber.ending.isEmpty()) {
+				accountNumber.setText(accountNumberPrefix + " " + item.accountNumber.ending);
 			}
 		}
 
