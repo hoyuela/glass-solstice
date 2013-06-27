@@ -11,6 +11,8 @@ import com.google.android.gms.maps.model.VisibleRegion;
 
 class ClustersBuilder {
 
+	private final float zoomLevel;
+	
 	private final Options options;
 
 	private final ArrayList<InputPoint> relevantInputPointsList = new ArrayList<InputPoint>();
@@ -19,7 +21,9 @@ class ClustersBuilder {
 	private final WeakReference<Projection> projectionRef;
 	private final WeakReference<VisibleRegion> visibleRegionRef;
 
-	ClustersBuilder(Projection projection, Options options, ArrayList<ClusterPoint> initialClusteredPoints) {
+	ClustersBuilder(Projection projection, Options options, ArrayList<ClusterPoint> initialClusteredPoints, 
+					final float zoomLevel) {
+		this.zoomLevel = zoomLevel;
 		this.options = options;
 
 		this.projectionRef = new WeakReference<Projection>(projection);
@@ -99,7 +103,8 @@ class ClustersBuilder {
 			for (InputPoint point : relevantInputPointsList) {
 				boolean addedToExistingCluster = false;
 				for (ClusterPoint clusterPoint : clusteredPoints) {
-					if (clusterPoint.getPixelDistanceFrom(point) <= options.getPixelDistanceToJoinCluster()) {
+					if (clusterPoint.getPixelDistanceFrom(point) <= options.getPixelDistanceToJoinCluster() &&
+						this.zoomLevel <= 20.5f) {
 						clusterPoint.add(point);
 						addedToExistingCluster = true;
 						break;

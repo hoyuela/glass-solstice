@@ -30,7 +30,7 @@ public class ClusteringTask extends AsyncTask<Argument, Void, Result> {
 			Process.setThreadPriority(Process.THREAD_PRIORITY_DEFAULT + Process.THREAD_PRIORITY_LESS_FAVORABLE);
 
 			Argument arg = args[0];
-			ClustersBuilder builder = new ClustersBuilder(arg.projection, arg.options, arg.previousClusters);
+			ClustersBuilder builder = new ClustersBuilder(arg.projection, arg.options, arg.previousClusters, arg.zoomLevel);
 			builder.addAll(arg.points);
 			result.currentClusters = builder.build();
 			result.projection = arg.projection;
@@ -56,6 +56,7 @@ public class ClusteringTask extends AsyncTask<Argument, Void, Result> {
 		Options options;
 		ArrayList<InputPoint> points;
 		ArrayList<ClusterPoint> previousClusters;
+		float zoomLevel;
 	}
 
 	static class Result {
