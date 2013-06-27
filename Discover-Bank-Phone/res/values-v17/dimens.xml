@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <!-- RadioGroup Image Inner Padding -->
+    <!-- API 17 sets radio button padding based on drawable right edge instead of left edge -->
+    <!-- (no longer a need to account for drawable width) -->
+    <dimen name="radio_group_inner_padding">15dp</dimen>
+    
+</resources>
