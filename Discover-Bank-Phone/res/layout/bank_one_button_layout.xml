@@ -72,7 +72,8 @@
                 android:visibility="gone"
                 android:text="@null"
                 style="@style/field_copy_big"
-                android:paddingRight="@dimen/forms_inner_padding"/>
+                android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding"/>
                
                                
               <TextView
@@ -83,7 +84,9 @@
 		         android:layout_alignLeft="@+id/top_note_text"
 		         android:text="@string/status_text"
 		         android:layout_marginBottom="@dimen/forms_inner_padding"
-		         style="@style/inline_error_label" />
+		         style="@style/inline_error_label" 
+		         android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding"/>
               
             <LinearLayout
                 android:id="@+id/content_table"
@@ -103,7 +106,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/note_title"
-                style="@style/body_copy_title"/>
+                style="@style/body_copy_title"
+                android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding"/>
             
             <TextView 
                 android:id="@+id/note_text_msg"
@@ -111,7 +116,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/note_text"
-                style="@style/sub_copy_medium"/>
+                style="@style/sub_copy_medium"
+                android:paddingRight="@dimen/forms_inner_padding"
+                android:paddingLeft="@dimen/forms_inner_padding"/>
                 
             <!-- Action Button  -->
             <Button
@@ -126,6 +133,8 @@
                 android:layout_marginBottom="@dimen/between_related_elements_padding"
                 android:layout_marginTop="@dimen/orange_button_margin_top"
                 android:drawablePadding="@dimen/between_related_elements_padding"
+                android:layout_marginLeft="@dimen/forms_inner_padding"
+                android:layout_marginRight="@dimen/forms_inner_padding"
                 android:text="@string/action_button" />
 
             <!-- Action Link  -->
