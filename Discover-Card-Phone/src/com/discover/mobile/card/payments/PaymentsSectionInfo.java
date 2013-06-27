@@ -41,16 +41,25 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
 
                     }
                 }),
+         
+  /* 13.4 Changes start */        
+	    new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
+	            false, new View.OnClickListener() {
+	                @Override
+	                public void onClick(View v) {
+	
+	                }
+	            }),
 
-        new ClickComponentInfo(
+        /*new ClickComponentInfo(
                 R.string.sub_section_title_manage_bank_information, true,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
-                }),
-
+                }),*/
+ /* 13.4 Changes end */
         new ClickComponentInfo(R.string.sub_section_title_send_money, false,
                 new View.OnClickListener() {
                     @Override
@@ -91,15 +100,24 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
 
                     }
                 }),
-
-        new ClickComponentInfo(
+/* 13.4 Changes start */   
+        /*new ClickComponentInfo(
                 R.string.sub_section_title_manage_bank_information, true,
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
-                }));
+                })*/
+        
+        new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
+	            false, new View.OnClickListener() {
+	                @Override
+	                public void onClick(View v) {
+	
+	                }
+	            }));
+/* 13.4 Changes end */   
     }
 
     /* 13.3 Changes end */

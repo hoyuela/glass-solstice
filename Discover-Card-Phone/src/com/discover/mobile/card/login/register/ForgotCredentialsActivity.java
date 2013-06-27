@@ -27,6 +27,7 @@ import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
 /**
  * This class handles a user's choice and navigation to the first step of forgot
@@ -228,7 +229,11 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         }else if(v.getId() == R.id.privacy_terms)
         {
             
-            FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            //Changes for 13.4 start
+//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+          Intent privacyTerms = new Intent(ForgotCredentialsActivity.this , PrivacyTermsLanding.class);
+          startActivity(privacyTerms);
+          //Changes for 13.4 end
         }
       //Defect id 95853
     }
