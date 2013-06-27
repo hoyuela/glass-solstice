@@ -470,6 +470,8 @@ public class Clusterkraf {
 				arg.options = options;
 				arg.points = points;
 				arg.previousClusters = previousClusters;
+				arg.zoomLevel = map.getCameraPosition().zoom;
+				
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, arg);
 				} else {

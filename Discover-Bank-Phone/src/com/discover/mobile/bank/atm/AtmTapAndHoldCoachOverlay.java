@@ -149,10 +149,6 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 	 */
 	public void setDelegate(FrozenUI delegate) {
 		this.delegate = delegate;
-		
-		if (this.delegate != null) {
-			this.delegate.disableUI();	
-		}
 	}
 	
 	/**
@@ -168,6 +164,10 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		
 		this.runLifeCycle();
 		this.setShowing(true);
+		
+		if (this.delegate != null) {
+			this.delegate.disableUI();	
+		}
 	}
 	
 	/* ------------------------------ Private Helper Methods ------------------------------ */
