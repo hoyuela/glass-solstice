@@ -12,8 +12,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -101,6 +105,19 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     
     private ArrayList<String> navigationlist;
     
+    /***
+	 * Private contentObserver for settings -> display -> screen rotation setting.
+	 * For Defect: 101121
+	 * 
+	 */
+	private ContentObserver contentObserver = new ContentObserver(new Handler()) {
+		@Override
+		public void onChange(boolean selfChange) {
+			if (!selfChange) {
+				setOrientation();
+			}
+		}
+	};
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,9 +169,33 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Utils.hideSpinner();
     	// 13.3 changes start
  		mCardStoreData.addToAppCache("onBackPressed", false);
- 		// 13.3 changes end        
+ 		// 13.3 changes end
+ 		
+ 		// Add Content Change Observer or orientation change setting
+ 		// For Defect: 101121 Start
+ 		getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION),true, contentObserver);
+ 		setOrientation();
+ 		// For Defect: 101121 End
     }
 
+    /**
+     * For Defect: 101121
+     * Set Orientation of screen according to System Rotation Settings.
+     */
+    private void setOrientation(){
+    	if (android.provider.Settings.System.getInt(
+				getContentResolver(),
+				Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+		// Rotation is ON	
+			CardNavigationRootActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+		} else {
+			// Rotation is OFF
+			final Configuration currentConfig = getResources()
+					.getConfiguration();
+			//Request Activity to set default screen orientation
+			CardNavigationRootActivity.this.setRequestedOrientation(currentConfig.orientation);
+		}
+	}
     private void setNavigationList() {
     	navigationlist = new ArrayList<String>();
     	navigationlist.add(getString(R.string.section_title_account));
@@ -905,5 +946,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             setVisibleFragmentNoHistory(fragment);
         }
         hideSlidingMenuIfVisible();
+    }
+    /***
+	 * For Defect: 101121
+	 * onConfigurationChanged need to handle
+	 */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+    	setOrientation();
+    	super.onConfigurationChanged(newConfig);
     }
 }
