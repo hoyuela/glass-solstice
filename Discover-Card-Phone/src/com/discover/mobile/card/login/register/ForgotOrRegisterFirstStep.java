@@ -190,6 +190,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         progress.initChangePasswordHeader(0);
 
         loadAllViews();
+  /*      13.4 chnages start*/
+        setSpinnerStyle();
+        /*      13.4 chnages End*/
         setupFieldsAndLabels();
         setupCustomTextChangedListeners();
         provideFeedback.setOnClickListener(this);
@@ -241,7 +244,17 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         };
     }
 
-    /**
+    /*      13.4 chnages start*/
+    private void setSpinnerStyle() {
+		// TODO Auto-generated method stub
+    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.spinner_holo , R.drawable.spinner_invalid_holo_light);
+    	birthDatePicker.setUpSpinnerStyle(R.drawable.spinner_holo, R.drawable.spinner_invalid_holo_light);
+    	cardExpDatePicker.setupDefaultAppearance();
+    	birthDatePicker.setupDefaultAppearance();
+	}
+
+    /*      13.4 chnages End*/
+	/**
      * Initialize the member variables that will reference UI elements.
      */
     public void loadAllViews() {

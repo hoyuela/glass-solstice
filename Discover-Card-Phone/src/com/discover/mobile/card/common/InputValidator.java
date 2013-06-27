@@ -144,6 +144,21 @@ public final class InputValidator {
 
         return isUserIdValid;
     }
+    
+    /* 13.4 Changes Start */
+    public static boolean validateAnswerField(final String answer) {
+        Boolean specialCharacterEntered = false;
+        String regex = "^[a-zA-Z0-9]+$";
+        Matcher matcher = Pattern.compile(regex).matcher(answer);
+        if (matcher.find()) {
+            specialCharacterEntered = false;
+        } else {
+            specialCharacterEntered = true;
+        }
+
+        return specialCharacterEntered;
+    }
+    /* 13.4 Changes End */
 
     /**
      * Determines if a given String value represents a valid day value. i.e.

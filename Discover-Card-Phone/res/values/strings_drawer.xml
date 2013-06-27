@@ -11,7 +11,10 @@
     <string name="section_title_payments">Payments</string>
     <string name="sub_section_title_make_a_payment">Make a Payment</string>
     <string name="sub_section_title_manage_payments">Manage Payments</string>
-    <string name="sub_section_title_manage_bank_information">Manage Bank Information</string>
+   <!-- 13.4 change start -->
+    <!--<string name="sub_section_title_manage_bank_information">Manage Bank Information</string>-->
+    <string name="sub_section_title_manage_bank_accounts">Manage Bank Accounts</string>
+   <!-- 13.4 change end -->
     <string name="sub_section_title_send_money">Send Money</string>
     <string name="sub_section_title_send_money_history">Send Money History</string>
     
@@ -36,7 +39,7 @@
     <string name="sub_section_title_alert_history">Push Alerts History</string>
     <string name="sub_section_title_create_cash_pin">Create Cash PIN</string>
     <!--<string name="sub_section_title_maintain_fastcheck">Quick Look</string>-->
-    <string name="sub_section_title_passcode">Passcode</string>
+     <string name="sub_section_title_passcode">Passcode</string>
         
     
     <string name="section_title_customer_service">Customer Service</string>

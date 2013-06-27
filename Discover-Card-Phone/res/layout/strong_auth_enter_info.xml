@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/sa_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/field_stroke" >
+
+        <TextView
+            android:id="@+id/title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            android:paddingLeft="12dp"
+            android:text="@string/sa_title"
+            android:textColor="@color/blue_grey"
+            android:textSize="18dp"
+            android:textStyle="normal" />
+
+        <Button
+            android:id="@+id/logout_button"
+            style="@style/logout_actionbar_button"
+            android:layout_width="64dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/logout_button_drawable"
+            android:onClick="statementLogout"
+            android:text="@string/log_out" 
+            android:textSize="12dp"
+            />
+
+        <ImageView
+            android:id="@+id/gradient_line"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/stroke_ruling_line"
+            android:src="@drawable/gradiant_line" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/account_info_scroll_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/sa_action_bar"
+        android:background="@color/body_color" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
+
+            <LinearLayout
+                android:id="@+id/enter_info_Welcome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/strong_auth_welcometext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="22dp"
+                    android:layout_marginTop="22dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/strong_auth_enter_info_welcometext"
+                    android:textColor="@color/darkgray"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/strong_auth_welcometextcont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="22dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/strong_auth_enter_info_welcometext_Cont"
+                    android:textColor="@color/darkgray"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/strongauth_security_server_error"
+                    style="@style/error_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account_security_answer_doesnt_match" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/enter_info_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/enter_info_Welcome"
+                android:orientation="vertical" >
+
+                <include
+                    android:id="@+id/security_block1"
+                    layout="@layout/strong_auth_question_answer" />
+
+                <include
+                    android:id="@+id/security_block2"
+                    layout="@layout/strong_auth_question_answer" />
+
+                <include
+                    android:id="@+id/security_block3"
+                    layout="@layout/strong_auth_question_answer" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/account_security_remember_device_label"
+                style="@style/body_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/account_security_choice_radio_group"
+                android:layout_below="@+id/enter_info_top"
+                android:text="@string/account_security_remember_device_text" 
+                android:textColor="#8a9499"
+            	android:textSize="14dp"
+            	android:layout_marginBottom="6dp"
+                />
+
+            <RadioGroup
+                android:id="@+id/account_security_choice_radio_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_security_remember_device_label"
+                android:background="@drawable/rounded_table_corners_no_padding"
+                android:divider="@drawable/modal_divider_line"
+                android:orientation="vertical" >
+
+                <RadioButton
+                    android:id="@+id/account_security_choice_one_radio"
+                    style="@style/strongauth_ans_selection"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/custom_radio_check"
+                    android:drawablePadding="@dimen/forms_inner_padding"
+                    android:padding="@dimen/forms_inner_padding"
+                    android:text="@string/account_security_remember_me_text" />
+
+                <!--
+                     <View
+                    android:id="@+id/account_security_separator_line_one"
+                    android:layout_width="fill_parent"
+                    android:layout_height="4dp"
+                    android:background="@drawable/row_shadow" />
+                -->
+
+                <View
+                    android:id="@+id/account_security_separator_line_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#c0c8cc" />
+
+                <RadioButton
+                    android:id="@+id/account_security_choice_two_radio"
+                    style="@style/strongauth_ans_selection"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/custom_radio_check"
+                    android:drawablePadding="@dimen/forms_inner_padding"
+                    android:padding="@dimen/forms_inner_padding"
+                    android:text="@string/account_security_dont_remember_me_text"
+                    android:textColor="@color/field_copy" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/enter_info_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_security_choice_radio_group"
+                android:orientation="vertical" >
+
+                <Button
+                    android:id="@+id/account_info_continue_button"
+                    style="@style/call_to_action_theme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="40dp"
+                    android:onClick="validateInfoAndSubmitOnSuccess"
+                    android:text="@string/sa_submit" />
+
+                <include
+                    android:id="@+id/enter_info_footer"
+                    layout="@layout/card_fragment_footer" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

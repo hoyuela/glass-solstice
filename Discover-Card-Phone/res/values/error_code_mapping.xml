@@ -291,6 +291,34 @@
     <string name="E_1008">We will be performing a system maintenance between 1 a.m. and 6 a.m. Eastern Time. We apologize for any inconvenience. Please try again later, or for immediate assistance call 18777427822</string>
     <string name="E_1916">You have entered invalid information.Carefully review your information and please try again.</string>
 
+     <!--  13.4 Changes Start -->
+  <!--   Strong Auth Update User -->
+  	<string name="E_4001411">Entered value is not correct.</string>
+  	<string name="E_4001412">Entered value is not correct.</string>
+  	<string name="E_4001413">Entered value is not correct.</string>
+  	<string name="E_4001414">Entered value is not correct.</string>
+  	<string name="E_4001415">Answer exceeds 50 characters.</string>
+  	<string name="E_4001416">Entered value is not correct.</string>
+  	<string name="E_4001005">Entered value is not correct.</string>
+  	<string name="E_4001409">Entered value is not correct.</string>
+  	<string name="E_4001410">Entered value is not correct.</string>
+  	<string name="E_4001417">User is already Enrolled.</string>
+  	
+  	
+  	<string name="E_T_4001411">Improper Value.</string>
+  	<string name="E_T_4001412">Improper Value.</string>
+  	<string name="E_T_4001413">Improper Value.</string>
+  	<string name="E_T_4001414">Improper Value.</string>
+  	<string name="E_T_4001415">Improper Value.</string>
+  	<string name="E_T_4001416">Improper Value.</string>
+  	<string name="E_T_4001005">Improper Value.</string>
+  	<string name="E_T_4001409">Improper Value.</string>
+  	<string name="E_T_4001410">Improper Value.</string>
+  	<string name="E_T_4001417">Enrolled.</string>
+  	
+  	  <!--  13.4 Changes End -->
+    
+    
     <!-- Registration Code title -->
     <!-- DEFECT ID:97030 -->
     <string name="E_T_4031928">We\'re Sorry</string>

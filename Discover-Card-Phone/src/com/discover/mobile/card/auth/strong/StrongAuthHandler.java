@@ -137,12 +137,29 @@ public class StrongAuthHandler {
 
             @Override
             public void OnError(final Object data) {
+                
+                /*  13.4 changes Start*/ 
+                final CardErrorBean bean = (CardErrorBean) data;
+                final CardShareDataStore cardShareDataStore = CardShareDataStore
+                        .getInstance(context);
+                final String cache = (String) cardShareDataStore
+                        .getValueOfAppCache("WWW-Authenticate");
+               if (bean.getErrorCode().contains(
+                        "" + HttpURLConnection.HTTP_FORBIDDEN)
+                        && bean.getErrorCode().contains(
+                                "" + SKIPPED)) {
+                    if (authListener != null) {
+                        authListener.onStrongAuthSkipped(data);
+                    }
+                }else {                 
+                /*    13.4 changes End*/ 
                 if (authListener != null) {
                     authListener.onStrongAuthError(data);
                 } else {
                     final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             (CardErrorHandlerUi) context);
                     cardErrorResHandler.handleCardError((CardErrorBean) data);
+                }
                 }
             }
         };

@@ -8,7 +8,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
+import android.content.Intent;
 import android.telephony.TelephonyManager;
+
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUser;
+import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUserDetails;
 
 /**
  * 
@@ -80,6 +91,41 @@ public class StrongAuthUtil {
 
         return convertToHex(postHash);
     }
+    
+
+    /*13.4 Changes Start */
+    public void createUser(final CardErrorHandlerUi errorHandlerUi)
+    {
+         StrongAuthCreateUser authUserHandler = new StrongAuthCreateUser(
+                 context, new CardEventListener() {
+
+                     @Override
+                     public void onSuccess(Object data) {
+                         // TODO Auto-generated method stub
+                         StrongAuthCreateUserDetails createUserDetails = (StrongAuthCreateUserDetails) data ;
+                         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                                 .getInstance(context);
+                         final Intent strongAuthEnterInfoActivity = new Intent(context,
+                                 StrongAuthEnterInfoActivity.class);
+                         cardShareDataStoreObj.addToAppCache(
+                                 context.getString(R.string.sa_question_answer_list),
+                                 createUserDetails);
+                         context.startActivity(strongAuthEnterInfoActivity);
+                     }
+
+                     @Override
+                     public void OnError(Object data) {
+                         // TODO Auto-generated method stub
+                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                 errorHandlerUi);
+                         cardErrorResHandler
+                                 .handleCardError((CardErrorBean) data);
+                     }
+                 });
+         authUserHandler.sendRequest();
+    }
+
+    /*13.4 Changes End */
 
     /**
      * This method convert byte to hex format
