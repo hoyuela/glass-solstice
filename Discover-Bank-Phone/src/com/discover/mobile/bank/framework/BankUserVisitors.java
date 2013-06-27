@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * Non-instantiable class that contains a list of static methods used for visiting a BankUser's listeners and notifying
@@ -32,9 +33,15 @@ final class BankUserVisitors {
 		if (sender != null && listeners != null) {
 			final List<Account> accounts = (acctList != null && acctList.accounts != null) ? acctList.accounts : new ArrayList<Account>();
 
-			for (final BankUserListener listener : listeners) {
-				listener.onAccountsUpdate(sender, accounts);
-			}
+			/** Make sure visitors are notified via the UI thread */
+			DiscoverActivityManager.getActiveActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					for (final BankUserListener listener : listeners) {
+						listener.onAccountsUpdate(sender, accounts);
+					}
+				}
+			});
 		}
 	}
 
@@ -50,9 +57,16 @@ final class BankUserVisitors {
 	 */
 	static public void visitCurrentAccountChangeListeners(final BankUser sender, final List<BankUserListener> listeners, final Account account) {
 		if (sender != null && listeners != null) {
-			for (final BankUserListener listener : listeners) {
-				listener.onCurrentAccountUpdate(sender, account);
-			}
+
+			/** Make sure visitors are notified via the UI thread */
+			DiscoverActivityManager.getActiveActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					for (final BankUserListener listener : listeners) {
+						listener.onCurrentAccountUpdate(sender, account);
+					}
+				}
+			});
 		}
 	}
 }
