@@ -1,6 +1,7 @@
 package com.discover.mobile.card.account.summary;
 
 import android.content.Context;
+import android.text.Spanned;
 import android.view.View.OnClickListener;
 
 /**
@@ -52,6 +53,15 @@ public final class SimpleListItemFactory {
      */
     public static SimpleListItem createItem(final Context context,
             final String label, final String value) {
+        final SimpleListItem item = new SimpleListItem(context, null);
+        item.setLabel(label);
+        item.setValue(value);
+        item.hideAction();
+        return item;
+    }
+    
+    public static SimpleListItem createItem(final Context context,
+            final Spanned label, final String value) {
         final SimpleListItem item = new SimpleListItem(context, null);
         item.setLabel(label);
         item.setValue(value);
