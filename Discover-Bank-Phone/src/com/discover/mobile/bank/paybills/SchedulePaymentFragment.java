@@ -18,8 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -61,7 +59,7 @@ import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 public class SchedulePaymentFragment extends BaseFragment 
-implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
+	implements BankErrorHandlerDelegate, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -141,7 +139,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	/** Reference to the Activity's canceled listener */
 	private OnPaymentCanceledListener canceledListener;
 	/**Flag used to control whether back press should show cancel modal*/
-	private final boolean isBackPressedDisabled = true;
+	private static final boolean OVERRIDE_BACK_PRESS = true;
 
 	/** boolean set to true when the fragment is in edit mode*/
 	private boolean editMode = false;
@@ -537,38 +535,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	}
 
 	/**
-	 * Flips the memo elements, TextView and EditText, visually and textually.
-	 * 
-	 * @param showEditable
-	 *            shows the editable field if true; the text field if false.
-	 */
-	private void flipMemoElements(final boolean showEditable) { // TODO REMOVE
-//		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
-//		InputMethodManager imm = activity.getInputMethodManager();
-//
-//		// EditText will be shown.
-//		if (showEditable) {
-//			/**Hide memo error code*/
-//			memoError.setVisibility(View.GONE);
-//
-//			memoText.setVisibility(View.INVISIBLE);
-//			memoEdit.setVisibility(View.VISIBLE);
-//			memoEdit.setText(memoText.getText().toString());
-//			memoEdit.requestFocus();
-//			imm.showSoftInput(memoEdit, 0);
-//			memoEdit.setSelection(memoEdit.getText().length());
-//
-//			// TextView will be shown.
-//		} else {
-//			memoText.setVisibility(View.VISIBLE);
-//			memoEdit.setVisibility(View.INVISIBLE);
-//			memoText.setText(memoEdit.getText().toString());
-//			imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
-//		}
-//		imm = null;
-	}
-
-	/**
 	 * Limits the memo's character length and prevents invalid characters.
 	 */
 	private void setMemoFieldValidation() {
@@ -682,35 +648,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	 * Initializes the view's miscellaneous listeners.
 	 */
 	private void createItemListeners() {
-
-		// Listens for a focus change so that we can handle special view
-		// behavior
-		parentView.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(final View v, final MotionEvent event) {
-				if (!v.equals(memoEdit)) {
-					flipMemoElements(false);
-				}
-				return false;
-			}
-		});
         
-		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				if (!hasFocus) {
-					flipMemoElements(false);
-				}
-			});
-
-			/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
-			memoEdit.setOnEditorActionListener(this);
-		}else{
-			memoItem.setVisibility(View.GONE);
-
-		}
-
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -834,8 +772,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private int formatAmount(final String amount) {
 		int ret = 0;
 		if (!Strings.isNullOrEmpty(amount)) {
-			String formattedAmount = amount.replaceAll(",", "");
-			formattedAmount = formattedAmount.replace(".", "");
+			String formattedAmount = amount.replaceAll(StringUtility.COMMA, StringUtility.EMPTY);
+			formattedAmount = formattedAmount.replace(StringUtility.PERIOD, StringUtility.EMPTY);
 			ret = Integer.parseInt(formattedAmount);
 		}
 		return ret;
@@ -946,30 +884,11 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		}
 	}
 
-	/**
-	 * Method used to detect if user has pressed done on the soft keyboard. This callback will only be called
-	 * if the ime option for the editable field has been set to EditorInfo.IME_ACTION_DONE.
-	 * 
-	 * @param v	The view that was clicked.
-	 * @param actionId	Identifier of the action. This will be either the identifier you supplied, 
-	 * or EditorInfo.IME_NULL if being called due to the enter key being pressed.
-	 * @param event	If triggered by an enter key, this is the event; otherwise, this is null.
-	 * 
-	 * @return Return true if you have consumed the action, else false.
-	 */
-	@Override
-	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-		if ((actionId == EditorInfo.IME_ACTION_DONE) && v.equals(memoEdit)) {
-			flipMemoElements(false);
-		}
-		return false;
-	}
-
 	/** Cancel modal presentation should override default Back button behavior */
 	@Override
 	public void onBackPressed() {
 		/**Show Cancel Modal only if back press has been disabled*/
-		if( isBackPressedDisabled ) {
+		if( OVERRIDE_BACK_PRESS ) {
 			final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
@@ -993,7 +912,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 
 	@Override
 	public boolean isBackPressDisabled() {
-		return isBackPressedDisabled;
+		return OVERRIDE_BACK_PRESS;
 	}
 
 	private CalendarListener createCalendarListener() {	
