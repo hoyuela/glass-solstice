@@ -106,13 +106,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		view = LayoutInflater.from(context).inflate(R.layout.bank_frequency_detail_view, null);
 		res = context.getResources();
 		cancelled = (RadioButton) view.findViewById(R.id.cancelled_button);
-		cancelled.setEnabled(false);
 		date = (RadioButton) view.findViewById(R.id.date_button);
-		date.setEnabled(false);
 		transaction = (RadioButton) view.findViewById(R.id.transactions_button);
-		transaction.setEnabled(false);
 		dollar = (RadioButton) view.findViewById(R.id.dollar_button);
-		dollar.setEnabled(false);
 		dollarAmount = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		transactionAmount = (PositiveIntegerEditText) view.findViewById(R.id.transaction_amount);
 		dateValue = (TextView) view.findViewById(R.id.date_value);
@@ -122,10 +118,8 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		view.findViewById(R.id.transaction_layout).setOnClickListener(getLayoutListener(TRANSACTION));
 		view.findViewById(R.id.dollar_layout).setOnClickListener(getLayoutListener(AMOUNT));
 
-		dollarAmount.setEnabled(false);
 		dollarAmount.enableBankAmountTextWatcher(true);
 		
-		transactionAmount.setEnabled(false);
 		transactionAmount.setMaxInputLength(MAX_TRANSFERS_ALLOWED);
 		earliestPaymentDate = Calendar.getInstance();
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
@@ -313,7 +307,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private void disableCancelled(){
 		cancelled.setChecked(false);
-		cancelled.setButtonDrawable(R.drawable.make_payment_radio_button);
 		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.field_copy));
 	}
 
@@ -322,7 +315,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private void disableDate(){
 		date.setChecked(false);
-		date.setButtonDrawable(R.drawable.make_payment_radio_button);
 		((TextView)view.findViewById(R.id.date_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.field_copy));
 		final ImageView caret = (ImageView)view.findViewById(R.id.freq_caret);
@@ -347,11 +339,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private void disableTransaction(){
 		transactionAmount.clearFocus();
 		transaction.setChecked(false);
-		transaction.setButtonDrawable(R.drawable.make_payment_radio_button);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.field_copy));
 		transactionAmount.clearErrors();
 		transactionAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-		transactionAmount.setEnabled(false);
 		transactionAmount.setText("");
 		clearErrorLabel(R.id.transactions_error_label);
 	}
@@ -361,10 +351,8 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private void disableAmount(){
 		dollar.setChecked(false);
-		dollar.setButtonDrawable(R.drawable.make_payment_radio_button);
 		((TextView)view.findViewById(R.id.dollar_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.field_copy));
-		dollarAmount.setEnabled(false);
 		dollarAmount.clearFocus();
 		dollarAmount.enableBankAmountTextWatcher(false);
 		dollarAmount.setText("");
@@ -380,7 +368,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private void enableCancelled(){
 		index = CANCELLED;
 		cancelled.setChecked(true);
-		cancelled.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.canceled_label)).setTextColor(res.getColor(R.color.body_copy));
 	}
 
@@ -390,7 +377,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private void enableDate(){
 		index = DATE;
 		date.setChecked(true);
-		date.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.date_value)).setTextColor(res.getColor(R.color.body_copy));
 		final ImageView caret = (ImageView)view.findViewById(R.id.freq_caret);
 		caret.setImageDrawable(getResources().getDrawable(R.drawable.blue_arrow_right));
@@ -402,9 +388,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private void enableTransaction(){
 		index = TRANSACTION;
 		transaction.setChecked(true);
-		transaction.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
-		transactionAmount.setEnabled(true);
 		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE);
 		transactionAmount.requestFocus();
 	}
@@ -415,9 +399,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private void enableAmount(){
 		index = AMOUNT;
 		dollar.setChecked(true);
-		dollar.setButtonDrawable(R.drawable.make_payment_radio_button_ds);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
-		dollarAmount.setEnabled(true);
 		dollarAmount.requestFocus();
 	}
 
