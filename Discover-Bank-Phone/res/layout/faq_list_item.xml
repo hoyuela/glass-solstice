@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
+    android:layout_height="wrap_content"
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp" >
+    
     <View
         android:id="@+id/divider"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:layout_marginBottom="@dimen/between_related_elements_padding"
-        android:background="@drawable/table_dotted_line" />
+        android:layout_height="1dp"
+        android:background="@drawable/common_table_list_item_gray" />
 
+    <!-- Adjust top/bottom padding of the follow layout to dictate height of item without moving divider. -->
     <RelativeLayout
         android:id="@+id/faq_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider"
-        android:padding="@dimen/between_related_elements_padding" >
+        android:paddingTop="@dimen/groups_of_elements_padding"
+        android:paddingBottom="@dimen/groups_of_elements_padding"
+        android:paddingLeft="@dimen/forms_inner_padding"
+        android:paddingRight="@dimen/forms_inner_padding" >
 
         <TextView
             android:id="@+id/expand_indicator"
             style="@style/blue_hyperlink"
-            android:layout_width="@dimen/groups_of_elements_padding"
+            android:layout_width="24dp"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/faq_section_title"
+            android:layout_alignTop="@+id/faq_section_title"
             android:clickable="false"
-            android:gravity="center_horizontal|center_vertical"
+            android:gravity="left|center_vertical"
             android:text="@string/plus" />
 
         <TextView
@@ -31,11 +38,11 @@
             style="@style/body_copy"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/expand_indicator"
             android:layout_toRightOf="@+id/expand_indicator"
             android:clickable="false"
-            android:text="@string/edit"
-            android:textStyle="bold" />
+            android:gravity="left|center_vertical"
+            android:textStyle="normal"
+            android:lines="2" />
 
         <TextView
             android:id="@+id/faq_section_detail"
