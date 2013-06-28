@@ -502,6 +502,12 @@ public class SchedulePaymentFragment extends BaseFragment
 				paymentDetail = (PaymentDetail)b.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			}
 			editMode = b.getBoolean(BankExtraKeys.EDIT_MODE, false);
+			
+			if (editMode) {
+				memoItem.setVisibility(View.GONE);
+				memoEdit.setVisibility(View.GONE);
+				memoError.setVisibility(View.GONE);
+			}
 		}
 	}
 
