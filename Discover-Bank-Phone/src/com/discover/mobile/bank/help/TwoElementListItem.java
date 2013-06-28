@@ -144,4 +144,11 @@ public class TwoElementListItem extends RelativeLayout{
 	public void setDividerLine(final View dividerLine) {
 		this.dividerLine = dividerLine;
 	}
+	
+	/**
+	 * @param isVisible - {@code true} when divider should be visible, {@code false} otherwise.
+	 */
+	public void setDividerLineVisibility(final boolean isVisible) {
+		dividerLine.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+	}
 }
