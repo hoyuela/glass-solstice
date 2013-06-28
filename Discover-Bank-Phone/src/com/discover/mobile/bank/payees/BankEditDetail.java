@@ -3,6 +3,7 @@ package com.discover.mobile.bank.payees;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +32,13 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	private BankEditDetail nextDetail;
 	private TextView errorLabel;
 	private View dividerLine;
-	private View caret;
 	private View view;
 	
+	private boolean editMode = false;
+	
+	/** Width (dp) the middle label and editable field should be when displaying data on a single line. */
+	private static final int SINGLE_LINE_LABEL_WIDTH = 200;
+
 	public BankEditDetail(final Context context) {
 		super(context);
 		doSetup();
@@ -142,6 +147,10 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	 */
 	public void enableEditing(final boolean value) {
 		editableField.setEnabled(value);
+		// Show grey underline when field is editable
+		middleLabel.setBackground(value ? 
+				getResources().getDrawable(R.drawable.common_edit_text_grey_line) : null);
+
 	}
 	
 	/**
@@ -160,23 +169,30 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	 * @param value Set to true if want to make editable, otherwise false.
 	 */
 	public void setEditMode( final boolean value ) {
+		if (editMode == value) {
+			// Bettering performance as this method is often called multiple times in a row.
+			editMode = value;
+			return;
+		}
+		
+		editMode = value;
 		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		
 		editableField.clearErrors();
-		
 		if( value ) {
 			if( !editableField.hasFocus() ) {
 				editableField.setText(middleLabel.getText());
 				editableField.setVisibility(View.VISIBLE);
-				middleLabel.setVisibility(View.GONE);
+				middleLabel.setVisibility(View.INVISIBLE);
 				editableField.setFocusable(true);
 				editableField.requestFocus();
+				editableField.setSelection(editableField.getText().length());
 				
 				imm.showSoftInput(editableField, InputMethodManager.SHOW_FORCED);
 			}
 		} else {
 			middleLabel.setText(editableField.getText());
-			editableField.setVisibility(View.GONE);
+			editableField.setVisibility(View.INVISIBLE);
 			middleLabel.setVisibility(View.VISIBLE);
 			
 			imm.hideSoftInputFromWindow(editableField.getWindowToken(), 0);
@@ -194,10 +210,10 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		if( value ) {		
 			editableField.setText(middleLabel.getText());
 			editableField.setVisibility(View.VISIBLE);
-			middleLabel.setVisibility(View.GONE);
+			middleLabel.setVisibility(View.INVISIBLE);
 		} else {
 			middleLabel.setText(editableField.getText());
-			editableField.setVisibility(View.GONE);
+			editableField.setVisibility(View.INVISIBLE);
 			middleLabel.setVisibility(View.VISIBLE);
 		}
 	}
@@ -290,4 +306,28 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public boolean isEditable() {
 		return this.getEditableField().isEnabled();
 	}
+	
+	/**
+	 * Alters the view so that all text appears on one line.
+	 */
+	public void makeSingleLine() {
+		// Convert default view width from dp to pixels
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SINGLE_LINE_LABEL_WIDTH, 
+        		getResources().getDisplayMetrics());
+
+        // Update Layout Parameters for the middle label
+        LayoutParams paramsLabel = (LayoutParams) middleLabel.getLayoutParams();
+        paramsLabel.width = width;
+		paramsLabel.addRule(RelativeLayout.BELOW, 0);
+		paramsLabel.addRule(RelativeLayout.ALIGN_LEFT, 0);
+		paramsLabel.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1);
+		middleLabel.setLayoutParams(paramsLabel);
+		
+		// Update Layout Parameters for the editable field
+		LayoutParams paramsEditText = (LayoutParams) editableField.getLayoutParams();
+		paramsEditText.width = width;
+		paramsEditText.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, -1);
+		editableField.setLayoutParams(paramsEditText);
+	}
+	
 }

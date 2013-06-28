@@ -147,6 +147,7 @@ final public class PayeeDetailListGenerator  {
 		zipCode.getEditableField().setInputType(InputType.TYPE_CLASS_NUMBER);
 		zipCode.getEditableField().setError(R.string.bank_invalid_zip);
 		zipCode.enableEditing(isEditable);
+		zipCode.makeSingleLine();
 		
 		if( isLastField ) {
 			zipCode.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
@@ -167,6 +168,7 @@ final public class PayeeDetailListGenerator  {
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
+		phoneNumber.makeSingleLine();
 		return phoneNumber;
 	}
 	
@@ -177,6 +179,8 @@ final public class PayeeDetailListGenerator  {
 		item.setText(state);
 		item.getEditableField().setEnabled(false);
 		item.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		item.getMiddleLabel().setBackground(context.getResources().getDrawable(R.drawable.common_dropdown));
+		item.makeSingleLine();
 		return item;
 	}
 
@@ -239,6 +243,7 @@ final public class PayeeDetailListGenerator  {
 		memo.getEditableField().setFilters(inputFilters);
 		memo.enableEditing(isEditable);
 		memo.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		memo.getEditableField().setTextAppearance(context, R.style.sub_copy_big);
 		memo.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
 		return memo;
 	}
