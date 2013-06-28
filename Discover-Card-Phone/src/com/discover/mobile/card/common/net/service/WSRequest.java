@@ -12,134 +12,125 @@ import java.util.HashMap;
  */
 
 public final class WSRequest {
-	private String strURL;
-	private String strMethodType;
-	private byte[] btInput;
-	private HashMap<String, String> hmHeaderValues;
-	private boolean isFrequentCaller;
-	private String username;
-	private String password;
-	private int connectionTimeOut = 10000;
-	private int connectionReadTimeOut = 10000;
+    private String strURL;
+    private String strMethodType;
+    private byte[] btInput;
+    private HashMap<String, String> hmHeaderValues;
+    private boolean isFrequentCaller;
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(final String username) {
-		this.username = username;
-	}
+    public void setUsername(final String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(final String password) {
-		this.password = password;
-	}
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 
-	
+    private String username;
+    private String password;
 
-	public WSRequest() {
-		hmHeaderValues = new HashMap<String, String>();
-	}
+    private int connectionTimeOut = 10000;
 
-	@Override
-	protected void finalize() throws Throwable {
-		// TODO Auto-generated method stub
-		super.finalize();
-		hmHeaderValues.clear();
-		hmHeaderValues = null;
-	}
+    public WSRequest() {
+        hmHeaderValues = new HashMap<String, String>();
+    }
 
-	public void setCookieHander() {
-		CookieHandler.setDefault(new CookieManager());
-		((CookieManager) CookieHandler.getDefault())
-				.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+    @Override
+    protected void finalize() throws Throwable {
+        // TODO Auto-generated method stub
+        super.finalize();
+        hmHeaderValues.clear();
+        hmHeaderValues = null;
+    }
 
-	}
+    public void setCookieHander() {
+        CookieHandler.setDefault(new CookieManager());
+        ((CookieManager) CookieHandler.getDefault())
+                .setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return strURL;
-	}
+    }
 
-	/**
-	 * @param url
-	 *            the url to set
-	 */
-	public void setUrl(final String url) {
-		strURL = url;
-	}
+    /**
+     * @return the url
+     */
+    public String getUrl() {
+        return strURL;
+    }
 
-	/**
-	 * @return the methodtype
-	 */
-	public String getMethodtype() {
-		return strMethodType;
-	}
+    /**
+     * @param url
+     *            the url to set
+     */
+    public void setUrl(final String url) {
+        strURL = url;
+    }
 
-	/**
-	 * @param methodtype
-	 *            the methodtype to set
-	 */
-	public void setMethodtype(final String methodtype) {
-		strMethodType = methodtype;
-	}
+    /**
+     * @return the methodtype
+     */
+    public String getMethodtype() {
+        return strMethodType;
+    }
 
-	/**
-	 * @return the headerValues
-	 */
-	public HashMap<String, String> getHeaderValues() {
-		return hmHeaderValues;
-	}
+    /**
+     * @param methodtype
+     *            the methodtype to set
+     */
+    public void setMethodtype(final String methodtype) {
+        strMethodType = methodtype;
+    }
 
-	/**
-	 * @param headerValues
-	 *            the headerValues to set
-	 */
-	public void setHeaderValues(final HashMap<String, String> headerValues) {
-		hmHeaderValues = headerValues;
-	}
+    /**
+     * @return the headerValues
+     */
+    public HashMap<String, String> getHeaderValues() {
+        return hmHeaderValues;
+    }
 
-	/**
-	 * @return the input
-	 */
-	public byte[] getInput() {
-		return btInput;
-	}
+    /**
+     * @param headerValues
+     *            the headerValues to set
+     */
+    public void setHeaderValues(final HashMap<String, String> headerValues) {
+        hmHeaderValues = headerValues;
+    }
 
-	/**
-	 * @param input
-	 *            the input to set
-	 */
-	public void setInput(final byte[] input) {
-		btInput = input;
-	}
+    /**
+     * @return the input
+     */
+    public byte[] getInput() {
+        return btInput;
+    }
 
-	public int getConnectionTimeOut() {
-		return connectionTimeOut;
-	}
+    /**
+     * @param input
+     *            the input to set
+     */
+    public void setInput(final byte[] input) {
+        btInput = input;
+    }
 
-	public void setConnectionTimeOut(final int connectionTimeOut) {
-		this.connectionTimeOut = connectionTimeOut;
-	}
+    public int getConnectionTimeOut() {
+        return connectionTimeOut;
+    }
 
-	public boolean isFrequentCaller() {
-		return isFrequentCaller;
-	}
+    public void setConnectionTimeOut(final int connectionTimeOut) {
+        this.connectionTimeOut = connectionTimeOut;
+    }
 
-	public void setFrequentCaller(final boolean isFrequentCaller) {
-		this.isFrequentCaller = isFrequentCaller;
-	}
+    public boolean isFrequentCaller() {
+        return isFrequentCaller;
+    }
 
-	public int getConnectionReadTimeOut() {
-		return connectionReadTimeOut;
-	}
-
-	public void setConnectionReadTimeOut(int connectionReadTimeOut) {
-		this.connectionReadTimeOut = connectionReadTimeOut;
-	}
+    public void setFrequentCaller(final boolean isFrequentCaller) {
+        this.isFrequentCaller = isFrequentCaller;
+    }
 }

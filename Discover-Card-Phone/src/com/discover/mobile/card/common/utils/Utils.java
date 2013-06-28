@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -680,4 +685,44 @@ public class Utils {
         Utils.log(LOG_TAG, "Mobile On: " + isConnectedMobile);
         return isConnectedWifi || isConnectedMobile;
     }
+    
+    /*
+     * Changes for 13.4 start
+     */
+    public static void logoutUser(final Activity cur_Activity){
+         isSpinnerAllowed = true;
+         CardEventListener logoutCardEventListener = new CardEventListener() {
+
+             @Override
+             public void onSuccess(Object data) {
+                 final Bundle bundle = new Bundle();
+                 bundle.putBoolean(
+                         IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                         cur_Activity, bundle);
+//                 cur_Activity.finish();
+             }
+
+             @Override
+             public void OnError(Object data) {
+                 final Bundle bundle = new Bundle();
+                 bundle.putBoolean(
+                         IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                         cur_Activity, bundle);
+//                 finish();
+             }
+         };
+         final WSRequest request = new WSRequest();
+         final String url = NetworkUtility.getWebServiceUrl(cur_Activity,
+                 R.string.logOut_url);
+         request.setUrl(url);
+         request.setMethodtype("POST");
+         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(cur_Activity, null,
+                 "Discover", "Signing Out...", logoutCardEventListener);
+         serviceCall.execute(request);
+    }
+    /*
+     * Changes for 13.4 end
+     */
 }

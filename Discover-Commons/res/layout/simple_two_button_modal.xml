@@ -45,7 +45,7 @@
                 android:id="@+id/modal_alert_cancel"
                 style="@style/common_modal_gray_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1" 
                 android:layout_marginBottom="0dp"/>
 
@@ -53,7 +53,7 @@
                 android:id="@+id/modal_ok_button"
                 style="@style/common_modal_orange_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:layout_weight="1" />
         </LinearLayout>
     </RelativeLayout>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
 /**
  * Activity definition used to display a help guide for either User ID or
@@ -76,7 +78,11 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
             @Override
             public void onClick(final View v) {
-            	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+                //Changes for 13.4 start
+//              FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+                Intent privacyTerms = new Intent(StrengthBarHelpActivity.this , PrivacyTermsLanding.class);
+                startActivity(privacyTerms);
+                //Changes for 13.4 end
             }
         });
         //Defect id 95853

@@ -56,7 +56,7 @@ public class DiscoverMapWrapper {
 
 	/**Clustering library reference**/
 	private Clusterkraf clusterkraf;
-	
+
 	/**
 	 * 
 	 * @param map - map to be used
@@ -154,12 +154,14 @@ public class DiscoverMapWrapper {
 	public void addObjectsToMap(final List<? extends LocationObject> objects){
 		if(null != map){
 			//clusterkraf options
-			Options options = new Options();
+			final Options options = new Options();
 			options.setTransitionInterpolator(new OvershootInterpolator());
-			options.setMarkerOptionsChooser(new AtmClusterMarker(DiscoverActivityManager.getActiveActivity().getApplicationContext()));
 			options.setPixelDistanceToJoinCluster(convertToDensityIndependentPixels());
-			ArrayList<InputPoint> list = new ArrayList<InputPoint>();
+			final ArrayList<InputPoint> list = new ArrayList<InputPoint>();
 			for(final LocationObject object : objects){
+				options.setMarkerOptionsChooser(
+						new AtmClusterMarker(DiscoverActivityManager.getActiveActivity().getApplicationContext(), 
+								object.getPinDrawable()));
 				object.setDistanceFromUser(getDistanceFromUser(object));
 				list.add(new InputPoint(new LatLng(object.getLatitude(), object.getLongitude()), object));
 				adapter.addAtmToList(object);
@@ -174,8 +176,9 @@ public class DiscoverMapWrapper {
 	 * pixels.  used for clustering 
 	 */
 	private int convertToDensityIndependentPixels(){
-		DisplayMetrics disMetrics = new DisplayMetrics();
-		WindowManager windowManager = (WindowManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.WINDOW_SERVICE);
+		final DisplayMetrics disMetrics = new DisplayMetrics();
+		final WindowManager windowManager = 
+				(WindowManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.WINDOW_SERVICE);
 		windowManager.getDefaultDisplay().getMetrics(disMetrics);
 		return Math.round(disMetrics.density * 100);
 	}
@@ -192,18 +195,6 @@ public class DiscoverMapWrapper {
 
 		return distance * MILES_PER_KILOMETER;
 
-	}
-
-	/**
-	 * Create the marker for the map
-	 * @param object - to create the marker for
-	 * @return the marker to be added to the map
-	 */
-	private MarkerOptions createMapMarker(final LocationObject object){
-		final LatLng item = new LatLng(object.getLatitude(),object.getLongitude());	
-
-		return new MarkerOptions().position(item)
-				.icon(BitmapDescriptorFactory.fromResource(object.getPinDrawable()));
 	}
 
 	/**

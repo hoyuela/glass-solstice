@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 
@@ -173,7 +175,11 @@ public class RegistrationAccountInformationActivity extends
             //Defect id 95853
         }else if(v.getId() == R.id.privacy_terms)
         {
-        	FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            //Changes for 13.4 start
+//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(RegistrationAccountInformationActivity.this , PrivacyTermsLanding.class);
+            startActivity(privacyTerms);
+            //Changes for 13.4 end
         }
         //Defect id 95853
         

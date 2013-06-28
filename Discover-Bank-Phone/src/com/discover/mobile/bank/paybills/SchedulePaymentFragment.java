@@ -18,22 +18,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.actionbarsherlock.internal.widget.IcsAdapterView;
+import com.actionbarsherlock.internal.widget.IcsSpinner;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
@@ -63,7 +59,7 @@ import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 public class SchedulePaymentFragment extends BaseFragment 
-implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPressed {
+	implements BankErrorHandlerDelegate, FragmentOnBackPressed {
 
 	/** Keys used to save/load values possibly lost during rotation. */
 	private static final String PAY_FROM_ACCOUNT_ID = "a";
@@ -87,17 +83,13 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	/** Progress header - breadcrumb */
 	private BankHeaderProgressIndicator progressHeader;
 	/** Spinner used to display all the user bank accounts */
-	private Spinner paymentAccountSpinner;
+	private IcsSpinner paymentAccountSpinner;
 	/** Error view for improper amount */
 	private TextView amountError;
-	/** Text view for payment account choice */
-	private TextView paymentAccountText;
 	/** Text view for payment title */
 	private TextView paymentAccountTitle;
 	/** Text View for payment account error*/
 	private TextView paymentAccountError;
-	/** Text view for memo */
-	private TextView memoText;
 	/** Edit view for memo */
 	private EditText memoEdit;
 	/**Text view for memo error*/
@@ -118,8 +110,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private Button cancelButton;
 	/** Payment button */
 	private Button payNowButton;
-	/** Caret in Payment From Cell*/
-	private ImageView paymentCaret ;
 
 	/** Payee object (typically passed here via bundle) */
 	private PayeeDetail payee;
@@ -130,8 +120,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 
 	/** Id for currently selected account */
 	private int accountId;
-	/** List position for current Account */
-	private int accountIndex;
 	/** Earliest payment date */
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
@@ -151,7 +139,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	/** Reference to the Activity's canceled listener */
 	private OnPaymentCanceledListener canceledListener;
 	/**Flag used to control whether back press should show cancel modal*/
-	private final boolean isBackPressedDisabled = true;
+	private static final boolean OVERRIDE_BACK_PRESS = true;
 
 	/** boolean set to true when the fragment is in edit mode*/
 	private boolean editMode = false;
@@ -183,10 +171,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		conflictError = (TextView) view.findViewById(R.id.conflict_error);
 		paymentAccountItem = (RelativeLayout) view
 				.findViewById(R.id.payment_acct_element);
-		paymentAccountText = (TextView) view
-				.findViewById(R.id.payment_acct_text);
-		paymentAccountSpinner = (Spinner) view
-				.findViewById(R.id.payment_acct_spinner);
+		paymentAccountSpinner = (IcsSpinner) view.findViewById(R.id.payment_acct_spinner);
 		paymentAccountError = (TextView)view.findViewById(R.id.payment_acct_error);
 		paymentAccountTitle = (TextView)view.findViewById(R.id.payment_acct_title);
 		amountEdit = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
@@ -196,19 +181,17 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		dateError = (TextView) view.findViewById(R.id.date_error);
 		dateItem = (RelativeLayout) view.findViewById(R.id.date_item);
 		memoItem = (RelativeLayout) view.findViewById(R.id.memo_element);
-		memoText = (TextView) memoItem.findViewById(R.id.memo_text);
 		memoEdit = (EditText) memoItem.findViewById(R.id.memo_edit);
 		memoError = (TextView) view.findViewById(R.id.memo_error);
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
-		paymentCaret = (ImageView)view.findViewById(R.id.payment_caret);
 		bankUser = BankUser.instance();
 
 		/**Set a default value for chosen payment date*/
 		chosenPaymentDate = Calendar.getInstance();
 
 		loadDataFromBundle();
-		setInitialViewData();
+		setupInitialViewData();
 		setMemoFieldValidation();
 		createItemListeners();
 		restoreState(savedInstanceState);
@@ -249,12 +232,17 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					final BankNavigationRootActivity activity = 
-							(BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
-					InputMethodManager imm = activity.getInputMethodManager();
-					amountEdit.requestFocus();
-					imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
-					imm = null;
+					Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+					
+					// Double check for instance type (do not assume BankNavigationRootActivity)
+					// Due to possibility of timeout occurring when coming from background
+					if (currentActivity instanceof BankNavigationRootActivity) {
+						InputMethodManager imm = ((BankNavigationRootActivity) currentActivity)
+								.getInputMethodManager();
+						amountEdit.requestFocus();
+						imm.showSoftInput(amountEdit, InputMethodManager.SHOW_IMPLICIT);
+						imm = null;
+					}
 				}
 			}, halfSecond);
 		}
@@ -264,16 +252,16 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		if((amountEdit == null) || (dateText == null) || (memoText == null)) { return; }
+		if((amountEdit == null) || (dateText == null)) { return; }
 
 
-		outState.putInt(PAY_FROM_ACCOUNT_ID, accountIndex);
+		outState.putInt(PAY_FROM_ACCOUNT_ID, paymentAccountSpinner.getSelectedItemPosition());
 		outState.putString(AMOUNT, amountEdit.getText().toString());
 		final String[] datesToSave = dateText.getText().toString().split("/");
 		outState.putString(DATE_DAY, datesToSave[1]);
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
-		outState.putString(MEMO, memoText.getText().toString());
+		outState.putString(MEMO, memoEdit.getText().toString());
 
 		/**Remember which field has focus*/
 		if( amountEdit.hasFocus() ) {
@@ -335,8 +323,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 						saveState.getString(DATE_DAY)));
 			}
 			memoEdit.setText(saveState.getString(MEMO));
-			memoText.setText(saveState.getString(MEMO));
-
 
 			/**Restore error state*/
 			final Bundle data = saveState;
@@ -411,42 +397,53 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	public int getActionBarTitle() {
 		return R.string.pay_a_bill_title;
 	}
+	
+	/** Populates {@link IcsSpinner} dropdown with eligible bank accounts for Bill Pay. */
+	private void setupSpinnerAdapter() {
+		final AccountAdapter accountAdapter = new AccountAdapter(getActivity(),
+				R.layout.bank_dropdown_selection_view_large, bankUser.getPaymentCapableAccounts().accounts);
+		paymentAccountSpinner.setAdapter(accountAdapter);
+	}
+	
+	/**
+	 * Selects a specific Account from the IcsSpinner if found.
+	 * Otherwise, does not alter the current selection.
+	 * @param account - {@link Account} you wish to select.
+	 */
+	private void setSpinnerSelectedAccount(Account account) {
+		// Parse all items in the Adapter and determine if one matches the requested Account.
+		for (int x=0; x<paymentAccountSpinner.getAdapter().getCount(); ++x) {
+			if (paymentAccountSpinner.getItemAtPosition(x).equals(account)) {
+				paymentAccountSpinner.setSelection(x);
+				return;
+			}
+		}
+	}
 
 	/**
 	 * Initializes the layout's elements with dynamic data either passed to the
 	 * fragment or loaded from elsewhere.
 	 */
-	private void setInitialViewData() {
-		/**Populate Spinner with eligible bank accounts for Bill Pay*/
-		if (bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
-			final AccountAdapter accountAdapter = new AccountAdapter(
-					getActivity(), R.layout.common_push_simple_spinner_view,
-					bankUser.getPaymentCapableAccounts().accounts);
-
-			accountAdapter.setDropDownViewResource(R.layout.common_push_simple_spinner_dropdown);
-			paymentAccountSpinner.setAdapter(accountAdapter);
-		} else {
-			/**Hide Caret when only a single account is selectable for scheduling payment*/
-			paymentCaret.setVisibility(View.INVISIBLE);
-		}
+	private void setupInitialViewData() {
+		setupSpinnerAdapter();
 
 		/**Check if page is displayed to add a payment*/
 		if (payee != null) {
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
-			paymentAccountText.setText(defaultPaymentAccount());
 
+			setSpinnerSelectedAccount(getDefaultAccount());
 			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 		}
 		/**Check if page is displayed to edit a payment*/
 		else if( paymentDetail != null ) {
 			dateText.setText(getPaymentDate(paymentDetail.deliverBy));
 			payeeText.setText(paymentDetail.payee.nickName);
-			paymentAccountText.setText(paymentDetail.paymentAccount.nickname);
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
 
 			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
+			setSpinnerSelectedAccount(paymentDetail.paymentAccount); 
 			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
 
 			/**Update Pay Now Button Text*/
@@ -476,20 +473,20 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	 * 
 	 * @return Name of default account
 	 */
-	private String defaultPaymentAccount() {
+	private Account getDefaultAccount() {
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
 				accountId = Integer.valueOf(a.id);
-				return a.nickname;
+				return a;
 			}
 		}
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
 				accountId = Integer.valueOf(a.id);
-				return a.nickname;
+				return a;
 			}
 		}
-		return "";
+		return null;
 	}
 
 	/**
@@ -538,38 +535,6 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 			valueString = "0" + valueString;
 		}
 		return valueString;
-	}
-
-	/**
-	 * Flips the memo elements, TextView and EditText, visually and textually.
-	 * 
-	 * @param showEditable
-	 *            shows the editable field if true; the text field if false.
-	 */
-	private void flipMemoElements(final boolean showEditable) {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity) getActivity();
-		InputMethodManager imm = activity.getInputMethodManager();
-
-		// EditText will be shown.
-		if (showEditable) {
-			/**Hide memo error code*/
-			memoError.setVisibility(View.GONE);
-
-			memoText.setVisibility(View.INVISIBLE);
-			memoEdit.setVisibility(View.VISIBLE);
-			memoEdit.setText(memoText.getText().toString());
-			memoEdit.requestFocus();
-			imm.showSoftInput(memoEdit, 0);
-			memoEdit.setSelection(memoEdit.getText().length());
-
-			// TextView will be shown.
-		} else {
-			memoText.setVisibility(View.VISIBLE);
-			memoEdit.setVisibility(View.INVISIBLE);
-			memoText.setText(memoEdit.getText().toString());
-			imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
-		}
-		imm = null;
 	}
 
 	/**
@@ -686,41 +651,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	 * Initializes the view's miscellaneous listeners.
 	 */
 	private void createItemListeners() {
-
-		// Listens for a focus change so that we can handle special view
-		// behavior
-		parentView.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(final View v, final MotionEvent event) {
-				if (!v.equals(memoEdit)) {
-					flipMemoElements(false);
-				}
-				return false;
-			}
-		});
-
-		memoItem.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View arg0) {
-				if (memoText.getVisibility() == View.VISIBLE) {
-					flipMemoElements(true);
-				}
-			}
-		});
-
-		memoEdit.setOnFocusChangeListener(new OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(final View v, final boolean hasFocus) {
-				if (!hasFocus) {
-					flipMemoElements(false);
-				}
-			}
-		});
-
-		/**Set listener to flip memo edit field from editable to non-editable when user taps done on keyboard*/
-		memoEdit.setOnEditorActionListener(this);
-
+		
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -729,27 +660,31 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 
 				paymentAccountError.setVisibility(View.GONE);
 				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
-					paymentAccountSpinner
-					.setOnItemSelectedListener(new OnItemSelectedListener() {
-						@Override
-						public void onItemSelected(final AdapterView<?> parent,
-								final View v, final int position, final long id) {
-							final Account a = (Account) paymentAccountSpinner
-									.getSelectedItem();
-							accountId = Integer.valueOf(a.id);
-							accountIndex = position;
-
-							paymentAccountText.setText(a.nickname);
-							setSelectedAccountTitle(a);
-						}
-
-						@Override
-						public void onNothingSelected(final AdapterView<?> arg0) {
-						}
-					});
-
 					paymentAccountSpinner.performClick();
 				}
+			}
+		});
+		
+		paymentAccountSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(IcsAdapterView<?> parent, View view, 
+					int position, long id) {
+
+				// Retrieve the newly selected account
+				final Account selectedAccount = (Account) paymentAccountSpinner.getSelectedItem();
+				
+				if (selectedAccount == null) {
+					return;
+				}
+				
+				accountId = Integer.valueOf(selectedAccount.id);
+
+				// Update the title above the spinner
+				setSelectedAccountTitle(selectedAccount);
+			}
+
+			@Override
+			public void onNothingSelected(IcsAdapterView<?> parent) {
 			}
 		});
 
@@ -840,8 +775,8 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 	private int formatAmount(final String amount) {
 		int ret = 0;
 		if (!Strings.isNullOrEmpty(amount)) {
-			String formattedAmount = amount.replaceAll(",", "");
-			formattedAmount = formattedAmount.replace(".", "");
+			String formattedAmount = amount.replaceAll(StringUtility.COMMA, StringUtility.EMPTY);
+			formattedAmount = formattedAmount.replace(StringUtility.PERIOD, StringUtility.EMPTY);
 			ret = Integer.parseInt(formattedAmount);
 		}
 		return ret;
@@ -952,30 +887,11 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 		}
 	}
 
-	/**
-	 * Method used to detect if user has pressed done on the soft keyboard. This callback will only be called
-	 * if the ime option for the editable field has been set to EditorInfo.IME_ACTION_DONE.
-	 * 
-	 * @param v	The view that was clicked.
-	 * @param actionId	Identifier of the action. This will be either the identifier you supplied, 
-	 * or EditorInfo.IME_NULL if being called due to the enter key being pressed.
-	 * @param event	If triggered by an enter key, this is the event; otherwise, this is null.
-	 * 
-	 * @return Return true if you have consumed the action, else false.
-	 */
-	@Override
-	public boolean onEditorAction(final TextView v, final int actionId, final KeyEvent event) {
-		if ((actionId == EditorInfo.IME_ACTION_DONE) && v.equals(memoEdit)) {
-			flipMemoElements(false);
-		}
-		return false;
-	}
-
 	/** Cancel modal presentation should override default Back button behavior */
 	@Override
 	public void onBackPressed() {
 		/**Show Cancel Modal only if back press has been disabled*/
-		if( isBackPressedDisabled ) {
+		if( OVERRIDE_BACK_PRESS ) {
 			final AreYouSureGoBackModal modal = new AreYouSureGoBackModal(this, new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
@@ -999,7 +915,7 @@ implements BankErrorHandlerDelegate, OnEditorActionListener, FragmentOnBackPress
 
 	@Override
 	public boolean isBackPressDisabled() {
-		return isBackPressedDisabled;
+		return OVERRIDE_BACK_PRESS;
 	}
 
 	private CalendarListener createCalendarListener() {	

@@ -56,8 +56,12 @@ public class JQMResourceMapper {
 
         temp.put("Make a Payment", R.string.sub_section_title_make_a_payment);
         temp.put("Manage Payments", R.string.sub_section_title_manage_payments);
-        temp.put("Manage Bank Information",
-                R.string.sub_section_title_manage_bank_information);
+        /* 13.4 change start */
+        /*temp.put("Manage Bank Information",
+                R.string.sub_section_title_manage_bank_information);*/
+		temp.put("Manage Bank Accounts",
+                R.string.sub_section_title_manage_bank_accounts);
+		/* 13.4 change end */
         temp.put("Send Money", R.string.sub_section_title_send_money);
         temp.put("Send Money History",
                 R.string.sub_section_title_send_money_history);
@@ -80,7 +84,6 @@ public class JQMResourceMapper {
         temp.put("Redemption History",
                 R.string.sub_section_title_redemption_history);
         temp.put("Quick View", R.string.sub_section_title_fast_view);
-        temp.put("Qv Faq",R.string.sub_section_title_fast_view);
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
         temp.put("Push Alerts History",

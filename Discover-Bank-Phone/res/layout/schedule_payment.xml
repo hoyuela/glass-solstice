@@ -36,7 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/sched_pay_list"
-                android:layout_below="@id/schedule_pay_header"
                 android:layout_marginTop="15dp"
                 android:paddingRight="@dimen/forms_inner_padding"
                 android:text="@string/schedule_pay_duplicate_payment"
@@ -48,8 +47,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/conflict_error"
-                android:layout_margin="15dp"
-                android:background="@drawable/rounded_table_corners_shape"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/common_table_background"
                 android:orientation="vertical"
                 android:padding="0dp" >
 
@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/payee_text"
-                        style="@style/title_copy"
+                        style="@style/title_unbold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/payee_title"
@@ -87,8 +87,6 @@
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <include layout="@layout/divider_horizontal" />
-
                 <!-- Pay From Account -->
 
                 <RelativeLayout
@@ -105,31 +103,23 @@
 
                     <TextView
                         android:id="@+id/payment_acct_text"
-                        style="@style/title_copy"
+                        style="@style/title_unbold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/payment_acct_title"
                         android:layout_below="@+id/payment_acct_title"
-                        android:layout_toLeftOf="@+id/payment_caret"
                         android:ellipsize="end"
                         android:paddingRight="@dimen/between_related_elements_padding"
                         android:scrollHorizontally="true"
                         android:singleLine="true" />
 
-                    <ImageView
-                        android:id="@+id/payment_caret"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@string/caret_description"
-                        android:src="@drawable/blue_arrow_right" />
-
-                    <Spinner
+                    <com.actionbarsherlock.internal.widget.IcsSpinner
                         android:id="@+id/payment_acct_spinner"
-                        android:layout_width="wrap_content"
+                        style="@style/common_spinner_dropdown"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="invisible" />
+                        android:layout_alignLeft="@+id/payment_acct_title"
+                        android:layout_below="@+id/payment_acct_title" />
 
                     <TextView
                         android:id="@+id/payment_acct_error"
@@ -143,8 +133,6 @@
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <include layout="@layout/divider_horizontal" />
-
                 <!-- Amount -->
 
                 <RelativeLayout
@@ -153,11 +141,11 @@
                     android:gravity="center_vertical" >
 
                     <LinearLayout
-                        android:id="@+id/amount_llayout"
+                        android:id="@+id/amount_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="4" >
+                        android:weightSum="3.75" >
 
                         <TextView
                             android:id="@+id/amount_title"
@@ -170,7 +158,7 @@
                             style="@style/field_copy_big"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_weight=".75"
                             android:gravity="right"
                             android:paddingRight="3dp"
                             android:text="@string/bank_dollar_sign"
@@ -186,13 +174,11 @@
                         android:id="@+id/amount_error"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/amount_llayout"
+                        android:layout_below="@id/amount_layout"
                         android:text="@string/schedule_pay_too_high"
                         android:textColor="@color/error_indicator"
                         android:visibility="gone" />
                 </RelativeLayout>
-
-                <include layout="@layout/divider_horizontal" />
 
                 <!-- Deliver By -->
 
@@ -201,58 +187,64 @@
                     style="@style/schedule_pay_list_element"
                     android:gravity="center_vertical" >
 
-                    <TextView
-                        android:id="@+id/date_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:text="@string/schedule_pay_date" />
-
                     <LinearLayout
-                        android:id="@+id/date_layout"
-                        android:layout_width="wrap_content"
+                        android:id="@+d/date_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignTop="@+id/date_title"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical" 
+                        android:weightSum="3.75" >
 
                         <TextView
-                            android:id="@+id/date_text"
-                            style="@style/title_copy"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/date_title"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/between_related_elements_padding" />
+                            android:layout_weight="1.75"
+                            android:text="@string/schedule_pay_date" />
 
-                        <ImageView
-                            android:id="@+id/date_caret"
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:contentDescription="@string/caret_description"
-                            android:src="@drawable/calendar_icon" />
+                            android:layout_weight="2">
+
+                            <ImageView
+                                android:id="@+id/date_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:contentDescription="@string/caret_description"
+                                android:src="@drawable/calendar_icon" />
+                            
+                            <TextView
+                                android:id="@+id/date_text"
+                                style="@style/title_unbold"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_toLeftOf="@+id/date_icon"
+                                android:layout_marginRight="@dimen/between_related_elements_padding"
+                                android:background="@drawable/common_edit_text_grey_line" />
+                            
+                            
+                        </RelativeLayout>
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/date_error"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/date_title"
-                        android:layout_below="@+id/date_layout"
-                        android:layout_toLeftOf="@+id/date_caret"
+                        android:layout_below="@id/date_layout"
                         android:paddingRight="@dimen/between_related_elements_padding"
                         android:text="@string/schedule_pay_invalid_date"
                         android:textColor="@color/error_indicator"
                         android:visibility="gone" />
                 </RelativeLayout>
 
-                <include layout="@layout/divider_horizontal" />
-
                 <!-- Memo -->
 
                 <RelativeLayout
                     android:id="@+id/memo_element"
-                    style="@style/schedule_pay_list_element"
-                    android:layout_marginBottom="1dp" >
+                    style="@style/schedule_pay_list_element" >
 
                     <TextView
                         android:id="@+id/memo_title"
@@ -262,41 +254,17 @@
                         android:layout_alignParentTop="true"
                         android:text="@string/schedule_pay_memo_opt" />
 
-                    <ImageView
-                        android:id="@+id/memo_caret"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:contentDescription="@string/caret_description"
-                        android:src="@drawable/blue_arrow_right" />
-
-                    <TextView
-                        android:id="@+id/memo_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/memo_title"
-                        android:layout_below="@id/memo_title"
-                        android:layout_toLeftOf="@+id/memo_caret"
-                        android:text=""
-                        android:textColor="@color/black" />
-
                     <EditText
                         android:id="@+id/memo_edit"
+                        style="@style/common_edittext_grey_line"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/memo_title"
                         android:layout_below="@id/memo_title"
-                        android:layout_marginRight="@dimen/between_related_elements_padding"
-                        android:layout_toLeftOf="@+id/memo_caret"
-                        android:background="@drawable/edit_text_default"
-                        android:imeOptions="flagNoExtractUi"
                         android:inputType="textWebEditText"
                         android:maxLength="40"
                         android:scrollHorizontally="false"
-                        android:textColor="@color/black"
-                        android:textCursorDrawable="@null"
-                        android:visibility="invisible" />
+                        android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/memo_error"
@@ -304,7 +272,6 @@
                         android:layout_height="wrap_content"
                         android:layout_alignLeft="@+id/memo_edit"
                         android:layout_below="@+id/memo_edit"
-                        android:layout_toLeftOf="@+id/memo_caret"
                         android:paddingRight="@dimen/between_related_elements_padding"
                         android:textColor="@color/error_indicator"
                         android:visibility="gone" />
@@ -315,7 +282,7 @@
 
             <Button
                 android:id="@+id/pay_now"
-                style="@style/call_to_action_theme"
+                style="@style/common_call_to_action_theme_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/sched_pay_list"

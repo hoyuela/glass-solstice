@@ -13,10 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:paddingRight="@dimen/between_related_elements_padding"
-        android:paddingBottom="@dimen/between_related_elements_padding"
-        android:src="@drawable/magnifying_glass_icon_white"
         android:background="@drawable/magnifying_glass_bkgrd"
+        android:contentDescription="@string/empty"
+        android:paddingBottom="@dimen/between_related_elements_padding"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:src="@drawable/magnifying_glass_icon_white"
         android:visibility="gone" />
 
     <RelativeLayout
@@ -29,7 +30,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="visible" >
 
         <ImageButton
             android:id="@+id/search_show"
@@ -42,6 +43,7 @@
             android:layout_marginTop="@dimen/search_bar_arrow_margin_top"
             android:alpha=".5"
             android:background="@drawable/transparent_square"
+            android:contentDescription="@string/empty"
             android:src="@drawable/drk_blue_arrow_left_square" />
 
         <ImageButton
@@ -52,6 +54,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="0dp"
+            android:contentDescription="@string/empty"
             android:visibility="invisible" />
 
         <EditText
@@ -61,20 +64,20 @@
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/between_related_elements_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginLeft="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_toLeftOf="@+id/help_dummy"
             android:layout_toRightOf="@+id/search_show"
-            android:background="@drawable/edit_text_default"
+            android:background="@drawable/common_textfield_default_grey"
             android:cursorVisible="true"
             android:drawableLeft="@drawable/magnifying_glass"
             android:drawablePadding="@dimen/between_related_elements_padding"
             android:drawableRight="@drawable/atm_current_location_button"
             android:ellipsize="end"
             android:focusable="true"
-            android:imeOptions="actionDone|flagNoExtractUi"
             android:hint="@string/atm_location_search_help"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:inputType="textPostalAddress"
             android:textColor="@color/body_copy"
             android:textCursorDrawable="@null" />
@@ -84,7 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_below="@+id/search_box"
-            android:background="@drawable/atm_search_dropshadow" />
+            android:background="@drawable/atm_search_dropshadow"
+            android:contentDescription="@string/empty" />
 
         <LinearLayout
             android:id="@+id/filter_bar"
@@ -102,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/between_related_elements_padding"
                 android:background="@drawable/atm_pin_orange_list_view"
+                android:contentDescription="@string/empty"
                 android:textColor="@color/title" />
 
             <TextView
@@ -111,13 +116,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/atm_location_surcharge_free" />
 
-            <ImageView
+            <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
                 android:id="@+id/filter_enable"
+                style="@style/bank_switch_light"
                 android:layout_width="75dp"
                 android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/between_related_elements_padding"
-                android:background="@drawable/swipe_on"
-                android:textColor="@color/title" />
+                android:layout_marginLeft="@dimen/between_related_elements_padding" />
         </LinearLayout>
 
         <ImageView
@@ -125,7 +129,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/filter_bar"
-            android:background="@drawable/atm_search_dropshadow" />
+            android:background="@drawable/atm_search_dropshadow"
+            android:contentDescription="@string/empty" />
     </RelativeLayout>
 
 </RelativeLayout>

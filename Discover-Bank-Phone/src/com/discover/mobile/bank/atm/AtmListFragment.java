@@ -60,7 +60,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		/**ATMs retrieved from the server*/
 		final AtmResults results = (AtmResults)bundle.get(BankExtraKeys.DATA_LIST_ITEM);
 		/**Current amount of results being shown*/
-		final int index = (bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0));
+		final int index = bundle.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 		final TableLoadMoreFooter footer = getLoadMoreFooter();
 
 		//If the results is empty or null
@@ -93,7 +93,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		}
 
 		//Update the background to prevent a pixelated view
-		CommonUtils.fixBackgroundRepeat(this.getView().findViewById(R.id.table_background));
+		CommonUtils.fixBackgroundRepeat(getView().findViewById(R.id.table_background));
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void setupAdapter() {
-		adapter = new AtmListAdapter(this.getActivity(), R.layout.bank_atm_detail_item, this);
+		adapter = new AtmListAdapter(getActivity(), R.layout.bank_atm_detail_item, this);
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 			handler.postDelayed(new Runnable() { 
 				@Override
 				public void run() { 
-					
+
 					observer.loadMoreData(); 
 				} 
 			}, DELAY); 
@@ -144,7 +144,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public void setupHeader() {
-		header = new TableTitles(this.getActivity(), null);
+		header = new TableTitles(getActivity(), null);
 		header.setMessage(this.getString(R.string.atm_location_no_results));
 		header.hideFilters();
 		showNothingToLoad();
@@ -153,6 +153,8 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 	@Override
 	public void setupFooter() {
 		final TableLoadMoreFooter footer = getLoadMoreFooter();
+		//Changing the background to match the buttons and the search bar.
+		footer.setBackgroundResource(R.drawable.atm_search_bar_background);
 		footer.getGo().setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -169,7 +171,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		try {
 			final String addressString =  atm.address1 + StringUtility.SPACE  + atm.city 
 					+ StringUtility.SPACE + atm.state;
-			final Geocoder coder = new Geocoder(this.getActivity());
+			final Geocoder coder = new Geocoder(getActivity());
 			final List<Address> addresses = coder.getFromLocationName(addressString, 1);
 			final Bundle bundle = new Bundle();
 			if(null != addresses && !addresses.isEmpty()){
@@ -230,7 +232,7 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 
 	@Override
 	public int getSectionMenuLocation() {
-		return (observer instanceof SearchNearbyFragment) 
+		return observer instanceof SearchNearbyFragment 
 				? BankMenuItemLocationIndex.FIND_NEARBY_SECTION: BankMenuItemLocationIndex.SEARCH_BY_LOCATION;
 	}
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loading_atms_modal" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <TextView 
+        android:id="@+id/loading_atms_modal_content"
+        android:layout_centerInParent="true"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_rounded_black_transparent_background"
+        android:textColor="@android:color/white"
+    	android:padding="5dp" />
+    
+</RelativeLayout>
