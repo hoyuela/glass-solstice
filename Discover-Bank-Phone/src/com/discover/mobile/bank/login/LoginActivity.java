@@ -596,8 +596,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			restoreToggle = NO_TOGGLE_TO_RESTORE;
 		}
 
-		//Default to the last path user chose for login Card or Bank
-		setApplicationAccount();
+		
 
 		/*
 		 * Check to see if pre-auth request is required; should be done at
@@ -627,7 +626,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			getErrorHandler().showErrorsOnScreen(this, null);
 			DiscoverActivityManager.clearPreviousActiveActivity();
 		}
-
+		/*
+		 * Moved call to setApplicationAccount down here to avoid
+		 * privacy and terms duplication error - julian
+		 */
+		privacySecOrTermButtonBank.setVisibility(View.INVISIBLE);
+		cardForgotAndPrivacySection.setVisibility(View.INVISIBLE);
+		//Default to the last path user chose for login Card or Bank
+		setApplicationAccount();
 	}
 
 	/**
