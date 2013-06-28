@@ -25,7 +25,8 @@
     <dimen name="small_call_to_actions_padding">5dp</dimen>
     <dimen name="orange_button_left_right_padding">30dp</dimen>
     <dimen name="small_orange_button_left_right_padding">15dp</dimen>
-    <dimen name="between_related_elements_padding">7dp</dimen>
+    <dimen name="between_related_elements_padding">7dp</dimen><!-- If edited, edit below 'doubled' as well -->
+    <dimen name="between_related_elements_padding_doubled">14dp</dimen>
     <dimen name="help_icon_right_padding">12dp</dimen>
     <dimen name="groups_of_elements_padding">20dp</dimen>
     <dimen name="orange_button_margin_top">40dp</dimen>
