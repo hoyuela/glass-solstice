@@ -264,7 +264,8 @@
                         android:inputType="textWebEditText"
                         android:maxLength="40"
                         android:scrollHorizontally="false"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@null" />
 
                     <TextView
                         android:id="@+id/memo_error"
