@@ -45,8 +45,7 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
 	private static final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
@@ -853,21 +852,14 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * check capture feature.
 	 * @return a modal dialog with check capture help content.
 	 */
-	private CheckDepositModal getHelpModal() {
+	private SimpleContentModal getHelpModal() {
 		final Spanned helpContent = Html.fromHtml(
 				getResources().getString(R.string.bank_deposit_capture_help_content));
-
-		final ModalDefaultTopView top = new ModalDefaultTopView(this, null);
-		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(this, null);
-
-		top.setTitle(R.string.bank_deposit_capture_help_title);
-		top.getContentTextView().setText(helpContent, TextView.BufferType.SPANNABLE);
-		top.showErrorIcon(false);
-		top.hideNeedHelpFooter();
-		bottom.setButtonText(R.string.ok);
-
-		final CheckDepositModal modal = new CheckDepositModal(this, top, bottom);
-		bottom.getButton().setOnClickListener(new OnClickListener() {
+		
+		final SimpleContentModal modal = new SimpleContentModal(this, R.string.bank_deposit_capture_help_title,
+																helpContent.toString(), R.string.ok);
+		
+		modal.getButton().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {

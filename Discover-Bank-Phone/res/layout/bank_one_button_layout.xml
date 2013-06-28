@@ -91,7 +91,6 @@
             <LinearLayout
                 android:id="@+id/content_table"
                 android:layout_below="@+id/general_error"
-                android:layout_centerHorizontal="true"
                 android:orientation="vertical"
                 android:background="@drawable/rounded_table_corners_no_padding"
                 android:layout_width="fill_parent"

@@ -34,11 +34,10 @@ public class SimpleContentModal extends ModalAlertWithOneButton implements Modal
 	 * @param context - activity context
 	 */
 	public SimpleContentModal(final Context context) {
-		super(context);	
+		super(context);
 		view = getLayoutInflater().inflate(R.layout.simple_content_modal, null);
 		helpFooter = new NeedHelpFooter((ViewGroup) view);
 	}
-
 
 	/**
 	 * An alternate way to create a modal alert with one button 
