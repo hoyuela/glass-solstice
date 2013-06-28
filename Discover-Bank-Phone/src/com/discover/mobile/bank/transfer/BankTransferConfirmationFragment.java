@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
@@ -95,7 +97,13 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		BankConductor.navigateToHomePage(true);
+		/** Check if account date is out dated, if so then download new account data */
+		if (BankUser.instance().isAccountOutDated()) {
+			/** Update Accounts since a transfer has been scheduled */
+			BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
+		} else {
+			BankConductor.navigateToHomePage(false);
+		}
 	}
 
 	/**
