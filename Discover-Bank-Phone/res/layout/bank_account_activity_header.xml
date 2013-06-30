@@ -4,128 +4,210 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/title_text"
-        style="@style/page_title"
-        android:layout_width="wrap_content"
+    
+    <!-- Layout holds the title that shows -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/table_inner_padding"
+	    android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginRight="@dimen/help_widget_width"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:gravity="left"
-        android:paddingRight="@dimen/help_widget_width"
-        android:text="@string/activity_title" />
-
+		android:layout_marginRight="@dimen/help_widget_width"
+		android:layout_marginBottom="@dimen/table_inner_padding"
+		android:gravity="left"
+	    android:layout_alignParentLeft="true"  
+        android:orientation="horizontal">
+	     <View
+	      	android:id="@+id/arrow"
+	     	android:layout_width="15dp"
+	     	android:layout_height="15dp"    
+	        android:layout_marginRight="@dimen/between_related_elements_padding"
+	        android:layout_gravity="center_vertical"
+	     	android:background="@drawable/drk_blue_arrow_down" />
+	
+	    <TextView
+	        android:id="@+id/title_text"
+	        style="@style/page_title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/activity_title" />
+	</LinearLayout>
+	
     <RelativeLayout
         android:id="@+id/header_labels"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title_text" >
+        android:layout_below="@+id/title_layout" >
 
         <TextView
             android:id="@+id/lable1"
-            style="@style/plain_body_copy_title"
+            style="@style/bank_account_activity_header_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/activity_online_checking" />
 
         <TextView
             android:id="@+id/value1"
-            style="@style/plain_body_copy_title"
+            style="@style/bank_account_activity_header_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lable1"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_alignTop="@+id/lable1"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/lable2"
-            android:gravity="right" />
+            android:layout_toRightOf="@+id/lable2" />
 
         <TextView
             android:id="@+id/lable2"
-            style="@style/plain_body_copy_title"
+            style="@style/bank_account_activity_header_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/lable1"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:text="@string/activity_available_balance" />
-
-        <TextView
-            android:id="@+id/value2"
-            style="@style/plain_body_copy_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/lable2"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/lable2"
-            android:layout_below="@+id/lable1"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/lable2"
-            android:gravity="right"
-            android:singleLine="true"
-            android:textIsSelectable="false" />
-
-        <TextView
-            android:id="@+id/lable3"
-            style="@style/plain_body_copy_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/lable2"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
             android:text="@string/activity_current_balance" />
 
         <TextView
+            android:id="@+id/value2"
+            style="@style/bank_account_activity_header_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lable2"
+            android:layout_alignTop="@+id/lable2"
+            android:layout_below="@+id/lable1"
+            android:layout_toRightOf="@+id/lable2"/>
+
+        <TextView
+            android:id="@+id/lable3"
+            style="@style/bank_account_activity_header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lable2"
+            android:text="@string/activity_available_balance" />
+
+        <TextView
             android:id="@+id/value3"
-            style="@style/plain_body_copy_title"
+            style="@style/bank_account_activity_header_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/lable3"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/lable3"
             android:layout_below="@+id/lable2"
+            android:layout_toRightOf="@+id/lable3"/>
+        
+          <!-- Maturity Date label -->
+        <TextView 
+            android:id="@+id/maturity_date_label"
+            style="@style/bank_account_activity_header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lable3"
+            android:text="@string/activity_maturity_date"
+            />
+        
+        <!-- Maturity Date Value -->
+        <TextView 
+            android:id="@+id/maturity_date_value"
+            style="@style/bank_account_activity_header_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/maturity_date_label"
+            android:layout_alignTop="@+id/maturity_date_label"
+            android:layout_below="@+id/lable3"
+            android:layout_toRightOf="@+id/maturity_date_label"/>
+           
+         <View
+       		 android:id="@+id/line_break"
+       		 android:layout_width="fill_parent"
+       		 android:layout_height="1dp"
+       		 android:layout_margin="@dimen/forms_inner_padding"
+       		 android:layout_below="@+id/maturity_date_label"
+       		 android:background="@drawable/table_solid_line" />
+         
+        <!-- APY Label -->
+        <TextView 
+            android:id="@+id/apy_or_pmt_label"
+            style="@style/bank_account_activity_header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line_break"
+            android:text="@string/activity_apy"
+            />
+        
+        <!-- APY Value -->
+        <TextView 
+            android:id="@+id/apy_or_pmt_value"
+            style="@style/bank_account_activity_header_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/apy_or_pmt_label"
+            android:layout_alignTop="@+id/apy_or_pmt_label"
+            android:layout_below="@+id/line_break"
             android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/lable3"
-            android:gravity="right"
-            android:singleLine="true"
-            android:textIsSelectable="false" />
+            android:layout_toRightOf="@+id/apy_or_pmt_label"    
+            />
         
         <!-- Interest text label -->
         <TextView 
-            android:id="@+id/lable4"
-            style="@style/plain_body_copy_title"
+            android:id="@+id/interest_or_totaldue_label"
+            style="@style/bank_account_activity_header_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/lable3"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:text="@string/activity_interest_rate"
+            android:layout_below="@+id/apy_or_pmt_label"
+            android:text="@string/activity_interest_rate" 
             />
         
         <!-- Interest value text view -->
         <TextView 
-            android:id="@+id/value4"
-            style="@style/plain_body_copy_title"
+            android:id="@+id/interest_or_totaldue_value"
+            style="@style/bank_account_activity_header_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/lable4"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/lable4"
-            android:layout_below="@+id/lable3"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_toRightOf="@+id/lable4"
-            android:gravity="right"
-            android:singleLine="true"
-            android:textIsSelectable="false"
+            android:layout_alignBottom="@+id/interest_or_totaldue_label"
+            android:layout_alignTop="@+id/interest_or_totaldue_label"
+            android:layout_below="@+id/apy_or_pmt_label"
+            android:layout_toRightOf="@+id/interest_or_totaldue_label"/>
+        
+        <!-- Interest Last Statement label -->
+        <TextView 
+            android:id="@+id/lastinterest_or_lastpmt_label"
+            style="@style/bank_account_activity_header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/interest_or_totaldue_label"
+            android:text="@string/activity_interest_last_statement"
             />
+        
+        <!-- Interest Last Statement Value -->
+        <TextView 
+            android:id="@+id/lastinterest_or_lastpmt_value"
+            style="@style/bank_account_activity_header_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/lastinterest_or_lastpmt_label"
+            android:layout_alignTop="@+id/lastinterest_or_lastpmt_label"
+            android:layout_below="@+id/interest_or_totaldue_label"
+            android:layout_toRightOf="@+id/interest_or_totaldue_label"/>
+        
+        <!-- Interest YTD label -->
+        <TextView 
+            android:id="@+id/ytd_label"
+            style="@style/bank_account_activity_header_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lastinterest_or_lastpmt_label"
+            android:text="@string/activity_ytd"
+            />
+        
+        <!-- Interest YTD Value -->
+        <TextView 
+            android:id="@+id/ytd_last_value"
+            style="@style/bank_account_activity_header_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ytd_label"
+            android:layout_alignTop="@+id/ytd_label"
+            android:layout_below="@+id/lastinterest_or_lastpmt_label"
+            android:layout_toRightOf="@+id/ytd_last_value"/>
+   
     </RelativeLayout>
 
     <com.discover.mobile.common.ui.table.TableButtonGroup
@@ -133,8 +215,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_labels"
+        android:layout_marginTop="@dimen/groups_of_elements_padding" 
         android:layout_marginBottom="@dimen/table_inner_padding"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
         custom:resourceArry="@array/account_activity_buttons" />
 
     <TextView

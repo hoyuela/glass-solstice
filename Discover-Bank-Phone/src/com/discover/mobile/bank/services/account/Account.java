@@ -13,6 +13,7 @@ import com.discover.mobile.bank.services.deposit.AccountLimits;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.json.Percentage;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.discover.mobile.common.utils.StringUtility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
@@ -200,7 +201,7 @@ public class Account implements Serializable {
 	 * The amount of interest that was compounded and added to the account balance 'Year to Date',
 	 * represented in cents. (e.g. 12345 would be $123.45)
 	 */
-	@JsonProperty("interestYearToDate")
+	@JsonProperty("interestEarnedYearToDate")
 	public Money interestYearToDate;
 
 	/**
@@ -224,11 +225,13 @@ public class Account implements Serializable {
 	/**
 	 * The date that the next payment is due
 	 */
+	@JsonProperty("nextPaymentDueDate")
 	public String nextPaymentDueDate;
 
 	/**
 	 * The original balance
 	 */
+	@JsonProperty("originalBalance")
 	public Money originalBalance;
 
 	/**
@@ -236,6 +239,11 @@ public class Account implements Serializable {
 	 * */
 	@JsonProperty("lastPaymentReceivedAmount")
 	public Money lastPaymentReceivedAmount;
+
+	/**
+	 * The total payment amount due for a loan
+	 * */
+	public Money totalAmountDue;
 
 	/**
 	 * The length of the CD in months (eg. "24" for 2 year CD)
@@ -300,26 +308,27 @@ public class Account implements Serializable {
 	public String getGroupCategory() {
 		String ret = "";
 
-		//Group for Checking: Holds only Checking Types
-		if( type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {		
-			ret = Account.ACCOUNT_CHECKING;	
-		}
-		//Group for Savings: Holds Online Savings, MMA, CDs
-		else if( type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || 
-				type.equalsIgnoreCase(Account.ACCOUNT_MMA) ||
-				type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
-			ret = Account.ACCOUNT_SAVINGS;
+		if (!Strings.isNullOrEmpty(type)) {
+			// Group for Checking: Holds only Checking Types
+			if (type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
+				ret = Account.ACCOUNT_CHECKING;
+			}
+			// Group for Savings: Holds Online Savings, MMA, CDs
+			else if (type.equalsIgnoreCase(Account.ACCOUNT_SAVINGS) || type.equalsIgnoreCase(Account.ACCOUNT_MMA)
+					|| type.equalsIgnoreCase(Account.ACCOUNT_CD)) {
+				ret = Account.ACCOUNT_SAVINGS;
 
-		}
-		//Group for Retirement Plans: Holds IRA, IRA CDs
-		else if( type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
-			ret = Account.ACCOUNT_IRA;
-		}
-		//Group Personal Loans: Personal Loans
-		else if( type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
-			ret = Account.ACCOUNT_LOAN;
-		} else {
-			ret = type;
+			}
+			// Group for Retirement Plans: Holds IRA, IRA CDs
+			else if (type.equalsIgnoreCase(Account.ACCOUNT_IRA)) {
+				ret = Account.ACCOUNT_IRA;
+			}
+			// Group Personal Loans: Personal Loans
+			else if (type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+				ret = Account.ACCOUNT_LOAN;
+			} else {
+				ret = type;
+			}
 		}
 
 		return ret;
@@ -395,25 +404,30 @@ public class Account implements Serializable {
 	 * @return Returns the type formatted string for the this account.
 	 */
 	public String getFormattedName() {
-		String formattedName;
-	
-		if( type.equalsIgnoreCase(ACCOUNT_CD) || type.equalsIgnoreCase(ACCOUNT_IRA) ) {			
-			formattedName = type.toUpperCase(Locale.US) +":";
-		} else if( !type.equalsIgnoreCase(Account.ACCOUNT_LOAN) ) {
-			formattedName = type.replaceAll("_", " ");
-			final StringBuilder result = new StringBuilder(formattedName.length());
-			final String[] charArray = formattedName.split("\\s");
-			final int l = charArray.length;
-			for(int i = 0; i < l; ++i) {
-				if(i>0){
-					result.append(" ");      
+		String formattedName = this.typeLabel;
+
+		if (Strings.isNullOrEmpty(formattedName)) {
+
+			if (type.equalsIgnoreCase(ACCOUNT_CD) || type.equalsIgnoreCase(ACCOUNT_IRA)) {
+				formattedName = type.toUpperCase(Locale.US) + ":";
+			} else if (!type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+				formattedName = type.replaceAll("_", " ");
+				final StringBuilder result = new StringBuilder(formattedName.length());
+				final String[] charArray = formattedName.split("\\s");
+				final int l = charArray.length;
+				for (int i = 0; i < l; ++i) {
+					if (i > 0) {
+						result.append(" ");
+					}
+					result.append(Character.toUpperCase(charArray[i].charAt(0))).append(charArray[i].substring(1));
 				}
-				result.append(Character.toUpperCase(charArray[i].charAt(0))).append(charArray[i].substring(1));
+				result.append(":");
+				formattedName = result.toString();
+			} else {
+				formattedName = ACCOUNT_LOAN_FORMATTED;
 			}
-			result.append(":");
-			formattedName = result.toString();
 		} else {
-			formattedName = ACCOUNT_LOAN_FORMATTED;
+			formattedName += StringUtility.COLON;
 		}
 		
 		return formattedName;
