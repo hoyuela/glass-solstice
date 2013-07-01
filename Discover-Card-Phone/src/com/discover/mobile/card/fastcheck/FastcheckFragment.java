@@ -294,7 +294,6 @@ public class FastcheckFragment extends BaseFragment implements
 			sb.append(res.getString(R.string.fast_check_salutation_good_evening));
 		String tmp = fastcheckDetail.getCardmemberFirstName();
 		if (tmp != null) tmp = tmp.substring(0, 1) + tmp.substring(1).toLowerCase(Locale.US);
-		sb.append(" ");
 		sb.append(tmp);
 		return sb.toString();
 	}
