@@ -1272,4 +1272,12 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		}
 
 	}
+	
+	@Override
+	public void stopProgressDialog() {
+		if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}
+	}
 }

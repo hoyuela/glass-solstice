@@ -166,9 +166,8 @@ implements OnPaymentCanceledListener {
 	public void onPause() {
 		super.onPause();
 		
-		if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
-			DiscoverModalManager.getActiveModal().dismiss();
-			DiscoverModalManager.setAlertShowing(true);
+		if (this.getCurrentContentFragment() instanceof CustomProgressDialog) {
+			((CustomProgressDialog)this.getCurrentContentFragment()).stopProgressDialog();
 		}
 	}
 	
