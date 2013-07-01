@@ -247,6 +247,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			accountDetail.getMiddleLabel().setText(account.nickname);
 			accountDetail.getMiddleLabel().setSingleLine(false);
 			accountDetail.getMiddleLabel().setMaxLines(2);
+			accountDetail.getEditableField().setVisibility(View.GONE); // Ensure editable field cannot be selected
 			accountDetail.getView().setOnFocusChangeListener(null);
 			accountDetail.getView().setOnClickListener(new OnClickListener() {
 				/**
@@ -283,6 +284,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 			final String amount = getResources().getString(R.string.amount);
 			amountDetail.setOnFocusChangeListener(null);
 			amountDetail.getTopLabel().setText(amount);
+			amountDetail.getEditableField().setVisibility(View.GONE); // Ensure editable cannot be selected
 			amountDetail.getMiddleLabel().setText(BankStringFormatter.convertCentsToDollars(depositAmount));
 			content.add(amountDetail);
 
