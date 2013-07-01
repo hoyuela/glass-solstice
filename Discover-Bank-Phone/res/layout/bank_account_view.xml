@@ -6,38 +6,44 @@
      android:paddingLeft="@dimen/forms_inner_padding"
      android:paddingRight="@dimen/forms_inner_padding"
      android:paddingBottom="@dimen/table_inner_padding" >
+     
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
     
-	 <TextView
-        android:id="@+id/acct_nickname"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="@dimen/between_related_elements_padding"
-        android:text="@string/acct_nickname_str"
-        style="@style/light_static_text"/>
-	 	 
-	  <TextView
-        android:id="@+id/acct_ending"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/acct_nickname"
-        android:layout_toLeftOf="@+id/acct_carat"
-        android:layout_margin="@dimen/between_related_elements_padding"
-        android:text="@string/acct_ending_str"
-        style="@style/light_static_text"/>
-	  	 
-	 <TextView
-        android:id="@+id/acct_balance"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/acct_nickname"
-        android:paddingBottom="@dimen/between_related_elements_padding"
-        android:text="@string/acct_balance_str"
-        style="@style/page_title_no_bold"/>
+		 <TextView
+	        android:id="@+id/acct_nickname"
+	        android:singleLine="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginTop="@dimen/between_related_elements_padding"
+	        android:text="@string/acct_nickname_str"
+	        style="@style/light_static_text"/>
+		 	 
+		  <TextView
+	        android:id="@+id/acct_ending"
+	        android:singleLine="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/acct_nickname"
+	        android:layout_margin="@dimen/between_related_elements_padding"
+	        android:text="@string/acct_ending_str"
+	        style="@style/light_static_text"/>
+		  	 
+		 <TextView
+	        android:id="@+id/acct_balance"
+	        android:singleLine="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@+id/acct_nickname"
+	        android:paddingBottom="@dimen/between_related_elements_padding"
+	        android:text="@string/acct_balance_str"
+	        style="@style/page_title_no_bold"/>
+	 
+	 </RelativeLayout>
 	 
 	  <ImageView
         android:id="@+id/acct_carat"
@@ -46,4 +52,5 @@
        	android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/blue_arrow_right"/>
+	  
 </RelativeLayout>

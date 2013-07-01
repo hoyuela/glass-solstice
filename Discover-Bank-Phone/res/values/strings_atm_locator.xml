@@ -55,7 +55,7 @@
     <string name="atm_help_direction_icon_title">Directions Icon</string>
     <string name="atm_help_direction_icon_text">Displays step-by-step directions.</string>
     <string name="atm_help_tap_and_hold_to_search_title">Redo Search</string>
-    <string name="atm_help_tap_and_hold_to_search_text">Tap and hold to search in a\nnew location</string>
+    <string name="atm_help_tap_and_hold_to_search_text">Tap and hold to search in a\nnew location.</string>
     <string name="atm_location_timeout_title">Cannot Retrieve Current Location</string>
     <string name="atm_location_timeout_text">We\'re sorry, we are unable to find your location at this time. Please allow us to search for your location again.</string>
     <string name="atm_searching_for_atms">Searching for ATMs</string>
