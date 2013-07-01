@@ -145,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:weightSum="3.75" >
+                        android:weightSum="3.25" >
 
                         <TextView
                             android:id="@+id/amount_title"
@@ -158,7 +158,7 @@
                             style="@style/field_copy_big"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight=".75"
+                            android:layout_weight=".25"
                             android:gravity="right"
                             android:paddingRight="3dp"
                             android:text="@string/bank_dollar_sign"
@@ -193,13 +193,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical" 
-                        android:weightSum="3.75" >
+                        android:weightSum="3.25" >
 
                         <TextView
                             android:id="@+id/date_title"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.75"
+                            android:layout_weight="1.25"
                             android:text="@string/schedule_pay_date" />
 
                         <RelativeLayout
@@ -223,6 +223,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_toLeftOf="@+id/date_icon"
                                 android:layout_marginRight="@dimen/between_related_elements_padding"
+                                android:singleLine="true"
                                 android:background="@drawable/common_edit_text_grey_line" />
                             
                             
@@ -264,7 +265,8 @@
                         android:inputType="textWebEditText"
                         android:maxLength="40"
                         android:scrollHorizontally="false"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textCursorDrawable="@null" />
 
                     <TextView
                         android:id="@+id/memo_error"

@@ -4,13 +4,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 	android:padding="3dp"
-    android:background="@color/white">
+    android:background="@drawable/common_dropdown_item_background">
 	<TextView 
 	    android:id="@+id/state"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:gravity="left"
-	    android:background="@color/white"
 	    android:textColor="@color/field_copy"
 	    android:textSize="18sp" />
 </LinearLayout>
