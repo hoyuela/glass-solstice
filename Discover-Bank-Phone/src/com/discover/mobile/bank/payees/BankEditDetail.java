@@ -148,9 +148,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 	public void enableEditing(final boolean value) {
 		editableField.setEnabled(value);
 		// Show grey underline when field is editable
-		middleLabel.setBackground(value ? 
-				getResources().getDrawable(R.drawable.common_edit_text_grey_line) : null);
-
+		middleLabel.setBackgroundResource(value ? R.drawable.common_edit_text_grey_line : 0);
 	}
 	
 	/**

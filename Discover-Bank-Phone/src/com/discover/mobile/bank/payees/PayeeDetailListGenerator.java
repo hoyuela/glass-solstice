@@ -177,9 +177,14 @@ final public class PayeeDetailListGenerator  {
 			
 		item.getTopLabel().setText(R.string.bank_payee_state);
 		item.setText(state);
-		item.getEditableField().setEnabled(false);
+		item.enableEditing(false);
 		item.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT);
-		item.getMiddleLabel().setBackground(context.getResources().getDrawable(R.drawable.common_dropdown));
+		item.getEditableField().setVisibility(View.GONE);
+		
+		// Update the Spinner appearance to match 13.6 elements
+		item.getMiddleLabel().setBackgroundResource(R.drawable.common_dropdown);
+		
+		// Place the state spinner on a single line since "state" is only 2 letters long
 		item.makeSingleLine();
 		return item;
 	}
