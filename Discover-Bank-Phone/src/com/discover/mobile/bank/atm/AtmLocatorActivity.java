@@ -5,6 +5,7 @@ package com.discover.mobile.bank.atm;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -103,6 +104,17 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 			}
 			DiscoverModalManager.setAlertShowing(true);
 		}
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		AtmTapAndHoldCoachOverlay coachOverlay = mapFragment.getCoachOverlay();
+		
+		if(coachOverlay != null && coachOverlay.isShowing()) {
+			mapFragment.getCoachOverlay().dismissCoach();
+		}
+		
+		return super.dispatchTouchEvent(ev);
 	}
 	
 	@Override

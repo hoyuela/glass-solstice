@@ -4,6 +4,7 @@
 package com.discover.mobile.bank.atm;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
@@ -13,6 +14,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -43,7 +46,6 @@ import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
-import com.discover.mobile.bank.ui.FrozenUI;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -67,8 +69,9 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 public abstract class AtmMapFragment extends BaseFragment 
 implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener{
 
+	private GestureListener gestureListener;
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
 	 * to get the users location.  Defaults to NOT_ENABLED.
@@ -157,7 +160,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 	private ImageButton help;
 
 	/** Overlay for the Tap and Hold Coach */
-	protected AtmTapAndHoldCoachOverlay overlay;
+	private AtmTapAndHoldCoachOverlay overlay;
 
 	/**Location of the user*/
 	private Location location;
@@ -204,7 +207,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(getActivity());
 		}
 	}
-
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(getLayout(), null);
@@ -264,8 +267,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		CommonUtils.fixBackgroundRepeat(navigationPanel);
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
-		overlay.setDelegate(this);
-
+		gestureListener = new GestureListener(DiscoverActivityManager.getActiveActivity().getBaseContext(), this);
+		
 		return view;
 	}
 
@@ -554,7 +557,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		mapButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(!isOnMap && overlay.getVisibility() != View.VISIBLE) {
+				if(!isOnMap) {
 					toggleButton();
 				}
 			}
@@ -563,7 +566,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		listButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				if(isOnMap  && overlay.getVisibility() != View.VISIBLE) {
+				if(isOnMap) {
 					toggleButton();
 				}
 			}
@@ -1177,17 +1180,22 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 
 	@Override
 	public boolean onTouch(final View sender, final MotionEvent event) {
-		/** Check if User clicked on Terms link in footer */
-		if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
-			final int four = 4;
-			final int five = 5;
+		if (!overlay.isShowing()) {
+			/** Check if User clicked on Terms link in footer */
+			if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
+				final int four = 4;
+				final int five = 5;
 
-			final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * four / five;
+				final float locationOfLink = googleTerms.getLeft() + googleTerms.getMeasuredWidth() * four / five;
 
-			if (event.getRawX() > locationOfLink) {
-				showTerms();
-			}
+				if (event.getRawX() > locationOfLink) {
+					showTerms();
+				}
+			}	
+		} else {
+			overlay.dismissCoach();
 		}
+		
 		return false;
 	}
 
@@ -1246,26 +1254,28 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 		}
 		return isVisible;
 	}
-
-	/**
-	 * Enables the Atm Map Fragment UI 
-	 */
-	@Override
-	public void enableUI() {
-		listButton.setEnabled(true);
-		mapButton.setEnabled(true);
-		searchBar.enableSearchBar();
-		help.setEnabled(true);
+	
+	public AtmTapAndHoldCoachOverlay getCoachOverlay() {
+		return this.overlay;
 	}
-
-	/*
-	 * Disables the Atm Map Fragment UI
-	 */
-	@Override
-	public void disableUI() {
-		listButton.setEnabled(false);
-		mapButton.setEnabled(false);
-		searchBar.disableSearchBar();
-		help.setEnabled(false);
+	
+	public void setCoachOverlay(final AtmTapAndHoldCoachOverlay coach) {
+		this.overlay = coach;
+	}
+	
+	private final class GestureListener extends SimpleOnGestureListener {
+		GestureDetector detector;
+		OnTouchListener touchListener;
+		
+		public GestureListener(final Context context, final OnTouchListener touchListener) {
+			this.detector = new GestureDetector(context, this);
+			this.touchListener = touchListener;
+		}
+		
+		@Override
+		public boolean onDown(final MotionEvent e) {
+			touchListener.onTouch(null, e);
+			return true;
+		}
 	}
 }

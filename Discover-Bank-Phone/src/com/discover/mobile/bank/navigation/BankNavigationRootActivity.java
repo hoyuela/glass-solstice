@@ -2,6 +2,7 @@ package com.discover.mobile.bank.navigation;
 
 import java.util.Calendar;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,15 +17,21 @@ import android.widget.ImageView;
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.atm.AtmMapFragment;
+import com.discover.mobile.bank.atm.AtmTapAndHoldCoachOverlay;
+import com.discover.mobile.bank.atm.SearchNearbyFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -62,6 +69,15 @@ implements OnPaymentCanceledListener {
 		updateMenuOnClose();
 
 		compareLastTouchTimeAndUpdateSession();
+		
+		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
+			if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
+				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
+			} else {
+				DiscoverModalManager.getActiveModal().show();
+			}
+			DiscoverModalManager.setAlertShowing(true);
+		}
 	}
 
 	@Override
@@ -153,7 +169,17 @@ implements OnPaymentCanceledListener {
 		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
 		outState.putString(BANK_SESSION_KEY, SessionTokenManager.getToken());
 	}
-
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
+			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.setAlertShowing(true);
+		}
+	}
+	
 	/**
 	 * Used to handle user interaction across the application.
 	 * 
@@ -167,6 +193,14 @@ implements OnPaymentCanceledListener {
 
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			compareLastTouchTimeAndUpdateSession();
+		}
+		
+		if (this.getCurrentContentFragment() instanceof AtmMapFragment) {
+			AtmTapAndHoldCoachOverlay coachOverlay = ((AtmMapFragment)this.getCurrentContentFragment()).getCoachOverlay();
+			
+			if(coachOverlay != null && coachOverlay.isShowing()) {
+				coachOverlay.dismissCoach();
+			}
 		}
 
 		// Don't consume event.
@@ -454,9 +488,18 @@ implements OnPaymentCanceledListener {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {		
-		if(!isFragmentLoadingMore()){
-			super.startProgressDialog(isProgressDialogCancelable);
+	public void startProgressDialog(boolean isProgressDialogCancelable) {	
+		if (!(this.getCurrentContentFragment() instanceof AtmMapFragment)) {
+			if(!isFragmentLoadingMore()){
+				super.startProgressDialog(isProgressDialogCancelable);
+			}	
+		} else {
+			if (!DiscoverModalManager.hasActiveModal()) {
+				DiscoverModalManager.setActiveModal(new AtmSearchingForAtmsModal(getContext(), false, null));
+				DiscoverModalManager.setProgressDialogCancelable(false);
+				DiscoverModalManager.setAlertShowing(true);
+				DiscoverModalManager.getActiveModal().show();	
+			}
 		}
 	}
 	

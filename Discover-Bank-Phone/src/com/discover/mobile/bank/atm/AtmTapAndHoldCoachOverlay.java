@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLayoutChangeListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -45,9 +46,6 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 	
 	/** Holds a flag to whether or not the view is shown. */
 	private boolean isShowing = false;
-	
-	/** Reference to the UI to be frozen */
-	private FrozenUI delegate;
 	
 	/* Persistent storage keys for the tap and hold feature to keep track of the last time it was used/coach was shown */
 	private static final String PREFS_FILE = "UpdatePreferences";
@@ -142,32 +140,18 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		this.isShowing = isShowing;
 	}
 	
-	/**
-	 * Sets the delegate and disables the delegates UI
-	 * 
-	 * @param delegate
-	 */
-	public void setDelegate(FrozenUI delegate) {
-		this.delegate = delegate;
-	}
-	
-	/**
-	 * Clears the delegate
-	 */
-	public void clearDelegate() {
-		this.delegate = null;
-	}
-	
 	public void showCoach() {
 		this.setVisibility(View.VISIBLE);
 		this.startAnimation(this.createFadeInAnimation());
 		
 		this.runLifeCycle();
 		this.setShowing(true);
-		
-		if (this.delegate != null) {
-			this.delegate.disableUI();	
-		}
+	}
+	
+	public void dismissCoach() {
+		this.setVisibility(View.GONE);
+		this.isShowing = false;
+		AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
 	}
 	
 	/* ------------------------------ Private Helper Methods ------------------------------ */
@@ -181,8 +165,8 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		if (shouldShowCoachOverlay()) {
 			view = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.bank_atm_redo_search_coach, null);
 			
-			this.addClickListenerToXButton();
 			this.addView(view);	
+			this.runLifeCycle();
 		}
 	}
 	
@@ -196,7 +180,7 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		fadeIn.setDuration(ANIMATIONDURATION);
 		
 		return fadeIn;
-	}
+	} 
 	
 	/**
 	 * Performs the fade out animation for AtmTapAndHoldCoachOverlay
@@ -209,7 +193,6 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				setVisibility(View.GONE);
-				delegate.enableUI();
 				AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
 			}
 
@@ -222,20 +205,6 @@ public class AtmTapAndHoldCoachOverlay extends RelativeLayout {
 		
 		this.startAnimation(fadeOut);
 		this.setShowing(false);
-	}
-	
-	/**
-	 * Adds the click listener to the X button to make the AtmTapAndHoldCoachOverlay disappear.
-	 */
-	private void addClickListenerToXButton() {
-		ImageButton closeButton = (ImageButton) view.findViewById(R.id.atm_tap_new_search_exit_button);
-		closeButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				causeFadeOutAnimation();
-			}
-		});
 	}
 	
 	/*
