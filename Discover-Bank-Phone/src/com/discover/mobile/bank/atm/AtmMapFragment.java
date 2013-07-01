@@ -537,9 +537,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			newLocation.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
-			mapWrapper.setUsersCurrentLocation(newLocation, R.drawable.atm_starting_point_pin, getActivity());
-
-			zoomToLocation(newLocation);
+			
+			setUserLocation(newLocation);
 
 			getAtms(newLocation);
 			hasLoadedAtms = true;
