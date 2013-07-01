@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ 
+    <!-- Number of pages that the view pager will contain-->
+    <integer name="bank_whats_new_pages">2</integer>
+    
+    <!-- Action bar title of the whats new activity -->
+    <string name="bank_whats_new_action_bar_title">What\'s New</string>
+    
+    <!-- List of drawables that will be displayed in the view pager -->
+    <array name="bank_whats_new_drawables">
+        <item>@drawable/whats_new_pincluster</item>
+        <item>@drawable/whats_new_singletapsearch</item>
+    </array>
+    
+</resources>

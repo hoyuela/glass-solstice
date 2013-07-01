@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <style name="bank_whats_new_title">
+        <item name="android:textColor">@color/title</item>
+        <item name="android:textSize">@dimen/title_mid</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="bank_whats_new_content">
+        <item name="android:textColor">@color/sub_copy</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+    </style>
+    
+    <style name="bank_whats_new_action_bar">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/body_copy_min</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+</resources>

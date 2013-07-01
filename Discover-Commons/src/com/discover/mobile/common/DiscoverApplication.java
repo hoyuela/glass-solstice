@@ -7,13 +7,13 @@ import java.util.Map;
 import android.app.Application;
 
 public class DiscoverApplication extends Application {
-	
+
 	/**The cache object that maintains the most recent user's choice to use current location*/
 	private static LocationPreferenceCache locationPreference = new LocationPreferenceCache();
-	
+
 	Map<String, Object> globalData=new HashMap<String, Object>();
 	List<String>cookie;
-	
+
 	static {
 		System.setProperty("guice.custom.loader", "false");
 	}
@@ -21,8 +21,11 @@ public class DiscoverApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		//Update the user preferences if it is needed.
+		Globals.updateVersionPrefsIfNeeded(this);
 	}
-	
+
 	/**
 	 * 
 	 * @return a reference to the current locationPreference object for this instance of the application. Used for
@@ -32,7 +35,7 @@ public class DiscoverApplication extends Application {
 		if(locationPreference == null) {
 			locationPreference = new LocationPreferenceCache();
 		}
-		
+
 		return locationPreference;
 	}
 
@@ -45,7 +48,7 @@ public class DiscoverApplication extends Application {
 	{
 		globalData.put(className, data);
 	}
-    
+
 	/**
 	 * Thsi method return the data stored in hashmap
 	 * @return data Actual data
@@ -53,9 +56,9 @@ public class DiscoverApplication extends Application {
 	public Map<String,Object> getData()
 	{
 		return globalData;
-		
+
 	}
-	
+
 	/**
 	 * This function clear whole cache.
 	 */
@@ -66,7 +69,7 @@ public class DiscoverApplication extends Application {
 			globalData.clear();
 		}
 	}
-	
+
 	/**
 	 * This will delete cache object by sending key
 	 * @param key
@@ -78,12 +81,12 @@ public class DiscoverApplication extends Application {
 			globalData.remove(key);
 		}
 	}
-	
+
 	public void setCookie(final List<String> cookie)
 	{
 		this.cookie=cookie;
 	}
-	
+
 	public List<String>getCookie()
 	{
 		return cookie;
