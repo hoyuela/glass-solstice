@@ -1,10 +1,11 @@
 package com.discover.mobile.bank;
 
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -34,8 +35,13 @@ public final class DiscoverIntentListener extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		
 		navigateTo(getIntent().getData());
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
 	}
 
 	/**
@@ -94,41 +100,43 @@ public final class DiscoverIntentListener extends BaseActivity {
 
 			final String url = data.toString().replace(BROWSER_SCHEME, HTTPS);
 
-			SimpleContentModal modal = null;
-
 			// Create a one button modal to notify the user that they are
 			// leaving the application
-			modal = new SimpleContentModal(this, 
-											R.string.bank_open_browser_title, 
-											R.string.bank_open_browser_text, 
-											R.string.continue_text);
+			SimpleContentModal modal = new SimpleContentModal(this, R.string.bank_open_browser_title, R.string.bank_open_browser_text, 
+											   R.string.continue_text);
 
 			/** Needs to be final in order to dismiss in listener */
 			final SimpleContentModal modalParam = modal;
+			
 			// Set the dismiss listener that will navigate the user to the
 			// browser
-			modal.getBottom().getButton().setOnClickListener(new OnClickListener() {
+			modal.getButton().setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(final View v) {
 					modalParam.dismiss();
 					final Intent i = new Intent(Intent.ACTION_VIEW);
 					i.setData(Uri.parse(url));
 					DiscoverActivityManager.getActiveActivity().startActivity(i);
-
-				}
-			});
-
-			modal.setOnDismissListener(new OnDismissListener() {
-				@Override
-				public void onDismiss(final DialogInterface arg0) {
 					finish();
 				}
 			});
+			
+			modal.setOnKeyListener(new OnKeyListener()
+		    {                           
+		        public boolean onKey(DialogInterface v, int keyCode, KeyEvent event) {
+		            if(keyCode == KeyEvent.KEYCODE_BACK)
+		            {
+		            	modalParam.dismiss();
+		            	finish();
+		            }
+		            return true;
+		        }
+		    });
 
 			/** Hide Need Help footer */
 			modal.hideNeedHelpFooter();
 
-			showCustomAlert(modal);
+			showCustomAlert(modalParam);
 		}
 	}
 
