@@ -251,7 +251,7 @@ public abstract class NetworkServiceCall<R> {
 	}
 
 	public void cancel() {
-		if (params.isCancellable()) {
+		if (params.isCancellable() && conn != null) {
 			this.wasCancelled = true;
 			conn.disconnect();	
 		}

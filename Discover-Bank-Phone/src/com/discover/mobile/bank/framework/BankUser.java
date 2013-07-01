@@ -3,6 +3,7 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -17,6 +18,7 @@ import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
+import com.discover.mobile.bank.ui.table.LoadMoreList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
 
@@ -415,6 +417,12 @@ public final class BankUser extends CacheManager implements Serializable {
 		this.accountOutDated = accountOutDated;
 	}
 
+	private final HashMap<Enum<?>, LoadMoreList> cachedActivityMap = new HashMap<Enum<?>, LoadMoreList>();
+	
+	public HashMap<Enum<?>, LoadMoreList> getCachedActivityMap() {
+		return cachedActivityMap;
+	}
+	
 	/**
 	 * @return the externalTransferAccounts
 	 */

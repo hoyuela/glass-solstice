@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.ui.widgets;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,32 @@ public class StatusMessageView extends RelativeLayout {
 		final TextView statusText = (TextView)this.findViewById(R.id.status_text);
 		if(statusText != null) {
 			statusText.setText(text);
+			setTextBold(true);
+		}
+	}
+	
+	public void setTextBold(final boolean shouldTextBold) {
+		final TextView statusText = (TextView)this.findViewById(R.id.status_text); 
+		if(statusText != null) {
+			if(shouldTextBold) {
+				statusText.setTypeface(Typeface.DEFAULT_BOLD);
+			}else {
+				statusText.setTypeface(Typeface.DEFAULT);
+			}
+		}
+	}
+	
+	public void hideErrorIcon() {
+		final View image = findViewById(R.id.status_image);
+		if(image != null) {
+			image.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void showErrorIcon() {
+		final View image = findViewById(R.id.status_image);
+		if(image != null) {
+			image.setVisibility(View.VISIBLE);
 		}
 	}
 	
