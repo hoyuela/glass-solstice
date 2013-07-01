@@ -87,7 +87,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/error_text_view"
-                    android:visibility="visible" >
+                    android:visibility="visible"
+                    android:background="@color/white"
+                    android:layout_marginRight="@dimen/element_side_padding"
+                    android:layout_marginLeft="@dimen/element_side_padding" >
 
                     <TextView
                         android:id="@+id/user_id_label"
