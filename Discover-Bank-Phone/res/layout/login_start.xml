@@ -140,7 +140,8 @@
                         android:hint="@string/empty"
                         android:inputType="textPassword"
                         android:maxLength="32"
-                        android:textCursorDrawable="@null" />
+                        android:textCursorDrawable="@null"
+                        android:imeOptions="actionGo" />
 					
 					<!-- toggle switch label and compound button -->
 					<RelativeLayout
