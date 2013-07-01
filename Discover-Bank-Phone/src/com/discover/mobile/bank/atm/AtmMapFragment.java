@@ -41,11 +41,13 @@ import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.help.HelpMenuListFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.navigation.CustomProgressDialog;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.atm.AddressToLocationDetail;
 import com.discover.mobile.bank.services.atm.AddressToLocationResultDetail;
 import com.discover.mobile.bank.services.atm.AtmResults;
 import com.discover.mobile.bank.services.atm.AtmServiceHelper;
+import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -69,9 +71,7 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 public abstract class AtmMapFragment extends BaseFragment 
 implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener{
-
-	private GestureListener gestureListener;
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDialog {
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
 	 * to get the users location.  Defaults to NOT_ENABLED.
@@ -267,7 +267,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener{
 		CommonUtils.fixBackgroundRepeat(navigationPanel);
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
-		gestureListener = new GestureListener(DiscoverActivityManager.getActiveActivity().getBaseContext(), this);
 		
 		return view;
 	}
@@ -1263,19 +1262,14 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener{
 		this.overlay = coach;
 	}
 	
-	private final class GestureListener extends SimpleOnGestureListener {
-		GestureDetector detector;
-		OnTouchListener touchListener;
-		
-		public GestureListener(final Context context, final OnTouchListener touchListener) {
-			this.detector = new GestureDetector(context, this);
-			this.touchListener = touchListener;
+	@Override
+	public void startProgressDialog(final boolean isProgressDialogCancelable, final Context context) {
+		if (!DiscoverModalManager.hasActiveModal()) {
+			DiscoverModalManager.setActiveModal(new AtmSearchingForAtmsModal(context, false, null));
+			DiscoverModalManager.setProgressDialogCancelable(false);
+			DiscoverModalManager.setAlertShowing(true);
+			DiscoverModalManager.getActiveModal().show();	
 		}
-		
-		@Override
-		public boolean onDown(final MotionEvent e) {
-			touchListener.onTouch(null, e);
-			return true;
-		}
+
 	}
 }

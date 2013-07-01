@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
@@ -69,15 +70,6 @@ implements OnPaymentCanceledListener {
 		updateMenuOnClose();
 
 		compareLastTouchTimeAndUpdateSession();
-		
-		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
-			if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
-				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
-			} else {
-				DiscoverModalManager.getActiveModal().show();
-			}
-			DiscoverModalManager.setAlertShowing(true);
-		}
 	}
 
 	@Override
@@ -195,12 +187,10 @@ implements OnPaymentCanceledListener {
 			compareLastTouchTimeAndUpdateSession();
 		}
 		
-		if (this.getCurrentContentFragment() instanceof AtmMapFragment) {
-			AtmTapAndHoldCoachOverlay coachOverlay = ((AtmMapFragment)this.getCurrentContentFragment()).getCoachOverlay();
+		if (this.getCurrentContentFragment() instanceof OnTouchListener) {
+			OnTouchListener listener = (OnTouchListener)this.getCurrentContentFragment();
 			
-			if(coachOverlay != null && coachOverlay.isShowing()) {
-				coachOverlay.dismissCoach();
-			}
+			listener.onTouch(this.getCurrentContentFragment().getView(), ev);
 		}
 
 		// Don't consume event.
@@ -488,18 +478,14 @@ implements OnPaymentCanceledListener {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {	
-		if (!(this.getCurrentContentFragment() instanceof AtmMapFragment)) {
+	public void startProgressDialog(boolean isProgressDialogCancelable) {
+		if (!(this.getCurrentContentFragment() instanceof CustomProgressDialog)) {
 			if(!isFragmentLoadingMore()){
 				super.startProgressDialog(isProgressDialogCancelable);
-			}	
-		} else {
-			if (!DiscoverModalManager.hasActiveModal()) {
-				DiscoverModalManager.setActiveModal(new AtmSearchingForAtmsModal(getContext(), false, null));
-				DiscoverModalManager.setProgressDialogCancelable(false);
-				DiscoverModalManager.setAlertShowing(true);
-				DiscoverModalManager.getActiveModal().show();	
 			}
+		} else {
+			((CustomProgressDialog)this.getCurrentContentFragment()).startProgressDialog(isProgressDialogCancelable, 
+																						 getContext());
 		}
 	}
 	
