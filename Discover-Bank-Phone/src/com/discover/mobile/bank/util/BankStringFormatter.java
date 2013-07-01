@@ -30,8 +30,9 @@ public final class BankStringFormatter {
 	/**String representing a dollar sign*/
 	public static final String DOLLAR = "$";
 	
-	private static final String DATE_YYYY_MM_DD = "yyyy-MM-dd";
-	private static final String DATE_MM_DD_YYYY = "MM/dd/yyyy";
+	public static final String DATE_YYYY_MM_DD = "yyyy-MM-dd";
+	public static final String DATE_MM_DD_YYYY = "MM/dd/yyyy";
+	public static final String DATE_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
 	
 	/**
 	 * Convert the date from the format dd/MM/yyyy to dd/MM/yy
@@ -217,6 +218,39 @@ public final class BankStringFormatter {
 		return selectedDate;
 	}
 	
+	/**
+	 * Method used to convert a date stored in a string from format yyyy-MM-dd'T'HH:mm:ss.SSSZ to mm/dd/yyyy.
+	 * 
+	 * @param formattedDate
+	 *            a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ
+	 * @return a String in the format mm/dd/yyyy in the eastern time zone
+	 */
+	public static String convertFromISO8601Date(final String formattedDate) {
+		String selectedDate = "";
+
+		if (!Strings.isNullOrEmpty(formattedDate)) {
+			final String easternTime = "America/New_York";
+			selectedDate = formattedDate;
+
+			final SimpleDateFormat chosenDateFormat = new SimpleDateFormat(DATE_ISO8601, Locale.getDefault());
+			chosenDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
+
+			final SimpleDateFormat submissionDateFormat;
+
+			submissionDateFormat = new SimpleDateFormat(DATE_MM_DD_YYYY, Locale.getDefault());
+			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
+
+			try {
+				final Date unformattedDate = chosenDateFormat.parse(selectedDate);
+				selectedDate = submissionDateFormat.format(unformattedDate);
+			} catch (final ParseException e) {
+				Log.e(TAG, "Could not format date : " + e);
+			}
+
+		}
+
+		return selectedDate;
+	}
 	
 	/**
 	 * Formats date as MM/dd/YYYY.

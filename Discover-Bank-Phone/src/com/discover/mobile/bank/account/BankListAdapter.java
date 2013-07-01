@@ -111,15 +111,32 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 			holder.amount.setText(NumberFormat.getCurrencyInstance(Locale.US).format(amount));
 		}
 
-		if (((AccountActivityHeader) fragment.getHeader()).isPosted() && amount > 0) {
-			holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
-		} 
+		/** Set amount color */
+		if (account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+			if (((AccountActivityHeader) fragment.getHeader()).isPosted()) {
+				holder.amount.setTextColor(res.getColor(R.color.black));
+			} else {
+				holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+			}
+		} else {
+			if (((AccountActivityHeader) fragment.getHeader()).isPosted() && amount > 0) {
+				holder.amount.setTextColor(res.getColor(R.color.green_acceptance));
+			}
+		}
 
-		view.setOnClickListener(getClickListener(holder.pos));
-		view.setBackgroundResource(holder.pos%2 == 0 ? 
-				R.drawable.common_table_list_item_selector: 
-					R.drawable.common_table_list_item_gray_selector);
-		view.setClickable(true);
+		/** Disable the view from being clickable if it is a loan */
+		if (!account.type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
+			view.setOnClickListener(getClickListener(holder.pos));
+
+			view.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_selector
+					: R.drawable.common_table_list_item_gray_selector);
+
+			/** Loan transactions should not be clickable */
+			view.setClickable(true);
+		} else {
+			view.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_white : R.drawable.common_table_list_item_gray);
+
+		}
 		return view;
 	}
 

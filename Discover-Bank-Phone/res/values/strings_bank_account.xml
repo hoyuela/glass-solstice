@@ -22,8 +22,13 @@
     <string name="recent_activity_amount">Amount</string>
     <string name="activity_online_checking">Online Checking:</string>
     <string name="activity_available_balance">Available Balance:</string>
+    <string name="activity_original_balance">Original Balance:</string>
     <string name="activity_current_balance">Current Balance:</string>
+    <string name="activity_apy">Current APY:</string>
     <string name="activity_interest_rate">Interest Rate:</string>
+    <string name="activity_interest_last_statement">Interest Last Statement:</string>
+    <string name="activity_ytd">Interest YTD:</string>
+    <string name="activity_maturity_date">Maturity Date:</string>
     <string name="activity_no_scheduled">You have no scheduled transactions.</string>
     <string name="activity_no_posted">You have no account activity.</string>
     <string name="activity_table_name">Transactions</string>
@@ -32,6 +37,9 @@
     <string name="table_release_to_update">Release to update&#8230;</string>
     <string name="account_activity_scheduled_transfer_deleted">Scheduled %s Deleted</string>
     <string name="transfer">Transfer</string>
+    <string name="activity_pmt_due_date">Payment Due Date:</string>
+    <string name="activity_total_due">Total Amount Due:</string>
+    <string name="activity_last_pmt">Last Payment (Received):</string>
     
     <string name="delete_next_transfer_in_series_content_description">Delete the next transfer in the series</string>
     <string name="delete_entire_transfer_series_content_description">Delete the entire series of transfers</string>
