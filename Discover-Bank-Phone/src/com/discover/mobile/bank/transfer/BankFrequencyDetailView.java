@@ -174,7 +174,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			transactionAmount.setText(savedTransactionLimit);
 			dollarAmount.setText(savedAmount);
 			disableCancelled();
-			setRadioButtonState(index);
+			enableCell(index);
 			
 			/** Reset Calendar Event Listener */
 			final Fragment fragment = ((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager()
