@@ -8,9 +8,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
-import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
-import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 /**
  * This modal is used when a user is pressing the back button during a workflow that has a lot of user inputted data.
@@ -119,20 +116,18 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		
 		if(currentActivity != null) {
-			final SimpleContentModal goBackModal = new SimpleContentModal(currentActivity);
-			goBackModal.setButtonText(buttonText);
 			
-			goBackModal.hideNeedHelpFooter();
 			String title = currentActivity.getResources().getString(titleText);
+			String body = currentActivity.getResources().getString(bodyText);
+			
 			if(!title.endsWith(questionMark)) {
 				title += questionMark;
 			}
 			
-			goBackModal.setTitle(title);
-			goBackModal.setContent(bodyText);
+			final SimpleContentModal cancelModal = new SimpleContentModal(currentActivity, title, 
+																			body, buttonText);
 			
-			
-			goBackModal.getButton().setOnClickListener(new OnClickListener() {
+			cancelModal.getButton().setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(final View v) {
@@ -140,11 +135,12 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 						userClickAction.onClick(v);
 					}
 					
-					goBackModal.dismiss();
+					cancelModal.dismiss();
 					performBackstackPopping();
 				}
 			});
-			baseFragment.showCustomAlertDialog(goBackModal);
+			
+			baseFragment.showCustomAlertDialog(cancelModal);
 		}
 	}
 	

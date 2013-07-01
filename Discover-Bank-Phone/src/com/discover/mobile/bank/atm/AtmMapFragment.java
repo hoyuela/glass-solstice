@@ -439,25 +439,26 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, FrozenUI {
 			mapWrapper.setCurrentLocation(location);
 			setUserLocation(mapWrapper.getCurrentLocation());
 		}
-
-		mapWrapper.getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
-			@Override
-			public void onMapLongClick(final LatLng locationOfLongClick) {
-				//Says the feature was used today
-				AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
-
-				//Creates a new location based on the long pressed location
-				final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
-				newLocation.setLatitude(locationOfLongClick.latitude);
-				newLocation.setLongitude(locationOfLongClick.longitude);
-
-				//Clears the map than prepares for and performs for the new service call
-				mapWrapper.clear();
-				hasLoadedAtms = false;
-				isLoading = false;
-				setUserLocation(newLocation);
-			}
-		});
+		if(mapWrapper.getMap() != null){
+			mapWrapper.getMap().setOnMapLongClickListener(new OnMapLongClickListener() {
+				@Override
+				public void onMapLongClick(final LatLng locationOfLongClick) {
+					//Says the feature was used today
+					AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
+	
+					//Creates a new location based on the long pressed location
+					final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
+					newLocation.setLatitude(locationOfLongClick.latitude);
+					newLocation.setLongitude(locationOfLongClick.longitude);
+	
+					//Clears the map than prepares for and performs for the new service call
+					mapWrapper.clear();
+					hasLoadedAtms = false;
+					isLoading = false;
+					setUserLocation(newLocation);
+				}
+			});
+		}
 	}
 
 	/**

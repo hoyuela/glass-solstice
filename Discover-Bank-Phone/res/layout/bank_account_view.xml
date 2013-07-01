@@ -45,5 +45,5 @@
         android:layout_height="wrap_content"
        	android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/gray_right_arrow"/>
+        android:background="@drawable/blue_arrow_right"/>
 </RelativeLayout>

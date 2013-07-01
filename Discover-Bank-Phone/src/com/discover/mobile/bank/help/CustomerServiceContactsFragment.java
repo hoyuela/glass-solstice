@@ -107,10 +107,16 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	public static void loadListElementsToLayoutFromList(final LinearLayout layout, 
 														final List<TwoElementListItem> elementList) {
-		if(layout != null){
-			for(final TwoElementListItem element : elementList){
-				layout.addView(element);
+		if(layout == null) {
+			return;
+		}
+		
+		for (int i=0; i<elementList.size(); ++i) {
+			if (i == 0) {
+				elementList.get(i).setDividerLineVisibility(false);
 			}
+			
+			layout.addView(elementList.get(i));
 		}
 	}
 
@@ -135,8 +141,8 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideBankElements(final View mainView) {
 		//Hide the "Discover Card" titles.
-		CommonUtils.setViewInvisible(mainView.findViewById(R.id.card_phone_title_label));
-		CommonUtils.setViewInvisible(mainView.findViewById(R.id.card_mail_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_phone_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
 
 		//Hide bank mailing addresses and its title.
 		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_mail_title_label));
@@ -155,8 +161,8 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 */
 	private void hideCardElements(final View mainView) {
 		//Hide the "Discover Bank" titles.
-		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_mail_title_label));
-		CommonUtils.setViewInvisible(mainView.findViewById(R.id.bank_phone_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_mail_title_label));
+		CommonUtils.setViewGone(mainView.findViewById(R.id.bank_phone_title_label));
 
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_title_label));
 		CommonUtils.setViewGone(mainView.findViewById(R.id.card_mail_address_list));

@@ -167,7 +167,7 @@
 
         <Button
             android:id="@+id/retake_button"
-            style="@style/white_button"
+            style="@style/common_call_to_action_gray_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/help_button"
@@ -184,13 +184,13 @@
 
         <Button
             android:id="@+id/capture_button"
-            style="@style/call_to_action_theme"
+            style="@style/common_small_call_to_action_theme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/help_button"
-            android:layout_marginBottom="@dimen/between_related_elements_padding"
-            android:layout_marginRight="@dimen/between_related_elements_padding"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/call_to_actions_padding"
             android:drawableLeft="@drawable/chckdep_camera_icon"
             android:drawablePadding="@dimen/groups_of_elements_padding"
             android:paddingLeft="30dp"
