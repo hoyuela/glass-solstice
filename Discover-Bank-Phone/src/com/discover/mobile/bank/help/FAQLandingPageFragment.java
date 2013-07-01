@@ -56,7 +56,7 @@ public class FAQLandingPageFragment extends BaseFragment {
 			final TextView label = (TextView)item.findViewById(android.R.id.text1);
 			label.setText(values[i]);
 			item.setOnClickListener(getListClickListener(item));
-			item.setBackground(null);
+			item.setBackgroundResource(0);
 
 			//Add the constructed list item to the table.
 			faqList.addView(item);
