@@ -338,6 +338,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	/**
 	 * Refresh the pull to reset listener so that it can load more
 	 */
+	@Override
 	public void refreshListener(){
 		if(getActivity() != null) {
 			table.setMode(Mode.PULL_FROM_END);
@@ -345,6 +346,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			table.setShowViewWhileRefreshing(true);
 			table.getLoadingLayoutProxy().
 									setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
+			getLoadMoreFooter().showDone();
 		}
 	}
 	

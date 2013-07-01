@@ -28,4 +28,9 @@ public interface DynamicDataFragment{
 	 * @return isLoadingMore - if the fragment is loading more
 	 */
 	boolean getIsLoadingMore();
+	
+	/**
+	 * Refresh the load more listener
+	 */
+	void refreshListener();
 }

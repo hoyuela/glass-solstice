@@ -315,6 +315,11 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 		getViewPager().setCurrentItem(position);
 	}
 
+	@Override
+	public void refreshListener() {
+		
+	}
+
 	/**
 	 * Get if the fragment is loading more
 	 * @return isLoadingMore - if the fragment is loading more

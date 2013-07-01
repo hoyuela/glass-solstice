@@ -1279,4 +1279,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			DiscoverModalManager.setAlertShowing(true);
 		}
 	}
+	
+
+	@Override
+	public void refreshListener() {
+		
+	}
+
 }

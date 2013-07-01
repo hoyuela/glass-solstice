@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.TransferDeletionType;
@@ -253,10 +254,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		if( isGuiReady() ) {
 			//Check if the screen displaying is a table
-			if(activeActivity instanceof BankNavigationRootActivity && 
-					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
-					final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-					((BaseTable) fragment).refreshListener();
+			final Fragment currentFragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+			if(activeActivity instanceof BankNavigationRootActivity && currentFragment instanceof DynamicDataFragment){
+					((DynamicDataFragment) currentFragment).refreshListener();
 			}
 			
 			//Check if the error is a Strong Auth Challenge
