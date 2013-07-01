@@ -93,8 +93,49 @@
         </activity>
         <activity android:name="com.discover.mobile.card.login.register.ForgotUserIdActivity" android:label="@string/app_name" android:launchMode="standard" android:noHistory="true">
 
+            
+            
             <!-- DEFECT96936 -->
         </activity>
+        
+        <!--    13.4 Changes start -->
+        <activity
+            android:name="com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard" 
+            >
+        </activity>
+          <activity
+            android:name="com.discover.mobile.card.auth.strong.StrongAuthQuestionList"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard" >
+        </activity>
+        
+        <activity
+            android:name="com.discover.mobile.card.privacyterms.PrivacyTermsLanding"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard" >
+        </activity>
+        
+         <activity
+            android:name="com.discover.mobile.card.privacyterms.PrivacyTermsStatement"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard" >
+        </activity>
+        
+        <activity
+            android:name="com.discover.mobile.card.privacyterms.PrivacyTermsofUse"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            android:launchMode="standard" >
+        </activity>
+       
+       
+            <!--    13.4 Changes End -->
         <activity android:name="com.discover.mobile.card.login.register.EnterNewPasswordActivity" android:label="@string/app_name" android:launchMode="standard">
         </activity>
         <activity android:name="com.discover.mobile.bank.help.CustomerServiceContactsActivity" android:label="@string/app_name" android:launchMode="standard">
@@ -177,6 +218,18 @@
                 <data android:scheme="method"/>
             </intent-filter>
         </activity>
+         <!--    13.4 Changes Start -->
+        <activity android:name="com.discover.mobile.card.CardEventListener" android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data android:scheme="cardprivacystatements"/>
+            </intent-filter>
+        </activity>
+        
+        <!--    13.4 Changes End -->
         
          <!--Broadcast Receiver for changing Base URL for bank dynamically  -->
         <receiver android:name="com.discover.mobile.bank.BankUrlChanger" >
