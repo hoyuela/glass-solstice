@@ -159,19 +159,15 @@ public class HomeSummaryFragment extends BaseFragment implements
 		if (null != accountDetails) {
 			if (null != accountDetails.mailingAddress) {
 				if (null != accountDetails.mailingAddress.firstName) {
-					String lowerCaseName = accountDetails.mailingAddress.firstName.toLowerCase();
-					String formatName = lowerCaseName.substring(0, 1).toUpperCase() + lowerCaseName.substring(1);
 					defaultHiText.append(" "
-							+ formatName);
+							+ accountDetails.mailingAddress.firstName);
 				}
 			} else {
 
 				if (null != accountDetails.primaryCardMember) {
 					if (null != accountDetails.primaryCardMember.nameOnCard) {
-						String lowerCaseName = accountDetails.primaryCardMember.nameOnCard.toLowerCase();
-						String formatName = lowerCaseName.substring(0, 1).toUpperCase() + lowerCaseName.substring(1);
 						defaultHiText
-								.append(formatName);
+								.append(accountDetails.primaryCardMember.nameOnCard);
 					}
 				}
 
