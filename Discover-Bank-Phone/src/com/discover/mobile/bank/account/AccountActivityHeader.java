@@ -215,8 +215,8 @@ public class AccountActivityHeader extends RelativeLayout{
 			apyOrPmtLabel.setText(R.string.activity_pmt_due_date);
 			showLineBreak |= showDate(apyOrPmtLabel, apyOrPmtValue, account.nextPaymentDueDate);
 
-			interestRateOrTotalDueLabel.setText(R.string.activity_pmt_due_date);
-			showLineBreak |= showMoney(interestRateOrTotalDueLabel, interestRateOrTotalDueValue, account.totalAmountDue);
+			interestRateOrTotalDueLabel.setText(R.string.activity_total_due);
+			showLineBreak |= showMoney(interestRateOrTotalDueLabel, interestRateOrTotalDueValue, account.currentAmontDue);
 
 			lastIntOrLastPmtLbl.setText(R.string.activity_last_pmt);
 			showLineBreak |= showMoney(lastIntOrLastPmtLbl, lastIntOrLastPmtVal, account.lastPaymentReceivedAmount);

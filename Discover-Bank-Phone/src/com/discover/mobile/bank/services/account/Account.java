@@ -241,11 +241,6 @@ public class Account implements Serializable {
 	public Money lastPaymentReceivedAmount;
 
 	/**
-	 * The total payment amount due for a loan
-	 * */
-	public Money totalAmountDue;
-
-	/**
 	 * The length of the CD in months (eg. "24" for 2 year CD)
 	 * */
 	@JsonProperty("accountTerm")
