@@ -237,6 +237,7 @@
                 <action android:name="com.discover.mobile.CHANGE_URL_BROADCAST_INTENT" />
             </intent-filter>
         </receiver>
+        <activity android:name="com.discover.mobile.bank.whatsnew.WhatsNewActivity"  android:theme="@style/AppTheme.NoTitleBar" />
     </application>
 
 </manifest>
