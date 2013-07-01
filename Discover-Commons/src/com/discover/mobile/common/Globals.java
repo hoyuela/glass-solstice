@@ -2,6 +2,7 @@ package com.discover.mobile.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.discover.mobile.common.utils.EncryptionUtil;
@@ -88,9 +89,13 @@ public final class Globals {
 
 	/**Used to determine whether the user is logged in or not**/
 	private static boolean isLoggedIn;
+	/**
+	 * This bundle is meant to store data temporarily and is cleared when the application exits
+	 */
+	private static Bundle sessionCache;
 
-	private static long oldTouchTimeinMillis;
 	
+	private static long oldTouchTimeinMillis;
 	private static final String KEY = "Key=";
 	private static final String VALUE = " Value=";
 	private static final String IS_LOGGED_IN = "isLoggedIn=";
@@ -178,8 +183,14 @@ public final class Globals {
 		//Load all application level specific preferences
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), 
+		/** Check if current account has been cached, if so set account to the cached value */
+		if (getCache().containsKey(getStoredKeyName(CURRENT_ACCOUNT))) {
+			currentAccount = AccountType.values()[getCache().getInt(getStoredKeyName(CURRENT_ACCOUNT))];
+		} else {
+			currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT),
 																AccountType.CARD_ACCOUNT.ordinal())];
+		}
+
 		loadUserAndModalSelections(settings, context);
 	}
 	
@@ -197,8 +208,7 @@ public final class Globals {
 		//Check whether logged in or not
 		if( !isLoggedIn ) {
 			//Only Load remembered user if not logged in
-			currentUser = (rememberId)?getStoredUser(context):currentUser;
-
+			currentUser = (rememberId) ? getStoredUser(context) : currentUser;
 		}  else {
 			//Load user level settings only if logged in
 			showLoginModal = settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true);
@@ -220,7 +230,7 @@ public final class Globals {
 		//Load all application level specific preferences
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-		currentAccount = account;
+		setCurrentAccount(account);
 		loadUserAndModalSelections(settings, context);
 	}
 	
@@ -284,7 +294,7 @@ public final class Globals {
 			editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 			editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
 			
-			if( rememberId) {
+			if (rememberId) {
 				saveUser(editor, currentUser);
 			} else {
 				clearStoredUser(editor);
@@ -328,6 +338,9 @@ public final class Globals {
 	public static void setCurrentAccount(final AccountType value) {
 		//Validate that an acceptable value is provided
 		currentAccount = value;
+
+		/** Store the current account in a session cache so that it is retained while the application is running */
+		getCache().putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 	}
 
 	/**
@@ -545,6 +558,20 @@ public final class Globals {
 			}
 		}
 		return user;
+	}
+
+	/**
+	 * Method used to get a cache that is retained in memory while the application is running. This cache should be
+	 * cleared when the application is exited.
+	 * 
+	 * @return Reference to a Bundle object
+	 */
+	public static Bundle getCache() {
+		if (sessionCache == null) {
+			sessionCache = new Bundle();
+		}
+
+		return sessionCache;
 	}
 
 }
