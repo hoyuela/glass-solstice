@@ -8,6 +8,7 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TransferDetail implements Serializable, Cloneable {
@@ -146,6 +147,34 @@ public class TransferDetail implements Serializable, Cloneable {
 			if(durationTypes[i].equalsIgnoreCase(durationType)){
 				value = formattedDurations[i];
 			}
+		}
+		
+		return value;
+	}
+	
+	public static String getFormattedConfirmationDuration(final Context context, final String durationType, 
+														  final String durationValue) {
+		final String[] durationTypes = context.getResources().getStringArray(R.array.duration_type);
+		final String[] formattedDurations = context.getResources().
+											getStringArray(R.array.duration_type_confirmation_strings);
+	
+		String value = durationType;
+		
+		final int CONTINUE_UNTIL_CANCELLED_ROW = 0;
+		final int CONTINUE_UNTIL_DATE_ROW = 1;
+		final int CONTINUE_UNTIL_TRANSFERS_ROW = 2;
+		final int CONTINUE_UNTIL_DOLLAR_AMOUNT_ROW = 3;
+		
+		if (value.equals(durationTypes[CONTINUE_UNTIL_CANCELLED_ROW])) {
+			value = formattedDurations[CONTINUE_UNTIL_CANCELLED_ROW];
+		} else if (value.equals(durationTypes[CONTINUE_UNTIL_DATE_ROW])) {
+			value = String.format(formattedDurations[CONTINUE_UNTIL_DATE_ROW], BankStringFormatter.
+																			   getFormattedDate(durationValue));
+		} else if (value.equals(durationTypes[CONTINUE_UNTIL_TRANSFERS_ROW])) {
+			value = String.format(formattedDurations[CONTINUE_UNTIL_TRANSFERS_ROW], durationValue);
+		} else if (value.equals(durationTypes[CONTINUE_UNTIL_DOLLAR_AMOUNT_ROW])) {
+			value = String.format(formattedDurations[CONTINUE_UNTIL_DOLLAR_AMOUNT_ROW], 
+							      BankStringFormatter.convertCentsToDollars(durationValue));
 		}
 		
 		return value;
