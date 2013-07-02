@@ -24,9 +24,8 @@ public class SearchByLocationFragment extends AtmMapFragment{
 		super.setLocationStatus(NOT_USING_LOCATION);
 		
 		if (AtmTapAndHoldCoachOverlay.shouldShowCoachOverlay()) {
-			overlay = (AtmTapAndHoldCoachOverlay)v.findViewById(R.id.tap_and_hold_coach);
-			overlay.setDelegate(this);
-			overlay.showCoach();	
+			this.setCoachOverlay((AtmTapAndHoldCoachOverlay)v.findViewById(R.id.tap_and_hold_coach));
+			this.getCoachOverlay().showCoach();
 		}
 		
 		return v;

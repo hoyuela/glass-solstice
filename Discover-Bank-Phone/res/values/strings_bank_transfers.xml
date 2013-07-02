@@ -49,6 +49,13 @@
         <item>continue_until_a_set_dollar_amount_has_been_transferred</item>
     </string-array>
     
+    <string-array name="duration_type_confirmation_strings">
+        <item>Continue until cancelled</item>
+    	<item>Continue until %s</item>
+    	<item>Continue until %s transactions</item>
+    	<item>Continue until %s</item>    
+	</string-array>
+    
     <string name="external_accounts">External Accounts</string>
     <string name="internal_accounts">Internal Accounts</string>
     

@@ -135,7 +135,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
 			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
 				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
-			} else {
+			} else if(!DiscoverModalManager.getActiveModal().isShowing()){
 				DiscoverModalManager.getActiveModal().show();
 			}
 			DiscoverModalManager.setAlertShowing(true);

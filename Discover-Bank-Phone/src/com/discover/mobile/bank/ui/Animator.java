@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -166,6 +168,32 @@ public final class Animator {
 
 		});
 		return animation;
+	}
+	
+	/**
+	 * Method used to create a rotation animation that can be applied to a view. At the end of the rotation the position
+	 * of the view is maintained.
+	 * 
+	 * @param up
+	 *            If true rotates the view from 0 to 180 degrees otherwise rotates 180 to 0 degrees.
+	 * 
+	 * @return Reference to constructed animation.
+	 */
+	public static Animation createRotationAnimation(final boolean up, final long duration) {
+
+		final RotateAnimation rAnim;
+		if (up) {
+			rAnim = new RotateAnimation(0.0f, 180.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		} else {
+			rAnim = new RotateAnimation(180.0f, 0.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		}
+
+		rAnim.setRepeatCount(0);
+		rAnim.setInterpolator(new LinearInterpolator());
+		rAnim.setDuration(duration);
+		rAnim.setFillAfter(true);
+
+		return rAnim;
 	}
 }
 

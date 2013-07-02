@@ -90,6 +90,7 @@ import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.ui.fragments.BankWebViewFragment;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 import com.discover.mobile.bank.util.BankAtmUtil;
+import com.discover.mobile.bank.whatsnew.WhatsNewActivity;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
@@ -282,14 +283,20 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToHomePage(final boolean shouldNavigateByPopping) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if( activity.getClass() != BankNavigationRootActivity.class ) {
-			final Intent home = new Intent(activity, BankNavigationRootActivity.class);
-			home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			activity.startActivity(home);
+		//If the user is on the what's new activity send them to the navigation root.
+		if(activity instanceof WhatsNewActivity){
+			Globals.setUserHasLoggedIn(activity);
+			launchActivity(activity, BankNavigationRootActivity.class);
 
-			//Close current activity
-			activity.finish();
+			//Check to see if this is the first time the user has logged in.
+		} else if( !(activity instanceof WhatsNewActivity) && Globals.isFirstLoginForUser(activity)){
+			launchActivity(activity, WhatsNewActivity.class);
+
+			//If the navigation root is not showing launch it.
+		} else if( activity.getClass() != BankNavigationRootActivity.class ) {
+			launchActivity(activity, BankNavigationRootActivity.class);
+
+			//If the navigation root is showing do the following.
 		} else {
 			/** Check if current activity is a navigation activity*/
 			if( activity instanceof BankNavigationRootActivity ) {
@@ -308,6 +315,21 @@ public final class BankConductor  extends Conductor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Launch an activity and finish the current activity
+	 * @param activity - activity to use to launch the new activity
+	 * @param activityClass - class of the activity to launch
+	 */
+	private static void launchActivity(final Activity activity, final Class activityClass){
+		final Intent home = new Intent(activity, activityClass);
+		home.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		activity.startActivity(home);
+
+		//Close current activity
+		activity.finish();
 	}
 
 	public static void navigateToHomePage() {
@@ -551,7 +573,7 @@ public final class BankConductor  extends Conductor {
 						accountActivityFragment.showDeletePaymentMessage();
 					}else {
 						final TransferDeletionType type = 
-											(TransferDeletionType)bundle.getSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE);
+								(TransferDeletionType)bundle.getSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE);
 						accountActivityFragment.showTransferDeletedMessage(type);
 					}
 

@@ -17,7 +17,6 @@ import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,6 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -39,7 +39,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
@@ -75,6 +74,7 @@ import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 import com.discover.mobile.common.ui.widgets.NonEmptyEditText;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.EncryptionUtil;
@@ -82,7 +82,6 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 import com.slidingmenu.lib.SlidingMenu;
-import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 
 
 /**
@@ -227,7 +226,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
-				
+		//set the imeoption for the password editext
+		passField.setImeOptions(EditorInfo.IME_ACTION_GO);
 	 }
 	
 	/**
@@ -445,16 +445,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display session expired message
 	 */
 	public void showSessionExpired() {
-		//TODO passcode sgoff0 - show dialog as well
-		final Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+		((WindowManager) getSystemService(Context.WINDOW_SERVICE))
 				.getDefaultDisplay();
-//		Builder builder = new AlertDialog.Builder(getActivity());
-//		builder.setView(view)
-//				.setPositiveButton(buttonText, new MyClickListener(action))
-//				.setOnKeyListener(new MyKeyListener(backAction));
-//
-//		AlertDialog dialog = builder.create();
-//		dialog.show();
 
 		errorTextView.setText(getString(R.string.session_expired));
 		errorTextView.setVisibility(View.VISIBLE);
@@ -634,6 +626,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		cardForgotAndPrivacySection.setVisibility(View.INVISIBLE);
 		//Default to the last path user chose for login Card or Bank
 		setApplicationAccount();
+	
 	}
 
 	/**
@@ -770,7 +763,31 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 
 	}
-
+	/*
+	 * This function goes through the login process.  
+	 * This function is called by the Login Button onClick listeners
+	 * and the OnEditorActionListener of the password edit text field
+	 */
+	private void executeLogin(final View v){
+		CommonUtils.setViewGone(errorTextView);
+		
+		try {
+			final String encryptedUsername = EncryptionUtil.encrypt(idField.getText().toString());
+			DiscoverApplication.getLocationPreference().setMostRecentUser(encryptedUsername);
+		} catch (final Exception e) {
+			Log.e(TAG, "Unable to cache last attempted login");
+		}
+		
+		//Checking if imm is null before trying to hide the keyboard. This was causing a
+		//null pointer exception in landscape.
+		if (imm != null){
+			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		}
+		//Clear the last error that occurred
+		setLastError(0);
+		login();
+	}
+	
 	/**
 	 * setupButtons() Attach onClickListeners to buttons. These buttons will
 	 * execute the specified functionality in onClick when they are clicked...
@@ -781,7 +798,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		 */
 		saveUserIdToggleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
 				toggleSaveUserIdSwitch(buttonView, true);
 			}
 		});
@@ -789,23 +806,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				CommonUtils.setViewGone(errorTextView);
-				
-				try {
-					final String encryptedUsername = EncryptionUtil.encrypt(idField.getText().toString());
-					DiscoverApplication.getLocationPreference().setMostRecentUser(encryptedUsername);
-				} catch (final Exception e) {
-					Log.e(TAG, "Unable to cache last attempted login");
-				}
-				
-				//Checking if imm is null before trying to hide the keyboard. This was causing a
-				//null pointer exception in landscape.
-				if (imm != null){
-					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-				}
-				//Clear the last error that occurred
-				setLastError(0);
-				login();
+				executeLogin(v);
 			}
 		});
 
@@ -921,7 +922,20 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
                         LoginActivity.this);
 			}
 		});
-	
+		
+		//set up the ime option for the 
+		passField.setOnEditorActionListener(new EditText.OnEditorActionListener(){
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				//if the user hits the done or the enter button, start the login process
+				if (actionId == EditorInfo.IME_ACTION_GO) {
+					executeLogin(v);
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	/**
@@ -1633,14 +1647,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 	
-	private void guiValidationSuccess() {
-		for (int i = 0; i < 4; i++) {
-			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_green));
-		}
-		validationIV.setImageResource(R.drawable.tick_green);
-		validationIV.setVisibility(View.VISIBLE);
-	}
-
 	private void guiValidationError() {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_red));
@@ -1708,8 +1714,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	private void clearAllFields() {
-		for (int i = 0; i < fieldTVs.length; i++) {
-			clearField(fieldTVs[i]);
+		for (final EditText fieldTV : fieldTVs) {
+			clearField(fieldTV);
 		}
 		if (isPasscodeLogin()) {
 			fieldTVs[0].requestFocus();
@@ -1795,8 +1801,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	private String getPasscodeString() {
 		String retVal = "";
-		for (int i = 0; i < fieldTVs.length; i++) {
-			retVal += fieldTVs[i].getText();
+		for (final EditText fieldTV : fieldTVs) {
+			retVal += fieldTV.getText();
 		}
 		return retVal;
 	}
@@ -1989,6 +1995,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	@Override
 	public void onBackPressed() {
+		// Clear globals cache
+		Globals.getCache().clear();
+
 		navigateBack();
 	}
 

@@ -188,7 +188,7 @@ implements ErrorHandlerUi, AlertDialogParent, SyncedActivity {
 
 		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
-			DiscoverModalManager.getActiveModal().dismiss();
+			DiscoverModalManager.getActiveModal().hide();
 			DiscoverModalManager.setAlertShowing(true);
 		}else{
 			DiscoverModalManager.clearActiveModal();

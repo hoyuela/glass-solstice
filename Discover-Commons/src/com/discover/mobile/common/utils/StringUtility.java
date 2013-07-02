@@ -18,6 +18,7 @@ public final class StringUtility {
 	public static final String QUESTION_MARK = "?";
 	public static final String SLASH = "/";
 	public static final String PERIOD = ".";
+	public static final String COLON = ":";
 	
 	private StringUtility() {
 		throw new AssertionError();

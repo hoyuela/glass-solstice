@@ -2,6 +2,9 @@ package com.discover.mobile.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.discover.mobile.common.utils.EncryptionUtil;
@@ -40,6 +43,9 @@ public final class Globals {
 	/**String representing the file name*/
 	private static final String FILE_NAME = "com.discover.mobile.prefs";
 
+	/**String representing the file containing version only storage*/
+	private static final String VERSION_FILE_NAME = FILE_NAME + ".version";
+
 	/**Key to whether or not the shared preferences should be shown*/
 	public static final String SHOW_LOGIN_MODAL = "showLoginModal";
 
@@ -55,6 +61,12 @@ public final class Globals {
 	/**Key used to determine the mode the application is in Card or Bank*/
 	public static final String CURRENT_ACCOUNT = "currentAccount";
 
+	/**Key used to determine the version of the application */
+	public static final String VERSION = "version";
+
+	/**Key used to determine if the user has already seen the what's new*/
+	public static final String FIRST_LOGIN_KEY = "first_login";
+
 	/**Contains an identifier for the current user logged in. Value is used to construct user preferences file name.
 	 * Stored in Persistent Storage as currentAccount.USER_ID**/
 	private static String currentUser;
@@ -67,6 +79,7 @@ public final class Globals {
 	 * key name currentAccount.REMEMBER_USER_ID
 	 */
 	private static boolean rememberId;
+
 	/**Contains a boolean flag that specifies whether status bar should be displayed. Stored in Persistent Storage using
 	 * key name currentAccount.statusBarVisibility
 	 */
@@ -88,9 +101,13 @@ public final class Globals {
 
 	/**Used to determine whether the user is logged in or not**/
 	private static boolean isLoggedIn;
+	/**
+	 * This bundle is meant to store data temporarily and is cleared when the application exits
+	 */
+	private static Bundle sessionCache;
 
 	private static long oldTouchTimeinMillis;
-	
+
 	private static final String KEY = "Key=";
 	private static final String VALUE = " Value=";
 	private static final String IS_LOGGED_IN = "isLoggedIn=";
@@ -149,7 +166,7 @@ public final class Globals {
 
 		//Check if key provided is an account level preference
 		if( (getPreferenceLevel(key) & PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue()) == 
-										PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
+				PreferenceLevel.ACCOUNT_LEVEL_PREF.getValue() ) {
 			keyName.append(currentAccount);
 			keyName.append(StringUtility.PERIOD);
 		}
@@ -157,7 +174,7 @@ public final class Globals {
 		//Set file name for currentUser if the currentUser is set and preference level of key is user level
 		if( !Strings.isNullOrEmpty(currentUser) &&
 				(getPreferenceLevel(key) & PreferenceLevel.USER_LEVEL_PREF.getValue()) == 
-											PreferenceLevel.USER_LEVEL_PREF.getValue() ) {
+				PreferenceLevel.USER_LEVEL_PREF.getValue() ) {
 			keyName.append(currentUser);
 			keyName.append(StringUtility.PERIOD);
 		}
@@ -178,11 +195,16 @@ public final class Globals {
 		//Load all application level specific preferences
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-		currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), 
-																AccountType.CARD_ACCOUNT.ordinal())];
+		/** Check if current account has been cached, if so set account to the cached value */
+		if (getCache().containsKey(getStoredKeyName(CURRENT_ACCOUNT))) {
+			currentAccount = AccountType.values()[getCache().getInt(getStoredKeyName(CURRENT_ACCOUNT))];
+		} else {
+			currentAccount = AccountType.values()[settings.getInt(getStoredKeyName(CURRENT_ACCOUNT),
+					AccountType.CARD_ACCOUNT.ordinal())];
+		}
 		loadUserAndModalSelections(settings, context);
 	}
-	
+
 	/**
 	 * Loads settings for a user, for the logout modal and the atm location modal. Along with the status bar visibility
 	 * and the remember user id check box state.
@@ -197,7 +219,7 @@ public final class Globals {
 		//Check whether logged in or not
 		if( !isLoggedIn ) {
 			//Only Load remembered user if not logged in
-			currentUser = (rememberId)?getStoredUser(context):currentUser;
+			currentUser = rememberId ? getStoredUser(context) : currentUser;
 
 		}  else {
 			//Load user level settings only if logged in
@@ -220,10 +242,10 @@ public final class Globals {
 		//Load all application level specific preferences
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 
-		currentAccount = account;
+		setCurrentAccount(account);
 		loadUserAndModalSelections(settings, context);
 	}
-	
+
 	/**
 	 * Prints a log statement containing all of the preferences being loaded.
 	 */
@@ -278,13 +300,13 @@ public final class Globals {
 		final SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility);
 		editor.putBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), showLoginModal);
-				
+
 		//Username should only be saved if logged in and user has checked remember me in login screen
 		if( isLoggedIn ) {
 			editor.putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 			editor.putBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId);
-			
-			if( rememberId) {
+
+			if (rememberId) {
 				saveUser(editor, currentUser);
 			} else {
 				clearStoredUser(editor);
@@ -300,13 +322,13 @@ public final class Globals {
 			Log.v(TAG,"savePreferences");
 			Log.v(TAG, IS_LOGGED_IN +isLoggedIn);
 			Log.v(TAG, KEY +getStoredKeyName(CURRENT_ACCOUNT) +VALUE +
-								settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
+					settings.getInt(getStoredKeyName(CURRENT_ACCOUNT), AccountType.CARD_ACCOUNT.ordinal()));
 			Log.v(TAG, KEY +getStoredKeyName(REMEMBER_USER_ID) +VALUE +
-													settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
+					settings.getBoolean(getStoredKeyName(REMEMBER_USER_ID), rememberId));
 			Log.v(TAG, KEY +getStoredKeyName(STATUS_BAR_VISIBILITY) +
-							VALUE +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
+					VALUE +settings.getBoolean(getStoredKeyName(STATUS_BAR_VISIBILITY), statusBarVisibility));
 			Log.v(TAG, KEY +getStoredKeyName(SHOW_LOGIN_MODAL) +VALUE +
-															settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true));
+					settings.getBoolean(getStoredKeyName(SHOW_LOGIN_MODAL), true));
 		}
 	}
 
@@ -328,6 +350,9 @@ public final class Globals {
 	public static void setCurrentAccount(final AccountType value) {
 		//Validate that an acceptable value is provided
 		currentAccount = value;
+
+		/** Store the current account in a session cache so that it is retained while the application is running */
+		getCache().putInt(getStoredKeyName(CURRENT_ACCOUNT), currentAccount.ordinal());
 	}
 
 	/**
@@ -449,7 +474,7 @@ public final class Globals {
 	 * @return Returns true if successful, false otherwise.
 	 */
 	public static boolean updateAccountInformation(final AccountType account, final Context context, final String userId, 
-													final boolean saveUserId) {
+			final boolean saveUserId) {
 		boolean ret = false;
 
 		//Only update account information if logged in
@@ -510,12 +535,12 @@ public final class Globals {
 	private static void clearStoredUser(final SharedPreferences.Editor editor) {
 		saveUser(editor, "");
 	}
-	
+
 	/** Encrypts and stores the user ID in Shared Preferences. 
 	 *  Please note that the provided editor does not call commit() since this is usually called mid-editing. */
 	private static void saveUser(final SharedPreferences.Editor editor, final String user) {
 		final String encryptedUser;
-		
+
 		if (!user.isEmpty()) {
 			try {
 				encryptedUser = EncryptionUtil.encrypt(user);
@@ -528,7 +553,7 @@ public final class Globals {
 		}
 		editor.putString(getStoredKeyName(USER_ID), encryptedUser);
 	}
-	
+
 	/** @return a decrypted user ID from Shared Preferences or an empty String if ID does not exist or 
 	 * could not be deciphered. 
 	 */
@@ -536,7 +561,7 @@ public final class Globals {
 		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
 		final String encryptedUser = settings.getString(getStoredKeyName(USER_ID), StringUtility.EMPTY);
 		String user = StringUtility.EMPTY;
-		
+
 		if (!encryptedUser.isEmpty()) {
 			try {
 				user = EncryptionUtil.decrypt(encryptedUser);
@@ -547,4 +572,76 @@ public final class Globals {
 		return user;
 	}
 
+	/**
+	 * Method used to get a cache that is retained in memory while the application is running. This cache should be
+	 * cleared when the application is exited.
+	 * 
+	 * @return Reference to a Bundle object
+	 */
+	public static Bundle getCache() {
+		if (sessionCache == null) {
+			sessionCache = new Bundle();
+		}
+
+		return sessionCache;
+	}
+
+	/*
+	 * Update the version preferences if they need to be updated. This method
+	 * will clear out the version preferences if the current version is different
+	 * than the old.
+	 * 
+	 * @param context - context used to access the settings
+	 */
+	public static void updateVersionPrefsIfNeeded(final Context context) {
+		try {
+			final SharedPreferences settings = context.getSharedPreferences(VERSION_FILE_NAME, Context.MODE_PRIVATE);
+			final PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			final String currentVersion = pInfo.versionName;
+			final String storedVersion = settings.getString(VERSION, "0");
+
+			/**
+			 * If the current version does not equal the stored version then the version prefs
+			 * should be cleared and the updated should be made.
+			 */
+			if(!currentVersion.equals(storedVersion)){
+				settings.edit().clear().commit();
+				settings.edit().putString(VERSION, currentVersion).commit();
+			}
+		} catch (final NameNotFoundException e) {
+			if(Log.isLoggable(TAG, Log.ERROR)){
+				Log.e(TAG, "Could not get the package identifier." + context.getPackageName());
+			}
+		}
+	}
+
+	/**
+	 * Check to see if this is the first time the current user has logged in.
+	 * @param context - context used to get the stored preferences.
+	 * @return if this is the first time the current user has logged in.
+	 */
+	public static boolean isFirstLoginForUser(final Context context){
+		final SharedPreferences settings = context.getSharedPreferences(VERSION_FILE_NAME, Context.MODE_PRIVATE);
+		final String loginKey = getFirstLoginKey();
+		return settings.getBoolean(loginKey, true);	 
+	}
+
+	/**
+	 * Update the shared preferences to show that the user has logged in and that the 
+	 * isFirstLoginForUser should return false
+	 * @param context - context used to get the stored preferences
+	 */
+	public static void setUserHasLoggedIn(final Context context){
+		final SharedPreferences settings = context.getSharedPreferences(VERSION_FILE_NAME, Context.MODE_PRIVATE);
+		final String loginKey = getFirstLoginKey();
+		settings.edit().putBoolean(loginKey, false).commit();
+	}
+
+	/**
+	 * Get the user specific key to see if the user has logged in
+	 * @return the key to retrieve if the user has already logged in from the shared preferences.
+	 */
+	private static String getFirstLoginKey(){
+		return FIRST_LOGIN_KEY + StringUtility.PERIOD + getCurrentUser();
+	}
 }

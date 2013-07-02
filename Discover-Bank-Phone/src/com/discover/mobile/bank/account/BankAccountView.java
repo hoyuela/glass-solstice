@@ -112,11 +112,6 @@ public class BankAccountView extends RelativeLayout implements OnClickListener {
 			try{
 				String formatted = value.formatted;
 
-				if(formatted.charAt(0)=='(') {
-					formatted = formatted.replaceAll("\\(", "-");
-					formatted = formatted.replaceAll("\\)", "");
-				}
-
 				/**Set Text view for displaying balance for account */
 				acctBalance.setText(formatted);
 

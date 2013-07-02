@@ -418,7 +418,21 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 			posted = other;
 		}
 		header.setSortOrder(bundle.getInt(BankExtraKeys.SORT_ORDER, BankExtraKeys.SORT_DATE_DESC));
-		header.setHeaderExpanded(bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false));
+		
+		/** Verify if header was expanded before rotation */
+		final boolean expandHeader = bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false);
+		header.post(new Runnable() {
+			@Override
+			public void run() {
+				if (expandHeader) {
+					header.expand(false);
+				} else {
+					header.collapse(false);
+				}
+			}
+
+		});
+		
 		if(null != current){
 			updateAdapter(current);
 

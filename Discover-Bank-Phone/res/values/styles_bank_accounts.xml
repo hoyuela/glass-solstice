@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Style applied to labels in the Account Activity Header -->
+    <style name="bank_account_activity_header_label" parent="plain_body_copy_title">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_marginLeft">@dimen/forms_inner_padding</item>
+    </style>
+    
+    <!-- Style applied to text views showing Account Activity Header values -->
+    <style name="bank_account_activity_header_value" parent="plain_body_copy_title">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">@dimen/forms_inner_padding</item>
+        <item name="android:gravity">right</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textIsSelectable">false</item>
+    </style>
+</resources>
