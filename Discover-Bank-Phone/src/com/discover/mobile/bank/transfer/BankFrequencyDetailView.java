@@ -125,7 +125,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
 		chosenPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
-		
+		dollarAmount.setClickable(false);
 		addView(view);
 	}
 
@@ -154,7 +154,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		outState.putString(TRANS_VALUE, transactionAmount.getText().toString());
 		outState.putString(AMOUNT_VALUE, dollarAmount.getText().toString());
 		outState.putBoolean(DISPLAY_CALENDAR, (calendarFragment != null));
-		
 		return outState;
 	}
 	
@@ -172,7 +171,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				dateValue.setText(savedDate);
 			}
 			transactionAmount.setText(savedTransactionLimit);
+			dollarAmount.enableBankAmountTextWatcher(false);
 			dollarAmount.setText(savedAmount);
+			dollarAmount.enableBankAmountTextWatcher(true);
 			disableCancelled();
 			enableCell(index);
 			
@@ -343,6 +344,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		transactionAmount.clearErrors();
 		transactionAmount.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		transactionAmount.setText("");
+		transactionAmount.setEnabled(false);
 		clearErrorLabel(R.id.transactions_error_label);
 	}
 
@@ -351,6 +353,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private void disableAmount(){
 		dollar.setChecked(false);
+		dollarAmount.setEnabled(false);
 		((TextView)view.findViewById(R.id.dollar_label)).setTextColor(res.getColor(R.color.field_copy));
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.field_copy));
 		dollarAmount.clearFocus();
@@ -390,6 +393,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		transaction.setChecked(true);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
 		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		transactionAmount.setEnabled(true);
 		transactionAmount.requestFocus();
 	}
 
@@ -400,7 +404,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		index = AMOUNT;
 		dollar.setChecked(true);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
+		dollarAmount.setEnabled(true);
 		dollarAmount.requestFocus();
+		showKeyboard();
 	}
 
 	/**
