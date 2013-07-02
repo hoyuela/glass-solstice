@@ -23,6 +23,9 @@ public class TableHeaderButton extends RelativeLayout{
 	/**Boolean indicating if the current layout is selected*/
 	private boolean selected = false;
 
+	/**Enum to be associated with this button*/
+	private Enum<?> associatedEnum;
+
 	/**
 	 * Default constructor for the class.  This should not be used
 	 * @param context - activity context
@@ -92,6 +95,22 @@ public class TableHeaderButton extends RelativeLayout{
 	@Override
 	public boolean isSelected(){
 		return selected;
+	}
+
+	/**
+	 * Get the associated enum with this button
+	 * @return the associated enum
+	 */
+	public Enum<?> getAssociatedEnum() {
+		return associatedEnum;
+	}
+
+	/**
+	 * Set the associated enum with this button
+	 * @param associatedEnum the the enun to associate with this button
+	 */
+	public void setAssociatedEnum(final Enum<?> associatedEnum) {
+		this.associatedEnum = associatedEnum;
 	}
 
 }

@@ -49,30 +49,30 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
  * @author jthornton
  *
  */
-public abstract class LoadMoreBaseTable extends BaseFragment  implements DynamicDataFragment, LoadMoreList, Serializable {
+public abstract class LoadMoreBaseTable extends BaseFragment  implements DynamicDataFragment, LoadMoreList, Serializable, OnClickListener {
 
 	private static final long serialVersionUID = -1476233454449735956L;
 
 	private final int availableCores = Runtime.getRuntime().availableProcessors();
 	private final ThreadPoolExecutor threadPool = new ThreadPoolExecutor(availableCores, 
-																		 availableCores, 
-																		 1, 
-																		 TimeUnit.MINUTES,
-																		 new LinkedBlockingQueue<Runnable>());
-	
+			availableCores, 
+			1, 
+			TimeUnit.MINUTES,
+			new LinkedBlockingQueue<Runnable>());
+
 	private static final String SELECTED_BUTTON_KEY = LoadMoreBaseTable.class.getSimpleName() + "index";
 	private static final String SCROLL_POSITION = "sy";
 	private static final String CACHED_MAP = "chm";
 	private static final String LAST_VISIBLE_LIST_ITEM = "lvli";
-	
-	private int savedIndex = 0;
+
+	private Enum<?> savedIndex = null;
 	private int savedScroll = 0;
 	private int savedTopElement = 0;
-	
+
 	private Enum<?> currentListKey = null;
 
 	private final HashMap<Enum<?>, LoadMoreList> tableListsCache = new HashMap<Enum<?>, LoadMoreList>();
-	
+
 	private LoadMoreTableAdapter tableAdapter = null;
 
 	/**List View holding the data*/
@@ -83,10 +83,10 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 
 	/**Boolean used to determine if the fragment is loading more*/
 	private boolean isLoadingMore = false;
-	
+
 	/**The table headaer*/
 	private LoadMoreTableHeader header = null;
-	
+
 	private Handler uiHandler = null;
 
 	//-------------------------------------------------- Abstract Methods --------------------------------------------------
@@ -104,10 +104,10 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 * @return 
 	 */
 	public abstract void showFooterMessage();
-	
+
 	public abstract Enum<?> getDefaultList();
 	public abstract void setDefaultList(final Enum<?> defaultList);
-	
+
 	//-------------------------------------------------- Public Methods --------------------------------------------------
 	/**
 	 * Create the view
@@ -121,18 +121,18 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		table = (PullToRefreshListView) view.findViewById(R.id.bank_table);
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 		uiHandler = new Handler(Looper.getMainLooper());
-	
+		loadHeader();
 		final Bundle args = getArguments();
 		if(args != null) {
 			restoreArgumentsData(args);
 			loadDefaultListToCache(args);
 		}
-		
+
 		setupFooter();
 		setUpTable();
 		return view;
 	}
-	
+
 	/**
 	 * Save all the data on the screen in a bundle
 	 * @param outState -  bundle containing all the data
@@ -142,22 +142,33 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		super.onSaveInstanceState(outState);
 
 		final Bundle args = getArguments();
-		
+
 		//Save all of the Bundle data from the saveDataInBundle method to
 		//the arguments bundle that belongs to this Fragment.
 		if(args != null){
 			args.putAll(outState);
 			saveTableScrollPositionToBundle(args);
-			
+
 			if(header != null) {
-				args.putInt(SELECTED_BUTTON_KEY, header.getSelectedButtonIndex());
+				args.putSerializable(SELECTED_BUTTON_KEY, header.getSelectedButtonIndex());
 			}
-			
+
 			args.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
 			args.putSerializable(CACHED_MAP, tableListsCache);
 		}
 	}
-	
+
+	/**
+	 * Pause the fragment
+	 */
+	@Override
+	public void onPause(){
+		super.onPause();
+
+		//Clear the observer to free up memory
+		header.clearObserver();
+	}
+
 	/**
 	 * If the current list, which maps to the current key in cache, has more data to load.
 	 */
@@ -165,20 +176,20 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	public boolean canLoadMore() {
 		return getCurrentList() != null && getCurrentList().canLoadMore();
 	}
-	
+
 	/**
 	 * Load more activities
 	 */
 	public void loadMore(final String url){
 		setIsLoadingMore(true);
-	
+
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(BankExtraKeys.LOAD_MORE_LIST, LoadMoreBaseTable.this);
 		bundle.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
 		bundle.putBoolean(BankExtraKeys.IS_LOADING_MORE, true);
 		final GetTransfersServiceCall call = BankServiceCallFactory.createBankGetTransfersCall(url);
 		call.getExtras().putAll(bundle);
-			
+
 		call.submit();
 	}
 
@@ -190,7 +201,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			@Override
 			public void onClick(final View v){
 				uiHandler.post(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						if(table != null && table.getRefreshableView() != null) {
@@ -202,7 +213,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		});
 		getLoadMoreFooter().showDone();
 	}
-	
+
 	/**
 	 * Will setup the listview for a particular list that mapps to the parameter key.
 	 * @param tableDataCategory an Enumerated type that maps to a list in cache.
@@ -212,19 +223,23 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			currentListKey = tableDataCategory;
 			final boolean isLocalCacheEmpty = tableListsCache.get(currentListKey) == null;
 			LoadMoreList cachedList = null;
-			
+
 			//If local cache is empty
 			if(isLocalCacheEmpty) {
 				tableListsCache.put(currentListKey, BankUser.instance().getCachedActivityMap().get(currentListKey));
 			}
-			
+
 			cachedList = tableListsCache.get(currentListKey);
-						
+
 			tableAdapter.setData(cachedList);
 			tableAdapter.notifyDataSetChanged();
+
+			if(null != header){
+				header.setSelectedButton(tableDataCategory);
+			}
 		}
 	}
-	
+
 	/**
 	 * During a service call, this method is used to clear the list so that no data is presented behind
 	 * the loading dialog during the load.
@@ -235,7 +250,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		tableAdapter.notifyDataSetChanged();
 		hideEmptyListMessage();
 	}
-	
+
 	/**
 	 * This method is called once a load more operation succeeds. It will append data to the cached list
 	 * that corresponds to the current cache key.
@@ -244,7 +259,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	@Override
 	public void addData(final Bundle data) {
 		threadPool.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				Looper.prepare();
@@ -259,32 +274,32 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 							final List<LoadMoreDetail> appendableData = (List<LoadMoreDetail>)retrievedData.getDataList();
 							//The current list that will have data added to it.
 							final List<LoadMoreDetail> cachedListData = (List<LoadMoreDetail>)cachedList.getDataList();
-							
-							final boolean canAppend = cachedListData != null && 
-													  appendableData != null && 
-													  appendableData.size() > 0;
 
-						    //Update the links object of the cached list to be that of the newly retrieved list.
-							if(canAppend && retrievedData.getLinks() != null) {
-								cachedList.setLinks(retrievedData.getLinks());
-							}
-							
-							if(canAppend) {
-								cachedListData.addAll(appendableData);
-								uiHandler.post(new Runnable() {
-									
-									@Override
-									public void run() {
-										if(tableAdapter != null) {
-											tableAdapter.notifyDataSetChanged();
-										}
+							final boolean canAppend = cachedListData != null && 
+									appendableData != null && 
+									appendableData.size() > 0;
+
+									//Update the links object of the cached list to be that of the newly retrieved list.
+									if(canAppend && retrievedData.getLinks() != null) {
+										cachedList.setLinks(retrievedData.getLinks());
 									}
-								});
-							} else {
-								Log.e(LoadMoreBaseTable.class.getSimpleName(), 
-										"Failed to append any data.");
-							}
-							
+
+									if(canAppend) {
+										cachedListData.addAll(appendableData);
+										uiHandler.post(new Runnable() {
+
+											@Override
+											public void run() {
+												if(tableAdapter != null) {
+													tableAdapter.notifyDataSetChanged();
+												}
+											}
+										});
+									} else {
+										Log.e(LoadMoreBaseTable.class.getSimpleName(), 
+												"Failed to append any data.");
+									}
+
 						}else {
 							Log.e(LoadMoreBaseTable.class.getSimpleName(),
 									"No data returned from loadMore call.");
@@ -301,7 +316,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			}
 		});
 	}
-	
+
 	/**
 	 * Unused method
 	 */
@@ -324,17 +339,17 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		if(currentList == null) {
 			currentList = new ArrayList<LoadMoreDetail>();
 		}
-		
+
 		return currentList;
 	}
-	
+
 	/**
 	 * Get the footer that should be shown at the top of the list.
 	 */
 	public TableLoadMoreFooter getFooter() {
 		return (TableLoadMoreFooter)getView().findViewById(R.id.footer);
 	}
-	
+
 	/**
 	 * Refresh the pull to reset listener so that it can load more
 	 */
@@ -345,11 +360,11 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			table.onRefreshComplete();
 			table.setShowViewWhileRefreshing(true);
 			table.getLoadingLayoutProxy().
-									setLoadingDrawable(this.getResources().getDrawable(R.drawable.load_more_arrow_release));
+			setLoadingDrawable(getResources().getDrawable(R.drawable.load_more_arrow_release));
 			getLoadMoreFooter().showDone();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return the current key that is being used to retrieve data from cache.
@@ -357,7 +372,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	public Enum<?> getCurrentListKey() {
 		return currentListKey;
 	}
-	
+
 	/**
 	 * Unused method
 	 */
@@ -374,16 +389,16 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		Log.e(LoadMoreBaseTable.class.getSimpleName(),
 				"Do not use setLinks on " + LoadMoreBaseTable.class.getSimpleName());
 	}
-	
+
 	/**
 	 * Unused method
 	 */
 	@Override
 	public void handleReceivedData(final Bundle bundle) {
 	}
-	
+
 	//-------------------------------------------------- Private Methods --------------------------------------------------
-	
+
 	/**
 	 * Saves the current scroll position on screen to a Bundle so it can be restored later.
 	 * @param bundle the Bundle to save this information to.
@@ -400,25 +415,29 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			}
 		}
 	}
-	
+
 	/**
 	 * Restores data for this fragment that was saved during an configuration change.
 	 * 
 	 * @param args a Bundle that contains information that can be used to restore the state of this Fragment.
 	 */
 	private void restoreArgumentsData(final Bundle args) {
-		savedIndex = args.getInt(SELECTED_BUTTON_KEY, 0);
+		savedIndex = (Enum<?>) args.getSerializable(SELECTED_BUTTON_KEY);
 		currentListKey = (Enum<?>)args.getSerializable(BankExtraKeys.CACHE_KEY);
 		savedScroll = args.getInt(SCROLL_POSITION, 0); 
 		savedTopElement = args.getInt(LAST_VISIBLE_LIST_ITEM, 0);
-		
+
+		if(null != currentListKey){
+			header.setSelectedButton(currentListKey);
+		}
+
 		@SuppressWarnings("unchecked")
 		final HashMap<Enum<?>, LoadMoreList> bundleMap = (HashMap<Enum<?>, LoadMoreList>)args.getSerializable(CACHED_MAP);
 		if(bundleMap != null && bundleMap.size() > 0) {
 			tableListsCache.putAll(bundleMap);
 		}
 	}
-	
+
 	/**
 	 * Takes a Bundle and looks for a list that can be put into the local cache for this Fragment.
 	 * @param args a Bundle that contains a LoadMoreList to act as the first list to display. Once displayed,
@@ -428,7 +447,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		final LoadMoreList toCache = (LoadMoreList)args.getSerializable(BankExtraKeys.PRIMARY_LIST);
 		if(currentListKey != null  && toCache != null) {
 			tableListsCache.put(currentListKey, toCache);
-			
+
 			//Clear the value in the args bundle so it doesnt show up again.
 			args.putSerializable(BankExtraKeys.PRIMARY_LIST, null);
 		}
@@ -447,7 +466,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			}
 		});
 	}
-	
+
 	/**
 	 * Setup the table with default values.
 	 */
@@ -457,16 +476,15 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		table.getLoadingLayoutProxy().setReleaseLabel(getString(R.string.table_release_to_update));
 		table.getRefreshableView().setDivider(getResources().getDrawable(R.drawable.table_dotted_line));
 		table.getLoadingLayoutProxy().setLoadingDrawable(
-												getResources().getDrawable(R.drawable.load_more_arrow_release));
+				getResources().getDrawable(R.drawable.load_more_arrow_release));
 		table.setShowViewWhileRefreshing(true);
 		table.setShowIndicator(false);
 		table.getLoadingLayoutProxy().setRefreshingLabel(StringUtility.EMPTY);
 		table.setScrollingWhileRefreshingEnabled(false);
 		table.setOnRefreshListener(getTableOnRefreshListener());
-		loadHeader();
 		setupTableAdapter();
 	}
-	
+
 	/**
 	 * 
 	 * @return an OnRefreshListener for the pull to refresh table.
@@ -490,7 +508,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			LoadMoreList detailList = null;
 			if(currentListKey != null) {
 				LoadMoreList list = tableListsCache.get(currentListKey);
-				
+
 				if(list == null) {
 					//Fallback to main cache.
 					list = BankUser.instance().getCachedActivityMap().get(currentListKey);
@@ -499,14 +517,14 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 					detailList = list;
 					tableAdapter = new LoadMoreTableAdapter(getActivity(), detailList);
 					uiHandler.post(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							table.setAdapter(tableAdapter);
 							tableAdapter.notifyDataSetChanged();
 						}
 					});
-					
+
 					final int waitTime = 200;
 					uiHandler.postDelayed(getShowViewRunnable(), waitTime);
 				}
@@ -523,7 +541,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			header.hideMessage();
 		}
 	}
-	
+
 	/**
 	 * Shows a message at the top of the table, between the row of buttons and the column headers.
 	 */
@@ -533,14 +551,14 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			header.showMessage();
 		}
 	}
-	
+
 	/**
 	 * Do a postDelayed so that we can smoothly animate this fragment into view
 	 * after it has finished loading.
 	 */
 	private Runnable getShowViewRunnable() {
 		return new Runnable() {
-			
+
 			@Override
 			public void run() {
 				makeVisible();
@@ -548,7 +566,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			}
 		};
 	}	
-	
+
 	/**
 	 * Restores the table scroll position to a saved position.
 	 */
@@ -573,7 +591,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			getLoadMoreFooter().showDone();
 		}
 	}
-	
+
 	/**
 	 * Get the header that should be shown at the top of the list.
 	 */
@@ -585,8 +603,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			addHeaderToList(list);
 		}
 	}
-	
-	
+
+
 	/**
 	 * When the fragment is ready to be shown, clear any visible modals/dialogs and close the drawer.
 	 * Should be called after all loading has finished.
@@ -595,36 +613,29 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		if(DiscoverModalManager.getActiveModal() != null) {
 			DiscoverModalManager.clearActiveModal();
 		}
-		
+
 		final Activity currentActivity = getActivity();
 		if(currentActivity != null && currentActivity instanceof BaseFragmentActivity) {
 			((BaseFragmentActivity)currentActivity).hideSlidingMenuIfVisible();
 		}
 	}
-	
+
 	/**
-	 * Inflate the header for the table on a thread, and then add it to the list view from the main thread.
+	 * Inflate the header for the table, and then add it to the list view from the main thread.
 	 */
 	private void asyncHeaderLoad() {
 		final ListView list = getTable().getRefreshableView();
 		header = new LoadMoreTableHeader(getActivity());
-		addButtonsToHeader(header);
 
 		setTableTitles((TableTitles)header.findViewById(R.id.table_titles));
 		header.hideSecondaryMessage();
-		//A runnable that will set the header of the list to the header that was just created.
-		final Runnable updateHeaderRunnable = new Runnable() {
-			
-			@Override
-			public void run() {
-				addHeaderToList(list);				
-			}
-		};
-		
-		//Queue the UI update of the header to the main thread.
-		uiHandler.post(updateHeaderRunnable);
+
+		addHeaderToList(list);
+
+		//Add the observer so the buttons can be clicked
+		header.setObserver(this);
 	}
-	
+
 	/**
 	 * Adds an instantiated header to the ListView.
 	 * @param list the ListView to add the header to.
@@ -632,7 +643,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	private void addHeaderToList(final ListView list) {
 		if(list != null) {
 			list.addHeaderView(header, null, false);
-			header.setSelectedButton(savedIndex);
+			addButtonsToHeader(header);
+			header.setSelectedButton(savedIndex);	
 		}
 	}
 
@@ -661,21 +673,21 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	private LoadMoreList getCurrentList() {
 		LoadMoreList currentList = null;
-		
+
 		if(currentListKey != null) {
 			currentList = tableListsCache.get(currentListKey);
 		}
-		
+
 		if(currentList == null) {
 			currentList = new ListTransferDetail();
 		}
-		
+
 		return currentList;
 	}
-	
+
 	//-------------------------------------------------- Protected Methods --------------------------------------------------
 
-	
+
 	/**
 	 * 
 	 * @return the TableLoadMoreFooter for this table.
@@ -692,6 +704,14 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		return table;
 	}
 
+	/**
+	 * Get the load more header
+	 * @return the LoadMoreTableHeader
+	 */
+	protected LoadMoreTableHeader getHeader(){
+		return header;
+	}
+
 	//----------------------------------------------------- Inner Class -----------------------------------------------------
 
 	/**
@@ -703,15 +723,15 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	public class LoadMoreTableAdapter extends ArrayAdapter<LoadMoreDetail> {
 		/**The LoadMoreList that will be used*/
 		private LoadMoreList detailList = new ListTransferDetail();
-		
+
 		/**The List of data that will be displayed on screen*/
 		private List<LoadMoreDetail>listData = new ArrayList<LoadMoreDetail>();
-		
+
 		public LoadMoreTableAdapter(final Context context, final LoadMoreList detailList) {
 			super(context, 0);
 			setData(detailList);
 		}
-		
+
 		/**
 		 * Set the LoadMoreList that is used for
 		 * @param detailList
@@ -723,11 +743,11 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 				listData = (List<LoadMoreDetail>)detailList.getDataList();
 			}
 		}
-		
+
 		public LoadMoreTableAdapter(final Context context, final int resource, final int textViewResourceId) {
 			super(context, resource, textViewResourceId);
 		}
-		
+
 		/**
 		 * Notify the adapter that the dataset has changed and that it should refresh its elements
 		 * to show the new data.
@@ -739,7 +759,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			super.notifyDataSetChanged();
 			final boolean listIsEmpty = detailList == null || detailList.getDataList().size() < 1;
 			final boolean canLoadMore = detailList != null && detailList.canLoadMore();
-			
+
 			if(listIsEmpty) {
 				showEmptyListMessage();
 				table.setMode(Mode.DISABLED);
@@ -749,7 +769,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 					refreshListener();
 				}
 			}
-			
+
 			setIsLoadingMore(false);
 			getLoadMoreFooter().showDone();
 		}
@@ -760,48 +780,48 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		@Override
 		public int getCount() {
 			int tableSize = 0;
-			
+
 			if(detailList != null && detailList.getDataList() != null) {
 				tableSize = detailList.getDataList().size();
 			}
-		
+
 			return tableSize;
 		}
-		
+
 		@Override
 		public View getView(final int position, final View view, final ViewGroup parent) {
 			View localView = view;
 			ViewHolder holder = null;
-			
+
 			if(listData != null && position < listData.size()) {
 				final LoadMoreDetail detail = listData.get(position);
-				
+
 				/**If the view is null, create a new one*/
 				if(null == localView || !(localView.getTag() instanceof ViewHolder)){
 					if(detail != null){
 						holder = new ViewHolder();
 						localView = initTableCellForPositionUsingHolder(position, holder);
 					}
-				/**Else reuse the old one*/
+					/**Else reuse the old one*/
 				}else{
 					holder = (ViewHolder) view.getTag();
 				}
-				
+
 				if(detail != null) {
 					holder.date.setText(detail.getDate());
 					holder.amount.setText(detail.getAmount());
 					holder.description.setText(detail.getDescription());
-					
+
 					showRecurringLogo(detail, holder);
-		
-					localView.setBackgroundResource((holder.pos % 2 == 0) ? R.drawable.common_table_list_item_selector : 
-																			R.drawable.common_table_list_item_gray_selector);
+
+					localView.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_selector : 
+						R.drawable.common_table_list_item_gray_selector);
 				}
 			}
-			
+
 			return localView;
 		}
-		
+
 		/**
 		 * Inflates a table cell layout, accesses the view elements and assigns the holder references to it,
 		 * and returns the view.
@@ -818,7 +838,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			holder.pos = position;
 			return localView;
 		}
-		
+
 		/**
 		 * Shows the recurring logo if needed.
 		 * @param detail the detail object that holds data about a potential recurring transfer.
@@ -833,7 +853,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 				}
 			}
 		}
-		
+
 	}
 
 }
