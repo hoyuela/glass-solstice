@@ -445,13 +445,17 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display session expired message
 	 */
 	public void showSessionExpired() {
-		((WindowManager) getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-
-		errorTextView.setText(getString(R.string.session_expired));
-		errorTextView.setVisibility(View.VISIBLE);
-		errorTextView.setTextColor(getResources().getColor(R.color.black));
-		clearInputs();
+		final SimpleContentModal sessionExpired = new SimpleContentModal(getContext(), R.string.session_expired_header, 
+				  																 R.string.session_expired_body, 
+				  																 R.string.session_expired_button);
+		sessionExpired.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sessionExpired.dismiss();
+			}
+		});
+		
+		this.showCustomAlert(sessionExpired);
 	}
 
 	/**
@@ -626,7 +630,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		cardForgotAndPrivacySection.setVisibility(View.INVISIBLE);
 		//Default to the last path user chose for login Card or Bank
 		setApplicationAccount();
-	
 	}
 
 	/**
@@ -733,7 +736,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final boolean errorTextIsNotLogoutMessage =
 				!getResources().getString(R.string.logout_sucess).equals(errorTextView.getText().toString());
 		final boolean errorTextIsNotSessionExpired = 
-				!getResources().getString(R.string.session_expired).equals(errorTextView.getText().toString());
+				!getResources().getString(R.string.session_expired_body).equals(errorTextView.getText().toString());
 		return errorTextViewIsVisible && errorTextIsNotLogoutMessage && errorTextIsNotSessionExpired;
 	}
 
