@@ -5,7 +5,6 @@
     <string name="base_url_dev1">https://asys.mapi.discovercard.com</string>
     <string name="url_in_use">https://asys.mapi.discovercard.com</string>
 
-    
     <string name="discover_url">/cardsvcs/acs/</string>
     <string name="forgotUserID_url">reg/v1/user/id</string>
     <string name="logOut_url">session/v1/delete</string>
@@ -15,16 +14,16 @@
     <string name="createpassword_url">reg/v1/user/pwd</string>
     <string name="forgotBoth_url">reg/v1/user/reg/auth</string>
     <string name="createlogin_url">reg/v1/user/reg</string>
-    <string name="strongAuth_url">reg/v1/user/sa/check</string>
     <string name="strongAuth_quest_url">strongauth/v1/challenge</string>
     <string name="strongAuth_ans_url">strongauth/v1/authenticate</string>
     <string name="share_url">https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo&amp;referer=https://mobileapp.discover.com/</string>
-    <string name="xApplicationVersion">5.1.0</string>
+    <string name="xApplicationVersion">5.2.0</string>
     <!-- Bank SSO Login  -->
     <string name="sso_authenticate_url">acct/v1/tokensignin</string>
     <string name="sso_authenticate_bank_payload">acct/v1/refreshpayload</string>
     
     <!-- Push Notification -->
+    
     <string name="get_push_registration">contact/v1/registration/status</string>
     <string name="get_push_count">msghist/v1/notification/newcount</string>
     <string name="push_read_msg">msghist/v1/notification</string>
@@ -36,4 +35,16 @@
     <string name ="get_quick_view_status">personalprofile/v1/quickviewbinding/status</string>
     <string name ="quick_view">personalprofile/v1/quickviewbinding</string>
     <string name ="quick_view_unbind">_method=DELETE</string>
+    
+   <!--  13.4 changes start -->
+     <!-- Strong Auth -->
+    <string name="strongAuth_url">reg/v1/user/sa/check</string>
+    <string name="strongAuth_create_user_url">strongauth/v1/createuser</string>
+    <string name="strongAuth_update_user_url">strongauth/v1/updateuser</string>
+    <string name="strongAuth_quest_url">strongauth/v1/challenge</string>
+    <string name="strongAuth_ans_url">strongauth/v1/authenticate</string>
+    
+     <!--  13.4 changes End -->
+    
+    
 </resources>
