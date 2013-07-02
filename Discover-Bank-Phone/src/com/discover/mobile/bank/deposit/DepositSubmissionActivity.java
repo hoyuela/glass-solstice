@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -215,5 +216,12 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	public void startProgressDialog(boolean isProgressDialogCancelable) {		
 		//do nothing
 	}
+	
+	@Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Reload the XML layout to switch between portrait/landscape version.
+        setContentView(R.layout.deposit_submission);
+    }
 
 }
