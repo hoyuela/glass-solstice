@@ -50,10 +50,11 @@ public class TableButtonGroup extends LinearLayout{
 	 * Constructor for the class
 	 * @param context - activity context
 	 */
-	public TableButtonGroup(final Context context) {
+	public TableButtonGroup(final Context context, final String[] labels) {
 		super(context);
 		setClickable(false);
 		setOrientation(LinearLayout.HORIZONTAL);
+		addViewsToLayout(context, labels);
 	}
 
 	/**

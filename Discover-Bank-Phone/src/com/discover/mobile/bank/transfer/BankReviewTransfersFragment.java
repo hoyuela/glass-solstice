@@ -122,4 +122,13 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 			BankConductor.navigateToReviewTransfers(type);
 		}
 	}
+
+	/**
+	 * Get the array that will be used to display the labels on the buttons
+	 * @return the resource array to be used as labels on the buttons
+	 */
+	@Override
+	public int getButtonResourceArray() {
+		return R.array.bank_review_transfers_buttons;
+	}
 }
