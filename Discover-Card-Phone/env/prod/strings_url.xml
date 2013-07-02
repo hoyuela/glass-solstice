@@ -18,7 +18,7 @@
     <string name="strongAuth_quest_url">strongauth/v1/challenge</string>
     <string name="strongAuth_ans_url">strongauth/v1/authenticate</string>
     <string name="share_url">https://secure.opinionlab.com/ccc01/o.asp?id=OWPeJUwo&amp;referer=https://mobileapp.discover.com/</string>
-    <string name="xApplicationVersion">5.1.0</string>
+    <string name="xApplicationVersion">5.2.0</string>
     <!-- Bank SSO Login  -->
     <string name="sso_authenticate_url">acct/v1/tokensignin</string>
     <string name="sso_authenticate_bank_payload">acct/v1/refreshpayload</string>
