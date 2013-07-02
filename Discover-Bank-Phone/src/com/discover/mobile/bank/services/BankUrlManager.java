@@ -7,6 +7,9 @@ import java.util.Map;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.bank.services.transfer.OrderBy;
+import com.discover.mobile.bank.services.transfer.SortDirection;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
@@ -374,6 +377,49 @@ public final class BankUrlManager  {
 	 */
 	public static String generateGetPaymentsUrl(final PaymentQueryType query) {
 		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"?status=" +query;
+	}
+	
+	
+	/**
+	 * Gets the scheduled, descending, date sorted transfers.
+	 * 
+	 * @return a query url
+	 */
+	public static String generateGetTransfersUrl() {
+		return generateGetTransfersUrl(TransferType.Scheduled, OrderBy.Date, SortDirection.Descending);
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @return a query url
+	 */
+	public static String generateGetTransfersUrl(final TransferType type) {
+		return generateGetTransfersUrl(type, OrderBy.Date, SortDirection.Descending);
+	}
+	
+	/**
+	 * 
+	 * @param type
+	 * @param order
+	 * @param direction
+	 * @return a query url
+	 */
+	public static String generateGetTransfersUrl(final TransferType type, 
+													final OrderBy order, 
+													final SortDirection direction) {
+		
+		final StringBuilder urlBuilder = new StringBuilder();
+		
+		urlBuilder.append(BankUrlManager.getUrl(BankUrlManager.TRANSFER_URL_KEY));
+		urlBuilder.append("?view=");
+		urlBuilder.append(type.getFormattedQueryParam());
+		urlBuilder.append("&orderby=");
+		urlBuilder.append(order.getFormattedQueryParam());
+//		urlBuilder.append("&dir=");
+//		urlBuilder.append(direction.getFormattedQueryParam());
+		
+		return urlBuilder.toString();
 	}
 
 	/**

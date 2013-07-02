@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.services.transfer;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,10 +9,14 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
+import com.discover.mobile.bank.ui.table.LoadMoreDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
+import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 
-public class TransferDetail implements Serializable, Cloneable {
+public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 
 
 	/**Variable sent to the server if the transfer is to continue until cancelled*/
@@ -213,12 +218,90 @@ public class TransferDetail implements Serializable, Cloneable {
 
 			transferObject.fromAccount.id = this.fromAccount.id;
 			transferObject.toAccount.id = this.toAccount.id;
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
 				Log.e(TAG, "Failed to generate requrest format of transfer detail");
 			}
 		}
 		
 		return transferObject;
+	}
+
+	@Override
+	public String getDate() {
+		final StringBuilder dateBuilder = new StringBuilder(StringUtility.EMPTY);
+		
+		dateBuilder.append(deliverBy);
+		
+		return BankStringFormatter.getFormattedDate(dateBuilder.toString());
+	}
+
+	@Override
+	public String getDescription() {
+		final StringBuilder descriptionBuilder = new StringBuilder(StringUtility.EMPTY);
+		
+		if(fromAccount != null) {
+			final StringBuilder fromBuilder = new StringBuilder("From: ");
+			fromBuilder.append(fromAccount.nickname);
+			
+			descriptionBuilder.append(addEllipsesIfNeeded(fromBuilder.toString()));
+			descriptionBuilder.append(StringUtility.NEW_LINE);
+		}else {
+			Log.e(TAG, "No From Account Exists!");
+		}
+		
+		if(toAccount != null) {
+			final StringBuilder toBuilder = new StringBuilder("To: ");
+			toBuilder.append(toAccount.nickname);
+			
+			descriptionBuilder.append(addEllipsesIfNeeded(toBuilder.toString()));
+		}else {
+			Log.e(TAG, "No To Account Exits!");
+		}
+		
+		return descriptionBuilder.toString().toUpperCase(Locale.US);
+	}
+	
+	/**
+	 * Returns a String that contains 13 a-z characters it does not count colons or spaces and will append an ellipses
+	 * to the end if the length exceeds 13 a-z characters.
+	 * @param text 
+	 * @return
+	 */
+	private String addEllipsesIfNeeded(final String text) {
+		StringBuilder ellipsesBuilder = new StringBuilder(text);
+		final String colon = ":";
+		final int ellipsesLimit = 13;
+
+		//Remove all spaces and colons and count.
+		final int rawInputLength = text.replaceAll(StringUtility.SPACE, StringUtility.EMPTY)
+									   .replaceAll(colon, StringUtility.EMPTY)
+									   .length();
+		
+		final int countOfSpaces = CommonUtils.countOccurancesOfCharInString(StringUtility.SPACE, text);
+		final int countOfColons = CommonUtils.countOccurancesOfCharInString(colon, text);
+		
+		if(rawInputLength >= ellipsesLimit) {
+			ellipsesBuilder = new StringBuilder(StringUtility.EMPTY);
+			ellipsesBuilder.append(text.subSequence(0, ellipsesLimit + countOfSpaces + countOfColons));
+			ellipsesBuilder.append("...");
+		}
+		
+		return ellipsesBuilder.toString();
+	}
+
+	@Override
+	public String getAmount() {
+		final StringBuilder formattedAmount = new StringBuilder(StringUtility.EMPTY);
+		
+		formattedAmount.append(BankStringFormatter.convertCentsToDollars(amount.formatted));
+		
+		return formattedAmount.toString();
+	}
+
+	@Override
+	public boolean isRecurring() {
+		return !Strings.isNullOrEmpty(frequency) &&
+				!frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER);
 	}
 }

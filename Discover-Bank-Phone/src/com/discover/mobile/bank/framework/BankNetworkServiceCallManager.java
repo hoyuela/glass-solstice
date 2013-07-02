@@ -6,8 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +14,7 @@ import android.util.Log;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.AccountActivityViewPager;
 import com.discover.mobile.bank.account.TransferDeletionType;
@@ -65,13 +64,14 @@ import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
+import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
+import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
-import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -254,10 +254,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		if( isGuiReady() ) {
 			//Check if the screen displaying is a table
-			if(activeActivity instanceof BankNavigationRootActivity && 
-					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
-					final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-					((BaseTable) fragment).refreshListener();
+			final Fragment currentFragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+			if(activeActivity instanceof BankNavigationRootActivity && currentFragment instanceof DynamicDataFragment){
+					((DynamicDataFragment) currentFragment).refreshListener();
 			}
 			
 			//Check if the error is a Strong Auth Challenge
@@ -507,6 +506,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			else {
 				BankConductor.navigateToManagePayee(bundle);
 			}
+		} else if(sender instanceof GetTransfersServiceCall) {
+			
+			final TransferType type = ((GetTransfersServiceCall) sender).getTransferType();
+			final ListTransferDetail transferResults = (ListTransferDetail) result;
+
+			if(type != null && !((GetTransfersServiceCall) sender).isLoadingMore()) {
+				//Cache the result and ask the BankConductor to navigate
+				BankUser.instance().getCachedActivityMap().put(type, transferResults);
+				BankConductor.navigateToReviewTransfers(type);
+			}
+			
 		}
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();

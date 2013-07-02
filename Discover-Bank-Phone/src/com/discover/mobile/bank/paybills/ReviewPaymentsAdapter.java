@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.transfer.ViewHolder;
 import com.google.common.base.Strings;
 
 /**
@@ -73,7 +74,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 			if(null != detail){
 				view = inflater.inflate(R.layout.bank_table_item, null);
 				holder.date = (TextView) view.findViewById(R.id.date);
-				holder.payee = (TextView) view.findViewById(R.id.description);
+				holder.description = (TextView) view.findViewById(R.id.description);
 				holder.amount = (TextView) view.findViewById(R.id.amount);
 				holder.pos = position;
 			}
@@ -94,7 +95,7 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 				nickName = detail.payee.name;
 			}
 
-			holder.payee.setText(nickName);
+			holder.description.setText(nickName);
 		}
 
 		final double amount = (double)detail.amount.value/DOLLAR_CONVERSION;
@@ -180,15 +181,4 @@ public class ReviewPaymentsAdapter  extends ArrayAdapter<List<PaymentDetail>>{
 		details = data;
 	}
 
-	/**
-	 * Private class that holds view information
-	 * @author jthornton
-	 *
-	 */
-	private static class ViewHolder {
-		private TextView date;
-		private TextView payee;
-		private TextView amount;
-		private int pos;
-	}
 }

@@ -305,6 +305,22 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		hideSlidingMenuIfVisible();
 	}
+	
+	/**
+	 * Loads a new Fragment into the Fragment manager but does not close any loading dialogs
+	 * nor does it auto close the drawer.
+	 * 
+	 * @param fragment a Fragment to show.
+	 */
+	public void makeFragmentVisibleNoAnimationWithManualNav(final Fragment fragment) {
+		currentFragment = fragment;
+		getSupportFragmentManager()
+		.beginTransaction()
+		.replace(R.id.navigation_content, fragment)
+		//Adds the class name and fragment to the back stack
+		.addToBackStack(fragment.getClass().getSimpleName())
+		.commit();
+	}
 
 	/**
 	 * Make Fragment visible without any transition animation.
@@ -483,7 +499,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean progressDialogIsCancelable) {		
+	public void startProgressDialog(final boolean progressDialogIsCancelable) {		
 		if(!DiscoverModalManager.hasActiveModal()) {
 			DiscoverModalManager.setActiveModal(ProgressDialog.show(DiscoverActivityManager.getActiveActivity(), 
 												"Discover", "Loading...", true));
@@ -492,7 +508,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 			DiscoverModalManager.getActiveModal().setOnCancelListener(new OnCancelListener() {
 
 				@Override
-				public void onCancel(DialogInterface dialog) {
+				public void onCancel(final DialogInterface dialog) {
 					onCancelProgressDialog();
 				}
 			});

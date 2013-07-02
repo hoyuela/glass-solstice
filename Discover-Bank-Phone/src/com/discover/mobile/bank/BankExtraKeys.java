@@ -63,6 +63,12 @@ public final class BankExtraKeys {
 
 	/**Used to pass the amount of the check deposit around between fragments and activities*/
 	public static final String AMOUNT = "amount";
+	
+	/**Used for retrieving a cache key from a bundle */
+	public static final String CACHE_KEY = "c_k";
+	
+	/**Key to retrieve a LoadMoreList from a Bundle */
+	public static final String LOAD_MORE_LIST = "lml";
 
 	/**Used to pass a boolean to the check deposit workflow for when a user goes back to a previous
 	 * fragment to adjust the information they previously entered

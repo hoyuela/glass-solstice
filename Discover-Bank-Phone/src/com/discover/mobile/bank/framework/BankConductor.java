@@ -80,6 +80,9 @@ import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.bank.services.transfer.ListTransferDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
+import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
 import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
@@ -95,6 +98,7 @@ import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -395,6 +399,57 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToPayBillsLanding(){
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+	
+	public static void navigateToReviewTransfers(final TransferType transferType) {
+		if(transferType != null) {
+			final Activity activity = DiscoverActivityManager.getActiveActivity();
+			
+			if(activity instanceof BankNavigationRootActivity) {
+				//Tell current review transfers fragment to change to the new selection.
+				if(isCacheEmptyFor(transferType)) {
+					BankServiceCallFactory.createBankGetTransfersCall(transferType).submit();
+				} else if(!isCurrentFragmentReviewTransfers()) {
+					final ListTransferDetail defaultList = 
+										(ListTransferDetail)BankUser.instance().getCachedActivityMap().get(transferType);
+					
+					final Bundle args = new Bundle();
+					args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
+					args.putSerializable(BankExtraKeys.PRIMARY_LIST, defaultList);
+					//Navigate to a new review transfers fragemnt on top of the stack.
+					final BaseFragmentActivity navActivity = 
+													(BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
+					final BankReviewTransfersFragment nextVisibleFragment = new BankReviewTransfersFragment();
+					nextVisibleFragment.setArguments(args);
+
+					navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);	
+				}else {
+					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+					final BankReviewTransfersFragment currentFragment = 
+													(BankReviewTransfersFragment)navActivity.getCurrentContentFragment();
+					currentFragment.refreshTableAdapterForType(transferType);
+					DiscoverModalManager.clearActiveModal();
+				}
+			}
+		}
+	}
+	
+	private static boolean isCacheEmptyFor(final TransferType transferType) {
+		return BankUser.instance().getCachedActivityMap().get(transferType) == null;
+	}
+	
+	private static boolean isCurrentFragmentReviewTransfers() {
+		boolean isCurrentFragmentReviewTransfers = false;
+		
+		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+		if(currentActivity instanceof BankNavigationRootActivity) {
+			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
+			
+			isCurrentFragmentReviewTransfers = 
+					navActivity.getCurrentContentFragment() instanceof BankReviewTransfersFragment;
+		}
+
+		return isCurrentFragmentReviewTransfers;
 	}
 
 	/**

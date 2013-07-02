@@ -74,7 +74,7 @@ public abstract class BankTransferBaseFragment extends BankOneButtonFragment {
 
 	@Override
 	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
+		return BankMenuItemLocationIndex.TRANSFER_MONEY_SECTION;
 	}
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="review_transfers_title">Review Transfers</string>
+    
+    <string name="cancelled">cancelled</string>
+    <string name="completed">completed</string>
+    <string name="scheduled">scheduled</string>
+    
+    <string name="no_transfers_in_list">You have no %s transfers.</string>
+
+</resources>

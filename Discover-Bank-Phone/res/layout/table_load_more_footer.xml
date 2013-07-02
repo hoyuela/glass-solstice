@@ -5,14 +5,13 @@
     android:gravity="center_horizontal"
     android:paddingBottom="@dimen/groups_of_elements_padding" >
 
-    <View
+    <com.discover.mobile.bank.ui.DiscoverOrangeSpinner
         android:id="@+id/load_more"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:background="@drawable/large_loading_icon" />
+        android:layout_marginTop="@dimen/groups_of_elements_padding" />
 
     <View
         android:id="@+id/line"
@@ -23,30 +22,29 @@
         android:layout_below="@+id/load_more"
         android:background="@color/field_stroke" />
 
-    <TextView
+    <Button
         android:id="@+id/go_to_top"
         style="@style/bank_blue_hyperlink_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/line"
+        android:background="@null"
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
         android:layout_marginLeft="@dimen/forms_inner_padding"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:text="@string/activity_go_to_top"
         android:textSize="@dimen/small_copy_min" />
 
-    <TextView
+    <Button
         android:id="@+id/privacy_footer"
         style="@style/bank_blue_hyperlink_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/line"
+        android:background="@null"
         android:layout_marginBottom="@dimen/groups_of_elements_padding"
         android:layout_marginRight="@dimen/forms_inner_padding"
-        android:layout_marginTop="@dimen/groups_of_elements_padding"
-        android:lines="1"
         android:text="@string/privacy_and_terms"
         android:textSize="@dimen/small_copy_min" />
 
