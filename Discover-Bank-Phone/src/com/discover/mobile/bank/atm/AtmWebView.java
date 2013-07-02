@@ -5,6 +5,7 @@ package com.discover.mobile.bank.atm;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -24,10 +25,13 @@ import com.google.common.base.Strings;
  * @author jthornton
  *
  */
-public class AtmWebView{
+public class AtmWebView {
 
 	/**Key for getting the reporting ATM boolean from the bundle*/
 	private static final String REPORTING = "reporting";
+	
+	/**We need an api call that is avaialable in API11+ so this is defined to check against version numbers*/
+	private static final int API_ELEVEN = 11;
 
 	/**Lat string*/
 	private String lat;
@@ -64,12 +68,13 @@ public class AtmWebView{
 	 * Then set the web view's WebViewClient to hide the loading spinner
 	 * upon completing loading of the terms content.
 	 */
-	@SuppressLint("NewApi")
+	@SuppressLint({"NewApi", "SetJavaScriptEnabled"})
 	private void setupWebView(final String url) {
 		web.loadUrl(url);
 		final WebSettings webSettings = web.getSettings();
 		webSettings.setJavaScriptEnabled(true);
 		webSettings.setRenderPriority(RenderPriority.HIGH);
+		
 		web.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(final WebView view, final String url) {
@@ -91,6 +96,12 @@ public class AtmWebView{
 				return false;
 			}
 		});
+		
+		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
+		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
+		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
+			web.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+		}
 	}
 
 	/**

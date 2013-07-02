@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.common"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <com.discover.mobile.common.ui.table.TableButtonGroup
+        android:id="@+id/button_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/forms_inner_padding"
+        custom:resourceArry="@array/bank_review_transfers_buttons" />
+
+    <com.discover.mobile.bank.ui.widgets.StatusMessageView
+        android:id="@+id/status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_row"
+        android:layout_marginLeft="@dimen/forms_inner_padding"
+        android:layout_marginRight="@dimen/forms_inner_padding" />
+
+    <com.discover.mobile.bank.ui.table.TableTitles
+        android:id="@+id/table_titles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/status"
+        android:layout_marginTop="@dimen/groups_of_elements_padding" />
+
+</RelativeLayout>

@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.common.base.Strings;
+
 /**
  * A common place to put utilities that can and will be used across the app on both phone and tablet
  * @author jthornton
@@ -296,5 +298,37 @@ public final class CommonUtils {
 				bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
 			}
 		}
+	}
+	
+	/**
+	 * A method to count the number of times that a char appears in a String.
+	 * 
+	 * @param charToCount a char that should be searched for and counted.
+	 * @param stringToSearch a String which may contain occurrences of the charToCount
+	 * @return the number of occurrences of charToCount in stringToSearch.
+	 */
+	public static int countOccurancesOfCharInString(final char charToCount, final String stringToSearch) {
+		int count = 0;
+		
+		if(!Strings.isNullOrEmpty(stringToSearch)) {
+			final int strLength = stringToSearch.length();
+			for(int i = 0; i < strLength; ++i) {
+				if(stringToSearch.charAt(i) == charToCount) {
+					++count;
+				}
+			}
+		}
+		
+		return count;
+	}
+	
+	public static int countOccurancesOfCharInString(final String charToCount, final String stringToSearch) {
+		int count = 0;
+		
+		if(!Strings.isNullOrEmpty(charToCount)) {
+			count = countOccurancesOfCharInString(charToCount.charAt(0), stringToSearch);
+		}
+		
+		return count;
 	}
 }

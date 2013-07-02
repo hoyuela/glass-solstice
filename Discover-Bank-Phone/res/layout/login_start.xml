@@ -98,8 +98,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/table_inner_padding"
-                        android:paddingLeft="@dimen/element_side_padding"
-                        android:paddingRight="@dimen/element_side_padding"
                         android:text="@string/user_id"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold"
@@ -110,8 +108,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_id_label"
-                        android:layout_marginLeft="@dimen/element_side_padding"
-                        android:layout_marginRight="@dimen/element_side_padding"
                         android:hint="@string/empty"
                         android:imeOptions="actionNext"
                         android:inputType="textNoSuggestions"
@@ -126,8 +122,6 @@
                         android:layout_below="@+id/username_field"
                         android:layout_marginRight="14dp"
                         android:layout_marginTop="@dimen/groups_of_elements_padding"
-                        android:paddingLeft="@dimen/element_side_padding"
-                        android:paddingRight="@dimen/element_side_padding"
                         android:text="@string/password"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold" />
@@ -137,8 +131,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/password_label"
-                        android:layout_marginLeft="@dimen/element_side_padding"
-                        android:layout_marginRight="@dimen/element_side_padding"
                         android:layout_marginBottom="20dp"
                         android:hint="@string/empty"
                         android:inputType="textPassword"
@@ -170,7 +162,6 @@
 	                        style="@style/common_switch_light"
 	                        android:layout_width="wrap_content"
 	                        android:layout_height="wrap_content"
-	                        android:layout_marginRight="@dimen/element_side_padding"
 	                        android:layout_alignParentRight="true"
 	                         />
                     </RelativeLayout>
@@ -211,8 +202,6 @@
                         android:layout_below="@id/login_button"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/bottom_pad"
-                        android:paddingLeft="@dimen/element_side_padding"
-                        android:paddingRight="@dimen/element_side_padding"
                         android:visibility="invisible"
                         android:weightSum="1" >
 

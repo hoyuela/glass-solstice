@@ -2,17 +2,16 @@ package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.PrivacyTermsType;
+import com.discover.mobile.bank.ui.DiscoverOrangeSpinner;
 
 /**
  * Load more footer for the tables.
@@ -22,7 +21,7 @@ import com.discover.mobile.bank.help.PrivacyTermsType;
 public class TableLoadMoreFooter extends RelativeLayout implements OnClickListener{
 
 	/**View that shows the loading*/
-	private final View load;
+	private final DiscoverOrangeSpinner load;
 
 	/**View that shows the go to top*/
 	private final TextView go;
@@ -42,7 +41,7 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 
 		final View view = LayoutInflater.from(context).inflate(R.layout.table_load_more_footer, null);
 
-		load = view.findViewById(R.id.load_more);
+		load = (DiscoverOrangeSpinner)view.findViewById(R.id.load_more);
 		go = (TextView) view.findViewById(R.id.go_to_top);
 		line = view.findViewById(R.id.line);
 		privacy =  (TextView) view.findViewById(R.id.privacy_footer);
@@ -58,7 +57,7 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 	 */
 	public void showLoading(){
 		load.setVisibility(View.VISIBLE);
-		load.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate_full_circle));
+		load.startAnimation();
 		go.setVisibility(View.VISIBLE);
 		line.setVisibility(View.VISIBLE);
 	}
@@ -68,15 +67,14 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 	 */
 	public void showDone(){
 		load.setVisibility(View.GONE);
-		load.clearAnimation();
+		load.stopAnimation();
 		go.setVisibility(View.VISIBLE);
 		line.setVisibility(View.VISIBLE);
 		
 		/** Right Justify Privacy & Terms */
-		final RelativeLayout.LayoutParams params = (LayoutParams) privacy.getLayoutParams();
-		params.rightMargin = (int) getResources().getDimension(R.dimen.forms_inner_padding);
+		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) privacy.getLayoutParams();
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 		privacy.setLayoutParams(params);
-		privacy.setGravity(Gravity.RIGHT);
 	}
 
 	/**
@@ -84,15 +82,14 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 	 */
 	public final void hideAll(){		
 		load.setVisibility(View.GONE);
-		load.clearAnimation();
+		load.stopAnimation();
 		go.setVisibility(View.GONE);
 		line.setVisibility(View.GONE);
 		
 		/** Center Justify Privacy & Terms */
-		final RelativeLayout.LayoutParams params = (LayoutParams) privacy.getLayoutParams();
-		params.rightMargin = 0;
+		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) privacy.getLayoutParams();
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
 		privacy.setLayoutParams(params);
-		privacy.setGravity(Gravity.CENTER_HORIZONTAL);
 	}
 
 	/**
