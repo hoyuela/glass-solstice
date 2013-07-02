@@ -161,13 +161,9 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		
 		//Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
-			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
-				DiscoverModalManager.getActiveModal().dismiss();
-			} else {
-				DiscoverModalManager.getActiveModal().hide();
-			}
+			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.setAlertShowing(true);
-		}else{
+		} else {
 			DiscoverModalManager.clearActiveModal();
 		}
 	}
