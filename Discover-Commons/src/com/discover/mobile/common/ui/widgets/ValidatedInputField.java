@@ -246,7 +246,7 @@ public abstract class ValidatedInputField extends EditText {
 
 	protected Drawable getGrayX() {
 		if(grayX == null){
-			grayX = getResources().getDrawable(R.drawable.x_gray);
+			grayX = getResources().getDrawable(R.drawable.common_edit_text_x_grey);
 		}
 		return grayX;
 	}
