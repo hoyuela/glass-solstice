@@ -373,6 +373,19 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		return cal;
 	}
 
+	/*
+	 * Had to override the onPause because
+	 * onSaveInstanceState was not being called
+	 * when the select account fragment was brought
+	 * to the foreground. -julian
+	 */
+	@Override
+	public void onPause(){
+		super.onPause();
+		if (recurring != null) {
+			recurring.saveState(getArguments());
+		}
+	}
 	
 	/**
 	 * Save the current state of the screen.
