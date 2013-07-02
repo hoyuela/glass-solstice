@@ -98,7 +98,7 @@ import com.google.common.base.Strings;
  *
  */
 public final class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, 
-																							  SuccessListener<Serializable>,
+SuccessListener<Serializable>,
 ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
 	 * Used to print logs into Android logcat
@@ -254,11 +254,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 		if( isGuiReady() ) {
 			//Check if the screen displaying is a table
-			final Fragment currentFragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-			if(activeActivity instanceof BankNavigationRootActivity && currentFragment instanceof DynamicDataFragment){
+			if(activeActivity instanceof BankNavigationRootActivity){
+				final Fragment currentFragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				if(currentFragment instanceof DynamicDataFragment){
 					((DynamicDataFragment) currentFragment).refreshListener();
+				}
 			}
-			
+
 			//Check if the error is a Strong Auth Challenge
 			if( isStrongAuthChallenge(error) && !(sender instanceof CreateStrongAuthRequestCall) ) {
 				//Send request to Strong Auth web-service API
@@ -284,7 +286,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Dispatch response to BankBaseErrorHandler to determine how to handle the error
 			else if( !isBackgroundServiceCall(sender) )  {
 				((AlertDialogParent)activeActivity).closeDialog();
-				
+
 				errorHandler.handleFailure(sender, error);
 			}
 		} else {
@@ -309,10 +311,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//Check if the screen displaying is a table
 			if(activeActivity instanceof BankNavigationRootActivity && 
 					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
-					final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
-					((BaseTable) fragment).refreshListener();
+				final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
+				((BaseTable) fragment).refreshListener();
 			}
-			
+
 			if( !isBackgroundServiceCall(sender) ) {
 				((AlertDialogParent)activeActivity).closeDialog();
 			}
@@ -332,9 +334,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * @return
 	 */
 	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, 
-												final Serializable result, 
-												final Bundle bundle){
-		this.success(sender,result);
+			final Serializable result, 
+			final Bundle bundle){
+		success(sender,result);
 		return true;
 	}
 
@@ -376,7 +378,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if( !(sender instanceof CreateStrongAuthRequestCall) && //Shouldn't close strong auth page on a strong auth success
 				!(sender instanceof CustomerServiceCall) &&				//Customer Service call is only made when logging in
 				!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
-				(DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity)) {
+				DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
 			//Bring Navigation Root Activity to the foreground, to allow to switch fragments on it
 			BankConductor.navigateToHomePage();
 
@@ -386,7 +388,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			handleSuccessLater(sender, result);
 		}
 		//Download Customer Information if a Login call is successful
-		else if( (sender instanceof CreateBankLoginCall) || (sender instanceof CreateBankSSOLoginCall)) {
+		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 			KeepAlive.setBankAuthenticated(true);
@@ -448,7 +450,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				prevCall.retransmit(activeActivity);
 			}
 			// Navigate to Payment Confirmation upon a successful payment.
-		} else if( (sender instanceof CreatePaymentCall) || (sender instanceof UpdatePaymentCall)) {
+		} else if( sender instanceof CreatePaymentCall || sender instanceof UpdatePaymentCall) {
 			final PaymentDetail value = (PaymentDetail)result;
 			if(sender instanceof UpdatePaymentCall){
 				BankConductor.navigateToPayConfirmFragment(value, true);
@@ -465,7 +467,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankUser.instance().setScheduled(null);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( (sender instanceof CreateStrongAuthRequestCall) && (prevCall != null) && sender.isPostCall() ) {
+		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
 			//Retransmit the previous call that triggered the Strong Auth call
 			prevCall.retransmit(activeActivity);
 		}
@@ -478,7 +480,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 
 			/**Check to see if the payees were downloaded because of a delete payee call*/
-			if( (prevCall instanceof DeletePayeeServiceCall) &&
+			if( prevCall instanceof DeletePayeeServiceCall &&
 					!((DeletePayeeServiceCall)prevCall).isHandled()) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((DeletePayeeServiceCall)prevCall).markHandled();
@@ -494,20 +496,20 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankUser.instance().setCancelled(null);
 			}
 			/**Check to see if the payees were downloaded because of an added payee call*/
-			else if( (prevCall instanceof AddPayeeServiceCall) &&
+			else if( prevCall instanceof AddPayeeServiceCall &&
 					!((AddPayeeServiceCall)prevCall).isHandled() ) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((AddPayeeServiceCall)prevCall).markHandled();
 
 				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, 
-																			((AddPayeeServiceCall)prevCall).getResponse());
+						((AddPayeeServiceCall)prevCall).getResponse());
 			}
 			/**Catch-all means it was just a payee download*/
 			else {
 				BankConductor.navigateToManagePayee(bundle);
 			}
 		} else if(sender instanceof GetTransfersServiceCall) {
-			
+
 			final TransferType type = ((GetTransfersServiceCall) sender).getTransferType();
 			final ListTransferDetail transferResults = (ListTransferDetail) result;
 
@@ -516,7 +518,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankUser.instance().getCachedActivityMap().put(type, transferResults);
 				BankConductor.navigateToReviewTransfers(type);
 			}
-			
+
 		}
 		else if(sender instanceof GetExternalTransferAccountsCall) {
 			final Bundle args = new Bundle();
@@ -569,7 +571,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, ((GetActivityServerCall)sender).getDidDeleteActivity());
 			bundle.putBoolean(BankExtraKeys.DID_DELETE_PAYMENT, ((GetActivityServerCall)sender).getDidDeletePayment());
 			bundle.putSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE, 
-									((GetActivityServerCall) sender).getDeletionType());
+					((GetActivityServerCall) sender).getDeletionType());
 			bundle.putAll(((GetActivityServerCall) sender).getExtras());
 			BankConductor.navigateToAccountActivityPage(bundle);
 		}
@@ -588,18 +590,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			//Marks the internal transfer accounts as dirty.  External accounts will have an account type of null
 			Account account = 
-					BankUser.instance().getAccount((null != detail.fromAccount.type) ? detail.fromAccount.id : null);
+					BankUser.instance().getAccount(null != detail.fromAccount.type ? detail.fromAccount.id : null);
 			if (account != null) {
 				account.scheduled = null;
 			}
 
-			account = BankUser.instance().getAccount((null != detail.toAccount.type) ? detail.toAccount.id : null);
+			account = BankUser.instance().getAccount(null != detail.toAccount.type ? detail.toAccount.id : null);
 			if (account != null) {
 				account.scheduled = null;
 			}
 			BankUser.instance().getCurrentAccount().scheduled = null;
 			BankUser.instance().setScheduled(null);
-			
+
 			final TransferDeletionType deletionType = ((DeleteTransferServiceCall) sender).getDeletionType();
 			//Calls to re-get the activity data because it has been modified.
 			final String link = BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY);
@@ -742,12 +744,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			/**Clear the current last error stored in the error handler*/
 			errorHandler.clearLastError();
-			
+
 			/**
 			 * Update prevCall only if it is a different service request from current call
 			 * or if current call is null
 			 */
-			if( (curCall == null) || (curCall.getClass() != sender.getClass()) ) {
+			if( curCall == null || curCall.getClass() != sender.getClass() ) {
 				prevCall = curCall;
 			} else {
 				if( Log.isLoggable(TAG, Log.WARN)) {
@@ -757,11 +759,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			/**Update current call*/
 			curCall = sender;
-			
+
 			activeActivity.startProgressDialog(curCall.isCancellable());
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return if the current activity is a detail fragment for posted/scheduled activity.
@@ -769,14 +771,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	private boolean isCurrentFragmentActivityDetail() {		
 		boolean isActivityDetail = false;
 		final BankNavigationRootActivity navActivity = 
-													(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		Fragment currentFragment = null;
-		
+
 		if(navActivity != null) {
 			currentFragment = navActivity.getCurrentContentFragment();
 			isActivityDetail = currentFragment instanceof AccountActivityViewPager;
 		}
-		
+
 		return isActivityDetail;
 	}
 
@@ -833,7 +835,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detail);
 		return bundle;
 	}
-	
+
 	/**
 	 * Method defines the implementation of the complete callback defined by CompletionListener.
 	 * Called by NetworkServcieCall<> when a request has been completed irrespective of whether the success
@@ -880,7 +882,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		boolean connected = false;
 
 		// test for connection
-		if ( (cm.getActiveNetworkInfo() != null)
+		if ( cm.getActiveNetworkInfo() != null
 				&& cm.getActiveNetworkInfo().isAvailable()
 				&& cm.getActiveNetworkInfo().isConnected()) {
 			connected = true;
@@ -908,7 +910,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		boolean ret = false;
 
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		if( (activity != null) && (activity instanceof SyncedActivity)) {
+		if( activity != null && activity instanceof SyncedActivity) {
 			ret = ((SyncedActivity)activity).isReady();
 		}
 
@@ -933,7 +935,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				final int fiveSeconds = 5000;
 				while( !isReady ) {
 					final Activity activity = DiscoverActivityManager.getActiveActivity();
-					if( (activity != null) && (activity instanceof SyncedActivity)) {
+					if( activity != null && activity instanceof SyncedActivity) {
 						Log.v("Discover", "Waiting...");
 						isReady = ((SyncedActivity)activity).waitForResume(fiveSeconds);
 					}
@@ -979,14 +981,14 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
 			}
 
-			ret |=  (sender instanceof RefreshBankSessionCall) ||
-					(sender instanceof BankApiServiceCall) ||
-					(sender instanceof BankHolidayServiceCall);
+			ret |=  sender instanceof RefreshBankSessionCall ||
+					sender instanceof BankApiServiceCall ||
+					sender instanceof BankHolidayServiceCall;
 		}
 
 		return ret;
 	}
-	
+
 	public void cancelServiceCall() {
 		if(curCall.isCancellable()) {
 			curCall.cancel();

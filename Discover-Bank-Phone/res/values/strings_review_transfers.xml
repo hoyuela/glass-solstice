@@ -8,5 +8,11 @@
     <string name="scheduled">scheduled</string>
     
     <string name="no_transfers_in_list">You have no %s transfers.</string>
+    
+    <string-array name="bank_review_transfers_buttons">
+        <item>Scheduled Transfers</item>
+        <item>Completed Transfers</item>
+        <item>Cancelled Transfers</item>
+    </string-array>
 
 </resources>

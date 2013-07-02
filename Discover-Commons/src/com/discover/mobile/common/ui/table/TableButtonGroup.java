@@ -122,7 +122,7 @@ public class TableButtonGroup extends LinearLayout{
 		}
 
 		/**
-		 * Linear layout for the buttons.  This will default to one so that the buttons srtetch to
+		 * Linear layout for the buttons.  This will default to one so that the buttons stretch to
 		 * fill the layout in both portrait and landscape.
 		 */
 		final LinearLayout.LayoutParams params = 
@@ -190,6 +190,36 @@ public class TableButtonGroup extends LinearLayout{
 	}
 
 	/**
+	 * Set the button that has a specific associated enum to selected.
+	 * @param selectedEnum - Enum of the button that needs to be selected.
+	 */
+	public void setButtonSelected(final Enum<?> selectedEnum){
+		final TableHeaderButton newSelection =  findViewBasedOnEnum(selectedEnum);
+		if(null != newSelection && !selected.getText().equals(newSelection.getText())){
+			newSelection.setSelected();
+			if(null != selected){
+				selected.setUnselected();
+			}
+			selected = newSelection;
+		}
+	}
+
+	/**
+	 * Find the view that has the selected enum
+	 * @param selectedEnum - selected enum
+	 * @return null if the selected enum cannot be found, otherwise the button holding the enum
+	 */
+	private TableHeaderButton findViewBasedOnEnum(final Enum<?> selectedEnum){
+		TableHeaderButton button = null;
+		for(int i = 0; i < views.size(); i++){
+			if(views.get(i).getAssociatedEnum().equals(selectedEnum)){
+				button = views.get(i);
+			}
+		}
+		return button;
+	}
+
+	/**
 	 * Get the button at a specific location
 	 * @param postion - position in the table to get the button
 	 * @return the button at that position
@@ -207,5 +237,33 @@ public class TableButtonGroup extends LinearLayout{
 				view.setOnClickListener(null);
 			}
 		}
+	}
+
+	/**
+	 * Check to see if a button is selected
+	 * @param clickedEnum - enum that the button pressed contains
+	 * @return if the enum of the pressed button matches the enum of the selected
+	 */
+	public boolean isButtonSelected(final Enum<?> clickedEnum){
+		return selected.getAssociatedEnum().equals(clickedEnum);
+	}
+
+	/**
+	 * Associate an unknown amount of enums with the buttons.
+	 * This will associated the enums from left to right.
+	 * @param enums enums to associated with buttons
+	 */
+	public void associateButtonsWithEnum(final Enum<?>...enums){
+		for(int i = 0; i < enums.length; i++){
+			getButton(i).setAssociatedEnum(enums[i]);
+		}
+	}
+
+	/**
+	 * Get the selected buttons enum
+	 * @return the selected buttons enum
+	 */
+	public Enum<?> getSelectedEnum(){
+		return selected.getAssociatedEnum();
 	}
 }
