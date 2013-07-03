@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -56,6 +57,8 @@ public class DiscoverMapWrapper {
 
 	/**Clustering library reference**/
 	private Clusterkraf clusterkraf;
+	
+	private final int zoomLevel;
 
 	/**
 	 * 
@@ -69,6 +72,7 @@ public class DiscoverMapWrapper {
 			map.setInfoWindowAdapter(adapter);
 			map.setOnInfoWindowClickListener(adapter.getInfoWindowClickListener());
 		}
+		this.zoomLevel = DiscoverActivityManager.getActiveActivity().getResources().getDimensionPixelSize(R.dimen.atm_padding_from_edge_map);
 		setupMap();
 	}
 
@@ -157,6 +161,7 @@ public class DiscoverMapWrapper {
 			final Options options = new Options();
 			options.setTransitionInterpolator(new OvershootInterpolator());
 			options.setPixelDistanceToJoinCluster(convertToDensityIndependentPixels());
+			options.setZoomToBoundsPadding(zoomLevel);
 			final ArrayList<InputPoint> list = new ArrayList<InputPoint>();
 			for(final LocationObject object : objects){
 				options.setMarkerOptionsChooser(
