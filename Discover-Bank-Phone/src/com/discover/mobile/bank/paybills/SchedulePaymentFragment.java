@@ -34,9 +34,11 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.error.BankError;
 import com.discover.mobile.bank.services.error.BankErrorResponse;
@@ -143,6 +145,9 @@ public class SchedulePaymentFragment extends BaseFragment
 
 	/** boolean set to true when the fragment is in edit mode*/
 	private boolean editMode = false;
+	
+	/** boolean set to true when the fragment came from the payee added confirmation screen. */
+	private boolean payeeAddedMode = false;
 
 	/**
 	 * Pattern to match the ISO8601 date & time returned by payee service -
@@ -502,6 +507,7 @@ public class SchedulePaymentFragment extends BaseFragment
 				paymentDetail = (PaymentDetail)b.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 			}
 			editMode = b.getBoolean(BankExtraKeys.EDIT_MODE, false);
+			payeeAddedMode = b.getBoolean(BankExtraKeys.FROM_PAYEE_CONFIRMATION, false);
 			
 			if (editMode) {
 				memoItem.setVisibility(View.GONE);
@@ -515,7 +521,22 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * Instantiates the Cancel Button's modal and the modal's button listeners.
 	 */
 	private void setupCancelButton() {
-		new CancelThisActionModal(this).showModal();
+		if (!payeeAddedMode) {
+			new CancelThisActionModal(this).showModal();	
+		} else {
+			CancelThisActionModal cancelAction = new CancelThisActionModal(this);
+			cancelAction.setOnConfirmAction(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					((BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity())
+																		.getSupportFragmentManager().popBackStackImmediate();
+					BankAddManagedPayeeFragment.setCameFromPayBills(true);
+					BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
+				}
+			});
+			cancelAction.showModal();
+		}
 	}
 
 	/**
@@ -907,7 +928,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 					if((currentActivity != null) && (currentActivity instanceof BankNavigationRootActivity)) {
 						final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
-						if(editMode){
+						if(editMode || payeeAddedMode){
 							navActivity.getSupportFragmentManager().popBackStackImmediate();
 						}else{
 							navActivity.popTillFragment(BankSelectPayee.class);
