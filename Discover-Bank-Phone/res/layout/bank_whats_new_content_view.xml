@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/page_indicators"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/header" />
 
     <LinearLayout
@@ -46,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bank_whats_new_footer_height"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bank_page_indicator_background"
         android:gravity="center"
         android:orientation="horizontal" />
 

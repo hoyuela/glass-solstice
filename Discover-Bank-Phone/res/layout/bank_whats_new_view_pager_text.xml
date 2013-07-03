@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f9fa"
+    android:orientation="vertical"
+    android:padding="@dimen/forms_inner_padding" >
+
+    <TextView
+        android:id="@+id/whats_new_pager_title"
+        style="@style/bank_whats_new_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:text="Pin Down the Nearest ATM" />
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="@dimen/forms_inner_padding"
+        android:background="@drawable/bank_page_indicator_background"
+        android:contentDescription="@string/empty" />
+
+    <TextView
+        android:id="@+id/whats_new_pager_content"
+        style="@style/bank_whats_new_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ATMs are grouped for an easier search.  Just tap on the &quot;Multiple Pin&quot; icon to zoom into the group and find an ATM." />
+
+</LinearLayout>

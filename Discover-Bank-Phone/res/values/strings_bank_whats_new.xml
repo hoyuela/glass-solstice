@@ -7,6 +7,18 @@
     <!-- Action bar title of the whats new activity -->
     <string name="bank_whats_new_action_bar_title">What\'s New</string>
     
+    <!-- List of titles that will be displayed in the view pager -->
+    <array name="bank_whats_new_titles">
+        <item>Pin Down the Nearest ATM</item>
+        <item>ATMs at Your Fingertips</item>
+    </array>
+    
+        <!-- List of content that will be displayed in the view pager -->
+    <array name="bank_whats_new_content">
+        <item>ATMs are grouped for an easier search.  Just tap on the &quot;Multiple Pin&quot; icon to zoom into the group and find an ATM.</item>
+        <item>Tap and hold anywhere on the map for a new search to find an ATM.</item>
+    </array>
+    
     <!-- List of drawables that will be displayed in the view pager -->
     <array name="bank_whats_new_drawables">
         <item>@drawable/whats_new_pincluster</item>

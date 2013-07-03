@@ -2,12 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal"
+    android:weightSum="2" >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" >
+
+        <include
+            android:id="@+id/whats_new_text"
+            layout="@layout/bank_whats_new_view_pager_text" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/whats_new_image"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:contentDescription="@string/empty"
         android:scaleType="fitXY" />
 
