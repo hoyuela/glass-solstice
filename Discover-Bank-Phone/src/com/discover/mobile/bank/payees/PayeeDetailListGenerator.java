@@ -169,6 +169,7 @@ final public class PayeeDetailListGenerator  {
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
 		phoneNumber.makeSingleLine();
+		phoneNumber.getMiddleLabel().setVisibility(View.GONE);
 		return phoneNumber;
 	}
 	
@@ -207,6 +208,8 @@ final public class PayeeDetailListGenerator  {
 		final BankEditDetail address = createBankEditDetail(context, R.string.bank_payee_address, text);
 		address.enableEditing(false);
 		address.getMiddleLabel().setSingleLine(false);
+		address.getMiddleLabel().setTextAppearance(context, R.style.field_copy);
+		address.getEditableField().setText("");
 		return address;
 	}
 	
@@ -248,8 +251,8 @@ final public class PayeeDetailListGenerator  {
 		memo.getEditableField().setFilters(inputFilters);
 		memo.enableEditing(isEditable);
 		memo.getEditableField().setImeOptions(EditorInfo.IME_ACTION_DONE|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-		memo.getEditableField().setTextAppearance(context, R.style.sub_copy_big);
-		memo.getMiddleLabel().setTextAppearance(context, R.style.sub_copy_big);
+		memo.getEditableField().setTextAppearance(context, R.style.field_copy);
+		memo.getMiddleLabel().setTextAppearance(context, R.style.field_copy);
 		return memo;
 	}
 	
