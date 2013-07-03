@@ -419,8 +419,16 @@ public final class BankUser extends CacheManager implements Serializable {
 
 	private final HashMap<Enum<?>, LoadMoreList> cachedActivityMap = new HashMap<Enum<?>, LoadMoreList>();
 	
-	public HashMap<Enum<?>, LoadMoreList> getCachedActivityMap() {
-		return cachedActivityMap;
+	public void cacheListWithKey(final Enum<?> cacheKey, final LoadMoreList listToCache) {
+		cachedActivityMap.put(cacheKey, listToCache);
+	}
+	
+	public LoadMoreList getCachedListForKey(final Enum<?> cacheKey) {
+		return cachedActivityMap.get(cacheKey);
+	}
+	
+	public boolean isCacheEmptyFor(final Enum<?> transferType) {
+		return cachedActivityMap.get(transferType) == null;
 	}
 	
 	/**

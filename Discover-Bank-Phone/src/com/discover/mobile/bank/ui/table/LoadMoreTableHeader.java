@@ -9,12 +9,11 @@ import android.widget.LinearLayout;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
 import com.discover.mobile.common.ui.table.TableButtonGroup;
-
 /**
- * Header for the load more table.  This contains the button group,
- * the table titles and the status message.
+ * The header that is used in a LoadMoreBaseTable.
+ * it includes a list of buttons, a status message and a row of table titles.
  * 
- * @author sseward / jthornton
+ * @author scottseward
  *
  */
 public class LoadMoreTableHeader extends LinearLayout {
@@ -104,18 +103,18 @@ public class LoadMoreTableHeader extends LinearLayout {
 			statusView.setTextBold(false);
 		}
 	}
-
+	
 	/**
-	 * Hide the secondary title message
+	 * Hides the text label that is beneath the row of column titles and above the ListView.
 	 */
 	public void hideSecondaryMessage() {
 		if(titles != null) {
 			titles.hideMessage();
 		}
 	}
-
+	
 	/**
-	 * Show the message
+	 * Shows the StatusMessageView label with no error icon.
 	 */
 	public void showMessage() {
 		if(statusView != null) {
@@ -123,18 +122,18 @@ public class LoadMoreTableHeader extends LinearLayout {
 			hideErrorIcon();
 		}
 	}
-
+	
 	/**
-	 * Hide the status bar error icon
+	 * Hides the StatusMessageView error icon.
 	 */
 	private void hideErrorIcon() {
 		if(statusView != null) {
 			statusView.hideErrorIcon();
 		}
 	}
-
+	
 	/**
-	 * Hide the status bar message
+	 * Hides the StatusMessageView label.
 	 */
 	public void hideMessage() {
 		if(statusView != null) {

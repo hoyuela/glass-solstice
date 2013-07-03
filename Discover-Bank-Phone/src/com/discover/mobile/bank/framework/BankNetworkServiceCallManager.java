@@ -515,7 +515,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			if(type != null && !((GetTransfersServiceCall) sender).isLoadingMore()) {
 				//Cache the result and ask the BankConductor to navigate
-				BankUser.instance().getCachedActivityMap().put(type, transferResults);
+				BankUser.instance().cacheListWithKey(type, transferResults);
 				BankConductor.navigateToReviewTransfers(type);
 			}
 

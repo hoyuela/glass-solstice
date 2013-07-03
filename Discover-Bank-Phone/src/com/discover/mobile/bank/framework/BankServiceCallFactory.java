@@ -292,8 +292,16 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return getTransfersCall(null, url);
 	}
 	
+	/**
+	 * Creates a GetTransfersServiceCall for either a transfer type or a specific URL for an action
+	 * such as load more.
+	 * @param transferType the type of transfer to retrieve data for.
+	 * @param loadMoreUrl a specific url to make the request with, if not provided, a transfer type must be provided.
+	 * The transfer type will override the URL if both are provided.
+	 * @return a GetTransfersServiceCall object that is ready to be submitted.
+	 */
 	private static GetTransfersServiceCall getTransfersCall(final TransferType transferType, 
-															final String url) {
+															final String loadMoreUrl) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListTransferDetail>  callback =
@@ -301,7 +309,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 		
-		String callUrl = url;
+		String callUrl = loadMoreUrl;
 		if(transferType != null) {
 			callUrl = BankUrlManager.generateGetTransfersUrl(transferType);
 		}
@@ -312,6 +320,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return call;
 	}
 
+	/**
+	 * Create a GetExternalTransfersAccountsCall that will retrieve a user's external 
+	 * accounts for use in transfer money.
+	 * @return a GetExternalTransferAccountsCall object that will download a user's external account info.
+	 */
 	public static GetExternalTransferAccountsCall createGetExternalTransferAccountsCall() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 

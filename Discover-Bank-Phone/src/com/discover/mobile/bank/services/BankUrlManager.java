@@ -395,7 +395,13 @@ public final class BankUrlManager  {
 	 * @return a query url
 	 */
 	public static String generateGetTransfersUrl(final TransferType type) {
-		return generateGetTransfersUrl(type, OrderBy.Date, SortDirection.Descending);
+		String getTransfersUrl = StringUtility.EMPTY;
+		if(type == TransferType.Scheduled) {
+			getTransfersUrl = generateGetTransfersUrl(type, OrderBy.Date, SortDirection.Ascending);
+		}else {
+			getTransfersUrl = generateGetTransfersUrl(type, OrderBy.Date, SortDirection.Descending);
+		}
+		return getTransfersUrl;
 	}
 	
 	/**
@@ -416,9 +422,8 @@ public final class BankUrlManager  {
 		urlBuilder.append(type.getFormattedQueryParam());
 		urlBuilder.append("&orderby=");
 		urlBuilder.append(order.getFormattedQueryParam());
-//		urlBuilder.append("&dir=");
-//		urlBuilder.append(direction.getFormattedQueryParam());
-		
+		urlBuilder.append("&dir=");
+		urlBuilder.append(direction.getFormattedQueryParam());
 		return urlBuilder.toString();
 	}
 

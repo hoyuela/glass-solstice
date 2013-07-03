@@ -30,8 +30,13 @@ public interface LoadMoreDetail {
 	
 	/**
 	 * 
-	 * @return if the detail is a recurring detail.
+	 * @return if the detail is a recurring transfer.
 	 */
-	boolean isRecurring();
+	boolean isRecurringTransfer();
+	
+	/**
+	 * @return if the detail is an outbound transfer
+	 */
+	boolean isOutboundTransfer();
 	
 }
