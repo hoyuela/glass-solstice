@@ -18,6 +18,9 @@ public final class BankExtraKeys {
 
 	/**Used to send a list of details to the detail screen from the table*/
 	public static final String PRIMARY_LIST = "data1";
+	
+	/**Used to send whether or not the screen is being navigated to from the payee added confirmation screen*/
+	public static final String FROM_PAYEE_CONFIRMATION = "from-payee-confirmation";
 
 	/**Used to send the other list of details to the detail screen from the table*/
 	public static final String SECOND_DATA_LIST = "data2";
