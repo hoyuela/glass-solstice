@@ -64,6 +64,9 @@
             android:layout_weight="1"
             android:clickable="false"
             android:gravity="right"
+            android:maxEms="9"
+            android:ellipsize="end"
+            android:singleLine="true"
             android:lines="1" />
     </LinearLayout>
 

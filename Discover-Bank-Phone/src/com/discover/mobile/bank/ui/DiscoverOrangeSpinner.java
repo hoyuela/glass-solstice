@@ -17,6 +17,16 @@ import com.discover.mobile.bank.R;
  * It works by rotating a canvas by 1/12 of a rotation every 100 milliseconds.
  * It can be started and stopped.
  * 
+ * Can be used in XML by adding an attribute as such.
+ * 
+ * <com.discover.mobile.bank.ui.DiscoverOrangeSpinner
+ * 		android:layout_width="wrap_content"
+ * 		android:layout_height="wrap_content"
+ * 		/>
+ * 
+ * The spinner will automatically start spinning as soon as it is visible in a layout.
+ * Methods to start and stop the animation are available.
+ * 
  * @author scottseward
  *
  */

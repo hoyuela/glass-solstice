@@ -14,8 +14,14 @@ import com.discover.mobile.bank.ui.table.LoadMoreTableHeader;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.common.ui.table.TableHeaderButton;
 import com.discover.mobile.common.utils.StringUtility;
-
-public class BankReviewTransfersFragment extends LoadMoreBaseTable{
+/**
+ * The Fragment that provides an implementation for a LoadMoreBaseTable and presents
+ * types of Transfers in a list to the user.
+ * 
+ * @author scottseward
+ *
+ */
+public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 	private static final long serialVersionUID = 5179969192763576736L;
 
 	@Override
@@ -26,12 +32,19 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 
 		return mainView;
 	}
-
+	
+	/**
+	 * Add buttons to the header of the table so a user can navigate between possible transfer
+	 * tables.
+	 */
 	@Override
 	protected void addButtonsToHeader(final LoadMoreTableHeader header) {
 		header.associateButtonsWithEnum(TransferType.Scheduled, TransferType.Completed, TransferType.Cancelled);
 	}
-
+	
+	/**
+	 * Set the tiles of the columns that are used for the table.
+	 */
 	@Override
 	protected void setTableTitles(final TableTitles titleRow) {
 		titleRow.setLabel1("Date");
@@ -41,7 +54,7 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 
 	@Override
 	public void goToDetailsScreen(final int index) {
-
+		
 	}
 
 	@Override
@@ -49,57 +62,68 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 
 	}
 
+	/**
+	 * Will be called when setting up the Fragment to set the title for the page.
+	 */
 	@Override
 	public int getActionBarTitle() {
 		return R.string.review_transfers_title;
 	}
 
+	/**
+	 * Set the highlighted group location in the sliding menu for Review Transfers.
+	 */
 	@Override
 	public int getGroupMenuLocation() {
 		return BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP;
 	}
 
+	/**
+	 * Set the highlighted section location in the sliding menu for Review Transfers.
+	 */
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.REVIEW_TRANSFERS_SECTION;
 	}
 
-	@Override
-	public void setDefaultList(final Enum<?> defaultList) {
-
-	}
-
-	@Override
-	public Enum<?> getDefaultList() {
-		return null;
-	}
-
+	/**
+	 * Returns a String for a given TransferType to be displayed upon that TransferType list 
+	 * being empty.
+	 */
 	@Override
 	public String getEmptyListMessageForEnum(final Enum<?> listType) {
 		String formattableMessage = getResources().getString(R.string.no_transfers_in_list);
 
 		if(listType != null) {
 			switch((TransferType)listType) {
-			case Cancelled:
-				formattableMessage = String.format(formattableMessage, getResources().getString(R.string.cancelled));
-				break;
-			case Scheduled:
-				formattableMessage = String.format(formattableMessage, getResources().getString(R.string.scheduled));
-				break;
-			case Completed:
-				formattableMessage = String.format(formattableMessage, getResources().getString(R.string.completed));
-				break;
-			default:
-				formattableMessage = removeDoubleSpaces(formattableMessage);
-				break;
+				case Cancelled:
+					formattableMessage = String.format(formattableMessage, getResources().getString(R.string.cancelled));
+					break;
+				case Scheduled:
+					formattableMessage = String.format(formattableMessage, getResources().getString(R.string.scheduled));
+					break;
+				case Completed:
+					formattableMessage = String.format(formattableMessage, getResources().getString(R.string.completed));
+					break;
+				default:
+					//If no ListType was passed into the method, then display a generic "You have no transfers" message.
+					formattableMessage = removeDoubleSpaces(formattableMessage);
+					break;
 			}
 		}else {
+			//If no ListType was passed into the method, then display a generic "You have no transfers" message.
 			formattableMessage = removeDoubleSpaces(formattableMessage);	
 		}
 
 		return formattableMessage;
 	}
 
+	/**
+	 * 
+	 * @param somethingWithDoubleSpaces a String that may contain two spaces grouped together.
+	 * @return a String where all sets of two spaces next to eachother are replaced with a single
+	 * space.
+	 */
 	private String removeDoubleSpaces(final String somethingWithDoubleSpaces) {
 		return String.format(somethingWithDoubleSpaces, StringUtility.EMPTY)
 				.replaceAll(StringUtility.SPACE + StringUtility.SPACE, 
@@ -118,7 +142,6 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 
 	protected void navigate(final TransferType type){
 		if(type != null) {
-			BankReviewTransfersFragment.super.showEmptyTableForServiceCall();
 			BankConductor.navigateToReviewTransfers(type);
 		}
 	}
@@ -131,4 +154,5 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable{
 	public int getButtonResourceArray() {
 		return R.array.bank_review_transfers_buttons;
 	}
+
 }

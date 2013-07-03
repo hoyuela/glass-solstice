@@ -11,11 +11,16 @@ import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.ui.table.LoadMoreDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
+/**
+ * This class holds the data that represents the detailed information about a Transfer.
+ * 
+ * @author scottseward
+ *
+ */
 public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 
 
@@ -46,6 +51,7 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 	public static final String FREQUENCY = "frequency";
 	public static final String DURATION_TYPE = "durationType";
 	public static final String DURATION_VALUE = "durationValue";
+	public static final String DIRECTION = "direction";
 	
 	private static final long serialVersionUID = 3220773738601798470L;
 
@@ -77,6 +83,9 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 
 	@JsonProperty(DURATION_VALUE)
 	public String durationValue;
+	
+	@JsonProperty(DIRECTION)
+	public String direction;
 		
 	/**
 	 * Method used to receive a formatted string based on the frequency of this
@@ -157,6 +166,13 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 		return value;
 	}
 	
+	/**
+	 * 
+	 * @param context
+	 * @param durationType
+	 * @param durationValue
+	 * @return
+	 */
 	public static String getFormattedConfirmationDuration(final Context context, final String durationType, 
 														  final String durationValue) {
 		final String[] durationTypes = context.getResources().getStringArray(R.array.duration_type);
@@ -185,6 +201,9 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 		return value;
 	}
 	
+	/**
+	 * Returns a copy of the current object.
+	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		final TransferDetail clone = new TransferDetail();
@@ -227,6 +246,9 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 		return transferObject;
 	}
 
+	/**
+	 * Returns the date that should be shown on screen.
+	 */
 	@Override
 	public String getDate() {
 		final StringBuilder dateBuilder = new StringBuilder(StringUtility.EMPTY);
@@ -236,6 +258,10 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 		return BankStringFormatter.getFormattedDate(dateBuilder.toString());
 	}
 
+	/**
+	 * Returns a formatted String that contains to and from accounts that a transfer
+	 * took place between.
+	 */
 	@Override
 	public String getDescription() {
 		final StringBuilder descriptionBuilder = new StringBuilder(StringUtility.EMPTY);
@@ -244,7 +270,7 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 			final StringBuilder fromBuilder = new StringBuilder("From: ");
 			fromBuilder.append(fromAccount.nickname);
 			
-			descriptionBuilder.append(addEllipsesIfNeeded(fromBuilder.toString()));
+			descriptionBuilder.append(BankStringFormatter.addEllipsesIfNeeded(fromBuilder.toString()));
 			descriptionBuilder.append(StringUtility.NEW_LINE);
 		}else {
 			Log.e(TAG, "No From Account Exists!");
@@ -254,54 +280,37 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 			final StringBuilder toBuilder = new StringBuilder("To: ");
 			toBuilder.append(toAccount.nickname);
 			
-			descriptionBuilder.append(addEllipsesIfNeeded(toBuilder.toString()));
+			descriptionBuilder.append(BankStringFormatter.addEllipsesIfNeeded(toBuilder.toString()));
 		}else {
 			Log.e(TAG, "No To Account Exits!");
 		}
 		
 		return descriptionBuilder.toString().toUpperCase(Locale.US);
 	}
-	
+
 	/**
-	 * Returns a String that contains 13 a-z characters it does not count colons or spaces and will append an ellipses
-	 * to the end if the length exceeds 13 a-z characters.
-	 * @param text 
-	 * @return
+	 * The amount that should be displayed on screen for this Transfer.
 	 */
-	private String addEllipsesIfNeeded(final String text) {
-		StringBuilder ellipsesBuilder = new StringBuilder(text);
-		final String colon = ":";
-		final int ellipsesLimit = 13;
-
-		//Remove all spaces and colons and count.
-		final int rawInputLength = text.replaceAll(StringUtility.SPACE, StringUtility.EMPTY)
-									   .replaceAll(colon, StringUtility.EMPTY)
-									   .length();
-		
-		final int countOfSpaces = CommonUtils.countOccurancesOfCharInString(StringUtility.SPACE, text);
-		final int countOfColons = CommonUtils.countOccurancesOfCharInString(colon, text);
-		
-		if(rawInputLength >= ellipsesLimit) {
-			ellipsesBuilder = new StringBuilder(StringUtility.EMPTY);
-			ellipsesBuilder.append(text.subSequence(0, ellipsesLimit + countOfSpaces + countOfColons));
-			ellipsesBuilder.append("...");
-		}
-		
-		return ellipsesBuilder.toString();
-	}
-
 	@Override
 	public String getAmount() {
 		final StringBuilder formattedAmount = new StringBuilder(StringUtility.EMPTY);
-		
+
 		formattedAmount.append(BankStringFormatter.convertCentsToDollars(amount.formatted));
 		
 		return formattedAmount.toString();
 	}
 
+	/**
+	 * If this transfer is recurring.
+	 */
 	@Override
-	public boolean isRecurring() {
+	public boolean isRecurringTransfer() {
 		return !Strings.isNullOrEmpty(frequency) &&
 				!frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER);
+	}
+
+	@Override
+	public boolean isOutboundTransfer() {
+		return direction != null && direction.equalsIgnoreCase("outbound");
 	}
 }

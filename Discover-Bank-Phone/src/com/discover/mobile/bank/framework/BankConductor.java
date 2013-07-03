@@ -401,17 +401,30 @@ public final class BankConductor  extends Conductor {
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 	
+	/**
+	 * Navigates to a particular page of the Review Transfers table.
+	 * Performs checking of the cache for the table, if the cache is empty,
+	 * then a service call is performed to get the requested transfer type
+	 * and will resume navigation afterwards.
+	 * 
+	 * If the table is already visible, the table will be notified to update
+	 * itself to the new type and will either perform a service call to
+	 * get the data, or will refresh the table with cached data.
+	 * 
+	 * @param transferType a enumerated type that represents a type of transfer
+	 * that can be reviewed. 
+	 */
 	public static void navigateToReviewTransfers(final TransferType transferType) {
 		if(transferType != null) {
 			final Activity activity = DiscoverActivityManager.getActiveActivity();
 			
 			if(activity instanceof BankNavigationRootActivity) {
 				//Tell current review transfers fragment to change to the new selection.
-				if(isCacheEmptyFor(transferType)) {
+				if(BankUser.instance().isCacheEmptyFor(transferType)) {
 					BankServiceCallFactory.createBankGetTransfersCall(transferType).submit();
 				} else if(!isCurrentFragmentReviewTransfers()) {
 					final ListTransferDetail defaultList = 
-										(ListTransferDetail)BankUser.instance().getCachedActivityMap().get(transferType);
+										(ListTransferDetail)BankUser.instance().getCachedListForKey(transferType);
 					
 					final Bundle args = new Bundle();
 					args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
@@ -432,10 +445,6 @@ public final class BankConductor  extends Conductor {
 				}
 			}
 		}
-	}
-	
-	private static boolean isCacheEmptyFor(final TransferType transferType) {
-		return BankUser.instance().getCachedActivityMap().get(transferType) == null;
 	}
 	
 	private static boolean isCurrentFragmentReviewTransfers() {
