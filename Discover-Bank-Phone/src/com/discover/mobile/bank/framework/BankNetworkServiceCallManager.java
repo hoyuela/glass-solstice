@@ -29,6 +29,7 @@ import com.discover.mobile.bank.services.BackgroundServiceCall;
 import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.EnrollmentServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -46,6 +47,7 @@ import com.discover.mobile.bank.services.auth.RefreshBankSessionCall;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
+import com.discover.mobile.bank.services.deposit.DepositEnrollServiceCall;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
 import com.discover.mobile.bank.services.error.BankErrorSSOResponse;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
@@ -59,6 +61,7 @@ import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
+import com.discover.mobile.bank.services.payment.PaybillsEnrollServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
@@ -67,6 +70,7 @@ import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCal
 import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
+import com.discover.mobile.bank.services.transfer.TransferEnrollServiceCall;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
@@ -387,6 +391,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			handleSuccessLater(sender, result);
 		}
+ else if (sender instanceof EnrollmentServiceCall) {
+			handleEnrollmentService(sender);
+		}
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final Activity activity = DiscoverActivityManager.getActiveActivity();
@@ -687,6 +694,17 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}
 		}
+	}
+
+	private void handleEnrollmentService(final NetworkServiceCall<?> sender) {
+		if (sender instanceof DepositEnrollServiceCall) {
+
+		} else if (sender instanceof PaybillsEnrollServiceCall) {
+
+		} else if (sender instanceof TransferEnrollServiceCall) {
+
+		}
+
 	}
 
 	/**
