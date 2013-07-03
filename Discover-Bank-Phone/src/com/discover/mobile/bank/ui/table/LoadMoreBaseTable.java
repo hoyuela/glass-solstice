@@ -108,6 +108,12 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	public abstract Enum<?> getDefaultList();
 	public abstract void setDefaultList(final Enum<?> defaultList);
 
+	/**
+	 * Get the resource array that should be shown on the buttons
+	 * @return the resource array that will be the labels of the buttons
+	 */
+	public abstract int getButtonResourceArray();
+
 	//-------------------------------------------------- Public Methods --------------------------------------------------
 	/**
 	 * Create the view
@@ -625,9 +631,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	private void asyncHeaderLoad() {
 		final ListView list = getTable().getRefreshableView();
-		header = new LoadMoreTableHeader(getActivity());
+		header = new LoadMoreTableHeader(getActivity(), getButtonResourceArray());
 
-		setTableTitles((TableTitles)header.findViewById(R.id.table_titles));
+		setTableTitles(header.getTableTitles());
 		header.hideSecondaryMessage();
 
 		addHeaderToList(list);
