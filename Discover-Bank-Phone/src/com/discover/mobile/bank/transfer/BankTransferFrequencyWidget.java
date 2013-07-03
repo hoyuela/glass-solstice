@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.transfer;
 
@@ -47,7 +47,7 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 	}
 
 	/**
-	 * This method will take the loaded list of payees and fill
+	 * This method will take the loaded list of frequencies and fill
 	 * the list on the screen with the data.
 	 */
 	private void initLayout() {
@@ -56,87 +56,54 @@ public class BankTransferFrequencyWidget extends BaseFragment{
 		final String[] codes = this.getResources().getStringArray(R.array.transfer_frequency_codes);
 		list.removeAllViews();
 
+		// Create a list item for each frequency and add to the View.
 		for(int i = 0; i < text.length; i++){
 			SimpleChooseListItem item = null;
-			if(text.length == 1) {
-				item = createSingleListItem(text[i], codes[i]);
-				list.addView(item);
-			} else if (i == 0) {
+			
+			if (i == 0) {
 				item = createFirstListItem(text[i], codes[i]);
-				list.addView(item);
-			} else if (i == text.length - 1) {
-				item = createLastListItem(text[i], codes[i]);
-				list.addView(item);
 			} else {
 				item = createListItem(text[i], codes[i]);
-				list.addView(item);
 			}
+			
+			list.addView(item);
 		}
 	}
 
 	/**
-	 * Create a single choose list item for a middle entry - dashed on top, no bottom stroke
+	 * Creates a {@link SimpleChooseListItem} item with a solid stroke on the bottom.
 	 *
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
+	 * @param string - {@link String} text to display.
+	 * @param code - {@link String} value associated with the item.
+	 * @return {@link SimpleChooseListItem} with an {@link OnClickListener} attached.
 	 */
 	private SimpleChooseListItem createListItem(final String string, final String code) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, code, string,
-				R.layout.simple_choose_item_dash);
+				this.getActivity(), null, code, string, R.layout.simple_choose_item_stroke_bottom);
 		item.setOnClickListener(getOnClickListener(string, code));
 		return item;
 	}
-
+	
 	/**
-	 * Create a single choose list item for the bottom entry - solid stroke on bottom
+	 * Creates a {@link SimpleChooseListItem} with a solid stroke on the top and bottom.
 	 *
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
-	 */
-	private SimpleChooseListItem createLastListItem(final String string, final String code) {
-		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, code, string);
-		item.setBackgroundAsBottomItem(getActivity());
-		item.setOnClickListener(getOnClickListener(string, code));
-		return item;
-	}
-
-	/**
-	 * Create a single choose list item for a top entry - solid stroke on top
-	 *
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
+	 * @param string - {@link String} text to display.
+	 * @param code - {@link String} value associated with the item.
+	 * @return {@link SimpleChooseListItem} with an {@link OnClickListener} attached.
 	 */
 	private SimpleChooseListItem createFirstListItem(final String string, final String code) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
 				this.getActivity(), null, code, string);
-		item.setBackgroundAsTopItem(getActivity());
 		item.setOnClickListener(getOnClickListener(string, code));
 		return item;
 	}
 
 	/**
-	 * Create a single choose list item for a single list entry - solid stroke on all sides.
-	 *
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
-	 */
-	private SimpleChooseListItem createSingleListItem(final String string, final String code) {
-		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, code, string);
-		item.setOnClickListener(getOnClickListener(code, string));
-		return item;
-	}
-
-	/**
-	 * Get the click listener for when a list item it clicked
-	 * @param detail - detail that needs to be passed
-	 * @return the click listener for when a list item it clicked
+	 * Creates an {@link OnClickListener} for selecting a frequency.
+	 * 
+	 * @param string - {@link String} displayed on the clicked item.
+	 * @param code - {@link String} value associated with the clicked item.
+	 * @return {@link OnClickListener} to attach to a frequency.
 	 */
 	protected OnClickListener getOnClickListener(final String string, final String code) {
 		return new OnClickListener(){
