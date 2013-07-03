@@ -109,9 +109,6 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	public abstract void showFooterMessage();
 
-	public abstract Enum<?> getDefaultList();
-	public abstract void setDefaultList(final Enum<?> defaultList);
-
 	/**
 	 * Get the resource array that should be shown on the buttons
 	 * @return the resource array that will be the labels of the buttons
@@ -665,7 +662,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 * Should be called after all loading has finished.
 	 */
 	private void makeVisible() {
-		if(DiscoverModalManager.getActiveModal() != null) {
+		
+		if(DiscoverModalManager.getActiveModal() != null && !fragmentAlreadyLoaded()) {
 			DiscoverModalManager.clearActiveModal();
 		}
 
@@ -673,6 +671,21 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		if(currentActivity != null && currentActivity instanceof BaseFragmentActivity) {
 			((BaseFragmentActivity)currentActivity).hideSlidingMenuIfVisible();
 		}
+	}
+		
+	/**
+	 * 
+	 * @return if the fragment containing the laod more base table has already been created.
+	 */
+	private boolean fragmentAlreadyLoaded() {
+		final Bundle args = getArguments();
+		boolean wasRotating = false;
+		
+		if(args != null) {
+			wasRotating = args.getSerializable(CACHED_MAP) != null;
+		}
+		
+		return wasRotating;
 	}
 
 	/**
@@ -829,7 +842,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			View localView = view;
 			ViewHolder holder = null;
 
-			if(listData != null && position < listData.size()) {
+			if(listData != null && position < listData.size() && getActivity() != null) {
 				final LoadMoreDetail detail = listData.get(position);
 
 				/**If the view is null, create a new one*/

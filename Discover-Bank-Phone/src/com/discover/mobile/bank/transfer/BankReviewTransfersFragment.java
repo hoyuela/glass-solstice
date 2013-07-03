@@ -142,7 +142,6 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 
 	protected void navigate(final TransferType type){
 		if(type != null) {
-//			BankReviewTransfersFragment.super.showEmptyTableForServiceCall();
 			BankConductor.navigateToReviewTransfers(type);
 		}
 	}
@@ -155,4 +154,5 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 	public int getButtonResourceArray() {
 		return R.array.bank_review_transfers_buttons;
 	}
+
 }
