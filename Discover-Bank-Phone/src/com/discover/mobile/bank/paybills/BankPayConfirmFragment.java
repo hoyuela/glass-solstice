@@ -98,6 +98,8 @@ public final class BankPayConfirmFragment extends BankOneButtonFragment {
 	protected void onActionButtonClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
 		
+		//in some cases the Select Payee class does not exist on the back stack yet before arriving in make a payment so we 
+		//test if the activity is capable of popping til fragment and if not navigate manually to the page.
 		if (!(activity.popTillFragment(BankSelectPayee.class))) {
 			BankAddManagedPayeeFragment.setCameFromPayBills(false);
 			BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
