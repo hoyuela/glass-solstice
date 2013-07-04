@@ -374,8 +374,13 @@ public class ListItemGenerator {
 			list.add(getAmountCell(results.amount.value));
 			list.add(getSendOnCell(BankStringFormatter.getFormattedDate(results.sendDate)));
 			list.add(getDeliverByCell(BankStringFormatter.getFormattedDate(results.deliverBy)));
-			list.add(getFrequencyDurationCell(TransferDetail.getFormattedConfirmationDuration(context, results.durationType, 
-											  results.durationValue)));
+			
+			if (results.durationType != null) {
+				// Internal to internal transfers do not have a type, & do not need a duration cell.
+				list.add(getFrequencyDurationCell(TransferDetail.getFormattedConfirmationDuration(context,
+						results.durationType, results.durationValue)));
+			}
+			
 			list.add(getFrequencyCell(results.getFormattedFrequency(context)));
 			list.add(getReferenceNumberCell(results.id));
 		}

@@ -175,6 +175,11 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 	 */
 	public static String getFormattedConfirmationDuration(final Context context, final String durationType, 
 														  final String durationValue) {
+		
+		if (durationType == null) {
+			return null;
+		}
+		
 		final String[] durationTypes = context.getResources().getStringArray(R.array.duration_type);
 		final String[] formattedDurations = context.getResources().
 											getStringArray(R.array.duration_type_confirmation_strings);
