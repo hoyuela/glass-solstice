@@ -124,7 +124,10 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		earliestPaymentDate = Calendar.getInstance();
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
-		chosenPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
+		
+		//calendar should display highlighting 2 business days ahead by default
+		addBusinessDays(chosenPaymentDate, 2);
+		
 		dollarAmount.setClickable(false);
 		addView(view);
 	}
@@ -443,14 +446,14 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 
 				/** The Calendar will appear with the date specified by this calendar instance selected */
 				chosenPaymentDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
-
+				
 				/** Check if restoring calendar selection date, -1 means it is initializing */
 				displayedDate = chosenPaymentDate;
 
 			} catch (final Exception ex) {
 				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR), chosenPaymentDate.get(Calendar.MONTH),
 						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-
+				
 				displayedDate = chosenPaymentDate;
 			}
 			
@@ -458,6 +461,22 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), res
 					.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
 					.getHolidays(), createCalendarListener());
+		}
+	}
+	
+	/**
+	 * This method takes an instance of a Calendar and adds "days" business days to it.
+	 * @param cal	the Calendar object to add business days to
+	 * @param days	the # of business days to add to the Calendar
+	 */
+	private void addBusinessDays(final Calendar date, final int days) {
+		//Set the date to the first valid date for a transfer.
+		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(date, BankUser.instance().getHolidays());
+		
+		// Add Business Days
+		for( int i = 0; i < days; i++) {	
+			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
+			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
 		}
 	}
 
