@@ -173,7 +173,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 			editMode = value;
 			return;
 		}
-		Log.d("julian", "edit Mode changed to: "+value);
 		editMode = value;
 		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		
@@ -228,9 +227,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 		 * then toggle the edit mode for this view.
 		 */
 		if( sender.equals(view)  && isEditable()) {
-			boolean edit = !(editableField.getVisibility() == View.VISIBLE);
-			Log.d("julian", "onclick found edit being set to: "+edit);
-			setEditMode(edit);		
+			setEditMode(!(editableField.getVisibility() == View.VISIBLE));		
 		}
 	}
 
