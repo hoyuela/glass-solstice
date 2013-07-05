@@ -126,7 +126,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		chosenPaymentDate = Calendar.getInstance();
 		
 		//calendar should display highlighting 2 business days ahead by default
-		addBusinessDays(chosenPaymentDate, 2);
+		CalendarFragment.addBusinessDays(chosenPaymentDate, 2, BankUser.instance().getHolidays());
 		
 		dollarAmount.setClickable(false);
 		addView(view);
@@ -461,22 +461,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), res
 					.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
 					.getHolidays(), createCalendarListener());
-		}
-	}
-	
-	/**
-	 * This method takes an instance of a Calendar and adds "days" business days to it.
-	 * @param cal	the Calendar object to add business days to
-	 * @param days	the # of business days to add to the Calendar
-	 */
-	private void addBusinessDays(final Calendar date, final int days) {
-		//Set the date to the first valid date for a transfer.
-		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(date, BankUser.instance().getHolidays());
-		
-		// Add Business Days
-		for( int i = 0; i < days; i++) {	
-			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
-			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
 		}
 	}
 

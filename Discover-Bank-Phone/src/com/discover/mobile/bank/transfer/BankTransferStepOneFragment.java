@@ -282,13 +282,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Sets the dateTextView text to display the first valid date based on the current date.
 	 */
 	private void setDateFieldToFirstValidDate(final int earliestPmtOffset, final int textViewOffset) {
+		ArrayList<Date> disabledDays = BankUser.instance().getHolidays();
+		
 		//Set the date to the next available business day, used to determine the minimum selectable date in the calendar
-		earliestPaymentDate = addBusinessDays(Calendar.getInstance(), earliestPmtOffset);
+		earliestPaymentDate = CalendarFragment.addBusinessDays(Calendar.getInstance(), earliestPmtOffset, disabledDays);
 		
 				
 		//Set the dateTextView's text to the new valid date.
 		if(dateTextView != null) {
-			final Calendar textViewDate = addBusinessDays(Calendar.getInstance(), textViewOffset);
+			final Calendar textViewDate = CalendarFragment.addBusinessDays(Calendar.getInstance(), textViewOffset, disabledDays);
 			
 			dateTextView.setText(BankStringFormatter.formatDate(
 					String.valueOf(textViewDate.get(Calendar.YEAR)),
@@ -300,31 +302,6 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				args.putString(DATE, dateTextView.getText().toString());
 			}
 		}
-	}
-	
-	/**
-	 * Method used to add business days (days that are not weekends or holidays)
-	 * to the date provided.
-	 * 
-	 * @param date
-	 *            Reference to a Calendar which holds the date that will be
-	 *            added to.
-	 * @param days
-	 *            Number of business days to add to date
-	 * @return Reference to a Calendar object that will hold the date + number
-	 *         of business days added.
-	 */
-	private Calendar addBusinessDays(final Calendar date, final int days) {
-		//Set the date to the first valid date for a transfer.
-		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(date, BankUser.instance().getHolidays());
-		
-		// Add Business Days
-		for( int i = 0; i < days; i++) {	
-			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
-			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, BankUser.instance().getHolidays());
-		}
-		
-		return tempCal;
 	}
 	
 	/**
