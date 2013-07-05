@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/table_inner_padding"
-            android:layout_marginTop="52dp"
             custom:resourceArry="@array/review_payments_buttons" />
 
         <com.discover.mobile.bank.ui.widgets.StatusMessageView

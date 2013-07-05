@@ -75,7 +75,6 @@ public class LoadMoreTableHeader extends LinearLayout {
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 
 						LinearLayout.LayoutParams.WRAP_CONTENT);
 
-		buttonParams.setMargins(0, formsInnerPadding, 0, 0);
 		statusParams.setMargins(formsInnerPadding, 0, formsInnerPadding, 0);
 		titlesParams.setMargins(0, groupsOfElementsPadding, 0, 0);
 
