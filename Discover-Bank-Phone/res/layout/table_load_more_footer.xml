@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal"
-    android:paddingBottom="@dimen/groups_of_elements_padding" >
+    android:gravity="center_horizontal">
 
     <com.discover.mobile.bank.ui.DiscoverOrangeSpinner
         android:id="@+id/load_more"
@@ -30,8 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/line"
-        android:background="@null"
-        android:layout_marginBottom="@dimen/groups_of_elements_padding"
+        android:background="@null"     
         android:layout_marginLeft="@dimen/forms_inner_padding"
         android:text="@string/activity_go_to_top"
         android:textSize="@dimen/small_copy_min" />
@@ -43,8 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/line"
-        android:background="@null"
-        android:layout_marginBottom="@dimen/groups_of_elements_padding"
+        android:background="@null"       
         android:layout_marginRight="@dimen/forms_inner_padding"
         android:text="@string/privacy_and_terms"
         android:textSize="@dimen/small_copy_min" />
