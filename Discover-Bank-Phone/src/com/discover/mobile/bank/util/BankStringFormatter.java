@@ -184,6 +184,26 @@ public final class BankStringFormatter {
 	}
 	
 	/**
+	 * 
+	 * @return a String where every word (characters separated by spaces) has its first letter capitalized
+	 */
+	public static String capitalizeEveryWordInString(final String needsCapitalization) {
+		final StringBuilder capitalStringBuilder = new StringBuilder();
+		
+		if(!Strings.isNullOrEmpty(needsCapitalization)) {
+			final String[] words = needsCapitalization.split(StringUtility.SPACE);
+			
+			for(int i = 0; i < words.length; ++i) {
+				capitalStringBuilder.append(capitalize(words[i]));
+				capitalStringBuilder.append(StringUtility.SPACE);
+			}
+			
+		}
+		
+		return capitalStringBuilder.toString();
+	}
+	
+	/**
 	 *
 	 * @param formattedDate a String in the format mm/dd/yyyy
 	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ in the eastern time zone

@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
+import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.LoadMoreBaseTable;
 import com.discover.mobile.bank.ui.table.LoadMoreTableHeader;
@@ -52,9 +55,25 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 		titleRow.setLabel3("Amount");
 	}
 
+	/**
+	 * Launches the ViewPager with the selected (index) item visible in the view
+	 * pager.
+	 * 
+	 * @param the index to show first in the ViewPager.
+	 */
 	@Override
 	public void goToDetailsScreen(final int index) {
-		
+		final ListActivityDetail activityDetailList = new ListActivityDetail(getCurrentList(), 
+																				ActivityDetailType.Transfer);;
+		final Bundle bundle = new Bundle();
+		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, index);
+		bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, activityDetailList);
+		bundle.putSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE, getCurrentListKey());
+		bundle.putInt(BankExtraKeys.GROUP_MENU_OVERRIDE, getGroupMenuLocation());
+		bundle.putInt(BankExtraKeys.SECTION_MENU_OVERRIDE, getSectionMenuLocation());
+		bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.funds_transfer_details);
+
+		BankConductor.navigateToActivityDetailScreen(bundle);
 	}
 
 	@Override

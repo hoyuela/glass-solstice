@@ -8,6 +8,7 @@ import java.util.Map;
 import android.content.Context;
 
 import com.discover.mobile.bank.account.TransferDeletionType;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
@@ -84,7 +85,9 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	protected ActivityDetail parseSuccessResponse(final int status, 
 													final Map<String, List<String>> headers, final InputStream body)
 			throws IOException {
-		// TODO Auto-generated method stub
+		
+		BankUser.instance().clearReviewTransfersCache();
+		
 		return null;
 	}
 
