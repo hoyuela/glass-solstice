@@ -425,4 +425,21 @@ public class CalendarFragment extends CaldroidFragment {
 		return isTodayHoliday;
 	}
 
+	/**
+	 * This method takes an instance of a Calendar and adds "days" business days to it.
+	 * @param cal	the Calendar object to add business days to
+	 * @param days	the # of business days to add to the Calendar
+	 * @param disabledDates   this is a list of holidays. they will not be treated as business days.
+	 */
+	public static Calendar addBusinessDays(final Calendar cal, final int days, final ArrayList<Date> disabledDates) {
+		//Set the date to the first valid date for a transfer.
+		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(cal, disabledDates);
+		
+		// Add Business Days
+		for( int i = 0; i < days; i++) {	
+			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
+			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, disabledDates);
+		}
+		return tempCal;
+	}
 }

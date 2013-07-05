@@ -124,7 +124,10 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		earliestPaymentDate = Calendar.getInstance();
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
-		chosenPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
+		
+		//calendar should display highlighting 2 business days ahead by default
+		CalendarFragment.addBusinessDays(chosenPaymentDate, 2, BankUser.instance().getHolidays());
+		
 		dollarAmount.setClickable(false);
 		addView(view);
 	}
@@ -443,14 +446,14 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 
 				/** The Calendar will appear with the date specified by this calendar instance selected */
 				chosenPaymentDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
-
+				
 				/** Check if restoring calendar selection date, -1 means it is initializing */
 				displayedDate = chosenPaymentDate;
 
 			} catch (final Exception ex) {
 				chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR), chosenPaymentDate.get(Calendar.MONTH),
 						chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-
+				
 				displayedDate = chosenPaymentDate;
 			}
 			

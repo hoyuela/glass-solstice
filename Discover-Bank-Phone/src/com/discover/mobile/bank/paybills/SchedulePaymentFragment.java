@@ -181,6 +181,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountTitle = (TextView)view.findViewById(R.id.payment_acct_title);
 		amountEdit = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+		amountEdit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateText = (TextView) view.findViewById(R.id.date_text);
 		dateError = (TextView) view.findViewById(R.id.date_error);
