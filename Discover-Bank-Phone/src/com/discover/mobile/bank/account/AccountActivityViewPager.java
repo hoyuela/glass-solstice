@@ -1,5 +1,7 @@
 package com.discover.mobile.bank.account;
 
+import java.util.Locale;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -12,11 +14,14 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.SpinnerFragment;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -96,7 +101,28 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	 */
 	@Override
 	public int getActionBarTitle() {
-		return R.string.transaction_detail;
+		int titleText = getCustomTitleResourceFromBundle();
+		
+		if(titleText == 0) {
+			titleText = R.string.transaction_detail;
+		}
+		
+		return titleText;
+	}
+	
+	/**
+	 * Gets a custom title bar text from the bundle if provided in the arguments Bundle.
+	 * @return a custom title bar text from the bundle if provided in the arguments Bundle.
+	 */
+	private int getCustomTitleResourceFromBundle() {
+		final Bundle args = getArguments();
+		int titleText = 0;
+		
+		if(args != null) {
+			titleText = args.getInt(BankExtraKeys.TITLE_TEXT);
+		}
+		
+		return titleText;
 	}
 
 	/**
@@ -135,6 +161,7 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 		
 		if(position < activityItems.activities.size()) {
 			final Bundle bundle = new Bundle();
+			addCustomTransferTypeToBundle(bundle);
 			final ActivityDetail detailObject = activityItems.activities.get(position);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
 			bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, getArguments().getBoolean(BankExtraKeys.CATEGORY_SELECTED));
@@ -145,6 +172,21 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 		}
 
 		return pageFragment;
+	}
+	
+	/**
+	 * Adds a TransferType enum object to the bundle of a detail Fragment. This is so the Fragment can
+	 * request a more specific Transfer list from the ListItemGenerator.
+	 * @param bundle the Bundle to add a TransferType enum to.
+	 */
+	private void addCustomTransferTypeToBundle(final Bundle bundle) {
+		final Bundle args = getArguments();
+		if(bundle != null && args != null) {
+			final TransferType type = (TransferType)args.getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
+			if(type != null) {
+				bundle.putSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE, type);
+			}
+		}
 	}
 
 	/**
@@ -173,10 +215,12 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 	 * Return the title for the current fragment.
 	 */
 	@Override
-	protected int getTitleForFragment(final int position) {
+	protected String getTitleForFragment(final int position) {
+		String customFragmentTitle = StringUtility.EMPTY;
 		int title = R.string.transaction;
+		
 		//If the fragment is a spinner fragment, which would mean we are loadig more, return no title.
-		if(activityItems.activities.size() <= position){
+		if(activityItems == null || activityItems.activities == null || activityItems.activities.size() <= position){
 			title = R.string.empty;
 		}else {
 			final String transactionType = activityItems.activities.get(position).type;
@@ -189,7 +233,15 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 					title = R.string.bill_pay;
 				}else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(transactionType)) {
 					final String frequency = activityItems.activities.get(position).frequency;
-					if (!Strings.isNullOrEmpty(frequency) && !frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)) {
+					final boolean isRepeatingTransfer = !Strings.isNullOrEmpty(frequency) && 
+							!frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER);
+					
+					//If the transfer one in the review transfers section of the app, then it needs a custom title.
+					if (isTransferAReviewTransfer()) {
+						final Bundle args = getArguments();
+						final TransferType type = (TransferType)args.getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
+						customFragmentTitle = getFragmentTitleForTransferType(type, isRepeatingTransfer);
+					}else if (isRepeatingTransfer) {
 						title = R.string.repeating_funds_transfer;
 					}else{
 						title = R.string.funds_transfer;
@@ -197,7 +249,48 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 				}
 			}
 		}
-		return title;
+		String titleString = StringUtility.EMPTY;
+		
+		if(!Strings.isNullOrEmpty(customFragmentTitle)) {
+			titleString = customFragmentTitle;
+		}else {
+			titleString = getResources().getString(title);
+		}
+		
+		return titleString;
+	}
+	
+	/**
+	 * 
+	 * @return if the Fragment that is being displayed in the ViewPager is from a Review Transfers Fragment.
+	 */
+	private boolean isTransferAReviewTransfer() {
+		return getGroupMenuLocation() == BankMenuItemLocationIndex.TRANSFER_MONEY_GROUP &&
+				getSectionMenuLocation() == BankMenuItemLocationIndex.REVIEW_TRANSFERS_SECTION;
+	}
+	
+	/**
+	 * Given a specific TransferType and a value for repeating, a String will be returned that represents
+	 * a title for a transfer review fragment.
+	 * @param type the TransferType that is associated with the data being shown.
+	 * @param repeating if the Transfer is a repeating transfer or not.
+	 * @return a title String for this kind of transfer.
+	 */
+	private String getFragmentTitleForTransferType(final TransferType type, final boolean repeating) {
+		final StringBuilder titleBuilder = new StringBuilder();
+		
+		if(type != null) {
+			titleBuilder.append(type.name());
+			titleBuilder.append(StringUtility.SPACE);
+			
+			if(repeating) {
+				titleBuilder.append(getResources().getString(R.string.repeating_transfers));
+			} else {
+				titleBuilder.append(getResources().getString(R.string.transfer));
+			}
+		}
+		
+		return BankStringFormatter.capitalizeEveryWordInString(titleBuilder.toString().toLowerCase(Locale.US));
 	}
 
 	/**
@@ -252,15 +345,38 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 		return false;
 	}
 
+	/**
+	 * 
+	 * @return the index of the Group in the sliding menu that should be highlighted when this Fragment is in view.
+	 */
 	@Override
 	public int getGroupMenuLocation() {
-		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+		int menuSelection = 0;
+		final Bundle args = getArguments();
+		if(args != null && args.getInt(BankExtraKeys.GROUP_MENU_OVERRIDE) != 0) {
+			menuSelection = args.getInt(BankExtraKeys.GROUP_MENU_OVERRIDE);
+		}else {
+			menuSelection = BankMenuItemLocationIndex.ACCOUNT_SUMMARY_GROUP;
+		}
+		
+		return menuSelection;
 	}
 
+	/**
+	 * 
+	 * @return the index of the Section in the sliding menu that should be highlighted when this Fragment is in view.
+	 */
 	@Override
 	public int getSectionMenuLocation() {
-		return BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
-	}
+		int menuSelection = 0;
+		final Bundle args = getArguments();
+		if(args != null && args.getInt(BankExtraKeys.SECTION_MENU_OVERRIDE) != 0) {
+			menuSelection = args.getInt(BankExtraKeys.SECTION_MENU_OVERRIDE);
+		}else {
+			menuSelection = BankMenuItemLocationIndex.ACCOUNT_SUMMARY_SECTION;
+		}
+		
+		return menuSelection;	}
 
 	@Override
 	public void onBackPressed() {

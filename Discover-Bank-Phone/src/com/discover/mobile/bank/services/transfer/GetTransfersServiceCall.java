@@ -48,7 +48,9 @@ public class GetTransfersServiceCall extends
 	
 	private static GetCallParams getGetCallParams(final String url) {
 		return new GetCallParams(url) {{
-				final int timeout = 60;
+			//FIXME When service is known to respond in a reasonable amount of time.
+			//some queries are taking 120+ seconds to complete. iOS is using the same timeout value.
+				final int timeout = 180;
 				//Sets the service call to be cancellable
 				this.setCancellable(true);
 				this.readTimeoutSeconds = timeout;
@@ -86,7 +88,7 @@ public class GetTransfersServiceCall extends
 		final boolean receivedNewList = !isLoadingMore() && transferType != null;
 		
 		if(receivedNewList) {
-			BankUser.instance().cacheListWithKey(transferType, resultsList);
+			BankUser.instance().setCachedListWithKey(transferType, resultsList);
 		} else if (isLoadingMore){
 			appendResultsToCallingList(resultsList);
 		}
@@ -108,12 +110,12 @@ public class GetTransfersServiceCall extends
 					
 			final Enum<?> cacheKey = (Enum<?>)bundle.getSerializable(BankExtraKeys.CACHE_KEY);
 			
-			final boolean hasNewData = callingList != null && cacheKey != null;
 			if(callingList == null) {
 				callingList = (LoadMoreList)bundle.getSerializable(BankExtraKeys.LOAD_MORE_LIST);
 			}
 			
-			if(hasNewData && callingList != null) {
+			final boolean hasNewData = callingList != null && cacheKey != null;
+			if(hasNewData) {
 				bundle.putSerializable(LoadMoreList.APPEND_LIST_KEY, results);
 				callingList.addData(bundle);
 			} else {

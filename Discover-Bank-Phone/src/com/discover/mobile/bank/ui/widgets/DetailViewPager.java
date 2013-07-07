@@ -68,7 +68,7 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * Will return the title for the current Fragment so that transactions can be identified better.
 	 * @return a String resource for the title of the current Fragment/data
 	 */
-	protected abstract int getTitleForFragment(final int position);
+	protected abstract String getTitleForFragment(final int position);
 
 	/**
 	 * If the user is not the primary account holder they will not be able to edit scheduled
@@ -142,12 +142,8 @@ public abstract class DetailViewPager extends BaseFragment implements DynamicDat
 	 * Updates the text of the label to the left of the next/previous buttons.
 	 * @param titleTextResource a String resource to use as the title label for a transaction.
 	 */
-	public void updateTitleLabel(final int titleTextResource) {
-		if( titleTextResource != 0 ) {
-			titleLabel.setText(titleTextResource);
-		} else {
-			titleLabel.setVisibility(View.INVISIBLE);
-		}
+	public void updateTitleLabel(final String titleTextResource) {
+		titleLabel.setText(titleTextResource);
 	}
 
 	/**

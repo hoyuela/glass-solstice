@@ -21,6 +21,7 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.ui.table.TableHeaderButton;
 import com.discover.mobile.common.utils.StringUtility;
@@ -384,6 +385,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		}else{
 			bundle.putSerializable(BankExtraKeys.SECOND_DATA_LIST, posted);
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, scheduled);
+			bundle.putSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE, TransferType.Scheduled);
 		}
 		bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, header.getSelectedCategory());
 		bundle.putInt(BankExtraKeys.SORT_ORDER, header.getSortOrder());

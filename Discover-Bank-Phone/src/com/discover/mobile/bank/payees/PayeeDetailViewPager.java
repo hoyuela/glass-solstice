@@ -12,6 +12,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.ui.widgets.DetailViewPager;
+import com.discover.mobile.common.utils.StringUtility;
 
 public class PayeeDetailViewPager extends DetailViewPager {
 	private ListPayeeDetail detailList;
@@ -152,8 +153,8 @@ public class PayeeDetailViewPager extends DetailViewPager {
 	}
 
 	@Override
-	protected int getTitleForFragment(final int position) {
-		return 0;
+	protected String getTitleForFragment(final int position) {
+		return StringUtility.EMPTY;
 	}
 
 	@Override

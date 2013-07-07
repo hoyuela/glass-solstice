@@ -19,6 +19,7 @@ import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
@@ -76,15 +77,16 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 		List<ViewPagerListItem> items = null;
 		contentTable.removeAllViews();
-		if(ActivityDetail.TYPE_PAYMENT.equals(item.type)) {
+		if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(item.type)) {
 			items = generator.getScheduledBillPayList(item);
 			showDeleteButonForDetailIfNeeded(item, fragmentView);
 		}
-		else if(ActivityDetail.TYPE_DEPOSIT.equals(item.type)) {
+		else if(ActivityDetail.TYPE_DEPOSIT.equalsIgnoreCase(item.type)) {
 			items = generator.getScheduledDepositList(item);
 		}
-		else if(ActivityDetail.TYPE_TRANSFER.equals(item.type)) {
-			items = generator.getScheduledTransferList(item);
+		else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(item.type)) {
+			final TransferType type = (TransferType)getArguments().getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
+			items = generator.getTransferDetailList(item, type);
 
 			final ReceivedUrl recievedUrl = item.links.get(SELF);
 			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString())) {

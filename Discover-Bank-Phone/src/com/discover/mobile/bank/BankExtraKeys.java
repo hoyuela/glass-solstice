@@ -129,6 +129,13 @@ public final class BankExtraKeys {
 	public static final String SEND_MONEY_CARD_FAQ  = "sendMoney";
 
 	public static final String CARD_MODE_KEY = "cmk";
+	
+	/**The type of Transfer that is being reviewed. Likely used when passing a TransferType enum around.*/
+	public static final String REVIEW_TRANSFERS_TYPE = "rtt";
+	
+	/**Override a default menu selection when re-using existing Fragments.*/
+	public static final String GROUP_MENU_OVERRIDE = "gmo";
+	public static final String SECTION_MENU_OVERRIDE = "smo";
 
 	/**
 	 * String used to send data back from the frequency widget

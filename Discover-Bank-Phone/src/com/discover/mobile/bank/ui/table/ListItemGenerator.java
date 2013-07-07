@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.View;
 
 import com.discover.mobile.bank.R;
@@ -14,6 +15,7 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
@@ -93,7 +95,7 @@ public class ListItemGenerator {
 	public ViewPagerListItem getMemoItemCell(final String memo) {
 		String memoText = memo;
 		if(memo == null) {
-			memoText = "";
+			memoText = StringUtility.EMPTY;
 		} 
 
 		listItem = new ViewPagerListItem(context);
@@ -139,15 +141,23 @@ public class ListItemGenerator {
 	public ViewPagerListItem getSendOnCell(final String sendOn) {
 		return getTwoItemCell(R.string.send_on, sendOn);
 	}
+	
+	public ViewPagerListItem getSentOnCell(final String sentOn) {
+		return getTwoItemCell(R.string.sent_on, sentOn);
+	}
 
 	public ViewPagerListItem getDeliverByCell(final String deliverByDate) {
 		return getTwoItemCell(R.string.deliver_by, deliverByDate);
 	}
 
 	public ViewPagerListItem getDeliveredOnCell(final String deliveredOnDate) {
-		return getTwoItemCell(R.string.delivered_on, deliveredOnDate);
+		return getTwoItemCell(R.string.delivered_by, deliveredOnDate);
 	}
-
+	
+	public ViewPagerListItem getCancelledOnCell(final String cancelledOnDate) {
+		return getTwoItemCell(R.string.cancelled_on, cancelledOnDate);
+	}
+	
 	public ViewPagerListItem getFrequencyCell(final String frequency) {
 		ViewPagerListItem item = null;
 		final boolean isOneTimeTransfer = TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequency) ||
@@ -446,7 +456,7 @@ public class ListItemGenerator {
 	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
 	 * @return a list of items which display the information in the ActivityDetail item.
 	 */
-	public List<ViewPagerListItem> getScheduledTransferList(final ActivityDetail item) {
+	public List<ViewPagerListItem> getTransferDetailList(final ActivityDetail item, final TransferType transferType) {
 		final List<ViewPagerListItem> items = new ArrayList<ViewPagerListItem>();
 
 		if(item.fromAccount != null){
@@ -455,20 +465,73 @@ public class ListItemGenerator {
 
 		items.add(getToCell(item.toAccount.nickname));
 		items.add(getAmountCell(item.amount.formatted));
-		items.add(getSendOnCell(BankStringFormatter.getFormattedDate(item.sendDate)));
-		items.add(getDeliverByCell(BankStringFormatter.getFormattedDate(item.deliverBy)));
+		items.add(getSendCellForType(item, transferType));
+		items.add(getDeliverCellForType(item, transferType));
 		items.add(getFrequencyCell(TransferDetail.getFormattedFrequency(context, item.frequency)));
 
-
-		if( !Strings.isNullOrEmpty(item.durationType) && 
-				!Strings.isNullOrEmpty(item.frequency) &&
-				!item.frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER)){
-			items.add(getFrequencyDurationCell(
-					TransferDetail.getFormattedDuration(context, item.durationType)));
+		if(isItemRecurringTransfer(item)) {
+			final String duration = TransferDetail.getFormattedDuration(context, item.durationType);
+			items.add(getFrequencyDurationCell(duration));
 		}
 
 		hideDivider(items);
 		return items;
+	}
+	
+	private boolean isItemRecurringTransfer(final ActivityDetail item) {
+		return !Strings.isNullOrEmpty(item.durationType) && 
+				!Strings.isNullOrEmpty(item.frequency) &&
+				!item.frequency.equalsIgnoreCase(TransferDetail.ONE_TIME_TRANSFER);
+	}
+	
+	/**
+	 * Returns a list item for a send date that is either a Sent On type or a Send On type based on the Transfer Type.
+	 * @param item an ActivityDetail object that contains a sendDate.
+	 * @param transferType the TransferType for this date.
+	 * @return a list item for a send date that is either a Sent On type or a Send On type based on the Transfer Type.
+	 */
+	private ViewPagerListItem getSendCellForType(final ActivityDetail item, final TransferType transferType) {
+		ViewPagerListItem listItem = null;
+
+		final String sendDate = BankStringFormatter.getFormattedDate(item.sendDate);
+		if(transferType == TransferType.Scheduled) {
+			listItem = getSendOnCell(sendDate);
+		} else {
+			listItem = getSentOnCell(sendDate);
+		}
+		
+		return listItem;
+	}
+	
+	/**
+	 * Returns a list item for a deliver date that is either a Deliver On type or a Delivered On
+	 * type based on the Transfer Type.
+	 * @param item an ActivityDetail object that contains a deliverBy date.
+	 * @param transferType the TransferType for this date.
+	 * @return a list item for a send date that is either a Sent On type or a Send On type based on the Transfer Type.
+	 */
+	private ViewPagerListItem getDeliverCellForType(final ActivityDetail item, final TransferType transferType) {
+		ViewPagerListItem listItem = null;
+		
+		final String deliverDate = BankStringFormatter.getFormattedDate(item.deliverBy);
+		switch(transferType) {
+		case Scheduled:
+			listItem = getDeliverByCell(deliverDate);
+			break;
+		case Completed:
+			listItem = getDeliveredOnCell(deliverDate);
+			break;
+		case Cancelled:
+			listItem = getCancelledOnCell(deliverDate);
+			break;
+		default:
+			listItem = getDeliverByCell(deliverDate);
+			Log.e(ListItemGenerator.class.getSimpleName(), 
+					"Unable to get deliver cell for transfer type : " + transferType);
+			break;
+		}
+		
+		return listItem;
 	}
 
 	/**

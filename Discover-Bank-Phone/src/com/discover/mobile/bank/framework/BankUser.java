@@ -18,6 +18,7 @@ import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.LoadMoreList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
@@ -82,6 +83,9 @@ public final class BankUser extends CacheManager implements Serializable {
 
 	/**Boolean set to true when the account list needs to be updated*/
 	private boolean accountOutDated = false; 
+	
+	/**A HashMap used for caching user activity (LoadMoreLists) to avoid repeated unnecessary service calls.*/
+	private final HashMap<Enum<?>, LoadMoreList> cachedActivityMap = new HashMap<Enum<?>, LoadMoreList>();
 
 	/**
 	 * List of listeners notified when a change event occurs on BankUser
@@ -417,18 +421,31 @@ public final class BankUser extends CacheManager implements Serializable {
 		this.accountOutDated = accountOutDated;
 	}
 
-	private final HashMap<Enum<?>, LoadMoreList> cachedActivityMap = new HashMap<Enum<?>, LoadMoreList>();
-	
-	public void cacheListWithKey(final Enum<?> cacheKey, final LoadMoreList listToCache) {
+	/**
+	 * 
+	 * @param cacheKey a key to associate with a LoadMoreList
+	 * @param listToCache a LoadMoreList to put into cache.
+	 */
+	public void setCachedListWithKey(final Enum<?> cacheKey, final LoadMoreList listToCache) {
 		cachedActivityMap.put(cacheKey, listToCache);
 	}
 	
+	/**
+	 * 
+	 * @param cacheKey a key which is expected to map to a LoadMoreList
+	 * @return a LoadMoreList object that is mapped to the provided cacheKey
+	 */
 	public LoadMoreList getCachedListForKey(final Enum<?> cacheKey) {
 		return cachedActivityMap.get(cacheKey);
 	}
 	
-	public boolean isCacheEmptyFor(final Enum<?> transferType) {
-		return cachedActivityMap.get(transferType) == null;
+	/**
+	 * 
+	 * @param cacheKey a key to use when checking the cache map.
+	 * @return if the given key maps to a LoadMoreList in cache.
+	 */
+	public boolean isCacheEmptyFor(final Enum<?> cacheKey) {
+		return cachedActivityMap.get(cacheKey) == null;
 	}
 	
 	/**
@@ -456,5 +473,20 @@ public final class BankUser extends CacheManager implements Serializable {
 		final GetCustomerAccountsServerCall acctsDwnld = BankServiceCallFactory.createGetCustomerAccountsServerCall();
 		acctsDwnld.setIsBackgroundCall(true);
 		acctsDwnld.submit();
+	}
+	
+	/**
+	 * Clears the cache for all TransferTypes in the BankUser object.
+	 */
+	public void clearReviewTransfersCache() {
+		final TransferType[] transferTypes = TransferType.values();
+		
+		if(transferTypes != null && transferTypes.length > 0) {
+			final int numOfTransferTypes = transferTypes.length;
+
+			for(int i = 0; i < numOfTransferTypes; ++i) {
+				this.setCachedListWithKey(transferTypes[i], null);
+			}
+		}
 	}
 }

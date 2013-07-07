@@ -6,6 +6,8 @@
     <string name="cancelled">cancelled</string>
     <string name="completed">completed</string>
     <string name="scheduled">scheduled</string>
+    <string name="transfer">transfer</string>
+    <string name="repeating_transfers">repeating transfers</string>
     
     <string name="no_transfers_in_list">You have no %s transfers.</string>
     

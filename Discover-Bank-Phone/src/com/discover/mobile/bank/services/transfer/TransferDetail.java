@@ -1,7 +1,9 @@
 package com.discover.mobile.bank.services.transfer;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
+import com.discover.mobile.bank.services.json.ReceivedUrl;
 import com.discover.mobile.bank.ui.table.LoadMoreDetail;
 import com.discover.mobile.bank.util.BankStringFormatter;
 import com.discover.mobile.common.utils.StringUtility;
@@ -52,6 +55,7 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 	public static final String DURATION_TYPE = "durationType";
 	public static final String DURATION_VALUE = "durationValue";
 	public static final String DIRECTION = "direction";
+	public static final String LINKS = "links";
 	
 	private static final long serialVersionUID = 3220773738601798470L;
 
@@ -86,6 +90,9 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 	
 	@JsonProperty(DIRECTION)
 	public String direction;
+	
+	@JsonProperty(LINKS)
+	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
 		
 	/**
 	 * Method used to receive a formatted string based on the frequency of this
