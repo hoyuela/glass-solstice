@@ -23,12 +23,16 @@ import com.discover.mobile.bank.deposit.BankDepositWorkFlowStep;
 import com.discover.mobile.bank.error.BankBaseErrorResponseHandler;
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.paybills.BankSelectPayee;
+import com.discover.mobile.bank.paybills.ReviewPaymentsTable;
 import com.discover.mobile.bank.payees.BankAddPayeeConfirmFragment;
+import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.services.AcceptTermsService;
 import com.discover.mobile.bank.services.BackgroundServiceCall;
 import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -47,6 +51,7 @@ import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.auth.strong.CreateStrongAuthRequestCall;
 import com.discover.mobile.bank.services.customer.CustomerServiceCall;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
+import com.discover.mobile.bank.services.deposit.GetDepositEnrollStatus;
 import com.discover.mobile.bank.services.error.BankErrorSSOResponse;
 import com.discover.mobile.bank.services.logout.BankLogOutCall;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
@@ -58,16 +63,20 @@ import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
+import com.discover.mobile.bank.services.payment.GetPaybillsEnrollStatus;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
+import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
 import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.services.transfer.TransferType;
+import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
+import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
@@ -387,6 +396,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			//during a strong auth or after. Have to wait for navigation root to come to foreground first.
 			handleSuccessLater(sender, result);
 		}
+		// Handle response to a EnrollmentServiceCall
+		else if (sender instanceof GetEnrolledStatusServiceCall) {
+			handleGetEnrollmentServiceCall((GetEnrolledStatusServiceCall) sender);
+		}
 		//Download Customer Information if a Login call is successful
 		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
 			final Activity activity = DiscoverActivityManager.getActiveActivity();
@@ -428,6 +441,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				handleAcceptPaymentTerms();
 			} else if( acceptTerms.getEligibility().isDepositsEligibility() ) {
 				handleAcceptDepositsTerms();
+			} else if (acceptTerms.getEligibility().isTransfersEligibility()) {
+				handleAcceptTransferTerms();
 			}
 		}
 		//Navigate to Account Summary landing page once Account Summary is downloaded
@@ -690,6 +705,50 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	}
 
 	/**
+	 * Method to handle a successful Accept Transfers Terms and Conditions
+	 */
+	private void handleAcceptTransferTerms() {
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity();
+		final String currentTitle = activity.getActionBarTitle();
+		final String makeTransfer = activity.getString(R.string.section_title_pay_bills);
+		final String reviewTransfer = activity.getString(R.string.review_transfers_title);
+
+		if (currentTitle.equals(makeTransfer)) {
+			BankConductor.navigateToTransferMoney();
+		} else if (currentTitle.equals(reviewTransfer)) {
+			BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+		}
+	}
+
+	/**
+	 * Method used to determine where to navigate the application after receiving enrollment status for a specific
+	 * service.
+	 * 
+	 * @param sender
+	 *            Reference to the enrollment service call.
+	 */
+	private void handleGetEnrollmentServiceCall(final GetEnrolledStatusServiceCall sender) {
+		if (sender instanceof GetDepositEnrollStatus) {
+			/** Navigates to either to Check Deposit - Select Account Page or Check Deposit - Accept Terms page */
+			BankConductor.navigateToCheckDepositWorkFlow(null, BankDepositWorkFlowStep.SelectAccount);
+		} else if (sender instanceof GetPaybillsEnrollStatus) {
+			if( ((GetPaybillsEnrollStatus) sender).getExtras().containsKey(BankSelectPayee.class.toString()) ) {
+				BankConductor.navigateToPayBills();
+			} else if (((GetPaybillsEnrollStatus) sender).getExtras().containsKey(ReviewPaymentsTable.class.toString())) {
+				BankConductor.navigateToReviewPayments();
+			} else if (((GetPaybillsEnrollStatus) sender).getExtras().containsKey(BankManagePayee.class.toString())) {
+				BankConductor.navigateToManagePayees();
+			}
+		} else if (sender instanceof GetTransferEnrollStatus) {
+			if (((GetTransferEnrollStatus) sender).getExtras().containsKey(BankReviewTransfersFragment.class.toString())) {
+				BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+			} else if (((GetTransferEnrollStatus) sender).getExtras().containsKey(BankTransferStepOneFragment.class.toString())) {
+				BankConductor.navigateToTransferMoney();
+			}
+		}
+	}
+
+	/**
 	 * Method to handle a successful Accept Deposits Terms and Conditions
 	 */
 	public void handleAcceptDepositsTerms() {
@@ -713,11 +772,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * Method to handle a successful Accept Payments Terms and Conditions
 	 */
 	public void handleAcceptPaymentTerms() {
-		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-		final String currentTitle = activity.getActionBarTitle();
+ 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+ 		final String currentTitle = activity.getActionBarTitle();
 		final String payBills = activity.getString(R.string.section_title_pay_bills);
 		final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
-
+		final String makeTransfer = activity.getString(R.string.section_title_pay_bills);
+		final String reviewTransfer = activity.getString(R.string.review_transfers_title);
+ 
 		if(currentTitle.equals(payBills)) {
 			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 		} else if(currentTitle.equals(managePayees)) {
@@ -725,6 +786,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		} else{
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+			if (currentTitle.equals(makeTransfer)) {
+				BankConductor.navigateToTransferMoney();
+			} else if (currentTitle.equals(reviewTransfer)) {
+				BankConductor.navigateToReviewPayments();
+			}
 		}
 	}
 

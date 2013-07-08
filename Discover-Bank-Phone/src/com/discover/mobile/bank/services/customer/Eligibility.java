@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
 
@@ -57,6 +58,12 @@ public class Eligibility implements Serializable {
 	@JsonProperty("reasonCode")
 	public String reasonCode;
 	/**
+	 * Flag used to determine whether this eligibility object has been syncrhornized with values from the server.
+	 */
+	@JsonIgnore
+	public boolean updated;
+
+	/**
 	 * Contains Bank web-service API Resource links
 	 */
 	@JsonProperty("links")
@@ -87,28 +94,28 @@ public class Eligibility implements Serializable {
 	 * 
 	 * @return True if customer is eligible for a product, false otherwise
 	 */
-	public boolean isEnrolled() {
+	public final boolean isEnrolled() {
 		return enrolled;
 	}
 	/**
 	 * 
 	 * @return True if customer is enrolled in a product, false otherwise.
 	 */
-	public boolean isEligible() {
+	public final boolean isEligible() {
 		return eligible;
 	}
 	/**
 	 * 
 	 * @return Returns the url string for enroll stored in the eligibility object.
 	 */
-	public String getEnroll() {
+	public final String getEnroll() {
 		return BankUrlManager.getUrl(links, ENROLL_KEY);
 	}
 	/**
 	 * 
 	 * @return Returns the url string for enroll stored in the eligibility object.
 	 */
-	public String getEnrollmentUrl() {
+	public final String getEnrollmentUrl() {
 		return BankUrlManager.getUrl(links, ENROLLMENT_KEY);
 	}
 	
@@ -116,7 +123,7 @@ public class Eligibility implements Serializable {
 	 * 
 	 * @return Returns the url string for terms store in the eligibility object.
 	 */
-	public String getTermsUrl() {
+	public final String getTermsUrl() {
 		final StringBuilder urlBuilder = new StringBuilder();
 		urlBuilder.append(BankUrlManager.getBaseUrl());
 		
@@ -144,7 +151,7 @@ public class Eligibility implements Serializable {
 	 * 
 	 * @return Returns true if eligibility objects is meant for transfer services, false otherwise.
 	 */
-	public boolean isTransfersEligibility() {
+	public final boolean isTransfersEligibility() {
 		return ( !Strings.isNullOrEmpty(this.service) && service.equals("transfers"));
 	}
 	
@@ -152,7 +159,7 @@ public class Eligibility implements Serializable {
 	 * 
 	 * @return  Returns true if eligibility objects is meant for deposits services, false otherwise.
 	 */
-	public boolean isDepositsEligibility() {
+	public final boolean isDepositsEligibility() {
 		return ( !Strings.isNullOrEmpty(this.service) && service.equals("deposits"));
 	}
 	
@@ -160,7 +167,7 @@ public class Eligibility implements Serializable {
 	 * 
 	 * @return  Returns true if eligibility objects is meant for payment services, false otherwise.
 	 */
-	public boolean isPaymentsEligibility() {
+	public final boolean isPaymentsEligibility() {
 		return ( !Strings.isNullOrEmpty(this.service) && service.equals("payments"));
 	}
 	
@@ -168,8 +175,27 @@ public class Eligibility implements Serializable {
 	 * @return Returns true if reasonCode is equal to CUSTOMER_BLOCKED_REASON which means customer is forbidden
 	 *         to use the service specified in service field, false otherwise.
 	 */
-	public boolean isUserBlocked() {
+	public final boolean isUserBlocked() {
 		return !eligible && (!Strings.isNullOrEmpty(reasonCode) && reasonCode.equals(CUSTOMER_BLOCKED_REASON));
 	}
 
+	/**
+	 * Method used to determine whether this object has been updated with the eligibility values on the server.
+	 * 
+	 * @return True if updated, false otherwise
+	 */
+	public boolean isUpdated() {
+		return updated;
+	}
+
+	/**
+	 * Method used to update the flag used to determine whether this object has been updated with the eligibility values
+	 * on the server.
+	 * 
+	 * @param updated
+	 *            True if it has been updated, false otherwise.
+	 */
+	public void setUpdated(final boolean updated) {
+		this.updated = updated;
+	}
 }

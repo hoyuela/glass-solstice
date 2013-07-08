@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="transfers_page_title">Welcome to Money Transfers</string>
     <string name="transfer_money">Transfer Money</string>
     <string name="schedule_transfer">Schedule Transfer</string>
     <string name="schedule_another_transfer">Schedule Another Transfer</string>
