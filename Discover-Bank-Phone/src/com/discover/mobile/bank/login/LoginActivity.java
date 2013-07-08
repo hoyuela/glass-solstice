@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
