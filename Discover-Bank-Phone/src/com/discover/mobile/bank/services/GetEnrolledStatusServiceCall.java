@@ -25,9 +25,10 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  * @author henryoyuela
  * 
  */
-public abstract class EnrollmentServiceCall extends BankJsonResponseMappingNetworkServiceCall<Eligibility> {
+public abstract class GetEnrolledStatusServiceCall extends BankJsonResponseMappingNetworkServiceCall<Eligibility> {
 
 	private final TypedReferenceHandler<Eligibility> handler;
+	private final Eligibility eligibility;
 
 	/**
 	 * 
@@ -36,7 +37,7 @@ public abstract class EnrollmentServiceCall extends BankJsonResponseMappingNetwo
 	 * @param callback
 	 *            Reference to the Handler for the response
 	 */
-	public EnrollmentServiceCall(final Context context, final AsyncCallback<Eligibility> callback, final Eligibility eligibility) {
+	public GetEnrolledStatusServiceCall(final Context context, final AsyncCallback<Eligibility> callback, final Eligibility eligibility) {
 
 		super(context, new GetCallParams(eligibility.getEnrollmentUrl()) {
 			{
@@ -56,6 +57,8 @@ public abstract class EnrollmentServiceCall extends BankJsonResponseMappingNetwo
 			}
 		}, Eligibility.class);
 
+		this.eligibility = eligibility;
+
 		handler = new StrongReferenceHandler<Eligibility>(callback);
 	}
 
@@ -67,12 +70,13 @@ public abstract class EnrollmentServiceCall extends BankJsonResponseMappingNetwo
 	@Override
 	protected Eligibility parseSuccessResponse(final int status, final Map<String, List<String>> headers, final InputStream body) throws IOException {
 
-		final Eligibility eligibility = super.parseSuccessResponse(status, headers, body);
+		final Eligibility newEligibility = super.parseSuccessResponse(status, headers, body);
 
-		/** Cache Eligibility in Customer Object */
-		final Eligibility cachedValue = BankUser.instance().getCustomerInfo().getEligibilityValues(eligibility.service);
-		cachedValue.enrolled = eligibility.enrolled;
+		/** Update cache Eligibility in Customer Object */
+		final Eligibility cachedEligibility = BankUser.instance().getCustomerInfo().getEligibilityValues(eligibility.service);
+		cachedEligibility.enrolled = newEligibility.enrolled;
+		cachedEligibility.updated = true;
 
-		return eligibility;
+		return cachedEligibility;
 	}
 }
