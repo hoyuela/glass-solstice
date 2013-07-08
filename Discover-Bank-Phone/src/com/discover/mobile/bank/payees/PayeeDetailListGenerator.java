@@ -174,10 +174,12 @@ final public class PayeeDetailListGenerator  {
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
+		//When creating a new payee, the phone number input 
+		//appears inline with the label.  After adding, on the confirm
+		//screen all fields appear below their label
 		if ( singleLine ) {
 			phoneNumber.makeSingleLine();
 		}
-		//phoneNumber.getMiddleLabel().setVisibility(View.GONE);
 		return phoneNumber;
 	}
 	
