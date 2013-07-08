@@ -226,8 +226,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
-		//set the imeoption for the password editext
-		passField.setImeOptions(EditorInfo.IME_ACTION_GO);
 	 }
 	
 	/**
