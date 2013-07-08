@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ResultReceiver;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -226,8 +227,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
+		//You must set the IME Option in java so that the "GO" appears on the keyboard -julian
+		passField.setImeOptions(EditorInfo.IME_ACTION_GO | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 	 }
-	
+	 
 	/**
 	 * This method fixes an issue where, in a signed build, when the app
 	 * is resumed, LoginActivity can be re-created when not needed, and
@@ -779,11 +782,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			Log.e(TAG, "Unable to cache last attempted login");
 		}
 		
-		//Checking if imm is null before trying to hide the keyboard. This was causing a
-		//null pointer exception in landscape.
-		if (imm != null){
-			imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		}
+		InputMethodManager mngr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		mngr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		//Clear the last error that occurred
 		setLastError(0);
 		login();
