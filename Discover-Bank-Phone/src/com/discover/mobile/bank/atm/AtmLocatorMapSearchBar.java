@@ -163,7 +163,8 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		searchBox.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(final TextView arg0, final int arg1, final KeyEvent arg2) {
-				if (arg1 == EditorInfo.IME_ACTION_DONE) {
+				if (arg1 == EditorInfo.IME_ACTION_DONE || arg1 == EditorInfo.IME_ACTION_SEARCH) {
+					clearSearchFocus();
 					if(null != fragment){
 						fragment.performSearch(searchBox.getText().toString());
 					}
