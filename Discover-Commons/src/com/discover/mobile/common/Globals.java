@@ -646,7 +646,7 @@ public final class Globals {
 		try {
 			key = EncryptionUtil.encrypt(FIRST_LOGIN_KEY + StringUtility.PERIOD + getCurrentUser());
 		} catch (final Exception e) {
-			return StringUtility.EMPTY;
+			key =  StringUtility.EMPTY;
 		}
 		return key;
 	}
