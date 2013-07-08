@@ -162,6 +162,7 @@ final public class PayeeDetailListGenerator  {
 	
 	// TEMP this may (and should) be replaced with the server formatting the phone numbers.
 	//taken from ListItemGenerator
+	/**Added this in so phone number appears in consistent format across the app*/
 	private static final int PHONE_DASH_INDEX = 3;
 	private static final int PHONE_LENGTH_MIN = 5;
 	private static String badPhoneNumberFormatter(final String phoneNumber) {
@@ -331,7 +332,6 @@ final public class PayeeDetailListGenerator  {
 	 */
 	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final PayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
-		Log.d("julian", "getConfirmedPayeeDetailList() item is: "+item.verified);
 		if( item.verified ) {
 			/**Add Payee Name*/
 			items.add(createName(context, item.name, item.verified,false));
