@@ -300,7 +300,7 @@ public final class BankConductor  extends Conductor {
 			launchActivity(activity, BankNavigationRootActivity.class);
 
 			//Check to see if this is the first time the user has logged in.
-		} else if( !(activity instanceof WhatsNewActivity) ){//&& Globals.isFirstLoginForUser(activity)){
+		} else if( !(activity instanceof WhatsNewActivity) && Globals.isFirstLoginForUser(activity)){
 			launchActivity(activity, WhatsNewActivity.class);
 
 			//If the navigation root is not showing launch it.

@@ -22,7 +22,7 @@
     <!-- List of drawables that will be displayed in the view pager -->
     <array name="bank_whats_new_drawables">
         <item>@drawable/whats_new_pincluster</item>
-        <item>@drawable/whats_new_singletapsearch</item>
+        <item>@drawable/whats_new_tapsearch</item>
     </array>
     
 </resources>

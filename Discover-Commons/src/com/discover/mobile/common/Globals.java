@@ -642,6 +642,12 @@ public final class Globals {
 	 * @return the key to retrieve if the user has already logged in from the shared preferences.
 	 */
 	private static String getFirstLoginKey(){
-		return FIRST_LOGIN_KEY + StringUtility.PERIOD + getCurrentUser();
+		String key;
+		try {
+			key = EncryptionUtil.encrypt(FIRST_LOGIN_KEY + StringUtility.PERIOD + getCurrentUser());
+		} catch (final Exception e) {
+			return StringUtility.EMPTY;
+		}
+		return key;
 	}
 }
