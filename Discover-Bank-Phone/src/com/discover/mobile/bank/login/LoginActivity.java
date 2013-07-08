@@ -446,8 +446,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	public void showSessionExpired() {
 		final SimpleContentModal sessionExpired = new SimpleContentModal(getContext(), R.string.session_expired_header, 
-				  																 R.string.session_expired_body, 
-				  																 R.string.session_expired_button);
+				  																 	   R.string.session_expired_body, 
+				  																       R.string.session_expired_button);
+		sessionExpired.getHelpFooter().setToDialNumberOnClick(getString(R.string.bank_need_help_number_text));
 		sessionExpired.getButton().setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
