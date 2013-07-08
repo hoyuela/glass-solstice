@@ -38,16 +38,23 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/page_indicators"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/header" />
 
     <LinearLayout
-        android:id="@+id/page_indicators"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/bank_whats_new_footer_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <LinearLayout
+            android:id="@+id/page_indicators"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/bank_whats_new_footer_height"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal" />
+    </LinearLayout>
 
 </RelativeLayout>

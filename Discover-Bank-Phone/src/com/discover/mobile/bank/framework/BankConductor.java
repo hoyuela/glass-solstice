@@ -407,7 +407,7 @@ public final class BankConductor  extends Conductor {
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
+
 	/**
 	 * Navigates to a particular page of the Review Transfers table.
 	 * Performs checking of the cache for the table, if the cache is empty,
@@ -469,14 +469,14 @@ public final class BankConductor  extends Conductor {
 			serviceCall.submit();
 		}
 	}
-	
+
 	private static boolean isCurrentFragmentReviewTransfers() {
 		boolean isCurrentFragmentReviewTransfers = false;
-		
+
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
-			
+
 			isCurrentFragmentReviewTransfers = 
 					navActivity.getCurrentContentFragment() instanceof BankReviewTransfersFragment;
 		}
@@ -1223,29 +1223,29 @@ public final class BankConductor  extends Conductor {
 					case SelectAmount:
 						fragment = new BankDepositSelectAmount();
 						break;
-					// Navigate user to first step in check deposit work-flow
+						// Navigate user to first step in check deposit work-flow
 					case SelectAccount:
 						fragment = new BankDepositSelectAccount();
 						break;
-					// Navigate user to page where they can review their deposit
+						// Navigate user to page where they can review their deposit
 					case ReviewDeposit:
 						fragment = new CaptureReviewFragment();
 						break;
-					// Navigate user to final step in Check deposit work-flow
+						// Navigate user to final step in Check deposit work-flow
 					case Confirmation:
 						fragment = new BankDepositConfirmFragment();
 						// Clear the accounts
 						BankUser.instance().setAccountOutDated(true);
 						break;
-					// Navigate to timeout error if check deposit error fragment flag is found in bundle
+						// Navigate to timeout error if check deposit error fragment flag is found in bundle
 					case DepositError:
 						fragment = new CheckDepositErrorFragment();
 						break;
-					// Navigate to duplicate error fragment if boolean flag is found in bundle
+						// Navigate to duplicate error fragment if boolean flag is found in bundle
 					case DuplicateError:
 						fragment = new DuplicateCheckErrorFragment();
 						break;
-					// Navigate to forbidden error fragment if user receives a 403 error code
+						// Navigate to forbidden error fragment if user receives a 403 error code
 					case ForbiddenError:
 						fragment = new BankDepositForbidden();
 						break;
@@ -1753,12 +1753,12 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToPayBills() {
 		final Customer customer = BankUser.instance().getCustomerInfo();
-		
+
 		/** verify if the customer's eligibility status for pay bills has been updated for the session*/
 		if( customer.getPaymentsEligibility().isUpdated() ) {			
 			final boolean isEligible = customer.isPaymentsEligible();
 			final boolean isEnrolled = customer.isPaymentsEnrolled();
-			
+
 			if (!isEligible) {
 				BankConductor.navigateToPayBillsLanding();
 			} else if (isEligible && !isEnrolled) {
@@ -1888,7 +1888,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToTransferMoney() {
 		Activity activity = DiscoverActivityManager.getActiveActivity();
-		final boolean isLoggedIn = (activity != null);
+		final boolean isLoggedIn = activity != null;
 		final boolean isBankNavigationRootActivityActive = activity instanceof BankNavigationRootActivity;
 
 		/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
