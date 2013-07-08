@@ -531,7 +531,7 @@ public final class BankConductor  extends Conductor {
 
 		SimpleContentModal modal = null;
 
-		if(activity != null && activity instanceof NavigationRootActivity ) {
+		if(activity instanceof NavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			modal = new SimpleContentModal(activity, title, body, R.string.continue_text);
 
@@ -770,7 +770,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		//Fetch the current activity
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( activity instanceof BankNavigationRootActivity ) {
 			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
 			final GetPaymentsServiceCall call = BankServiceCallFactory.createGetPaymentsServerCall(url);
 			call.setWasDeleted(true);
@@ -806,7 +806,7 @@ public final class BankConductor  extends Conductor {
 	 */
 	public static void navigateToActivityDetailFromDelete(final Bundle bundle) {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-		if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+		if(currentActivity instanceof BankNavigationRootActivity) {
 			//Clear dat cache/
 			BankUser.instance().setScheduled(null);
 			BankUser.instance().getCurrentAccount().scheduled = null;
@@ -851,7 +851,7 @@ public final class BankConductor  extends Conductor {
 				activity.finish();
 			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
-			else if(currentActivity != null && currentActivity instanceof NavigationRootActivity) {
+			else if(currentActivity instanceof NavigationRootActivity) {
 				final Fragment provideFeedback = new ProvideFeedbackFragment();
 				provideFeedback.setArguments(bundle);
 				((NavigationRootActivity) currentActivity).makeFragmentVisible(provideFeedback);
@@ -1132,7 +1132,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			navActivity.closeDialog();
 			final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
@@ -1168,7 +1168,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( activity instanceof BankNavigationRootActivity ) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
@@ -1197,7 +1197,7 @@ public final class BankConductor  extends Conductor {
 		if (customer.getDepositsEligibility().isUpdated()) {
 
 			/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
-			if (activity != null && activity instanceof BankNavigationRootActivity) {
+			if (activity instanceof BankNavigationRootActivity) {
 				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 				navActivity.closeDialog();
 
@@ -1278,7 +1278,7 @@ public final class BankConductor  extends Conductor {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( activity instanceof BankNavigationRootActivity ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final SimpleContentModal modal = new SimpleContentModal(activity,
 					R.string.bank_callmodal_title,

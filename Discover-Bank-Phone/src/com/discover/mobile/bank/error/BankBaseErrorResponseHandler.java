@@ -278,7 +278,7 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 			mErrorHandler.handleGenericError(httpErrorCode);
 			return true;
 		case HttpURLConnection.HTTP_CONFLICT:
-			if(sender != null && sender instanceof CreatePaymentCall) {
+			if(sender instanceof CreatePaymentCall) {
 				final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 				final BaseFragment f = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				if(f instanceof SchedulePaymentFragment) {

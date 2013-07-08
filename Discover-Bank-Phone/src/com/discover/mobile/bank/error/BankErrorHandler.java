@@ -242,7 +242,7 @@ public final class BankErrorHandler implements ErrorHandler {
 	public void updateModalInfo(final SimpleContentModal modal) {
 		/**Update footer in modal to use phone number provided in error response*/
 		final ErrorResponse<?> errorResponse = BankNetworkServiceCallManager.getInstance().getLastError();
-		if( errorResponse != null &&  errorResponse instanceof BankErrorResponse ) {
+		if( errorResponse instanceof BankErrorResponse ) {
 			final BankErrorResponse bankErrorResponse = (BankErrorResponse) errorResponse;
 			final String phoneNumber = bankErrorResponse.getPhoneNumber();
 			final String title = bankErrorResponse.getTitle();
@@ -395,7 +395,7 @@ public final class BankErrorHandler implements ErrorHandler {
 		boolean handled = false;
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
+		if( activity instanceof BankNavigationRootActivity ) {
 			final NetworkServiceCall<?> lastCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
@@ -444,11 +444,10 @@ public final class BankErrorHandler implements ErrorHandler {
 		/**Verify an error message is provided*/
 		if( !Strings.isNullOrEmpty(msgErrResponse.getErrorMessage()) ) {
 			/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-			if( activity != null && activity instanceof BankNavigationRootActivity ) {
+			if( activity instanceof BankNavigationRootActivity ) {
 				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
 
-				if( navActivity.getCurrentContentFragment() != null &&
-						navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
+				if( navActivity.getCurrentContentFragment() instanceof BankErrorHandlerDelegate ) {
 
 					final BankErrorHandlerDelegate errorHandler = (BankErrorHandlerDelegate)navActivity.getCurrentContentFragment();
 
@@ -582,7 +581,7 @@ public final class BankErrorHandler implements ErrorHandler {
 	public void handleNoConnection() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if( activity != null && activity instanceof ErrorHandlerUi ) {
+		if( activity instanceof ErrorHandlerUi ) {
 			// Create a one button modal to notify the user that they are leaving the application
 			final SimpleContentModal modal = new SimpleContentModal(activity,
 					R.string.bank_network_connection_error_title,
