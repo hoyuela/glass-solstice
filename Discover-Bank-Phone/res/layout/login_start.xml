@@ -109,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_id_label"
                         android:hint="@string/empty"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textNoSuggestions"
                         android:maxLength="16"
                         android:textCursorDrawable="@null" />
@@ -136,7 +136,7 @@
                         android:inputType="textPassword"
                         android:maxLength="32"
                         android:textCursorDrawable="@null"
-                        android:imeOptions="actionGo" />
+                        android:imeOptions="actionGo|flagNoExtractUi" />
 					
 					<!-- toggle switch label and compound button -->
 					<RelativeLayout
