@@ -145,7 +145,6 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 
 		/**Check if a socket timeout exception occurred*/
 		if( exceptionHandler.getLastException() != null &&
-				exceptionHandler.getLastSender() != null &&
 				exceptionHandler.getLastSender() instanceof SubmitCheckDepositCall ) {
 
 			/**Clear the last exception occurred to avoid the back press not working*/
@@ -168,8 +167,7 @@ public class CaptureReviewFragment extends BankDepositBaseFragment implements Ba
 		final NetworkServiceCall<?> networkServiceCall = BankNetworkServiceCallManager.getInstance().getLastServiceCall();
 
 		/**Verify that network service call is not null, was a check deposit submit, and this transaction is not complete*/
-		if (networkServiceCall != null && 
-				networkServiceCall instanceof SubmitCheckDepositCall ) {	
+		if (networkServiceCall instanceof SubmitCheckDepositCall ) {	
 
 			final SubmitCheckDepositCall submitDepositCall = (SubmitCheckDepositCall)networkServiceCall;
 

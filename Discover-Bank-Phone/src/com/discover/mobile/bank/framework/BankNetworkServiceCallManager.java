@@ -976,7 +976,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		boolean ret = false;
 
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		if( activity != null && activity instanceof SyncedActivity) {
+		if( activity instanceof SyncedActivity) {
 			ret = ((SyncedActivity)activity).isReady();
 		}
 
@@ -1001,7 +1001,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				final int fiveSeconds = 5000;
 				while( !isReady ) {
 					final Activity activity = DiscoverActivityManager.getActiveActivity();
-					if( activity != null && activity instanceof SyncedActivity) {
+					if( activity instanceof SyncedActivity) {
 						Log.v("Discover", "Waiting...");
 						isReady = ((SyncedActivity)activity).waitForResume(fiveSeconds);
 					}

@@ -184,7 +184,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			final Fragment fragment = ((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager()
 					.findFragmentByTag(CalendarFragment.TAG);
 			/** Verify calendar was being shown before recreating listeners */
-			if (fragment != null && fragment instanceof CalendarFragment && bundle.getBoolean(DISPLAY_CALENDAR, false)) {
+			if (fragment instanceof CalendarFragment && bundle.getBoolean(DISPLAY_CALENDAR, false)) {
 				calendarFragment = (CalendarFragment) fragment;
 				calendarFragment.setCalendarListener(createCalendarListener());
 			}

@@ -508,7 +508,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 */
 	private void resetCalendarEventListener() {
 	    final Fragment fragment = getFragmentManager().findFragmentByTag(CalendarFragment.TAG);
-	    if( fragment != null && fragment instanceof CalendarFragment) {
+	    if( fragment instanceof CalendarFragment) {
 	    	calendarFragment = (CalendarFragment) fragment;
 	    	calendarFragment.setCalendarListener(createCalendarListener());
 	    }

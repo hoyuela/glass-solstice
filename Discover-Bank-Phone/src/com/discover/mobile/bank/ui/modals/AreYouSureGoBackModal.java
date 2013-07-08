@@ -150,7 +150,7 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 	private void performBackstackPopping() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		if(activity != null && activity instanceof BankNavigationRootActivity) {
+		if(activity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)activity;
 			
 			if(popTillFragment != null) {
