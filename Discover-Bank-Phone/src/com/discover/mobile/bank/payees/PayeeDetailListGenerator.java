@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.telephony.PhoneNumberUtils;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -160,21 +161,7 @@ final public class PayeeDetailListGenerator  {
 	}
 	
 	
-	// TEMP this may (and should) be replaced with the server formatting the phone numbers.
-	//taken from ListItemGenerator
-	/**Added this in so phone number appears in consistent format across the app*/
-	private static final int PHONE_DASH_INDEX = 3;
-	private static final int PHONE_LENGTH_MIN = 5;
-	private static String badPhoneNumberFormatter(final String phoneNumber) {
-		if(phoneNumber == null) {
-			return "";
-		} else if (phoneNumber.length() < PHONE_LENGTH_MIN) {
-			return phoneNumber;
-		} else {
-			return phoneNumber.subSequence(0, PHONE_DASH_INDEX) + StringUtility.DASH 
-					+ badPhoneNumberFormatter(phoneNumber.substring(PHONE_DASH_INDEX));
-		}
-	}
+	
 	
 	private static BankEditDetail createPhoneNumber(final Context context,
 			final String phone, final boolean isEditable, final boolean singleLine) {
@@ -182,7 +169,7 @@ final public class PayeeDetailListGenerator  {
 		/**Add Phone Number, Validation Must be a 10 digit #  and Invalid characters for a payee nickname: <>;"[]{} */
 		final BankPhoneDetail phoneNumber =  new BankPhoneDetail(context);
 		
-		if(phone != null) {	phoneNumber.setText(badPhoneNumberFormatter(phone));}
+		if(phone != null) {	phoneNumber.setText(PhoneNumberUtils.formatNumber(phone));}
 		phoneNumber.getTopLabel().setText(R.string.bank_payee_phone_number);
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
