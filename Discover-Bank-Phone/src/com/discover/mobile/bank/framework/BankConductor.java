@@ -66,20 +66,26 @@ import com.discover.mobile.bank.payees.BankManagePayee;
 import com.discover.mobile.bank.payees.BankSearchSelectPayeeFragment;
 import com.discover.mobile.bank.payees.PayeeDetailViewPager;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
+import com.discover.mobile.bank.services.customer.Customer;
+import com.discover.mobile.bank.services.deposit.GetDepositEnrollStatus;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
 import com.discover.mobile.bank.services.payee.SearchPayeeServiceCall;
+import com.discover.mobile.bank.services.payment.GetPaybillsEnrollStatus;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
+import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
@@ -88,6 +94,7 @@ import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
 import com.discover.mobile.bank.transfer.BankTransferNotEligibleFragment;
 import com.discover.mobile.bank.transfer.BankTransferSelectAccount;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
+import com.discover.mobile.bank.transfer.BankTransferTermsFragment;
 import com.discover.mobile.bank.ui.fragments.BankTextViewFragment;
 import com.discover.mobile.bank.ui.fragments.BankUnderDevelopmentFragment;
 import com.discover.mobile.bank.ui.fragments.BankWebViewFragment;
@@ -400,51 +407,76 @@ public final class BankConductor  extends Conductor {
 		final BankPayeeNotEligibleFragment fragment = new BankPayeeNotEligibleFragment();
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
-	
-	public static void navigateToReviewTransfers(final TransferType transferType) {
-		if(transferType != null) {
-			final Activity activity = DiscoverActivityManager.getActiveActivity();
-			
-			if(activity instanceof BankNavigationRootActivity) {
-				//Tell current review transfers fragment to change to the new selection.
-				if(isCacheEmptyFor(transferType)) {
-					BankServiceCallFactory.createBankGetTransfersCall(transferType).submit();
-				} else if(!isCurrentFragmentReviewTransfers()) {
-					final ListTransferDetail defaultList = 
-										(ListTransferDetail)BankUser.instance().getCachedActivityMap().get(transferType);
-					
-					final Bundle args = new Bundle();
-					args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
-					args.putSerializable(BankExtraKeys.PRIMARY_LIST, defaultList);
-					//Navigate to a new review transfers fragemnt on top of the stack.
-					final BaseFragmentActivity navActivity = 
-													(BaseFragmentActivity)DiscoverActivityManager.getActiveActivity();
-					final BankReviewTransfersFragment nextVisibleFragment = new BankReviewTransfersFragment();
-					nextVisibleFragment.setArguments(args);
 
-					navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);	
-				}else {
-					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-					final BankReviewTransfersFragment currentFragment = 
-													(BankReviewTransfersFragment)navActivity.getCurrentContentFragment();
-					currentFragment.refreshTableAdapterForType(transferType);
-					DiscoverModalManager.clearActiveModal();
+	/**
+	 * Navigates to a particular page of the Review Transfers table.
+	 * Performs checking of the cache for the table, if the cache is empty,
+	 * then a service call is performed to get the requested transfer type
+	 * and will resume navigation afterwards.
+	 * 
+	 * If the table is already visible, the table will be notified to update
+	 * itself to the new type and will either perform a service call to
+	 * get the data, or will refresh the table with cached data.
+	 * 
+	 * @param transferType a enumerated type that represents a type of transfer
+	 * that can be reviewed. 
+	 */
+	public static void navigateToReviewTransfers(final TransferType transferType) {
+		final Customer customer = BankUser.instance().getCustomerInfo();
+
+		/** Verify the eligibility status for transfers has been synchronized with value in server */
+		if (customer.getTransfersEligibility().isUpdated()) {
+			if (transferType != null) {
+				final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+				if (activity instanceof BankNavigationRootActivity) {
+					final boolean isEnrolled = customer.isTransferEnrolled();
+
+					if (isEnrolled) {
+						// Tell current review transfers fragment to change to the new selection.
+						if (BankUser.instance().isCacheEmptyFor(transferType)) {
+							BankServiceCallFactory.createBankGetTransfersCall(transferType).submit();
+						} else if (!isCurrentFragmentReviewTransfers()) {
+							final ListTransferDetail defaultList = (ListTransferDetail) BankUser.instance().getCachedListForKey(transferType);
+
+							final Bundle args = new Bundle();
+							args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
+							args.putSerializable(BankExtraKeys.PRIMARY_LIST, defaultList);
+							// Navigate to a new review transfers fragemnt on top of the stack.
+							final BaseFragmentActivity navActivity = (BaseFragmentActivity) DiscoverActivityManager.getActiveActivity();
+							final BankReviewTransfersFragment nextVisibleFragment = new BankReviewTransfersFragment();
+							nextVisibleFragment.setArguments(args);
+
+							navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);
+						} else {
+							final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+							final BankReviewTransfersFragment currentFragment = (BankReviewTransfersFragment) navActivity.getCurrentContentFragment();
+							currentFragment.refreshTableAdapterForType(transferType);
+							DiscoverModalManager.clearActiveModal();
+						}
+					} else {
+						BankConductor.navigateToTransfersTermsScreen(R.string.review_transfers_title);
+					}
 				}
 			}
+		} else {
+			final GetEnrolledStatusServiceCall serviceCall = BankServiceCallFactory.createGetEnrolledStatus(GetTransferEnrollStatus.class);
+
+			// Specify where the application will be navigating to after receiving a response to the enrollment service
+			// call.
+			serviceCall.getExtras().putString(BankReviewTransfersFragment.class.toString(), BankReviewTransfersFragment.class.toString());
+
+			serviceCall.submit();
 		}
 	}
-	
-	private static boolean isCacheEmptyFor(final TransferType transferType) {
-		return BankUser.instance().getCachedActivityMap().get(transferType) == null;
-	}
-	
+
 	private static boolean isCurrentFragmentReviewTransfers() {
 		boolean isCurrentFragmentReviewTransfers = false;
-		
+
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
-			
+
 			isCurrentFragmentReviewTransfers = 
 					navActivity.getCurrentContentFragment() instanceof BankReviewTransfersFragment;
 		}
@@ -1158,71 +1190,81 @@ public final class BankConductor  extends Conductor {
 	public static void navigateToCheckDepositWorkFlow(final Bundle bundle, final BankDepositWorkFlowStep step) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof BankNavigationRootActivity ) {
-			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-			navActivity.closeDialog();
+		// Check if application has fetched the enrollment status of the user
+		final Customer customer = BankUser.instance().getCustomerInfo();
 
-			Fragment fragment = null;
+		/** Verify deposit eligibility is syncrhonized with value on server */
+		if (customer.getDepositsEligibility().isUpdated()) {
 
-			final boolean isEligible = BankUser.instance().getCustomerInfo().isDepositEligible();
-			final boolean isEnrolled = BankUser.instance().getCustomerInfo().isDepositEnrolled();
-			final boolean isForbidden = BankUser.instance().getCustomerInfo().getDepositsEligibility().isUserBlocked();
+			/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
+			if (activity != null && activity instanceof BankNavigationRootActivity) {
+				final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+				navActivity.closeDialog();
 
-			//Check if user is forbidden to use check deposit
-			if( isForbidden ) {
-				fragment = new BankDepositForbidden();
-				//Check if user is eligible and has eligible accounts
-			} else if(!isEligible || !BankUser.instance().hasDepositEligibleAccounts()){
-				fragment = new BankDepositNotEligibleFragment();
-			}
-			//Check if user is enrolled
-			else if(isEligible && !isEnrolled){
-				fragment = new BankDepositTermsFragment();
-			}
-			else{
-				switch( step ) {
-				//Navigate user to second step in check deposit work-flow
-				case SelectAmount:
-					fragment = new BankDepositSelectAmount();
-					break;
-					//Navigate user to first step in check deposit work-flow
-				case SelectAccount:
-					fragment = new BankDepositSelectAccount();
-					break;
-					//Navigate user to page where they can review their deposit
-				case ReviewDeposit:
-					fragment = new CaptureReviewFragment();
-					break;
-					//Navigate user to final step in Check deposit work-flow
-				case Confirmation:
-					fragment = new BankDepositConfirmFragment();
-					//Clear the accounts
-					BankUser.instance().setAccountOutDated(true);
-					break;
-					//Navigate to timeout error if check deposit error fragment flag is found in bundle
-				case DepositError:
-					fragment = new CheckDepositErrorFragment();
-					break;
-					//Navigate to duplicate error fragment if boolean flag is found in bundle
-				case DuplicateError:
-					fragment = new DuplicateCheckErrorFragment();
-					break;
-					//Navigate to forbidden error fragment if user receives a 403 error code
-				case ForbiddenError:
+				Fragment fragment = null;
+
+				final boolean isEligible = customer.isDepositEligible();
+				final boolean isEnrolled = customer.isDepositEnrolled();
+				final boolean isForbidden = customer.getDepositsEligibility().isUserBlocked();
+
+				// Check if user is forbidden to use check deposit
+				if (isForbidden) {
 					fragment = new BankDepositForbidden();
-					break;
+					// Check if user is eligible and has eligible accounts
+				} else if (!isEligible || !BankUser.instance().hasDepositEligibleAccounts()) {
+					fragment = new BankDepositNotEligibleFragment();
+				}
+				// Check if user is enrolled
+				else if (isEligible && !isEnrolled) {
+					fragment = new BankDepositTermsFragment();
+				} else {
+					switch (step) {
+					// Navigate user to second step in check deposit work-flow
+					case SelectAmount:
+						fragment = new BankDepositSelectAmount();
+						break;
+						// Navigate user to first step in check deposit work-flow
+					case SelectAccount:
+						fragment = new BankDepositSelectAccount();
+						break;
+						// Navigate user to page where they can review their deposit
+					case ReviewDeposit:
+						fragment = new CaptureReviewFragment();
+						break;
+						// Navigate user to final step in Check deposit work-flow
+					case Confirmation:
+						fragment = new BankDepositConfirmFragment();
+						// Clear the accounts
+						BankUser.instance().setAccountOutDated(true);
+						break;
+						// Navigate to timeout error if check deposit error fragment flag is found in bundle
+					case DepositError:
+						fragment = new CheckDepositErrorFragment();
+						break;
+						// Navigate to duplicate error fragment if boolean flag is found in bundle
+					case DuplicateError:
+						fragment = new DuplicateCheckErrorFragment();
+						break;
+						// Navigate to forbidden error fragment if user receives a 403 error code
+					case ForbiddenError:
+						fragment = new BankDepositForbidden();
+						break;
+					}
+				}
+
+				if (fragment != null) {
+					fragment.setArguments(bundle);
+					navActivity.makeFragmentVisible(fragment);
+				}
+			} else {
+				if (Log.isLoggable(TAG, Log.ERROR)) {
+					Log.e(TAG, "Unable to navigate to check deposit work-flow");
 				}
 			}
-
-			if( fragment != null ) {
-				fragment.setArguments(bundle);
-				navActivity.makeFragmentVisible(fragment);
-			}
-		} else {
-			if( Log.isLoggable(TAG, Log.ERROR)) {
-				Log.e(TAG, "Unable to navigate to check deposit work-flow");
-			}
+		}
+		// Fetch enrollment status of the logged in user
+		else {
+			BankServiceCallFactory.createGetEnrolledStatus(GetDepositEnrollStatus.class).submit();
 		}
 	}
 
@@ -1559,7 +1601,6 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
-
 	/**
 	 * Method used to navigate to Contact Us Page. The Contact US page can show both
 	 * card and bank information, card only or bank only information. The type is used
@@ -1706,5 +1747,189 @@ public final class BankConductor  extends Conductor {
 		fragment.setArguments(bundle);
 		activity.makeFragmentVisible(fragment);
 	}
+
+	/**
+	 * Navigates to the first step of pay bills, or to the other steps if a user is not eligible or enrolled.
+	 */
+	public static void navigateToPayBills() {
+		final Customer customer = BankUser.instance().getCustomerInfo();
+
+		/** verify if the customer's eligibility status for pay bills has been updated for the session*/
+		if( customer.getPaymentsEligibility().isUpdated() ) {			
+			final boolean isEligible = customer.isPaymentsEligible();
+			final boolean isEnrolled = customer.isPaymentsEnrolled();
+
+			if (!isEligible) {
+				BankConductor.navigateToPayBillsLanding();
+			} else if (isEligible && !isEnrolled) {
+				navigateToPayBillsTermsScreen(R.string.section_title_pay_bills);
+			} else {
+				BankAddManagedPayeeFragment.setCameFromPayBills(true);
+				BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
+			}
+		}
+		/** make request to update the customer's eligibility status for pay bills */
+		else {
+			final GetEnrolledStatusServiceCall serviceCall = BankServiceCallFactory.createGetEnrolledStatus(GetPaybillsEnrollStatus.class);
+
+			// Specify where the application will be navigating to after receiving a response to the enrollment service
+			// call.
+			serviceCall.getExtras().putString(BankSelectPayee.class.toString(), BankSelectPayee.class.toString());
+
+			serviceCall.submit();
+		}	
+	}
+
+	/**
+	 * Method used to navigate a user to the review payments page. User must be logged in and have downloaded the
+	 * customer object in order to proceed. The method will check the customer's eligibilities and enrollment status.
+	 */
+	public static void navigateToReviewPayments() {
+		final Customer customer = BankUser.instance().getCustomerInfo();
+
+		/** verify if the customer's eligibility status for pay bills has been updated for the session */
+		if (customer.getPaymentsEligibility().isUpdated()) {
+			final boolean isEligible = customer.isPaymentsEligible();
+			final boolean isEnrolled = customer.isPaymentsEnrolled();
+
+			if (!isEligible) {
+				BankConductor.navigateToPayBillsLanding();
+			} else if (isEligible && !isEnrolled) {
+				navigateToPayBillsTermsScreen(R.string.review_payments_title);
+			} else if (null != BankUser.instance().getScheduled()) {
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
+				BankConductor.navigateToReviewPaymentsTable(bundle);
+			} else {
+				final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
+				BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
+			}
+		}
+		/** make request to update the customer's eligibility status for pay bills */
+		else {
+			final GetEnrolledStatusServiceCall serviceCall = BankServiceCallFactory.createGetEnrolledStatus(GetPaybillsEnrollStatus.class);
+
+			// Specify where the application will be navigating to after receiving a response to the enrollment service
+			// call.
+			serviceCall.getExtras().putString(ReviewPaymentsTable.class.toString(), ReviewPaymentsTable.class.toString());
+
+			serviceCall.submit();
+		}
+	}
+
+	/**
+	 * Navigates into the first step of manage payees based on the user's current eligibility and the satus of the
+	 * BankUser cache.
+	 */
+	public static void navigateToManagePayees() {
+		final Customer customer = BankUser.instance().getCustomerInfo();
+
+		/** verify if the customer's eligibility status for pay bills has been updated for the session */
+		if (customer.getPaymentsEligibility().isUpdated()) {
+			final boolean isEligible = customer.isPaymentsEligible();
+			final boolean isEnrolled = customer.isPaymentsEnrolled();
+
+			if (!isEligible) {
+				BankConductor.navigateToPayBillsLanding();
+			} else if (isEligible && !isEnrolled) {
+				navigateToPayBillsTermsScreen(R.string.sub_section_title_manage_payees);
+			} else if (null != BankUser.instance().getPayees()) {
+				final Bundle bundle = new Bundle();
+				bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
+				BankConductor.navigateToManagePayee(bundle);
+			} else {
+				BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+			}
+		}
+		/** make request to update the customer's eligibility status for pay bills */
+		else {
+			final GetEnrolledStatusServiceCall serviceCall = BankServiceCallFactory.createGetEnrolledStatus(GetPaybillsEnrollStatus.class);
+
+			// Specify where the application will be navigating to after receiving a response to the enrollment service
+			// call.
+			serviceCall.getExtras().putString(BankManagePayee.class.toString(), BankManagePayee.class.toString());
+
+			serviceCall.submit();
+		}
+	}
+
+	/**
+	 * Send the user to the pay bill terms and conditions page
+	 * 
+	 * @param title
+	 *            used to signify what screen should come next
+	 */
+	protected static void navigateToPayBillsTermsScreen(final int title) {
+		final Bundle bundle = new Bundle();
+		bundle.putInt(BankExtraKeys.TITLE_TEXT, title);
+		BankConductor.navigateToPayBillsTerms(bundle);
+	}
+
+	/**
+	 * Send the user to the pay bill terms and conditions page
+	 * 
+	 * @param title
+	 *            used to signify what screen should come next
+	 */
+	protected static void navigateToTransfersTermsScreen(final int title) {
+		((AlertDialogParent) DiscoverActivityManager.getActiveActivity()).closeDialog();
+
+		final Bundle bundle = new Bundle();
+		bundle.putInt(BankExtraKeys.TITLE_TEXT, title);
+
+		final BankTransferTermsFragment fragment = new BankTransferTermsFragment();
+		fragment.setArguments(bundle);
+		((BaseFragmentActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+	}
+
+	/**
+	 * Method used to navigate to transfer money work-flow. The user must be logged in in order to use this
+	 * functionality.
+	 */
+	public static void navigateToTransferMoney() {
+		Activity activity = DiscoverActivityManager.getActiveActivity();
+		final boolean isLoggedIn = activity != null;
+		final boolean isBankNavigationRootActivityActive = activity instanceof BankNavigationRootActivity;
+
+		/** Verify that the user is logged in and the BankNavigationRootActivity is the active activity */
+		if (isLoggedIn && isBankNavigationRootActivityActive) {
+			activity = null;
+
+			final Customer customer = BankUser.instance().getCustomerInfo();
+
+			if (customer.getTransfersEligibility().isUpdated()) {
+				final boolean isEligible = customer.isTransferEligible();
+				final boolean isEnrolled = customer.isTransferEnrolled();
+
+				final AccountList cachedExternalAccounts = BankUser.instance().getExternalAccounts();
+				if (isEligible ) {
+					if( isEnrolled )  {
+						if( cachedExternalAccounts == null) {					
+							BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
+						} else {
+							final Bundle args = new Bundle();
+							args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, cachedExternalAccounts);
+							BankConductor.navigateToTransferMoneyLandingPage(args);
+						}	
+					} else {
+						navigateToTransfersTermsScreen(R.string.transfer_money);
+					}
+				} else {
+					// User is not eligible and will be taken to the ineligible landing page.
+					BankConductor.navigateToTransferMoneyLandingPage(null);
+				}
+			} else {
+				final GetEnrolledStatusServiceCall serviceCall = BankServiceCallFactory.createGetEnrolledStatus(GetTransferEnrollStatus.class);
+
+				// Specify where the application will be navigating to after receiving a response to the enrollment
+				// service
+				// call.
+				serviceCall.getExtras().putString(BankTransferStepOneFragment.class.toString(), BankTransferStepOneFragment.class.toString());
+
+				serviceCall.submit();
+			}
+		}
+	}
+
 }
 

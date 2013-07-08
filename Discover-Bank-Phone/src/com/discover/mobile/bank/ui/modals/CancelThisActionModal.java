@@ -26,6 +26,8 @@ public class CancelThisActionModal implements BaseFragmentModal {
 	private int titleText = R.string.cancel_this_action;
 	private int buttonText = R.string.cancel_this_action;
 	
+	private final Activity currentActivity;
+	private final SimpleContentModal cancelModal;
 	/**
 	 * Create a modal that will show on the current Fragment. Upon hitting the action button in the modal,
 	 * the user will be taken back to the account summary page.
@@ -34,11 +36,21 @@ public class CancelThisActionModal implements BaseFragmentModal {
 	 */
 	public CancelThisActionModal(final BaseFragment baseFragmentThatSupportsShowCustomAlertDialog) {
 		baseFragment = baseFragmentThatSupportsShowCustomAlertDialog;
+		
+		currentActivity = DiscoverActivityManager.getActiveActivity();
+		cancelModal = new SimpleContentModal(currentActivity);
+		cancelAction = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				cancelModal.dismiss();
+				BankConductor.navigateToHomePage(true);	
+			}
+		};
 	}
 	
 	/**
-	 * Set the action to be performed in addition to navigating back to the account summary page upon
-	 * the button in the modal being pressed.
+	 * Sets the action to be performed by the modal after clicking to continue.
 	 * 
 	 * @param onClick an OnClickListener that will perform some action in its onClick method.
 	 */
@@ -51,11 +63,9 @@ public class CancelThisActionModal implements BaseFragmentModal {
 	 */
 	@Override
 	public final void showModal() {			
-		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		
 		if(currentActivity != null) {
 			final String questionMark = "?";
-			final SimpleContentModal cancelModal = new SimpleContentModal(currentActivity);
 			String title = currentActivity.getResources().getString(titleText);
 			
 			if(!title.endsWith(questionMark)) {
@@ -70,12 +80,7 @@ public class CancelThisActionModal implements BaseFragmentModal {
 				
 				@Override
 				public void onClick(final View v) {
-					if(cancelAction != null) {
-						cancelAction.onClick(v);
-					}
-					
-					cancelModal.dismiss();
-					BankConductor.navigateToHomePage(true);			
+					cancelAction.onClick(v);	
 				}
 			});
 

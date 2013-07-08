@@ -118,82 +118,44 @@ public class BankSelectPayee extends BaseFragment{
 		else {
 			addPayee.setText(getResources().getString(R.string.select_payee_another_payee));
 			payeesList.removeAllViews();
-			int i = 0;
-			final int size = payees.payees.size();
+			int count = 0;
+			
+			// Create a list item for each payee and add to the View
 			for (final PayeeDetail payee : payees.payees) {
-				SimpleChooseListItem item = null;
-
-				if (size == 1) {
-					item = createSingleListItem(payee);
-					payeesList.addView(item);
-				} else if (i == 0) {
+				SimpleChooseListItem item = null; 
+				
+				if (count == 0) {
 					item = createFirstListItem(payee);
-					payeesList.addView(item);
-				} else if (i == size - 1) {
-					item = createLastListItem(payee);
-					payeesList.addView(item);
 				} else {
 					item = createListItem(payee);
-					payeesList.addView(item);
 				}
-				i++;
+				
+				payeesList.addView(item);
+				++count;
 			}
 		}
 	}
 
 	/**
-	 * Create a single choose list item for a middle entry - dashed on top, no bottom stroke
+	 * Creates a {@link SimpleChooseListItem} with a solid stroke on the bottom.
 	 * 
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
+	 * @param detail - detail used to show the text and associate to the item
+	 * @return {@link SimpleChooseListItem} with an {@link OnClickListener} attached.
 	 */
 	private SimpleChooseListItem createListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.nickName,
-				R.layout.simple_choose_item_dash);
+				this.getActivity(), null, detail, detail.nickName, R.layout.simple_choose_item_stroke_bottom);
 		item.setOnClickListener(getOnClickListener(detail));
 		return item;
 	}
-
+	
 	/**
-	 * Create a single choose list item for the bottom entry - solid stroke on bottom
+	 * Creates a {@link SimpleChooseListItem} with a solid stroke on the top and bottom.
 	 * 
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
-	 */
-	private SimpleChooseListItem createLastListItem(final PayeeDetail detail) {
-		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.nickName);
-		item.setBackgroundAsBottomItem(getActivity());
-		item.setOnClickListener(getOnClickListener(detail));
-		return item;
-	}
-
-	/**
-	 * Create a single choose list item for a top entry - solid stroke on top
-	 * 
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
+	 * @param detail - detail used to show the text and associate to the item
+	 * @return {@link SimpleChooseListItem} with an {@link OnClickListener} attached.
 	 */
 	private SimpleChooseListItem createFirstListItem(final PayeeDetail detail) {
-		final SimpleChooseListItem item = new SimpleChooseListItem(
-				this.getActivity(), null, detail, detail.nickName);
-		item.setBackgroundAsTopItem(getActivity());
-		item.setOnClickListener(getOnClickListener(detail));
-		return item;
-	}
-
-	/**
-	 * Create a single choose list item for a single list entry - solid stroke on all sides.
-	 * 
-	 * @param detail
-	 *            - detail used to show the text and associate to the item
-	 * @return the single choose list item
-	 */
-	private SimpleChooseListItem createSingleListItem(final PayeeDetail detail) {
 		final SimpleChooseListItem item = new SimpleChooseListItem(
 				this.getActivity(), null, detail, detail.nickName);
 		item.setOnClickListener(getOnClickListener(detail));

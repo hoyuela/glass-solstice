@@ -1,34 +1,44 @@
 package com.discover.mobile.bank.ui.table;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.StatusMessageView;
 import com.discover.mobile.common.ui.table.TableButtonGroup;
-
 /**
- * Header for the load more table.  This contains the button group,
- * the table titles and the status message.
+ * The header that is used in a LoadMoreBaseTable.
+ * it includes a list of buttons, a status message and a row of table titles.
  * 
- * @author sseward / jthornton
+ * @author scottseward
  *
  */
-public class LoadMoreTableHeader extends RelativeLayout {
+public class LoadMoreTableHeader extends LinearLayout {
 
 	/**Group of buttons displayed*/
-	private TableButtonGroup buttons;
+	private final TableButtonGroup buttons;
+
+	/**Status message views*/
+	private StatusMessageView statusView;
+
+	/**Table titles in the view*/
+	private TableTitles titles;
 
 	/**
 	 * Constructor for the class
 	 * @param context - activity context
+	 * @param resourceLabels - integer value pointing to the resource array to be used as button labels
 	 */
-	public LoadMoreTableHeader(final Context context) {
+	public LoadMoreTableHeader(final Context context, final int resourceLabels) {
 		super(context);
+		setOrientation(LinearLayout.VERTICAL);
+		buttons = new TableButtonGroup(context, 
+				context.getResources().getStringArray(resourceLabels));
 		inflateLayout();
+
 	}
 
 	/**
@@ -38,17 +48,8 @@ public class LoadMoreTableHeader extends RelativeLayout {
 	 */
 	public LoadMoreTableHeader(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
-		inflateLayout();
-	}
-
-	/**
-	 * Constructor for the class
-	 * @param context - activity context
-	 * @param attrs - attributes to apply to the header
-	 * @param defStyle - style to apply
-	 */
-	public LoadMoreTableHeader(final Context context, final AttributeSet attrs, final int defStyle) {
-		super(context, attrs, defStyle);
+		setOrientation(LinearLayout.VERTICAL);
+		buttons = new TableButtonGroup(context, attrs);
 		inflateLayout();
 	}
 
@@ -56,9 +57,31 @@ public class LoadMoreTableHeader extends RelativeLayout {
 	 * Inflate the layout
 	 */
 	private void inflateLayout() {
-		final View inflatedLayout = LayoutInflater.from(getContext()).inflate(R.layout.load_more_header, null);
-		buttons = (TableButtonGroup) inflatedLayout.findViewById(R.id.button_row);
-		this.addView(inflatedLayout);
+		final Resources res = getContext().getResources();
+		final int formsInnerPadding = (int) res.getDimension(R.dimen.forms_inner_padding);
+		final int groupsOfElementsPadding = (int) res.getDimension(R.dimen.groups_of_elements_padding);
+		statusView = new StatusMessageView(getContext());
+		titles = new TableTitles(getContext(), null);
+
+		final LinearLayout.LayoutParams buttonParams = 
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 
+						LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		final LinearLayout.LayoutParams statusParams = 
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 
+						LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		final LinearLayout.LayoutParams titlesParams = 
+				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 
+						LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		statusParams.setMargins(formsInnerPadding, 0, formsInnerPadding, 0);
+		titlesParams.setMargins(0, groupsOfElementsPadding, 0, 0);
+
+
+		addView(buttons, buttonParams);
+		addView(statusView, statusParams);
+		addView(titles, titlesParams);
 	}
 
 	/**
@@ -74,49 +97,44 @@ public class LoadMoreTableHeader extends RelativeLayout {
 	 * @param message - message to set
 	 */
 	public void setCustomMessage(final String message) {
-		final StatusMessageView statusView = (StatusMessageView)findViewById(R.id.status);
 		if(statusView != null) {
 			statusView.setText(message);
 			statusView.setTextBold(false);
 		}
 	}
-
+	
 	/**
-	 * Hide the secondary title message
+	 * Hides the text label that is beneath the row of column titles and above the ListView.
 	 */
 	public void hideSecondaryMessage() {
-		final TableTitles titles = (TableTitles)findViewById(R.id.table_titles);
 		if(titles != null) {
 			titles.hideMessage();
 		}
 	}
-
+	
 	/**
-	 * Show the message
+	 * Shows the StatusMessageView label with no error icon.
 	 */
 	public void showMessage() {
-		final StatusMessageView statusView = (StatusMessageView)findViewById(R.id.status);
 		if(statusView != null) {
 			statusView.setVisibility(View.VISIBLE);
 			hideErrorIcon();
 		}
 	}
-
+	
 	/**
-	 * Hide the status bar error icon
+	 * Hides the StatusMessageView error icon.
 	 */
 	private void hideErrorIcon() {
-		final StatusMessageView statusView = (StatusMessageView)findViewById(R.id.status);
 		if(statusView != null) {
 			statusView.hideErrorIcon();
 		}
 	}
-
+	
 	/**
-	 * Hide the status bar message
+	 * Hides the StatusMessageView label.
 	 */
 	public void hideMessage() {
-		final StatusMessageView statusView = (StatusMessageView)findViewById(R.id.status);
 		if(statusView != null) {
 			statusView.setVisibility(View.GONE);
 		}
@@ -169,5 +187,9 @@ public class LoadMoreTableHeader extends RelativeLayout {
 	 */
 	public void clearObserver(){
 		buttons.removeObserver();
+	}
+
+	public TableTitles getTableTitles(){
+		return titles;
 	}
 }

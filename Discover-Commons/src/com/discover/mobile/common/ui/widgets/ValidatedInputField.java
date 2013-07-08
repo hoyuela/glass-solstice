@@ -246,7 +246,7 @@ public abstract class ValidatedInputField extends EditText {
 
 	protected Drawable getGrayX() {
 		if(grayX == null){
-			grayX = getResources().getDrawable(R.drawable.x_gray);
+			grayX = getResources().getDrawable(R.drawable.common_edit_text_x_grey);
 		}
 		return grayX;
 	}
@@ -375,7 +375,8 @@ public abstract class ValidatedInputField extends EditText {
 	 * @return Returns true if the user pressed in the region of the right drawable in the EditText field.
 	 */
 	private boolean isTouchRegionValid(final MotionEvent event){
-		return event.getX() > this.getWidth() - this.getPaddingRight() - getRedX().getIntrinsicWidth();
+		return (event.getX() > this.getWidth() - this.getPaddingRight() - getRedX().getIntrinsicWidth())
+				&& event.getAction() == MotionEvent.ACTION_UP;
 	}
 	
 	/**

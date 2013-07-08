@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
+import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
@@ -95,7 +97,13 @@ public final class BankPayConfirmFragment extends BankOneButtonFragment {
 	@Override
 	protected void onActionButtonClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)getActivity();
-		activity.popTillFragment(BankSelectPayee.class);
+		
+		//in some cases the Select Payee class does not exist on the back stack yet before arriving in make a payment so we 
+		//test if the activity is capable of popping til fragment and if not navigate manually to the page.
+		if (!(activity.popTillFragment(BankSelectPayee.class))) {
+			BankAddManagedPayeeFragment.setCameFromPayBills(false);
+			BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
+		}
 	}
 
 	/**

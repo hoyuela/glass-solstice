@@ -23,6 +23,12 @@ public class WhatsNewViewPagerAdapter extends FragmentStatePagerAdapter {
 	/**Array containing reference to the drawables to be displayed in the view pager*/
 	private final TypedArray drawables; 
 
+	/**Array holding the titles of the view pager*/
+	private final String[] titles;
+
+	/**Array holding the content of the view page*/
+	private final String[] contents;
+
 	/**
 	 * Constructor for the class
 	 * @param context - context to get resources from
@@ -37,6 +43,8 @@ public class WhatsNewViewPagerAdapter extends FragmentStatePagerAdapter {
 		super(fm);
 		final Resources res = context.getResources();
 		drawables = res.obtainTypedArray(R.array.bank_whats_new_drawables);
+		titles = res.getStringArray(R.array.bank_whats_new_titles);
+		contents = res.getStringArray(R.array.bank_whats_new_content);
 	}
 
 	/**
@@ -47,6 +55,8 @@ public class WhatsNewViewPagerAdapter extends FragmentStatePagerAdapter {
 	public Fragment getItem(final int position) {
 		final Bundle bundle = new Bundle();
 		bundle.putInt(WhatsNewViewPagerFragment.DRAWABLE, drawables.getResourceId(position, 0));
+		bundle.putString(WhatsNewViewPagerFragment.TITLE, titles[position]);
+		bundle.putString(WhatsNewViewPagerFragment.CONTENT, contents[position]);
 
 		final WhatsNewViewPagerFragment fragment = new WhatsNewViewPagerFragment();
 		fragment.setArguments(bundle);

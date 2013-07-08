@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
@@ -85,7 +86,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 		/**Hide Bottom Note*/
 		hideBottomNote();
 
-		getActionButton().setText(R.string.bank_sch_payment);
+		getActionButton().setText(R.string.bank_pay_this_payee);
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
@@ -109,7 +110,10 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 	protected void onActionButtonClick()  {
 		if( getActivity() instanceof BankNavigationRootActivity ) {
 			//Navigate user to schedule a payment fragment
-			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
+			final Bundle bundle = new Bundle();
+			bundle.putSerializable(BankExtraKeys.SELECTED_PAYEE, this.detail);
+			bundle.putBoolean(BankExtraKeys.FROM_PAYEE_CONFIRMATION, true);
+			BankConductor.navigateToPayBillStepTwo(bundle);
 		}
 	}
 

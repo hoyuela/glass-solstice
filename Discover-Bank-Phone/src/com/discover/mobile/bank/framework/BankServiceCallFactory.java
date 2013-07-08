@@ -14,6 +14,7 @@ import com.discover.mobile.bank.services.BankApiServiceCall;
 import com.discover.mobile.bank.services.BankHolidayServiceCall;
 import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
@@ -43,6 +44,7 @@ import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.bank.services.deposit.AccountLimits;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.services.deposit.GetAccountLimits;
+import com.discover.mobile.bank.services.deposit.GetDepositEnrollStatus;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddPayeeServiceCall;
@@ -57,6 +59,7 @@ import com.discover.mobile.bank.services.payment.CreatePaymentCall;
 import com.discover.mobile.bank.services.payment.CreatePaymentDetail;
 import com.discover.mobile.bank.services.payment.DeletePaymentServiceCall;
 import com.discover.mobile.bank.services.payment.GetPayBillsTermsAndConditionsCall;
+import com.discover.mobile.bank.services.payment.GetPaybillsEnrollStatus;
 import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
@@ -64,6 +67,7 @@ import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
+import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
 import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
@@ -292,8 +296,16 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return getTransfersCall(null, url);
 	}
 	
+	/**
+	 * Creates a GetTransfersServiceCall for either a transfer type or a specific URL for an action
+	 * such as load more.
+	 * @param transferType the type of transfer to retrieve data for.
+	 * @param loadMoreUrl a specific url to make the request with, if not provided, a transfer type must be provided.
+	 * The transfer type will override the URL if both are provided.
+	 * @return a GetTransfersServiceCall object that is ready to be submitted.
+	 */
 	private static GetTransfersServiceCall getTransfersCall(final TransferType transferType, 
-															final String url) {
+															final String loadMoreUrl) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListTransferDetail>  callback =
@@ -301,7 +313,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						activity, (ErrorHandlerUi) activity)
 						.build();
 		
-		String callUrl = url;
+		String callUrl = loadMoreUrl;
 		if(transferType != null) {
 			callUrl = BankUrlManager.generateGetTransfersUrl(transferType);
 		}
@@ -312,6 +324,11 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return call;
 	}
 
+	/**
+	 * Create a GetExternalTransfersAccountsCall that will retrieve a user's external 
+	 * accounts for use in transfer money.
+	 * @return a GetExternalTransferAccountsCall object that will download a user's external account info.
+	 */
 	public static GetExternalTransferAccountsCall createGetExternalTransferAccountsCall() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
@@ -696,5 +713,34 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 
 		return new UpdatePaymentCall(activity, callback, payment, paymentId);
+	}
+
+	/**
+	 * Method used to create a service call that retrieves a customer's status for using the feature and whether they
+	 * need to enroll in order to use the service.
+	 * 
+	 * @param type
+	 *            Used to determine the type of service call that should be made. Accepted values are:
+	 *            GetDepositEnrollStatus, GetPaybillsEnrollStatus, and GetTransferEnrollStatus
+	 * 
+	 * @return Reference to created GetEnrolledStatusServiceCall.
+	 */
+	public static GetEnrolledStatusServiceCall createGetEnrolledStatus(final Class<?> type) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+
+		final AsyncCallback<Eligibility> callback = BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Eligibility.class, activity,
+				(ErrorHandlerUi) activity).build();
+
+		GetEnrolledStatusServiceCall serviceCall = null;
+
+		if (type == GetDepositEnrollStatus.class) {
+			serviceCall = new GetDepositEnrollStatus(activity, callback);
+		} else if (type == GetPaybillsEnrollStatus.class) {
+			serviceCall = new GetPaybillsEnrollStatus(activity, callback);
+		} else if (type == GetTransferEnrollStatus.class) {
+			serviceCall = new GetTransferEnrollStatus(activity, callback);
+		}
+
+		return serviceCall;
 	}
 }

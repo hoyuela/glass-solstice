@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.transfer;
+package com.discover.mobile.bank.ui.table;
 import android.widget.ImageView;
 import android.widget.TextView;
 

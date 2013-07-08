@@ -6,13 +6,15 @@
     <string name="cancelled">cancelled</string>
     <string name="completed">completed</string>
     <string name="scheduled">scheduled</string>
+    <string name="transfer">transfer</string>
+    <string name="repeating_transfers">repeating transfers</string>
     
     <string name="no_transfers_in_list">You have no %s transfers.</string>
     
     <string-array name="bank_review_transfers_buttons">
-        <item>Scheduled Transfers</item>
-        <item>Completed Transfers</item>
-        <item>Cancelled Transfers</item>
+        <item>Scheduled\nTransfers</item>
+        <item>Completed\nTransfers</item>
+        <item>Cancelled\nTransfers</item>
     </string-array>
 
 </resources>

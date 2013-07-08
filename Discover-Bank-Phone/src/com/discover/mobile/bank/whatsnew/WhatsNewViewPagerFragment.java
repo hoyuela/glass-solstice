@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 
@@ -21,6 +22,12 @@ public class WhatsNewViewPagerFragment extends Fragment{
 	/**Key to get the drawable out of the arguments bundle*/
 	public static final String DRAWABLE = "drawable";
 
+	/**Key to get the titles out of the arguments bundle*/
+	public static final String TITLE = "title";
+
+	/**Key to get the contents out of the arguments bundle*/
+	public static final String CONTENT = "content";
+
 	/**
 	 * Create the view and inflate the layout
 	 * @param inflater - inflater used to inflate the view
@@ -32,9 +39,13 @@ public class WhatsNewViewPagerFragment extends Fragment{
 			final Bundle savedInstanceState) {
 		final ViewGroup view = (ViewGroup) inflater.inflate(R.layout.bank_whats_new_view_pager, container, false);
 		final ImageView image = (ImageView) view.findViewById(R.id.whats_new_image);
+		final TextView title = (TextView) view.findViewById(R.id.whats_new_pager_title);
+		final TextView content = (TextView) view.findViewById(R.id.whats_new_pager_content);
 
 		final Bundle bundle = getArguments();
 		image.setImageResource(bundle.getInt(DRAWABLE));
+		title.setText(bundle.getString(TITLE));
+		content.setText(bundle.getString(CONTENT));
 
 		return view;
 	}

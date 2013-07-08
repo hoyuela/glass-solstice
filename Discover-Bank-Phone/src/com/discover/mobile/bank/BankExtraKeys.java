@@ -18,6 +18,9 @@ public final class BankExtraKeys {
 
 	/**Used to send a list of details to the detail screen from the table*/
 	public static final String PRIMARY_LIST = "data1";
+	
+	/**Used to send whether or not the screen is being navigated to from the payee added confirmation screen*/
+	public static final String FROM_PAYEE_CONFIRMATION = "from-payee-confirmation";
 
 	/**Used to send the other list of details to the detail screen from the table*/
 	public static final String SECOND_DATA_LIST = "data2";
@@ -126,6 +129,13 @@ public final class BankExtraKeys {
 	public static final String SEND_MONEY_CARD_FAQ  = "sendMoney";
 
 	public static final String CARD_MODE_KEY = "cmk";
+	
+	/**The type of Transfer that is being reviewed. Likely used when passing a TransferType enum around.*/
+	public static final String REVIEW_TRANSFERS_TYPE = "rtt";
+	
+	/**Override a default menu selection when re-using existing Fragments.*/
+	public static final String GROUP_MENU_OVERRIDE = "gmo";
+	public static final String SECTION_MENU_OVERRIDE = "smo";
 
 	/**
 	 * String used to send data back from the frequency widget

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
-import com.discover.mobile.bank.transfer.ViewHolder;
+import com.discover.mobile.bank.ui.table.ViewHolder;
 import com.google.common.base.Strings;
 
 /**

@@ -153,11 +153,11 @@ public class PaymentDetailsViewPager extends DetailViewPager implements Fragment
 	 * detail item that is being shown.
 	 */
 	@Override
-	protected int getTitleForFragment(final int position) {
+	protected String getTitleForFragment(final int position) {
 		if(detailList.payments.size() > 0){
-			return fragmentTitle;
+			return getResources().getString(fragmentTitle);
 		} else {
-			return R.string.no_data_found;
+			return getResources().getString(R.string.no_data_found);
 		}
 	}
 

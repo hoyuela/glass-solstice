@@ -2,6 +2,7 @@
 <resources>
     <!-- Detail Item Titles -->
     <string name="funds_transfer">Funds Transfer</string>
+    <string name="funds_transfer_details">Funds Transfer Details</string>
     <string name="repeating_funds_transfer">Repeating Funds Transfer</string>
     <string name="bill_pay">Bill Pay</string>
     <string name="check_deposit">Check Deposit</string>
@@ -15,8 +16,10 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="send_on">Send On</string>
+    <string name="sent_on">Sent On</string>
     <string name="deliver_by">Deliver By</string>
-    <string name="delivered_on">Delivered On</string>
+    <string name="delivered_by">Delivered By</string>
+    <string name="cancelled_on">Cancelled On</string>
     <string name="frequency">Frequency</string>
     <string name="available_balance">Available Balance</string>
     <string name="memo">Memo</string>

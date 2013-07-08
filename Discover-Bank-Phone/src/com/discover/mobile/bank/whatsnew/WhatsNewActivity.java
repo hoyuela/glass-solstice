@@ -1,22 +1,33 @@
 package com.discover.mobile.bank.whatsnew;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.auth.KeepAlive;
+import com.discover.mobile.common.error.ErrorHandler;
+import com.discover.mobile.common.error.ErrorHandlerUi;
 
 /**
  * Activity for the what's new content.  This will be shown on the first time a user logs into the application.
@@ -32,7 +43,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * @author jthornton
  *
  */
-public class WhatsNewActivity extends FragmentActivity{
+public class WhatsNewActivity extends FragmentActivity implements ErrorHandlerUi{
 
 	/**Key to get the location of the view pager out of the bundle*/
 	private static final String PAGER_LOCATION = "location";
@@ -52,6 +63,9 @@ public class WhatsNewActivity extends FragmentActivity{
 	/**The pager adapter, which provides the pages to the view pager widget.*/
 	private WhatsNewViewPagerAdapter mPagerAdapter;
 
+	/**Boolean set to true if the session is timing out*/
+	private boolean isTimingOut = false;
+
 	/**
 	 * Create the activity. 
 	 * @param savedInstanceState - saved state of the bundle
@@ -59,6 +73,7 @@ public class WhatsNewActivity extends FragmentActivity{
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Globals.setOldTouchTimeInMillis(Calendar.getInstance().getTimeInMillis());
 		setContentView(R.layout.bank_whats_new_content_view);
 		final ImageButton button = (ImageButton) findViewById(R.id.close);
 		numPages = getResources().getInteger(R.integer.bank_whats_new_pages);
@@ -72,7 +87,7 @@ public class WhatsNewActivity extends FragmentActivity{
 		button.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToHomePage();
+				onBackPressed();
 			}
 		});
 
@@ -142,6 +157,67 @@ public class WhatsNewActivity extends FragmentActivity{
 	}
 
 	/**
+	 * Used to handle user interaction across the application.
+	 * 
+	 * @param ev
+	 *            The MotionEvent that was recognized.
+	 * @return True if consumed, false otherwise.
+	 */
+	@Override
+	public boolean dispatchTouchEvent(final MotionEvent ev) {
+		super.dispatchTouchEvent(ev);
+
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			compareLastTouchTimeAndUpdateSession();
+		}
+
+		// Don't consume event.
+		return false;
+	}
+
+	/**
+	 * Determines the current time and gets the time stored in globals. Then
+	 * updates globals with the current time.
+	 */
+	private void compareLastTouchTimeAndUpdateSession() {
+		final Calendar mCalendarInstance = Calendar.getInstance();
+
+		final long previousTime = Globals.getOldTouchTimeInMillis();
+		final long currentTime = mCalendarInstance.getTimeInMillis();
+
+		if(!setIsUserTimedOut(previousTime, currentTime)) {
+			KeepAlive.checkForRequiredSessionRefresh();
+		}
+		Globals.setOldTouchTimeInMillis(currentTime);
+	}
+
+
+	/**
+	 * Determines whether or not the user is timed out.
+	 * 
+	 * @param previousTime
+	 * @param currentTime
+	 * @return true if the user is timed-out, false otherwise.
+	 */
+	private boolean setIsUserTimedOut(final long previousTime,
+			final long currentTime) {
+		// Previous value exists
+		if (previousTime != 0) {
+			final int oneSecond = 1000;
+			final long difference = currentTime - previousTime;
+			final float secs = (float) difference / oneSecond;
+
+			// User has become inactive and will be set to timed-out.
+			if ( secs > BankUrlManager.MAX_IDLE_TIME) {
+				isTimingOut = true;
+				BankConductor.logoutUser(this);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Save the state of the activity.
 	 * @param outState - bundle to save the state the activity
 	 */
@@ -156,6 +232,82 @@ public class WhatsNewActivity extends FragmentActivity{
 	 */
 	@Override
 	public void onBackPressed() {
-		BankConductor.navigateToHomePage();
+		if(!isTimingOut){
+			BankConductor.navigateToHomePage();
+		}
+	}
+
+	@Override
+	public TextView getErrorLabel() {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+		return null;
+	}
+
+	@Override
+	public List<EditText> getInputFields() {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+		return null;
+	}
+
+	@Override
+	public void showCustomAlert(final AlertDialog alert) {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+	}
+
+	@Override
+	public void showOneButtonAlert(final int title, final int content, final int buttonText) {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+	}
+
+	@Override
+	public void showDynamicOneButtonAlert(final int title, final String content,
+			final int buttonText) {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+	}
+
+	@Override
+	public Context getContext() {
+		return this;
+	}
+
+	@Override
+	public void setLastError(final int errorCode) {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+	}
+
+	@Override
+	public int getLastError() {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+		return 0;
+	}
+
+	@Override
+	public ErrorHandler getErrorHandler() {
+		/**
+		 * Intentionally left blank.  The only service call that is made here is the logout, which the
+		 * result, if an error occurs, gets ignored. 
+		 */		
+		return null;
 	}
 }

@@ -13,6 +13,8 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 public final class BankStringFormatter {
@@ -182,6 +184,26 @@ public final class BankStringFormatter {
 	}
 	
 	/**
+	 * 
+	 * @return a String where every word (characters separated by spaces) has its first letter capitalized
+	 */
+	public static String capitalizeEveryWordInString(final String needsCapitalization) {
+		final StringBuilder capitalStringBuilder = new StringBuilder();
+		
+		if(!Strings.isNullOrEmpty(needsCapitalization)) {
+			final String[] words = needsCapitalization.split(StringUtility.SPACE);
+			
+			for(int i = 0; i < words.length; ++i) {
+				capitalStringBuilder.append(capitalize(words[i]));
+				capitalStringBuilder.append(StringUtility.SPACE);
+			}
+			
+		}
+		
+		return capitalStringBuilder.toString();
+	}
+	
+	/**
 	 *
 	 * @param formattedDate a String in the format mm/dd/yyyy
 	 * @return a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ in the eastern time zone
@@ -287,6 +309,34 @@ public final class BankStringFormatter {
 		}
 		
 		return valueString;
+	}
+	
+	/**
+	 * Returns a String that contains 13 a-z characters it does not count colons or spaces and will append an ellipses
+	 * to the end if the length exceeds 13 a-z characters.
+	 * @param text 
+	 * @return
+	 */
+	public static String addEllipsesIfNeeded(final String text) {
+		StringBuilder ellipsesBuilder = new StringBuilder(text);
+		final String colon = ":";
+		final int ellipsesLimit = 13;
+
+		//Remove all spaces and colons and count.
+		final int rawInputLength = text.replaceAll(StringUtility.SPACE, StringUtility.EMPTY)
+									   .replaceAll(colon, StringUtility.EMPTY)
+									   .length();
+		
+		final int countOfSpaces = CommonUtils.countOccurancesOfCharInString(StringUtility.SPACE, text);
+		final int countOfColons = CommonUtils.countOccurancesOfCharInString(colon, text);
+		
+		if(rawInputLength >= ellipsesLimit) {
+			ellipsesBuilder = new StringBuilder(StringUtility.EMPTY);
+			ellipsesBuilder.append(text.subSequence(0, ellipsesLimit + countOfSpaces + countOfColons));
+			ellipsesBuilder.append("...");
+		}
+		
+		return ellipsesBuilder.toString();
 	}
 	
 }

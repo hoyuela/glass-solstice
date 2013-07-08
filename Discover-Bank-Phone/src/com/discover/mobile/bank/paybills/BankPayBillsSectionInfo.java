@@ -1,19 +1,15 @@
 package com.discover.mobile.bank.paybills;
 
-import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationHelper;
 import com.discover.mobile.bank.payees.BankAddManagedPayeeFragment;
-import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
@@ -55,27 +51,12 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 
 				/**Check if user is already in this workflow*/
 				if( !BankPayBillsSectionInfo.isViewingMenuSection(BankMenuItemLocationIndex.PAY_BILLS_SECTION)) {
-					navigateIntoPayBills();
+					BankConductor.navigateToPayBills();
 				} else {
 					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 		};
-	}
-	
-	/**
-	 * Navigates to the first step of pay bills, or to the other steps
-	 * if a user is not eligible or enrolled.
-	 */
-	private static void navigateIntoPayBills() {
-		if(!isEligible()){
-			BankConductor.navigateToPayBillsLanding();
-		} else if(isEligible() && !isEnrolled()){
-			sendToTermsScreen(R.string.section_title_pay_bills);
-		} else{
-			BankAddManagedPayeeFragment.setCameFromPayBills(true);
-			BankConductor.getInstance().launchFragment(BankSelectPayee.class, null, null);
-		}
 	}
 
 	/**
@@ -93,39 +74,11 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					return;
 				}
 
-				navigateIntoManagePayees();
+				BankConductor.navigateToManagePayees();
 				BankAddManagedPayeeFragment.setCameFromPayBills(false);
 				
 			}
 		};
-	}
-	
-	/**
-	 * Navigates into the first step of manage payees based on the user's current
-	 * eligibility and the satus of the BankUser cache.
-	 */
-	private static void navigateIntoManagePayees() {
-		if (!isEligible()) {
-			BankConductor.navigateToPayBillsLanding();
-		} else if (isEligible() && !isEnrolled()) {
-			sendToTermsScreen(R.string.sub_section_title_manage_payees);
-		} else if (null != BankUser.instance().getPayees()) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, BankUser.instance().getPayees());
-			BankConductor.navigateToManagePayee(bundle);
-		} else {
-			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
-		}
-	}
-
-	/**
-	 * Send the user to the pay bill terms and conditions page
-	 * @param title used to signify what screen should come next
-	 */
-	protected static void sendToTermsScreen(final int title){
-		final Bundle bundle = new Bundle();
-		bundle.putInt(BankExtraKeys.TITLE_TEXT, title);
-		BankConductor.navigateToPayBillsTerms(bundle);
 	}
 
 	/**
@@ -143,42 +96,11 @@ public final class BankPayBillsSectionInfo extends GroupComponentInfo {
 					return;
 				}
 
-				navigateIntoReviewPayments();
+				BankConductor.navigateToReviewPayments();
 			}
 		};
 	}
 	
-	private static void navigateIntoReviewPayments() {
-		if (!isEligible()) {
-			BankConductor.navigateToPayBillsLanding();
-		} else if (isEligible() && !isEnrolled()) {
-			sendToTermsScreen(R.string.review_payments_title);
-		} else if( null != BankUser.instance().getScheduled()) {
-			final Bundle bundle = new Bundle();
-			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, BankUser.instance().getScheduled());
-			BankConductor.navigateToReviewPaymentsTable(bundle);
-		} else {
-			final String url = BankUrlManager.generateGetPaymentsUrl(PaymentQueryType.SCHEDULED);
-			BankServiceCallFactory.createGetPaymentsServerCall(url).submit();
-		}
-	}
-
-	/**
-	 * Method call to see if a uses is eligible for payments
-	 * @return if a user is eligible for payments
-	 */
-	protected static boolean isEligible(){
-		return BankUser.instance().getCustomerInfo().isPaymentsEligible();
-	}
-
-	/**
-	 * Method call to see if a users is enrolled in payments
-	 * @return if a user is enrolled in payments
-	 */
-	protected static boolean isEnrolled(){
-		return BankUser.instance().getCustomerInfo().isPaymentsEnrolled();
-	}
-
 	/**
 	 * Method used to determine if user is already viewing a screen that the user can navigate to
 	 * via the menu section specified.

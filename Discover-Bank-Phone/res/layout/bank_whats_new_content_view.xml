@@ -23,14 +23,14 @@
 
         <ImageButton
             android:id="@+id/close"
-            android:layout_width="@dimen/min_touch_region"
+            android:layout_width="@dimen/bank_whats_new_action_bar_height"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/bank_whats_new_action_button_selector"
             android:contentDescription="@string/empty"
             android:padding="@dimen/groups_of_elements_padding"
-            android:layout_marginRight="@dimen/groups_of_elements_padding"
+            android:paddingRight="@dimen/groups_of_elements_padding"
             android:src="@drawable/x_gray" />
     </RelativeLayout>
 
@@ -39,6 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/page_indicators"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/header" />
 
     <LinearLayout
@@ -46,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bank_whats_new_footer_height"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bank_page_indicator_background"
         android:gravity="center"
         android:orientation="horizontal" />
 

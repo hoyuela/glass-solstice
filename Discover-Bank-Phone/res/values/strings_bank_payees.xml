@@ -38,6 +38,7 @@
 	<string name="bank_deposit_amount">Deposit Amount</string>
 	<string name="bank_payee_empty">You currently have no payees set up.</string>
 	<string name="bank_payee_none">None of the above</string>
+	<string name="bank_pay_this_payee">Pay This Payee</string>
 	
 	<!-- Delete Payee Modal Strings -->
 	<string name="bank_payee_delete_title">Delete Payee?</string>

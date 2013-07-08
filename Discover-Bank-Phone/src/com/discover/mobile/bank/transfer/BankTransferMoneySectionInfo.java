@@ -1,13 +1,9 @@
 package com.discover.mobile.bank.transfer;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
-import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
@@ -15,7 +11,6 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationHelper;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
@@ -78,43 +73,12 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 				if( BankUser.instance().getHolidays().isEmpty() ) {
 					BankServiceCallFactory.createBankHolidayDownloadServiceCall().submit();
 				}
-				Activity activity = DiscoverActivityManager.getActiveActivity();
-				final boolean isLoggedIn = (activity != null);
-				final boolean isBankNavigationRootActivityActive = activity instanceof BankNavigationRootActivity;
 
-				/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-				if( isLoggedIn && isBankNavigationRootActivityActive) {
-					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-					activity = null;
-
-					final boolean isEligible = BankUser.instance().getCustomerInfo().isTransferEligible();
-
-					/**Check if user is already in the Transfer Money work-flow*/
-					if( !isUserAlreadyInTransferFunds() ) {
-						final AccountList cachedExternalAccounts = BankUser.instance().getExternalAccounts();
-						if(isEligible && cachedExternalAccounts == null) {
-							BankServiceCallFactory.createGetExternalTransferAccountsCall().submit();
-						} else if(isEligible){
-							final Bundle args = new Bundle();
-							args.putSerializable(BankExtraKeys.EXTERNAL_ACCOUNTS, cachedExternalAccounts);
-							BankConductor.navigateToTransferMoneyLandingPage(args);
-						} else {
-							//User is not eligible and will be taken to the inelligible landing page.
-							BankConductor.navigateToTransferMoneyLandingPage(null);
-						}
-					} else {
-						final String debugTag = BankTransferMoneySectionInfo.class.getSimpleName();
-
-						//Log.isLoggable will throw an exception if it is given a tag of length > 23, 
-						//so we need to restrict it.
-						final String limitedTag = debugTag.substring(0, Math.min(debugTag.length(), 23));
-
-						if( Log.isLoggable(limitedTag, Log.WARN)) {
-							Log.w(limitedTag, "User is already in the check deposit work-flow");
-						}
-
-						navActivity.hideSlidingMenuIfVisible();
-					}
+				/** Check if user is already in the Transfer Money work-flow */
+				if (!isUserAlreadyInTransferFunds()) {
+					BankConductor.navigateToTransferMoney();
+				} else {
+					BankNavigationHelper.hideSlidingMenu();
 				}
 			}
 
