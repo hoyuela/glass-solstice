@@ -11,8 +11,7 @@
         style="@style/bank_whats_new_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/forms_inner_padding"
-        android:text="Pin Down the Nearest ATM" />
+        android:layout_marginBottom="@dimen/forms_inner_padding" />
 
     <ImageView
         android:id="@+id/divider"
@@ -26,7 +25,6 @@
         android:id="@+id/whats_new_pager_content"
         style="@style/bank_whats_new_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ATMs are grouped for an easier search.  Just tap on the &quot;Multiple Pin&quot; icon to zoom into the group and find an ATM." />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
