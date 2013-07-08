@@ -3,6 +3,7 @@ package com.discover.mobile.bank.payees;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -172,7 +173,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 			editMode = value;
 			return;
 		}
-		
 		editMode = value;
 		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		
@@ -214,6 +214,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
 			editableField.setVisibility(View.INVISIBLE);
 			middleLabel.setVisibility(View.VISIBLE);
 		}
+		editMode = value;
 	}
 
 	/**
@@ -257,7 +258,6 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
         	editableField.setOnFocusChangeListener(null);
         	setEditModeNoFocus(false);
         	editableField.setOnFocusChangeListener(this);
-        	
         	/**Move focus to next BankEditDetail in page if there is one*/
         	if( null != nextDetail) {
         		new Handler().postDelayed(new Runnable() {
@@ -267,6 +267,7 @@ public class BankEditDetail extends RelativeLayout implements OnClickListener, O
         			}
         		}, 500);
         	}
+        	return true;
         }
         return false;
 	}
