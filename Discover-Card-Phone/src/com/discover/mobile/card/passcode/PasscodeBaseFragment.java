@@ -1,9 +1,6 @@
 package com.discover.mobile.card.passcode;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -12,14 +9,11 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -87,14 +81,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	public static final int KEY_DELETE = 67;
 
-	protected final int MODAL_PASSCODE_CREATED = R.layout.dialog_passcode_created;
-	protected final int MODAL_LOCKOUT = R.layout.dialog_passcode_lockout;
-	protected final int MODAL_LOCKOUT_DISABLED_PASSCODE = R.layout.dialog_passcode_lockout_passcode;
-//	protected final int MODAL_STRONG_AUTH_SKIPPED = R.layout.dialog_whatsnew;
-	protected final int MODAL_PASSCODE_UPDATED = R.layout.dialog_passcode_updated;
-	protected final int MODAL_PASSCODE_DISABLED = R.layout.dialog_passcode_disabled;
-	protected final int MODAL_PASSCODE_ENABLED = R.layout.dialog_passcode_enabled;
-	protected final int MODAL_PASSCODE_GUIDELINES = R.layout.dialog_passcode_guidelines;
 	protected PasscodeUtils pUtils;
 	protected boolean isStopping = false;
 
@@ -335,7 +321,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 	}
 
-
 	/*
 	 * Executed on the first 3 input fields to condition them handles password
 	 * masking handles navigating to next item
@@ -415,104 +400,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		pUtils.createPasscodeToken(token);
 	}
 
-	protected void dialogHelper(int viewLayout, String buttonText, boolean isOrangeButton, Runnable action){
-		dialogHelper(viewLayout, buttonText, isOrangeButton, action, action);
-	}
-	
-	protected void dialogHelper(int viewLayout, String buttonText, boolean isOrangeButton, Runnable action, Runnable backAction){
-
-		LayoutInflater inflater = LayoutInflater.from(getActivity());
-		View view = inflater.inflate(viewLayout, null);
-
-		// make dialog fill screen
-		Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-		int width = display.getWidth();
-		int height = display.getHeight();
-		view.setMinimumHeight(height);
-		view.setMinimumWidth(width);
-
-		Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setView(view)
-				.setPositiveButton(buttonText, new MyClickListener(action))
-				.setOnKeyListener(new MyKeyListener(backAction));
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
-
-		if (isOrangeButton) {
-			// Orange button
-			Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-			if (b != null) {
-				b.setBackgroundColor(getResources().getColor(R.color.passcodeOrange));
-				b.setTextColor(getResources().getColor(R.color.white));
-			}
-		} else {
-			// gray button
-			Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-			if (b != null) {
-				b.setBackgroundColor(getResources().getColor(R.color.passcodeGray));
-				b.setTextColor(getResources().getColor(R.color.black));
-			}
-		}
-	}
-
-	// Fires off specified action on click, added to dialogs so back button can be detected
-	private class MyKeyListener implements DialogInterface.OnKeyListener {
-
-		private Runnable action;
-
-		public MyKeyListener(Runnable action) {
-			this.action = action;
-		}
-
-		public Runnable getAction() {
-			return action;
-		}
-
-		@Override
-		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-			if (keyCode == KeyEvent.KEYCODE_BACK
-					&& event.getAction() == KeyEvent.ACTION_UP
-					&& !event.isCanceled()) {
-				Log.v(TAG, "About to execute action");
-				if (getAction() != null) {
-					Log.v(TAG, "Back button action executed!");
-					getAction().run();
-				} else {
-					Log.e(TAG, "Back button action is null");
-				}
-				dialog.dismiss();
-				return true;
-			}
-			return false;
-		}
-	}
-
-	// Fires off specified action on back button pressed
-	private class MyClickListener implements DialogInterface.OnClickListener {
-
-		private Runnable action;
-
-		public MyClickListener(Runnable action) {
-			this.action = action;
-		}
-
-		public Runnable getAction() {
-			return action;
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int arg1) {
-			Log.v(TAG, "About to execute action");
-			if (getAction() != null) {
-				Log.v(TAG, "Action executed!");
-				getAction().run();
-			}
-			dialog.dismiss();
-		}
-	}
-
 	protected class NavigateACHomeAction implements Runnable {
 		public NavigateACHomeAction() {}
 		@Override
@@ -542,9 +429,9 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				.setText(Html.fromHtml(getResources().getString(stringId)));
 	}
 
-	protected void slideTransition() {
-		getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-	}
+//	protected void slideTransition() {
+//		getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//	}
 	
 	protected void storeFirstName() {
 //		PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());

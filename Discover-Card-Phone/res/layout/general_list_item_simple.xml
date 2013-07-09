@@ -2,34 +2,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_list_item"
-     >
+    android:background="@color/card_body_color">
+
     <LinearLayout
         android:id="@+id/topLeftLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="12dp"
-        android:paddingTop="12dp" >
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/achome_separator"
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#d0d0d0" />
 
         <TextView
             android:id="@id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:paddingLeft="16dp"
             android:text="Current Balance:"
-            android:textColor="#576166"
-            android:textSize="16sp" />
+            android:textColor="@color/field_copy"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@id/content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="5dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="6dp"
             android:text=""
-            android:textColor="#3d484d"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="@color/title"
+            android:textSize="18sp"
+            android:textStyle="normal" />
     </LinearLayout>
 
     <!--
@@ -52,12 +59,12 @@
         android:layout_alignBottom="@+id/topLeftLayout"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="22dp"
+        android:layout_marginRight="26dp"
         android:gravity="center"
         android:text="SIGN UP"
         android:textColor="#267bb1"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textSize="14sp"
+        android:textStyle="normal" />
 
     <ImageView
         android:id="@+id/generalS_Page_arrow"
@@ -65,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:paddingRight="12dp"
+        android:paddingRight="16dp"
         android:src="@drawable/blue_arrow_right" />
 
 </RelativeLayout>

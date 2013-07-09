@@ -318,32 +318,32 @@
 
     <!-- /* 13.4  Changes Start* -->
 
-    <style name="strongauth_ans_selection">
+    <style name="card_strongauth_ans_selection">
         <item name="android:textColorHighlight">#3d484d</item>
         <item name="android:textColor">#8a9499</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="spinner_style">
+    <style name="card_spinner_style">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#3d484d</item>
         <item name="android:textSize">14sp</item>
         <item name="android:background">#ebeff0</item>
         <item name="android:hint">Select a Question</item>
-        <item name="android:windowTitleStyle">@style/prompt_style</item>
+        <item name="android:windowTitleStyle">@style/card_prompt_style</item>
     </style>
 
-    <style name="prompt_style" parent="@android:style/Theme.Dialog">
+    <style name="card_prompt_style" parent="@android:style/Theme.Dialog">
         <item name="android:background">@android:color/black</item>
         <item name="android:padding">10dp</item>
     </style>
 
-    <style name="HoloSpinner">
-        <item name="android:background">@drawable/spinner_holo</item>
+    <style name="card_holospinner">
+        <item name="android:background">@drawable/card_spinner_holo</item>
     </style>
 
-    <style name="page_title">
+    <style name="card_page_title">
         <item name="android:textColor">@color/title</item>
         <item name="android:textSize">@dimen/title_min</item>
         <item name="android:textStyle">bold</item>

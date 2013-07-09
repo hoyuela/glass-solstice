@@ -2,38 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/home_list_item"
+    android:background="@color/card_body_color"
     android:orientation="vertical" >
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <LinearLayout
             android:id="@+id/topLeftLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingTop="12dp" >
+            >
+
+            <View
+                android:id="@+id/achome_separator_thick"
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="#d0d0d0"
+                android:visibility="gone"
+                 />
+            
+            <View
+                android:id="@+id/achome_separator"
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="#d0d0d0" />
 
             <TextView
                 android:id="@id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Current Balance:"
-                android:textColor="#576166"
-                android:textSize="16sp" />
+                android:layout_marginTop="14dp"
+                android:textColor="@color/field_copy"
+                android:textSize="14sp" 
+                android:paddingLeft="16dp"
+                />
 
             <TextView
                 android:id="@id/content_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="5dp"
+                android:paddingBottom="14dp"
+                android:paddingTop="6dp"
                 android:text=""
-                android:textColor="#3d484d"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="@color/title"
+                android:textSize="18sp"
+                android:textStyle="normal" 
+                android:paddingLeft="16dp"
+                />
         </LinearLayout>
 
         <!--
@@ -56,12 +75,12 @@
             android:layout_alignBottom="@+id/topLeftLayout"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="26dp"
             android:gravity="center"
             android:text="PAY"
-            android:layout_marginRight="22dp"
             android:textColor="#267bb1"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="normal" />
 
         <ImageView
             android:id="@+id/general_Page_arrow"
@@ -69,17 +88,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingRight="12dp"
+            android:paddingRight="16dp"
             android:src="@drawable/blue_arrow_right" />
 
         <View
             android:id="@id/general_list_item_separator_line"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
+            android:layout_height="1dp"
             android:layout_below="@+id/topLeftLayout"
-            android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
-            android:background="#c0c8cc" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="#d0d0d0" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -91,9 +110,9 @@
             android:id="@id/bottom_bar_label"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="8dp"
+            android:paddingBottom="14dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="14dp"
             android:text="Credit Available:"
             android:textColor="#8a9499"
             android:textSize="14sp" />
@@ -102,10 +121,11 @@
             android:id="@id/bottom_bar_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/bottom_bar_label"
-            android:paddingBottom="12dp"
-            android:paddingTop="8dp"
-            android:text=""
+            android:layout_alignParentRight="true"
+            android:paddingBottom="14dp"
+            android:paddingTop="14dp"
+            android:paddingRight="64dp"
+            android:text="$1.21"
             android:textColor="#8a9499"
             android:textSize="14sp" />
     </RelativeLayout>

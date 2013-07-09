@@ -8,15 +8,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:includeFontPadding="false"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="4dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:layout_marginTop="20dp"
         android:text="@string/account_info_help_level1"
         android:textStyle="bold"
         android:textSize="16dp"
         android:textColor="#3d484d"
-        style="@style/strength_help_level_message"/>
+        />
 
     <View
         android:id="@+id/reg_help_strength_image"
@@ -24,8 +21,7 @@
         android:layout_height="15dp"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/reg_help_strength_level"
-        android:layout_marginBottom="6dp"
-        android:background="@drawable/rounded_red_bar" />
+        android:background="@drawable/card_strenghtbar_red_img" />
 
     <View
         android:id="@+id/reg_help_strong_check"
@@ -45,10 +41,12 @@
         android:includeFontPadding="false"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/reg_help_strength_level"
-     	android:paddingTop="4dp"
-     	android:paddingBottom="4dp"
         android:text="@string/account_info_help_action1"
-        style="@style/action_message" />
+        android:layout_marginTop="14dp"
+        android:textSize="14dp"
+        android:textColor="@color/sub_copy"
+        android:textStyle="bold"
+        />
 
     <TextView
         android:id="@+id/reg_help_strength_msg"
@@ -56,13 +54,12 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:layout_alignParentLeft="true"
-        android:paddingBottom="4dp"
         android:layout_marginBottom="24dp"
         android:layout_below="@id/reg_help_strength_action"
         android:text="@string/account_info_help_msg1"
         android:textStyle="normal"
         android:textSize="14dp"
-        android:textColor="#576166"
+        android:textColor="@color/sub_copy"
         
  />
 

@@ -44,7 +44,7 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 		Log.v(TAG, "SUBMIT EVENT");
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isValid) {
-			new GetMatchRequest(this.getActivity(), getPasscodeString(), getPasscodeToken()).loadDataFromNetwork(new VerifyPasscodeMatchRequestListener());
+			new GetMatchRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new VerifyPasscodeMatchRequestListener());
 		} else {
 			passcodeResponse(false);
 		}

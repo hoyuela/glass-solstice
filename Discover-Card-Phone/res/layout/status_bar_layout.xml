@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="12dp"
+    android:background="@color/card_body_color" >
 
      <TextView
         android:id="@+id/account_name"
@@ -13,7 +14,7 @@
         android:maxLines="1"
         android:textStyle="bold"
         android:textColor="#293033"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:gravity="center"/>
      
       <ImageView

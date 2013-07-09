@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd"
+    android:background="@color/card_body_color"
     android:orientation="vertical" >
 
     <ScrollView
@@ -20,14 +20,14 @@
 
             <TextView
                 android:id="@+id/forgot_id_title_label"
-                android:textColor="#293033"
-                android:textStyle = "normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
                 android:text="@string/forgot_id_title_text"
-                android:textSize="14dp" />
+                android:textColor="#293033"
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/forgot_id_submission_error_label"
@@ -39,48 +39,48 @@
                 android:includeFontPadding="false"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:textSize="16dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/forgot_id_account_num_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#8a9499" 
                 android:layout_below="@+id/forgot_id_submission_error_label"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:includeFontPadding="false"
                 android:text="@string/account_info_label_one"
-                android:textStyle="normal"
-                android:textSize="14dp" />
+                android:textColor="#8a9499"
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/forgot_id_id_field"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_below="@+id/forgot_id_account_num_label"
                 android:textCursorDrawable="@null" />
 
             <TextView
                 android:id="@+id/forgot_id_id_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_id_field"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" />
+                android:text="@string/invalid_input"
+                android:textColor="#ed1c24"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/account_information_input_info_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_id_error_label"
-                android:textColor="#8a9499" 
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="6dp"
                 android:includeFontPadding="false"
                 android:text="@string/account_info_input_restrictions_label"
-                android:textSize="14dp"
+                android:textColor="#8a9499"
+                android:textSize="14sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -90,14 +90,14 @@
                 android:layout_below="@+id/account_information_input_info_label"
                 android:includeFontPadding="false"
                 android:paddingTop="16dp"
-                android:textColor="#8a9499" 
                 android:text="@string/forgot_id_password_text"
-                android:textSize="14dp" />
+                android:textColor="#8a9499"
+                android:textSize="14sp" />
 
             <com.discover.mobile.card.common.uiwidget.NonEmptyEditText
                 android:id="@+id/forgot_id_password_field"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_below="@+id/forgot_id_password_label"
                 android:inputType="textPassword"
                 android:maxLength="32"
@@ -105,44 +105,50 @@
 
             <TextView
                 android:id="@+id/forgot_id_pass_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_password_field"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" />
+                android:text="@string/invalid_input"
+                android:textColor="#ed1c24"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/forgot_id_submit_button"
-                style="@style/call_to_action_theme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_below="@+id/forgot_id_password_field"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
-                android:text="@string/submit_text" />
+                android:background="@drawable/card_action_orange_button"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/submit_text"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_cancel_label"
-                style="@style/blue_hyperlink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/forgot_id_submit_button"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="44dp"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:includeFontPadding="false"
-                android:paddingTop="16dp"
                 android:text="@string/cancel_text"
-                android:textSize="17dp" />
+                android:textColor="@color/footer_link"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <RelativeLayout
                 android:id="@+id/footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="46dp"
-                android:layout_below="@+id/account_info_cancel_label" >
-                
+                android:layout_below="@+id/account_info_cancel_label"
+                android:layout_marginTop="48dp" >
+
                 <include layout="@layout/old_general_need_help_footer" />
             </RelativeLayout>
             <!-- Defect id 95853 -->
@@ -168,8 +174,7 @@
 
                 <include
                     android:id="@+id/home_footer"
-                    layout="@layout/card_fragment_footer"
-                    android:paddingBottom="20dp" />
+                    layout="@layout/card_fragment_footer" />
             </RelativeLayout>
             <!-- Defect id 95853 -->
         </RelativeLayout>

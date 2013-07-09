@@ -6,8 +6,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
-import com.discover.mobile.card.common.net.utility.NetworkUtility;
-import com.discover.mobile.card.passcode.model.json.Status;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 
 /**
@@ -24,8 +22,6 @@ public class GetSyntaxValidityRequest implements PasscodeRequest {
 	public GetSyntaxValidityRequest(Activity activity, String passcode) {
 		this.activity = activity;
 		this.passcode = passcode;
-		// TODO Update URL
-//		this.url = "http://discover-api.appspot.com/api/v1/passcode/syntaxValidity" + "?passcode=" + this.passcode;
 		this.url = activity.getString(R.string.url_in_use) 
 				+ activity.getString(R.string.discover_url)
 				+ "personalprofile/v1/passcode/syntaxValidity";
@@ -33,12 +29,7 @@ public class GetSyntaxValidityRequest implements PasscodeRequest {
 
 	public void loadDataFromNetwork(CardEventListener cel) {
 		WSRequest request = new WSRequest();
-//		request.setMethodtype("POST");
 		request.setUrl(this.url + "?passcode=" + this.passcode);
-		
-//		String input = "{\"passcode:\"" + this.passcode + "\"}";
-//		request.setInput(input.getBytes());
-		
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(this.activity,
 				new VerifySyntax(), "Discover", "Checking Passcode Syntax...", cel);
 		serviceCall.execute(request);

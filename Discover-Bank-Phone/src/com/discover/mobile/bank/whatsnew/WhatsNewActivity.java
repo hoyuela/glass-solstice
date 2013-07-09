@@ -5,12 +5,16 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,8 +26,11 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
+import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
@@ -43,7 +50,10 @@ import com.discover.mobile.common.error.ErrorHandlerUi;
  * @author jthornton
  *
  */
-public class WhatsNewActivity extends FragmentActivity implements ErrorHandlerUi{
+public class WhatsNewActivity extends FragmentActivity implements ErrorHandlerUi, AlertDialogParent{
+
+	/**Tag used for logging*/
+	private static final String TAG = WhatsNewActivity.class.getSimpleName();
 
 	/**Key to get the location of the view pager out of the bundle*/
 	private static final String PAGER_LOCATION = "location";
@@ -309,5 +319,69 @@ public class WhatsNewActivity extends FragmentActivity implements ErrorHandlerUi
 		 * result, if an error occurs, gets ignored. 
 		 */		
 		return null;
+	}
+
+	/**
+	 * @return Return a reference to the current dialog being displayed over this activity.
+	 */
+	@Override
+	public AlertDialog getDialog() {
+		return DiscoverModalManager.getActiveModal();
+	}
+
+	/**
+	 * Allows to set the current dialog that is being displayed over this activity.
+	 */
+	@Override
+	public void setDialog(final AlertDialog dialog) {
+		DiscoverModalManager.setActiveModal(dialog);
+	}
+
+	/**
+	 * Closes the current dialog this is being displayed over this activity. Requires
+	 * a call to setDialog to be able to use this function.
+	 */
+	@Override
+	public void closeDialog() {
+		if( DiscoverModalManager.hasActiveModal() && DiscoverModalManager.isAlertShowing()) {
+			DiscoverModalManager.clearActiveModal();
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
+		}
+	}
+
+	/**
+	 * Starts a Progress dialog using this activity as the context. The ProgressDialog created
+	 * will be set at the active dialog.
+	 */
+	@Override
+	public void startProgressDialog(final boolean progressDialogIsCancelable) {		
+		if(!DiscoverModalManager.hasActiveModal()) {
+			DiscoverModalManager.setActiveModal(ProgressDialog.show(DiscoverActivityManager.getActiveActivity(), 
+					"Discover", "Loading...", true));
+			DiscoverModalManager.setProgressDialogCancelable(progressDialogIsCancelable);
+			DiscoverModalManager.getActiveModal().setCanceledOnTouchOutside(false);
+			DiscoverModalManager.getActiveModal().setOnCancelListener(new OnCancelListener() {
+
+				@Override
+				public void onCancel(final DialogInterface dialog) {
+					onCancelProgressDialog();
+				}
+			});
+			DiscoverModalManager.setAlertShowing(true);
+		} else {
+			if( Log.isLoggable(TAG, Log.WARN)) {
+				Log.w(TAG, "Activity does not have a dialog associated with it!" );
+			}
+		}
+	}
+
+	/**
+	 * When the progress dialog is dismiss cancel the service call.
+	 */
+	public void onCancelProgressDialog() {
+		BankNetworkServiceCallManager.getInstance().cancelServiceCall();
 	}
 }

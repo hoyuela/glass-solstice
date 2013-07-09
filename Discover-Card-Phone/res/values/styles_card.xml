@@ -4,7 +4,7 @@
      <style name="card_blue_hyperlink">
       <!--    13.4 Changes Start -->
         <!-- <item name="android:textColor">@color/blue_link</item> -->
-        <item name="android:textColor">@color/footer_color</item>
+        <item name="android:textColor">@color/card_footer_color</item>
         <!--    13.4 Changes End -->
         <item name="android:textSize">@dimen/body_copy_min</item>
     </style>

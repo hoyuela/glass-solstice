@@ -70,7 +70,10 @@ public class PasscodeLandingFragment extends BaseFragment {
 	
 	private void navigateForgot(){
 		Log.v(TAG, "Navigate Forgot");
-		makeFragmentVisible(new PasscodeForgotStep1Fragment());
+		final StrongAuthHandler authHandler = new StrongAuthHandler(
+        		PasscodeLandingFragment.this.getActivity(),
+        		new PasscodeStrongAuthFlow(new PasscodeForgotStep1Fragment()), false);
+        authHandler.strongAuth();
 	}
 
 	private void navigateSetup(){
@@ -78,7 +81,7 @@ public class PasscodeLandingFragment extends BaseFragment {
 		//TODO sgoff0 - properly configure SA
 		final StrongAuthHandler authHandler = new StrongAuthHandler(
         		PasscodeLandingFragment.this.getActivity(),
-        		new SetupPasscodeStrongAuthFlow(), false);
+        		new PasscodeStrongAuthFlow(new PasscodeSetupStep1Fragment()), false);
         authHandler.strongAuth();
 	}
 	
@@ -130,12 +133,23 @@ public class PasscodeLandingFragment extends BaseFragment {
 		}
 	};
 	
-	private final class SetupPasscodeStrongAuthFlow implements StrongAuthListener {
+	private final class PasscodeStrongAuthFlow implements StrongAuthListener {
+		
+		private PasscodeBaseFragment frag;
+		
+		public PasscodeStrongAuthFlow(PasscodeBaseFragment frag) {
+			super();
+			this.frag = frag;
+		}
+
 		@Override
 		public void onStrongAuthSucess(Object data) {
 			// TODO Auto-generated method stub
 			Log.v(TAG, "StrongAuth success: about to make fragment visible");
-			makeFragmentVisible(new PasscodeSetupStep1Fragment());
+//			makeFragmentVisible(new PasscodeSetupStep1Fragment());
+			if (frag != null) {
+				makeFragmentVisible(frag);
+			}
 		}
 
 		@Override

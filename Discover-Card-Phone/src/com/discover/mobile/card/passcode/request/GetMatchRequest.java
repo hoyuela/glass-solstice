@@ -10,16 +10,13 @@ import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 
 public class GetMatchRequest implements PasscodeRequest {
 
-	private String token;
 	private String passcode;
 	private String url;
 	private Activity activity;
 
-	public GetMatchRequest(Activity activity, String passcode, String token) {
+	public GetMatchRequest(Activity activity, String passcode) {
 		this.activity = activity;
 		this.passcode = passcode;
-		//TODO temporarily use token until Brian removes requirement from server
-		this.token = token;
 		this.url = activity.getString(R.string.url_in_use) 
 				+ activity.getString(R.string.discover_url)
 				+ "personalprofile/v1/passcode/match";
@@ -30,7 +27,7 @@ public class GetMatchRequest implements PasscodeRequest {
 		request.setMethodtype("POST");
 		request.setUrl(this.url);
 		
-		String input = "{\"passcode\":\"" + this.passcode + "\", \"deviceToken\": \"" + this.token + "\"}";
+		String input = "{\"passcode\":\"" + this.passcode + "\"}";
 		request.setInput(input.getBytes());
 		
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(

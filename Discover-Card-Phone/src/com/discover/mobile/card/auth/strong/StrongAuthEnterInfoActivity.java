@@ -91,9 +91,9 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     private static final String UPDATE_SECOND_CONFIRM_ANSWER_ERROR_STATE = "q";
     private static final String UPDATE_THIRD_CONFIRM_ANSWER_ERROR_STATE = "r";
 
-    protected final int SPINNER_ERROR_APPEARANCE = R.drawable.spinner_invalid_holo_light;
-    protected final int SPINNER_FOCUSSED_APPEARANCE = R.drawable.spinner_focused_holo_light;
-    protected final int SPINNER_DEFAULT_APPEARANCE = R.drawable.spinner_filled_holo_light;
+    protected final int SPINNER_ERROR_APPEARANCE = R.drawable.card_spinner_invalid_holo_light;
+    protected final int SPINNER_FOCUSSED_APPEARANCE = R.drawable.card_spinner_focused_holo_light;
+    protected final int SPINNER_DEFAULT_APPEARANCE = R.drawable.card_spinner_filled_holo_light;
 
     // Error State
     private boolean answerFirstIsInError = false;
@@ -119,7 +119,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
             confirmThirdAnswer;
     private TextView firstQuestionLabel, secondQuestionLabel,
             thirdQuestionLabel;
-    private Button update;
+    private Button submit;
     private RadioGroup securityRadioGroup;
 
     // Footer links
@@ -364,15 +364,15 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     private void setlabelValues() {
         // TODO Auto-generated method stub
-        firstQuestionLabel.setText(R.string.security_question);
-        secondQuestionLabel.setText(R.string.security_question_second);
-        thirdQuestionLabel.setText(R.string.security_question_third);
+        firstQuestionLabel.setText(R.string.sa_security_question);
+        secondQuestionLabel.setText(R.string.sa_security_question_second);
+        thirdQuestionLabel.setText(R.string.sa_security_question_third);
 
     }
 
     private void handlingClickEvents() {
         // TODO Auto-generated method stub
-        update.setOnClickListener(this);
+        submit.setOnClickListener(this);
         privacyTerms.setOnClickListener(this);
         provideFeedback.setOnClickListener(this);
         logout.setOnClickListener(this);
@@ -721,7 +721,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         confirmAnswerThirdError = (TextView) securityBlock3
                 .findViewById(R.id.confirm_answer_error_label);
 
-        update = (Button) findViewById(R.id.account_info_continue_button);
+        submit = (Button) findViewById(R.id.account_info_submit_button);
         privacyTerms = (TextView) findViewById(R.id.privacy_terms);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         logout = (Button) findViewById(R.id.logout_button);
@@ -766,7 +766,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
-        if (v.getId() == R.id.account_info_continue_button) {
+        if (v.getId() == R.id.account_info_submit_button) {
 
             validateAndUpdate();
 

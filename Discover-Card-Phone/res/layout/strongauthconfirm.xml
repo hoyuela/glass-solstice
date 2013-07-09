@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/call_to_sa_done_button"
+        android:background="@drawable/card_modal_orange_button"
         android:text="@string/sa_confirm_done"
         android:textColor="@color/white"
         android:textSize="20dp"

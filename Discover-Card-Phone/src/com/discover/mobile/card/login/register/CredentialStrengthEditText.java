@@ -198,7 +198,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         mNoTextImage = BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.strength_meter_grey);
         mStrengthMeter = mNoTextImage;
-        this.setBackgroundResource(R.drawable.textfield_normal_holo_light);
+        this.setBackgroundResource(R.drawable.card_textfield_normal_holo_light);
     }
 
     /**
@@ -306,7 +306,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
                 && hasGoodLength && (hasLowerCase || hasUpperCase)
                 && hasNonAlphaNum && hasNumber) {
             mStrengthMeter = mStrongImage;
-            setBackgroundResource(R.drawable.textfield_valid_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_valid_holo_light);
         }
         /*
          * Meets minimum requirements but does not include a variation of
@@ -315,7 +315,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         else if (!passAndIdMatch && !looksLikeActNum && !hasInvalidChar
                 && hasGoodLength) {
             mStrengthMeter = mModerateImage;
-            setBackgroundResource(R.drawable.textfield_focused_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_focused_holo_light);
         }
         /*
          * Does not meet minimum requirements (not 6-16 characters, looks like
@@ -324,7 +324,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
          */
         else {
             mStrengthMeter = mWeakImage;
-            setBackgroundResource(R.drawable.textfield_invalid_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_invalid_holo_light);
         }
 
         // Force an onDraw
@@ -387,7 +387,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         if (!passAndIdMatch && hasGoodLength && hasUpperAndLowerAndNum
                 && hasNonAlphaNum) {
             mStrengthMeter = mStrongImage;
-            setBackgroundResource(R.drawable.textfield_valid_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_valid_holo_light);
         }
         /*
          * Meets minimum requirements but does not include a variation of upper
@@ -396,7 +396,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         else if (!passAndIdMatch && hasGoodLength && hasNumber
                 && (hasUpperCase || hasLowerCase)) {
             mStrengthMeter = mModerateImage;
-            setBackgroundResource(R.drawable.textfield_focused_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_focused_holo_light);
         }
         /*
          * Does not meet minimum requirements (not 8-32 characters, does not
@@ -404,7 +404,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
          */
         else {
             mStrengthMeter = mWeakImage;
-            setBackgroundResource(R.drawable.textfield_invalid_holo_light);
+            setBackgroundResource(R.drawable.card_textfield_invalid_holo_light);
         }
 
         this.invalidate();
@@ -418,7 +418,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
      */
     public void setStrengthMeterInvalid() {
         mStrengthMeter = mInvalidImage;
-        this.setBackgroundResource(R.drawable.textfield_invalid_holo_light);
+        this.setBackgroundResource(R.drawable.card_textfield_invalid_holo_light);
     }
 
     /**

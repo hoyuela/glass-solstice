@@ -2,16 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/body_color"
+    android:background="@color/card_body_color"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:id="@+id/security_question_layout"
-        android:background="@color/body_color"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:layout_marginBottom="34dp"
-        >
+        android:background="@color/card_body_color" >
 
         <TextView
             android:id="@+id/security_question"
@@ -20,33 +19,35 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:includeFontPadding="false"
-            android:text="@string/security_question"
+            android:text="@string/sa_security_question"
             android:textColor="#8a9499"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <EditText
             android:id="@+id/account_security_question_field"
-            style="@style/HoloSpinner"
+            style="@style/card_holospinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/security_question"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:editable="false"
-            android:textColor="@color/hint_color"
-            android:textSize="18sp"
-            android:hint="@string/option_select" />
+            android:hint="@string/sa_option_select"
+            android:textColor="@color/card_hint_color"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/security_question_error_label"
-            style="@style/error_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_question_field"
             android:layout_marginTop="5dp"
             android:includeFontPadding="false"
             android:text="@string/question_1_notselected"
-            android:textSize="14dp" />
+            android:textColor="@color/error_indicator"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/answer"
@@ -54,35 +55,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/security_question_error_label"
-            android:includeFontPadding="false"
-            android:text="@string/answer"
             android:layout_marginTop="14dp"
+            android:includeFontPadding="false"
+            android:text="@string/sa_answer"
             android:textColor="#8a9499"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <com.discover.mobile.card.common.uiwidget.AnswerEditText
             android:id="@+id/account_security_answer_field"
             android:layout_width="fill_parent"
-            android:layout_height="46dp"
+            android:layout_height="44dp"
             android:layout_below="@+id/answer"
             android:hint="@string/empty"
             android:imeOptions="actionNext"
             android:inputType="textNoSuggestions"
             android:maxLength="50"
-         	android:textColor="@color/field_color"
+            android:textColor="@color/card_field_color"
             android:textCursorDrawable="@null"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/answer_error_label"
-            style="@style/error_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_answer_field"
             android:layout_marginTop="5dp"
             android:includeFontPadding="false"
             android:text="@string/special_characters_entered"
-            android:textSize="14dp" />
+            android:textColor="@color/error_indicator"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/confirm_answer"
@@ -90,34 +93,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/answer_error_label"
-            android:includeFontPadding="false"
-            android:text="@string/confirm_answer"
             android:layout_marginTop="14dp"
+            android:includeFontPadding="false"
+            android:text="@string/sa_confirm_answer"
             android:textColor="#8a9499"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <com.discover.mobile.card.common.uiwidget.ConfirmationAnswerEditText
             android:id="@+id/account_security_confirm_answer_field"
             android:layout_width="fill_parent"
-            android:layout_height="46dp"
+            android:layout_height="44dp"
             android:layout_below="@+id/confirm_answer"
             android:hint="@string/empty"
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
-            android:textColor="@color/field_color"
+            android:textColor="@color/card_field_color"
             android:textCursorDrawable="@null"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/confirm_answer_error_label"
-            style="@style/error_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/account_security_confirm_answer_field"
             android:layout_marginTop="5dp"
             android:includeFontPadding="false"
             android:text="@string/confirm_answer_nottyped"
-            android:textSize="14dp" />
+            android:textColor="@color/error_indicator"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

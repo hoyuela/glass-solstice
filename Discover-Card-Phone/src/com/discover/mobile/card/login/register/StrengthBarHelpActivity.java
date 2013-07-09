@@ -114,7 +114,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level1,
                     R.string.account_info_help_action1,
                     R.string.account_info_help_msg1,
-                    R.drawable.rounded_red_bar, R.drawable.x_red);
+                    R.drawable.card_strenghtbar_red_img, R.drawable.x_red);
 
         }
 
@@ -124,7 +124,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level2,
                     R.string.account_info_help_action2,
                     R.string.account_info_help_msg2,
-                    R.drawable.rounded_yellow_bar, 0);
+                    R.drawable.card_strenghtbar_yellow_img, 0);
 
         }
 
@@ -134,7 +134,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level3,
                     R.string.account_info_help_action3,
                     R.string.account_info_help_msg3,
-                    R.drawable.rounded_green_bar, R.drawable.checkmark_green);
+                    R.drawable.card_strenghtbar_green_img, R.drawable.card_tick_green);
         }
     }
 
@@ -149,7 +149,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level1,
                     R.string.account_info_help_action1,
                     R.string.account_info_help_pswd_msg1,
-                    R.drawable.rounded_red_bar, R.drawable.x_red);
+                    R.drawable.card_strenghtbar_red_img, R.drawable.x_red);
 
         }
 
@@ -159,7 +159,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level2,
                     R.string.account_info_help_action2,
                     R.string.account_info_help_msg2,
-                    R.drawable.rounded_yellow_bar, 0);
+                    R.drawable.card_strenghtbar_yellow_img, 0);
 
         }
 
@@ -169,7 +169,7 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level3,
                     R.string.account_info_help_action3,
                     R.string.account_info_help_msg3,
-                    R.drawable.rounded_green_bar, R.drawable.checkmark_green);
+                    R.drawable.card_strenghtbar_green_img, R.drawable.card_tick_green);
         }
     }
 
