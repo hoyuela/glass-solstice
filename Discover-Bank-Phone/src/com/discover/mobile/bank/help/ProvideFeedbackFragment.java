@@ -13,7 +13,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Class used to display Privacy and Terms based on the type specified via the arguments bundle
@@ -47,7 +46,6 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		showFooter(false);
 		view.findViewById(R.id.header).setVisibility(View.GONE);
 
-		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 

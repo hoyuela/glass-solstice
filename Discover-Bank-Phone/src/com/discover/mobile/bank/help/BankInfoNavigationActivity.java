@@ -15,6 +15,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.slidingmenu.lib.SlidingMenu;
 
 /**
@@ -47,6 +48,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bank_privacy_terms_activity_layout);
+		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
 		showActionBar();
 
 		/**Check if this is the first time this activity is being launched*/

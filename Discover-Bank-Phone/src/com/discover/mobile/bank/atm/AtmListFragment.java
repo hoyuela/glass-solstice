@@ -25,7 +25,6 @@ import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.bank.ui.table.TableLoadMoreFooter;
 import com.discover.mobile.bank.ui.table.TableTitles;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 
@@ -91,9 +90,6 @@ public class AtmListFragment extends BaseTable implements FragmentOnBackPressed{
 		}else{
 			getTable().setMode(Mode.PULL_FROM_END);
 		}
-
-		//Update the background to prevent a pixelated view
-		CommonUtils.fixBackgroundRepeat(getView().findViewById(R.id.table_background));
 	}
 
 	/**

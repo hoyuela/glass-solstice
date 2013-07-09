@@ -23,7 +23,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.discover.mobile.common.utils.WebUtility;
 
@@ -197,7 +196,6 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		/**Set click listener for accept button*/
 		acceptButton.setOnClickListener(this);
 
-		CommonUtils.fixBackgroundRepeat(mainView);
 		return mainView;
 	}
 

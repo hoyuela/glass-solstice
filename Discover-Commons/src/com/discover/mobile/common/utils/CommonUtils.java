@@ -37,6 +37,8 @@ public final class CommonUtils {
 	
 	/** Number of cents in a dollar */
 	private static final int CENTS_IN_DOLLAR = 100;
+	
+	private static final boolean isGingerbread = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB;
 
 	private CommonUtils() {
 		throw new AssertionError();
@@ -290,7 +292,7 @@ public final class CommonUtils {
 	 * @param view a view which contains a tiled background image.
 	 */
 	public final static void fixBackgroundRepeat(final View view) {
-		if( view != null ) {
+		if( isGingerbread && view != null ) {
 		    final Drawable bg = view.getBackground();
 			if (bg instanceof BitmapDrawable) {
 				final BitmapDrawable bmp = (BitmapDrawable) bg;

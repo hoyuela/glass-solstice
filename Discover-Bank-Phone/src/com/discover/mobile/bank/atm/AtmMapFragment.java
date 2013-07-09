@@ -14,8 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -55,7 +53,6 @@ import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -263,8 +260,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		setUpListeners();
 		disableMenu();
 		savedState = getArguments();
-
-		CommonUtils.fixBackgroundRepeat(navigationPanel);
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
 		

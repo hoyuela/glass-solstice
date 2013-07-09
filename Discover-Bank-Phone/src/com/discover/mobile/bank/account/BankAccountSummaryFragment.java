@@ -37,7 +37,6 @@ import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.widgets.AccountToggleView;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 
 /**
@@ -86,8 +85,6 @@ public class BankAccountSummaryFragment extends BaseFragment implements Fragment
 			toggleView.toggleVisibility();
 		}
 
-		//Update the background to prevent a pixelated view
-		CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.background_view));
 		return view;
 	}
 
