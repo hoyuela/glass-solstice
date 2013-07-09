@@ -22,7 +22,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -197,8 +196,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/** {@code true} when we restored an error on orientation change. */
 	private boolean restoreError = false;
 
-	private InputMethodManager imm;
-
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
 	
@@ -229,7 +226,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//You must set the IME Option in java so that the "GO" appears on the keyboard -julian
 		passField.setImeOptions(EditorInfo.IME_ACTION_GO | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 	 }
-	 
+	
 	/**
 	 * This method fixes an issue where, in a signed build, when the app
 	 * is resumed, LoginActivity can be re-created when not needed, and
@@ -451,7 +448,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		sessionExpired.getHelpFooter().setToDialNumberOnClick(getString(R.string.bank_need_help_number_text));
 		sessionExpired.getButton().setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(final View v) {
 				sessionExpired.dismiss();
 			}
 		});
@@ -782,13 +779,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			Log.e(TAG, "Unable to cache last attempted login");
 		}
 		
-		InputMethodManager mngr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		final InputMethodManager mngr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		mngr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		//Clear the last error that occurred
 		setLastError(0);
 		login();
 	}
-	
+
 	/**
 	 * setupButtons() Attach onClickListeners to buttons. These buttons will
 	 * execute the specified functionality in onClick when they are clicked...
@@ -923,12 +920,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
                         LoginActivity.this);
 			}
 		});
-		
+	
 		//set up the ime option for the 
 		passField.setOnEditorActionListener(new EditText.OnEditorActionListener(){
 			@Override
-			public boolean onEditorAction(TextView v, int actionId,
-					KeyEvent event) {
+			public boolean onEditorAction(final TextView v, final int actionId,
+					final KeyEvent event) {
 				//if the user hits the done or the enter button, start the login process
 				if (actionId == EditorInfo.IME_ACTION_GO) {
 					executeLogin(v);
