@@ -109,6 +109,7 @@ import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
