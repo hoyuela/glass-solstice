@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:background="@color/card_body_color" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/modal_bottom_margin"
+        android:paddingBottom="18dp"
         android:orientation="vertical"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding" >

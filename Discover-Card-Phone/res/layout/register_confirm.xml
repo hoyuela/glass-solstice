@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="@color/card_body_color" >
 
     <ScrollView
         android:id="@+id/registerconfirmscroll"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginBottom="68dp"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="24dp"
-            android:paddingRight="24dp" 
-            >
+            android:paddingRight="24dp" >
 
             <TextView
                 android:id="@+id/account_info_confirm_first_paragraph_label"
@@ -25,7 +24,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_confirm_first_paragraph_text"
                 android:textColor="#293033"
-                android:textSize="26dp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -37,7 +36,7 @@
                 android:includeFontPadding="false"
                 android:text="your password changed "
                 android:textColor="@color/darkgray"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="normal"
                 android:visibility="gone" />
 
@@ -51,7 +50,7 @@
                 android:includeFontPadding="false"
                 android:text="your password changed "
                 android:textColor="@color/darkgray"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="normal"
                 android:visibility="gone" />
 
@@ -64,8 +63,8 @@
                 android:layout_marginTop="12dp"
                 android:includeFontPadding="false"
                 android:text="@string/account_info_confirm_security_precaution_text"
-                android:textColor="#3d484d"
-                android:textSize="18dp"
+            	android:textColor="@color/darkgray"
+                android:textSize="16sp"
                 android:textStyle="normal" />
 
             <RelativeLayout
@@ -73,21 +72,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_confirm_security_precaution_label"
-                android:layout_marginBottom="22dp"
-                android:background="@drawable/notification_list_item"
-                android:paddingLeft="@dimen/forms_inner_padding"
-                android:paddingRight="@dimen/forms_inner_padding" >
+                android:layout_marginBottom="14dp" >
+
+                <View
+                    android:id="@+id/top_separator_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/account_info_confirm_security_precaution_label"
+                    android:background="#d0d0d0" />
 
                 <TextView
                     android:id="@+id/account_info_confirm_summary_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/account_info_confirm_security_precaution_label"
+                    android:layout_below="@+id/top_separator_line"
                     android:layout_marginTop="8dp"
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_summary_text"
                     android:textColor="#3d484d"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -100,7 +103,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_id_title_text"
                     android:textColor="#8a9499"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -113,7 +116,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_id_placeholder_text"
                     android:textColor="#293033"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -126,7 +129,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_email_title_text"
                     android:textColor="#8a9499"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -140,7 +143,7 @@
                     android:maxLines="@integer/MAX_INPUT_LINES"
                     android:text="@string/email_placeholder"
                     android:textColor="#293033"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -153,7 +156,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_account_title_text"
                     android:textColor="#8a9499"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -167,7 +170,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_account_text"
                     android:textColor="#293033"
-                    android:textSize="18dp"
+                    android:textSize="18sp"
                     android:textStyle="normal" />
 
                 <TextView
@@ -189,9 +192,16 @@
                     android:layout_below="@+id/account_info_confirm_account_stars_label"
                     android:layout_marginTop="14dp"
                     android:includeFontPadding="false"
-                    android:paddingBottom="4dp"
+                    android:paddingBottom="8dp"
                     android:textColor="#3d484d"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
+
+                <View
+                    android:id="@+id/bottom_separator_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_below="@+id/account_info_confirm_note_label"
+                    android:background="#d0d0d0" />
             </RelativeLayout>
 
             <TextView
@@ -202,10 +212,9 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_confirm_security_precaution_text"
                 android:textColor="@color/darkgray"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:textStyle="normal"
-                android:visibility="gone"
-                 />
+                android:visibility="gone" />
         </RelativeLayout>
     </ScrollView>
 
@@ -215,10 +224,10 @@
         android:layout_height="46dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/call_to_sa_done_button"
+        android:background="@drawable/card_modal_orange_button"
         android:text="@string/home_text"
         android:textColor="@color/white"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

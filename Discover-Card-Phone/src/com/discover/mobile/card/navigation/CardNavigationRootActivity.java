@@ -43,7 +43,6 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
-import com.discover.mobile.card.passcode.disable.PasscodeDisableStep1Fragment;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep2Fragment;
 import com.discover.mobile.card.passcode.menu.PasscodeMenuFragment;
@@ -212,7 +211,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     	nativeList = new ArrayList<String>();
     	nativeList.add(HomeSummaryFragment.class.getSimpleName());
     	nativeList.add(QuickViewSetupFragment.class.getSimpleName());
-    	nativeList.add(PasscodeDisableStep1Fragment.class.getSimpleName());
     	nativeList.add(PasscodeEnableStep1Fragment.class.getSimpleName());
     	nativeList.add(PasscodeEnableStep2Fragment.class.getSimpleName());
     	nativeList.add(PasscodeMenuFragment.class.getSimpleName());
@@ -377,20 +375,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public ErrorHandler getErrorHandler() {
         // return CardErrorHandler.getInstance();
         return null;
-    }
-    
-    //TODO passcode sgoff - optimize
-    public boolean isNative(String text) {
-    	return (text.equals(PasscodeDisableStep1Fragment.class.getSimpleName())
-				|| text.equals(PasscodeEnableStep1Fragment.class.getSimpleName())
-				|| text.equals(PasscodeEnableStep2Fragment.class.getSimpleName())
-				|| text.equals(PasscodeMenuFragment.class.getSimpleName())
-				|| text.equals(PasscodeRemoveFragment.class.getSimpleName())
-				|| text.equals(PasscodeSetupStep1Fragment.class.getSimpleName())
-				|| text.equals(PasscodeSetupStep2Fragment.class.getSimpleName())
-				|| text.equals(PasscodeUpdateStep1Fragment.class.getSimpleName())
-				|| text.equals(PasscodeUpdateStep2Fragment.class.getSimpleName())
-				|| text.equals(PasscodeUpdateStep3Fragment.class.getSimpleName()));
     }
 
     @Override

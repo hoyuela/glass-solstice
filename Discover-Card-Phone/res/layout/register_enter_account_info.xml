@@ -13,7 +13,7 @@
         android:id="@+id/account_info_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@drawable/light_gray_bkgrd" >
+        android:background="@color/card_body_color" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -21,7 +21,7 @@
             android:layout_marginTop="18dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:paddingBottom="20dp"
+            android:paddingBottom="30dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp" >
 
@@ -30,16 +30,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/header"
-                android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
                 android:text="@string/forgot_password_text"
                 android:textColor="#293033"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_label_one_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_error_label_layout"
@@ -47,7 +45,8 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_label_one"
                 android:textColor="#8a9499"
-                android:textSize="14dp" />
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
@@ -57,7 +56,7 @@
                 android:imeOptions="actionDone"
                 android:textColor="#293033"
                 android:textCursorDrawable="@null"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/account_information_input_info_label"
@@ -68,17 +67,20 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_input_restrictions_label"
                 android:textColor="#8a9499"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_card_account_number_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_main_input_field"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" >
+                android:text="@string/invalid_input"
+                android:textColor="@color/error_indicator"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" >
             </TextView>
 
             <RelativeLayout
@@ -93,25 +95,27 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="@dimen/forms_inner_padding"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="2dp"
                     android:contentDescription="@string/discover_copyright_text"
-                    android:paddingTop="4dp"
-                    android:src="@drawable/error_icon_red"
+                    android:src="@drawable/esclamation_red_img"
                     android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/account_info_error_label"
-                    style="@style/error_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/icon"
                     android:layout_toRightOf="@+id/icon"
-                    android:includeFontPadding="false" />
+                    android:includeFontPadding="false"
+                    android:textColor="@color/error_indicator"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/account_info_card_expiration_date_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_information_input_info_label"
@@ -120,11 +124,11 @@
                 android:includeFontPadding="false"
                 android:text="@string/card_expiration_date_text"
                 android:textColor="#8a9499"
-                android:textSize="14dp" />
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_ssn_info_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_expiration_date_error_label"
@@ -132,7 +136,8 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_ssn_info_text"
                 android:textColor="#8a9499"
-                android:textSize="14dp" />
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <com.discover.mobile.card.common.uiwidget.SsnEditText
                 android:id="@+id/account_info_ssn_input_field"
@@ -143,7 +148,7 @@
                 android:imeOptions="actionDone"
                 android:textColor="#293033"
                 android:textCursorDrawable="@null"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/account_info_ssn_prefix_label"
@@ -155,22 +160,24 @@
                 android:paddingRight="4dp"
                 android:text="@string/ssn_prefix"
                 android:textColor="#8a9499"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_ssn_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/account_info_ssn_input_field"
                 android:layout_below="@+id/account_info_ssn_input_field"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" />
+                android:text="@string/invalid_input"
+                android:textColor="@color/error_indicator"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/account_info_dob_label"
-                style="@style/body_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_ssn_error_label"
@@ -179,45 +186,51 @@
                 android:includeFontPadding="false"
                 android:text="@string/account_info_dob_text"
                 android:textColor="#8a9499"
-                android:textSize="14dp" />
+                android:textSize="14sp"
+                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_dob_year_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_marginTop="5dp"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" />
+                android:text="@string/invalid_input"
+                android:textColor="@color/error_indicator"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/account_info_continue_button"
-                style="@style/call_to_action_theme"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="14dp"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/orange_normal_btn"
+                android:background="@drawable/card_action_orange_button"
                 android:onClick="validateInfoAndSubmitOnSuccess"
-                android:text="@string/continue_text" />
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/continue_text"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/account_info_cancel_label"
-                style="@style/blue_hyperlink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_continue_button"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="44dp"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
                 android:text="@string/cancel_text"
-                android:textSize="17dp" />
+                android:textColor="@color/footer_link"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText
                 android:id="@+id/account_info_card_exp_date_picker"
@@ -225,17 +238,20 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_expiration_date_label"
                 android:textColor="#8a9499"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_expiration_date_error_label"
-                style="@style/error_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_card_exp_date_picker"
                 android:includeFontPadding="false"
-                android:text="@string/invalid_input" />
+                android:text="@string/invalid_input"
+                android:textColor="@color/error_indicator"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                android:visibility="gone" />
 
             <com.discover.mobile.card.common.uiwidget.DatePickerEditText
                 android:id="@+id/account_info_birth_date_picker"
@@ -243,14 +259,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_dob_label"
                 android:textColor="#8a9499"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:textStyle="normal" />
 
             <RelativeLayout
                 android:id="@+id/footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_cancel_label" >
+                android:layout_below="@+id/account_info_cancel_label"
+                android:layout_marginTop="48dp" >
 
                 <include layout="@layout/old_general_need_help_footer" />
             </RelativeLayout>

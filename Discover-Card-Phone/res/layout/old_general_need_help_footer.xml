@@ -15,7 +15,7 @@
             android:layout_centerHorizontal="true"
             android:textColor="#293033"
             android:textStyle="normal"
-            android:textSize="14dp"
+            android:textSize="14sp"
             />
 
 	    <TextView
@@ -29,7 +29,7 @@
 	        android:paddingLeft="@dimen/content_padding"
 	        android:paddingBottom="4dp"
 	        android:textColor="#267bb1"
-	        android:textSize="14dp"
+	        android:textSize="14sp"
 	        android:textStyle="normal"
 	        />
     </RelativeLayout>  

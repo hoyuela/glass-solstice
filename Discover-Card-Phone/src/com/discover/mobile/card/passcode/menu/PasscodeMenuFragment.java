@@ -37,7 +37,6 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 public class PasscodeMenuFragment extends BaseFragment {
 	static final String TRACKING_PAGE_NAME = "PasscodeMenu";
 	private static String TAG = "PasscodeMenuFragment";
-	protected final int MODAL_PASSCODE_DISABLED = R.layout.dialog_passcode_disabled;
 	
 	@Override
 	public int getActionBarTitle() {
@@ -202,8 +201,6 @@ public class PasscodeMenuFragment extends BaseFragment {
 		public void onSuccess(Object data) {
 			PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
 			pUtils.deletePasscodeToken();
-//			pUtils.dialogHelper(getActivity(), MODAL_PASSCODE_DISABLED, "Home", true, new NavigateACHomeAction(), new NavigateACHomeAction());
-//			showDisableModal();
 			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 			final EnhancedContentModal modal = new EnhancedContentModal(activeActivity, 
 					R.string.passcode_dialog_disabled_title, 

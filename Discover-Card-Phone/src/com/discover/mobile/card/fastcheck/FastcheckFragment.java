@@ -11,7 +11,6 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -215,7 +214,7 @@ public class FastcheckFragment extends BaseFragment implements
 			
 		if (deviceToken == null || deviceToken.length() != 88) {
 			 if (Log.isLoggable(TAG, Log.ERROR))
-				 Log.e(TAG, "getFastcheckData(), token is NULL or length not proper." );
+				 Log.e(TAG, "getFastcheckData(), token is NULL or length is not proper" );
 			if (deviceToken != null) FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token that is not long in 88
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 			return;
@@ -483,12 +482,13 @@ public class FastcheckFragment extends BaseFragment implements
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(context);
 		CardErrorBean cardErrorBean = (CardErrorBean) data;
-		 if (Log.isLoggable(TAG, Log.DEBUG)) {
-			 Log.d(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
-			 Log.d(TAG, "onError() error msg is " + cardErrorBean.getErrorMessage());
-		 }
 		
-		 if (cardErrorBean == null || cardErrorBean.getErrorCode() == null) {
+		if (cardErrorBean != null && Log.isLoggable(TAG, Log.ERROR)) {
+			Log.e(TAG, "onError() error code is " + cardErrorBean.getErrorCode());
+			Log.e(TAG, "onError() error msg is " + cardErrorBean.getErrorMessage());
+		}
+		
+		if (cardErrorBean == null || cardErrorBean.getErrorCode() == null) {
 			resultPage = TECH_DIFF_RESULT_PAGE;
 			updateCacheAndTimestamp(null, null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
@@ -496,31 +496,28 @@ public class FastcheckFragment extends BaseFragment implements
 			showFastcheckErrorPage(res.getString(R.string.E_100));
 		} else if (cardErrorBean.getErrorCode().startsWith("403")) {
 			resultPage = CANNOT_ACCESS_RESULT_PAGE;
-			updateCacheAndTimestamp(null,null);
-			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access));
+			updateCacheAndTimestamp(null, null);
+			showFastcheckErrorPage(res.getString(R.string.fast_check_error_cannot_access), true);
 		} else if (cardErrorBean.getErrorCode().startsWith("429")) {
 			// orientation change fix begin
 			if (resultPage == INITIAL_RESULT_PAGE) checkOrientationChange(res, cardShareDataStoreObj);
 			showPreviousPage(res);
-		}  else if ( cardErrorBean.getErrorCode().startsWith("401")
-				|| (cardErrorBean.getErrorMessage()!=null && cardErrorBean.getErrorMessage().indexOf("Received authentication challenge is null")>=0) ){
+		} else if ( cardErrorBean.getErrorCode().startsWith("401")
+					|| (cardErrorBean.getErrorMessage()!=null && cardErrorBean.getErrorMessage().indexOf("Received authentication challenge is null")>=0) ){
 			resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
 			FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify invalid token
-			updateCacheAndTimestamp(null,null);
+			updateCacheAndTimestamp(null, null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_no_token));
-		}  else if (cardErrorBean.getErrorCode().startsWith("503")) {
+		} else if (cardErrorBean.getErrorCode().startsWith("503")) {
 			resultPage = MAINTENANCE_RESULT_PAGE;
 			updateCacheAndTimestamp(null, cardErrorBean.getErrorMessage());
 			showFastcheckErrorPage(cardErrorBean.getErrorMessage(), true);
 		} else {
 			resultPage = TECH_DIFF_RESULT_PAGE;
-			updateCacheAndTimestamp(null,null);
+			updateCacheAndTimestamp(null, null);
 			showFastcheckErrorPage(res.getString(R.string.fast_check_error_tech_diff));
 		}
-		
-
 	}
-	
 	
 	public void onLeftSwipe() {}
 	

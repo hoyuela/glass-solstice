@@ -248,8 +248,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     /*      13.4 chnages start*/
     private void setSpinnerStyle() {
 		// TODO Auto-generated method stub
-    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.spinner_holo , R.drawable.spinner_invalid_holo_light);
-    	birthDatePicker.setUpSpinnerStyle(R.drawable.spinner_holo, R.drawable.spinner_invalid_holo_light);
+    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo , R.drawable.card_spinner_invalid_holo_light);
+    	birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo, R.drawable.card_spinner_invalid_holo_light);
     	cardExpDatePicker.setupDefaultAppearance();
     	birthDatePicker.setupDefaultAppearance();
 	}
