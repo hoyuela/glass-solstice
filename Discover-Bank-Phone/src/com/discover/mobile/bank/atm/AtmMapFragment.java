@@ -204,7 +204,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(getActivity());
 		}
 	}
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(getLayout(), null);
@@ -262,7 +262,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		savedState = getArguments();
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
-		
+
 		return view;
 	}
 
@@ -442,12 +442,12 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 				public void onMapLongClick(final LatLng locationOfLongClick) {
 					//Says the feature was used today
 					AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
-	
+
 					//Creates a new location based on the long pressed location
 					final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
 					newLocation.setLatitude(locationOfLongClick.latitude);
 					newLocation.setLongitude(locationOfLongClick.longitude);
-	
+
 					//Clears the map than prepares for and performs for the new service call
 					mapWrapper.clear();
 					hasLoadedAtms = false;
@@ -534,7 +534,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			newLocation.setLongitude(address.geometry.endLocation.lon);
 			mapWrapper.clear();
 			currentIndex = 0;
-			
+
 			setUserLocation(newLocation);
 
 			getAtms(newLocation);
@@ -1188,7 +1188,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		} else {
 			overlay.dismissCoach();
 		}
-		
+
 		return false;
 	}
 
@@ -1247,15 +1247,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		}
 		return isVisible;
 	}
-	
+
 	public AtmTapAndHoldCoachOverlay getCoachOverlay() {
-		return this.overlay;
+		return overlay;
 	}
-	
+
 	public void setCoachOverlay(final AtmTapAndHoldCoachOverlay coach) {
-		this.overlay = coach;
+		overlay = coach;
 	}
-	
+
 	@Override
 	public void startProgressDialog(final boolean isProgressDialogCancelable, final Context context) {
 		if (!DiscoverModalManager.hasActiveModal()) {
@@ -1266,7 +1266,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		}
 
 	}
-	
+
 	@Override
 	public void stopProgressDialog() {
 		if (DiscoverModalManager.getActiveModal() instanceof AtmSearchingForAtmsModal) {
@@ -1274,11 +1274,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			DiscoverModalManager.setAlertShowing(true);
 		}
 	}
-	
+
 
 	@Override
 	public void refreshListener() {
-		
 	}
 
+	@Override
+	public void onConfigurationChanged(final Configuration config){
+		config.toString();
+
+	}
 }

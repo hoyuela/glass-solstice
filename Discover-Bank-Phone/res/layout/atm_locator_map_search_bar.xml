@@ -57,7 +57,7 @@
             android:contentDescription="@string/empty"
             android:visibility="invisible" />
 
-        <EditText
+        <com.discover.mobile.bank.atm.AtmSearchEditText
             android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -77,7 +77,7 @@
             android:ellipsize="end"
             android:focusable="true"
             android:hint="@string/atm_location_search_help"
-            android:imeOptions="actionDone|flagNoExtractUi"
+            android:imeOptions="actionSearch|flagNoExtractUi"
             android:inputType="textPostalAddress"
             android:textColor="@color/body_copy"
             android:textCursorDrawable="@null" />

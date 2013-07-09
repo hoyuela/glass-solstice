@@ -4,7 +4,6 @@
 package com.discover.mobile.bank.atm;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.Animator;
+import com.discover.mobile.bank.ui.ExpandCollapseAnimation;
 import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 
 /**
@@ -31,7 +31,7 @@ import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 public class AtmLocatorMapSearchBar extends RelativeLayout{
 
 	/**Box containing the search text*/
-	private final EditText searchBox;
+	private final AtmSearchEditText searchBox;
 
 	/**Filter layout*/
 	private final LinearLayout filterLayout;
@@ -57,6 +57,9 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	/**Fragment used to do searches*/
 	private AtmMapSearchFragment fragment;
 
+	/**Integer Duration of the expand collapse animation*/
+	private static final int DURATION = 300;
+
 	/**
 	 * Keys for saving the bundle
 	 */	
@@ -79,7 +82,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		hide = (ImageView) view.findViewById(R.id.search_show);
 		show = (ImageView) view.findViewById(R.id.search_expand);
 		filterLayout = (LinearLayout) view.findViewById(R.id.filter_bar);
-		searchBox = (EditText)view.findViewById(R.id.search_box);
+		searchBox = (AtmSearchEditText)view.findViewById(R.id.search_box);
 		filterToggle = (DiscoverToggleSwitch) view.findViewById(R.id.filter_enable);
 		searchDummy = (ImageView) view.findViewById(R.id.help_dummy);
 
@@ -99,6 +102,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			public void onClick(final View v) {
 				if(isSearchExpanded){
 					show.setVisibility(View.VISIBLE);
+					clearSearchFocus();
 					searchLayout.startAnimation(Animator.createSlideToLeftAnimation(context, searchLayout));
 					isSearchExpanded = false;
 				}
@@ -125,36 +129,18 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 * Set up the search box and its listeners
 	 */
 	private void setupSearchBox(final Context context){
-		final Drawable locationImage = getResources().getDrawable(R.drawable.atm_current_location_button);
-		final Drawable magnifyingImage = getResources().getDrawable(R.drawable.magnifying_glass);
-		searchBox.setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, locationImage, null);
-
+		searchBox.setSearchView(this);
 		searchBox.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View v, final MotionEvent event) {
 				if(event.getAction() == MotionEvent.ACTION_UP){
-					if(isTouchRegionValid(event)){
-						searchBox.clearFocus();
-						filterLayout.setVisibility(View.GONE);
-						final InputMethodManager manager = 
-								(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-						manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+					if(searchBox.isTouchRegionValid(event)){
+						clearSearchFocus();
 						fragment.startCurrentLocationSearch();
 						return true;
 					}
 				}
-
 				return false;
-			}
-
-			/**
-			 * Determines if the MotionEvent touch region was on the right drawable.
-			 * @param event The MotionEvent that will be used to check where the user pressed on the screen.
-			 * @return Returns true if the user pressed in the region of the right drawable in the EditText field.
-			 */
-			private boolean isTouchRegionValid(final MotionEvent event){
-				return event.getX() > 
-				searchBox.getWidth() - searchBox.getPaddingRight() - locationImage.getIntrinsicWidth();
 			}
 		});
 
@@ -163,9 +149,7 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			@Override
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(hasFocus){
-					filterLayout.startAnimation(Animator.expand(filterLayout));
-				}else{
-					filterLayout.startAnimation(Animator.collapseAndHide(filterLayout));
+					filterLayout.startAnimation(new ExpandCollapseAnimation(filterLayout, true, DURATION));
 				}
 				if(searchBox.getText().toString().isEmpty() && !hasFocus){
 					searchBox.setHint(R.string.atm_location_search_help);
@@ -174,17 +158,13 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 				}
 			}
 
-		});
+		}); 
 
 		searchBox.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 			@Override
 			public boolean onEditorAction(final TextView arg0, final int arg1, final KeyEvent arg2) {
-				if (arg1 == EditorInfo.IME_ACTION_DONE) {
-					searchBox.clearFocus();
-					filterLayout.setVisibility(View.GONE);
-					final InputMethodManager manager = 
-							(InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-					manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+				if (arg1 == EditorInfo.IME_ACTION_DONE || arg1 == EditorInfo.IME_ACTION_SEARCH) {
+					clearSearchFocus();
 					if(null != fragment){
 						fragment.performSearch(searchBox.getText().toString());
 					}
@@ -195,6 +175,20 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		});
 	}
 
+	/**
+	 * Clear the focus of the edit text on the search field
+	 */
+	protected void clearSearchFocus(){
+		searchBox.clearFocus();
+		final InputMethodManager manager = 
+				(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
+		filterLayout.startAnimation(new ExpandCollapseAnimation(filterLayout, false, DURATION));
+	}
+
+	/**
+	 * Set up the search bar to show with the list
+	 */
 	public void showListView(){
 		show.setVisibility(View.GONE);
 		searchLayout.setVisibility(View.VISIBLE);
@@ -202,6 +196,9 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		hide.setVisibility(View.GONE);
 	}
 
+	/**
+	 * Set up the search bar to show with the map
+	 */
 	public void showMapView(){
 		searchDummy.setVisibility(View.INVISIBLE);
 		hide.setVisibility(View.VISIBLE);
@@ -288,17 +285,5 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 	 */
 	public void setSearchExpanded(final boolean isSearchExpanded) {
 		this.isSearchExpanded = isSearchExpanded;
-	}
-
-	public void disableSearchBar() {
-		show.setEnabled(false);
-		hide.setEnabled(false);
-		searchBox.setEnabled(false);
-	}
-
-	public void enableSearchBar() {
-		show.setEnabled(true);
-		hide.setEnabled(true);
-		searchBox.setEnabled(true);
 	}
 }
