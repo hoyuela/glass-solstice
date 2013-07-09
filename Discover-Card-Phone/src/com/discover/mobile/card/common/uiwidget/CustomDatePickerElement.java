@@ -218,6 +218,8 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
         if (this.isValid()) {
             this.setText(CommonUtils.getFormattedDate(getMonth(), getDay(),
                     getYear()));
+            /*    13.4 Changes Start*/
+            this.setTextColor(currentContext.getResources().getColor(R.color.title));
         }
     }
 

@@ -13,4 +13,8 @@
     <string name="create_login">Create Login</string>
     <string name="id_and_ssn_match_text">User ID must not look like your social security number. Please choose another one.</string>
     
+       <!-- 13.4 Changes Start -->
+    <string name="forgot_both_title">Forgot Both User ID and Password</string>
+    <string name="registration_title">Registration</string>
+    
 </resources>

@@ -17,7 +17,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:maxLines="1"
-            android:paddingLeft="12dp"
+            android:paddingLeft="16dp"
             android:text="@string/sa_title"
             android:textColor="@color/blue_grey"
             android:textSize="18dp"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/stroke_ruling_line"
-            android:src="@drawable/gradiant_line" />
+            android:src="@drawable/header_bottomline" />
     </RelativeLayout>
 
     <ScrollView
@@ -195,7 +195,9 @@
                     android:layout_marginBottom="14dp"
                     android:layout_marginTop="40dp"
                     android:onClick="validateInfoAndSubmitOnSuccess"
-                    android:text="@string/sa_submit" />
+                    android:text="@string/sa_submit" 
+                    android:background="@drawable/orange_normal_btn"
+                    />
 
                 <include
                     android:id="@+id/enter_info_footer"

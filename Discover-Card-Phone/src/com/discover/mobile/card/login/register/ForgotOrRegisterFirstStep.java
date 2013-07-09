@@ -123,6 +123,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected TextView accountIdentifierFieldRestrictionsLabel;
     protected TextView helpNumber;
     protected TextView provideFeedback;
+    protected TextView welcomeHeading;
   //Defect id 95853
     protected TextView privacy_terms ;
   //Defect id 95853
@@ -258,6 +259,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * Initialize the member variables that will reference UI elements.
      */
     public void loadAllViews() {
+        welcomeHeading = (TextView)findViewById(R.id.forgot_password);
         accountIdentifierFieldLabel = (TextView) findViewById(R.id.account_info_label_one_label);
         accountIdentifierFieldRestrictionsLabel = (TextView) findViewById(R.id.account_information_input_info_label);
         accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);

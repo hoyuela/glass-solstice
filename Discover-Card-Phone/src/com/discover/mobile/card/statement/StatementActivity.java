@@ -457,7 +457,7 @@ public class StatementActivity extends DroidGap {
             Utils.log(LOG_TAG, "Performing healthcheck");
 //            new StatementHealthCheck().execute();
             Log.v(TAG, "About to call healthCheck");
-            //new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
+            new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
             sLastHealthCheck = currentTime;
         }
     }
@@ -583,7 +583,7 @@ public class StatementActivity extends DroidGap {
             } else {
 //                new StatementHealthCheck().execute();
             	Log.v(TAG, "About to call healthCheck");
-                //new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
+                new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
             }
         }
     }

@@ -81,4 +81,12 @@ public class PrivacyTermsofUse extends CardNotLoggedInCommonActivity implements
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        Intent privacyHome  =  new Intent(PrivacyTermsofUse.this, PrivacyTermsLanding.class);
+        startActivity(privacyHome);
+        finish();
+    }
 }

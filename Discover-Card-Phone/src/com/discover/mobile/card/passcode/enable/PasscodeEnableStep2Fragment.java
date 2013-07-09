@@ -1,5 +1,6 @@
 package com.discover.mobile.card.passcode.enable;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -9,11 +10,14 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
@@ -50,7 +54,18 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-		dialogHelper(MODAL_PASSCODE_ENABLED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+//		dialogHelper(MODAL_PASSCODE_ENABLED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.passcode_dialog_enabled_title, 
+				R.string.passcode_dialog_enabled_content, 
+				R.string.home_text,
+				new NavigateACHomeAction(),
+				new NavigateACHomeAction());
+		modal.hideNeedHelpFooter();
+		modal.setOrangeTitle();
+		((NavigationRootActivity)context).showCustomAlert(modal);
 		getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	

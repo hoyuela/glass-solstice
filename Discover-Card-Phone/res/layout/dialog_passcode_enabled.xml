@@ -8,8 +8,5 @@
         android:textColor="@color/orange"
         />
 
-    <TextView
-        style="@style/PasscodeOverlayParagraph"
-        android:text="@string/passcode_dialog_enabled_paragraph_1" />
 
 </LinearLayout>
