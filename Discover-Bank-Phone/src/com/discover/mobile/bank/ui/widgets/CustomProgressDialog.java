@@ -1,4 +1,4 @@
-package com.discover.mobile.bank.navigation;
+package com.discover.mobile.bank.ui.widgets;
 
 import android.content.Context;
 
