@@ -39,7 +39,6 @@ import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverModalManager;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -130,7 +129,6 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		footer = (TableLoadMoreFooter) view.findViewById(R.id.footer);
 		uiHandler = new Handler(Looper.getMainLooper());
 
-		CommonUtils.fixBackgroundRepeat(view);
 		return view;
 	}
 	

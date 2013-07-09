@@ -40,11 +40,6 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
 		}
 
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			// Must re-establish tiling for older devices.
-			CommonUtils.fixBackgroundRepeat(mainView.findViewById(R.id.customer_service_layout));
-		}
-
 		return mainView;
 	}
 

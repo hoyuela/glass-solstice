@@ -19,6 +19,7 @@ import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * Activity that will allow the user to access the atm locator
@@ -38,6 +39,8 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.bank_atm_locator_activity);
+		
+		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
 		showActionBar();
 	}
 
@@ -107,8 +110,8 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	}
 	
 	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		AtmTapAndHoldCoachOverlay coachOverlay = mapFragment.getCoachOverlay();
+	public boolean dispatchTouchEvent(final MotionEvent ev) {
+		final AtmTapAndHoldCoachOverlay coachOverlay = mapFragment.getCoachOverlay();
 		
 		if(coachOverlay != null && coachOverlay.isShowing()) {
 			mapFragment.getCoachOverlay().dismissCoach();
@@ -204,7 +207,7 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {
+	public void startProgressDialog(final boolean isProgressDialogCancelable) {
 		//Prevent a second modal from appearing if this method is recalled.
 		if (!DiscoverModalManager.hasActiveModal()) {
 			DiscoverModalManager.setActiveModal(new AtmSearchingForAtmsModal(getContext(), false, null));

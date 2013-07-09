@@ -2,7 +2,6 @@ package com.discover.mobile.bank.navigation;
 
 import java.util.Calendar;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,27 +17,22 @@ import android.widget.ImageView;
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.atm.AtmMapFragment;
-import com.discover.mobile.bank.atm.AtmTapAndHoldCoachOverlay;
-import com.discover.mobile.bank.atm.SearchNearbyFragment;
 import com.discover.mobile.bank.error.BankErrorHandler;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
-import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.nav.NavigationIndex;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.net.SessionTokenManager;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
 
@@ -97,6 +91,7 @@ implements OnPaymentCanceledListener {
 		 * status bar.
 		 */
 		setContentView(R.layout.bank_content_view);
+		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
 	}
 
 	/**
@@ -187,7 +182,7 @@ implements OnPaymentCanceledListener {
 		}
 		
 		if (this.getCurrentContentFragment() instanceof OnTouchListener) {
-			OnTouchListener listener = (OnTouchListener)this.getCurrentContentFragment();
+			final OnTouchListener listener = (OnTouchListener)this.getCurrentContentFragment();
 			
 			listener.onTouch(this.getCurrentContentFragment().getView(), ev);
 		}
@@ -477,7 +472,7 @@ implements OnPaymentCanceledListener {
 	 * will be set at the active dialog.
 	 */
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {
+	public void startProgressDialog(final boolean isProgressDialogCancelable) {
 		if (!(this.getCurrentContentFragment() instanceof CustomProgressDialog)) {
 			if(!isFragmentLoadingMore()){
 				super.startProgressDialog(isProgressDialogCancelable);

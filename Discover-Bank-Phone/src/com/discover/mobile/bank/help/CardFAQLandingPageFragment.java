@@ -23,7 +23,6 @@ import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * This is the landing page for the Card FAQ section.
@@ -81,10 +80,7 @@ public class CardFAQLandingPageFragment extends BaseFragment {
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
 			view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		} else {
-			// Tiled background is often broken for older devices
-			CommonUtils.fixBackgroundRepeat(view.findViewById(R.id.faq_layout));
-		}
+		} 
 
 		final BankLayoutFooter footer = (BankLayoutFooter) view.findViewById(R.id.bank_footer);
 		footer.setVisibility(View.VISIBLE);
