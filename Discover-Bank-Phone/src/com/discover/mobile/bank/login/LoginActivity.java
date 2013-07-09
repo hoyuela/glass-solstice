@@ -2008,9 +2008,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	@Override
 	public CallbackPriority getCallbackPriority() {
-		//set the callback priority to middle so that it doesn't interrupt
-		//any high priority callbacks.
-		return CallbackPriority.MIDDLE;
+		//set the callback priority to last as we want the ui
+		//to become interactive only after all service calls have completed.
+		return CallbackPriority.LAST;
 	}
 
 	/*
