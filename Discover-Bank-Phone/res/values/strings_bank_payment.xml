@@ -78,6 +78,6 @@
  	<string name="schedule_pay_success_edit">Your payment has been saved successfully.</string>
  	
  	<!-- Cancel Payments -->
- 	<string name="are_you_sure_cancel_body">All information you entered for this transaction will be lost. You\'ll need to re-enter the information to complete the transaction.</string>
+ 	<string name="are_you_sure_cancel_body">All information you entered for this transaction will be lost. You\'ll need to re-enter the information to complete this transaction.</string>
 
 </resources>
