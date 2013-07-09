@@ -24,10 +24,10 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
 public class SimpleContentModal extends ModalAlertWithOneButton implements ModalBottomOneButtonView, ModalTopView{
 
 	/**View of the modal*/
-	private final View view;
+	protected final View view;
 
 	/** View that holds the footer text */
-	private final NeedHelpFooter helpFooter;
+	protected final NeedHelpFooter helpFooter;
 
 	/**
 	 * Constructor for the alert
@@ -213,6 +213,14 @@ public class SimpleContentModal extends ModalAlertWithOneButton implements Modal
 	@Override
 	public Button getButton(){
 		return (Button) view.findViewById(R.id.button);
+	}
+
+	/**
+	 * 
+	 * @return the TextView on the modal
+	 */
+	public TextView getTitle(){
+		return (TextView) view.findViewById(R.id.modal_alert_title);
 	}
 
 	/**

@@ -292,8 +292,13 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         if (errorLabel != null) {
             if (!isNull())
                 errorLabel.setVisibility(View.VISIBLE);
-            if (!(answerEditText.isValid()))
-                errorLabel.setVisibility(View.GONE);
+            if (!(answerEditText.isValid())) {
+                if (answerEditText.isNull()) {
+                    errorLabel.setVisibility(View.VISIBLE);
+                } else {
+                    errorLabel.setVisibility(View.GONE);
+                }
+            }
         }
     }
 

@@ -37,6 +37,16 @@ public class SimpleTwoButtonModal extends ModalAlertWithTwoButtons implements Mo
 		view = getLayoutInflater().inflate(R.layout.simple_two_button_modal, null);
 		helpFooter = new NeedHelpFooter((ViewGroup) view);
 	}
+	
+	public SimpleTwoButtonModal(final Context context, int title, int message, int okButtonText, int cancelButtonText){
+		super(context);
+		view = getLayoutInflater().inflate(R.layout.simple_two_button_modal, null);
+		helpFooter = new NeedHelpFooter((ViewGroup) view);
+		setTitle(title);
+		setContent(message);
+		setOkButtonText(okButtonText);
+		setCancelButtonText(cancelButtonText);
+	}
 
 	/**
 	 * Create the modal alert and add the views to be displayed.

@@ -22,7 +22,7 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-		setHeaderText(R.string.passcode_update_step2_header);
+		setHeaderText(R.string.passcode_forgot_step1_header);
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
 		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_FORGOT_STEP1);
 		return view;

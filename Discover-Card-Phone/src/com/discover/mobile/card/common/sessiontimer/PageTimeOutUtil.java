@@ -10,6 +10,7 @@ import com.discover.mobile.card.common.net.service.WSProxy;
 import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.login.register.EnterNewPasswordActivity;
 import com.discover.mobile.card.login.register.ForgotOrRegisterFinalStep;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
@@ -139,5 +140,10 @@ public final class PageTimeOutUtil {
             ((EnterNewPasswordActivity) mContext).idealTimeoutLogout();
         }
       //DEFECT 96936
+        /*13.4 changes start*/
+        else if(mContext instanceof StrongAuthEnterInfoActivity)
+        {
+            ((StrongAuthEnterInfoActivity) mContext).idealTimeoutLogout();
+        }
     }
 }

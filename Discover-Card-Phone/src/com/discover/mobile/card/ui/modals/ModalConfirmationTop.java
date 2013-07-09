@@ -55,7 +55,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
 	public ModalConfirmationTop(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		
-		final ScrollView mainView = (ScrollView) LayoutInflater.from(context)
+		final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(context)
                 .inflate(R.layout.register_confirm, null);
 		final  TextView noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
 		
@@ -131,6 +131,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
     public void setDialog(final String screenType){
         if(IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)){
             dialogTitle.setText("Success!");
+            dialogTitle.setTextColor(res.getColor(R.color.orange_link_idicator));
             firstParagraph.setVisibility(View.VISIBLE);
             secondParagraph.setVisibility(View.VISIBLE);
             firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
@@ -139,6 +140,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
             securityLabelBelow.setVisibility(View.VISIBLE);
         } else if(IntentExtraKey.SCREEN_FORGOT_PASS.equals(screenType)){
             dialogTitle.setText("Success!");
+            dialogTitle.setTextColor(res.getColor(R.color.orange_link_idicator));
             firstParagraph.setVisibility(View.VISIBLE);
             secondParagraph.setVisibility(View.VISIBLE);
             firstParagraph.setText(res.getString(R.string.password_confirmation_changed_text));
@@ -149,6 +151,7 @@ public class ModalConfirmationTop extends RelativeLayout implements ModalTopView
             
         } else if(IntentExtraKey.SCREEN_REGISTRATION.equals(screenType)){
             dialogTitle.setText("Success!");
+            dialogTitle.setTextColor(res.getColor(R.color.orange_link_idicator));
             firstParagraph.setVisibility(View.VISIBLE);
             secondParagraph.setVisibility(View.VISIBLE);
             firstParagraph.setText(res.getString(R.string.account_info_confirm_registration));

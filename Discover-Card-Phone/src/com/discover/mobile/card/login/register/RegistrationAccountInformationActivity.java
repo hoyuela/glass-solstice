@@ -46,6 +46,8 @@ public class RegistrationAccountInformationActivity extends
         super.onCreate(savedInstanceState);
         accountIdentifierField.setFieldAccountNumber();
         Utils.hideSpinner();
+        /*13.4 Changes Start */
+        welcomeHeading.setText(R.string.registration_title);
     }
 
     public RegistrationAccountInformationActivity() {

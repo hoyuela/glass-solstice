@@ -12,8 +12,7 @@
     <string name="edit_label">Edit</string>
 
     <!-- Welcome text for Strong auth enter info -->
-    <string name="strong_auth_enter_info_welcometext">To help you maintain the security of your account , Discover 
-        requires you to choose three questions and answers that will verify your identity when your account is being accessed online.</string>
+    <string name="strong_auth_enter_info_welcometext">Maintain the security of your account with three questions and answers that will verify your identity when your account is being accessed online.</string>
     <string name="strong_auth_enter_info_welcometext_Cont">All fields are required. Use letters and numbers only. No special characters or punctuation.</string>
 
     <!-- Strong auth header text -->

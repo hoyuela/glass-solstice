@@ -27,12 +27,15 @@ import android.widget.TextView;
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.event.OnPasscodeErrorEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSubmitEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSuccessEventListener;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public abstract class PasscodeBaseFragment extends BaseFragment implements View.OnKeyListener, OnPasscodeErrorEventListener,
@@ -270,7 +273,14 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 
 	protected void showPasscodeGuidelines() {
-		dialogHelper(MODAL_PASSCODE_GUIDELINES, "Close", false, new NoNavigateAction());
+//		dialogHelper(MODAL_PASSCODE_GUIDELINES, "Close", false, new NoNavigateAction());
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.passcode_dialog_guidelines_title, 
+				R.string.passcode_dialog_guidelines_content, 
+				R.string.ok);
+		modal.hideNeedHelpFooter();
+		((NavigationRootActivity)context).showCustomAlert(modal);
 	}
 	
 	public boolean onKey(View paramView, int paramInt, KeyEvent paramKeyEvent) {

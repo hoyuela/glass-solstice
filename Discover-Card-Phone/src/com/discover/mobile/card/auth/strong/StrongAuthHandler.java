@@ -146,8 +146,8 @@ public class StrongAuthHandler {
                         .getValueOfAppCache("WWW-Authenticate");
                if (bean.getErrorCode().contains(
                         "" + HttpURLConnection.HTTP_FORBIDDEN)
-                        && bean.getErrorCode().contains(
-                                "" + SKIPPED)) {
+                         && cache != null
+                                && cache.contains("skipped")) {
                     if (authListener != null) {
                         authListener.onStrongAuthSkipped(data);
                     }

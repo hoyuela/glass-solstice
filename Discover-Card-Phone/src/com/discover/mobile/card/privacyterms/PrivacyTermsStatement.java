@@ -80,5 +80,14 @@ public class PrivacyTermsStatement extends CardNotLoggedInCommonActivity
             Utils.createProvideFeedbackDialog(this, referer);
         }
     }
+    
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        Intent privacyHome  =  new Intent(PrivacyTermsStatement.this, PrivacyTermsLanding.class);
+        startActivity(privacyHome);
+        finish();
+    }
 
 }

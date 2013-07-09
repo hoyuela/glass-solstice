@@ -46,6 +46,7 @@ import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
@@ -93,7 +94,6 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     protected final int SPINNER_ERROR_APPEARANCE = R.drawable.spinner_invalid_holo_light;
     protected final int SPINNER_FOCUSSED_APPEARANCE = R.drawable.spinner_focused_holo_light;
     protected final int SPINNER_DEFAULT_APPEARANCE = R.drawable.spinner_filled_holo_light;
-
 
     // Error State
     private boolean answerFirstIsInError = false;
@@ -151,10 +151,13 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     private String question1, question2, question3;
 
-
     /** Added for spinner question */
     private int lastselectedQuestion1, lastselectedQuestion2,
             lastselectedQuestion3;
+    
+    private Boolean isLogout = false ;
+    private Boolean isTimeout ;
+    private CardEventListener timerlogoutCardEventListener ;
 
     @SuppressLint("NewApi")
     @Override
@@ -176,6 +179,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         setupConfirmationFields();
         setupRadioGroupListener();
         restoreState(savedInstanceState);
+        PageTimeOutUtil.getInstance(StrongAuthEnterInfoActivity.this).startPageTimer();
     }
 
     @Override
@@ -753,7 +757,6 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         // super.onBackPressed();
     }
 
-
     @Override
     public CardErrHandler getCardErrorHandler() {
         // TODO Auto-generated method stub
@@ -768,50 +771,17 @@ public class StrongAuthEnterInfoActivity extends Activity implements
             validateAndUpdate();
 
         } else if (v.getId() == R.id.privacy_terms) {
-           // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(StrongAuthEnterInfoActivity.this , PrivacyTermsLanding.class);
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(StrongAuthEnterInfoActivity.this,
+                    PrivacyTermsLanding.class);
             startActivity(privacyTerms);
         } else if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(StrongAuthEnterInfoActivity.this,
                     "strongAuthEnroll-pg");
-        }  else if (v.getId() == R.id.logout_button) {
+        } else if (v.getId() == R.id.logout_button) {
             // Changes for 13.4 start
-            Utils.logoutUser(this);
-           /* Utils.isSpinnerAllowed = true;
-            CardEventListener logoutCardEventListener = new CardEventListener() {
-
-                @Override
-                public void onSuccess(Object data) {
-                    // TODO Auto-generated method stub
-                    final Bundle bundle = new Bundle();
-                    bundle.putBoolean(
-                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                    FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                            StrongAuthEnterInfoActivity.this, bundle);
-                    finish();
-                }
-
-                @Override
-                public void OnError(Object data) {
-                    // TODO Auto-generated method stub
-                    final Bundle bundle = new Bundle();
-                    bundle.putBoolean(
-                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                    FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                            StrongAuthEnterInfoActivity.this, bundle);
-                    finish();
-                }
-            };
-            final WSRequest request = new WSRequest();
-            final String url = NetworkUtility.getWebServiceUrl(this,
-                    R.string.logOut_url);
-            request.setUrl(url);
-            request.setMethodtype("POST");
-            final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
-                    "Discover", "Signing Out...", logoutCardEventListener);
-            serviceCall.execute(request);*/
-            
-            //Changes for 13.4 end
+            Utils.logoutUser(this , false);
+            // Changes for 13.4 end
         }
     }
 
@@ -859,7 +829,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     .findViewById(radioButtonId);
             final int selectedIndex = securityRadioGroup
                     .indexOfChild(selectedButton);
-            
+
             if (selectedIndex == 0) {
                 strongAuthReviewQueAnsDetails.bindDevice = "true";
             } else {
@@ -960,7 +930,6 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         return formValid;
     }
 
-
     public class SuccessModalConfirmationTop extends RelativeLayout implements
             ModalTopView {
 
@@ -1054,7 +1023,6 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         return inputFields;
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
@@ -1073,7 +1041,14 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     strongAuthReviewQueAnsDetails.saQuestionId1 = data
                             .getStringExtra("selectedQuestionId");
                     firstAnswer.requestFocus();
+                    StrongAuthEnterInfoActivity.this
+                            .getWindow()
+                            .setSoftInputMode(
+                                    LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
+            } else {
+                StrongAuthEnterInfoActivity.this.getWindow().setSoftInputMode(
+                        LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
 
         } else if (requestCode == 2) {
@@ -1089,8 +1064,15 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     strongAuthReviewQueAnsDetails.saQuestionId2 = data
                             .getStringExtra("selectedQuestionId");
                     secondAnswer.requestFocus();
+                    StrongAuthEnterInfoActivity.this
+                            .getWindow()
+                            .setSoftInputMode(
+                                    LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
                 }
+            } else {
+                StrongAuthEnterInfoActivity.this.getWindow().setSoftInputMode(
+                        LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
         } else if (requestCode == 3) {
             if (resultCode == RESULT_OK) {
@@ -1105,12 +1087,28 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     strongAuthReviewQueAnsDetails.saQuestionId3 = data
                             .getStringExtra("selectedQuestionId");
                     thirdAnswer.requestFocus();
-                    
+                    StrongAuthEnterInfoActivity.this
+                            .getWindow()
+                            .setSoftInputMode(
+                                    LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
                 }
+            } else {
+                StrongAuthEnterInfoActivity.this.getWindow().setSoftInputMode(
+                        LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
         }
-        StrongAuthEnterInfoActivity.this.getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
     }
+    
+
+    public void idealTimeoutLogout() {
+        Utils.log("CardNavigationRootActivity", "inside logout...");
+        // super.logout();
+        isTimeout = true;
+        Utils.logoutUser(StrongAuthEnterInfoActivity.this, isTimeout);
+    }
+    
+   
 
 }

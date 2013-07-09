@@ -1,12 +1,16 @@
 package com.discover.mobile.card.common.net.error;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
@@ -15,6 +19,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityFacade;
+import com.discover.mobile.common.utils.PasscodeUtils;
 
 /**
  * 
@@ -39,6 +44,8 @@ public final class CardErrorResponseHandler {
     public static final int INCORRECT_USERID_PASSWORD = 401;
 
     public static final int LOCKOUT = 4011103;
+    
+    public static final int PASSCODE_NOT_BOUND = 4012107;
 
     public static final int USER_ACCOUNT_LOCKED = 403;
     public static final int SERVICE_UNDER_MAINTENANCE = 503;
@@ -92,12 +99,17 @@ public final class CardErrorResponseHandler {
             final String[] errorMsgSplit = errorCode.split("_");
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
             switch (errorCodeNumber) {
+            //TODO You've Been Locked Out (passcode locked out after 3 attempts)
+            //TODO Passcode disabled 
             case INCORRECT_USERID_PASSWORD:
             case LOCKOUT:
             	if(CardLoginFacadeImpl.class.isInstance(errorHandlerUi))
             	{
             		final LoginActivityFacade loginFacade = FacadeFactory
     						.getLoginFacade();
+
+            		Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
+            		Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
     				final Bundle bundle = new Bundle();
     				bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE,
     						cardErrorHold.getErrorMessage());
@@ -110,8 +122,15 @@ public final class CardErrorResponseHandler {
             handleInlineError(cardErrorHold.getErrorMessage());
             	}
                break;
-
             
+            case PASSCODE_NOT_BOUND:
+            	final Context context = DiscoverActivityManager.getActiveActivity();
+            	final EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
+            	modal.hideNeedHelpFooter();
+            	showCustomAlert(modal);
+            	PasscodeUtils pUtils = new PasscodeUtils(context);
+            	pUtils.deletePasscodeToken();
+            	break;
 
             default:
                 handleGenericError(cardErrorHold.getErrorTitle(),
@@ -209,6 +228,7 @@ public final class CardErrorResponseHandler {
         if (errorHandlerUi != null) {
             errorHandlerUi.getErrorLabel().setText(errorText);
             errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
+            
         }
     }
 
