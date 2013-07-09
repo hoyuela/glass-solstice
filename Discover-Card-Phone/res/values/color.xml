@@ -99,10 +99,10 @@
     
   <!--   13.4 Changes Start -->
  <!--    Strong Auth  -->
-   <color name="field_color">#293033</color>
-   <color name="footer_color">#267bb1</color>
-   <color name="body_color">#f8fafa</color>
-   <color name="hint_color">#b9c1c5</color>
+   <color name="card_field_color">#293033</color>
+   <color name="card_footer_color">#267bb1</color>
+   <color name="card_body_color">#f8fafa</color>
+   <color name="card_hint_color">#b9c1c5</color>
    
  
 </resources>

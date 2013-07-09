@@ -12,8 +12,7 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
-import com.discover.mobile.card.passcode.request.CreateBindingRequest;
-import com.discover.mobile.card.passcode.request.UpdatePasscodeRequest;
+import com.discover.mobile.card.passcode.request.CreateResetRequest;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -27,7 +26,6 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 	private static String mStep1Answer;
 
 	public void onCreate(Bundle paramBundle) {
-		// super.onCreate(paramBundle, true);
 		super.onCreate(paramBundle);
 		mStep1Answer = getArguments().getString("passcode");
 	}
@@ -53,7 +51,8 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		boolean isMatch = this.getPasscodeString().equals(mStep1Answer);
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isMatch && isValid) {
-			new UpdatePasscodeRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new UpdatePasscodeRequestListener());
+			String deviceToken = PasscodeUtils.genClientBindingToken();
+			new CreateResetRequest(this.getActivity(), getPasscodeString(), deviceToken).loadDataFromNetwork(new ResetPasscodeRequestListener(deviceToken));
 		} else {
 			passcodeResponse(false);
 		}
@@ -75,41 +74,21 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		getActivity().getSupportFragmentManager().popBackStack(PasscodeForgotStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	
-	private final class UpdatePasscodeRequestListener implements CardEventListener {
-		@Override
-		public void OnError(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Error");
-			passcodeResponse(false);
-		}
-
-		@Override
-		public void onSuccess(Object data) {
-			Log.v(TAG, "Success!");
-			storeFirstName();
-			//TODO fire binding request
-			String deviceToken = PasscodeUtils.genClientBindingToken();
-			new CreateBindingRequest(getActivity(), deviceToken).loadDataFromNetwork(new EnableRequestListener(deviceToken));
-		}
-	};
-
-	private final class EnableRequestListener implements CardEventListener {
+	private final class ResetPasscodeRequestListener implements CardEventListener {
 		private String deviceToken;
 		
-		public EnableRequestListener(String deviceToken) {
+		public ResetPasscodeRequestListener(String deviceToken) {
 			this.deviceToken = deviceToken;
 		}
 		@Override
 		public void OnError(Object data) {
-			// TODO Auto-generated method stub
 			passcodeResponse(false);
 		}
 
 		@Override
 		public void onSuccess(Object data) {
-			//TODO make this result accurate from the service call
 			passcodeResponse(true);
-			//if successful store token on device
+			storeFirstName();
 			createPasscodeToken(this.deviceToken);
 			getActivity().getSupportFragmentManager().popBackStack(PasscodeForgotStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}

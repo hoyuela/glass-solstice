@@ -233,7 +233,7 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
      * EditText's input.
      */
     private void setAppearanceMatched() {
-        this.setBackgroundResource(R.drawable.textfield_valid_holo_light);
+        this.setBackgroundResource(R.drawable.card_textfield_valid_holo_light);
         this.setCompoundDrawablesWithIntrinsicBounds(null, null,
                 getGreenCheck(), null);
     }
@@ -293,7 +293,7 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
             if (!isNull())
                 errorLabel.setVisibility(View.VISIBLE);
             if (!(answerEditText.isValid())) {
-                if (answerEditText.isNull()) {
+                if (answerEditText.isNull() && !isNull()) {
                     errorLabel.setVisibility(View.VISIBLE);
                 } else {
                     errorLabel.setVisibility(View.GONE);

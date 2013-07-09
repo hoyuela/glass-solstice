@@ -35,8 +35,8 @@ public abstract class ValidatedInputField extends EditText {
 	 */
 	//protected int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_holo_light;
 	/*	13.4 Start*/
-	protected int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_holo_light;
-	protected int FIELD_ERROR_APPEARANCE = R.drawable.textfield_invalid_holo_light;
+	protected int FIELD_DEFAULT_APPEARANCE = R.drawable.card_edit_text_holo_light;
+	protected int FIELD_ERROR_APPEARANCE = R.drawable.card_textfield_invalid_holo_light;
 
 	private ValidatedInputField thisEditText;
 
@@ -108,7 +108,7 @@ public abstract class ValidatedInputField extends EditText {
 	public void setupDefaultAppearance() {
 		this.setBackgroundResource(FIELD_DEFAULT_APPEARANCE);
 		/* this.setTextColor(getResources().getColor(R.color.field_copy)); */
-		this.setTextColor(getResources().getColor(R.color.field_color));
+		this.setTextColor(getResources().getColor(R.color.card_field_color));
 		setupDefaultHeight();
 	}
 

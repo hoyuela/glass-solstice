@@ -397,6 +397,12 @@ public class HomeSummaryFragment extends BaseFragment implements
 		currentBalance = (LinearLayout) view
 				.findViewById(R.id.home_current_balance);
 
+		View thickLine = (View)currentBalance.findViewById(R.id.achome_separator_thick);
+		View thinLine = (View)currentBalance.findViewById(R.id.achome_separator);
+		
+		thickLine.setVisibility(View.VISIBLE);
+		thinLine.setVisibility(View.GONE);
+		
 		// main content
 		((TextView) currentBalance.findViewById(R.id.title))
 				.setText(R.string.current_balance);

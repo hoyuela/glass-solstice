@@ -200,7 +200,7 @@ public class ConfirmationEditText extends ValidatedInputField {
      * EditText's input.
      */
     private void setAppearanceMatched() {
-        this.setBackgroundResource(R.drawable.textfield_valid_holo_light);
+        this.setBackgroundResource(R.drawable.card_textfield_valid_holo_light);
         this.setCompoundDrawablesWithIntrinsicBounds(null, null,
                 getGreenCheck(), null);
     }

@@ -1,5 +1,6 @@
 package com.discover.mobile.card.passcode.update;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -10,10 +11,13 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.request.UpdatePasscodeRequest;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 
 public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	
@@ -78,7 +82,17 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+//		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.passcode_dialog_updated_title, 
+				R.string.passcode_dialog_updated_content, 
+				R.string.home_text,
+				new NavigateACHomeAction(),
+				new NavigatePasscodeLandingAction());
+		modal.hideNeedHelpFooter();
+		modal.setOrangeTitle();
+		((NavigationRootActivity)context).showCustomAlert(modal);
 		getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	

@@ -6,7 +6,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
-import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 
 public class CreateBindingRequest implements PasscodeRequest {
@@ -18,8 +17,6 @@ public class CreateBindingRequest implements PasscodeRequest {
 	public CreateBindingRequest(Activity activity, String token) {
 		this.activity = activity;
 		this.token = token;
-		// TODO Update URL
-		// https://www.discovercard.com/cardsvcs/acs/personalprofile/v1/passcode/bind
 		this.url = activity.getString(R.string.url_in_use) 
 				+ activity.getString(R.string.discover_url)
 				+ "personalprofile/v1/passcode/binding";

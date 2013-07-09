@@ -22,38 +22,30 @@
     <string name="passcode_dialog_created_content">
         <![CDATA[
 		    You have successfully created your 4-digit Passcode.  The next time you enter the app you\'ll be asked to login with your new Passcode.
-		    <br/>
+		    <br/><br/>
 		    Remember, <b>your Passcode is only enabled on this device</b>. However, you can enable the same Passcode on other devices.
-		    <br/>
+		    <br/><br/>
 		    Don\'t worry, you can always log in with your User ID and Password at any time if you forget your Passcode.
 		]]>
 	</string>
-    <string name="passcode_dialog_created_paragraph_1">You have successfully created your 4-digit Passcode.  The next time you enter the app you\'ll be asked to login with your new Passcode.</string>
-    <string name="passcode_dialog_created_paragraph_2"><![CDATA[Remember, <b>your Passcode is only enabled on this device</b>. However, you can enable the same Passcode on other devices.]]></string>
-    <string name="passcode_dialog_created_paragraph_3">Don\'t worry, you can always log in with your User ID and Password at any time if you forget your Passcode.</string>
-    <string name="passcode_dialog_lockout_passcode_title">You\'ve Been Locked Out</string>
-    <string name="passcode_dialog_lockout_passcode_paragraph_1">You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can createa new Passcode.</string>
-    <string name="passcode_dialog_lockout_passcode_paragraph_2">Please contact Customer service at 1-877-742-7822 for assistance.</string>
-    <string name="passcode_dialog_lockout_title">You\'ve Been Locked Out</string>
-    <string name="passcode_dialog_lockout_paragraph_1">We know you\'re excited to get into the app, but you\'ve tried to log in with the wrong Passcode too many times. Please contact Customer service at 1-877-742-7822 for assistance.</string>
     <string name="passcode_dialog_updated_title">Passcode Updated</string>
-    <string name="passcode_dialog_updated_paragraph_1">Your Passcode Has been successfully updated! The next time you enter the app you\'ll be asked to log in with your updated Passcode.</string>
-    <string name="passcode_dialog_updated_paragraph_2"><b>If you have other Passcode-enabled devices, they have been updated wtih your new Passcode.</b></string>
+    <string name="passcode_dialog_updated_content">
+        <![CDATA[
+        Your Passcode Has been successfully updated! The next time you enter the app you\'ll be asked to log in with your updated Passcode.
+        <br/><br/>
+        <b>If you have other Passcode-enabled devices, they have been updated wtih your new Passcode.</b>
+		]]>
+    </string>
     <string name="passcode_dialog_disabled_title">Passcode Disabled</string>
     <string name="passcode_dialog_disabled_content">
         <![CDATA[
 		    <b>Your passcode has been disabled on this device.</b>
-		    <br/>
+		    <br/><br/>
 		    The next time you enter the app you\'ll be asked to log in with your User ID and Password.
-		    <br/>
-		    You may set up a new Passcode at anytime.
 		]]>
 	</string>
-    <string name="passcode_dialog_disabled_paragraph_1"><b>Your passcode has been disabled on this device.</b></string>
-    <string name="passcode_dialog_disabled_paragraph_2">The next time you enter the app you\'ll be asked to log in with your User ID and Password.</string>
-    <string name="passcode_dialog_disabled_paragraph_3">You may set up a new Passcode at anytime.</string>
     <string name="passcode_dialog_enabled_title">Passcode Enabled</string>
-    <string name="passcode_dialog_enabled_content"><b>Your Passcode has been enabled on this device</b>. The next time you enter the app you\'ll be asked to log in with this Passcode.</string>
+    <string name="passcode_dialog_enabled_content"><![CDATA[<b>Your Passcode has been enabled on this device</b>. The next time you enter the app you\'ll be asked to log in with this Passcode.]]></string>
     <string name="passcode_dialog_guidelines_title">Passcode Guidelines</string>
     <string name="passcode_dialog_guidelines_content">
         <![CDATA[When creating your 4-digit Passcode please keep in mind these guidelines. Your Passcode cannot be any of the following:
@@ -67,17 +59,6 @@
 		    <br/>•The first 4 digits of your credit card number (6011)
 		]]>
 	</string>
-    <string name="passcode_dialog_guidelines_paragraph_1">When creating your 4-digit Passcode please keep in mind these guidelines. Your Passcode cannot be any of the following:</string>
-    <string name="passcode_dialog_guidelines_paragraph_2">• Your date of birth (MMDD or MMYY, i.e. 0116 or 0186)</string>
-    <string name="passcode_dialog_guidelines_paragraph_3">• The last 4 digits of your Social Security Number</string>
-    <string name="passcode_dialog_guidelines_paragraph_4">• 4 consecutive numbers (i.e. 1,2,3,4 or 4,3,2,1)</string>
-    <string name="passcode_dialog_guidelines_paragraph_5">• The same number (i.e. 2,2,2,2)</string>
-    <string name="passcode_dialog_guidelines_paragraph_6">• The last 4 digits of your account number</string>
-    <string name="passcode_dialog_guidelines_paragraph_7">• The street number on the account</string>
-    <string name="passcode_dialog_guidelines_paragraph_8">• The first 4 digits of your credit card number (6011)</string>
-    <string name="passcode_dialog_overview_title">Passcode Overview</string>
-    <string name="passcode_dialog_overview_paragraph_1">Create a 4-digit Passcode to log into your account safely and securely, even faster than using your User ID and Password.</string>
-    <string name="passcode_dialog_overview_paragraph_2">You can easily update or disable your Passcode when you\'re logged into the app. Or, if you forget your Passcode, use your User ID and Password to login at any time.</string>
     <string name="passcode_guidelines_link">What are my Passcode Guidelines?</string>
     <string name="passcode_setup_step1_header">Choose your 4-digit Passcode to use when you sign in.</string>
     <string name="passcode_setup_step2_header">Verify your Passcode.</string>

@@ -2,19 +2,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/light_gray_bkgrd" >
-
+    android:background="@color/card_body_color">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:paddingBottom="18dp"
+        >
 
         <LinearLayout
             android:id="@+id/homestatusbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp" >
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
 
             <include
                 android:id="@+id/accounthomestatusbar"
@@ -32,13 +33,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/homestatusbar"
             android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp" >
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="6dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
 
             <include
                 android:id="@+id/acoutagemode_message"
                 layout="@layout/error_message_outage_mode"
-                android:visibility="gone" />
+                android:visibility="gone"
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -46,8 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/aclitemessage"
             android:orientation="vertical"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp" >
+            android:layout_marginBottom="18dp"
+            >
 
             <include
                 android:id="@+id/home_current_balance"
@@ -68,8 +72,8 @@
             <View
             android:id="@id/general_list_item_separator_line"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#c0c8cc" />
+            android:layout_height="2dp"
+            android:background="#d0d0d0" />
              
            <!--  <TextView
                 android:id="@+id/provide_feedback_button1"
