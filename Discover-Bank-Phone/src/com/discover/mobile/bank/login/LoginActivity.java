@@ -54,6 +54,7 @@ import com.discover.mobile.bank.help.PrivacyTermsType;
 import com.discover.mobile.bank.services.auth.BankLoginDetails;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall;
 import com.discover.mobile.bank.services.auth.PreAuthCheckCall.PreAuthResult;
+import com.discover.mobile.bank.ui.InputEnablerListener;
 import com.discover.mobile.bank.ui.InvalidCharacterFilter;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -67,10 +68,12 @@ import com.discover.mobile.common.auth.InputValidator;
 import com.discover.mobile.common.auth.KeepAlive;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
+import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
@@ -95,7 +98,7 @@ import com.slidingmenu.lib.SlidingMenu;
  *
  */
 
-public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface {
+public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface, CompletionListener, InputEnablerListener {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
 	final long halfSecond = 500;
@@ -1029,6 +1032,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if( View.VISIBLE == cardCheckMark.getVisibility() ) {
 			cardLogin(username, password) ;
 		} else {
+			//disable all input fields so that user cannot
+			//navigate to another screen once login
+			//process has started
+			disableInput();
 			bankLogin(username, password);
 		}
 	}
@@ -1997,6 +2004,55 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Globals.getCache().clear();
 
 		navigateBack();
+	}
+
+	@Override
+	public CallbackPriority getCallbackPriority() {
+		//set the callback priority to middle so that it doesn't interrupt
+		//any high priority callbacks.
+		return CallbackPriority.MIDDLE;
+	}
+
+	/*
+	 * Re-enable buttons 
+	 */
+	@Override
+	public void enableInput() {
+		//call setupButtons to attach on click listeners.
+		setupButtons();
+	}
+	
+	/*
+	 * Remove onclick listeners from all ui buttons and clickable elements
+	 * This keeps the user from navigating to another screen during the login process.
+	 */
+	@Override
+	public void disableInput() {
+		//disable all the buttons and ui element onclick listeners
+		saveUserIdToggleSwitch.setOnCheckedChangeListener(null);
+		loginButton.setOnClickListener(null);
+		customerServiceButton.setOnClickListener(null);
+		provideFeedbackButton.setOnClickListener(null);
+		registerOrAtmButton.setOnClickListener(null);
+		privacySecOrTermButtonBank.setOnClickListener(null);
+		passcodeForgot.setOnClickListener(null);
+		forgotUserIdOrPassText.setOnClickListener(null);
+		passcodeUserIDLogin.setOnClickListener(null);
+		passcodeCardPrivacyLink.setOnClickListener(null);
+		cardPrivacyLink.setOnClickListener(null);
+		gotoFastcheckButton.setOnClickListener(null);
+		fcPrivacyTermButton.setOnClickListener(null);
+		fcProvideFeedbackButton.setOnClickListener(null);
+	}
+
+	/*This method is used in the CreateLoginCall.  
+	 * Once the login service call is complete, we need to reenable 
+	 * ui elements for clicks
+	 */
+	@Override
+	public void complete(NetworkServiceCall<?> sender, Object result) {
+		//login is completed (whether or not successfull)
+		enableInput();
 	}
 
 	/**

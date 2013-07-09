@@ -124,10 +124,12 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @return A NetworkServiceCallQueue populated with the NetworkServiceCall<> required to successfully login to
 	 * 			the Bank Service
 	 */
-	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials ) {
+	public static CreateBankLoginCall createLoginCall(final BankLoginDetails credentials) {
 		return createLoginCall(credentials, false);
 	}
 
+
+	
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
@@ -143,6 +145,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		//Build the handler for the response to the Bank authentication request
 		final AsyncCallback<BankLoginData> callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, activity, activity)
+				.withCompletionListener(activity)
 				.build();
 
 		//Create the NetworkServieCall<> for authenticating with the Bank Authentication Server
@@ -151,6 +154,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return loginCall;
 	}
 
+	
 	/**
 	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank.
 	 * @param credentials

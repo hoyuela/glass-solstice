@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.ui.FrozenUI;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.Globals;
