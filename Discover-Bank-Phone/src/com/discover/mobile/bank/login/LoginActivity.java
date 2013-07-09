@@ -2029,6 +2029,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	@Override
 	public void disableInput() {
 		//disable all the buttons and ui element onclick listeners
+		passField.setOnEditorActionListener(null);
 		saveUserIdToggleSwitch.setOnCheckedChangeListener(null);
 		loginButton.setOnClickListener(null);
 		customerServiceButton.setOnClickListener(null);
