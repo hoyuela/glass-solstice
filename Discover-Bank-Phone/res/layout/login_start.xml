@@ -55,8 +55,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
-                    android:paddingLeft="@dimen/element_side_padding"
+                    android:layout_marginLeft="@dimen/element_side_padding"
                     android:paddingTop="@dimen/element_top_padding"
+                    android:paddingBottom="@dimen/logo_bottom_padding"
                     android:src="@drawable/discover_blk_logo_login" />
 
                 <Button
@@ -109,7 +110,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_id_label"
                         android:hint="@string/empty"
-                        android:imeOptions="actionNext"
+                        android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textNoSuggestions"
                         android:maxLength="16"
                         android:textCursorDrawable="@null" />
@@ -136,7 +137,7 @@
                         android:inputType="textPassword"
                         android:maxLength="32"
                         android:textCursorDrawable="@null"
-                        android:imeOptions="actionGo" />
+                        android:imeOptions="actionGo|flagNoExtractUi" />
 					
 					<!-- toggle switch label and compound button -->
 					<RelativeLayout

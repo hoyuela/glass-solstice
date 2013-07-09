@@ -246,7 +246,7 @@ abstract class BankAddPayeeFragment extends BankOneButtonFragment implements Ban
 			@Override
 			public void onClick(final View v) {
 				final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
-				if (currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+				if (currentActivity instanceof BankNavigationRootActivity) {
 					final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
 
 					if(isCameFromPayBills()) {

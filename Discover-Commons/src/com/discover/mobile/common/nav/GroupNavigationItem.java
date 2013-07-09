@@ -35,7 +35,7 @@ final class GroupNavigationItem extends NavigationItem {
 			return;
 		}
 		final NavigationItem selectedItem = adapter.getSelectedItem();
-		if(selectedItem != null && selectedItem instanceof GroupNavigationItem) {
+		if(selectedItem instanceof GroupNavigationItem) {
 			((GroupNavigationItem)selectedItem).collapse();
 		}
 

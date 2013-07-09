@@ -42,7 +42,10 @@ import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
+import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+
+import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.phonegap.plugins.ResourceDownloader;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
@@ -74,7 +77,7 @@ public class Utils {
     public static final String CARDTYPE_CORP = "CRP";
     public static final String CARDTYPE_DBC = "DBC";
     public static final String CARDTYPE_DBC_MILES = "DBM";
-    public static String vOne=null;
+    public static String vOne = null;
     public static final String CARDTYPE_DEFAULT = "Not Supported";
 
     /**
@@ -257,8 +260,7 @@ public class Utils {
             try {
                 if (progressBar != null && !progressBar.isShowing()) {
                     progressBar.show();
-                }
-                else if (null != strMessage && strMessage != "")
+                } else if (null != strMessage && strMessage != "")
                     progressBar.setMessage(strMessage);
             } catch (final Exception e) {
                 e.printStackTrace();
@@ -294,12 +296,10 @@ public class Utils {
     public static void hideSpinner() {
         if (isSpinnerAllowed) {
             if (null != progressBar && progressBar.isShowing()) {
-                try
-                {
+                try {
                     progressBar.dismiss();
+                } catch (Exception e) {
                 }
-                catch(Exception e)
-                {}
                 progressBar = null;
             } else {
                 isSpinnerAllowed = false;
@@ -315,22 +315,19 @@ public class Utils {
     public static void createProvideFeedbackDialog(final Context context,
             final String referer) {
         // TODO Auto-generated method stub
-    	
 
         final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(context);
         final SessionCookieManager sessionCookieManager = cardShareDataStore
                 .getCookieManagerInstance();
-        vOne=sessionCookieManager.getVone();
-        if(vOne==null)
-        {
-        	vOne="v1st";
+        vOne = sessionCookieManager.getVone();
+        if (vOne == null) {
+            vOne = "v1st";
         }
         String customerInformation;
 
         // Added to create the customer information for provide feedback url
-        if (null != vOne
-                && null != sessionCookieManager.getDfsKey()) {
+        if (null != vOne && null != sessionCookieManager.getDfsKey()) {
             customerInformation = "&custom_var="
                     + vOne
                     + "|"
@@ -346,7 +343,7 @@ public class Utils {
         }
         final String provideFeedbackUrl = context.getString(R.string.share_url)
                 + referer + customerInformation;
-       
+
         Utils.log("inside createProvideFeedback", provideFeedbackUrl);
         final LinearLayout main = new LinearLayout(context);
         main.setOrientation(LinearLayout.VERTICAL);
@@ -533,9 +530,9 @@ public class Utils {
     }
 
     public static void log(final String strMessage) {
-    	if (enableLogging) {
-    		log("Discover", strMessage);
-    	}
+        if (enableLogging) {
+            log("Discover", strMessage);
+        }
     }
 
     public static void log(final String strTag, final String strMessage) {
@@ -685,42 +682,60 @@ public class Utils {
         Utils.log(LOG_TAG, "Mobile On: " + isConnectedMobile);
         return isConnectedWifi || isConnectedMobile;
     }
-    
+
     /*
      * Changes for 13.4 start
      */
-    public static void logoutUser(final Activity cur_Activity){
-         isSpinnerAllowed = true;
-         CardEventListener logoutCardEventListener = new CardEventListener() {
+    public static void logoutUser(final Activity cur_Activity,
+            final Boolean isTimeOut) {
+        isSpinnerAllowed = true;
+        CardEventListener logoutCardEventListener = new CardEventListener() {
 
-             @Override
-             public void onSuccess(Object data) {
-                 final Bundle bundle = new Bundle();
-                 bundle.putBoolean(
-                         IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                         cur_Activity, bundle);
-//                 cur_Activity.finish();
-             }
+            @Override
+            public void onSuccess(Object data) {
+                final Bundle bundle = new Bundle();
+                PageTimeOutUtil.getInstance(cur_Activity).destroyTimer();
+                if (isTimeOut) {
+                    bundle.putBoolean(
+                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+                    bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+                } else {
+                    bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+                    bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                }
+                FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                        cur_Activity, bundle);
+                Utils.hideSpinner();
+                // cur_Activity.finish();
+            }
 
-             @Override
-             public void OnError(Object data) {
-                 final Bundle bundle = new Bundle();
-                 bundle.putBoolean(
-                         IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                         cur_Activity, bundle);
-//                 finish();
-             }
-         };
-         final WSRequest request = new WSRequest();
-         final String url = NetworkUtility.getWebServiceUrl(cur_Activity,
-                 R.string.logOut_url);
-         request.setUrl(url);
-         request.setMethodtype("POST");
-         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(cur_Activity, null,
-                 "Discover", "Signing Out...", logoutCardEventListener);
-         serviceCall.execute(request);
+            @Override
+            public void OnError(Object data) {
+                final Bundle bundle = new Bundle();
+                PageTimeOutUtil.getInstance(cur_Activity).destroyTimer();
+                if (isTimeOut) {
+                    bundle.putBoolean(
+                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
+                    bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+                } else {
+                    bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
+                    bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                }
+
+                FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                        cur_Activity, bundle);
+                Utils.hideSpinner();
+                // cur_Activity.finish();
+            }
+        };
+        final WSRequest request = new WSRequest();
+        final String url = NetworkUtility.getWebServiceUrl(cur_Activity,
+                R.string.logOut_url);
+        request.setUrl(url);
+        request.setMethodtype("POST");
+        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(cur_Activity,
+                null, "Discover", "Signing Out...", logoutCardEventListener);
+        serviceCall.execute(request);
     }
     /*
      * Changes for 13.4 end

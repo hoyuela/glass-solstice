@@ -693,7 +693,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		}
 
 		final Activity currentActivity = getActivity();
-		if(currentActivity != null && currentActivity instanceof BaseFragmentActivity) {
+		if(currentActivity instanceof BaseFragmentActivity) {
 			((BaseFragmentActivity)currentActivity).hideSlidingMenuIfVisible();
 		}
 	}

@@ -20,6 +20,8 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.ui.modals.EnhancedTwoButtonModal;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.request.DeletePasscodeRequest;
 import com.discover.mobile.card.passcode.update.PasscodeUpdateStep1Fragment;
@@ -29,6 +31,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeMenuFragment extends BaseFragment {
@@ -46,6 +49,15 @@ public class PasscodeMenuFragment extends BaseFragment {
 		@Override
 		public void run() {
 			makeFragmentVisible(new HomeSummaryFragment());
+		}
+	}
+	
+	protected class DisableCompleteAction implements Runnable {
+		public DisableCompleteAction() {}
+		@Override
+		public void run() {
+			PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
+			new DeletePasscodeRequest(getActivity(), pUtils.getPasscodeToken()).loadDataFromNetwork(new DisableRequestListener());
 		}
 	}
 	
@@ -95,8 +107,21 @@ public class PasscodeMenuFragment extends BaseFragment {
 		    				  new UpdatePasscodeStrongAuthFlow(), false);
 		    		  authHandler.strongAuth();
 		    	  } else if (id == 1) {
+		    		  final Context context = DiscoverActivityManager.getActiveActivity();
+		    		  final EnhancedTwoButtonModal modal = new EnhancedTwoButtonModal(context, 
+		    				  R.string.passcode_dialog_disable_are_you_sure_title, 
+		    				  R.string.passcode_dialog_disable_are_you_sure_content, 
+		    				  R.string.yes,
+		    				  R.string.no,
+		    				  new DisableCompleteAction(),
+		    				  new NavigateACHomeAction());
+		    		  modal.hideNeedHelpFooter();
+		    		  ((NavigationRootActivity)context).showCustomAlert(modal);
+		    		  
+		    		  /*
 		    		  PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
 		    		  new DeletePasscodeRequest(getActivity(), pUtils.getPasscodeToken()).loadDataFromNetwork(new DisableRequestListener());
+		    		  */
 		    	  }
 		      }
 		    });
@@ -180,17 +205,12 @@ public class PasscodeMenuFragment extends BaseFragment {
 //			pUtils.dialogHelper(getActivity(), MODAL_PASSCODE_DISABLED, "Home", true, new NavigateACHomeAction(), new NavigateACHomeAction());
 //			showDisableModal();
 			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
-			final SimpleContentModal modal = new SimpleContentModal(activeActivity, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_paragraph_1, R.string.home_text);
+			final EnhancedContentModal modal = new EnhancedContentModal(activeActivity, 
+					R.string.passcode_dialog_disabled_title, 
+					R.string.passcode_dialog_disabled_content, 
+					R.string.home_text,
+					new NavigateACHomeAction());
 			modal.hideNeedHelpFooter();
-			modal.getBottom().getButton()
-//			modal.getButton()
-			.setOnClickListener(new View.OnClickListener(){
-				@Override
-				public void onClick(final View v){
-					Log.v(TAG, "On click of okay, should nav home");
-					new NavigateACHomeAction();
-				}
-			});
 			((NavigationRootActivity)activeActivity).showCustomAlert(modal);
 		}
 	};

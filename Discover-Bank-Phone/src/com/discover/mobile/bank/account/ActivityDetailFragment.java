@@ -268,7 +268,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	private void showDeletePaymentModal(final ActivityDetail item) {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 
-		if(currentActivity != null && currentActivity instanceof BankNavigationRootActivity) {
+		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
 
 			final SimpleContentModal deleteModal = new SimpleContentModal(navActivity);

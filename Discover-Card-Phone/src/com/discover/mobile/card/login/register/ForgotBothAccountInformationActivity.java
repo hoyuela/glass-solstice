@@ -41,6 +41,8 @@ public class ForgotBothAccountInformationActivity extends
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountIdentifierField.setFieldAccountNumber();
+        /*13.4 Changes Start */
+        welcomeHeading.setText(R.string.forgot_both_title);
     }
 
     /**

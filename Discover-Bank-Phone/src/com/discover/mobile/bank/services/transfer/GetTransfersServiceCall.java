@@ -137,7 +137,7 @@ public class GetTransfersServiceCall extends
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity)currentActivity;
 			final Fragment topFragment = navActivity.getCurrentContentFragment();
-			if(topFragment != null && topFragment instanceof LoadMoreList) {
+			if(topFragment instanceof LoadMoreList) {
 				currentListFragment = (LoadMoreList)topFragment;
 			}
 		}

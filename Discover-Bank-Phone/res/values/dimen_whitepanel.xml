@@ -9,4 +9,7 @@
     <dimen name="element_top_padding">16dp</dimen>
     
     <dimen name="toggle_padding">8dp</dimen>
+
+    <!-- Discover Logo bottom padding ensures that the quick view button is not cut-off at the bottom of its View -->
+    <dimen name="logo_bottom_padding">4dp</dimen>
 </resources>

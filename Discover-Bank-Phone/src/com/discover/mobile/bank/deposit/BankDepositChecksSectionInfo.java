@@ -43,7 +43,7 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 					final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 					/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
-					if( activity != null && activity instanceof BankNavigationRootActivity ) {
+					if( activity instanceof BankNavigationRootActivity ) {
 						final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 
 						/**Check if user is already in the Check Deposit work-flow*/

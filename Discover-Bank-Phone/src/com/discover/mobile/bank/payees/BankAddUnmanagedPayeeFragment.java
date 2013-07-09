@@ -155,7 +155,7 @@ public class BankAddUnmanagedPayeeFragment extends BankAddPayeeFragment {
 				
 				/**Set flag to false so that when service call is called it adds payee*/
 				isUpdate = false;
-			} else if(item != null && item instanceof PayeeDetail ) {
+			} else if(item instanceof PayeeDetail ) {
 				final AddUnmanagedPayee unmanagedPayee = (AddUnmanagedPayee)detail;
 				
 				unmanagedPayee.name = ((PayeeDetail)item).name;

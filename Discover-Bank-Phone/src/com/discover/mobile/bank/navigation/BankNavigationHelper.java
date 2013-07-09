@@ -35,7 +35,7 @@ public final class BankNavigationHelper {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof NavigationRootActivity ) {
+		if( activity instanceof NavigationRootActivity ) {
 			final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
 		
 			final BaseFragment fragment = navActivity.getCurrentContentFragment();
@@ -59,7 +59,7 @@ public final class BankNavigationHelper {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
-		if( activity != null && activity instanceof NavigationRootActivity ) {
+		if( activity instanceof NavigationRootActivity ) {
 			final NavigationRootActivity navActivity = (NavigationRootActivity) activity;
 			navActivity.hideSlidingMenuIfVisible();
 		}

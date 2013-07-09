@@ -661,12 +661,16 @@ public class EnhancedAccountSecurityActivity extends
             strongAuthAns.sendRequest(answer, strongAuthQuestionId,
                     selectedIndex);
         } catch (JsonGenerationException e) {
-            handleError(e);
+        	e.printStackTrace();
+            //handleError(e);
         } catch (NoSuchAlgorithmException e) {
-            handleError(e);
+        	e.printStackTrace();
+           // handleError(e);
         } catch (IOException e) {
-            handleError(e);
+        	e.printStackTrace();
+           // handleError(e);
         } catch (Exception e) {
+        	e.printStackTrace();
             handleError(e);
         }
     }

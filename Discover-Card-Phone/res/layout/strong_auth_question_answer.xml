@@ -19,7 +19,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="6dp"
             android:includeFontPadding="false"
             android:text="@string/security_question"
             android:textColor="#8a9499"

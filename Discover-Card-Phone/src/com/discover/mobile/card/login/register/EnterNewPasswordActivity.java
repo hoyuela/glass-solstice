@@ -179,6 +179,12 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
     }
 
+    
+    @Override
+    public TextView getErrorLabel() {
+        // TODO Auto-generated method stub
+        return errorMessageLabel;
+    }
     /**
      * Setup input fields, attach error labels and set the type of input that
      * the fields will receive.

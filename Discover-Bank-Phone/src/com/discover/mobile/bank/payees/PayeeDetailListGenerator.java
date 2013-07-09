@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.telephony.PhoneNumberUtils;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
@@ -14,6 +16,7 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.payee.AddPayeeDetail;
 import com.discover.mobile.bank.services.payee.AddUnmanagedPayee;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -157,19 +160,26 @@ final public class PayeeDetailListGenerator  {
 		return zipCode;
 	}
 	
+	
+	
+	
 	private static BankEditDetail createPhoneNumber(final Context context,
-			final String phone, final boolean isEditable) {
+			final String phone, final boolean isEditable, final boolean singleLine) {
 	
 		/**Add Phone Number, Validation Must be a 10 digit #  and Invalid characters for a payee nickname: <>;"[]{} */
 		final BankPhoneDetail phoneNumber =  new BankPhoneDetail(context);
 		
-		if(phone != null) {	phoneNumber.setText(phone);}
+		if(phone != null) {	phoneNumber.setText(PhoneNumberUtils.formatNumber(phone));}
 		phoneNumber.getTopLabel().setText(R.string.bank_payee_phone_number);
 		phoneNumber.enableEditing(isEditable);
 		phoneNumber.getEditableField().setImeOptions(EditorInfo.IME_ACTION_NEXT|EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		phoneNumber.getEditableField().setError(R.string.bank_invalid_phone_number);
-		phoneNumber.makeSingleLine();
-		phoneNumber.getMiddleLabel().setVisibility(View.GONE);
+		//When creating a new payee, the phone number input 
+		//appears inline with the label.  After adding, on the confirm
+		//screen all fields appear below their label
+		if ( singleLine ) {
+			phoneNumber.makeSingleLine();
+		}
 		return phoneNumber;
 	}
 	
@@ -311,7 +321,6 @@ final public class PayeeDetailListGenerator  {
 	 */
 	public static List<RelativeLayout> getConfirmedPayeeDetailList(final Context context, final PayeeDetail item) {
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
-
 		if( item.verified ) {
 			/**Add Payee Name*/
 			items.add(createName(context, item.name, item.verified,false));
@@ -326,7 +335,7 @@ final public class PayeeDetailListGenerator  {
 			/**Create Add Unmanaged Payee List*/
 			items.add(createName(context, item.name, item.verified, false));
 			items.add(createNickName(context, item.nickName, false));
-			items.add(createPhoneNumber(context, item.phone.formatted, false));
+			items.add(createPhoneNumber(context, item.phone.formatted, false, false));
 			items.add(createAddress(context, item.address.formattedAddress));
 			
 			if (item.memo != null && !Strings.isNullOrEmpty(item.memo.trim())) {
@@ -349,7 +358,7 @@ final public class PayeeDetailListGenerator  {
 
 		final BankEditDetail name = createName(context, item.name, item.verified, false);
 		final BankEditDetail nickName = createNickName(context, item.nickName, true);
-		final BankEditDetail phoneNumber =  createPhoneNumber(context, item.phone.formatted, true);
+		final BankEditDetail phoneNumber =  createPhoneNumber(context, item.phone.formatted, true, true);
 		final BankEditDetail addressLine1 =  createAddressLine1(context, item.address.streetAddress, true);
 		final BankEditDetail addressLine2 =  createAddressLine2(context, item.address.extendedAddress, true);
 		final BankEditDetail city = createCity(context, item.address.locality, true);

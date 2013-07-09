@@ -1,5 +1,6 @@
 package com.discover.mobile.card.passcode.forgot;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -9,11 +10,14 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
 import com.discover.mobile.card.passcode.request.UpdatePasscodeRequest;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
@@ -32,7 +36,7 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-		setHeaderText(R.string.passcode_update_step3_header);
+		setHeaderText(R.string.passcode_forgot_step2_header);
 		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_FORGOT_STEP2);
 		return view;
 	}
@@ -57,7 +61,17 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+//		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.passcode_dialog_forgot_title, 
+				R.string.passcode_dialog_forgot_content, 
+				R.string.home_text,
+				new NavigateACHomeAction(),
+				new NavigatePasscodeLandingAction());
+		modal.hideNeedHelpFooter();
+		modal.setOrangeTitle();
+		((NavigationRootActivity)context).showCustomAlert(modal);
 		getActivity().getSupportFragmentManager().popBackStack(PasscodeForgotStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	

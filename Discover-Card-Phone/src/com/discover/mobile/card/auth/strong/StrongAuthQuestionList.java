@@ -38,6 +38,8 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
     private int lastselectedQuestion1;
     private Button logout ;
     private TextView privacyTerms , provideFeedback ;
+    private Boolean isQuestionSelected = false ;
+    private  Intent strongAuthEnterInfoActivity ;
 
     @SuppressLint("NewApi")
     @Override
@@ -56,7 +58,7 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
         provideFeedback = (TextView)findViewById(R.id.provide_feedback_button);
         handlingClickEvents();
         
-        final Intent strongAuthEnterInfoActivity = getIntent();
+        strongAuthEnterInfoActivity = getIntent();
         int questionGroup = getIntent().getIntExtra("Questiongroup", 1);
         final List<String> questions = getIntent().getStringArrayListExtra(
                 "Questions");
@@ -74,6 +76,7 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
+                isQuestionSelected = true ;
                 View currentClickedView = listView.getChildAt(position);
                 CheckedTextView currentClickedCheckView = (CheckedTextView) currentClickedView.findViewById(R.id.checkedTextView1);
                 currentClickedCheckView.setChecked(true);
@@ -95,7 +98,10 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
                 finish();
             }
         });
+        
+       
 
+        
     }
 
     private void handlingClickEvents() {
@@ -105,7 +111,17 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
         provideFeedback.setOnClickListener(this);
     }
 
-
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        if(!isQuestionSelected){
+            setResult(RESULT_CANCELED);
+            finish();
+        }
+        isQuestionSelected = false; 
+    }
+    
     @Override
     public void onClick(View v) {
         // TODO Auto-generated method stub
@@ -117,39 +133,10 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
             Utils.createProvideFeedbackDialog(this,
                     "strongAuthEnroll-pg");
         } else if (v.getId() == R.id.logout_button) {
-            Utils.isSpinnerAllowed = true;
-            CardEventListener logoutCardEventListener = new CardEventListener() {
-
-                @Override
-                public void onSuccess(Object data) {
-                    // TODO Auto-generated method stub
-                    final Bundle bundle = new Bundle();
-                    bundle.putBoolean(
-                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                    FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                            StrongAuthQuestionList.this, bundle);
-                    finish();
-                }
-
-                @Override
-                public void OnError(Object data) {
-                    // TODO Auto-generated method stub
-                    final Bundle bundle = new Bundle();
-                    bundle.putBoolean(
-                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-                    FacadeFactory.getLoginFacade().navToLoginWithMessage(
-                            StrongAuthQuestionList.this, bundle);
-                    finish();
-                }
-            };
-            final WSRequest request = new WSRequest();
-            final String url = NetworkUtility.getWebServiceUrl(this,
-                    R.string.logOut_url);
-            request.setUrl(url);
-            request.setMethodtype("POST");
-            final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
-                    "Discover", "Signing Out...", logoutCardEventListener);
-            serviceCall.execute(request);
+            
+            // Changes for 13.4 start
+            Utils.logoutUser(this , false);
+            
         }
     }
     
