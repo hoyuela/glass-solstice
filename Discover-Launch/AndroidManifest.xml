@@ -99,41 +99,40 @@
         </activity>
         
         <!--    13.4 Changes start -->
-        <activity
+                <activity
             android:name="com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
-            android:launchMode="standard" 
-            >
-        </activity>
-          <activity
-            android:name="com.discover.mobile.card.auth.strong.StrongAuthQuestionList"
             android:label="@string/app_name"
-            android:configChanges="orientation|screenSize"
             android:launchMode="standard" >
         </activity>
-        
+        <activity
+            android:name="com.discover.mobile.card.auth.strong.StrongAuthQuestionList"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:noHistory="true" >
+        </activity>
         <activity
             android:name="com.discover.mobile.card.privacyterms.PrivacyTermsLanding"
-            android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
-            android:launchMode="standard" >
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:noHistory="true" >
         </activity>
-        
-         <activity
+        <activity
             android:name="com.discover.mobile.card.privacyterms.PrivacyTermsStatement"
-            android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
-            android:launchMode="standard" >
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:noHistory="true" >
         </activity>
-        
         <activity
             android:name="com.discover.mobile.card.privacyterms.PrivacyTermsofUse"
-            android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
-            android:launchMode="standard" >
+            android:label="@string/app_name"
+            android:launchMode="standard"
+            android:noHistory="true" >
         </activity>
-       
        
             <!--    13.4 Changes End -->
         <activity android:name="com.discover.mobile.card.login.register.EnterNewPasswordActivity" android:label="@string/app_name" android:launchMode="standard">
