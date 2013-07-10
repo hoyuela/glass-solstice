@@ -216,4 +216,10 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 			DiscoverModalManager.getActiveModal().show();	
 		}
 	}
+	
+	@Override
+	public void closeDialog(){
+		mapFragment.setShowCustomDialog(false);
+		super.closeDialog();
+	}
 }
