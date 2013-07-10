@@ -217,9 +217,5 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 		}
 	}
 	
-	@Override
-	public void closeDialog(){
-		mapFragment.setShowCustomDialog(false);
-		super.closeDialog();
-	}
+
 }

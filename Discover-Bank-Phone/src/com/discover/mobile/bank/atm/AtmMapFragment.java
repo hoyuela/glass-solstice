@@ -1299,7 +1299,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 *should show the custom "searching for atms..." dialog 
 	 *or the default progress dialog.
 	 */
-	public boolean needsToShowCustomDialog(){
+	public boolean useCustomDialog(){
 		return showCustomDialog;
 	}
 	

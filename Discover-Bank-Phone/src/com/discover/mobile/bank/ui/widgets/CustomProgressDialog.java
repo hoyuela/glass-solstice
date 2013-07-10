@@ -11,7 +11,7 @@ public interface CustomProgressDialog {
 	 * activity whether or not a custom or default progress dialog
 	 * needs to be shown
 	 */
-	boolean needsToShowCustomDialog();
+	boolean useCustomDialog();
 	
 	/*
 	 * sets boolean value to determine whether a custom modal

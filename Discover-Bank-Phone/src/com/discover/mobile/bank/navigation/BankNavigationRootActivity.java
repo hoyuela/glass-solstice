@@ -474,7 +474,7 @@ implements OnPaymentCanceledListener {
 	 */
 	@Override
 	public void startProgressDialog(final boolean isProgressDialogCancelable) {
-		if ( this.getCurrentContentFragment() instanceof CustomProgressDialog && ((CustomProgressDialog) this.getCurrentContentFragment()).needsToShowCustomDialog()) {
+		if ( this.getCurrentContentFragment() instanceof CustomProgressDialog && ((CustomProgressDialog) this.getCurrentContentFragment()).useCustomDialog()) {
 			((CustomProgressDialog) this.getCurrentContentFragment()).startProgressDialog(isProgressDialogCancelable, getContext());
 		} else {
 			if (!isFragmentLoadingMore()) {
