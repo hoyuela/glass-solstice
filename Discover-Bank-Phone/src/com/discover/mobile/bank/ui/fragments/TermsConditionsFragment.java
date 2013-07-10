@@ -78,7 +78,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	/**Divider between the content and the footer*/
 	private View divider;
-
+	
 	/**
 	 * Get all of the interface elements that we need to access.
 	 * @param mainView
@@ -141,31 +141,15 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 					isBaseline ? SCROLL_DELAY_BASELINE : SCROLL_DELAY);
 		}
 	}
-
+	
 	@Override
-	public void onSaveInstanceState(final Bundle outState) {
-		super.onSaveInstanceState(outState);
-		
+	public void onPause() {
+		super.onPause();
 		/**Verify webview is not null*/
 		if( null != termsWebView ) {
-			termsWebView.saveState(outState);
 			// Since we are retaining instance, no need to store in the bundle.
 			scroll = WebUtility.calculateProgression(termsWebView);
 		}
-		
-		/**
-		 * Retain instance state so that this method is not 
-		 * called again until the fragment is resumed again.
-		 */
-		this.setRetainInstance(true);
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		/**This is to allow onSaveInstanceState to be called again on rotation*/
-		this.setRetainInstance(false);
 	}
 
 	/**
@@ -178,7 +162,8 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
-
+		this.setRetainInstance(true);
+		
 		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
 		loadResources(mainView);
 		
