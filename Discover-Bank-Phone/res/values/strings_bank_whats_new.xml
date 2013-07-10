@@ -9,8 +9,8 @@
     
     <!-- List of titles that will be displayed in the view pager -->
     <array name="bank_whats_new_titles">
-        <item>Pin Down the Nearest ATM</item>
-        <item>ATMs at Your Fingertips</item>
+        <item>Pin down the nearest ATM</item>
+        <item>ATMs at your fingertips</item>
     </array>
     
         <!-- List of content that will be displayed in the view pager -->
