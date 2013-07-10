@@ -589,7 +589,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	/**
 	 * This PictureCallback is used by the camera to store the resulting picture
 	 * as a JPEG. It also does some UI setup for the check preview such as,
-	 * hiding the check brackets, showing the confirmatoin buttons and setting
+	 * hiding the check brackets, showing the confirmation buttons and setting
 	 * the next check mark to visible.
 	 */
 	private Bitmap lastPicture = null;
@@ -747,13 +747,13 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
-		final int eightHundredPixels = 800;
+		final int maxImageWidth = 1600;
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 
 		Size smallCaptureSize = null;
 
 		for(final Size size : sizes) {
-			if(size.width < eightHundredPixels && smallCaptureSize == null) {
+			if(size.width <= maxImageWidth && smallCaptureSize == null) {
 				smallCaptureSize = size;
 			}
 		}

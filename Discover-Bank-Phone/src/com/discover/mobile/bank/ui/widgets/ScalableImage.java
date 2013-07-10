@@ -21,19 +21,17 @@ public class ScalableImage extends View {
 
   	public ScalableImage(final Context context, final AttributeSet attrs) {
 	    super(context, attrs);
-	   
   	}
 
   	public ScalableImage(final Context context, final AttributeSet attrs, final int defStyle) {
 	    super(context, attrs, defStyle);
-	    
   	}
 
   	/**
   	 * Sets the height of the View to a proportion of the width.
   	 */
   	@Override protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
-  		Drawable logo = this.getBackground();
+  		final Drawable logo = this.getBackground();
   		int width = 0;
   		int height = 0;
   		

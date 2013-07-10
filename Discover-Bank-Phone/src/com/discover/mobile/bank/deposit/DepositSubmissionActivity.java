@@ -26,6 +26,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 
 
@@ -50,6 +51,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deposit_submission);
+		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
 		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
@@ -102,7 +104,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	 */
 	private String getCompressedImageFromPath(final String path) {
 		final StringBuilder base64Image = new StringBuilder();
-		base64Image.append("");
+
 		final int jpegCompressionQuality = 40;
 
 		if(!Strings.isNullOrEmpty(path)) {
@@ -213,12 +215,12 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	}
 
 	@Override
-	public void startProgressDialog(boolean isProgressDialogCancelable) {		
+	public void startProgressDialog(final boolean isProgressDialogCancelable) {		
 		//do nothing
 	}
 	
 	@Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(final Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Reload the XML layout to switch between portrait/landscape version.
         setContentView(R.layout.deposit_submission);

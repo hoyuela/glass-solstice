@@ -118,7 +118,7 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 		if(currentActivity != null) {
 			
 			String title = currentActivity.getResources().getString(titleText);
-			String body = currentActivity.getResources().getString(bodyText);
+			final String body = currentActivity.getResources().getString(bodyText);
 			
 			if(!title.endsWith(questionMark)) {
 				title += questionMark;
@@ -126,6 +126,7 @@ public class AreYouSureGoBackModal implements BaseFragmentModal {
 			
 			final SimpleContentModal cancelModal = new SimpleContentModal(currentActivity, title, 
 																			body, buttonText);
+			cancelModal.getHelpFooter().setToDialNumberOnClick(R.string.call_for_help_number);
 			
 			cancelModal.getButton().setOnClickListener(new OnClickListener() {
 				
