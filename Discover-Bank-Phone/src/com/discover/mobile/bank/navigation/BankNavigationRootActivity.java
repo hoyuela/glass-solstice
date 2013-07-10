@@ -23,6 +23,7 @@ import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.ui.widgets.CustomProgressDialog;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
