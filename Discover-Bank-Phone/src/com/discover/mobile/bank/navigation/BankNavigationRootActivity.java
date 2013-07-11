@@ -23,6 +23,7 @@ import com.discover.mobile.bank.framework.BankNetworkServiceCallManager;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment.OnPaymentCanceledListener;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.ui.widgets.CustomProgressDialog;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.BaseFragment;
@@ -473,14 +474,27 @@ implements OnPaymentCanceledListener {
 	 */
 	@Override
 	public void startProgressDialog(final boolean isProgressDialogCancelable) {
-		if (!(this.getCurrentContentFragment() instanceof CustomProgressDialog)) {
-			if(!isFragmentLoadingMore()){
+		if ( this.getCurrentContentFragment() instanceof CustomProgressDialog && ((CustomProgressDialog) this.getCurrentContentFragment()).useCustomDialog()) {
+			((CustomProgressDialog) this.getCurrentContentFragment()).startProgressDialog(isProgressDialogCancelable, getContext());
+		} else {
+			if (!isFragmentLoadingMore()) {
 				super.startProgressDialog(isProgressDialogCancelable);
 			}
-		} else {
-			((CustomProgressDialog)this.getCurrentContentFragment()).startProgressDialog(isProgressDialogCancelable, 
-																						 getContext());
 		}
+		
+	}
+	/*
+	 * Overriding closeDialog so that the BankNavigationRoot
+	 * can clear the custom dialogs (used in atm locator).
+	 * When we close a dialog, we want to make sure it will be
+	 * set up to display the default modal the next time one will be shown
+	 */
+	@Override
+	public void closeDialog() {
+		if( this.getCurrentContentFragment() instanceof CustomProgressDialog ) {
+			((CustomProgressDialog) this.getCurrentContentFragment()).setShowCustomDialog(false);
+		}
+		super.closeDialog();
 	}
 	
 	@Override

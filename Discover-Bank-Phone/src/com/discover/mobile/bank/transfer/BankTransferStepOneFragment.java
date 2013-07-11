@@ -178,7 +178,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		final String amount = amountField.getText().toString();
 		boolean isAmountNotZero = false;
 		if(!Strings.isNullOrEmpty(amount)) {
-			final String amountWithoutCommas = amount.replaceAll(",", "");
+			final String amountWithoutCommas = amount.replaceAll(StringUtility.COMMA, StringUtility.EMPTY);
 			isAmountNotZero =  Double.parseDouble(amountWithoutCommas) > 0.0d;
 		}
 		return isAmountNotZero;
@@ -282,7 +282,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Sets the dateTextView text to display the first valid date based on the current date.
 	 */
 	private void setDateFieldToFirstValidDate(final int earliestPmtOffset, final int textViewOffset) {
-		ArrayList<Date> disabledDays = BankUser.instance().getHolidays();
+		final ArrayList<Date> disabledDays = BankUser.instance().getHolidays();
 		
 		//Set the date to the next available business day, used to determine the minimum selectable date in the calendar
 		earliestPaymentDate = CalendarFragment.addBusinessDays(Calendar.getInstance(), earliestPmtOffset, disabledDays);

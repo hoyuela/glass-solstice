@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -383,6 +384,7 @@ public class CalendarFragment extends CaldroidFragment {
 	 */
 	public static Calendar getFirstValidDateCalendar(final Calendar currentCalendar, final List<Date> holidays) {
 		final Calendar hasNextValidDateCal = currentCalendar;
+		hasNextValidDateCal.setTimeZone(TimeZone.getTimeZone("US/Eastern"));
 		
 		if(hasNextValidDateCal != null) {	
 			//Get the current day so we can see if its a weekend
