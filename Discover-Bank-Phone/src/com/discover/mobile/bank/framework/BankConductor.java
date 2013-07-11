@@ -701,7 +701,7 @@ public final class BankConductor  extends Conductor {
 			activity.getSupportFragmentManager().popBackStack();
 		}
 
-		((AlertDialogParent)activity).closeDialog();
+		((AlertDialogParent) activity).closeDialog();
 		if(activity.isFragmentLoadingMore() && !isGoingBack){
 			activity.addDataToDynamicDataFragment(extras);
 		} else if( extras != null && extras.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {

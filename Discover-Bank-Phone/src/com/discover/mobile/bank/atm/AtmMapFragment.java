@@ -189,6 +189,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 */
 	private RelativeLayout googleTerms;
 
+	/*
+	 * This boolean determines whether the custom map dialog should be shown
+	 * or if the default progress dialog should be shown
+	 */
+	private boolean showCustomDialog;
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -741,6 +746,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 		//We need to redraw all of the icons in order to handle new ATM locator icons being added through pull to load more
 		//and the change with grouping icons.
+		
 		mapWrapper.addObjectsToMap(results.results.atms.subList(0, endIndex));
 		currentIndex = endIndex;
 		bundle.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
@@ -752,6 +758,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			tempResults = results;
 			resultEndIndex = endIndex;
 		}
+		isLoading = false;
 	}
 
 	/**
@@ -793,6 +800,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		hasLoadedAtms = false;
 		mapWrapper.clear();
 		currentIndex = 0;
+		setShowCustomDialog(true);
 		((NavigationRootActivity)getActivity()).startProgressDialog(true);
 		locationManagerWrapper.getLocation();
 	}
@@ -824,6 +832,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 * @param location - location to get atms near
 	 */
 	private void getAtms(final Location location){
+		setShowCustomDialog(true);
 		final AtmServiceHelper helper = new AtmServiceHelper(location);
 		helper.setSurchargeFree(searchBar.isFilterOn());
 		BankServiceCallFactory.createGetAtmServiceCall(helper).submit();
@@ -1285,4 +1294,18 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		config.toString();
 
 	}
+	/*
+	 *Returns whether or not the navigation root activity
+	 *should show the custom "searching for atms..." dialog 
+	 *or the default progress dialog.
+	 */
+	public boolean useCustomDialog(){
+		return showCustomDialog;
+	}
+	
+	public void setShowCustomDialog(boolean show){
+		showCustomDialog = show;
+	}
+	
+	
 }

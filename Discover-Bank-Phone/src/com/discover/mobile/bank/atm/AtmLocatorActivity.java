@@ -216,4 +216,6 @@ public class AtmLocatorActivity extends NavigationRootActivity{
 			DiscoverModalManager.getActiveModal().show();	
 		}
 	}
+	
+
 }
