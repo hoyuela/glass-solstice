@@ -1,5 +1,9 @@
 package com.discover.mobile.card.navigation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.List;
 import java.util.Locale;
@@ -20,6 +24,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -122,6 +127,7 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 			return mView;
 		} else {
 			mView = inflater.inflate(R.layout.cordova_web_frag, null, false);
+			
 			cwv = (CordovaWebView) mView
 					.findViewById(R.id.cordova_web_frag_cordova_webview);
 			cwv.clearCache(true);
@@ -458,6 +464,25 @@ public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
 	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void takeScreenShot()
+	{
+		mView.setDrawingCacheEnabled(true);
+		Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
+		mView.setDrawingCacheEnabled(false);
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+		File f = new File(Environment.getExternalStorageDirectory() + File.separator + "test.jpg");
+		try {
+			f.createNewFile();
+			FileOutputStream fo = new FileOutputStream(f);
+			fo.write(bytes.toByteArray()); 
+			fo.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	class MyWebviewClient extends CordovaWebViewClient {

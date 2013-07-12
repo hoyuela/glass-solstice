@@ -17,6 +17,10 @@ public final class WSRequest {
     private byte[] btInput;
     private HashMap<String, String> hmHeaderValues;
     private boolean isFrequentCaller;
+    private String username;
+    private String password;
+    private int connectionTimeOut = 10000;
+    private int connectionReadTimeOut = 10000;
 
     public String getUsername() {
         return username;
@@ -33,11 +37,6 @@ public final class WSRequest {
     public void setPassword(final String password) {
         this.password = password;
     }
-
-    private String username;
-    private String password;
-
-    private int connectionTimeOut = 10000;
 
     public WSRequest() {
         hmHeaderValues = new HashMap<String, String>();
@@ -132,5 +131,13 @@ public final class WSRequest {
 
     public void setFrequentCaller(final boolean isFrequentCaller) {
         this.isFrequentCaller = isFrequentCaller;
+    }
+
+    public int getConnectionReadTimeOut() {
+        return connectionReadTimeOut;
+    }
+
+    public void setConnectionReadTimeOut(int connectionReadTimeOut) {
+        this.connectionReadTimeOut = connectionReadTimeOut;
     }
 }

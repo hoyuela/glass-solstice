@@ -10,7 +10,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Your Passcode is currently enabled on this device."
-        android:textColor="@color/passcodeBlack"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <View
@@ -21,7 +21,7 @@
 
     <ListView
         android:id="@+id/listview"
-        android:textColor="@color/passcodeBlack"
+        android:textColor="@color/black"
         android:layout_width="fill_parent"
         android:dividerHeight="1dp"
         android:divider="@color/gray"
@@ -31,6 +31,17 @@
         android:background="@color/gray"
         android:layout_width="fill_parent"
         android:layout_height="1dp"/>
-    
+     
+     <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="0.8"
+        android:gravity="bottom"
+        android:overScrollMode="never" >
+
+        <include layout="@layout/card_fragment_footer" />
+    </RelativeLayout>
 
 </LinearLayout>

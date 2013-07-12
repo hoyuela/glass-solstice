@@ -41,16 +41,15 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
     private Boolean isQuestionSelected = false ;
     private  Intent strongAuthEnterInfoActivity ;
 
-    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.securityquestionlist);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
+        /*if (android.os.Build.VERSION.SDK_INT >= 11) {
             ActionBar actionBar = getActionBar();
             actionBar.hide();
-        }
+        }*/
 
         final ListView listView = getListView();
         logout = (Button)findViewById(R.id.logout_button);

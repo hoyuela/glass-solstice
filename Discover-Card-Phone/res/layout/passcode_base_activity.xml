@@ -13,9 +13,8 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="10dp"
-        android:text=""
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/passcodeBlack"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:typeface="sans" />
 
@@ -69,51 +68,28 @@
              />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/holdFocus"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:inputType="phone" />
-
     <TextView
         android:id="@+id/passcodeGuidelines"
         style="@style/PasscodeGuidelines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:paddingLeft="12dp"
-        android:paddingTop="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="20dp"
         android:text="@string/passcode_guidelines_link"
         android:textSize="16sp"
         android:textStyle="bold" />
-
-    <LinearLayout
+    
+    <RelativeLayout
+        android:id="@+id/footer"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal"
-        android:gravity="bottom" 
-        android:layout_marginBottom="12dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="0.8"
+        android:gravity="bottom"
+        android:overScrollMode="never" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Privacy &amp; Terms"
-            android:textColor="@color/passcodeBlue" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" | "
-            android:textColor="@color/passcodeBlack" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Provide Feedback"
-            android:textColor="@color/passcodeBlue" />
-    </LinearLayout>
+        <include layout="@layout/card_fragment_footer" />
+    </RelativeLayout>
 
 </LinearLayout>

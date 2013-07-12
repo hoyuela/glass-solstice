@@ -5,8 +5,47 @@
     <string name="E_503">Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
     <string name="E_4031110">We are working on making enhancements to our mobile app. During this time, the mobile app will not be available for Discover Business Card, Essential Card and Corporate Card accounts. We expect it to be up and running by July 22, 2013. Please sign in through our mobile site at m.discover.com to access your account information. Thank you.</string>
     <string name="E_4011103">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822</string>
+    <string name="E_4012109">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822</string>
+    <string name="E_4012113">You have one more log in attempt today. For security purposes, we limit the number of attempts to enter your information. If you think you are receiving this message in error, call 1-877-742-7822</string>
     <string name="E_4011107">Your temporary password has been used or is expired.</string>
-    <string name="E_4031101">We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. Please contact Customer Service at 1-877-742-7822 for assistance</string>
+    <string name="E_4032017">
+        <![CDATA[
+        You recently requested to disable Passcode login.  Please log in with your User ID and Password. You can set up a new Passcode after logging in.
+		]]>
+	</string>
+    <!-- 4031101 & 4032112 - Lockout -->
+    <string name="E_4031101">
+        <![CDATA[
+        We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. 
+        <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
+    <string name="E_4032112">
+        <![CDATA[
+        We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. 
+        <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
+	<!-- 4032114 & 4032111 - Passcode Disabled but Login attempts remaining -->
+    <string name="E_4032114">
+        <![CDATA[
+        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
+    <string name="E_4032111">
+        <![CDATA[
+        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
+    <!-- 4032110 - Passcode and ULR Lockout -->
+    <string name="E_4032110">
+        <![CDATA[
+        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
     <string name="E_4031104">Your online access is still being set up. Please try back again	later.</string>
     <string name="E_4031105">We\'re sorry, you may no longer use this Discover card account number to access the app. Instead, please visit www.discover.com to create User ID and password. If you have any questions, please contact Customer Service at 1-877-742-7822</string>
     <string name="E_4031105_WITHUSERID">We\'re Sorry, you may no longer use this Discover Card account number	to access the app. Instead, please log in using	your User ID and Password. !~~! "&lt;br&#47;&gt;""&lt;br&#47;&gt; If you have any questions, please contact Customer Service at 1-877-742-7822</string>
@@ -236,6 +275,12 @@
     <string name="E_T_4031401_DENY">We\'re Sorry</string>
     <string name="E_T_4031106">We\'re Sorry</string>
     <string name="E_T_4031101"> You\'ve Been Locked Out</string>
+    <string name="E_T_4032112"> You\'ve Been Locked Out</string>
+    <string name="E_T_4032110"> You\'ve Been Locked Out</string>
+    <string name="E_T_4032114">Passcode Disabled</string>
+    <string name="E_T_4032111">Passcode Disabled</string>
+    <string name="E_T_4012107">Passcode Disabled</string>
+    
     <string name="E_T_503">Oops!</string>
     <string name="E_T_4031110">We\'re Sorry</string>
     <string name="E_T_100">Network Connection Error</string>

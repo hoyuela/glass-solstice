@@ -14,6 +14,7 @@ import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
+import com.discover.mobile.card.passcode.request.GetMatchRequest;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -46,7 +47,8 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		if (isValid) {
 			String deviceToken = PasscodeUtils.genClientBindingToken();
 			//TODO make sure service is updated to accept passcode as well with this call
-			new CreateBindingRequest(this.getActivity(), deviceToken).loadDataFromNetwork(new EnableRequestListener(deviceToken));
+			new GetMatchRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new MatchRequestListener(deviceToken));
+//			new CreateBindingRequest(this.getActivity(), deviceToken).loadDataFromNetwork(new EnableRequestListener(deviceToken));
 		} else {
 			passcodeResponse(false);
 		}
@@ -72,6 +74,23 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onPasscodeErrorEvent() {
 		clearAllFields();
+	}
+
+	private final class MatchRequestListener implements CardEventListener {
+		private String deviceToken;
+		
+		public MatchRequestListener(String deviceToken) {
+			this.deviceToken = deviceToken;
+		}
+		@Override
+		public void OnError(Object data) {
+			passcodeResponse(false);
+		}
+
+		@Override
+		public void onSuccess(Object data) {
+			new CreateBindingRequest(getActivity(), deviceToken).loadDataFromNetwork(new EnableRequestListener(deviceToken));
+		}
 	}
 	
 	private final class EnableRequestListener implements CardEventListener {

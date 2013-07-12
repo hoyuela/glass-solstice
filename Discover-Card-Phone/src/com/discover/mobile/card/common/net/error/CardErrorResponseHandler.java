@@ -1,5 +1,7 @@
 package com.discover.mobile.card.common.net.error;
 
+import java.util.ArrayList;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,8 +45,49 @@ public final class CardErrorResponseHandler {
      */
     public static final int INCORRECT_USERID_PASSWORD = 401;
 
-    public static final int LOCKOUT = 4011103;
+//    public static final int LOCKOUT = 4011103;
+
     
+    private ArrayList<Integer> lockoutErrors;
+    private ArrayList<Integer> passcodeDisabledErrors;
+    private ArrayList<Integer> lastAttemptErrors;
+    
+    private void setErrorList(){
+    	Log.v("CardErrorResponseHandler", "Setting error list");
+    	lockoutErrors = new ArrayList<Integer>();
+    	lockoutErrors.add(ULR_LOCK);
+    	lockoutErrors.add(ULR_LOCK_PASSCODE_LAST_ATTEMPT);
+    	lockoutErrors.add(ULR_LOCKED_PASSCODE_DELTED);
+    	
+    	passcodeDisabledErrors = new ArrayList<Integer>();
+    	passcodeDisabledErrors.add(ULR_ATTEMPTS_PASSCODE_DELTED);
+    	passcodeDisabledErrors.add(ULR_LAST_ATTEMPT_PASSCODE_DELTED);
+    	passcodeDisabledErrors.add(ULR_LOCKED_PASSCODE_DELTED);
+    	passcodeDisabledErrors.add(PASSCODE_NOT_BOUND);
+    	
+    	lastAttemptErrors = new ArrayList<Integer>();
+    	lastAttemptErrors.add(ULR_LAST_ATTEMPT);
+    	lastAttemptErrors.add(ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT);
+    	lastAttemptErrors.add(ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT);
+    }
+    
+    //show 1 more attempt
+    public static final int ULR_LAST_ATTEMPT = 4011103;
+    public static final int ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT = 4012109;
+    public static final int ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT = 4012113; //should I show no message?
+    
+    // BAU lockout (user has 3 failed login attempt has is locked out from the app - regardless of whether those attempts were with passcode or uid/pwd)
+    public static final int ULR_LOCK = 4031101;
+    public static final int ULR_LOCK_PASSCODE_LAST_ATTEMPT = 4032110;
+    
+    //User has 5 failed attempts with passcode in a row and their passcode is now disabled. However, they still have attempts remaining with their uid/pwd so they're not locked out from the app. The title of this modal in the comps is confusing.
+    public static final int ULR_ATTEMPTS_PASSCODE_DELTED = 4032114; //delete passcode
+    public static final int ULR_LAST_ATTEMPT_PASSCODE_DELTED = 4032111; //delete passcode
+    
+    //The user has 5 failed attempts with passcode in a row so their passcode is disabled AND they do not have any more login attempts remaining so they are locked out from the app. 
+    public static final int ULR_LOCKED_PASSCODE_DELTED = 4032112; // delete passcode
+
+    //show passcode not bound message
     public static final int PASSCODE_NOT_BOUND = 4012107;
 
     public static final int USER_ACCOUNT_LOCKED = 403;
@@ -91,6 +134,7 @@ public final class CardErrorResponseHandler {
     public void handleCardError(final CardErrorBean cardErrorHold,
             final CardErrorCallbackListener errorClickCallback) {
         Utils.hideSpinner();
+        setErrorList();
         if (cardErrorHold.isAppError()) {
             handleAppError("Application Error", cardErrorHold.getErrorMessage());
 
@@ -98,11 +142,37 @@ public final class CardErrorResponseHandler {
             final String errorCode = cardErrorHold.getErrorCode();
             final String[] errorMsgSplit = errorCode.split("_");
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
-            switch (errorCodeNumber) {
-            //TODO You've Been Locked Out (passcode locked out after 3 attempts)
-            //TODO Passcode disabled 
-            case INCORRECT_USERID_PASSWORD:
-            case LOCKOUT:
+            final Context context = DiscoverActivityManager.getActiveActivity();
+            
+            //delete passcode
+            if (passcodeDisabledErrors.contains(errorCodeNumber)) {
+            	PasscodeUtils pUtils = new PasscodeUtils(context);
+            	pUtils.deletePasscodeToken();
+            }
+
+            if (lockoutErrors.contains(errorCodeNumber) && passcodeDisabledErrors.contains(errorCode)) {
+            	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4032112, R.string.E_4032112, R.string.close_text);
+            	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
+            	modalUIDAndPasscodeLockout.setGrayButton();
+            	modalUIDAndPasscodeLockout.showErrorIcon();
+            	showCustomAlert(modalUIDAndPasscodeLockout);
+            } else if (lockoutErrors.contains(errorCodeNumber)) {
+            	EnhancedContentModal modalLockout = new EnhancedContentModal(context, R.string.E_T_4031101, R.string.E_4031101, R.string.close_text);
+            	modalLockout.hideNeedHelpFooter();
+            	modalLockout.setGrayButton();
+            	modalLockout.showErrorIcon();
+            	showCustomAlert(modalLockout);
+            } else if (errorCodeNumber == PASSCODE_NOT_BOUND) {
+            	EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
+            	modal.hideNeedHelpFooter();
+            	showCustomAlert(modal);
+            } else if (passcodeDisabledErrors.contains(errorCodeNumber)) {
+            	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.close_text);
+            	modalPasscodeDisabled.hideNeedHelpFooter();
+            	modalPasscodeDisabled.setGrayButton();
+            	modalPasscodeDisabled.showErrorIcon();
+            	showCustomAlert(modalPasscodeDisabled);
+            } else if (lastAttemptErrors.contains(errorCodeNumber) || errorCodeNumber == INCORRECT_USERID_PASSWORD) {
             	if(CardLoginFacadeImpl.class.isInstance(errorHandlerUi))
             	{
             		final LoginActivityFacade loginFacade = FacadeFactory
@@ -118,31 +188,14 @@ public final class CardErrorResponseHandler {
             	}
             	else
             	{
-         
-            handleInlineError(cardErrorHold.getErrorMessage());
+            		handleInlineError(cardErrorHold.getErrorMessage());
             	}
-               break;
-            
-            case PASSCODE_NOT_BOUND:
-            	final Context context = DiscoverActivityManager.getActiveActivity();
-            	final EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
-            	modal.hideNeedHelpFooter();
-            	showCustomAlert(modal);
-            	PasscodeUtils pUtils = new PasscodeUtils(context);
-            	pUtils.deletePasscodeToken();
-            	break;
-
-            default:
+            } else {
                 handleGenericError(cardErrorHold.getErrorTitle(),
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-
-                break;
             }
         }
-
-
-
     }
 
     private void handleInlineError(String errorMessage) {

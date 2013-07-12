@@ -13,6 +13,7 @@ import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthListener;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -55,6 +56,7 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 				getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			}
 		});
+		Utils.setFooter(view, getActivity());
 		return view;
 	}
 

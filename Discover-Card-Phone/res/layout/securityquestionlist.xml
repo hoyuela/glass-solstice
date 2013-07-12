@@ -14,10 +14,9 @@
             android:id="@+id/title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:maxLines="1"
-            android:paddingLeft="16dp"
+            android:paddingRight="64dp"
             android:text="@string/sa_title"
             android:textColor="@color/blue_grey"
             android:textSize="18dp"
@@ -25,7 +24,6 @@
 
         <Button
             android:id="@+id/logout_button"
-            style="@style/logout_actionbar_button"
             android:layout_width="64dp"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
@@ -87,7 +85,7 @@
 
         <include
             android:id="@+id/enter_info_footer"
-            android:layout_below="@android:id/list"
+            android:layout_below="@+id/general_list_item_separator_line_end"
             layout="@layout/card_fragment_footer" />
     </RelativeLayout>
 

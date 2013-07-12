@@ -1,5 +1,8 @@
 package com.discover.mobile.card.navigation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -15,7 +18,9 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -469,6 +474,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
     @Override
     public void logout() {
+    	takeScreenShot();
         Utils.log("CardNavigationRootActivity", "inside logout...");
         // super.logout();
         Utils.isSpinnerAllowed = true;
@@ -518,7 +524,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        
+        /* 13.4 changes start*/
+        isTimeout = false;
         Utils.hideSpinner();
         
         finish();
@@ -536,7 +543,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        
+        /* 13.4 changes start*/
+        isTimeout = false;
         Utils.hideSpinner();
         
         finish();
@@ -994,4 +1002,35 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     	setOrientation();
     	super.onConfigurationChanged(newConfig);
     }
+    
+    public void takeScreenShot()
+	{
+        View mView = getWindow().getDecorView().getRootView();
+        //View mView = view.findViewById(R.id.cardRootLayout); 
+        if (null!=mView)
+        {
+			mView.setDrawingCacheEnabled(true);
+			Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
+			mView.setDrawingCacheEnabled(false);
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+			File f = new File(Environment.getExternalStorageDirectory() + File.separator + "Discover_ScreenShot.jpg");
+			try {
+				f.createNewFile();
+				FileOutputStream fo = new FileOutputStream(f);
+				fo.write(bytes.toByteArray()); 
+				fo.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+				mView.setDrawingCacheEnabled(false);
+				bitmap = null;
+				mView=null;
+				f = null;
+			}
+        }
+	}
 }

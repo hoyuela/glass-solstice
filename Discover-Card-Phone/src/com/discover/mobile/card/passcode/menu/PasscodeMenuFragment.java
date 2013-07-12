@@ -22,6 +22,7 @@ import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.ui.modals.EnhancedTwoButtonModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.request.DeletePasscodeRequest;
 import com.discover.mobile.card.passcode.update.PasscodeUpdateStep1Fragment;
@@ -30,8 +31,6 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.SimpleContentModal;
-import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeMenuFragment extends BaseFragment {
@@ -125,6 +124,7 @@ public class PasscodeMenuFragment extends BaseFragment {
 		      }
 		    });
 
+		Utils.setFooter(view, getActivity());
 		return view;
 	}
 	
