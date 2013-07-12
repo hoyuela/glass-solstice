@@ -51,7 +51,7 @@
                 <ImageView
                     android:id="@+id/discoverLogo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
@@ -248,7 +248,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="20dp"
-                        android:text="Welcome message" />
+                        />
 
                     <LinearLayout
                         android:id="@+id/passcodeFields"
@@ -288,12 +288,6 @@
                             android:visibility="invisible" />
                     </LinearLayout>
 
-                    <EditText
-                        android:id="@+id/holdFocus"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:inputType="phone" />
-
                     <LinearLayout
                         android:id="@+id/passcode_links"
                         android:layout_width="fill_parent"
@@ -309,7 +303,7 @@
                             android:layout_weight="1.0"
                             android:clickable="true"
                             android:gravity="center"
-                            android:text="Forgot Passcode"
+                            android:text="@string/passcode_forgot"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/blue"
                             android:textSize="@dimen/small_copy_mid" />
@@ -322,7 +316,7 @@
                             android:layout_weight="1.0"
                             android:clickable="true"
                             android:gravity="center"
-                            android:text="User ID Login"
+                            android:text="@string/passcode_uid_login"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/blue"
                             android:textSize="@dimen/small_copy_mid" />

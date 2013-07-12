@@ -95,7 +95,4 @@
     <color name="action_button_gray_pressed">#a7abad</color>
     <color name="action_button_orange">#fe8738</color>
     <color name="action_button_orange_pressed">#ed4b0b</color>
-    <!-- Passcode -->
-	<color name="passcodeOrange">#F56000</color>
-	<color name="passcodeGray">#D7E6E9</color>
 </resources>

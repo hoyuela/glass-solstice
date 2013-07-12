@@ -63,6 +63,8 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String getDFSKey = "getDFSKey";
     public static final String getVOne = "getVOne";
     public static final String disableMenuButton = "disableMenuButton";
+    public static final String takeScreenShot = "takeScreenShot";
+    
 
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
@@ -819,7 +821,25 @@ public class HybridControlPlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
             return true;
         }
-
+        else if (action.equals(takeScreenShot)) {
+            Utils.log(TAG, "inside gotoAchome ");
+            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
+                    .getActivity();
+            final FragmentManager fragManager = cnrAct
+                    .getSupportFragmentManager();
+            cnrAct.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Added changes to clear page cache when return back to
+                    // achome.
+                	cnrAct.takeScreenShot();
+                	/*
+                    CordovaWebFrag cwf = cnrAct.getCordovaWebFragInstance();
+                    cwf.takeScreenShot();
+                    */
+                }
+            });
+        }
         return false;
     }
 

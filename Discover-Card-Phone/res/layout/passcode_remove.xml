@@ -23,7 +23,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="25dp"
         android:text="@string/passcode_remove_paragraph_1"
-        android:textColor="@color/passcodeBlack"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginRight="25dp"
         android:text="@string/passcode_remove_paragraph_2"
-        android:textColor="@color/passcodeBlack"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <Button
@@ -61,33 +61,16 @@
         android:text="@string/passcode_remove_link_no_thanks"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/footer"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:gravity="bottom" 
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="12dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="0.8"
+        android:gravity="bottom"
+        android:overScrollMode="never" >
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Privacy &amp; Terms"
-            android:textColor="@color/passcodeBlue" />
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" | "
-            android:textColor="@color/passcodeBlack" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Provide Feedback"
-            android:textColor="@color/passcodeBlue" />
-    </LinearLayout>
+        <include layout="@layout/card_fragment_footer" />
+    </RelativeLayout>
 
 </RelativeLayout>

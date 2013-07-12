@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Passcode</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="reenter_pass">Re-enter your passcode.</string>
-    <string name="set_pass">Set a passcode.</string>
-    <string name="set_pass_title">Passcode Setting</string>
-    <string name="verify_pass_title">Verify Passcode</string>
-    <string name="enter_pass">Enter a passcode.</string>
-    <string name="enter_new_pass">Enter new passcode.</string>
-    <string name="nomatch_pass">Passcodes did not match.</string>
-    <string name="passcode_enter">Passcode Verification</string>
-    <string name="passcode_setting">Passcode Setting</string>
-    <string name="passcode_start_over">Passcodes did not match.</string>
-    <string name="passcode_does_not_match">Passcodes did not match.
- Please try again.</string>
-    <string name="incorrect_passcode">Incorrect passcode.
- Please try again.</string>
     <string name="passcode_dialog_created_title">Passcode Created</string>
     <string name="passcode_dialog_created_content">
         <![CDATA[
@@ -44,6 +27,13 @@
 		    The next time you enter the app you\'ll be asked to log in with your User ID and Password.
 		]]>
 	</string>
+    <string name="passcode_dialog_disabled_locked_content">
+        <![CDATA[
+		    You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+		    <br/><br/>
+		    Please contact Customer Service at 1-877-742-7822 for assistance.
+		]]>
+	</string>
     <string name="passcode_dialog_enabled_title">Passcode Enabled</string>
     <string name="passcode_dialog_enabled_content"><![CDATA[<b>Your Passcode has been enabled on this device</b>. The next time you enter the app you\'ll be asked to log in with this Passcode.]]></string>
     <string name="passcode_dialog_guidelines_title">Passcode Guidelines</string>
@@ -60,13 +50,13 @@
 		]]>
 	</string>
     <string name="passcode_guidelines_link">What are my Passcode Guidelines?</string>
-    <string name="passcode_setup_step1_header">Choose your 4-digit Passcode to use when you sign in.</string>
+    <string name="passcode_setup_step1_header">Create your 4-digit Passcode to use when you sign in.</string>
     <string name="passcode_setup_step2_header">Verify your Passcode.</string>
     <string name="passcode_update_step1_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode. ]]></Data></string>
     <string name="passcode_update_step2_header"><Data><![CDATA[ Please create your <b>new</b> Passcode. ]]></Data></string>
     <string name="passcode_update_step3_header"><Data><![CDATA[ Please verify your <b>new</b> Passcode. ]]></Data></string>
     <string name="passcode_disable_step1_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode to disable it. ]]></Data></string>
-    <string name="passcode_enable_step1_paragraph_1">Our records show that you have an existing Passcode enabled on other devices.  In order to enable Pascode login on this device you must enter that same Passocde on this device.</string>
+    <string name="passcode_enable_step1_paragraph_1">Our records show that you have an existing Passcode enabled on other devices.  In order to enable Passcode login on this device you must enter that same Passcode on this device.</string>
     <string name="passcode_enable_step1_paragraph_2">Would you like to enable Passcode Login for this device?</string>
     <string name="passcode_enable_step1_button_yes">Yes</string>
     <string name="passcode_enable_step1_link_no_thanks">No Thanks</string>

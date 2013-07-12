@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.common.BaseFragment;
@@ -52,6 +53,7 @@ public class PasscodeRemoveFragment extends BaseFragment {
 			}
 		});
 		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_REMOVE);
+		Utils.setFooter(view, getActivity());
 		return view;
 	}
 

@@ -15,16 +15,22 @@
      limitations under the License.
 -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/card_spinner_filled_holo_light" android:state_enabled="true" android:state_window_focused="false"/>
     <item android:drawable="@drawable/card_spinner_normal_holo_light" android:state_enabled="false" android:state_window_focused="false"/>
-    <item android:drawable="@drawable/card_spinner_focused_holo_light" android:state_enabled="true" android:state_focused="true"/>
-    <iten android:drawable="@drawable/card_spinner_focused_holo_light" android:state_activated="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/card_spinner_filled_holo_light" android:state_enabled="true" android:state_focused="true"/>
+    <iten android:drawable="@drawable/card_spinner_filled_holo_light" android:state_activated="true" android:state_enabled="true" />
     <item android:drawable="@drawable/card_spinner_normal_holo_light" android:state_enabled="true"/>
     <item android:drawable="@drawable/card_spinner_filled_holo_light" android:state_focused="true"/>
     <item android:drawable="@drawable/card_spinner_filled_holo_light"/>
 
+</selector> -->
+
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_focused="true" android:drawable="@drawable/card_spinner_filled_holo_light" />
+    <item android:state_focused="false" android:drawable="@drawable/card_spinner_normal_holo_light" />
+    
 </selector>
-
-

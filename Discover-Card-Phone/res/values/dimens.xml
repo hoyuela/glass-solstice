@@ -65,8 +65,6 @@
     <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
     
     <!-- Passcode Dimens -->
-   	<dimen name="passcode_vpad">20.0dip</dimen>
-    <dimen name="passcode_prompt_text">20.0sp</dimen>
     <dimen name="passcode_digit_text">17.0sp</dimen>
     <dimen name="passcode_digit_width">60.0dip</dimen>
     <dimen name="passcode_digit_height">54.0dip</dimen>

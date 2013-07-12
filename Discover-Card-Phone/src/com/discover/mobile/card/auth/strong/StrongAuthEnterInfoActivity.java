@@ -92,8 +92,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     private static final String UPDATE_THIRD_CONFIRM_ANSWER_ERROR_STATE = "r";
 
     protected final int SPINNER_ERROR_APPEARANCE = R.drawable.card_spinner_invalid_holo_light;
-    protected final int SPINNER_FOCUSSED_APPEARANCE = R.drawable.card_spinner_focused_holo_light;
-    protected final int SPINNER_DEFAULT_APPEARANCE = R.drawable.card_spinner_filled_holo_light;
+    protected final int SPINNER_FOCUSSED_APPEARANCE = R.drawable.card_spinner_filled_holo_light;
+    protected final int SPINNER_DEFAULT_APPEARANCE = R.drawable.card_spinner_normal_holo_light;
 
     // Error State
     private boolean answerFirstIsInError = false;
@@ -159,17 +159,15 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     private Boolean isTimeout ;
     private CardEventListener timerlogoutCardEventListener ;
 
-    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.strong_auth_enter_info);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
+     /*   if (android.os.Build.VERSION.SDK_INT >= 11) {
             ActionBar actionBar = getActionBar();
             actionBar.hide();
-        }
-
+        }*/
         populateQuestions();
         intializeViews();
         setlabelValues();

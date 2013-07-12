@@ -14,10 +14,9 @@
             android:id="@+id/title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
             android:maxLines="1"
-            android:paddingLeft="16dp"
+            android:paddingRight="64dp"
             android:text="@string/sa_title"
             android:textColor="@color/blue_grey"
             android:textSize="18dp"
@@ -26,7 +25,6 @@
 
         <Button
             android:id="@+id/logout_button"
-            style="@style/logout_actionbar_button"
             android:layout_width="64dp"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
@@ -46,7 +44,7 @@
     </RelativeLayout>
 
     <ScrollView
-        android:id="@+id/account_info_scroll_view"
+        android:id="@+id/strong_auth_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/sa_action_bar"
@@ -192,15 +190,17 @@
                 <Button
                     android:id="@+id/account_info_submit_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="42dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
                     android:layout_marginTop="40dp"
                     android:text="@string/sa_submit" 
                     android:textStyle="bold"
                     android:layout_gravity="center_horizontal"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:textSize="20sp"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:textSize="20dp"
                     android:background="@drawable/card_action_orange_button"
                     android:textColor="@color/white"
                     />

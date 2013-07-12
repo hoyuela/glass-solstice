@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,7 +23,9 @@ import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.passcode.event.OnPasscodeErrorEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSubmitEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSuccessEventListener;
@@ -71,7 +74,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	private static final int[] fieldIds;
 	// protected TextView[] fieldTVs = new TextView[4];
 	protected EditText[] fieldTVs = new EditText[4];
-	protected EditText holdFocus;
 	private static String TAG = "PasscodeBaseFragment";
 	protected ImageView validationIV;
 	protected TextView headerTV;
@@ -142,8 +144,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 					return;
 				}
 
-				// move focus to dummy field
-				holdFocus.requestFocus();
+				fieldTVs[0].requestFocus();
 
 				// dynamic success/error functions
 				onPasscodeSubmitEvent();
@@ -243,8 +244,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				});
 		passcodeGuidelinesTV.setVisibility(View.INVISIBLE);
 		headerTV = ((TextView) view.findViewById(R.id.headerTV));
-		holdFocus = (EditText) view.findViewById(R.id.holdFocus);
 
+		Utils.setFooter(view, getActivity());
 		mContext = getActivity();
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i] = ((EditText) view.findViewById(fieldIds[i]));
@@ -264,8 +265,9 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_guidelines_title, 
 				R.string.passcode_dialog_guidelines_content, 
-				R.string.ok);
+				R.string.close_text);
 		modal.hideNeedHelpFooter();
+		modal.setGrayButton();
 		((NavigationRootActivity)context).showCustomAlert(modal);
 	}
 	
@@ -453,5 +455,4 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 		pUtils.storeFirstName(fname);
 	}
-	
 }

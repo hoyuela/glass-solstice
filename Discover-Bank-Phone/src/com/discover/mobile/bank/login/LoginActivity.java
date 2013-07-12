@@ -150,7 +150,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	//Passcode Fields
 	PasscodeUtils pUtils;
 	protected EditText[] fieldTVs = new EditText[4];
-	protected EditText holdFocus;
 	protected ImageView validationIV;
 	private TextView welcomeTV;
 	private TextView passcodeCardPrivacyLink;
@@ -320,7 +319,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//passcode
 		validationIV = ((ImageView) findViewById(R.id.validation));
 		welcomeTV = (TextView) findViewById(R.id.welcome);
-		holdFocus = (EditText) findViewById(R.id.holdFocus);
 		fieldTVs[0] = (EditText)findViewById(R.id.passcode01);
 		fieldTVs[1] = (EditText)findViewById(R.id.passcode02);
 		fieldTVs[2] = (EditText)findViewById(R.id.passcode03);
@@ -1823,8 +1821,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
-				// move focus to dummy field
-				holdFocus.requestFocus();
+				fieldTVs[0].requestFocus();
 				FacadeFactory.getCardLoginFacade().loginWithPasscode(LoginActivity.this, pUtils.getPasscodeToken(), getPasscodeString());
 			}
 
