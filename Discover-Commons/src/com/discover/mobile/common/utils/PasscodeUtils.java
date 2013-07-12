@@ -4,23 +4,10 @@ import java.security.SecureRandom;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.support.v4.app.FragmentActivity;
 import android.util.Base64;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-
-import com.discover.mobile.common.R;
 
 public class PasscodeUtils {
 
@@ -164,97 +151,4 @@ public class PasscodeUtils {
 		return sb.toString();
 	}
 	
-	public void dialogHelper(FragmentActivity activity, int viewLayout, String buttonText, boolean isOrangeButton, Runnable action, Runnable backAction){
-
-		LayoutInflater inflater = LayoutInflater.from(activity);
-		View view = inflater.inflate(viewLayout, null);
-
-		// make dialog fill screen
-		Display display = ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE))
-				.getDefaultDisplay();
-		int width = display.getWidth();
-		int height = display.getHeight();
-		view.setMinimumHeight(height);
-		view.setMinimumWidth(width);
-
-		Builder builder = new AlertDialog.Builder(activity);
-		builder.setView(view)
-				.setPositiveButton(buttonText, new MyClickListener(action))
-				.setOnKeyListener(new MyKeyListener(backAction));
-
-		AlertDialog dialog = builder.create();
-		dialog.show();
-
-		if (isOrangeButton) {
-			// Orange button
-			Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-			if (b != null) {
-				b.setBackgroundColor(activity.getResources().getColor(R.color.passcodeOrange));
-				b.setTextColor(activity.getResources().getColor(R.color.white));
-			}
-		} else {
-			// gray button
-			Button b = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-			if (b != null) {
-				b.setBackgroundColor(activity.getResources().getColor(R.color.passcodeGray));
-				b.setTextColor(activity.getResources().getColor(R.color.black));
-			}
-		}
-	}
-	// Fires off specified action on back button pressed
-	private class MyClickListener implements DialogInterface.OnClickListener {
-
-		private Runnable action;
-
-		public MyClickListener(Runnable action) {
-			this.action = action;
-		}
-
-		public Runnable getAction() {
-			return action;
-		}
-
-		@Override
-		public void onClick(DialogInterface dialog, int arg1) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "About to execute action");
-			if (getAction() != null) {
-				Log.v(TAG, "Action executed!");
-				getAction().run();
-			}
-			dialog.dismiss();
-		}
-	}
-	
-	private class MyKeyListener implements DialogInterface.OnKeyListener {
-
-		private Runnable action;
-
-		public MyKeyListener(Runnable action) {
-			this.action = action;
-		}
-
-		public Runnable getAction() {
-			return action;
-		}
-
-		@Override
-		public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-			//TODO action to take on back button press
-			if (keyCode == KeyEvent.KEYCODE_BACK
-					&& event.getAction() == KeyEvent.ACTION_UP
-					&& !event.isCanceled()) {
-				Log.v(TAG, "About to execute action");
-				if (getAction() != null) {
-					Log.v(TAG, "Back button action executed!");
-					getAction().run();
-				} else {
-					Log.e(TAG, "Back button action is null");
-				}
-				dialog.dismiss();
-				return true;
-			}
-			return false;
-		}
-	}
 }
