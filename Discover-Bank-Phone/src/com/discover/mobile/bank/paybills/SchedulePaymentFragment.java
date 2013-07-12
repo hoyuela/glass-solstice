@@ -128,6 +128,8 @@ public class SchedulePaymentFragment extends BaseFragment
 	private Calendar chosenPaymentDate;
 	/** Fragment used to select a payment date*/
 	private CalendarFragment calendarFragment;
+	/** Handler used to post the runnable that dismisses calendarFragment*/
+	private Handler handler;
 
 	/** saved bundle data */
 	private Bundle savedBundle;
@@ -192,6 +194,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		payNowButton = (Button) view.findViewById(R.id.pay_now);
 		cancelButton = (Button) view.findViewById(R.id.cancel_button);
 		bankUser = BankUser.instance();
+		handler = new Handler();
 
 		/**Set a default value for chosen payment date*/
 		chosenPaymentDate = Calendar.getInstance();
@@ -972,7 +975,8 @@ public class SchedulePaymentFragment extends BaseFragment
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 
 				//Delay closing of calendar to be able to see the selection change
-				new Handler().postDelayed(closeCalendarRunnable, CALENDAR_DELAY);
+				handler.removeCallbacks(closeCalendarRunnable);
+				handler.postDelayed(closeCalendarRunnable, CALENDAR_DELAY);
 			}
 
 			@Override
