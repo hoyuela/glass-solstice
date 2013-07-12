@@ -65,9 +65,7 @@
 	<string name="welcome_morning">Good morning</string>
 	<string name="welcome_afternoon">Good afternoon</string>
 	<string name="welcome_evening">Good evening</string>
-    <string name="passcode_dialog_disabled_title">Passcode Disabled</string>
-    <string name="passcode_dialog_disabled_not_bound_paragraph_1">You recently requested to disable Passcode login. Please log in with your User ID and Password.  You can set up a new Passcode after logging in.</string>
-    <string name="passcode_dialog_disabled_too_many_attempts_paragraph_1">You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successuflly log into the app, you can create a new Passocde.</string>
-    <string name="passcode_dialog_disabled_too_many_attempts_paragraph_2">Please contact Customer service at 1-877-742-7822 for assistance.</string>
+	<string name="passcode_forgot">Forgot Passcode</string>
+	<string name="passcode_uid_login">User ID Login</string>
 </resources>
 
