@@ -1079,13 +1079,13 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			DiscoverModalManager.getActiveModal().dismiss();
 			setHelpModalShowing(false);
 		}if(shouldGoBack){
-			streetView.clearWebview();
-			streetView.hide();
-			shouldGoBack = false;
-			
 			if (streetViewWasOnMap) {
 				showMap();
 			}
+			
+			streetView.clearWebview();
+			streetView.hide();
+			shouldGoBack = false;
 		}else if(isListLand){
 			toggleButton();
 		}else{	
