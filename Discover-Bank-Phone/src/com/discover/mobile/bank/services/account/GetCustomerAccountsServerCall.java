@@ -108,15 +108,26 @@ public class GetCustomerAccountsServerCall  extends BankUnamedListJsonResponseMa
 	protected AccountList parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 
-		final AccountList accountList = new AccountList();
+		AccountList accountList = new AccountList();
 		accountList.accounts = super.parseUnamedList(body);
 		
-		//Stores Accounts data into BankUser singleton instance to be referenced
-		//later by the application layer and other classes
-		BankUser.instance().setAccounts(accountList);
-		
-		// Set flag to false so that another download request is not made and cached accounts are used instead.
-		BankUser.instance().setAccountOutDated(false);
+		/*
+		 * This if else statement is a fail safe.
+		 * On mst0 server returns empty list of accounts some times.
+		 * In that case this if statement will keep stale information
+		 * instead of clearing out account information.
+		 */
+		if (!accountList.accounts.isEmpty()) {
+			//Stores Accounts data into BankUser singleton instance to be referenced
+			//later by the application layer and other classes
+			BankUser.instance().setAccounts(accountList);
+			// Set flag to false so that another download request is not made and cached accounts are used instead.
+			BankUser.instance().setAccountOutDated(false);
+		} else {
+			//accountlist is empty, due to server issue
+			//return the stale one that is cached
+			accountList = BankUser.instance().getAccounts();
+		}
 
 		return accountList;
 	}
