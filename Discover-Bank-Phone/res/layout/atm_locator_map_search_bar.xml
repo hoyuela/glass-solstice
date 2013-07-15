@@ -59,6 +59,7 @@
 
         <com.discover.mobile.bank.atm.AtmSearchEditText
             android:id="@+id/search_box"
+            style="@style/common_edittext_grey_line"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
@@ -69,7 +70,6 @@
             android:layout_marginTop="@dimen/between_related_elements_padding"
             android:layout_toLeftOf="@+id/help_dummy"
             android:layout_toRightOf="@+id/search_show"
-            android:background="@drawable/common_textfield_default_grey"
             android:cursorVisible="true"
             android:drawableLeft="@drawable/magnifying_glass"
             android:drawablePadding="@dimen/between_related_elements_padding"
