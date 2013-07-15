@@ -30,7 +30,9 @@
             android:layout_centerVertical="true"
             android:background="@drawable/card_logout_button"
             android:text="@string/log_out"
-            android:textSize="12dp" />
+            android:textSize="12dp" 
+            android:textColor="@color/sub_copy"
+            />
 
         <ImageView
             android:id="@+id/gradient_line"
@@ -42,8 +44,9 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
         android:layout_below="@+id/sa_action_bar"
         android:background="@color/card_body_color"
         android:orientation="vertical"
@@ -72,21 +75,24 @@
             android:id="@android:id/list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/general_list_item_separator_line_end"
             android:layout_below="@+id/general_list_item_separator_line_start"
             android:divider="@color/stroke_rulink_link"
-            android:dividerHeight="1dp" />
+            android:dividerHeight="1dp" 
+            android:choiceMode="singleChoice"
+            />
+
+        <include
+            android:id="@+id/enter_info_footer" android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            layout="@layout/card_fragment_footer" />
 
         <View
             android:id="@+id/general_list_item_separator_line_end"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent" 
             android:layout_height="2dp"
-            android:layout_below="@android:id/list"
+            android:layout_above="@+id/enter_info_footer"
             android:background="#c0c8cc" />
-
-        <include
-            android:id="@+id/enter_info_footer"
-            android:layout_below="@+id/general_list_item_separator_line_end"
-            layout="@layout/card_fragment_footer" />
     </RelativeLayout>
 
 </RelativeLayout>

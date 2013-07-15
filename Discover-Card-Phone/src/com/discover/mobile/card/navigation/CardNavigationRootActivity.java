@@ -778,6 +778,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         Utils.log("CardNavigationRootActivity", "frag count is " + fragCount);
 
+        String TAG = "CardnavigationRootActivity";
+        Log.v(TAG, "Frag Count: " + fragCount);
         if (fragCount > 2) {
             String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
                     .getName();
@@ -787,6 +789,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                     + isPopped);
             //13.3 QuicView Changes Start
             if (nativeList.contains(fragTag)) {
+            	Log.v(TAG, "Native List Contains Frag: " + fragTag);
                 Fragment fragment = fragManager
                         .findFragmentByTag(fragTag);
                 makeFragmentVisible(fragment, false);
@@ -796,6 +799,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 }
 
             } else {
+            	Log.v(TAG, "Native List DOES NOT Contain Frag: " + fragTag);
                 if (fragTag
                         .equalsIgnoreCase(getString(R.string.enhanced_account_security_title))
                         || fragTag.equalsIgnoreCase("No Title")) {

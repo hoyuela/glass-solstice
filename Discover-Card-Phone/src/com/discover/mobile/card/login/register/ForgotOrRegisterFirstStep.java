@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
 
