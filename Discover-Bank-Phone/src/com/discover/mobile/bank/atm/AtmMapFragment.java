@@ -119,6 +119,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Boolean that is true if the map is showing*/
 	private boolean isOnMap = true;
+	
+	/* Boolean that says whether atm locator was on the map or list view before heading to street view.  We are unable to 
+	 * change isOnMap's value to work in the fashion as required by the street view work flows so this variable is now used.
+	 */
+	private boolean streetViewWasOnMap = true;
 
 	/**Wrapper around the map*/
 	private DiscoverMapWrapper mapWrapper;
@@ -1019,6 +1024,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 */
 	@Override
 	public void showStreetView(final Bundle bundle){
+		streetViewWasOnMap = isOnMap;
+		if (isOnMap) {
+			showList();	
+		}
+		
 		shouldGoBack = true;
 		streetView.show();
 		streetView.loadStreetView(bundle);
@@ -1069,6 +1079,13 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			DiscoverModalManager.getActiveModal().dismiss();
 			setHelpModalShowing(false);
 		}if(shouldGoBack){
+			
+			//There is an issue where the map gets garbage collected so in order to prevent this we swap to the list
+			//view when going to street view than upon return we swap back.   
+			if (streetViewWasOnMap) {
+				showMap();
+			}
+			
 			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
