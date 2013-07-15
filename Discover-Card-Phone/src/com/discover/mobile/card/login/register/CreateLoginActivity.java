@@ -27,7 +27,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.CardEventListener;

@@ -356,8 +356,8 @@
         <item name="android:textSize">@dimen/passcode_digit_text</item>
         <item name="android:typeface">serif</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
         <item name="android:cursorVisible">false</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">false</item>

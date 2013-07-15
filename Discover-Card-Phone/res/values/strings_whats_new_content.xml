@@ -19,18 +19,15 @@
 	</string>
     <string name="quickview_gotolink">Go to Profile and Settings to enable.</string>
    
-   
-
-    <!-- Strings Used on New Offer -->
+   	<string name="manage_bankacc_content_heading">Manage your bank accounts on the go</string>
+    <string name="manage_bankacc_content_description">You can now add, edit and remove your bank acounts straight from your Discover Mobile app.</string>
+    <string name="manage_bankacc_gotolink"></string>
     
-    <string name="fastview_content_heading">Get Fast view of your Cashback account(Dummy page)</string>
-    <string name="fastview_content_description">View your Account Summary ,current balance,available credit and Cashback Bonus
-	   balance at anytime with just a quick tap or swipe of your finger.	
-	</string>
-    <string name="fastview_gotolink">Go to Profile and settings  to Disable and Enable.</string>    
-   
+    <string name="passcode_content_heading">Get into the app faster with Passcode</string>
+    <string name="passcode_content_description">Set up a 4-digt Passcode to access your account information, instead of using your User ID and Password</string>
+    <string name="passcode_gotolink">Go to Profile and Settings to enable.</string>  
     
-   
-      
-      
+    <string name="manage_payment_content_heading">An upgraded way to manage payments</string>
+    <string name="manage_payment_content_description">Now you can edit and cancel pending payments directly from your Discover Mobile app.</string>
+    <string name="manage_payment_gotolink"></string>  
 </resources>

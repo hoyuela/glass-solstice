@@ -47,8 +47,8 @@ public class PasscodeLandingFragment extends BaseFragment {
 	}
 	
 	public void route() {
-		//TODO sgoff0 - service call required for delete passcode in this fashion?
-		if (pUtils.isForgotPasscode()) {
+		if (pUtils.isForgotPasscode() && doesAccountHavePasscode) {
+			//only allow forgot passcode flow if account has passcode already setup
 			//when logged in via forgot passcode flow delete passcode and set status back to false
 			pUtils.deletePasscodeToken();
         	pUtils.setForgotPasscode(false);

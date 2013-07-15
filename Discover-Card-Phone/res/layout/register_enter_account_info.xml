@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <com.discover.mobile.common.nav.HeaderProgressIndicator
+    <com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -51,7 +51,7 @@
             <com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText
                 android:id="@+id/account_info_main_input_field"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/input_field_height"
+                android:layout_height="44dp"
                 android:layout_below="@+id/account_info_label_one_label"
                 android:imeOptions="actionDone"
                 android:textColor="#293033"
@@ -142,7 +142,7 @@
             <com.discover.mobile.card.common.uiwidget.SsnEditText
                 android:id="@+id/account_info_ssn_input_field"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_below="@+id/account_info_ssn_info_label"
                 android:layout_toRightOf="@+id/account_info_ssn_prefix_label"
                 android:imeOptions="actionDone"
@@ -205,7 +205,7 @@
             <Button
                 android:id="@+id/account_info_continue_button"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_info_birth_date_picker"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="40dp"
@@ -213,9 +213,11 @@
                 android:onClick="validateInfoAndSubmitOnSuccess"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="@string/continue_text"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
 
             <TextView
@@ -235,7 +237,7 @@
             <com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText
                 android:id="@+id/account_info_card_exp_date_picker"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_below="@+id/account_info_card_expiration_date_label"
                 android:textColor="#8a9499"
                 android:textSize="18sp"
@@ -256,7 +258,7 @@
             <com.discover.mobile.card.common.uiwidget.DatePickerEditText
                 android:id="@+id/account_info_birth_date_picker"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="44dp"
                 android:layout_below="@+id/account_info_dob_label"
                 android:textColor="#8a9499"
                 android:textSize="18sp"

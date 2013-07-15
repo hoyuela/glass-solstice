@@ -1,28 +1,28 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">  
-        
-     
-     <include
-            android:id="@+id/whats_new_titlebar"            
-            layout="@layout/whats_new_titlebar" >
-        </include>
-    
+    android:layout_height="fill_parent"
+    android:background="@drawable/light_gray_bkgrd"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/whats_new_titlebar" android:layout_weight="0.1"
+        layout="@layout/whats_new_titlebar" >
+    </include>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
-    
+        android:layout_weight="0.8"
+        android:layout_height="wrap_content"
+         />
+
     <com.discover.mobile.card.whatsnew.CirclePageIndicator
         android:id="@+id/indicator"
-        android:padding="10dip"
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        
-        />
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:paddingTop="10dp"
+        android:paddingBottom="24dp" />
+
 </LinearLayout>

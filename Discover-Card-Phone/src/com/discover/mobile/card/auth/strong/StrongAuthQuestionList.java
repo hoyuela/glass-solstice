@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -73,10 +74,10 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                    int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, final View view,
+                    final int position, final long id) {
                 isQuestionSelected = true ;
-                View currentClickedView = listView.getChildAt(position);
+                /*View currentClickedView = listView.getChildAt(position);
                 CheckedTextView currentClickedCheckView = (CheckedTextView) currentClickedView.findViewById(R.id.checkedTextView1);
                 currentClickedCheckView.setChecked(true);
                 
@@ -85,7 +86,21 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
                 View previousClickedView = listView.getChildAt(lastselectedQuestion1);
                 CheckedTextView previousClickedCheckView = (CheckedTextView) previousClickedView.findViewById(R.id.checkedTextView1);
                 previousClickedCheckView.setChecked(false);
-                }
+                }*/
+                
+                /*      Handler handler = new Handler(); 
+                handler.postDelayed(new Runnable() { 
+                     public void run() { 
+                    	    strongAuthEnterInfoActivity.putExtra("selectedQuestion",
+                                    questions.get(position));
+                            strongAuthEnterInfoActivity.putExtra("selectedQuestionId",
+                                    questionsId.get(position));
+                            strongAuthEnterInfoActivity.putExtra("lastSelectedPosition",
+                                    position);
+                            setResult(RESULT_OK, strongAuthEnterInfoActivity);
+                            finish();
+                     } 
+                }, 5000); */
                 
                 strongAuthEnterInfoActivity.putExtra("selectedQuestion",
                         questions.get(position));
@@ -95,6 +110,7 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
                         position);
                 setResult(RESULT_OK, strongAuthEnterInfoActivity);
                 finish();
+                
             }
         });
         
