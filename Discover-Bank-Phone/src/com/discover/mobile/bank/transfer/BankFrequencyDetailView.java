@@ -393,7 +393,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		index = TRANSACTION;
 		transaction.setChecked(true);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
-		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		transactionAmount.setEnabled(true);
 		transactionAmount.requestFocus();
 	}

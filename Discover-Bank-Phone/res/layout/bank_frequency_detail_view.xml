@@ -207,7 +207,7 @@
             android:layout_marginBottom="@dimen/forms_inner_padding"
             android:layout_weight="2.25"
             android:gravity="center_vertical"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:textCursorDrawable="@null" 
             android:clickable="false"
             android:enabled="false"/>
@@ -286,7 +286,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2.25"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:clickable="false"
             android:enabled="false"
             />
