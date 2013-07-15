@@ -1079,6 +1079,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			DiscoverModalManager.getActiveModal().dismiss();
 			setHelpModalShowing(false);
 		}if(shouldGoBack){
+			
+			//There is an issue where the map gets garbage collected so in order to prevent this we swap to the list
+			//view when going to street view than upon return we swap back.   
 			if (streetViewWasOnMap) {
 				showMap();
 			}
