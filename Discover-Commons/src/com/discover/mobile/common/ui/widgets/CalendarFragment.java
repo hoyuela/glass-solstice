@@ -434,14 +434,45 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param disabledDates   this is a list of holidays. they will not be treated as business days.
 	 */
 	public static Calendar addBusinessDays(final Calendar cal, final int days, final ArrayList<Date> disabledDates) {
-		//Set the date to the first valid date for a transfer.
-		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(cal, disabledDates);
+		int daysToAdvanceCalendar = days;
 		
-		// Add Business Days
-		for( int i = 0; i < days; i++) {	
-			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
-			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, disabledDates);
+		//decrement initial offset if the current day is a weekend
+		if(isTodayWeekend(cal)) {
+			daysToAdvanceCalendar--;
 		}
+		
+		//Set the date to the first valid date for a transfer.
+		final Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(cal, disabledDates);
+
+		// Add Business Days
+		for( int i = 0; i < daysToAdvanceCalendar; i++) {
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			
+			//Dont count a weekend or holiday as a business day, so increment
+			//the value by one so we can go one more day.
+			if(isTodayWeekend(cal) || isHoliday(cal, disabledDates)) {
+				daysToAdvanceCalendar++;
+			}
+		}
+
 		return tempCal;
+	}
+	
+	/**
+	 * 
+	 * @param calendar a Calendar to use to check if the day of the week contained in the calendar
+	 * 	is a weekend.
+	 * @return if today is a weekend. 
+	 */
+	private static boolean isTodayWeekend(final Calendar calendar) {
+		boolean isWeekend = false;
+		
+		if(calendar != null) {
+			final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+			isWeekend |= dayOfWeek == Calendar.SUNDAY;
+			isWeekend |= dayOfWeek == Calendar.SATURDAY;
+		}
+		
+		return isWeekend;
 	}
 }
