@@ -353,8 +353,6 @@ public final class BankConductor  extends Conductor {
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 
-			activity.getCurrentContentFragment();
-
 			/**Check if user is already viewing FAQ*/
 			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP,
 					BankMenuItemLocationIndex.FREQUENTLY_ASKED_QUESTIONS)) {
