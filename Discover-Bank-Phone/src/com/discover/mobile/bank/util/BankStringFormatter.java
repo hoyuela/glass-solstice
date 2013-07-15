@@ -13,7 +13,6 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
@@ -327,12 +326,26 @@ public final class BankStringFormatter {
 									   .replaceAll(colon, StringUtility.EMPTY)
 									   .length();
 		
-		final int countOfSpaces = CommonUtils.countOccurancesOfCharInString(StringUtility.SPACE, text);
-		final int countOfColons = CommonUtils.countOccurancesOfCharInString(colon, text);
-		
 		if(rawInputLength >= ellipsesLimit) {
-			ellipsesBuilder = new StringBuilder(StringUtility.EMPTY);
-			ellipsesBuilder.append(text.subSequence(0, ellipsesLimit + countOfSpaces + countOfColons));
+			int ellipsizeAtIndex = 0;
+			int numOfCharsLeft = ellipsesLimit;
+			
+			/**
+			 * Count the number of characters in the String that are letters, and
+			 * make the 13th letter the ellipsis index. (Things that are not colons or spaces are characters.)
+			 */
+			for(int i = 0; i < text.length() && numOfCharsLeft > 0; ++i) {
+				final char currentCharacter = text.charAt(i);
+				final boolean isCurrentCharacterLetter = !(':' == currentCharacter) && 
+															!(' ' == currentCharacter);
+				if(isCurrentCharacterLetter) {
+					numOfCharsLeft--;
+				}
+				ellipsizeAtIndex++;
+			}
+			
+			ellipsesBuilder = new StringBuilder();
+			ellipsesBuilder.append(text.subSequence(0, ellipsizeAtIndex));
 			ellipsesBuilder.append("...");
 		}
 		
