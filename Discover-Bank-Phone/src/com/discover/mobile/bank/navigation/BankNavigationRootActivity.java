@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -92,7 +93,9 @@ implements OnPaymentCanceledListener {
 		 * status bar.
 		 */
 		setContentView(R.layout.bank_content_view);
-		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
+		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
+		mainLayout.requestTransparentRegion(mainLayout);
+ 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
 	}
 
 	/**
