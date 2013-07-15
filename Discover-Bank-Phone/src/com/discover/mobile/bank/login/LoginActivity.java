@@ -3,6 +3,7 @@ package com.discover.mobile.bank.login;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -19,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -208,6 +210,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		preventDuplicateLoginScreens();
 		
 		setContentView(R.layout.login_start);
+		setupUI(findViewById(R.id.login_table));
 		loadResources();
 	    setupTextSwitcher();
 
@@ -227,6 +230,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		DiscoverActivityManager.setActiveActivity(this);
 		//You must set the IME Option in java so that the "GO" appears on the keyboard -julian
 		passField.setImeOptions(EditorInfo.IME_ACTION_GO | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+		
 	 }
 	
 	/**
@@ -1700,6 +1704,22 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		return isCardLogin() && pUtils.doesDeviceTokenExist() && !isUserIDLogin;
 	}
 	
+	protected void forceSoftKeyboardShown(int inputId) {
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(fieldTVs[inputId], InputMethodManager.SHOW_IMPLICIT);
+	}
+
+	public static void hideSoftKeyboard(Activity activity) {
+		if (activity == null) {
+			return;
+		}
+		View currentFocus = activity.getCurrentFocus();
+		if (currentFocus != null) { 
+			InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+		}
+	}
+	
 	private void setupPasscode(){
 	    if (pUtils == null) {
 	    	pUtils = new PasscodeUtils(this.getApplicationContext());
@@ -1762,9 +1782,50 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 	
+	private EditText getNextInputField() {
+		for (int i = 0; i < fieldTVs.length; i++) {
+			if (fieldTVs[i].length() == 0) {
+				return fieldTVs[i];
+			}
+		}
+		return fieldTVs[0];
+	}
+	
+	private int getNextInput() {
+		for (int i = 0; i < fieldTVs.length; i++) {
+			if (fieldTVs[i].length() == 0) {
+				return i;
+			}
+		}
+		return 0;
+	}
+	
+	private class PasscodeTouchListner implements View.OnTouchListener {
+
+		private int fieldInt;
+
+		public PasscodeTouchListner(int fieldInt) {
+			this.fieldInt = fieldInt;
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			int nextInput = getNextInput();
+			//if touched edit text is not next passcode field to recieve focus then overwrite user selection
+			if (fieldInt != nextInput) {
+				fieldTVs[fieldInt].clearFocus();
+				fieldTVs[nextInput].requestFocus();
+				forceSoftKeyboardShown(nextInput);
+				return true;
+			}
+			return false;
+		}
+		
+	}
 	private void setupPasscodeField(final int fieldInt) {
 		final EditText et = fieldTVs[fieldInt];
 		et.setOnKeyListener(new MyPasscodeKeyListener());
+		et.setOnTouchListener(new PasscodeTouchListner(fieldInt));
 		et.setTransformationMethod(PasswordTransformationMethod.getInstance());
 		et.addTextChangedListener(new TextWatcher() {
 			// Logic to mask input and go to next item
@@ -1792,7 +1853,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		public static final int KEY_DELETE = 67;
 		@Override
 		public boolean onKey(final View v, final int keyCode, final KeyEvent event) {
-			if (event.getAction() == 0) {
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				return false;
 			}
 			if (keyCode == KEY_DELETE) {
@@ -1811,9 +1872,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	private void setupSubmit() {
-		final EditText et = fieldTVs[3];
+		int fieldInt = 3;
+		final EditText et = fieldTVs[fieldInt];
 		// for hardware keys
 		et.setOnKeyListener(new MyPasscodeKeyListener());
+		et.setOnTouchListener(new PasscodeTouchListner(fieldInt));
 		et.setTransformationMethod(PasswordTransformationMethod.getInstance());
 		et.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -2054,27 +2117,27 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	/**
-	 * Handles back nav for passcode specific scenarios
+	 * Hides soft keyboard when a non-EditText view is touched.
+	 * @param view
 	 */
-/*
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		//TODO - sgoff0 currently navigates all the way back to passcode every time even if on policy & terms
-		if (keyCode == KeyEvent.KEYCODE_BACK && isTaskRoot()) {
-			Log.v(TAG, "back pressed");
-			if (pUtils.isForgotPasscode()) {
-				pUtils.setForgotPasscode(false);
-				errorTextView.setVisibility(View.GONE);
-				isUserIDLogin = false;
-				displayActiveLoginMode();
-			} else if (isUserIDLogin) {
-				isUserIDLogin = false;
-				displayActiveLoginMode();
-			} 
-		}
-		return super.onKeyDown(keyCode, event);
+	public void setupUI(View view) {
+	    //Set up touch listener for non-text box views to hide keyboard.
+	    if(!(view instanceof EditText)) {
+	        view.setOnTouchListener(new View.OnTouchListener() {
+	            public boolean onTouch(View v, MotionEvent event) {
+	                hideSoftKeyboard(LoginActivity.this);
+	                return false;
+	            }
+	        });
+	    }
+	    //If a layout container, iterate over children and seed recursion.
+	    if (view instanceof ViewGroup) {
+	        for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+	            View innerView = ((ViewGroup) view).getChildAt(i);
+	            setupUI(innerView);
+	        }
+	    }
 	}
-*/
 
 }	
 	
