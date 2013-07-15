@@ -833,6 +833,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 
 			if(listIsEmpty) {
 				showEmptyListMessage();
+				/** Hide header titles if no transactions on the account */
+				header.getTableTitles().hideFilters();
 				table.setMode(Mode.DISABLED);
 			}else {
 				hideEmptyListMessage();
