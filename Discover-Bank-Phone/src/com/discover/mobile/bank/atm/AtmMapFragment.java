@@ -1277,7 +1277,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 */
 	private void showMapView(final boolean value) {
 		final FrameLayout mapLayout = (FrameLayout) getView().findViewById(R.id.discover_map);
-
+		mapLayout.requestTransparentRegion(mapLayout);
 		if (value) {
 			mapLayout.setVisibility(View.VISIBLE);
 		} else {
