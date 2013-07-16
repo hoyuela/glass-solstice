@@ -183,7 +183,10 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 		final InputMethodManager manager = 
 				(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		manager.hideSoftInputFromWindow(searchBox.getWindowToken(), 0);
-		filterLayout.startAnimation(new ExpandCollapseAnimation(filterLayout, false, DURATION));
+		
+		if (filterLayout.isShown()) {
+			filterLayout.startAnimation(new ExpandCollapseAnimation(filterLayout, false, DURATION));
+		}
 	}
 
 	/**
