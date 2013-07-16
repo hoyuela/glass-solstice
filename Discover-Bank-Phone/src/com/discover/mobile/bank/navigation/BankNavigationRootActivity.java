@@ -93,7 +93,7 @@ implements OnPaymentCanceledListener {
 		 * status bar.
 		 */
 		setContentView(R.layout.bank_content_view);
-		RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
+		final RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mainLayout.requestTransparentRegion(mainLayout);
  		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
 	}
@@ -303,6 +303,9 @@ implements OnPaymentCanceledListener {
 	public void onBackPressed() {
 		if( !isBackPressDisabled()) {
 			super.onBackPressed();
+			//When we go back make sure to clear the previously tracked page for analytics so that
+			//whenever the user navigates somehwere, the page is sure to be tracked.
+			BankTrackingHelper.clearPreviousTrackedPage();
 		}
 		else if(isBackPressFragment()){
 			((FragmentOnBackPressed)currentFragment).onBackPressed();

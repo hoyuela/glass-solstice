@@ -17,6 +17,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.deposit.BankDepositForbidden;
 import com.discover.mobile.bank.deposit.BankDepositTermsFragment;
@@ -489,6 +490,9 @@ public final class BankErrorHandler implements ErrorHandler {
 			final ErrorHandlerUi currentUi = (ErrorHandlerUi) DiscoverActivityManager.getActiveActivity();
 			showErrorsOnScreen(currentUi, null);
 		}
+		
+		//Report generic error modals to analytics.
+		BankTrackingHelper.forceTrackPage(R.string.bank_internal_server_analytics_error);
 	}
 
 	/*

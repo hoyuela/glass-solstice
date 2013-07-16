@@ -17,4 +17,6 @@
     <string name="bank_capture_confirm">confirm_authorize-pg</string>
     <string name="bank_capture_sending">transmitting_animation-pg</string>
     <string name="bank_capture_acknowledge">acknowledgement-pg</string>
+    <string name="bank_select_payee">payment_payee-pg</string>
+    <string name="bank_internal_server_analytics_error">500_error-pg</string>
 </resources>

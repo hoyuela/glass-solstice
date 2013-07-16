@@ -27,6 +27,7 @@ import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Class used to wrap the tracking helper to track the users as they move through out the application.
@@ -69,8 +70,15 @@ public final class BankTrackingHelper {
 		if(!previousTrackedPage.equals(className) && null != trackingMap.get(className)){
 			TrackingHelper.trackBankPage(
 					DiscoverActivityManager.getActiveActivity().getString(trackingMap.get(className)), getExtras(className));
-			previousTrackedPage = className;
 		}
+		previousTrackedPage = className;
+	}
+	
+	/**
+	 * Clear the previously tracked page so that the next page that is navigated to will get tracked.
+	 */
+	public static void clearPreviousTrackedPage() {
+		previousTrackedPage = StringUtility.EMPTY;
 	}
 
 	/**
@@ -162,6 +170,7 @@ public final class BankTrackingHelper {
 		trackingMap.put(CaptureReviewFragment.class.getSimpleName(), R.string.bank_capture_confirm);
 		trackingMap.put(DepositSubmissionActivity.class.getSimpleName(), R.string.bank_capture_sending);
 		trackingMap.put(BankDepositConfirmFragment.class.getSimpleName(), R.string.bank_capture_acknowledge);
+		trackingMap.put(BankSelectPayee.class.getSimpleName(), R.string.bank_select_payee);
 	}
 
 	/**
