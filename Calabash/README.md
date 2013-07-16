@@ -1,3 +1,7 @@
+PLEASE SEE THE UNIFIED CALABASH SETUP AND USER GUIDE [ON THE DISCOVER AUTOMATED TESTING PAGE](https://sites.google.com/a/solstice-consulting.com/discover-team/qa/automated-testing)
+===========================
+
+
 Calabash - Discover Android
 ===========================
 
@@ -46,7 +50,7 @@ Links
 
 [Official Calabash Site](http://calaba.sh)  
 [Calabash-Android](https://github.com/calabash/calabash-android)  
-[Using the Calabash Console](https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md)  
+[Calabash Android Ruby API Commands](https://github.com/calabash/calabash-android/blob/master/documentation/ruby_api.md)  
 [Query Syntax](https://github.com/calabash/calabash-android/wiki/05-Query-Syntax)  
 [Cucumber Tags](https://github.com/cucumber/cucumber/wiki/Tags)  
 [Compartmentalization/Customization](http://fangmobile.com/2013/03/04/four-levels-of-customization-in-calabash-android/)  
