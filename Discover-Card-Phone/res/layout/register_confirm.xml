@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/card_body_color" >
+    android:background="@drawable/card_popup_whitebg">
 
     <ScrollView
         android:id="@+id/registerconfirmscroll"
