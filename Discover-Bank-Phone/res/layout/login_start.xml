@@ -99,7 +99,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/table_inner_padding"
-                        android:text="@string/user_id"
+                        android:text="@string/empty"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold"
                         android:typeface="sans" />
@@ -109,7 +109,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_id_label"
-                        android:hint="@string/empty"
+                        android:hint="@string/user_id"
+                        android:textColorHint="@color/transparentGray"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textNoSuggestions"
                         android:maxLength="16"
@@ -123,7 +124,7 @@
                         android:layout_below="@+id/username_field"
                         android:layout_marginRight="14dp"
                         android:layout_marginTop="@dimen/groups_of_elements_padding"
-                        android:text="@string/password"
+                        android:text="@string/empty"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold" />
 
@@ -133,7 +134,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/password_label"
                         android:layout_marginBottom="20dp"
-                        android:hint="@string/empty"
+                        android:hint="@string/password"
+                        android:textColorHint="@color/transparentGray"
                         android:inputType="textPassword"
                         android:maxLength="32"
                         android:textCursorDrawable="@null"
