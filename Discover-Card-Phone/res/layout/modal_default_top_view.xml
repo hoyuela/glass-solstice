@@ -8,7 +8,9 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingLeft="24dp"
-	    android:paddingRight="24dp">
+	    android:paddingRight="24dp"
+	    android:background="@drawable/card_popup_whitebg"
+	    >
 	   
 		<ImageView
 	        android:id="@+id/error_icon"

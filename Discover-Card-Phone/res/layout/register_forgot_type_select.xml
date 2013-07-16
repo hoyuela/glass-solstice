@@ -2,14 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_gray_bkgrd" >
+    android:background="@color/card_body_color" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding" >
+       >
 
         <LinearLayout
             android:id="@+id/linear_layout_one"
@@ -19,27 +18,40 @@
 
             <TextView
                 android:id="@+id/forgot_credentials_label"
-                style="@style/title_copy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="50dp"
                 android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:text="@string/forgot_credentials_text" />
+                android:text="@string/forgot_credentials_text"
+                android:textColor="@color/title"
+                android:textSize="24sp"
+                android:textStyle="normal" 
+                android:paddingLeft="16dp"
+                />
+
+            <View
+                android:id="@+id/general_list_item_separator_line_start"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_height="2dp"
+                android:background="@color/card_line_separator"/>
 
             <ListView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:background="@drawable/list_bg"
-                android:cacheColorHint="@android:color/transparent"
-                android:divider="@drawable/row_shadow"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp" >
+                android:layout_height="164dp"
+                android:background="@color/card_body_color"
+                android:divider="@color/card_line_separator"
+                android:dividerHeight="1dp"
+                android:footerDividersEnabled="false"
+                >
             </ListView>
+
+            <View
+                android:id="@+id/general_list_item_separator_line_end"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/card_line_separator" />
         </LinearLayout>
 
         <RelativeLayout
@@ -47,11 +59,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linear_layout_one"
-            android:paddingTop="30dp" >
+            android:layout_marginTop="50dp" >
 
             <include layout="@layout/old_general_need_help_footer" />
         </RelativeLayout>
-	     <!-- Defect id 95853 -->
+        <!-- Defect id 95853 -->
         <!--
              <TextView
             android:id="@+id/provide_feedback_button"
@@ -62,8 +74,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/orange_button_margin_top"
             android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/feedback_text" />
-        -->
+            android:text="@string/feedback_text"/>        -->
 
         <RelativeLayout
             android:id="@+id/provide_feedback_footer"
@@ -75,7 +86,7 @@
                 android:id="@+id/home_footer"
                 layout="@layout/card_fragment_footer" />
         </RelativeLayout>
-             <!-- Defect id 95853 -->
+        <!-- Defect id 95853 -->
     </RelativeLayout>
 
 </ScrollView>

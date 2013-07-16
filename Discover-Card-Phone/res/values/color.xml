@@ -97,6 +97,7 @@
    <color name="card_footer_color">#267bb1</color>
    <color name="card_body_color">#f8fafa</color>
    <color name="card_hint_color">#b9c1c5</color>
+   <color name="card_line_separator">#d0d0d0</color>
    
  
 </resources>
