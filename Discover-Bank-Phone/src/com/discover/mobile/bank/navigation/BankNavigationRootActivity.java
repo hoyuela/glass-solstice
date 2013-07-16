@@ -101,7 +101,7 @@ implements OnPaymentCanceledListener {
 	/**
 	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
 	 */
-	private void updateMenuOnClose() {
+	public void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setOnClosedListener(new OnClosedListener() {
 

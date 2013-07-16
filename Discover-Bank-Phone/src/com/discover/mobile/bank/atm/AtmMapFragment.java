@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -218,7 +219,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(getLayout(), null);
-
 		/**
 		 * The map and list fragments should only be added if they aren't already on the back stack. These
 		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
@@ -273,6 +273,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
 
+		
+		
 		return view;
 	}
 
@@ -284,53 +286,80 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		setHelpModalShowing(true);
 	}
 
-
-	/**
-	 * Resume the fragment
+	/*
+	 * Loads and initiliazes the map.  This function not
+	 * only loads the map for the first time but also 
+	 * resumes the maps state, and therefore this function
+	 * should be called in onResume() 
 	 */
-	@Override
-	public void onResume(){
-		super.onResume();
-
-		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
-		activity.setCurrentFragment(this);
+	public void loadMapAndDisplay() {
+		//map needs to be shown before we can start interacting with it.
+		showMapView(true);
 		setUpMap();
 		disableMenu();
-
 		setupMapOrListView();
-
 		/**
 		 * Verify that the bundle used to populate the map fragment has data.
 		 */
 		resumeStateOfFragment(savedState);
-
 		final Bundle bundle = getArguments();
 		if (bundle.containsKey(OVERLAY_SHOWING) && bundle.getBoolean(OVERLAY_SHOWING)) {
 			overlay.showCoach();
 		}
-
 		determineNavigationStatus();
-
 		if(shouldGoBack){
 			streetView.showWebView();
 		}
-
 		if( fragment.getView() != null && fragment.getMap() != null ) {
 			setMapTransparent((ViewGroup)fragment.getView());
 
 		}
-
 		if(isHelpModalShowing()){
 			HelpMenuListFactory.instance().showAtmHelpModal(this);
 			setHelpModalShowing(true);
 		} else if (isLeavingModalShowing) {
 			showTerms();
 		}
-
 		restoreCameraView();
 		adjustMapZoomIfNeeded();
-
 		fadeInMap();
+	}
+
+	/*
+	 * This function delays showing the map until the fragment is completely loaded.
+	 * This helps reduce the cpu load and interference with the transitions between 
+	 * fragments.
+	 */
+	private void loadAndDisplayMapDelayed() {
+		//make sure the map is hidden
+		showMapView(false);
+		//wait one second then load the map and display it 
+		//to user
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				loadMapAndDisplay();
+			}}, 1000);
+	}
+	/**
+	 * Resume the fragment
+	 */
+	@Override
+	public void onResume(){
+		super.onResume();
+		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
+		activity.setCurrentFragment(this);
+		if (savedState == null){
+			//if the saved state is null, this is the first time the 
+			//map fragment is being loaded.  Delay showing the map to avoid
+			//interference with the transitions.
+			loadAndDisplayMapDelayed();
+		} else {
+			//savedState in not null so the map should already 
+			//be initialized, we just need to resume the state
+			loadMapAndDisplay();
+		}
+	
 	}
 
 	/**
