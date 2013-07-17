@@ -5,7 +5,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="paymentsHistory-pg">
+	<div data-role="page" id="paymentsHistory-pg" class="payments">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -15,30 +15,80 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<h1>Payment History</h1>
-				<div class="padding10pxLeftright">
-						<span id ="errorPaymentsHistoryDiv"></span>
-				</div>
-				<span id="paymentsHistory_paymentHistory"></span>
-				<div class="txtcenteraln">
+                <ul class="paymentsMenu">
+                    <li><a href="#" onclick="navigation('../payments/paymentsSummary');">Summary</a></li>
+                    <li class="curnt"><a href="#" onclick="navigation('../payments/paymentsHistory');">History</a></li>
+                    <li><a href="#" onclick="navigation('../payments/pendingPayments');" >Pending</a></li>
+                </ul>            
+            <div class="clearboth"></div>
+
+				 <span id="paymentsHistory_paymentHistory"></span> 
+                <span id = "errorPaymentsHistoryDiv"></span>
+	
+					<!--<ul class="transactionTable font12" data-role="listview" data-filter="false" data-filter-placeholder="Search these results">
+						<li class="">
+							<div class="ui-grid-b">
+								<div class="ui-block-a"> <span>Date</span> </div>
+								<div class="ui-block-b"> <span>Method</span> </div>
+								<div class="ui-block-c"> <span>Amount</span> </div>
+							</div>
+						</li>
+
+						<li class="listLi">
+							<div class="ui-grid-b">
+								<div class="ui-block-a"> <span>08/09/11</span> </div>
+								<div class="ui-block-b "> <span>ONLINE</span> </div>
+								<div class="ui-block-c "> <span class="greenValues">$1.56</span> </div>
+								<div class="ui-block-d "> <span>DISCOVER BANK ACCT ****1234</span><span class="payArr"></span></div>
+							</div>
+						</li>
+                        
+						<li class="listLi">
+							<div class="ui-grid-b">
+								<div class="ui-block-a"> <span>08/10/11</span> </div>
+								<div class="ui-block-b"> <span>PHONE</span> </div>
+								<div class="ui-block-c"> <span class="greenValues">$5.13</span> </div>
+								<div class="ui-block-d "> <span>BANK OF AMERICA ****9876</span><span class="payArr"></span></div>
+							</div>
+						</li>
+
+						<li class="listLi">
+							<div class="ui-grid-b">
+								<div class="ui-block-a"> <span>08/11/11</span> </div>
+								<div class="ui-block-b"> <span>ONLINE</span> </div>
+								<div class="ui-block-c"> <span class="greenValues">$10.56</span> </div>
+								<div class="ui-block-d "> <span>DISCOVER BANK ACCT ****1234</span><span class="payArr"></span></div>
+							</div>
+						</li>
+						<li class="listLi">
+							<div class="ui-grid-b">
+								<div class="ui-block-a"> <span>08/11/11</span> </div>
+								<div class="ui-block-b"> <span>OTHER</span> </div>
+								<div class="ui-block-c"> <span class="greenValues">$27.13</span> </div>
+								<div class="ui-block-d "> <span>BANK OF AMERICA ****9876</span><span class="payArr"></span></div>
+							</div>
+						</li>
+                        
+					</ul>-->
+				
+<!--				<div class="txtcenteraln" style="margin: 10px 0 10px 0;" >
 					<a class="small_btn" data-role="button" onclick="navigation('paymentStep1');" href="#">Make a Payment </a>
 				</div>
-
+-->
               <p class="small11pxfont" id="paymentsHistory_onlinepaymentmethodmsg"></p>
 				<!--<p class="note">"Online" payment method includes mobile
 					payments.</p>-->
 			</div>
-
-			<div id="footnotes" class="footnotes" ></div>
+			
 		</div>
 
-
+		<div class="dropDownLayer"></div>
 		<!-- content end -->
-
-      <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+		<div id="footnotes" class="footnotes"></div>
+      <!--<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
             <footer id="footer" class="mnu_footer">
 			</footer>
-				</div>
+				</div>-->
 	</div>
 	<!--page end -->
 </body>

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,17 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.EnhanceSecurityConstant;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.help.HelpItemGenerator;
-import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.error.RegistrationErrorCodes;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -39,14 +30,21 @@ import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
-
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.EnhanceSecurityConstant;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.help.HelpItemGenerator;
+import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.google.common.base.Strings;
 
 /**
  * Class Description of EnhancedAccountSecurity
@@ -75,14 +73,15 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 
 // @ContentView(R.layout.strongauth_page)
 public class EnhancedAccountSecurityActivity extends
-        CardNotLoggedInCommonActivity implements EnhanceSecurityConstant {
+        CardNotLoggedInCommonActivity implements EnhanceSecurityConstant,
+        OnClickListener {
 
     /**
      * Field Description of HELP_DROPDOWN_LINE_HEIGHT The Strong Auth screen has
      * an expandable menu that provides help to the user, this value is used to
      * define the number of vertical lines that the menu will occupy when it is
      * expanded. (When collapsed it is set to 0)
-     */    
+     */
 
     private static final String TAG = EnhancedAccountSecurityActivity.class
             .getSimpleName();
@@ -98,10 +97,10 @@ public class EnhancedAccountSecurityActivity extends
      * method of this activity or via updateQuestion().
      */
 
-    
-    private RadioGroup securityRadioGroup;    
+    private RadioGroup securityRadioGroup;
     private TextView questionLabel;
-    
+    private TextView privacyTerms, provideFeedback;
+
     /**
      * Holds reference to the button that triggers the NetworkServiceCall<> to
      * POST the answer in the TextView with id
@@ -111,7 +110,6 @@ public class EnhancedAccountSecurityActivity extends
 
     private String inputErrorText;
     private int inputErrorVisibility;
-    
 
     // INPUT FIELDS
     private NonEmptyEditText questionAnswerField;
@@ -133,7 +131,7 @@ public class EnhancedAccountSecurityActivity extends
     private static final String SERVER_ERROR_TEXT = "c";
     private static final String ANSWER_ERROR_VISIBILITY = "b";
     private static final String ANSWER_ERROR_TEXT = "d";
-    
+
     /**
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
@@ -189,7 +187,7 @@ public class EnhancedAccountSecurityActivity extends
         restoreState(savedInstanceState);
 
         // Disabling continue button only applies to Bank
-       // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
+        // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
         {
             // Add text change listener to determine when the user has entered
             // text
@@ -199,7 +197,7 @@ public class EnhancedAccountSecurityActivity extends
             // Disable continue button by default
             continueButton.setEnabled(false);
         }
-        
+
         // Adding Tool Tip menu
         // setupClickableHelpItem();
         /**
@@ -226,6 +224,8 @@ public class EnhancedAccountSecurityActivity extends
                  * if ans is incorrect then ask user to enter it again if ans is
                  * wrong consecutive three times then get the another question
                  **/
+                Log.d("13.4", "error code" + bean.getErrorCode() + " message: "
+                        + bean.getErrorMessage());
                 if (!bean.isAppError()
                         && bean != null
                         && bean.getErrorCode()
@@ -306,11 +306,11 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     private void restoreState(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {            
+        if (savedInstanceState != null) {
 
             inputErrorVisibility = savedInstanceState
                     .getInt(ANSWER_ERROR_VISIBILITY);
-            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);            
+            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
 
             errorMessage.setText(inputErrorText);
             errorMessage.setVisibility(inputErrorVisibility);
@@ -357,6 +357,37 @@ public class EnhancedAccountSecurityActivity extends
         if (inputErrorText == null || inputErrorText.equalsIgnoreCase("")) {
             questionAnswerField.attachErrorLabel(errorMessage);
         }
+        privacyTerms = (TextView) findViewById(R.id.privacy_terms);
+        provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        handlingClickEvents();
+    }
+
+    private void handlingClickEvents() {
+        privacyTerms.setOnClickListener(this);
+        provideFeedback.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.privacy_terms) {
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(
+                    EnhancedAccountSecurityActivity.this,
+                    PrivacyTermsLanding.class);
+            privacyTerms.putExtra("is_enhance", true);
+            //privacyTerms.putExtra("is_enhance", true);
+            //privacyTerms.putExtra("is_enhance", true);
+            
+            startActivity(privacyTerms);
+        } else if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(this, "strongAuthEnroll-pg");
+        } else if (v.getId() == R.id.logout_button) {
+
+            // Changes for 13.4 start
+            Utils.logoutUser(this, false);
+
+        }
     }
 
     private void setupRadioGroupListener() {
@@ -396,7 +427,6 @@ public class EnhancedAccountSecurityActivity extends
         if (extras != null) {
             // Determine if the activity was created from a Card or a Bank
             // logical path
-            
 
             // Check if activity was created via a Card or Bank logical path
 
@@ -605,6 +635,7 @@ public class EnhancedAccountSecurityActivity extends
      *            been detected
      */
     private void onTextChanged(final CharSequence newText) {
+
         if (newText != null && newText.length() >= MIN_ANSWER_LENGTH) {
             continueButton.setEnabled(true);
         } else {
@@ -661,16 +692,16 @@ public class EnhancedAccountSecurityActivity extends
             strongAuthAns.sendRequest(answer, strongAuthQuestionId,
                     selectedIndex);
         } catch (JsonGenerationException e) {
-        	e.printStackTrace();
-            //handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (NoSuchAlgorithmException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (IOException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             handleError(e);
         }
     }

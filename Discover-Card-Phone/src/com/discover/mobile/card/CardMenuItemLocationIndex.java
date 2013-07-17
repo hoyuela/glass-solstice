@@ -95,11 +95,13 @@ public final class CardMenuItemLocationIndex {
 	 * Profile and Setting Indexes
 	 */
 	public static final int PROFILE_AND_SETTINGS_GROUP = 5;
-	public static final int FAST_ACCESS_SECTION = 1;
-	public static final int MANAGE_ALERTS_SECTION = 2;
-	public static final int ALERTS_HISTORY_SECTION = 3;
-	public static final int CREATE_CASH_PIN_SECTION = 4;
-	   public static final int PASSCODE_SECTION = 5;
+
+	public static final int PASSCODE_SECTION = 1;
+	public static final int FAST_ACCESS_SECTION = 2;
+	public static final int MANAGE_ALERTS_SECTION = 3;
+	public static final int ALERTS_HISTORY_SECTION = 4;
+	public static final int CREATE_CASH_PIN_SECTION = 5;
+
 
 	/**
 	 * Customer Service indexes

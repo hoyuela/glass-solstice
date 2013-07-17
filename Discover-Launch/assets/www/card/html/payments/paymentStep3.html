@@ -2,10 +2,13 @@
 <html>
 <head>
 <title>Discover - Payments Step-III</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">      
+
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="paymentStep3-pg" class="rd-page">
+	<div data-role="page" id="paymentStep3-pg" class="rd-page payments">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -14,20 +17,19 @@
 		<!-- header end -->
 		<!-- content start -->
 		<div id="pgPadding"></div>
-		<div class="progress-indicator pos-center">
-		<ul>
-		    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="ui-link">2. Verify</a></li>
-                    <li><a href="#" class="active ui-link">3. Confirmation</a></li>
-		</ul>
-		<div class="clearboth"></div>
-	    </div>
+        <div class="progress-indicator">
+            <ul>
+                <li><a href="#" class="visited">Review/Edit</a></li>
+                <li><a href="#" class="visited">Verify</a></li>
+                <li><a href="#" class="active">Confirmation</a></li>
+            </ul>
+            <div class="clearboth"></div>
+        </div>
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<h1>Thank You</h1>
 				<!-- h2>Step 3 of 3</h2 -->
 				<div class="errormsg2" id="commonErrorInMakePayment3Div"></div>
-				<div id="confirmSuccessPay3">
+<!--				<div id="confirmSuccessPay3">
 					<p>Your Payment in the amount of <span id="stepthree_amount"></span> has been scheduled to
 						post on <span id="stepthree_date"></span> from <span id="stepthree_bankname_type"></span>
 						<span id="stepthree_maskedbank_accountnumber"></span>.</p>
@@ -38,23 +40,37 @@
 						that your payment was submitted if we have your e-mail address on
 						file.</p>
 				</div>
+-->
+				<ul class="whitebg-list-view">
+<!--					<li><span>Payment Option</span><br/><span class="amt_bold" id="paymentOption_value">234324</span></li>
+-->					<li><span>Confirmation Number</span><br/><span class="amt_bold" id="paystep3Confirm">1234-567-8901</span></li>
+					<li><span>Amount</span><br/><span class="amt_bold" id="payStep3AmountValue">$20.00</span></li>
+					<li><span>Payment Date</span><br/><span class="amt_bold" id="paymentStep3PostingDate">06/30/2013</span></li>
+                    <li><span id="accountEndingNum"> 1234</span><br/><span class="amt_bold" id="payStep3BankDtl">Discover Bank Account</span></li>
+				</ul>
 
-				<div class="txtcenteraln margintop10px">
-					<a class="small_btn" data-role="button" onclick="navigation('paymentsSummary');" href="#">Return to Payment Summary</a>
+				<div class="txtcenteraln margintop10px" id="makePaymentFreshCall">
+
+                    <a class="small-btn" href="#" onclick="navigation('paymentsSummary');" data-role="button">Payment Summary</a><br/>
+                    
+				</div>
+				<div class="txtcenteraln margintop10px" id="makePaymentEditConfirmBtn">
+
+                    <a class="small-btn" href="#" onclick="navigation('paymentsSummary');dfs.crd.sct.onClickEditVerifyConfmManagePayBtn();" data-role="button">Manage Payments</a><br/>
+                    
 				</div>
 			</div>
-
-			<div id="footnotes" class="footnotes" ></div>
+			
 		</div>
 
-
+		<div class="dropDownLayer"></div>
 		<!-- content end -->
 
-
-	<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+		<div id="footnotes" class="footnotes"></div>
+	<!--<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
             <footer id="footer" class="mnu_footer">
 			</footer>
-				</div>
+				</div>-->
 	</div>
 	<!--page end -->
 </body>

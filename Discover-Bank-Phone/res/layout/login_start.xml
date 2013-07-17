@@ -81,7 +81,20 @@
                     android:gravity="center_horizontal"
                     android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
+                    android:text="The information you provided does not match our records, or you are not registered for the Account Center."
                     android:visibility="gone" />
+
+                <ImageView 
+                    android:id="@+id/error_exclamation"
+                    android:src="@drawable/exclamation_gray_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="-35dp"
+                    android:layout_marginTop="-10dp"
+                    android:layout_alignTop="@+id/error_text_view"
+                    android:layout_toLeftOf="@+id/error_text_view"
+                    android:visibility="gone"
+                    />
 
                 <RelativeLayout
                     android:id="@+id/regular_login"
@@ -250,19 +263,22 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="20dp"
+                        android:textColor="@color/black"
                         />
 
                     <LinearLayout
                         android:id="@+id/passcodeFields"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/welcome"
+                        android:layout_centerHorizontal="true"
                         android:gravity="center" >
 
                         <EditText
                             android:id="@+id/passcode01"
                             style="@style/PasscodeDigit"
                             android:inputType="phone" >
+				            <requestFocus />
                         </EditText>
 
                         <EditText
@@ -279,21 +295,27 @@
                             android:id="@+id/passcode04"
                             style="@style/PasscodeDigit"
                             android:inputType="phone" />
-
-                        <ImageView
-                            android:id="@+id/validation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="3dp"
-                            android:src="@drawable/tick_green"
-                            android:visibility="invisible" />
+                        
                     </LinearLayout>
+                    
+                    <ImageView
+                        android:id="@+id/validation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:src="@drawable/x_red"
+                        android:layout_toRightOf="@+id/passcodeFields"
+                        android:layout_alignBottom="@+id/passcodeFields"
+                        android:layout_alignTop="@+id/passcodeFields"
+                        android:visibility="invisible" />
 
                     <LinearLayout
                         android:id="@+id/passcode_links"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_below="@+id/passcodeFields"
                         android:orientation="horizontal" >
 
@@ -345,6 +367,7 @@
                 <!-- Toggle Account Section -->
 
                 <RelativeLayout
+                    android:id="@+id/account_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

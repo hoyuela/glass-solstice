@@ -1,46 +1,50 @@
 package com.discover.mobile.card.auth.strong;
 
-import com.discover.mobile.card.common.net.error.CardErrorBean;
+import android.content.Context;
+
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.net.error.CardErrorCallbackListener;
-import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 
 public abstract class StrongAuthDefaultResponseHandler implements
 		StrongAuthListener {
 
-	private CardErrorHandlerUi errorHandlerUI = null;
 	private CardErrorCallbackListener errorCallbackListener;
-	public StrongAuthDefaultResponseHandler(CardErrorHandlerUi errorHandlerUI) {
-		super();
-		this.errorHandlerUI = errorHandlerUI;
-	}
 
 	@Override
     public abstract void onStrongAuthSucess(final Object data);
 
     @Override
     public void onStrongAuthSkipped(final Object data) {
-    	if (null!=errorHandlerUI && errorHandlerUI instanceof CardErrorHandlerUi)
-    	{
-    		errorCallbackListener = new CardErrorCallbackListener() {
-                @Override
-                public void onButton1Pressed() {
-                	//Utils.logoutUser(DiscoverActivityManager.getActiveActivity(), false);
-                	DiscoverActivityManager.getActiveActivity().onBackPressed();
-                }
-
-				@Override
-				public void onButton2Pressed() {
-					
-				}
-            };
-	        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-	        		errorHandlerUI);
-	        cardErrorResHandler.handleCardError((CardErrorBean) data, errorCallbackListener);
-    	}
+    	
+    	final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.E_SA_SKIPPED_TITLE, 
+				R.string.E_SA_SKIPPED_CONTENT, 
+				R.string.close_text,
+				new Runnable(){
+					@Override
+					public void run() {
+						DiscoverActivityManager.getActiveActivity().onBackPressed();
+					}}
+				);
+		modal.setGrayButton();
+		modal.hideNeedHelpFooter();
+		((NavigationRootActivity)context).showCustomAlert(modal);
     }
+    
+    @Override
+	public void onStrongAuthError(Object data) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onStrongAuthNotEnrolled(Object data) {
+		// TODO Auto-generated method stub
+	}
 
 //    @Override
 //    public void onStrongAuthError(final Object data) {
@@ -54,24 +58,20 @@ public abstract class StrongAuthDefaultResponseHandler implements
 
     @Override
     public void onStrongAuthCardLock(final Object data) {
-    	if (null!=errorHandlerUI && errorHandlerUI instanceof CardErrorHandlerUi)
-    	{
-    		errorCallbackListener = new CardErrorCallbackListener() {
-                @Override
-                public void onButton1Pressed() {
-                	Utils.logoutUser(DiscoverActivityManager.getActiveActivity(), false);
-                }
-
-				@Override
-				public void onButton2Pressed() {
-					
-				}
-            };
-    		
-	        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-	        		errorHandlerUI);
-	        cardErrorResHandler.handleCardError((CardErrorBean) data, errorCallbackListener);
-    	}
+    	final Context context = DiscoverActivityManager.getActiveActivity();
+		final EnhancedContentModal modal = new EnhancedContentModal(context, 
+				R.string.E_T_4031401_LOCKOUT, 
+				R.string.E_1402_LOCKOUT, 
+				R.string.close_text,
+				new Runnable(){
+					@Override
+					public void run() {
+						Utils.logoutUser(DiscoverActivityManager.getActiveActivity(), false);
+					}}
+				);
+		modal.setGrayButton();
+		modal.hideNeedHelpFooter();
+		((NavigationRootActivity)context).showCustomAlert(modal);
     }
 
 }

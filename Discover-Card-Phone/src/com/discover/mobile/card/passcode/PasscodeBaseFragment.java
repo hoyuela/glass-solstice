@@ -1,5 +1,6 @@
 package com.discover.mobile.card.passcode;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -445,12 +445,18 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		imm.showSoftInput(fieldTVs[inputId], InputMethodManager.SHOW_IMPLICIT);
 	}
 	protected void forceSoftKeyboardHidden() {
-		if (fieldTVs.length > 0 && fieldTVs[0] != null){
-			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
-				      Context.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(fieldTVs[0].getWindowToken(), 0);
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
+		View currentFocus = activity.getCurrentFocus();
+		if (currentFocus != null){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 		}
 	}
+	
 	protected class NavigateACHomeAction implements Runnable {
 		public NavigateACHomeAction() {}
 		@Override
@@ -502,4 +508,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 		pUtils.storeFirstName(fname);
 	}
+	
+	
 }

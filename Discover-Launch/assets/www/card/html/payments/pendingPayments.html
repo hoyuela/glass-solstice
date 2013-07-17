@@ -5,7 +5,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="pendingPayments-pg">
+	<div data-role="page" id="pendingPayments-pg" class="payments">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -15,30 +15,34 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<div id="name">
-					<h1>Pending Payments</h1>
-				</div>
-				<div class="padding10pxLeftright">
-					<span id ="errorPendingPaymentDiv"></span>
-				</div>
-				<span id="pendingPayments_pendingList"></span> 
+                <ul class="paymentsMenu">
+                    <li><a href="#" onclick="navigation('../payments/paymentsSummary');">Summary</a></li>
+                    <li><a href="#" onclick="navigation('../payments/paymentsHistory');">History</a></li>
+                    <li class="curnt"><a href="#" onclick="navigation('../payments/pendingPayments');" >Pending</a></li>
+                </ul>            
+                     <div class="clearboth"></div>           
+            				 <span id = "errorPendingPaymentDiv"></span>
+							 <div class="paymentMethodErrorMsg" style="color:red;"></div>
+							 <p><span id="editPaymentMsg"></span></p>
+
+			       	 <span id="pendingPayments_pendingList"></span> 
 				
-				<div class="txtcenteraln" >
+<!--				<div class="txtcenteraln" >
 					<a class="small_btn" data-role="button" id="pendingPayments_makeapaymentbutton" onclick="navigation('paymentStep1');" href="#">Make a Payment </a>
 				</div>
-				 <p class="small11pxfont" id="pendingPayments_onlinepaymentmethodmsg"></p> 
+-->				 <p class="small11pxfont" id="pendingPayments_onlinepaymentmethodmsg"></p> 
 				<!-- <p class="note boldtext">"Online" payment method includes mobile
 					payments.</p> -->
 			</div>
-
-			<div id="footnotes" class="footnotes" ></div>
+			
 		</div>
-
+		<div class="dropDownLayer"></div>
+		<div id="footnotes" class="footnotes"></div>
 		<!-- content end -->
-<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+<!--<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
             <footer id="footer" class="mnu_footer">
 			</footer>
-				</div>
+				</div>-->
 	</div>
 	<!--page end -->
 </body>

@@ -1735,6 +1735,12 @@ input[type="text"].errormsg,input[type="number"].errormsg{
 	border: 1px solid red !important;
 }
 
+span.errormsg {
+	border-left:1px solid red !important;
+	border-right:1px solid red !important;
+	border-bottom:1px solid red !important;
+}
+
 input[type="password"].errormsg {
 	color: #000 !important;
 	border: 1px solid red !important;

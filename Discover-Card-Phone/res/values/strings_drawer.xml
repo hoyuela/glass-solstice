@@ -19,18 +19,18 @@
     <string name="sub_section_title_send_money_history">Send Money History</string>
     
     
-    <string name="section_title_earn_cashback_bonus">Earn Cashback Bonus</string> 
-    <string name="sub_section_title_signup_for_2">Cashback Bonus Promos</string>
+    <string name="section_title_earn_cashback_bonus">Earn <i>Cashback Bonus</i></string> 
+    <string name="sub_section_title_signup_for_2"><i>Cashback Bonus</i> Promos</string>
     <string name="sub_section_title_extras">Extras</string>
     <string name="sub_section_title_refer_a_friend">Refer A Friend</string>
     
-    <string name="section_title_redeem_cashback_bonus">Redeem Cashback Bonus</string>  
+    <string name="section_title_redeem_cashback_bonus">Redeem <i>Cashback Bonus</i></string>  
     <string name="sub_section_title_partner_gift_cards">Partner Gift Cards &amp; eCerts</string>
     <!-- Change title for defect #96089 -->
     <string name="sub_section_title_discover_gift_cards">Discover Gift Card</string>
     <string name="sub_section_title_statement_credit">Statement Credit</string>
     <string name="sub_section_title_direct_deposit">Direct Deposit</string>
-    <string name="sub_section_title_pay_with_cashback_bonus">Pay with Cashback Bonus</string>
+    <string name="sub_section_title_pay_with_cashback_bonus">Pay with <i>Cashback Bonus</i></string>
     <string name="sub_section_title_redemption_history">Redemption History</string> 
     
     <string name="section_title_profile_and_settings">Profile &amp; Settings</string>

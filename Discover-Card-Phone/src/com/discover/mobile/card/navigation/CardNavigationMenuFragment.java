@@ -30,7 +30,6 @@ import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.miles.MilesForESCCards;
 import com.discover.mobile.card.miles.MilesInfo;
 import com.discover.mobile.card.miles.RedeemMilesInfo;
-import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.payments.PaymentsSectionInfo;
 import com.discover.mobile.card.profile.ProfileAndSettingsSectionInfo;
 import com.discover.mobile.card.redeemcashbackbonus.RedeemCashbackBonusInfo;
@@ -52,6 +51,9 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
     CardMenuInterface cardMenuInterface;
     public static ImmutableList<ComponentInfo> CARD_SECTION_LIST = null;
+    public static final String DEEPLINK = "deeplink";
+    public static final String DEEPLINK_PASSCODE = "passcode";
+    
     
     private CardShareDataStore mCardStoreData;
 
@@ -129,7 +131,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     public void onListItemClick(final ListView listView,
             final View clickedView, final int position, final long id) {
         TextView textView = (TextView) clickedView.findViewById(R.id.title);
-        final String text = (String) textView.getText();
+        final String text =  textView.getText().toString();
     	if (text.equals(mCardStoreData.getValueOfAppCache("currentPageTitle")))
     	{
     		BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
@@ -370,14 +372,14 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
      * @return Fragment to navigate directly to upon login
      */
     private BaseFragment getDeeplinkPage() {
-    	BaseFragment retVal;
+    	BaseFragment baseFrag = new HomeSummaryFragment();
         PasscodeUtils pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
         if (pUtils.isForgotPasscode()) {
-        	retVal = new PasscodeLandingFragment();
-        } else {
-        	retVal = new HomeSummaryFragment();
+        	Bundle bundle = new Bundle();
+        	bundle.putString(DEEPLINK, DEEPLINK_PASSCODE);
+        	baseFrag.setArguments(bundle);
         }
-        return retVal;
+        return baseFrag;
     }
 
 }

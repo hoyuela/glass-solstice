@@ -48,6 +48,8 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
+import com.discover.mobile.card.passcode.PasscodeLandingFragment;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep2Fragment;
 import com.discover.mobile.card.passcode.menu.PasscodeMenuFragment;
@@ -678,15 +680,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 .equalsIgnoreCase("RedeemMilesFragment")) {
             return;
         } else if (fragment.getClass().getSimpleName().equalsIgnoreCase("PasscodeLandingFragment")) {
-        	//TODO sgoff0 - is there a cleaner way to handle this?
-        	//don't keep this fragment in back stack
-        	Log.v("CardNavigationRootActivity", "navigate passcode landing fragment without backstack");
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(fragment)
-                    .add(R.id.navigation_content, fragment,
-                            fragment.getClass().getSimpleName())
-                    .commit();
+        	//TODO figure out a cleaner way to handle this.  PasscodeLandingFragment is used as a placeholder fragment but never invoked, instead
+        	//this logic is invoked to route passcode directly.  Without this there were quirks with the side menu and action bar title saying passcode
+        	//when it shouldn't have.  Plus there is no reason this routing logic needs it's own fragment.
+        	new PasscodeRouter(this).getStatusAndRoute();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()

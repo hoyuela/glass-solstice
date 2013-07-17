@@ -44,28 +44,28 @@ public class WhatsNewAvailable extends LinearLayout implements
         switch (pageID) {
         case QUICK_VIEW_INFO:
             final View quickview = vi.inflate(R.layout.whats_new_layout1, null);
-            setGravity(Gravity.CENTER);
+            setGravity(Gravity.FILL_VERTICAL);
             addView(quickview);
             setPageOneContent();
             break;
         case MANAGE_BANK_INFO:
             final View bankaccountview = vi.inflate(R.layout.whats_new_layout1,
                     null);
-            setGravity(Gravity.CENTER);
+            setGravity(Gravity.FILL_VERTICAL);
             addView(bankaccountview);
             setPageOneContent();
             break;
         case MANAGE_PAYMENT_INFO:
             final View paymentview = vi.inflate(R.layout.whats_new_layout1,
                     null);
-            setGravity(Gravity.CENTER);
+            setGravity(Gravity.FILL_VERTICAL);
             addView(paymentview);
             setPageOneContent();
             break;
         case PASSCODE_INFO:
             final View passcodeView = vi.inflate(R.layout.whats_new_layout1,
                     null);
-            setGravity(Gravity.CENTER);
+            setGravity(Gravity.FILL_VERTICAL);
             addView(passcodeView);
             setPageOneContent();
             break;

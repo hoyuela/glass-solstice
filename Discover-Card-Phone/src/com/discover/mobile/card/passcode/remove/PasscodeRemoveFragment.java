@@ -12,6 +12,7 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.PasscodeLandingFragment;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -37,13 +38,14 @@ public class PasscodeRemoveFragment extends BaseFragment {
 
 		final Button removeButton = ((Button) view.findViewById(R.id.buttonRemove));
 		final TextView linkNoThanks = ((TextView) view.findViewById(R.id.linkNoThanks));
-
+		
+		final PasscodeRemoveFragment prf = this;
 		removeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//TODO should I (or can i?) call server with this delete?
 				pUtils.deletePasscodeToken();
 				getActivity().getSupportFragmentManager().popBackStack();
-				makeFragmentVisible(new PasscodeLandingFragment());
+				new PasscodeRouter(prf).getStatusAndRoute();
+//				makeFragmentVisible(new PasscodeLandingFragment());
 			}
 		});
 

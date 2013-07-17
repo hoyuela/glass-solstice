@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/forms_inner_padding"
     android:layout_marginRight="@dimen/forms_inner_padding" 
-    android:background="@drawable/card_popup_whitebg"
     >
 
     <View

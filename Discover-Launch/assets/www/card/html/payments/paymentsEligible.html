@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Summary</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="paymentsEligible-pg" class="payments">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">            
+				<!--<span class="errormsg2 marginbottom10px" id="paymentsSummary_Inline_Error"></span> 
+				<span class="errormsg2" id="errorPaymentsSummaryDiv"></span> -->
+				<ul class="whitebg-list-view">
+						<li><span>Payment Date</span><br/><span class="amt_bold" id="paymentDate"> </span>
+						</li>
+						<li><span>Amount</span><br/><span class="amt_bold" id="amount"></span> 
+                        </li>
+						<li><span id="pendingPayMaskedAccNumber"></span></br> <span class="amt_bold" id="accountNo"></span>
+						</li>
+						<li><span>Confirmation Number</span><br/><span class="amt_bold" id="confirmationNumber"></span> 
+                        </li>
+						<li><span>Method</span></br> <span class="amt_bold" id="method"></span>
+						</li>
+<!--						<li id="minPaymentDue_Li"><span>Min. Payment Due </span><br/><span id="paymentsSummary_minimumPaymentDue" class="amt_bold paymentsummaryval"></span>
+						</li>
+						<li id="paymentDueDate_Li"><span>Payment Due Date</span><br/> <span id="paymentsSummary_paymentDueDate" class="amt_bold paymentsummaryval"></span>
+						</li>				
+-->				</ul>
+				<div class="txtcenteraln bigboldBTN">
+                <a href="#" onclick="dfs.crd.pymt.editPaymentToMAPStep1();dfs.crd.sct.onClickEligibleForEditBtn();" data-role="button" class="eligEdit" id="editBtn">Edit</a><div class="clearboth"></div>
+                <a href="#" onclick="navigation('../payments/cancelPayment1');dfs.crd.sct.onClickEligibleForEditCancelBtn();" class="bluelink boldtext">Cancel Payment</a>
+                </div>
+                
+			</div>
+			
+		</div>
+		<div class="dropDownLayer"></div>
+		<!-- content end -->
+		<div id="footnotes" class="footnotes"></div>
+	<!--<div data-role="footer" id="pg-footer" data-position="fixed"
+			data-id="myfooter" data-tap-toggle="false">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+		</div>-->
+			</div>
+	<!--page end -->
+</body>
+</html>

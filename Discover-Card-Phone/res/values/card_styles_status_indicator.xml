@@ -7,7 +7,7 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_marginTop">0dp</item>
-        <item name="android:background">@drawable/light_gray_bkgrd</item>
+        <item name="android:background">@color/card_body_color</item>
     </style>
 
     <style name="card_status_check_mark">
@@ -31,7 +31,7 @@
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:layout_marginBottom">4dp</item>
         <item name="android:padding">0dp</item>
-        <item name="android:src">@drawable/orange_down_arrow</item>
+        <item name="android:src">@drawable/card_progress_step_arrow</item>
         <item name="android:visibility">invisible</item>
     </style>
 

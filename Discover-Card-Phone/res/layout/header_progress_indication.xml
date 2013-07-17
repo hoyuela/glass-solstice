@@ -4,8 +4,8 @@
     <RelativeLayout
         android:id="@+id/location_text"
         style="@style/card_status_indicator_style" 
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding">
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <ImageView
             android:id="@+id/step1_confirm"
@@ -64,6 +64,15 @@
             android:id="@+id/step2_confirm"
             android:layout_toLeftOf="@+id/step_2"
             style="@style/card_status_check_mark" />
+        
+             <View
+            android:id="@+id/general_list_item_separator_line_start"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/card_line_separator"
+            />
+        
     </RelativeLayout>
 
 </merge>

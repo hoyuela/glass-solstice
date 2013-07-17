@@ -102,7 +102,7 @@ var pageMenuHglt={'cardHome':'HM','accountSummary':'AC','accountLanding':'AC','a
 		'confirmCancelTransaction':'MM|MR','noTransactionHistory':'MM|MR','howtoWorkUpdateEmail':'MM|MR',
 		'howItWorks':'MM|MR','personalizeCashPin1':'MR','personalizeCashPin2':'MR',
 		'personalizeCashPinError':'MR','profileEnroll':'MR','profileLanding':'MR','profileManageContact':'MR',
-		'manageBankInformation':'PY','paymentStep1':'PY','paymentStep2':'PY','paymentStep3':'PY','paymentInformation':'PY',
+		'manageBankAccounts':'PY','paymentStep1':'PY','paymentStep2':'PY','paymentStep3':'PY','paymentInformation':'PY',
 		'paymentsHistory':'PY','paymentsLanding':'PY','paymentsSummary':'PY','pendingPayments':'PY','cancelPayment':'PY',
 		'confirmCancelPayment':'PY','bankAccountForDirectDeposit':'CB','referAFriendShareErrorCBB':'CB','referAFriendStatusParmsErrorCBB':'CB',
 		'referAFriendStatusErrorCBB':'CB','strongMailScriptErrorCBB':'CB','referAFriendTermsErrorCBB':'CB','referAFriendTermsErrorMI2':'MI',
