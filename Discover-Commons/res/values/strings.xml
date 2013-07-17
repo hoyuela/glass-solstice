@@ -149,5 +149,5 @@
     
     <!-- toggle switch strings -->
     <string name="textOff">OFF</string>
-    <string name="textOn">On</string>
+    <string name="textOn">ON</string>
 </resources>
