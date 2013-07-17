@@ -5,10 +5,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
+import com.slidingmenu.lib.SlidingMenu;
 
 public final class BankAtmLocatorInfo extends GroupComponentInfo {
 
@@ -25,10 +27,23 @@ public final class BankAtmLocatorInfo extends GroupComponentInfo {
 			public void onClick(final View v) {
 				final NavigationRootActivity activity = (NavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 				if(!(activity.getCurrentContentFragment() instanceof SearchNearbyFragment)){
-					final SearchNearbyFragment fragment = new SearchNearbyFragment();
-					/**Provide a bundle in arguments to handle storing its state on rotation*/
-					fragment.setArguments(new Bundle());
-					activity.makeFragmentVisible(fragment);
+					/*This is a fix for the glitchy transition. 
+					 * We need to wait until the nav drawer is completely
+					 * closed before we start to load the map fragment
+					 */
+					SlidingMenu navMenu = activity.getSlidingMenu();
+					navMenu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
+						@Override
+						public void onClosed() {
+							final SearchNearbyFragment fragment = new SearchNearbyFragment();
+							fragment.setArguments(new Bundle());
+							//reset the on closed listener to the default
+							((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).updateMenuOnClose();
+							activity.makeFragmentVisible(fragment);
+						}
+					});
+					//close the menu to trigger the onClosed listener
+					navMenu.toggle();
 				}else{
 					activity.getSlidingMenu().toggle();
 				}
