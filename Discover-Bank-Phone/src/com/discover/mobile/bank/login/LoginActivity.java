@@ -473,9 +473,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	public void showLogoutSuccessful() {
 		final long tenSeconds = 10000;
+		errorTextView.invalidate();
 		errorTextView.setText(getString(R.string.logout_sucess));
-		errorTextView.setVisibility(View.VISIBLE);
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
+		errorTextView.setVisibility(View.VISIBLE);
 		
 		startFadeOutAnimationForView(errorTextView, halfSecond, View.GONE, tenSeconds);
 	}

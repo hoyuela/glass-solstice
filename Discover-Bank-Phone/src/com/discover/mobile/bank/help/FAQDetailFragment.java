@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -19,8 +17,6 @@ import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.BaseFragmentActivity;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 /**
@@ -52,8 +48,6 @@ public class FAQDetailFragment extends BaseFragment {
 		titleLabel.setText(getResources().getString(getTitleForFragment()));
 		populateFAQItemsToTable((LinearLayout)view.findViewById(R.id.content_table));
 		restoreState(savedInstanceState);
-		
-		setupNavButton(view);
 
 		//Disable hardware acceleration for the UI so that the dotted line gets drawn correctly.
 		if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
@@ -96,15 +90,6 @@ public class FAQDetailFragment extends BaseFragment {
 		}
 
 		return titleResource;
-	}
-	
-	private void setupNavButton(final View mainView) {
-		((ImageView)mainView.findViewById(R.id.previous_button)).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).goBack();
-			}
-		});
 	}
 
 	/**
