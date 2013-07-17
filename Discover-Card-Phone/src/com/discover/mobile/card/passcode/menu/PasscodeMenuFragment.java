@@ -17,8 +17,8 @@ import android.widget.ListView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthDefaultResponseHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.ui.modals.EnhancedTwoButtonModal;
@@ -128,8 +128,8 @@ public class PasscodeMenuFragment extends BaseFragment {
 		return view;
 	}
 	
-	private final class UpdatePasscodeStrongAuthFlow implements StrongAuthListener {
-		
+	private final class UpdatePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler {
+
 		@Override
 		public void onStrongAuthSucess(Object data) {
 			Log.v(TAG, "Success");
@@ -138,29 +138,16 @@ public class PasscodeMenuFragment extends BaseFragment {
 
 		@Override
 		public void onStrongAuthError(Object data) {
-			Log.v(TAG, "Error");
-		}
-
-		@Override
-		public void onStrongAuthCardLock(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "Lock");
 			
-		}
-
-		@Override
-		public void onStrongAuthSkipped(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Skipped");
-						
 		}
 
 		@Override
 		public void onStrongAuthNotEnrolled(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "NotEnrolled");
 			
 		}
+
 	}
 	
 	private class StableArrayAdapter extends ArrayAdapter<String> {

@@ -1,14 +1,18 @@
 package com.discover.mobile.card.passcode.forgot;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
+import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 import com.discover.mobile.card.passcode.request.GetSyntaxValidityRequest;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -18,6 +22,21 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 	static final String TRACKING_PAGE_NAME = "PasscodeForgotStep1";
 	private static String TAG = "PasscodeForgotStep1Fragment";
 
+	
+
+	@Override
+	public boolean onKey(View paramView, int keyCode, KeyEvent event) {
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			Log.v(TAG, "Action Down");
+			return false;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK ) {
+			getActivity().getSupportFragmentManager().popBackStack(PasscodeLandingFragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			makeFragmentVisible(new HomeSummaryFragment(), false);
+		}
+		return super.onKey(paramView, keyCode, event);
+	}
+	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
@@ -73,12 +92,7 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 		public void onSuccess(Object data) {
 			VerifySyntax vs = (VerifySyntax) data;
 			Log.v(TAG, vs.toString());
-//			if (vs.isValid) {
-				onPasscodeSuccessEvent();
-//			} else {
-//				onPasscodeErrorEvent();
-//			}
-			
+			onPasscodeSuccessEvent();
 		}
 	};
 

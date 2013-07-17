@@ -51,8 +51,8 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		boolean isMatch = this.getPasscodeString().equals(mStep1Answer);
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isMatch && isValid) {
-			String deviceToken = PasscodeUtils.genClientBindingToken();
-			new CreateResetRequest(this.getActivity(), getPasscodeString(), deviceToken).loadDataFromNetwork(new ResetPasscodeRequestListener(deviceToken));
+//			String deviceToken = PasscodeUtils.genClientBindingToken();
+			new CreateResetRequest(this.getActivity(), getPasscodeString(), getPasscodeToken()).loadDataFromNetwork(new ResetPasscodeRequestListener());
 		} else {
 			passcodeResponse(false);
 		}
@@ -67,7 +67,7 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 				R.string.passcode_dialog_forgot_content, 
 				R.string.home_text,
 				new NavigateACHomeAction(),
-				new NavigatePasscodeLandingAction());
+				new NavigateACHomeAction());
 		modal.hideNeedHelpFooter();
 		modal.setOrangeTitle();
 		((NavigationRootActivity)context).showCustomAlert(modal);
@@ -75,11 +75,11 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 	}
 	
 	private final class ResetPasscodeRequestListener implements CardEventListener {
-		private String deviceToken;
-		
-		public ResetPasscodeRequestListener(String deviceToken) {
-			this.deviceToken = deviceToken;
-		}
+//		private String deviceToken;
+//		
+//		public ResetPasscodeRequestListener(String deviceToken) {
+//			this.deviceToken = deviceToken;
+//		}
 		@Override
 		public void OnError(Object data) {
 			passcodeResponse(false);
@@ -89,7 +89,7 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		public void onSuccess(Object data) {
 			passcodeResponse(true);
 			storeFirstName();
-			createPasscodeToken(this.deviceToken);
+//			createPasscodeToken(this.deviceToken);
 			getActivity().getSupportFragmentManager().popBackStack(PasscodeForgotStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	};

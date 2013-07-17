@@ -12,7 +12,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
-import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
 import com.discover.mobile.card.passcode.request.GetMatchRequest;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -123,12 +122,4 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		}
 	};
 	
-	protected class RemoveHistoryAndNavigatePasscodeLandingAction implements Runnable {
-		public RemoveHistoryAndNavigatePasscodeLandingAction() {}
-		@Override
-		public void run() {
-			getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			makeFragmentVisible(new PasscodeLandingFragment());
-		}
-	}
 }

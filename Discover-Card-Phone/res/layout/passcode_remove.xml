@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/white"
     android:orientation="vertical"
+    android:clickable="true"
      >
 
     <ImageView 
@@ -13,7 +14,7 @@
         android:paddingLeft="5dp"
         android:paddingTop="24dp"
         
-        android:src="@drawable/esclamation_gray_img"/>
+        android:src="@drawable/exclamation_gray_img"/>
     
     <TextView
         android:id="@+id/paragraph_1"

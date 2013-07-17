@@ -34,7 +34,7 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	    {
 			Log.v(TAG, "REMOVING BACK STACK of FRAGS");
 			//TODO make it so update step 1 is shown
-			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep2Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep2Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			//TODO sgoff0 handle step 3 back button
 //			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 //			http://stackoverflow.com/questions/5802141/is-this-the-right-way-to-clean-up-fragment-back-stack-when-leaving-a-deeply-nest

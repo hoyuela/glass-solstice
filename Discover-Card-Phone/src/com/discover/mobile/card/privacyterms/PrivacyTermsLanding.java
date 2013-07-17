@@ -20,11 +20,14 @@ import com.discover.mobile.card.common.utils.Utils;
 
 
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
 import com.discover.mobile.card.error.CardErrHandler;
 
 public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity implements OnClickListener{
 
     private final String referer =  "privacyPolicy-pg" ;
+    private Bundle extras;
+    private boolean is_enhance =false ;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +63,16 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity implement
         setActionBarTitle(R.string.privacyTerms);
         footer.setOnClickListener(this);
         
+        extras = getIntent().getExtras();
+        if(extras!=null)
+        {
+           is_enhance= extras.getBoolean("is_enhance")  ;
+            
+        }
+        
     }
 
-    
+   
     private void insertDividerLine(final LinearLayout view) {
         final View divider = new View(this, null);
         divider.setBackgroundResource(R.drawable.table_dotted_line);
@@ -138,7 +148,23 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity implement
             Utils.createProvideFeedbackDialog(this, referer);
         }
     }
+
+
+   
     
-    
+    @Override
+    public void onBackPressed() {
+        // TODO Auto-generated method stub
+        super.onBackPressed();
+        if(is_enhance)
+        {
+            Intent enhanceActivity = new Intent(
+                    PrivacyTermsLanding.this,
+                    EnhancedAccountSecurityActivity.class);
+           
+            
+            startActivity(enhanceActivity);
+        }
+    }
    
 }
