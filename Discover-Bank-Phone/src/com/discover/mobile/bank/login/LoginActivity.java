@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -228,10 +229,16 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
+		
+		setupPasswordField();
+	 }
+	
+	private void setupPasswordField() {
 		//You must set the IME Option in java so that the "GO" appears on the keyboard -julian
 		passField.setImeOptions(EditorInfo.IME_ACTION_GO | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
-		
-	 }
+		passField.setTypeface(Typeface.DEFAULT);
+		passField.setTransformationMethod(new PasswordTransformationMethod());
+	}
 	
 	/**
 	 * This method fixes an issue where, in a signed build, when the app
@@ -1704,18 +1711,18 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		return isCardLogin() && pUtils.doesDeviceTokenExist() && !isUserIDLogin;
 	}
 	
-	protected void forceSoftKeyboardShown(int inputId) {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	protected void forceSoftKeyboardShown(final int inputId) {
+		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(fieldTVs[inputId], InputMethodManager.SHOW_IMPLICIT);
 	}
 
-	public static void hideSoftKeyboard(Activity activity) {
+	public static void hideSoftKeyboard(final Activity activity) {
 		if (activity == null) {
 			return;
 		}
-		View currentFocus = activity.getCurrentFocus();
+		final View currentFocus = activity.getCurrentFocus();
 		if (currentFocus != null) { 
-			InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+			final InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 			inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 		}
 	}
@@ -1802,15 +1809,15 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private class PasscodeTouchListner implements View.OnTouchListener {
 
-		private int fieldInt;
+		private final int fieldInt;
 
-		public PasscodeTouchListner(int fieldInt) {
+		public PasscodeTouchListner(final int fieldInt) {
 			this.fieldInt = fieldInt;
 		}
 
 		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			int nextInput = getNextInput();
+		public boolean onTouch(final View v, final MotionEvent event) {
+			final int nextInput = getNextInput();
 			//if touched edit text is not next passcode field to recieve focus then overwrite user selection
 			if (fieldInt != nextInput) {
 				fieldTVs[fieldInt].clearFocus();
@@ -1872,7 +1879,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 
 	private void setupSubmit() {
-		int fieldInt = 3;
+		final int fieldInt = 3;
 		final EditText et = fieldTVs[fieldInt];
 		// for hardware keys
 		et.setOnKeyListener(new MyPasscodeKeyListener());
@@ -2111,7 +2118,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * ui elements for clicks
 	 */
 	@Override
-	public void complete(NetworkServiceCall<?> sender, Object result) {
+	public void complete(final NetworkServiceCall<?> sender, final Object result) {
 		//login is completed (whether or not successfull)
 		enableInput();
 	}
@@ -2120,11 +2127,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Hides soft keyboard when a non-EditText view is touched.
 	 * @param view
 	 */
-	public void setupUI(View view) {
+	public void setupUI(final View view) {
 	    //Set up touch listener for non-text box views to hide keyboard.
 	    if(!(view instanceof EditText)) {
 	        view.setOnTouchListener(new View.OnTouchListener() {
-	            public boolean onTouch(View v, MotionEvent event) {
+	            @Override
+				public boolean onTouch(final View v, final MotionEvent event) {
 	                hideSoftKeyboard(LoginActivity.this);
 	                return false;
 	            }
@@ -2133,7 +2141,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	    //If a layout container, iterate over children and seed recursion.
 	    if (view instanceof ViewGroup) {
 	        for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-	            View innerView = ((ViewGroup) view).getChildAt(i);
+	            final View innerView = ((ViewGroup) view).getChildAt(i);
 	            setupUI(innerView);
 	        }
 	    }
