@@ -164,7 +164,7 @@ public class CalendarFragment extends CaldroidFragment {
 		final TextView monthTitle = (TextView) layout.findViewById(R.id.calendar_month_year_textview);
 		final LinearLayout titleHeader = (LinearLayout) inflater.inflate(R.layout.calendar_title_header, container, false);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 
-																					RelativeLayout.LayoutParams.WRAP_CONTENT);
+																				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		titleHeader.setLayoutParams(params);
 		layout.addView(titleHeader);
@@ -355,9 +355,15 @@ public class CalendarFragment extends CaldroidFragment {
 	 * 
 	 * @return True if cal holds the date to a weekend, false otherwise.
 	 */
-	public boolean isWeekend(final Calendar cal) {
-		final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-		return (Calendar.SATURDAY == dayOfWeek || Calendar.SUNDAY == dayOfWeek);	
+	public static boolean isWeekend(final Calendar cal) {
+		boolean isWeekend = false;
+		
+		if(cal != null) {
+			final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+			isWeekend = (Calendar.SATURDAY == dayOfWeek || Calendar.SUNDAY == dayOfWeek);
+		}
+		
+		return isWeekend;
 	}
 	
 
@@ -433,46 +439,21 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param days	the # of business days to add to the Calendar
 	 * @param disabledDates   this is a list of holidays. they will not be treated as business days.
 	 */
-	public static Calendar addBusinessDays(final Calendar cal, final int days, final ArrayList<Date> disabledDates) {
+	public static Calendar addBusinessDays(final Calendar cal, final int days, final List<Date> disabledDates) {
 		int daysToAdvanceCalendar = days;
-		
-		//decrement initial offset if the current day is a weekend
-		if(isTodayWeekend(cal)) {
-			daysToAdvanceCalendar--;
-		}
-		
-		//Set the date to the first valid date for a transfer.
-		final Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(cal, disabledDates);
 
-		// Add Business Days
+		//Add Business Days
 		for( int i = 0; i < daysToAdvanceCalendar; i++) {
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 			
-			//Dont count a weekend or holiday as a business day, so increment
-			//the value by one so we can go one more day.
-			if(isTodayWeekend(cal) || isHoliday(cal, disabledDates)) {
+			//Don't count a weekend or holiday as a business day, so increment
+			//the value of daysToAdvanceCalendar by one so we can go one more day in the if statement.
+			if(isWeekend(cal) || isHoliday(cal, disabledDates)) {
 				daysToAdvanceCalendar++;
 			}
 		}
 
-		return tempCal;
+		return cal;
 	}
 	
-	/**
-	 * 
-	 * @param calendar a Calendar to use to check if the day of the week contained in the calendar
-	 * 	is a weekend.
-	 * @return if today is a weekend. 
-	 */
-	private static boolean isTodayWeekend(final Calendar calendar) {
-		boolean isWeekend = false;
-		
-		if(calendar != null) {
-			final int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-			isWeekend |= dayOfWeek == Calendar.SUNDAY;
-			isWeekend |= dayOfWeek == Calendar.SATURDAY;
-		}
-		
-		return isWeekend;
-	}
 }

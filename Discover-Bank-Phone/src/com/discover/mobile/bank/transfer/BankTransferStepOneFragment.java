@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -126,8 +127,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		topNote.setVisibility(View.GONE);
 		final Bundle args = getArguments();
 		
-		chosenPaymentDate = Calendar.getInstance();
-		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(), 
+		chosenPaymentDate = Calendar.getInstance(Locale.US);
+		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(Locale.US), 
 				BankUser.instance().getHolidays());
 		
 		if(args != null) {
@@ -230,17 +231,15 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 		if(args != null) {
 			final String savedDate = args.getString(DATE);
 			final boolean isRecurringTransfer = !TransferDetail.ONE_TIME_TRANSFER.equalsIgnoreCase(frequencyCode);
-			
 			final boolean accountsAreInternal = areBothAccountsInternal();
-			
 			
 			if(isRecurringTransfer && !accountsAreInternal) {
 				final Calendar sendOnDate = convertToDate(sendOnDateCell.getText().toString());
 				if( !isValidReoccuringTransferDate(sendOnDate) ) {
-					setDateFieldToFirstValidDate(0,REOCURRING_TRANSFER_OFFSET);
+					setDateFieldToFirstValidDate(REOCURRING_TRANSFER_OFFSET);
 				}
 			} else if(accountsAreInternal) {
-				setDateFieldToFirstValidDate(0,0);
+				setDateFieldToFirstValidDate(0);
 				disableDateSelection();
 				
 				setFrequencyToOneTime();
@@ -248,7 +247,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			} else if(!Strings.isNullOrEmpty(savedDate)) {
 				dateTextView.setText(savedDate);				
 			}else {
-				setDateFieldToFirstValidDate(0,0);
+				setDateFieldToFirstValidDate(0);
 			}
 		}
 	}
@@ -318,24 +317,30 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	/**
 	 * Sets the dateTextView text to display the first valid date based on the current date.
 	 */
-	private void setDateFieldToFirstValidDate(final int earliestPmtOffset, final int textViewOffset) {
+	private void setDateFieldToFirstValidDate(final int textViewOffset) {
 		final ArrayList<Date> disabledDays = BankUser.instance().getHolidays();
 		
 		//Set the date to the next available business day, used to determine the minimum selectable date in the calendar
-		earliestPaymentDate = CalendarFragment.addBusinessDays(Calendar.getInstance(), earliestPmtOffset, disabledDays);
 		
+		//First, get a calendar that has the first available date selected.
+		earliestPaymentDate = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(Locale.US), disabledDays);
 		
+		final boolean isTodayWeekendOrHoliday = CalendarFragment.isWeekend(Calendar.getInstance(Locale.US)) || 
+												CalendarFragment.isHoliday(Calendar.getInstance(Locale.US), disabledDays);
+		//Add one fewer business day if today is a holiday or weekend.
+		int businessDaysToAdd = textViewOffset;
+		if(businessDaysToAdd > 0 && isTodayWeekendOrHoliday) {
+			businessDaysToAdd--;
+		}
+		final Calendar textViewCalendar = CalendarFragment.getFirstValidDateCalendar(Calendar.getInstance(Locale.US), 
+																						disabledDays);
+		CalendarFragment.addBusinessDays(textViewCalendar, businessDaysToAdd, disabledDays);
 		//Set the dateTextView's text to the new valid date.
 		if(dateTextView != null) {
-			final Calendar currentDate = Calendar.getInstance();
-			final Calendar textViewDate = CalendarFragment.addBusinessDays(currentDate, 
-																			textViewOffset, 
-																			disabledDays);
-			
 			dateTextView.setText(BankStringFormatter.formatDate(
-					String.valueOf(textViewDate.get(Calendar.YEAR)),
-					String.valueOf(textViewDate.get(Calendar.MONTH) + 1),
-					String.valueOf(textViewDate.get(Calendar.DAY_OF_MONTH))));
+					String.valueOf(textViewCalendar.get(Calendar.YEAR)),
+					String.valueOf(textViewCalendar.get(Calendar.MONTH) + 1),
+					String.valueOf(textViewCalendar.get(Calendar.DAY_OF_MONTH))));
 			
 			final Bundle args = getArguments();
 			if(args != null  && !Strings.isNullOrEmpty(dateTextView.getText().toString())) {
@@ -348,16 +353,16 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 * Method used to check if the date specified is later than the next valid re-occurring transfer date from today.
 	 * 
 	 * @param date The date that is being used to compare with the next valid re-occurring transfer date.
-	 * 
-	 * @return True if the date specified is valid re-occuring transfer date, false otherwise.
+	 * @return if the date specified is a valid recurring transfer date.
 	 */
 	private boolean isValidReoccuringTransferDate(final Calendar date) {
-		Calendar nextBusinessDay = Calendar.getInstance();
-		nextBusinessDay.add(Calendar.DAY_OF_MONTH, REOCURRING_TRANSFER_OFFSET);
-		
-		nextBusinessDay = CalendarFragment.getFirstValidDateCalendar(nextBusinessDay, BankUser.instance().getHolidays());
-			
-		final int comparison = nextBusinessDay.compareTo(date);
+		final List<Date>holidays = BankUser.instance().getHolidays();
+		final Calendar nextBusinessDayCalendar = CalendarFragment
+													.getFirstValidDateCalendar(Calendar.getInstance(Locale.US), holidays);
+
+		CalendarFragment.addBusinessDays(nextBusinessDayCalendar, REOCURRING_TRANSFER_OFFSET, holidays);
+
+		final int comparison = nextBusinessDayCalendar.compareTo(date);
 		
 		return (date != null &&  comparison <= 0 );
 	}
@@ -372,7 +377,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 	 *         parameter.
 	 */
 	private Calendar convertToDate(final String text) {
-		final Calendar cal = Calendar.getInstance();
+		final Calendar cal = Calendar.getInstance(Locale.US);
 		
 		try {
 			// here set the pattern as you date in string was containing like date/month/year
@@ -1059,7 +1064,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
 				
-				final Calendar cal=Calendar.getInstance();
+				final Calendar cal = Calendar.getInstance(Locale.US);
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
 			
@@ -1122,7 +1127,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			calendarFragment = new CalendarFragment();
 
 			/** The calendar will appear with the month and year in this Calendar instance */
-			Calendar displayedDate = Calendar.getInstance();
+			Calendar displayedDate = Calendar.getInstance(Locale.US);
 			
 			
 			/** Convert stored in text field into chosen date, this will avoid issue on rotation */
@@ -1130,7 +1135,8 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 				final String[] selectedDate = dateTextView.getText().toString().split("[\\/]+");
 
 				/** The Calendar will appear with the date specified by this calendar instance selected */
-				chosenPaymentDate.set(Integer.parseInt(selectedDate[2]), Integer.parseInt(selectedDate[0]) - 1, Integer.parseInt(selectedDate[1]));
+				chosenPaymentDate.set(Integer.parseInt(selectedDate[2]), Integer.parseInt(selectedDate[0]) - 1, 
+																						Integer.parseInt(selectedDate[1]));
 
 				/** Check if restoring calendar selection date, -1 means it is initializing */
 				displayedDate = chosenPaymentDate;
@@ -1141,11 +1147,19 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 
 				displayedDate = chosenPaymentDate;
 			}
+			final String transferDateLabelText = getResources().getString(R.string.select_transfer_date);
+			final FragmentManager supportFragmentManager = 
+						((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager();
 			
 			/** Show calendar as a dialog */
-			calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), getResources()
-					.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
-					.getHolidays(), createCalendarListener());
+			calendarFragment.show(supportFragmentManager, 
+									transferDateLabelText, 
+									displayedDate, 
+									chosenPaymentDate, 
+									earliestPaymentDate, 
+									BankUser.instance()
+									.getHolidays(), 
+									createCalendarListener());
 		}
 	}
 
