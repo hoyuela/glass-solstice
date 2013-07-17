@@ -1720,7 +1720,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//restore original layout height
 		final ViewGroup layout = (ViewGroup)findViewById(R.id.login_table);
 		final LayoutParams params = layout.getLayoutParams();
-		params.height = LayoutParams.MATCH_PARENT;
+		params.height = LayoutParams.WRAP_CONTENT;
 		
 		//TODO restore padding
 		setToggleBelow(R.id.regular_login);

@@ -24,8 +24,7 @@
     <com.discover.mobile.common.ui.widgets.NonFocusingScrollView
         android:id="@+id/login_pane"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_above="@+id/login_bottom_button_row" >
+        android:layout_height="fill_parent" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -146,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/password_label"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="@dimen/between_related_elements_padding"
                         android:hint="@string/password"
                         android:textColorHint="@color/transparentGray"
                         android:inputType="textPassword"
@@ -370,9 +369,8 @@
                     android:id="@+id/account_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/regular_login"
-                    android:paddingTop="@dimen/between_related_elements_padding" >
+                    android:layout_marginTop="@dimen/between_related_elements_padding" >
 
                     <!-- Divider -->
 
@@ -390,6 +388,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/login_horizontal_divider"
                         android:orientation="horizontal"
+                        android:baselineAligned="false"
                         android:paddingBottom="@dimen/bottom_pad"
                         android:paddingLeft="@dimen/left_pad"
                         android:paddingRight="@dimen/right_pad"
@@ -475,7 +474,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/login_table"
                 android:layout_centerHorizontal="true"
-                android:paddingBottom="@dimen/forms_inner_padding"
+                android:paddingBottom="80dp"
                 android:text="@string/discover_copyright_text"
                 android:textColor="@color/fdic_disclaimer_text_color"
                 android:textSize="@dimen/fdic_disclaimer_text_size" />
