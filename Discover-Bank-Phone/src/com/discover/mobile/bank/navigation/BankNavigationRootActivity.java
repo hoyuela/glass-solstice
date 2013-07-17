@@ -156,7 +156,9 @@ implements OnPaymentCanceledListener {
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
+		if(BankUser.instance() != null && BankUser.instance().getCustomerInfo() != null) {
+			BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
+		}
 		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
 		outState.putString(BANK_SESSION_KEY, SessionTokenManager.getToken());
 	}
