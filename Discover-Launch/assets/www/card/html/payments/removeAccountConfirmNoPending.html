@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        <title>Discover - Payments History</title>
+        </head>
+        <body>
+<!-- page start  -->
+<div data-role="page" id="removeAccountConfirmNoPending-pg" class="payments"> 
+               <!--header start  -->
+    <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+    <header id="header" class="cmn_header"> </header>
+  </div>
+          <!-- header end -->
+   
+          
+          <!-- content start  -->
+          <div data-role="content" class="ui-content-internalpages ui-content" role="main">
+   			 <div class="wraper"> 
+               <div class="accInstruction" id="removeMsg"> <span class="light">Are you sure you want to remove your bank account? There are no pending payments for this account.</span> </div>
+                   
+             
+              
+              <!-- options div ( remove or not remove Account)  started-->
+              <div class="option">
+        <div class="txtcenteraln r3matchbtn"> <a href="#" onClick= "navigation('removeComplete');dfs.crd.sct.removeBtnOnRemoveAccountConfirmNoPendingPage();"  data-role="button" data-theme="c" id="removeAccount">Remove Account</a> 
+                                    
+                </div>
+        <div class="lastText"> <a href="#" onClick= "navigation('../payments/manageBankAccounts');dfs.crd.sct.cancelOnRemoveAccountConfirmNoPendingPage();" class="bluelink boldtext removeAcc">Do Not Remove Account</a> </div>
+      </div>
+              <!-- option div end --> 
+              
+            </div>
+    <!-- wraper ends --> 
+	
+  </div>
+          <div class="dropDownLayer"></div>
+		  <div id="footnotes" class="footnotes"></div>
+          <!-- content end  --> 
+</div>
+<!-- page end  -->
+
+</body>
+</html>

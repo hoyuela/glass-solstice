@@ -2269,11 +2269,13 @@ try{
 function populateGlobalCache()
 {						
 				HybridControl.prototype.getAccountDetails(function successAccountDetail (arg) {achomeData = arg;}, null);
+				HybridControl.prototype.getSecToken(function successToken (arg) {sectoken = arg;}, null);
 				achomeData = $.parseJSON(achomeData);				
 				if(!jQuery.isEmptyObject(achomeData)){					
 				putDataToCache("ACHOME", achomeData);
 				getDataAsync();			   					                   
 					// save card type and data in global variables
+					sectoken = sectoken;
 					
 					incentiveCode = achomeData["incentiveCode"];                        
 					//13.3 changes-start

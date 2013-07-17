@@ -973,3 +973,315 @@ dfs.crd.sct.addToCalendar = function() {
     }
 }
 /************************EDO Tagging Spec - Mobile  - End**************************/
+/************************Tagging Spec - 13.4 - Start**************************/
+
+//Add btn clicked on "No bank accounts setup" page
+dfs.crd.sct.noAccountsSetupAddBtn = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_NO_ACCT_SETUP_ADD_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - NoAcSetUp-Add Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//"Features Unavailable" page
+function featuresUnavailableSCVariables(){
+try{
+	s.pageName="/ManageBankAccount/FeaturesUnavailable";
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Inline error tracking page
+function  inlineErrorTrackingSCVariables(isRoutingInlineErr,isAccNumbrInlineErr){
+try{
+	var inlineErrMsg = "";
+	if(isRoutingInlineErr && isAccNumbrInlineErr)
+		inlineErrMsg = "Bank Routing Number must be 9 digits. , Bank Account Number and Confirm Bank Account didn't match.";
+	else if(isRoutingInlineErr)
+		inlineErrMsg = "Bank Routing Number must be 9 digits.";
+	else if(isAccNumbrInlineErr)
+		inlineErrMsg = "Bank Account Number and Confirm Bank Account didn't match.";
+	s.prop10=inlineErrMsg;
+	s.tl(this,'o','Inline Errors');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Manage Payments btn clicked on "Features Unavailable" page
+dfs.crd.sct.managePaymentsBtn = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_FEATURES_UNAVAIL_MANAGE_PAYMENTS_BTN';
+	s.tl(this,'o','Manage Bank Account - FeatureUnavailable-ManagePayments Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//We're sorry" page when maximum number of banks have been added
+function maximumBanksReachedSCVariables(){
+try{
+	s.pageName="/ManageBankAccount/Accounts/Sorry";
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Manage Bank Account btn clicked on "We're sorry" page when maximum number of banks have been added
+dfs.crd.sct.manageBankAccountBtn = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_WERE_SORRY_MBA_BANK_ACCOUNTS_BTN';
+	s.tl(this,'o','Manage Bank Account - Sorry_MBA Bank Accounts Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Add bank account btn clicked
+dfs.crd.sct.addBankAccount = function(badAccountsAlertValue) {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	if(badAccountsAlertValue == "few" || badAccountsAlertValue == "all"){ //Global alert in case of bad accounts
+		s.prop1='MBA_GLOBAL_ALERT_ADD_ACCOUNT_BTN';
+		s.tl(this,'o','Manage Bank Account - Global Alert Add Account Btn');
+	}else{
+		s.prop1='MBA_ACCOUNTS_ADD_ACCOUNT_BTN';
+		s.tl(this,'o','Manage Bank Account - Accounts_Add Account Btn');
+	}
+	s.manageVars("clearVars");
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Confirm page - Add bank account btn clicked
+dfs.crd.sct.confirmAddBankAccountBtn = function(accountType) {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.eVar43=accountType;
+	s.prop1='MBA_STEP1_ADD_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Step1 Add Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Add bank account btn clicked on confirmation page after a bank is added
+dfs.crd.sct.addBtnOnAddBankAccountConfirmationPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_STEP3_ADD_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Step3 Add Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Add bank account btn clicked on confirmation page after a bank is updated
+dfs.crd.sct.addBtnOnEditBankAccountConfirmationPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_EDIT_ACCT_CONFIRM_ADD_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Edit_Ac - Confirm Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Edit bank account btn clicked on details page
+dfs.crd.sct.editBankAccount = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_ACCOUNT_DETAILS_EDIT_BTN';
+	s.tl(this,'o','Manage Bank Account - Account Details-Edit Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Edit bank account btn clicked on update page
+dfs.crd.sct.updateEditedBankAccountDetails = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_EDIT_ACCT_UPDATE_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Edit_Ac - Update Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Remove bank account btn clicked on details page
+dfs.crd.sct.removeBankAccount = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_ACCOUNT_DETAILS_REMOVE_ACCOUNT_TXT';
+	s.tl(this,'o','Manage Bank Account - AcDetails-Remove Account Txt');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Remove bank account btn clicked on removeAccountConfirmPending page
+dfs.crd.sct.removeBtnOnRemoveAccountConfirmPendingPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_PEND_PYMTS_REMOVE_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Pend_Payments-Remove Ac Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Cancel btn clicked on removeAccountConfirmPending page
+dfs.crd.sct.cancelOnRemoveAccountConfirmPendingPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_PEND_PYMTS_DO_NOT_REMOVE_ACCOUNT_TXT';
+	s.tl(this,'o','Manage Bank Account - Pend_Payments-Do Not Remove Ac Txt');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Remove bank account btn clicked on removeAccountConfirmNoPending page
+dfs.crd.sct.removeBtnOnRemoveAccountConfirmNoPendingPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_NO_PEND_PYMTS_REMOVE_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - NoPend_Payments-Remove Ac Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Cancel btn clicked on removeAccountConfirmNoPending page
+dfs.crd.sct.cancelOnRemoveAccountConfirmNoPendingPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_NO_PEND_PYMTS_DO_NOT_REMOVE_ACCOUNT_TXT';
+	s.tl(this,'o','Manage Bank Account - NoPend_Payments-Do Not Remove Ac Txt');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+//Add bank account btn clicked on confirmation page after a bank is removed
+dfs.crd.sct.addBtnOnRemoveBankAccountConfirmationPage = function() {
+try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MBA_REMOVE_CONFIRM_ADD_ACCOUNT_BTN';
+	s.tl(this,'o','Manage Bank Account - Removal Confirmed - Add Account Btn');
+	s.manageVars("clearVars"); 
+	}catch(err){
+        //showSysException(err);
+    }
+}
+
+dfs.crd.sct.onClickMakePaymentPaySummBtn = function() {
+ try{
+	s.linkTrackVars=s.linkTrackVars+',prop1';
+	s.prop1='MANAGE_PYMTS_SUMMARY_MAP_BTN';
+	s.tl(this,'o','Manage Payments - Summary Map Btn');	 
+ }catch(err){
+     //showSysException(err);
+ }
+}
+
+dfs.crd.sct.onClickEligibleForEditBtn = function() {
+	 try{
+		 s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_EDIT_EDIT_BTN';
+		 s.tl(this,'o','Manage Payments - Edit Btn');
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEligibleForEditCancelBtn = function() {
+	 try{
+		 s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_EDIT_CANCEL_PYMT_TXT';
+		 s.tl(this,'o','Manage Payments - Edit-Cancel Pymnt txt');
+
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEligibleForEditVerifyConfmBtn = function() {
+	 try{
+		 s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_VERIFY_CONFIRM_BTN';
+		 s.tl(this,'o','Manage Payments - Verify Confirm Btn');
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEditVerifyConfmManagePayBtn = function() {
+	 try{
+		 s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_CONFIRM_MANAGE_PYMTS_BTN';
+		 s.tl(this,'o','Manage Payments - Confirm Manage Pymnt Btn');
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEligibleForEditCancelConfmBtn = function() {
+	 try{
+		s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_VERIFY_CANCEL_PYMT_BTN';
+		 s.tl(this,'o','Manage Payments - Verify Cancel Pymnt Btn');
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEligibleForEditDoNotCancelConfmBtn = function() {
+	 try{
+		 s.linkTrackVars=s.linkTrackVars+',prop1';
+		 s.prop1='MANAGE_PYMTS_VERIFY_DO_NOT_CANCEL_TXT';
+		 s.tl(this,'o','Manage Payments - Verify Do Not Cancel Txt');
+	 }catch(err){
+	     //showSysException(err);
+	 }
+	}
+
+dfs.crd.sct.onClickEligibleForEditReviewEditPage = function(selectedPayMode) {
+	 try{
+		 s.eVar59=selectedPayMode;
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
+
+
+dfs.crd.sct.onClickEligibleForEditVerifyPage = function(amountSelected) {
+	 try{
+		 s.eVar59=amountSelected;
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
+/************************Tagging Spec - 13.4  - End**************************/

@@ -1,0 +1,1482 @@
+/* -------------------13.3 change starts (vaibhav)------------------------*/
+/*common comp css starts*/
+
+/*Overlay CSS Starts Here*/
+.overlay {
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	background:#000;
+	display:none;
+	z-index:9999;
+}
+
+/* parent  for the entire overlay*/
+.overlay_wraper {
+	background-color:white;
+	color:#000;
+	font-size:12px;
+	margin:auto;
+	display:none;
+	z-index:99999;
+	overflow:visible;
+	-webkit-border-bottom-left-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-webkit-border-top-left-radius:3px;
+	-webkit-border-top-right-radius:3px;
+	border:1px solid #999;
+}
+/* parent for the main content ovelay*/
+.wrapperForOverlayBodyCopy {
+	overflow:hidden;
+	color:#000;
+	font-size:12px;
+	margin:auto;
+	float:left;
+	z-index:99999;
+	padding:15px 0px 0px 0px ;
+	}
+.overlayMain{
+		padding:15px 25px 15px 25px ;
+}
+
+/*   alerticon class for overlay is removed as we will reuse / override 'errorExcl'  class which is global for the alert icon  */
+.overlayBtn {
+	height:70px;
+    width:100%;
+	text-align:center;
+	padding:15px 0;
+	-webkit-box-shadow: 0px -3px 6px #E0E0E0;
+}
+.overlay-header {
+	width:100%;
+	clear:right;
+}
+.overlay-content {
+	font-family:Helvetica, Arial, sans-serif;
+	margin-bottom:0px;	
+	padding:10px 25px;
+    overflow-y:auto;
+}
+.totalContent{
+	padding:0px;
+	margin-top:10px;
+	line-height:18px;
+	color:#333;	
+}
+.overlay-content h1 {
+	text-shadow: none;
+	color: black !important;
+	margin: 0;
+	padding: 0!important;
+	font-size: 17px;
+}
+.overlay-content h2 {
+	color: #FA5317;
+	font-weight: bold;
+	font-size: 15px;
+	text-shadow: none;
+	padding: 0px 18px 0px 18px;
+}
+.overlay-header .hdr-text h1 {
+	text-align:left;
+	font-size:26px ;
+	line-height: 28px;
+	font-weight:bold ;
+	color:#293033 ;
+}
+.overlay-header .hdr-text {
+	width:90%;
+	float:left;
+	font-family:helvetica;
+	color:#3b474c;
+	display: inline-block;
+	margin-left: 0;
+	margin-top: 8px;
+	padding-left: 25px;
+}
+.howToContent .merchantTitle{
+	padding-bottom:5px;	
+	color:#444;
+}
+
+/*.overlay-header .hdr-text p{font-size:17px;font-weight:bold !important; font-family:Arial, Helvetica, sans-serif; padding-bottom:5px;}*/
+/* @OFIX */
+.overlay-header .hdr-text p {
+	font-size:23px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	padding-bottom:5px;
+	line-height: 24px ;
+}
+#closebtn {
+	margin:11px 0px 0 0;
+	float:right;
+	display:inline-block;
+	cursor:pointer;
+	position:absolute;
+	top: -22px;
+	right: -10px;
+}
+.overlay-content .innerText {
+	height:280px;
+	margin:0;
+}
+.overlay-header h3 {
+	padding-top:10px;
+}
+.noScrollinContent .overlay-content .innerText {
+	height:auto;
+}
+.overlay-content .innerText span {
+	font-size:12px;
+	font-weight:bold;
+	display:inline-block;
+	margin-top:11px;
+}
+.overlay-content .innerText p {
+	font-size:13px;
+	color:#576166;
+}
+.overlay-content .overlay-btn {
+	text-align:center;
+	margin-top:20px;
+}
+.overlay-content .innerText .indent-p {
+	margin-left:5px;
+}
+.overlay-content .innerText .top-p {
+	margin-top:10px;
+}
+.overlay-content ul {
+	padding-left:15px;
+	font-size:13px;
+	color:#3B474C;
+	line-height:22px;
+}
+.overlay-content .overlay-btn .ui-btn-up-c, .small_btn, .white-box-rd-corner .small_btn {
+	padding:0 15px 0 15px;
+}
+.overlay-content .innerText span.boldtext{
+	margin-top:0;	
+}
+.howToContent .innerText p{
+	font-size:12px;	
+	line-height:18px;
+	margin-top:5px;
+}
+.howToContent .innerText{
+	height:250px;	
+}
+.howToDoneButton{
+	margin-top:20px !important;	
+}
+.InstructionDetail .innerText{
+	height:330px;
+	}
+.btnOverLayDiv{
+	padding:0;	
+}
+/*Overlay CSS Ends Here*/
+
+/************************Overlay with gradient line and Button - STARTS*****************************/
+/* for the box shadow before the button */
+
+/*fixing border to apply the gradient before the button */
+.overlayWithBoxShadowButton .wrapperForOverlayBodyCopy {
+	border:0;
+	border-bottom-left-radius:0;
+	border-bottom-right-radius:0;
+	-webkit-box-shadow:none;
+}
+
+/*  Adjusting height for external link overlay*/
+.overlayWithBoxShadowButton .overlay-content .innerText {
+    height:300px;       	
+}
+/* font size for the paragraph*/
+.overlayWithBoxShadowButton .overlay-content .innerText p{
+	font-size:18px;
+    margin:0;
+}
+.overlayWithBoxShadowButton .overlay-content .innerText a{
+	text-decoration:none;
+	color:#267bb1;
+}
+/* the padding and shadow nonw properites for overlay*/
+.overlayWithBoxShadowButton .overlayBtn{
+	padding:0;
+	-webkit-box-shadow:none;
+	clear:left;
+}
+.wrapperForOverlayBodyCopy .txtcenteraln a,.wrapperForOverlayBodyCopy .txtcenteraln a.ui-btn-up-c{
+	width:94%;
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #FF6600 !important;
+	background-image: none !important;
+	margin-right:0;
+}
+.wrapperForOverlayBodyCopy .txtcenteraln .ui-btn-hover-c,.wrapperForOverlayBodyCopy .txtcenteraln .ui-btn-down-c {
+	width:94%;
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #ed4c0c !important;
+	background-image: none !important;
+}
+.wrapperForOverlayBodyCopy .ui-btn-inner .ui-btn-text{
+	font-size:20px;
+}
+
+/************************Overlay with gradient line and Button - ENDS*****************************/
+
+
+/*summary/history/pending payments toggle starts*/
+.payments div[data-role="content"] {
+	margin-bottom: 40px;
+}
+.payments .footnotes {
+	position: absolute;
+	width: 100%;
+	bottom: 10px;
+}
+.payments .ddHighlightError {
+	border-bottom: 1px solid #ed1c24;
+}
+.payments .ddHighlightErrorArrow {
+	border-bottom: 12px solid #ed1c24;
+}
+.payments .ui-content {
+	overflow-x: visible;
+}
+.payments .dropDownLayer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: transparent;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	display: none;
+}
+.payments .whitebg-list-view li,.payments .whitebg-list-view li a, .payments .transaction-list li, .payments .transaction-list li div p {
+	color: #8a9499 !important;
+}
+.payments .whitebg-list-view li .addUpdate{
+	color:#ff6600 !important;
+}
+.payments .paymentsMenu {
+	padding-top: 0px;
+	background: #F2F2F2;
+	width: 100%;
+	float: left;
+	margin: 0 0 3% 0;
+	list-style-type: none;
+}
+.payments .paymentsMenu li {
+	width: 32.3%;
+	text-align: center;
+	padding: 12px 0px;
+	float: left;
+	height: 20px;
+	overflow: visible;
+	border-bottom: 2px solid #9fa7ac;
+	margin-left: 2px;
+}
+.payments .paymentsMenu li:first-child {
+	width: 34%;
+	margin-left: 0;
+}
+.payments .paymentsMenu li:first-child a {
+	border-left: none !important;
+}
+.payments .paymentsMenu li a {
+	display: block;
+	text-decoration: none;
+	color: #454e52 !important;
+	border-left: 1px solid #899399 !important;
+	padding: 3px 0;
+	font-size:12px;
+	color:#243136 !important;
+	font-weight:bold !important;
+}
+.payments .paymentsMenu li a:hover {
+	color: #454e52;
+}
+.payments .paymentsMenu li.curnt {
+	padding: 12px 0 9px 0;
+	border-bottom: 5px solid #ff6601;
+}
+/*summary/history/pending payments toggle ends*/
+.payments .amt_bold {
+	font-size: 18px;
+	font-weight: normal;
+}
+.payments .transactionTable li.ui-btn-up-c, .transactionTable li.ui-btn-down-c, .transactionTable li.ui-btn-hover-c {
+	background: transparent;
+	color: inherit;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	font-weight: normal;
+	text-shadow: none;
+	display: inherit;
+	border: none;
+	-webkit-box-shadow: none;
+}
+.payments .transactionTable li .ui-grid-b div {
+	line-height: 18px;
+}
+.payments .ui-content .ui-listview {
+	margin: 0px;
+}
+.payments .transactionTable {
+	margin: 0px;
+}
+.payments .transactionTable .ui-body-c {
+	border: none;
+	background: none;
+}
+.payments .transactionTable li.ui-li {
+	padding: 12px 10px;
+	border-bottom: 1px dotted #C0C8CC;
+}
+.payments .transactionTable li {
+	font-size: 14px !important;
+	color: #576166 !important;
+	cursor: pointer;
+}
+.payments .transactionTable .ui-li:first-child {
+	border-bottom: 2px solid #D7D4D4 !important;
+	cursor: pointer;
+	padding: 0px 10px 8px 10px;
+	font-size: 12px;
+}
+.payments .transactionTable .ui-li:first-child {
+	color: #293033 !important;
+	font-size:15px !important;
+}
+.payments .ui-content-internalpages .transactionTable .ui-li:last-child {
+	border-bottom: 2px solid #D7D4D4 !important;
+}
+.payments .transactionTable li .ui-grid-b .ui-block-a {
+	width: 40%;
+	padding: 0px;
+}
+.payments .transactionTable li .ui-grid-b .ui-block-b {
+	width: 41%;
+	padding: 0px;
+}
+.payments .transactionTable li .ui-grid-b .ui-block-c {
+	width: 18%;
+	padding: 0px;
+	text-align: right;
+}
+.payments .transactionTable .listLi:nth-child(2n) {
+	background: #f2f3f3;
+}
+.payments .transactionTable li .ui-grid-b .ui-block-b {
+	padding-left: 5px;
+}
+.payments .font12 li {
+	font-size: 12px;
+}
+.payments .wraper .bluelink, .payments .wraper .bluelink2,.payments .txtcenteraln .bluelink,.payments .txtcenteraln .bluelink2 {
+	display: block;
+	text-decoration: none !important;
+	color: #267BB1 !important;
+	font-size: 20px !important;
+	margin-top: 15px !important;
+	font-weight: bold !important;
+	width:auto;
+}
+
+.payments .wraper .txtcenteraln{
+	margin:20px;
+}
+.payments .ui-btn-inner {
+	padding:10px 30px 6px 30px !important;
+}
+/* buttons styling starts */
+.payments .wraper .txtcenteraln .ui-btn-up-c, .payments .wraper .txtcenteraln .small_btn, .payments .txtcenteraln .small_btn, .payments .wraper .white-box-rd-corner .small_btn, .payments .wraper .accRemoveInstruction .white-box-rd-corner .small_btn{
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #FF6600 !important;
+	background-image: none !important;
+}
+
+.payments .txtcenteraln  .paymtBtnDisable{
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #BDBDBD !important;
+	background-image: none !important;
+}
+
+.payments .ui-btn-inner {
+	padding: 8px 30px !important;
+}
+.payments .txtcenteraln .ui-btn-hover-c, .payments .txtcenteraln .ui-btn-down-c {
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #ed4c0c !important;
+	background-image: none !important;
+}
+.payments .calicon {
+	height: 20px;
+	width: 20px;
+	margin-top: 14px;
+}
+.payments .ui-btn-inner .ui-btn-text{
+	font-size:20px;
+}
+.payments .r3matchbtn a {
+	padding:0px;
+	margin:0px;
+}
+.payments .ui-btn-up-c.ui-disabled {
+	background: #d8dde0 !important;
+	border: 1px solid white;
+	color: #E8ECED;
+1border-radius: 4px !important;
+1-webkit-border-radius: 4px !important;
+	font-weight: bold;
+	font-size: 12px;
+	text-shadow: none;
+	display: inline-block;
+	opacity: 1;
+}
+/* buttons styling ends */
+
+/*----------------common comp css ends-----------------*/
+
+#paymentStep1-pg .r3matchbtn{
+	margin:20px;
+}
+#paymentStep1-pg .bluelink{
+	font-size:20px !important;
+} 
+#paymentsSummary-pg .ui-content, #paymentsHistory-pg .ui-content, #pendingPayments-pg .ui-content, #paymentsEligible-pg .ui-content, #paymentsNotEligible .ui-content, #paymentStep1-pg .ui-content, #paymentStep2-pg .ui-content, #paymentStep3-pg .ui-content, #cancelPayments1-pg .ui-content, #maxReachedError-pg .ui-content, #noPendingPayments-pg .ui-content,  #conflictingPaymentError-pg .ui-content, #removeComplete-pg .ui-content, #removeAccountConfirmNoPending-pg .ui-content{
+	padding: 0 !important;
+}
+#paymentsSummary-pg .whitebg-list-view li span {
+	color: #8a9499;
+}
+#paymentsSummary-pg .ui-content-internalpages .wraper, #paymentsHistory-pg .ui-content-internalpages .wraper, #pendingPayments-pg .ui-content-internalpages .wraper, #paymentsEligible-pg .ui-content-internalpages .wraper, #paymentsNotEligible .ui-content-internalpages .wraper, #paymentStep2-pg .ui-content-internalpages .wraper, #paymentStep3-pg .ui-content-internalpages .wraper, #cancelPayments1-pg .ui-content-internalpages .wraper, #noPendingPayments-pg .ui-content-internalpages .wraper {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+#paymentStep1-pg .ui-content-internalpages .wraper {
+	padding: 0px 0px 4px 0px;
+}
+#paymentsSummary-pg ul.whitebg-list-view, #paymentsEligible-pg ul.whitebg-list-view, #paymentsNotEligible ul.whitebg-list-view {
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 1px solid #E4E4E4 !important;
+}
+#paymentStep1-pg ul.whitebg-list-view, #paymentStep2-pg ul.whitebg-list-view, #paymentStep3-pg ul.whitebg-list-view, #cancelPayments1-pg ul.whitebg-list-view, #maxReachedError-pg ul.whitebg-list-view, #conflictingPaymentError-pg ul.whitebg-list-view, #removeComplete-pg ul.whitebg-list-view{
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-bottom: 1px solid #C0C8CC !important;
+}
+#paymentsSummary-pg .ui-content-internalpages ul.whitebg-list-view li, #paymentsEligible-pg .ui-content-internalpages ul.whitebg-list-view li, #paymentsNotEligible .ui-content-internalpages ul.whitebg-list-view li, #paymentStep2-pg .ui-content-internalpages ul.whitebg-list-view li, #paymentStep3-pg .ui-content-internalpages ul.whitebg-list-view li, #cancelPayments1-pg .ui-content-internalpages ul.whitebg-list-view li, #maxReachedError-pg .ui-content-internalpages ul.whitebg-list-view li, #conflictingPaymentError-pg .ui-content-internalpages ul.whitebg-list-view li, #removeComplete-pg .ui-content-internalpages ul.whitebg-list-view li {
+	border-bottom: 1px solid #E4E4E4 !important;
+	font-size: 14px;
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F7FAF9), to(#f7faf9)) !important;
+}
+
+#removeComplete-pg .ui-content-internalpages ul.whitebg-list-view li{padding-bottom:0px !important;}
+
+#removeComplete-pg .ui-content-internalpages ul.whitebg-list-view li:last-child{border-bottom:none !important;}
+#removeComplete-pg .ui-content-internalpages ul.whitebg-list-view li:first-child{border-top:2px solid #E4E4E4; margin-top:10px;}
+
+#paymentsSummary-pg .ui-content-internalpages ul.whitebg-list-view li:last-child, #paymentsEligible-pg .ui-content-internalpages ul.whitebg-list-view li:last-child, #paymentsNotEligible .ui-content-internalpages ul.whitebg-list-view li:last-child, #paymentStep1-pg .ui-content-internalpages ul.whitebg-list-view li:last-child, #paymentStep2-pg .ui-content-internalpages ul.whitebg-list-view li:last-child, #paymentStep3-pg .ui-content-internalpages ul.whitebg-list-view li:last-child, #cancelPayments1-pg .ui-content-internalpages ul.whitebg-list-view li:last-child {
+	border-bottom: none !important;
+}
+#paymentsHistory-pg .footnotes .provideFeedBack, #pendingPayments-pg .footnotes .provideFeedBack, #noPendingPayments-pg .footnotes .provideFeedBack {
+	margin-top: 80px !important;
+}
+#paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-d, #pendingPayments-pg .transactionTable li .ui-grid-b .ui-block-d {
+	width: 99%;
+	text-align: left;
+	padding-top: 2px;
+}
+#paymentsHistory-pg .transactionTable li {
+	color: #5c5e5f !important;
+}
+
+#paymentsHistory-pg .transactionTable li:first-child, #paymentsHistory-pg .transactionTable li:last-child, #pendingPayments-pg .transactionTable li:first-child, #pendingPayments-pg .transactionTable li:last-child {
+	color: #293033 !important;
+	border-bottom: 1px solid #d8dbde;
+}
+
+#pendingPayments-pg .opt2 li.listLi {
+	color: #1D7ABF !important;
+}
+#paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-b, #paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-c, #pendingPayments-pg .transactionTable li .ui-grid-b .ui-block-b, #pendingPayments-pg .transactionTable li .ui-grid-b .ui-block-c {
+	width: 29% !important;
+}
+#paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-c span,#pendingPayments-pg #pendingPayments_pendingList li .ui-grid-b .ui-block-c span{
+	color: #669900;
+}
+#paymentsHistory-pg .transactionTable li:first-child .ui-grid-b .ui-block-c span {
+	color: #293033 !important;
+}
+#paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-a, #pendingPayments-pg .transactionTable li .ui-grid-b .ui-block-a {
+	width: 41% !important;
+}
+#paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-b {
+	padding-left: 5px;
+}
+#paymentsHistory-pg .transactionTable .ui-btn-up-c, #pendingPayments-pg .transactionTable .ui-btn-up-c {
+	background-image: none !important;
+	border-top: 0px !important;
+	-webkit-border-radius: 0 !important;
+}
+
+#manageBankAccNoAcc-pg .ui-content-internalpages p{font-size:18px; line-height:24px; padding:20px 5px 0px 5px; color:#293033;}
+
+#paymentsEligible-pg .eligEdit {
+	margin: 0 auto;
+}
+.payments .txtlftalgn {
+	padding: 12px;
+}
+.payments .ui-content-internalpages .txtlftalgn p {
+	font-size: 14px !important;
+	font-weight: normal;
+	margin: 0px 0 10px 0;
+	color: #293033;
+	line-height: 17px;
+}
+#paymentStep1-pg .ui-content-internalpages .txtlftalgn p {
+	font-size: 14px !important;
+}
+#paymentStep1-pg .txtlftalgn .ui-link, #paymentStep2-pg .txtlftalgn .ui-link {
+	color: #267bb1;
+	font-size: 14px;
+	font-weight: normal !important;
+	line-height: 17px;
+	text-decoration: none;
+}
+.payments .ui-link {
+	color: #267bb1;
+	font-size: 14px;
+	font-weight: normal !important;
+	line-height: 17px;
+	text-decoration: none;
+}
+/*#missedPayments-pg3 .callNO .ui-link{
+	font-size:17px !important;
+line-height: 17px;}*/
+#paymentStep2-pg .r3matchbtn a.bluelink {
+	padding: 0px !important;
+}
+#missedPayments-pg3 .callNo .ui-link {
+	font-weight: normal !important;
+	text-decoration: none !important;
+	color: #267bb1 !important;
+	font-size:17px;
+}
+#missedPayments-pg3 .callNo {
+	display: block;
+	margin-top: 20px;
+}
+#paymentStep1-pg .nobg_2coltbl li {
+	padding: 0px !important;
+}
+#paymentStep1-pg .nobg_2coltbl .col1, .nobg_2coltbl .col2 {
+	font-size: 14px !important;
+}
+#paymentStep1-pg .nobg_2coltbl li {
+	border-bottom: 0px;
+}
+#paymentStep1-pg .customDD {
+	margin-top: 3px;
+}
+#paymentStep1-pg .detailsList {
+	margin: 0px 0px 0px 0px;
+}
+#paymentStep1-pg .ui-content .white-form {
+	background: none;
+	border: none;
+	padding: 0;
+}
+#paymentStep1-pg .ui-content .white-form .ui-btn-up-c, #paymentStep1-pg .ui-content .white-form .ui-btn-hover-c {
+	padding: 0;
+	line-height: 17px;
+}
+#paymentStep1-pg .ui-radio label {
+	background: none !important;
+}
+#paymentStep1-pg .ui-radio label.ui-btn {
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none
+}
+#paymentStep1-pg .ui-content .white-form .detailsList {
+	margin: 0px 0px 8px 0px;
+}
+#paymentStep1-pg .white-form .ui-btn-inner .ui-btn-text {
+	font-size: 14px;
+}
+#paymentStep1-pg .ui-content .white-form .wrapperSpan {
+	margin-top: 32px;
+}
+#paymentStep1-pg .ui-content .white-form .col1 {
+	width: 75%;/*payments issue 15-July, changed from 35% to 75%*/
+}
+#paymentStep1-pg .ui-content .white-form .lastStmtBal {
+	width:65% !important;
+}
+
+#paymentStep1-pg .lastStmtBal .ui-radio .ui-btn-icon-left .ui-btn-inner {
+	padding:8px 10px 8px 30px !important;
+}
+#paymentStep1-pg .ui-content .white-form .Othr {
+	width: 54% !important;
+}
+#paymentStep1-pg .ui-content .white-form .dlr {
+	float: left;
+	padding-top: 15px;
+	font-size: 16px;
+	color: #B9C1C5;
+}
+#paymentStep1-pg .payDate {
+	padding-top: 10px;
+	width: 34%;
+}
+#paymentStep1-pg .ui-content .datealign {
+	float: right;
+	width: 84%;
+}
+#paymentStep1-pg .ui-content .datealign .detailsList {
+	float: left;
+}
+#paymentStep1-pg .ui-content .datealign .detailsList li {
+	padding: 4px 6px !important;
+}
+#paymentStep1-pg .ui-content .datealign .detailsList {
+	margin: 7px 0px 13px 0px;
+}
+#paymentStep1-pg .dateList {
+	width: 76%;
+}
+#paymentStep1-pg #datepicker-val {
+	width: 90%;
+	float: left;
+	margin: 0 0 0 5px;
+	font-size: 17px !important;
+	height:18px !important;
+}
+#paymentStep1-pg .minDueLbl {
+	width: 138px !important;
+}
+#paymentStep1-pg .nobg_2coltbl li .minDueDate {
+	width: 83px !important;
+	float: left;
+	text-align: left;
+}
+#paymentStep1-pg .nobg_2coltbl li .col2 {
+	width: 57%;
+	color: #8a9499;
+}
+#paymentStep1-pg .ddList .detailName {
+	display: block;
+}
+#paymentStep1-pg .amnt {
+	font-size: 14px;
+	color: #777;
+	margin-bottom: -3px;
+	margin-top: 10px;
+	display: block;
+}
+#paymentStep1-pg .white-form .ui-radio .ui-icon {
+	top: 16px;
+}
+#paymentStep1-pg .min-last {
+	display: inline;
+	float: right;
+	line-height: 23px;
+	color: #b9c1c5;
+	font-size: 18px;
+	padding-top: 12px;
+}
+#paymentStep1-pg .emptyText {
+	margin-top: 15px;
+	right: 1%;
+}
+#paymentStep1-pg .nobg_2coltbl .emptyText {
+	margin-top: 8px;
+	right: 37px;
+}
+#paymentStep1-pg .ui-radio .ui-btn-icon-left .ui-btn-inner {
+	padding: 7px 1px 7px 29px;
+}
+#paymentStep1-pg .ui-icon, .ui-icon-searchfield::after {
+	border: 1px solid #B3B3B3 !important;
+}
+#paymentStep1-pg .white-form span.ui-btn-inner {
+1color:#B7B7B7;
+}
+#paymentStep1-pg .disableActiveRadio .ui-radio.ui-disabled {
+	opacity: 0.5 !important;
+}
+#paymentStep1-pg .white-form .ui-radio .ui-btn {
+	border: 0px !important;
+}
+#paymentStep1-pg .paymentinputtext {
+	font-weight: normal;
+}
+#paymentStep1-pg .ui-select {
+	margin-top: 0px;
+}
+#paymentStep1-pg .detailsList > li {
+	overflow: hidden;
+	padding-top: 0px;
+}
+#paymentStep1-pg .date-picker {
+	margin: 2px 0px !important;
+}
+#paymentStep1-pg input.textInput::-webkit-input-value, #paymentStep1-pg input.numInput::-webkit-input-value {
+ color:#8D9193 !important;
+ font-weight:normal;
+}
+#paymentStep1-pg .ui-content-internalpages .err1, #paymentStep1-pg .ui-content-internalpages .err2, #paymentStep1-pg .ui-content-internalpages .err3 {
+	color: #ed1c24;
+	margin-top: 8px;
+}
+#paymentStep1-pg .ui-content-internalpages .white-form .err1, #paymentStep1-pg .nobg_2coltbl li .err1 {
+	color: #ed1c24;
+	margin-top: 0px;
+}
+#paymentStep1-pg .errBorder {
+	border-bottom: solid 1px #ff0000;
+	border-left: solid 1px #ff0000;
+	border-right: solid 1px #ff0000;
+}
+#pendingPayments-pg .payArr {
+	height: 27px;
+	width: 29px;
+	float: right;
+	background: url('../images/payArrow.png') no-repeat;
+	background-size: 10px 15px;
+	background-position: 17px 6px;
+}
+#pendingPayments-pg .pendInfo {
+	padding: 0px 12px;
+	font-size: 16px;
+}
+#confirmCancelPayment-pg .payCanceled {
+	font-size: 17px;
+	color: #293033;
+	padding-bottom: 25px;
+}
+#cancelPayments1-pg .errorText, #paymentStep2-pg .errorText {
+	margin-top: 16px;
+	padding: 0 12px;
+	float: left;
+}
+/*#maxReachedError-pg .errorText, #conflictingPaymentError-pg .errorText{margin-top:16px;padding:0 12px;float:left;}*/
+
+#missedPayments-pg .ui-content, #missedPayments-pg3 .ui-content, #missedPayments-pg1 .ui-content {
+	padding: 30px 10px 10px 10px !important;
+}
+#maxReachedError-pg .errorText, #conflictingPaymentError-pg .errorText {
+	margin: 30px 0px 0px 15px;
+}
+#missedPayments-pg .errorText .marginTop, #missedPayments-pg1 .errorText .marginTop {
+	display: block;
+	margin-top: 20px;
+}
+#conflictingPaymentError-pg .whitebg-list-view li .smallText {
+	color: #8a9499;
+	font-size: 12px;
+}
+#conflictingPaymentError-pg .fontStyle, #maxReachedError-pg .fontStyle {
+	color: #293033;
+	font-size: 18px;
+}
+#maxReachedError-pg .errorText p, #conflictingPaymentError-pg .errorText p {
+	color: #293033;
+	font-size: 17px;
+	line-height: 20px !important;
+}
+#cancelPayments1-pg .errorText p, #paymentStep2-pg .errorText p {
+	font-size: 14px;
+	color: #293033;
+}
+/*#missedPayments-pg3 .errorText{margin-top:30px !important;}*/
+#missedPayments-pg .ui-content-internalpages p, #missedPayments-pg1 .ui-content-internalpages p, #missedPayments-pg2 .ui-content-internalpages p, #missedPayments-pg3 .ui-content-internalpages p {
+	color: #293033;
+	font-size: 17px;
+	line-height: 20px !important;
+}
+#missedPayments-pg .txtcenteraln, #missedPayments-pg1 .txtcenteraln {
+	margin-top: 30px !important;
+}
+#cancelPayments1-pg .progress-indicator li, #confirmCancelPayment-pg .progress-indicator li {
+	width: 48%;
+}
+/*--------------------------13.3 change ends (vaibhav)----------------------------------*/
+
+/*css for common components starts here*/
+.payments .wrapperSpan  {
+	border-bottom: solid 1px #b3b3b3;
+	border-left: solid 1px #b3b3b3;
+	border-right: solid 1px #b3b3b3;
+	overflow: visible;
+	max-height: 0.1em;
+	display: block;
+	padding: 2px;
+	margin-top: 22px;
+	float: left;
+	width: 100%;
+}
+.payments .emptyText {
+	margin-top: 23px;
+	position: absolute;
+	right: 19px;
+	cursor: pointer;
+	display: none;
+}
+.payments input.textInput, .payments input.numInput {
+	outline: none;
+	border: none;
+	background: transparent;
+	display: block;
+	position: relative;
+	bottom: 20px;
+	font-size: 18px !important;
+	margin: 0 0 0 5px;
+	padding: 0;
+	line-height: 1.1;
+}
+.payments input.textInput::-webkit-input-placeholder, .payments input.numInput::-webkit-input-placeholder {
+ color:#b1b1b1 !important;
+ font-weight:normal;
+}
+.payments .customDD {
+	width: 100%;
+	border-bottom: 1px solid #b5b5b5;
+	margin-top: 20px;
+	cursor: pointer;
+	position: relative;
+}
+.payments .ddValue {
+	font-size: 20px;
+	color: #383838;
+	float: left;
+}
+.payments .ddList {
+	list-style-type: none;
+	font-size: 20px;
+	color: #383838;
+	border: 1px solid #b8bab9;
+	margin-top: 1px;
+	cursor: pointer;
+	display: none;
+	-webkit-box-shadow: 0 0 5px #888;
+	z-index: 999999;
+	position: absolute;
+	background: #FFF;
+	left: 16px;
+	right: 16px;
+}
+.payments .ddList li:active {
+	background: #ebeff0;
+	-webkit-box-shadow: 0px 0px 5px 0px #6c787b inset;
+	cursor: pointer;
+}
+.payments .ddList li {
+	border-bottom: 1px solid #b8bab9;
+	padding: 18px 11px;
+}
+.payments .ddList li:first-child {
+	padding: 18px 11px;
+}
+.payments .ddList li:last-child {
+	border-bottom: none;
+}
+.payments .rightArrow {
+	width: 0;
+	height: 0;
+	text-indent: -9999px;
+	border-bottom: 12px solid #b8bab9;
+	border-left: 12px solid transparent;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.payments .placeholder {
+	color: #b4b4b4;
+	font-size: 20px;
+}
+/*porgress indicator css*/
+.payments .progress-indicator {
+	margin-top: -1px !important;
+	margin: 0 10px;
+	border-bottom: 1px solid #e0e2e2;
+}
+.payments .progress-indicator ul {
+	margin: 0;
+	padding: 0;
+}
+.payments .progress-indicator li {
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 33%;
+	text-align: center;
+	list-style: none;
+}
+.payments .progress-indicator a.active {
+	color: #576166 !important;
+	background: url(../images/active-arrow.png) no-repeat center top;
+	-webkit-background-size: 13px 9px;
+}
+.payments .progress-indicator li a {
+	text-decoration: none;
+	color: #8a9499 !important;
+	font-size: 12px;
+	font-weight: bold !important;
+	text-shadow: none;
+	margin: 0;
+	padding: 15px 0 15px 0;
+	display: block;
+}
+.payments .progress-indicator a.visited {
+	background: url(../images/checked-icon.png) no-repeat 0 18px;
+	display: inline-block;
+	-webkit-background-size: 10px 9px;
+	padding-left: 12px;
+}
+/*progress indocator css ends*/
+/*css for common components ends here*/
+.payments {
+	background: #f8fbfa;
+	background-image: none !important;
+}
+.payments .r3matchbtn a {
+	width: auto;
+}
+#manageBankAccNoAcc-pg .r3matchbtn a {
+	margin-top: 20px;
+}
+#manageBankAccounts-pg .ui-content, #manageBankAccDetails-pg .ui-content, #manageBankAccReviewDetails-pg .ui-content, #manageBankAccConfirmDetails-pg .ui-content {
+	padding: 0;
+}
+#manageBankAccounts-pg .ui-content {padding:7px 0px 0px 0px;}
+.payments .wraper .accountList {
+	border-top: 2px solid #d0d0d0;
+	margin-top: 25px;
+}
+#manageBankAccConfirmDetails-pg .wraper .accountList li:first-child {
+	padding: 15px;
+	border-top: 1px solid #cfd1d0;
+}
+.payments .wraper .accountList li {
+	padding: 15px;
+	border-bottom: 1px solid #cfd1d0;
+}
+.payments .wraper .accountList li .ui-block-a {
+	width: 80%;
+}
+.payments .wraper .accountList li .ui-block-b {
+	width: 20%;
+	height: 30px;
+	cursor: pointer;
+}
+.payments .wraper .accountList li span {
+	display: block;
+}
+.payments .wraper .accountList li span.accEnding {
+	font-size: 14px;
+	color: #787878;
+}
+.payments .wraper .accountList li span.accName {
+	font-size: 18px;
+	color: #333333;
+	margin-top: 3px;
+}
+.payments .wraper .accountList li .ui-block-b a {
+	margin: 8px 0 0 30px;
+	display: block;
+	text-decoration: none;
+	
+	background: url('../images/payArrow.png') no-repeat center;
+	background-size: 10px 15px;
+	height:26px;
+}
+#manageBankAccounts-pg .txtcenteraln {
+	margin-top: 20px;
+}
+#manageBankAccDetails-pg .accountList li .ui-block-b {
+	display: none;
+}
+.payments .wraper .pendingPaymentMsg {
+	padding: 13px 13px 0 15px;
+}
+
+.payments .wraper .pendingPaymentMsg p{
+	font-size: 18px;
+	color: #293033;
+	line-height:24px;
+	}
+
+#manageBankAccDetails-pg .txtcenteraln {
+	margin-top: 28px;
+}
+.payments .wraper .txtcenteraln a.removeAcc {
+	display: block;
+	text-decoration: none;
+}
+.payments .helpLink {
+	cursor: pointer;
+}
+.payments .helpLink .plusMinus {
+	background: url(../images/plus-minus2x.png) no-repeat;
+	background-position: 0 6px;
+	background-size: 100%;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+}
+.payments .helpLink .helpImg {
+	/*width:296px;
+	height:135px;
+	background:url("../images/helpImgExpanded.png") no-repeat top left;*/
+	text-align: center;
+	margin-top: 10px;
+	1display: none;
+	/*background-size:100%;*/
+}
+.payments .detailsList {
+	margin: 12px 0 30px 0;
+}
+.payments .detailsList > li {
+	overflow: visible;
+	padding-top: 20px;
+}
+.payments .detailsList > li:first-child {
+	padding-top: 0;
+}
+.payments .detailsList .detailName {
+	font-size: 14px;
+	color: #8a9499;
+}
+#manageBankAccEnterDetails-pg .r3matchbtn .cancelBtn {
+	display: block;
+	text-decoration: none;
+}
+#manageBankAccUpdateDetails-pg .r3matchbtn .cancelBtn {
+	display: block;
+	text-decoration: none;
+}
+
+.payments .errormsg {
+	float: left;
+	width: 88%;
+	margin: 10px 0 0 0;
+}
+.payments .errOther, .payments .errOther1, .payments .errOther2 {
+	margin: 10px 0 0 0;
+	color: #ed1c24 !important;
+}
+.payments .defaultMsg {
+	margin: 0;
+}
+.payments .errorText, .payments .errorText1, .payments .errorText2, .payments .errorText3, .payments .errorText4 {
+	float: left;
+}
+#manageBankAccounts-pg .errorText {
+	margin-top: 15px;
+	padding: 0 10px 0px 10px;
+}
+#manageBankAccounts-pg .errorText .alertImage,#manageBankAccDetails-pg .errorText .alertImage {
+	background:url(../images/alertImgGrey.png) no-repeat top left;
+	background-size:100%;
+}
+.payments .errorText1, .payments .errorText2, .payments .errorText3, .payments .errorText4 {
+	padding: 0px 12px;
+	width: 91%;
+}
+.payments .errorText .alertImage, .payments .errorText1 .alertImage, .payments .errorText2 .alertImage, .payments .errorText3 .alertImage, .payments .errorText4 .alertImage{
+	display: inline-block;
+	background: url(../images/alertImg.png) no-repeat top left;
+	background-size: 100%;
+	width: 22px;
+	height: 22px;
+	float: left;
+}
+#paymentStep2-pg .alertImage {
+	background: url(../images/alertImgGrey.png) no-repeat top left;
+	background-size: 100%;
+	width: 22px;
+	height: 22px;
+}
+#paymentsSummary-pg .alertImage {
+	background: url(../images/alertImgGrey.png) no-repeat top left;
+	background-size: 100%;
+	width: 22px;
+	height: 22px;
+}
+.payments .errorText div, .payments .errorText1 div, .payments .errorText2 div, .payments .errorText3 div, .payments .errorText4 div {
+	float: left;
+	width: 88%;
+	margin-left: 6px;
+}
+.payments .errorText p, .payments .errorText1 p, .payments .errorText2 p, .payments .errorText3 p, .payments .errorText4 p {
+	display: inline-block;
+}
+#manageBankAccReviewDetails-pg .wraper .accountList, #manageBankAccConfirmDetails-pg .wraper .accountList {
+	border-top: none;
+	margin-top: 0;
+}
+#manageBankAccReviewDetails-pg .cancelBtn {
+	display: block;
+	text-decoration: none;
+}
+#manageBankAccReviewDetails-pg .r3matchbtn, #manageBankAccConfirmDetails-pg .r3matchbtn {
+	margin-top: 40px;
+}
+#manageBankAccReviewDetails-pg .accountDetails li .ui-block-b, #manageBankAccConfirmDetails-pg .accountDetails li .ui-block-b {
+	display: none;
+}
+.payments .successMsg {
+	font-size: 19px;
+	margin: 18px 14px;
+	line-height: 21px;
+}
+/*removeAccount and removeAccountComplete page css*/
+
+/* css for navigations */
+#removeAccount-pg .blockSize, #removeAccountComplete-pg .blockSize {
+	width: 50%;
+	margin-top: 5px;
+}
+/*css for first instruction on both pages*/
+#removeAccount-pg .accInstruction {
+	float: left;
+	width: 100%;
+	margin-top: 5px;
+}
+#removeAccountComplete-pg .accRemoveInstruction {
+	float: left;
+	width: 100%;
+	margin: 5px 0px 40px 0px;
+}
+#removeAccountComplete-pg .r3matchbtn {
+	margin-top: 25px !important;
+}
+#removeAccount-pg .accInstruction span, #removeAccountComplete-pg .accRemoveInstruction .done, #removeAccountConfirmPending-pg .accInstruction span,  #removeAccountConfirmNoPending-pg .accInstruction span, #removeComplete-pg .accInstruction span{
+	color: #4F585E;
+	font-size: 16px;
+	display: block;
+	padding: 0px 12px 0px 12px;
+}
+
+#removeAccountConfirmPending-pg .accInstruction .light, #removeAccountConfirmNoPending-pg .accInstruction .light, #removeComplete-pg .accInstruction .light  {
+	padding: 17px 10px 10px 10px;
+}
+#removeComplete-pg .whitebg-list-view li a{
+	width:100%;
+}
+#removeComplete-pg .accInstruction .light, #removeAccountConfirmNoPending-pg .accInstruction .light, #removeAccountConfirmPending-pg .accInstruction .light{font-size:18px;  color:#2b3234 !important;}
+
+#removeComplete-pg .accInstruction .light, #removeAccountConfirmNoPending-pg .accInstruction .light, #removeAccountConfirmPending-pg .accInstruction .light{font-size:18px;  color:#293033 !important;}
+
+/*bold text*/
+#removeAccount-pg .pendingPayments {
+	width: 100%;
+	float: left;
+	margin-top: 12px;
+}
+#removeAccount-pg .pendingPayments .note {
+	color: #2D3235;
+	font-weight: bold;
+	font-size: 16px;
+	display: block;
+	padding: 0px 12px 12px 12px;
+}
+
+#removeAccountConfirmPending-pg .wraper .accInstruction .heighlight{color: #2D3235;font-weight: bold; padding:0 !important; display:inline; font-size:18px;}
+
+#removeAccount-pg .activeBlock, #removeAccountComplete-pg .activeBlock {
+	width: 50%;
+}
+/* css of grid and lists for pending payments  */
+#removeAccount-pg .wraper .transactionTable .ui-btn-up-c, #removeAccount-pg .transactionTable .ui-btn-up-c, #removeAccountConfirmPending-pg .wraper .transactionTable .ui-btn-up-c{
+	background-image: none !important;
+}
+#removeAccount-pg .wraper .ui-li-static.ui-li, #removeAccountConfirmPending-pg .wraper .ui-li-static.ui-li {
+	padding: 10px;
+}
+#removeAccount-pg .wraper .transactionTable li, #removeAccountConfirmPending-pg .wraper .transactionTable li  {
+	color: #5C5E5F !important;
+}
+#removeAccount-pg .wraper .transactionTable .ui-li:first-child, #removeAccountConfirmPending-pg .wraper .transactionTable .ui-li:first-child {
+	border-bottom: 1px solid #D7D4D4 !important;
+	cursor: pointer;
+	padding: 0px 10px 8px 10px;
+	font-size: 12px;
+}
+#removeAccount-pg .wraper .transactionTable .ui-li:last-child, #removeAccountConfirmPending-pg .wraper .transactionTable .ui-li:last-child  {
+	border-bottom: 1px solid #D7D4D4 !important;
+}
+#removeAccount-pg .wraper .transactionTable .listLi:nth-child(2n), #removeAccountConfirmPending-pg .wraper .transactionTable .listLi:nth-child(2n) {
+	background: #F2F2F2;
+}
+#removeAccount-pg .wraper .transactionTable li.ui-li, #removeAccountConfirmPending-pg .wraper .transactionTable li.ui-li{
+	padding: 12px 10px;
+	border-bottom: 1px dotted #C0C8CC !important;
+}
+#removeAccount-pg .wraper .ui-li-static.ui-li, #removeAccountConfirmPending-pg .wraper .ui-li-static.ui-li {
+	padding: 0px;
+}
+#removeAccount-pg .wraper .transactionTable li, #removeAccountConfirmPending-pg .wraper .transactionTable li{
+	font-size: 12px;
+	color: #3D484D;
+	cursor: pointer;
+	color: #5C5E5F;
+}
+#removeAccount-pg .wraper .transactionTable li .ui-grid-b .ui-block-d, #removeAccountConfirmPending-pg .wraper .transactionTable li .ui-grid-b .ui-block-d {
+	width: 100%;
+	text-align: left;
+	padding-top: 0px;
+}
+#removeAccount-pg .wraper .transactionTable li.ui-btn-up-c, #removeAccountConfirmPending-pg .transactionTable li.ui-btn-up-c,  .transactionTable li.ui-btn-down-c, .transactionTable li.ui-btn-hover-c {
+	background: transparent;
+	color: inherit;
+	border-radius: 0px !important;
+	-webkit-border-radius: 0px;
+	font-weight: normal;
+	text-shadow: none;
+	display: inherit;
+	border: none;
+	-webkit-box-shadow: none;
+	border-top: 0px !important;
+}
+#removeAccount-pg .wraper .transactionTable li .ui-grid-b .leftMargin, #removeAccountConfirmPending-pg .wraper .transactionTable li .ui-grid-b .leftMargin   {
+	margin-left: 10px;
+}
+#removeAccount-pg .wraper .txtcenteraln, #removeAccountConfirmPending-pg .wraper .txtcenteraln {
+	margin-top: 20px;
+}
+#removeAccount-pg .wraper .transactionTable li .ui-grid-b .amountMargin, #removeAccountConfirmPending-pg .wraper .transactionTable li .ui-grid-b .amountMargin  {
+	display: block;
+	text-align: right;
+	padding-right: 10px;
+}
+#removeAccount-pg .wraper .transactionTable .ui-btn-up-c, #removeAccountConfirmPending-pg .wraper .transactionTable .ui-btn-up-c   {
+	line-height: 15px;
+}
+#removeAccount-pg .wraper .option .ui-btn-up-c, #removeAccount-pg .wraper .option.white-box-rd-corner .small_btn {
+	border: none;
+	background-color: #FF6600 !important;
+	background-image: none !important;
+}
+/*#removeAccount-pg .wraper .option .r3matchbtn .ui-btn,#removeAccountComplete-pg .wraper .accRemoveInstruction .r3matchbtn .ui-btn{border:none;
+-webkit-box-shadow: 3px 3px -3px 1px #CECEC9;
+-moz-box-shadow: 3px 3px -3px 1px #CECEC9;
+box-shadow: 3px 3px -3px 1px #CECEC9}*/
+
+
+/*#removeAccount-pg .wraper .option .r3matchbtn .ui-btn,#removeAccountComplete-pg .wraper .accRemoveInstruction .r3matchbtn .ui-btn{border:none;
+-webkit-box-shadow:1px 1px 0px rgba(164, 168, 170, 0.8);
+-moz-box-shadow:1px 1px 0px rgba(164, 168, 170, 0.8);
+box-shadow:1px 1px 0px rgba(164, 168, 170, 0.8);
+}*/
+
+.payments .ui-btn {
+	width: auto;
+	border: none;
+	-webkit-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8);
+	-moz-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8);
+	box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8);
+}
+#removeAccount-pg .ui-content, #removeAccountComplete-pg .ui-content, #removeAccountConfirmPending-pg .ui-content, #removeAccountConfirmNoPending-pg .ui-content {
+	padding: 7px 0 0 0;
+}
+#removeAccount-pg .wraper .option #manageAccount {
+	width: 60%;
+}
+#removeAccount-pg .wraper .option, #removeAccountConfirmPending-pg .wraper .option, #removeAccountConfirmNoPending-pg .wraper .option {
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+#removeAccount-pg .option .lastText, #removeAccountConfirmPending-pg .option .lastText, #removeAccountConfirmNoPending-pg .option .lastText {
+	width: 75%;
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#removeAccountConfirmNoPending-pg .accInstruction .digits, #removeAccountConfirmPending-pg .accInstruction .digits
+{display:inline; padding:0; color:#2B3234; font-size:18px;}
+#removeAccountConfirmNoPending-pg .accInstruction{padding-top:3px;}
+
+
+#removeAccount-pg .option .lastText a, #removeAccountConfirmPending-pg .option .lastText a, #removeAccountConfirmNoPending-pg .option .lastText a  {
+	text-decoration: none;
+	color: #2979B0;
+	font-weight: bold;
+	font-size: 14px;
+	
+}
+
+#removeComplete-pg .wraper .addAcoountButton{margin-top:40px;}
+#removeComplete-pg .payArr {
+	height: 18px;
+	width: 10px;
+	background: url('../images/payArrow.png') no-repeat;
+	background-size: 10px 18px;
+	position: relative;
+	bottom: 26px;
+}
+
+/*End of removeAccount and removeAccountComplete page css*/
+
+/* Orange Radio starts here */
+#paymentStep1-pg .white-form .ui-radio-off .ui-icon {
+	background: none !important;
+}
+#paymentStep1-pg .ui-icon, .ui-icon-searchfield:after {
+	background-image : none !important;
+}
+#paymentStep1-pg .white-form .ui-radio-on .ui-icon {
+
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(44%,rgba(255,102,0,1)), color-stop(47%,rgba(71,33,8,1)), color-stop(48%,rgba(10,10,10,0.67)), color-stop(50%,rgba(255,255,255,0))) !important; /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover, rgba(255,102,0,1) 44%,rgba(71,33,8,1) 47%,rgba(10,10,10,0.67) 48%,rgba(255,255,255,0) 50%) !important; /* Chrome10+,Safari5.1+ Chrome10+,Safari5.1+ */
+background: radial-gradient(ellipse at center,  rgba(255,102,0,1) 44%,rgba(71,33,8,1) 47%,rgba(10,10,10,0.8) 48%,rgba(255,255,255,0) 52%); 
+ /* IE6-9 fallback on horizontal gradient */
+	background-size: 16px 16px;
+	
+}
+/* Orange Radio ends here */
+
+
+/*******native dropdown*********/
+#manageBankAccEnterDetails-pg .dd .ddTitle .ddTitleText .description {
+	color: #b4b4b4;
+	font-size: 20px;
+}
+#manageBankAccUpdateDetails-pg .dd .ddTitle .ddTitleText .description {
+	color: #b4b4b4;
+	font-size: 20px;
+}
+#managendingPayments-pg .noPayments {
+	text-align: center;
+	margin: 50px 0;
+}
+#noPendingPayments-pg .noPendingMsg {
+	font-size: 17px;
+	color: #3293033;
+	margin-left: 13px;
+}
+#cancelPayments1-pg .ui-content-internalpages .wraper {
+	padding-top: 20px !important;
+}
+#confirmCancelPayment-pg .wraper {
+	padding-top: 20px;
+}
+
+.payments input[type="tel"]:focus, 
+.payments input[type="text"]:focus, 
+.payments input[type="password"]:focus, 
+.payments input[type="number"]:focus, 
+.payments textarea:focus{
+	border: none !important;
+	outline: none !important;
+     -webkit-tap-highlight-color: rgba(255, 255, 255, 0) !important;    
+	/* -webkit-user-modify: read-write-plaintext-only !important; */
+}
+
+/** CALENDAR CSS [STARTS HERE]**/
+.payments#paymentStep1-pg .wraper2{padding:5px;}
+.payments#paymentStep1-pg .wrapper{ overflow-x:hidden !important;}
+.payments#paymentStep1-pg .ui-datepicker-multi .ui-datepicker-group {clear: both;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-header .ui-datepicker-title{color:#000;}
+.payments#paymentStep1-pg .ui-datepicker-prev,#paymentStep1-pg  .ui-datepicker-next{display:none!important}
+.payments#paymentStep1-pg #calendar .ui-datepicker-header{border:#fff;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-multi-2 .ui-datepicker-group {width: 100%;}
+.payments#paymentStep1-pg #calendar>.ui-widget-content{width: 100% !important; padding:0 !important;}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td{background: #fff;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-calendar{width:auto;}
+.payments#paymentStep1-pg #calendar a{color:#41494e}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td.ui-datepicker-unselectable.ui-state-disabled  {background: #e8eaec;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-unselectable{color:#879398}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td{border:1px solid #EAEFF0;}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td.ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled span  {visibility:hidden }
+.payments#paymentStep1-pg #calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day.ui-datepicker-today{background: #e8eaec !important;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.ui-datepicker-current-day{background: #e8eaec !important; }
+.payments#paymentStep1-pg #calendar .ui-datepicker-calendar th{color:#3f4849;}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody{
+-moz-box-shadow: 0 0 2px 2px #C0C5C9;
+-webkit-box-shadow: 0.1 0 2px 2px #C0C5C9;
+box-shadow: 0 0 2px 2px #C0C5C9;
+display: block;
+border-radius: 2px;}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td{padding: 3px 12px 3px 12px;}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar thead{display:block}
+.payments#paymentStep1-pg #calendar table.ui-datepicker-calendar thead th{padding: 0px 10px 8px 13px; font-weight: normal; }
+.payments#paymentStep1-pg  #calendar .ui-datepicker-header .ui-datepicker-title{color: #383838 !important;font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
+font-size: 18px;font-weight:normal}
+.payments#paymentStep1-pg  .wraper2 h3{color: #383838 !important;font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
+font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px solid #e3e3e3;margin-left: 8px;width: 97%;}
+.payments#paymentStep1-pg  #calendar{margin-top:0px;}
+.payments#paymentStep1-pg .dueDateParCs span, .dueDateParCs a{color:#41494e !important}
+.payments#paymentStep1-pg .dueDateParCs {border: 2px solid #8a9499 !important; padding:0 !important;}
+.payments#paymentStep1-pg .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs{background:#e8eaec !important;border: 1px solid #edf1f1 !important;}
+ 
+/** CALENDAR CSS [ENDS HERE]**/
+
+#paymentStep1-pg .nobg_2coltbl {
+	border-bottom:1px solid #c4cbcf;
+	padding:0 12px 3px 12px;
+}
+#paymentStep1-pg .wraper1 .ui-select , #paymentStep1-pg .wraper1 .white-form, #paymentStep1-pg .wraper1 .lateMinPayWarn{margin:0 12px;}
+#paymentStep1-pg .wraper .ui-select , #paymentStep1-pg .wraper .white-form, #paymentStep1-pg .wraper .lateMinPayWarn, #paymentStep1-pg .wraper  .errorText, #paymentStep1-pg .wraper .err2, #paymentStep1-pg .wraper .err1, #paymentStep1-pg .wraper1 .errorText{margin:0 12px;}
+#paymentStep1-pg .wraper form .err1 {margin:10px 0;}
+.payments .redHighlight {color:#ed1c24 !important;}
+/*.payments .servererrormsg, .payments .acctnumerrormsg {
+	float: left;
+	width: 88%;
+	margin: 10px 0 0 0;
+	color: red;
+}*/
+//#paymentStep1-pg .Othr .ui-radio.ui-disabled .ui-btn-text {color:#000 !important opacity:0 !important}
+
+/***********Cancel Payment, cancel Payment Confirm*****************/
+#cancelPayment-pg .ui-content, #confirmCancelPayment1-pg .ui-content {
+	padding:17px 16px 10px 16px;
+}
+#cancelPayment-pg .wraper h1, #confirmCancelPayment1-pg .wraper h1 {
+	font-size:18px;
+	font-weight: normal !important;
+}
+#cancelPayment-pg .wraper p, #confirmCancelPayment1-pg .wraper p {
+	font-size: 14px;
+	line-height: 16px;
+	margin-bottom: 20px;
+}
+#cancelPayment-pg .wraper p.cancelQuest1 {
+	margin-bottom:0;
+}
+#cancelPayment-pg .wraper .txtcenteraln, #confirmCancelPayment1-pg .wraper .txtcenteraln {
+	margin-top:27px;
+}
+#cancelPayment-pg .wraper .yesNo, #confirmCancelPayment1-pg .wraper .yesNo {
+	margin-bottom: 20px;
+	
+}
+#cancelPayment-pg .wraper .noBtn {
+	width: 170px;
+}
+#confirmCancelPayment1-pg .wraper .goHome {
+	width: 160px;
+}

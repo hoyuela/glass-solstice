@@ -2,175 +2,184 @@
 <html>
 <head>
 <title>Discover - Payments Step-I</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">      
+
+
 </head>
 <body>
 	<!-- page start  -->
-	<div data-role="page" id="paymentStep1-pg" class="rd-page">
-		<!-- header start  -->
-		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
-			data-position="fixed">
-			<header id="header" class="cmn_header"> </header>
-		</div>
-		<!-- header end -->
+	<div data-role="page" id="paymentStep1-pg" class="payments">
 		<!-- content start -->
 		<div id="pgPadding"></div>
-<!--<div class="progress-indicator pos-center">
-		<ul>
-		    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="ui-link">2. Verify</a></li>
-                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
-		</ul>
-		<div class="clearboth"></div>
-	    </div>-->
 		<div data-role="content" class="ui-content-internalpages">
-			<div class="wraper">
+			<div class="wrapper">
 				<div class="wraper1">
-					<!--<h1>Make a Payment:</h1>-->
+                    <div class="progress-indicator">
+                        <ul>
+                            <li><a href="#" class="active">Review/Edit</a></li>
+                            <li><a href="#">Verify</a></li>
+                            <li><a href="#">Confirmation</a></li>
+                        </ul>
+                        <div class="clearboth"></div>
+                    </div>
+                    
+                    <!--<h1>Make a Payment:</h1>-->
 					<!-- h2 style="margin-bottom:0px">Step 1 of 3</h2 -->
-                    <div class="progress-indicator pos-center">
-						<ul>
-						    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
-                    		<li><a href="#" class="ui-link">2. Verify</a></li>
-                    		<li><a href="#" class="ui-link">3. Confirmation</a></li>
-						</ul>
-					<div class="clearboth"></div>
-				    </div>
-					<div>
-					<div class="errormsg2" id="ha_MakePaymentStepOne_Error"></div>
-						<span class="marginTB15 fontsize13px" id="cuttOff_Note_MakePaymentOne"></span>
-						<div class="errormsg2" id="commonErrorInMakePaymentStepOneDiv"></div>
-						<div class="errormsg2" id="amounterror"></div>
-						<h3 class="margintop10px">Select a Bank Account</h3>
-						<span class="white-box-rd-corner trans-bg" id="bank_info"> </span>
-						
-						<div class="errormsg2" id="errorbankinfoDiv" ></div>
+					<div class="errorText hidden" id="errorDivForMAP1_HA">
+						<span class="alertImage"></span>
+						<div class="errormsg2" id="ha_MakePaymentStepOne_Error"></div>
 					</div>
-					<a href="#" onclick="navigation('manageBankInformation');" class="normaltext bluelink managebank" id='manage_Bank_Information'>
-					Manage Bank Information</a>
-					<form action="javascript:void(0)" method="post">
+					
+					<div class="errorText hidden" id="errorDivForMAP1">
+						<span class="alertImage"></span>
+						<div>
+							<div class="errorText" id="commonErrorInMakePaymentStepOneDiv"></div>
+							<div class="errormsg2" id="amounterror"></div>
+						</div>
+					</div>	
+					
+					<select name="selectAccType" id="bankDropDownStepOne"  data-native-menu="false" data-theme="d" swipTitle="true" style="margin-top:10px;">
+                    </select>
+                
+					<p class="err2 hidden">Please select a bank account</p>
+					<span class="white-box-rd-corner trans-bg" id="bank_info"></span>
+					<div class="errormsg2" id="errorbankinfoDiv" ></div>
+					
+					<form  method="post">
 						<div class="white-form">
-							<div>   
+							<span class="amnt">Amount</span>
+							<div class="radioWrap">   
 								<div>
 									<span class="errormsg2" id="radio1Error"></span>
 								</div>
-								<div class="col1">
-									<input type="radio" name="radio-choice-1" id="radio-choice-1"
-										value="choice-1" disabled="disabled"
+								<div class="col1 disableActiveRadio">
+									<input type="radio" class="rdoBtn" name="radio-choice-1" id="radio-choice-1"
+										value="choice-1" 
+										disabled="disabled"
 										onclick='dfs.crd.pymt.changeDropDownLabel()' /> <label
-										for="radio-choice-1" data-role="none">Minimum Payment
+										for="radio-choice-1" data-role="none" class="minLbl">Minimum Due
 									</label>
 								</div>
-								<div class="col2_RM amount2" id="minpaystepone_minpayment"></div>
-								<div class="clearboth borderbottom"></div>
+								<div class="min-last" id="minpaystepone_minpayment">$44.15</div>
+								<div class="clearboth"></div>
 							</div>
-
-
-
-							<div>
+							
+							<div class="radioWrap">
 								<div>
 									<span class="errormsg2" id="radio2Error"></span>
 								</div>
-								<div class="col1">
-									<input type="radio" name="radio-choice-1" id="radio-choice-2"
+								<div class="col1 lastStmtBal">
+									<input type="radio" name="radio-choice-1" class="rdoBtn" id="radio-choice-2" 
 										value="choice-2" onclick='dfs.crd.pymt.changeDropDownLabel()' disabled="disabled" />
-									<label for="radio-choice-2" data-role="none"><span id="variable_lable">Current Balance</span> </label>
+									<label for="radio-choice-2" data-role="none" class="lastLbl"><span id="variable_lable">Current Balance</span> </label>
 								</div>
-								<div class="col2_RM amount2"
-									id="minpaystepone_laststatementbalance"></div>
-								<div class="clearboth borderbottom"></div>
-							</div>
-							<div class="margintb5px">
-								<div>
-									<span class="errormsg2" id="errorPaymentAmountExceed"></span>
-								</div>
-
-								<div class="col1 disableActiveRadio" onclick="focusOtherAmount();">
-									<input type="radio" onclick='dfs.crd.pymt.changeDropDownLabel()'
-										name="radio-choice-1" id="radio-choice-3" value="choice-3" />
-									<label for="radio-choice-3" data-role="none">Other
-										Amount </label>
-
-
-
-								</div>
-								<div class="col2_RM amount" id="otheramountfield" style="line-height:44px;">
-									$<input type="number" placeholder="0.00" maxlength="8"
-										id="minpaystepone_other" class="inputtext paymentinputtext"
-										style="margin-top: 0px" /> <span class="floatright"
-										style="margin-top: 5px; margin-right: 5px;"> </span>
-								</div>
+								
+								<div class="min-last chkvalue" id="minpaystepone_laststatementbalance">$24.67</div>
 								<div class="clearboth"></div>
 							</div>
-						</div>
-						<div class="latepaywarn"> 
-							<a href="javascript:void(0)" class="bluelink" onclick="dfs.crd.pymt.MAPStep1PayWarnClick();">Late and Minimum Payment warning</a>
-						</div>
-						<ul class="nobg_2coltbl" style="margin-top: 4px;">
-							<li><span class="errormsg" id="errorPostingDate"></span>
-								<div class="col1" style="line-height: 24px;">Payment Date</div>
-								<div class="col2 boldtext">
-									<!--<div id="datepicker-val" class="boldtext txtrightaln" style="margin: 4px 0px"></div>-->
-									<fieldset id="payment-date">
-										<input type="hidden" name="date-post" id="datepicker-value"
-											class="datepicker-value" placeholder="" value="" /> 
-                                            <input type="hidden" name="date-compare" id="date-compare" />
-									</fieldset>
-									<!--<a class="date-picker disabled" id="button-selectdate" href="#" data-role="button" data-theme="d" style="margin: 2px;">Select a Date</a>-->
-                   <div class="datealign"> <input name="date-post" id="datepicker-val"
-						 class="datepicker-value" placeholder="" value="" />  
-                                
-     				<a class="date-picker disabled" id="button-selectdate" href="#" data-theme="d" style="margin: 2px;"> 
-    					 <img class="calicon" src="../../images/calendar_icon.png" /> </a>
-								 </div> 
-                                </div>
-							</li>
-							<li>
-							   <div class="col1">Payment Due Date</div>
-								<div class="col2 boldtext" id="minpaystepone_paymentduedate"></div>
-							</li>
-						</ul>
-						<div class="txtcenteraln r3matchbtn">
-							<div>
-								<!--  a class="small_btn" data-role="button" onclick="continuePaymentStep1ToStep2();" id="makePaymentOneContinue"  href="#">Continue</a -->
-								<input type="button" data-role="button"
-									onclick="dfs.crd.pymt.continuePaymentStep1ToStep2();"
-									id="makePaymentOneContinue" value="Continue">
+							
+							<div class="radioWrap">
+								<div class="col1 Othr" onclick="focusOtherAmount();">
+									<input type="radio" class="rdoBtn"  name="radio-choice-1" id="radio-choice-3" value="choice-3" />
+									<label for="radio-choice-3" data-role="none" class="otherLbl">Other Amount</label>
+								</div>
+								<span class="dlr">$</span>
+															
+								<ul class="detailsList">					
+									<li>
+										<span class="wrapperSpan">
+											<input type="number" placeholder="Enter Amount" maxlength="8" id="minpaystepone_other" class="numInput paymentinputtext" />
+											
+										</span>
+										<img src='../../images/emptyTextBox.png' width='15' height='15' alt='empty' class='emptyText' />
+									</li>
+								</ul>    
+								<div class="clearboth"></div>
 							</div>
+							<div>
+								<span class="errormsg2" id="errorPaymentAmountExceed"></span>
+							</div>
+							<!--p class="err3 hidden">Your payment cannot be more than your current balance of <span>$24.67</span></p>
+							<p class="errOther hidden">Please enter an amount using only numerals and a decimal point. Do not use $ signs or commas. (e.g. 1000.00)</p>
+							<p class="errOther1 hidden">Please enter a payment amount.</p>
+							<p class="errOther2 hidden">Payment amount entered must be between $0.01 and $99,999.99.</p-->
+							<a href="javascript:void(0)" class="lateMinPayWarn" onclick="dfs.crd.pymt.MAPStep1PayWarnClick();">Late and Minimum Payment Warnings</a>
+							
+							<ul class="nobg_2coltbl" style="margin-top: 4px;">
+								<li>
+									<span class="errormsg" id="errorPostingDate"></span>
+									<div class="col1 payDate" style="line-height: 24px;">Payment Date</div>
+									<div class="col2 boldtext">
+										<fieldset id="payment-date">
+											<input type="hidden" name="date-post" id="datepicker-value" class="datepicker-value" placeholder="06/30/2013"/> 
+											<input type="hidden" name="date-compare" id="date-compare" />
+										</fieldset>
+										
+									   <div class="datealign"> 
+												 <ul class="detailsList dateList">					
+													<li>
+														<span class="wrapperSpan">
+															<input type="text" class="datepicker-value textInput numberInput"  id="datepicker-val" readonly="readonly"/>
+														</span>
+														<img src='../../images/emptyTextBox.png' width='16' height='15' alt='empty' class='emptyText' />
+													   
+													</li>
+												</ul>    
+											
+													
+										<a class="date-picker disabled" id="button-selectdate" href="#" data-theme="d" style="margin: 2px;"> 
+											 <img class="calicon" src="../../images/calendar_icon_new.png" /> </a>
+										<div class="clearboth"></div>
+										</div> 
+									</div>
+								</li>
+								<li>
+									<div class="col1 minDueLbl">Min. payment due by</div>
+									<div class="col2 boldtext minDueDate" id="minpaystepone_paymentduedate">Aug 2, 2013</div>
+								</li>
+							</ul>
+							<div class="txtlftalgn bigboldBTN" >
+								<!-- Change 13.4 27 Ineligible for edit text changed  Start -->
+								<!-- Change 13.4 27 Ineligible for edit text changed  End -->
+								<p class="marginTB15 fontsize13px" id="cuttOff_Note_MakePaymentOne"></p>
+								<a href="#" onclick="navigation('paymentInformation');">Important information about Online Payments</a>
+							</div>
+							<div class="txtcenteraln r3matchbtn" >
+								<div onclick="dfs.crd.pymt.continuePaymentStep1ToStep2();">
+									  <a class="small_btn paymtBtnDisable" data-role="button" id="makePaymentOneContinue"  href="#">Continue</a> 
+								</div>
+								<a href="#" onclick="onBackKeyDown();" class="bluelink boldtext">Cancel</a>
+							</div>
+							
+							
 						</div>
-					<!--	<div>
-							<p>Payments made after 5p.m. Eastern Time<br/>will post on next business day<br/></p>
-						</div> -->
-						<div class="margintop5px">
-							<a href="#" onclick="navigation('paymentInformation');" class="bluelink boldtext" >Important Information about Online Payments</a>
-						</div>
-
 					</form>
-					<!-- Added the Id cuttOff_Note -->
-					<!-- <p class="note">Payment made after 5 p.m. eastern time will post
-					on the next business day.</p> -->
-
-				</div>
-
-
+					
+ 				</div>
 				<!-- calender start -->
 				<div class="wraper2" style="display: none">
-					<h3 class="calenderH3">Select Payment date</h3>
+					<h3 class="calenderH3">Select Payment Date</h3>
 					<div id="calendar"></div>
 					<div class="txtcenteraln">
 						<a href="#" class="bluelink normaltext boldtext cancelbtnarea"
 							id="calendar-cancel">Cancel</a>
 					</div>
-				</div>
+				
 				<!-- calender end -->
+			
+				</div>
 			</div>
-			<div id="footnotes" class="footnotes"></div>
-		</div>
+        </div>
+		<div class="dropDownLayer"></div>        
+		<div id="footnotes" class="footnotes"></div>
 		<!-- content end -->
-		<div data-role="footer" data-position="fixed" id="pg-footer"
-			data-id="myfooter">
-			<footer id="footer" class="mnu_footer"> </footer>
-		</div>
+		
+		<!--div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+				<footer id="footer" class="mnu_footer"> </footer>
+			</div-->
 	</div>
+
 	<!--page end -->
 </body>
 </html>

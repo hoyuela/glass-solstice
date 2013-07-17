@@ -2,10 +2,13 @@
 <html>
 <head>
 <title>Discover - Payments Step-II</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">      
+
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="paymentStep2-pg" class="rd-page">
+	<div data-role="page" id="paymentStep2-pg" class="rd-page payments">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -14,26 +17,37 @@
 		<!-- header end -->
 		<!-- content start -->
 		<div id="pgPadding"></div>
-		<div class="progress-indicator">
-		<ul>
-		    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="active ui-link">2. Verify</a></li>
-                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
-		</ul>
-		<div class="clearboth"></div>
-	    </div>
+        <div class="progress-indicator">
+            <ul>
+                <li><a href="#" class="visited">Review/Edit</a></li>
+                <li><a href="#" class="active">Verify</a></li>
+                <li><a href="#">Confirmation</a></li>
+            </ul>
+            <div class="clearboth"></div>
+        </div>
+
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<!--<h1>Make a Payment:</h1>-->
+				<div class="errorText hidden">
+					<span class="alertImage"></span>
+					<div>
+						<p id="safeSecureDiv"></p>
+					</div>
+				</div>		
+				
 				<!-- h2>Step 2 of 3</h2 -->
-				<p class="redtext" id="safeSecureDiv" ></p>
-				<p class="marginTB15 fontsize13px" id="cuttOff_Note"></p>
+<!--				<p class="redtext" id="safeSecureDiv" ></p>
+-->				<!--<p class="marginTB15 fontsize13px" id="cuttOff_Note"></p>-->
 				<ul class="whitebg-list-view">
-					<li><span id="bankname"></span><br/><span class="amt_bold" id="accountnumber"></span></li>
-					<li><span>Payment Option</span><br/><span class="amt_bold" id="paymentOption_value"></span></li>
-					<li><span>Amount</span><br/><span class="amt_bold" id="amount_value"></span></li>
-					<li><span>Posting Date</span><br/><span class="amt_bold" id="paymentStep2_posting_date"></span></li>
+					<li><span id="accountnumber"></span><br/><span class="amt_bold" id="bankname"></span></li>
+<!--					<li><span>Payment Option</span><br/><span class="amt_bold" id="paymentOption_value">234324</span></li>
+-->					<li><span>Amount</span><br/><span class="amt_bold" id="amount_value"></span></li>
+					<li><span>Payment Date</span><br/><span class="amt_bold" id="paymentStep2_posting_date"></span></li>
 				</ul>
+				<div class="txtlftalgn bigboldBTN">
+                    <p id="cuttOff_Note"></p>
+                    <a href="#" onclick="navigation('paymentInformation');">Important information about Online Payment</a>
+                </div>
 				<div  id="milesRedeem-button">
 					<div class="txtcenteraln r3matchbtn">
 						<a href="#" onclick="dfs.crd.pymt.confirmfromstep2tostep3(false,'');" data-role="button">Confirm</a><br/>
@@ -41,15 +55,15 @@
 					</div>
 				</div>
 			</div>
-			<div id="footnotes" class="footnotes" ></div>
+			
 		</div>
-
+		<div class="dropDownLayer"></div>
 		<!-- content end -->
-
-<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+		<div id="footnotes" class="footnotes"></div>
+<!--<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
             <footer id="footer" class="mnu_footer">
 			</footer>
-				</div>
+				</div>-->
 		</div>
 
 	<!--page end -->

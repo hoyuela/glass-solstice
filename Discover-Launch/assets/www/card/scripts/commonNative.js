@@ -40,31 +40,39 @@ function handleNativeFrame(activePage)
 
 function dismissProgressBar()
 {
-HybridControl.prototype.dismissProgressBar();
+	HybridControl.prototype.dismissProgressBar();
 }
 
 function makeaPayment()
 {
-preventBack = false;
-populateGlobalCache();
+	preventBack = false;
+	populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../payments/paymentStep1');
 }
 
 function managePayments()
 {
-preventBack = false;
-populateGlobalCache();
-	navigation('../payments/paymentsLanding');
+	preventBack = false;
+	populateGlobalCache();
+	navigation('../payments/paymentsSummary');
 }
-
-function manageBankInformation()
+/* 13.4 change start */
+/*function manageBankInformation()
 {
 preventBack = false;
 populateGlobalCache();
 	navigation('../payments/manageBankInformation');
+}*/
+
+function manageBankAccounts()
+{
+	preventBack = false;
+	populateGlobalCache();
+	navigation('../payments/manageBankAccounts');
 }
 
+/* 13.4 change end */
 function sendMoney()
 {	
 	preventBack = false;
@@ -281,41 +289,41 @@ function acHome(){
 
 function paymentHistory()
 {
-preventBack = false;
-populateGlobalCache();
-navigation('../payments/paymentsHistory');
+	preventBack = false;
+	populateGlobalCache();
+	navigation('../payments/paymentsHistory');
 }
 
 function redemptionOptions()
 {
-preventBack = false;
-populateGlobalCache();
-navigation('../rewards/redemptionLanding');
+	preventBack = false;
+	populateGlobalCache();
+	navigation('../rewards/redemptionLanding');
 }
 
 // Defect id 96085
 function home()
 {
-console.log("home function is called");
-navigation('../common/dummy',false);
+	console.log("home function is called");
+	navigation('../common/dummy',false);
 }
 // Defect id 96085
 
 //13.3 quickview start
 function quickView()
 {
-console.log("quickView function is called");
-//navigation('../common/dummy',false);
-activePage = "dummy-pg";
-currentActivePage = "dummy-pg";
-isLhnNavigation = true;
+	console.log("quickView function is called");
+	//navigation('../common/dummy',false);
+	activePage = "dummy-pg";
+	currentActivePage = "dummy-pg";
+	isLhnNavigation = true;
 }
 function qvFaq()
 {
-preventBack = false;
-populateGlobalCache();
-console.log("quickView function is called");
-navigation('../custormerService/faqQuickView');
+	preventBack = false;
+	populateGlobalCache();
+	console.log("quickView function is called");
+	navigation('../custormerService/faqQuickView');
 }
 //13.3 quickview end
 
