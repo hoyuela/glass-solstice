@@ -65,7 +65,11 @@ public final class PreAuthCallHelper  {
 
 		optionalUpgradeDialog.hideNeedHelpFooter();
 		optionalUpgradeDialog.setTitle(R.string.option_upgrade_dialog_title);
-		optionalUpgradeDialog.setContent(R.string.optional_upgrade_dialog_body);
+		
+		/* 13.4 use optional upgrade message from server, hlin0 */
+		//optionalUpgradeDialog.setContent(R.string.optional_upgrade_dialog_body);
+		optionalUpgradeDialog.setContent(message);
+
 
 		optionalUpgradeDialog.setOkButtonText(R.string.upgrade_dialog_button_text);
 		optionalUpgradeDialog.setCancelButtonText(R.string.no_thanks);
@@ -89,10 +93,15 @@ public final class PreAuthCallHelper  {
 	 * If the user chooses upgrade, they are directed to the Google Play store page for the Discover application.
 	 * If the user cancels the dialog by pressing the back button or otherwise, the application is force quit.
 	 */
-	public static void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi) {
+	public static void showForcedUpgradeAlertDialog(final ErrorHandlerUi errorHandlerUi, final String message) {
 		final Context context = errorHandlerUi.getContext();
+		
+		/* 13.4, use forced upgrade message from server, hlin0 */
+		//final SimpleContentModal modal = new SimpleContentModal(context, R.string.forced_upgrade_dialog_title, 
+		//		R.string.forced_upgrade_dialog_body, R.string.upgrade_dialog_button_text);
 		final SimpleContentModal modal = new SimpleContentModal(context, R.string.forced_upgrade_dialog_title, 
-				R.string.forced_upgrade_dialog_body, R.string.upgrade_dialog_button_text);
+				message, R.string.upgrade_dialog_button_text);
+
 
 		modal.hideNeedHelpFooter();
 		modal.showErrorIcon();

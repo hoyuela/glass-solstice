@@ -65,7 +65,7 @@
 	<string name="welcome_morning">Good morning</string>
 	<string name="welcome_afternoon">Good afternoon</string>
 	<string name="welcome_evening">Good evening</string>
-	<string name="passcode_forgot">Forgot Passcode</string>
+	<string name="passcode_forgot">Forgot Passcode?</string>
 	<string name="passcode_uid_login">User ID Login</string>
 </resources>
 
