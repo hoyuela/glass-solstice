@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -53,6 +52,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
@@ -84,6 +84,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Key to get the state of the help modal from the bundle*/
 	private static final String ATM_HELP_MODAL = "atmModal";
+	
+	/**Key to get the state of the no results modal from the bundle*/
+	private static final String NO_RESULTS_MODAL = "noResultsModal";
 
 	/**Key to get the state of the Leaving App modal from the bundle*/
 	private static final String LEAVING_APP_MODAL = "leaveApp";
@@ -96,6 +99,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Modal that lets the user know that getting of their location failed*/
 	private SimpleTwoButtonModal locationFailureModal;
+	
+	/**Modal that lets the user know that no ATMs were found*/
+	private SimpleContentModal noResultsModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
@@ -178,6 +184,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
+	
+	/**Boolean true if the no atm results modal is showing*/
+	private boolean noResultsModalShowing = false;
 
 	private boolean processingOnBackpress = false;
 
@@ -319,7 +328,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			setHelpModalShowing(true);
 		} else if (isLeavingModalShowing) {
 			showTerms();
+		} else if (isNoResultsModalShowing()) {
+			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());
+			showCustomAlertDialog(noResultsModal);
 		}
+		
 		restoreCameraView();
 		adjustMapZoomIfNeeded();
 		fadeInMap();
@@ -359,7 +372,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			//be initialized, we just need to resume the state
 			loadMapAndDisplay();
 		}
-	
+		
 	}
 
 	/**
@@ -660,6 +673,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 			listFragment.handleReceivedData(savedInstanceState);
 			setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
+			setNoResultsModalShowing(savedInstanceState.getBoolean(NO_RESULTS_MODAL, false));
 			isLeavingModalShowing = savedInstanceState.getBoolean(LEAVING_APP_MODAL, false);
 			if(0.0 == lat && 0.0 == lon){
 				mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
@@ -772,7 +786,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
 		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
-			showCustomAlertDialog(AtmModalFactory.getNoResultsModal(getActivity()));
+			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());			
+			showCustomAlertDialog(noResultsModal);
+			
 			endIndex = 0;
 		}else if(endIndex > results.results.atms.size()){
 			endIndex = results.results.atms.size();
@@ -881,7 +897,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		locationManagerWrapper.stopGettingLocaiton();
 
 		searchBar.saveState(outState);
-		hideModalIfNeeded();
 
 		if(null != mapWrapper.getMap()){
 			outState.putFloat(MAP_ZOOM, mapWrapper.getCurrentMapZoom());
@@ -900,6 +915,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		}
 		outState.putBoolean(ATM_HELP_MODAL, isHelpModalShowing());
+		outState.putBoolean(NO_RESULTS_MODAL, isNoResultsModalShowing());
 		outState.putBoolean(LEAVING_APP_MODAL, isLeavingModalShowing);
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		outState.putBoolean(BUTTON_KEY, isOnMap);
@@ -907,6 +923,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		if(shouldGoBack){
 			streetView.bundleData(outState);
 		}
+		
+		hideModalIfNeeded();
 	}
 
 	/**
@@ -919,6 +937,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			settingsModal.dismiss();
 		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
 			locationFailureModal.dismiss();
+		} else if(null != noResultsModal && noResultsModal.isShowing()){
+			noResultsModal.dismiss();
 		} else if(isHelpModalShowing()){
 			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.clearActiveModal();
@@ -929,6 +949,10 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	@Override
 	public void onPause(){
 		super.onPause();
+		
+		if(null != noResultsModal) {
+			setNoResultsModalShowing(noResultsModal.isShowing());
+		}
 
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
@@ -1107,7 +1131,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		if(helpModalShowing){
 			DiscoverModalManager.getActiveModal().dismiss();
 			setHelpModalShowing(false);
-		}if(shouldGoBack){
+		}
+		
+		if(shouldGoBack){
 			
 			//There is an issue where the map gets garbage collected so in order to prevent this we swap to the list
 			//view when going to street view than upon return we swap back.   
@@ -1210,12 +1236,26 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	public boolean isHelpModalShowing() {
 		return helpModalShowing;
 	}
+	
+	/**
+	 * @return the noResultsModalShowing
+	 */
+	public boolean isNoResultsModalShowing() {
+		return noResultsModalShowing;
+	}
 
 	/**
 	 * @param helpModalShowing the helpModalShowing to set
 	 */
 	public void setHelpModalShowing(final boolean helpModalShowing) {
 		this.helpModalShowing = helpModalShowing;
+	}
+	
+	/**
+	 * @param noResultsModalShowing the noResultsModalShowing boolean to set
+	 */
+	public void setNoResultsModalShowing(final boolean noResultsModalShowing) {
+		this.noResultsModalShowing = noResultsModalShowing;
 	}
 
 	private void zoomToLocation(final Location location) {
