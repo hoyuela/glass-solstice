@@ -68,7 +68,7 @@ public final class PreAuthCallHelper  {
 		
 		/* 13.4 use optional upgrade message from server, hlin0 */
 		//optionalUpgradeDialog.setContent(R.string.optional_upgrade_dialog_body);
-		optionalUpgradeDialog.setContent(message);
+		optionalUpgradeDialog.setContent(message.replace("\\n", "\n"));
 
 
 		optionalUpgradeDialog.setOkButtonText(R.string.upgrade_dialog_button_text);
@@ -100,7 +100,7 @@ public final class PreAuthCallHelper  {
 		//final SimpleContentModal modal = new SimpleContentModal(context, R.string.forced_upgrade_dialog_title, 
 		//		R.string.forced_upgrade_dialog_body, R.string.upgrade_dialog_button_text);
 		final SimpleContentModal modal = new SimpleContentModal(context, R.string.forced_upgrade_dialog_title, 
-				message, R.string.upgrade_dialog_button_text);
+				message.replace("\\n", "\n"), R.string.upgrade_dialog_button_text);
 
 
 		modal.hideNeedHelpFooter();

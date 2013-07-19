@@ -70,6 +70,17 @@
                     android:background="@drawable/quick_view_button"
                     android:text="@string/gotoFastcheckBtnText" />
 
+                <ImageView 
+                    android:id="@+id/error_exclamation"
+                    android:src="@drawable/exclamation_red_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignTop="@+id/error_text_view"
+                    android:visibility="gone"
+                    />
+
                 <TextView
                     android:id="@+id/error_text_view"
                     style="@style/error_label"
@@ -77,23 +88,11 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/discoverLogo"
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
+                    android:layout_toRightOf="@+id/error_exclamation"
                     android:gravity="center_horizontal"
-                    android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
-                    android:text="The information you provided does not match our records, or you are not registered for the Account Center."
+                    android:paddingLeft="@dimen/element_side_padding"
                     android:visibility="gone" />
-
-                <ImageView 
-                    android:id="@+id/error_exclamation"
-                    android:src="@drawable/exclamation_gray_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="-35dp"
-                    android:layout_marginTop="-10dp"
-                    android:layout_alignTop="@+id/error_text_view"
-                    android:layout_toLeftOf="@+id/error_text_view"
-                    android:visibility="gone"
-                    />
 
                 <RelativeLayout
                     android:id="@+id/regular_login"
@@ -145,7 +144,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/password_label"
-                        android:layout_marginBottom="@dimen/between_related_elements_padding"
+                        android:layout_marginBottom="20dp"
                         android:hint="@string/password"
                         android:textColorHint="@color/transparentGray"
                         android:inputType="textPassword"
@@ -369,8 +368,9 @@
                     android:id="@+id/account_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_below="@id/regular_login"
-                    android:layout_marginTop="@dimen/between_related_elements_padding" >
+                    android:paddingTop="@dimen/between_related_elements_padding" >
 
                     <!-- Divider -->
 
@@ -388,7 +388,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/login_horizontal_divider"
                         android:orientation="horizontal"
-                        android:baselineAligned="false"
                         android:paddingBottom="@dimen/bottom_pad"
                         android:paddingLeft="@dimen/left_pad"
                         android:paddingRight="@dimen/right_pad"
