@@ -542,7 +542,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 * @param text - search text
 	 */
 	@Override
-	public void performSearch(final String text) {		
+	public void performSearch(final String text) {
+		setShowCustomDialog(true);
 		isLoading = false;
 		((NavigationRootActivity)getActivity()).startProgressDialog(true);
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
