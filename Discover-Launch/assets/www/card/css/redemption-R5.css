@@ -793,8 +793,8 @@ font-weight: bold;
 .rd-page .rd-landing-heading-text .ui-block-a{width:90%;}
 .rd-page .rd-landing-heading-text .ui-block-b{width:10%;}
 .rd-page .rd-faq-main, .edo-page .rd-faq-main{ /*position:absolute;right:10px;*/ text-align:right; float: right;padding-top: 0px;}
-.rd-page .tooltip{width:200px;height:auto; position:absolute;right:26px;top:110px;z-index:9999;display:none;}
-#redeem-history .tooltip{width:200px;height:auto; position:absolute;right:26px;top:85px;z-index:9999;display:none;}
+/*.rd-page .tooltip{width:200px;height:auto; position:absolute;right:26px;top:110px;z-index:9999;display:none;}
+#redeem-history .tooltip{width:200px;height:auto; position:absolute;right:26px;top:85px;z-index:9999;display:none;} backlog changes */
 
 .rd-page .margin-8px{margin-top:8px;}
 .rd-page .arrow_head{

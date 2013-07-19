@@ -1392,6 +1392,7 @@ function postSiteCatGlobalData()
 function moreLandingLoad(){
 	try{
 		getMenuItems();
+        fromConfirmationPage = true;
 		var moreHTML="";
 		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
 			for (var key in moreNav) 

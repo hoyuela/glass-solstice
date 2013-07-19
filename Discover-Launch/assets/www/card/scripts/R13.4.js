@@ -2,6 +2,7 @@
 $("div[data-role='page']").live("pageshow",function(){
 	/*script for new textbox*/
 	$(".textInput,.numInput").focus(function(){
+		if($(this).attr('id') == 'datepicker-val'){return;}
 		$(this).parent(".wrapperSpan").css({"border-bottom": "solid 1px #303030","border-left": "solid 1px #303030","border-right": "solid 1px #303030"});
 		$(this).parent(".wrapperSpan").siblings(".detailName").css({"color":"#293033"});
 		

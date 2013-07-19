@@ -34,6 +34,7 @@ function profileManageContactLoad() {
 }
 
 function personalizeCashPin1Load() {
+    console.log("Discover-Pun personalize cash pin1 load...");
 	if (!dfs.crd.profile.verifyPriorPageForStep1()) return;
     if (!dfs.crd.profile.isCardTypeEligible()) {
 		cpEvent.preventDefault();
@@ -84,7 +85,8 @@ function personalizeCashPin1Load() {
 }
 
 function personalizeCashPin2Load() {
-	var validPriorPagesOfStep2 = new Array("personalizeCashPin1");
+    console.log("Discover-Pun personalizeCashPin2Load called");
+	var validPriorPagesOfStep2 = new Array("personalizeCashPin1","privacyStatement");
 	try {
 		if ($.inArray(fromPageName, validPriorPagesOfStep2) >= 0) {
 			var cardHome = dfs.crd.profile.getCardHomeData();
@@ -108,17 +110,11 @@ function personalizeCashPin2Load() {
 dfs.crd.profile.createPersonalPinUrl = RESTURL + "personalprofile/v1/personalizepin";
 
 dfs.crd.profile.moveToDiscoverSiteReminder = function() {
-	var strURLToOpen="";
-	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
-	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen); 
-	//window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
 }
 
 dfs.crd.profile.moveToDiscoverSiteProfile = function() {
-	var strURLToOpen="";
-	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
-	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen);
-	//window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
 }
 
 dfs.crd.profile.personalizeCashPin2 = function(enterPin, confirmPin) {
@@ -155,7 +151,7 @@ dfs.crd.profile.personalizeCashPin2 = function(enterPin, confirmPin) {
 dfs.crd.profile.validatePins = function(enterPin, confirmPin) {
 	var use4NumbersOnlyMsg = "Your PIN must be exactly 4 numbers-no letters.";
 	var pinMustMatchMsg = "Your new PIN and re-entered new PIN must match.";
-	var noZeroPinMsg = "Your may not select 0000 as a pin.";
+	var noZeroPinMsg = "You may not select 0000 as a pin.";
 	var validationError = null;
 	var intRegex = /^\d+$/;
 	if (enterPin == null || enterPin.length !== 4 || !intRegex.test(enterPin)

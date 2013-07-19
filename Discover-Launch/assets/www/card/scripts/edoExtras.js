@@ -910,14 +910,14 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                                                 $('#edoLandingPage-pg #edoLandingSortOptions .ui-select .ui-btn-text').text('Sort');
                                                                                 });
                                                       /*Click handler for Tooltip*/
-                                                      $(".icon_faqs").click(function(){
+                                                  /*    $(".icon_faqs").click(function(){
                                                                             if(deviceType == "Android") {
                                                                             $("#edoLandingSortOptions #sortFeatures").attr("disabled","disabled");
                                                                             }
                                                                             $(".tooltip").fadeIn(300);
                                                                             return false;
-                                                                            });
-                                                      $("body").click(function(){
+                                                                            }); backlog changes */
+                                                    /*  $("body").click(function(){
                                                                       if($(".tooltip").css("display")=='block'){
                                                                       $(".tooltip").fadeOut(300);
                                                                       if(deviceType == "Android") {
@@ -925,7 +925,7 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                                       }
                                                                       $(".icon_faqs").css({"opacity":"1"});
                                                                       }
-                                                                      });
+                                                                      });  backlog changes */
                                                       
                                                       
                                                       /**Click handler for top tabs**/
@@ -947,7 +947,7 @@ $("#edoLandingPage-pg, #edoLandingWithoutOffer").live('pageshow',function(event)
                                                       $('.overlay').click( function(){
 														/*doOverlayClose()*/
 													  });
-                                                      $('.tooltip').hide();
+                                                     // $('.tooltip').hide();  /* backlog changes */ 
                                                       doOverlayOpen();
                                                       }catch(err){
                                                       showSysException(err);
@@ -960,9 +960,9 @@ $("#edoHistory-pg").live('pageshow',function(){
                          /*Click handler for Tooltip*/
                          $('#closebtn').click( function(){
 						 $("#overlay_wraper, .overlay").hide()});
-                         $(".icon_faqs").click(function(){
+                        /* $(".icon_faqs").click(function(){
                                                $(".tooltip").fadeIn(300);
-                                               /*$(this).css({"opacity":"0.6"});*/
+                                               /*$(this).css({"opacity":"0.6"});
                                                return false;
                                                });
                          $("body").click(function(){
@@ -970,7 +970,7 @@ $("#edoHistory-pg").live('pageshow',function(){
                                          $(".tooltip").fadeOut(300);
                                          $(".icon_faqs").css({"opacity":"1"});
                                          }
-                                         });
+                                         }); ;backlog changes */
                          
                          /** For EDO Landing Page overlay **/
                          var isOpen = false;
@@ -987,7 +987,7 @@ $("#edoHistory-pg").live('pageshow',function(){
                          $('.overlay').click( function(){
 							/*doOverlayClose()*/
 							});
-                         $('.tooltip').hide();
+                         // $('.tooltip').hide();  /* backlog changes */
                          
                          /**Click handler for top tabs**/
                          $(".navtabs .ui-block-a").click(function(){

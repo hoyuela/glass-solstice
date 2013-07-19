@@ -360,7 +360,7 @@ width: 100%;}
 	font-weight: bold !important
 }
 /*faqs page ends*/
-.edo-page .tooltip {
+/*.edo-page .tooltip {
 	width: 186px;
 	height: auto;
 	position: absolute;
@@ -368,7 +368,7 @@ width: 100%;}
 	top: 85px;
 	z-index: 9999;
 	display: none;
-}
+}  backlog changes*/
 
 .edo-page .arrow_head {
 	width: 0;
@@ -564,11 +564,11 @@ margin: 20px 15px 0 10px;
 	padding-right:7px;
 }
 
-.edo-page .edoHistoryHeader .ui-block-b .rd-faq-main .icon_faqs {
+/*.edo-page .edoHistoryHeader .ui-block-b .rd-faq-main .icon_faqs {
  cursor: pointer;
  width:32px;
  height:33px;
-}
+}   backlog changes */
 
 .edo-page .navtabs {
 	width: 69%;
@@ -1546,7 +1546,7 @@ margin: 0px;
 
 
 
-#edoHistory-pg .tooltip {
+/*#edoHistory-pg .tooltip {
 top: 38px;
 right: 25px;
 }
@@ -1554,7 +1554,7 @@ right: 25px;
 #edoLandingPage-pg .tooltip {
 top: 40px;
 right: 25px;
-}
+} backlog changes*/
 
 #edoLandingPage-pg .filedetail{color:#ff6600;}
 #edoLandingPage-pg .rd-landing-bubble-data, #edoLandingPage-pg .rd-landing-bubble-data ul {margin-top: 0px; padding-top:0px;}
