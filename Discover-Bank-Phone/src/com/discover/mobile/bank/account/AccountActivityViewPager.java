@@ -165,6 +165,11 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 			final ActivityDetail detailObject = activityItems.activities.get(position);
 			bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, detailObject);
 			bundle.putBoolean(BankExtraKeys.CATEGORY_SELECTED, getArguments().getBoolean(BankExtraKeys.CATEGORY_SELECTED));
+			/**
+			 * Disable delete option from view pager if the user is navigating to detail page from review transfers. to
+			 * be covered in a later iteration. It should only be allowed from the activity page.
+			 */
+			bundle.putBoolean(BankExtraKeys.DELETE_ALLOWED, !isTransferAReviewTransfer());
 			pageFragment = new ActivityDetailFragment();
 			pageFragment.setArguments(bundle);
 		}else {

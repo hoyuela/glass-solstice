@@ -597,13 +597,17 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 
 		/** Check if view is currently being displayed */
 		if (isViewCreated()) {
+			/** Get reference to account object whose activity details are being displayed currently */
+			final Account account = header.getAccount();
 
-			// Check whether the user is currently on the posted or scheduled view
-			// to make the respective service call
-			if (header.isPosted()) {
-				isActivityDownloadRequired = header.getAccount().posted == null || posted == null;
-			} else {
-				isActivityDownloadRequired = header.getAccount().scheduled == null || scheduled == null;
+			if (account != null) {
+				// Check whether the user is currently on the posted or scheduled view
+				// to make the respective service call
+				if (header.isPosted()) {
+					isActivityDownloadRequired = account.posted == null || posted == null;
+				} else {
+					isActivityDownloadRequired = account.scheduled == null || scheduled == null;
+				}
 			}
 		}
 
