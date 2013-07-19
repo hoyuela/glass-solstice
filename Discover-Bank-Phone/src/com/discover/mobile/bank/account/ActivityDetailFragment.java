@@ -85,11 +85,14 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			items = generator.getScheduledDepositList(item);
 		}
 		else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(item.type)) {
+			/** Verify if delete is allowed, currently this flag is used to disable/enable delete option */
+			final boolean isDeleteAllowed = getArguments().getBoolean(BankExtraKeys.DELETE_ALLOWED);
 			final TransferType type = (TransferType)getArguments().getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
 			items = generator.getTransferDetailList(item, type);
 
 			final ReceivedUrl recievedUrl = item.links.get(SELF);
-			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString())) {
+			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString()) && isDeleteAllowed) {
+
 				//If the Activity is of frequency One Time we want to use the "link" button type whereas if it a 
 				//recurring transfer we want to allow the user
 				//access to the "See Options" button so they can either delete the entire series or a single transfer.

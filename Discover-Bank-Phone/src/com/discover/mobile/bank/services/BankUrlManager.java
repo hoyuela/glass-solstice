@@ -22,6 +22,8 @@ import com.google.common.base.Strings;
  * 
  */
 public final class BankUrlManager  {
+	private static final String TAG = BankUrlManager.class.getSimpleName();
+
 
 	private static String baseURL = DiscoverActivityManager.getString(R.string.bank_base_url);
 	private static final String DISCOVER_STRIPPED_URL = DiscoverActivityManager.getString(R.string.bank_stripped_url);
@@ -92,6 +94,11 @@ public final class BankUrlManager  {
 	 * @return the baseUrl
 	 */
 	public static String getBaseUrl() {
+		/** Reload base url if not set to a valid value */
+		if (Strings.isNullOrEmpty(baseURL.trim())) {
+			baseURL = DiscoverActivityManager.getString(R.string.bank_base_url);
+		}
+
 		return baseURL;
 	}
 

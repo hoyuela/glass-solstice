@@ -54,6 +54,9 @@ implements OnPaymentCanceledListener {
 
 	private static final String BANK_USER_KEY = "bankUser";
 	private static final String BANK_SESSION_KEY = "session";
+	/** Key used to store the last time the user interacted with the application while logged in. */
+	private static final String BANK_PREV_TIME = "prev-time";
+
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -150,6 +153,9 @@ implements OnPaymentCanceledListener {
 			.setNewLinks(BankUser.instance().getCustomerInfo().links);
 			SessionTokenManager.setToken(savedInstanceState
 					.getString(BANK_SESSION_KEY));
+
+			/** Restore the last time the user interacted with the application */
+			Globals.setOldTouchTimeInMillis(savedInstanceState.getLong(BANK_PREV_TIME));
 		}
 	}
 
@@ -161,6 +167,12 @@ implements OnPaymentCanceledListener {
 		}
 		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
 		outState.putString(BANK_SESSION_KEY, SessionTokenManager.getToken());
+
+		/**
+		 * Store the last time the user interacted with the application in the event volatile memory is wiped out by
+		 * Android OS
+		 */
+		outState.putLong(BANK_PREV_TIME, Globals.getOldTouchTimeInMillis());
 	}
 	
 	@Override
