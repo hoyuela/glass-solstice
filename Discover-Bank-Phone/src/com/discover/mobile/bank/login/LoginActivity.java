@@ -1333,6 +1333,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
 		fadeIn.setDuration(halfSecond);
 		forgotUserIdOrPassText.startAnimation(fadeIn);
+		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
 		cardPrivacyLink.startAnimation(AnimationUtils.loadAnimation(getContext(), 
 									   R.anim.to_center_from_left_of_center));
 		animateFastCheckIfNeeded();
