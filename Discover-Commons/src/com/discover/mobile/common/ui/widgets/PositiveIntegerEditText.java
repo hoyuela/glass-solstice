@@ -1,9 +1,11 @@
 package com.discover.mobile.common.ui.widgets;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.common.base.Strings;
 
@@ -34,6 +36,19 @@ public class PositiveIntegerEditText extends ValidatedInputField{
 	public void setupDefaultAppearance() {
 		super.setupDefaultAppearance();
 		this.setEms(DEFAULT_EMS);
+	}
+	
+	@Override
+	public void onFocusChanged(final boolean focused, final int direction, final Rect previouslyFocusedRect) {
+		super.onFocusChanged(focused, direction, previouslyFocusedRect);
+
+		final InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		if( focused ) {
+			imm.showSoftInput(this, InputMethodManager.SHOW_FORCED);
+		} else {
+			imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
+		}
 	}
 
 	/**
