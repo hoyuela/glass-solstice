@@ -177,9 +177,23 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			dollarAmount.setText(savedAmount);
 			dollarAmount.enableBankAmountTextWatcher(true);
 			disableCancelled();
-			enableCell(index, bundle);
-			
+			new Handler().postDelayed(enableCellRunnable(bundle), 1000);
 		}
+	}
+	
+	/**
+	 * 
+	 * @return a runnable that enables the proper radio button cell when resuming state. This runnable gets postDelayed because
+	 * the soft input keyboard cannot be opened while state is still being restored.
+	 */
+	private Runnable enableCellRunnable(final Bundle bundle) {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				enableCell(index, bundle);
+			}
+		};
 	}
 
 	/**
@@ -264,7 +278,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				disableDate();
 				enableTransaction();
 				disableAmount();
-				showKeyboard();
 				break;
 			case AMOUNT:
 				disableCancelled();
@@ -559,5 +572,4 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		}
 		return isHandled;
 	}
-
 }
