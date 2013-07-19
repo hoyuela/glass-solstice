@@ -1,5 +1,7 @@
 package com.discover.mobile.card.passcode;
 
+import java.util.Locale;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -298,6 +300,9 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		if (fieldInt == KEY_DELETE) {
 			deleteLatestInput().requestFocus();
 		}
+		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
+			printFragmentsInBackStack();
+		}
 		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
 	}
 
@@ -506,8 +511,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				}
 			}
 		}
-		pUtils.storeFirstName(fname);
+		if (fname != null && fname.length() > 1) {
+			char first = Character.toUpperCase(fname.charAt(0));
+			String retVal = first + fname.substring(1).toLowerCase(Locale.ENGLISH);
+			pUtils.storeFirstName(retVal);
+		}
 	}
-	
-	
 }

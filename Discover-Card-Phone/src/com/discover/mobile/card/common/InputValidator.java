@@ -148,7 +148,9 @@ public final class InputValidator {
     /* 13.4 Changes Start */
     public static boolean validateAnswerField(final String answer) {
         Boolean specialCharacterEntered = false;
-        String regex = "^[a-zA-Z0-9]+$";
+        /* 13.4 Defect ID 105360 start */
+        String regex = "^[a-zA-Z0-9 ]+$";
+        /* 13.4 Defect ID 105360 End */
         Matcher matcher = Pattern.compile(regex).matcher(answer);
         if (matcher.find()) {
             specialCharacterEntered = false;

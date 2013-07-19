@@ -43,7 +43,7 @@
                 android:background="@color/card_body_color"
                 android:divider="@color/card_line_separator"
                 android:dividerHeight="1dp"
-                android:footerDividersEnabled="false"
+                android:scrollbars="none"
                 >
             </ListView>
 

@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.discover.mobile.common.IntentExtraKey;
+
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.utils.Utils;
 
@@ -156,12 +158,22 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity implement
     public void onBackPressed() {
         // TODO Auto-generated method stub
         super.onBackPressed();
-        if(is_enhance)
+        if(is_enhance && extras !=null)
         {
             Intent enhanceActivity = new Intent(
                     PrivacyTermsLanding.this,
                     EnhancedAccountSecurityActivity.class);
            
+            enhanceActivity.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY) ;
+            enhanceActivity.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION));
+            enhanceActivity.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, extras.getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID));
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.FORGOT_BOTH_FLOW, extras.getBoolean(EnhancedAccountSecurityActivity.FORGOT_BOTH_FLOW));
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.FORGOT_PASSWORD_FLOW, extras.getBoolean(EnhancedAccountSecurityActivity.FORGOT_PASSWORD_FLOW));
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.ANSWER_ERROR_VISIBILITY, extras.getInt(EnhancedAccountSecurityActivity.ANSWER_ERROR_VISIBILITY));
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.ANSWER_ERROR_TEXT, extras.getString(EnhancedAccountSecurityActivity.ANSWER_ERROR_TEXT));
+            enhanceActivity.putExtra("is_enhance",true);
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.YES_RADIOBUTTON_SEL, extras.getBoolean(EnhancedAccountSecurityActivity.YES_RADIOBUTTON_SEL));
+            enhanceActivity.putExtra(EnhancedAccountSecurityActivity.ANSWER_TEXT, extras.getString(EnhancedAccountSecurityActivity.ANSWER_TEXT));
             
             startActivity(enhanceActivity);
         }

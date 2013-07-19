@@ -127,11 +127,15 @@ public class EnhancedAccountSecurityActivity extends
 
     private int activityResult = RESULT_CANCELED;
 
-    private static final String SERVER_ERROR_VISIBILITY = "a";
-    private static final String SERVER_ERROR_TEXT = "c";
-    private static final String ANSWER_ERROR_VISIBILITY = "b";
-    private static final String ANSWER_ERROR_TEXT = "d";
-
+    public static final String SERVER_ERROR_VISIBILITY = "a";
+    public static final String SERVER_ERROR_TEXT = "c";
+    public static final String ANSWER_ERROR_VISIBILITY = "b";
+    public static final String ANSWER_ERROR_TEXT = "d";
+    public static final String YES_RADIOBUTTON_SEL = "e";
+    public static final String ANSWER_TEXT = "f";
+    
+    private static String answer ;
+    public static boolean yes_radiobutton =true;
     /**
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
@@ -178,7 +182,7 @@ public class EnhancedAccountSecurityActivity extends
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        yes_radiobutton =true;
         setContentView(R.layout.strongauth_page);
         loadAllViews();
         setupRadioGroupListener();
@@ -311,12 +315,14 @@ public class EnhancedAccountSecurityActivity extends
             inputErrorVisibility = savedInstanceState
                     .getInt(ANSWER_ERROR_VISIBILITY);
             inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
-
+           //if(inputErrorText != null && !inputErrorText.equals(""))
+           {
             errorMessage.setText(inputErrorText);
             errorMessage.setVisibility(inputErrorVisibility);
             Utils.log(TAG, "inputErrorText " + inputErrorText
                     + " inputErrorVisibility " + inputErrorVisibility);
             restoreInputField();
+           }
 
             // restoreExpandableHelpMenu();
         }
@@ -375,7 +381,20 @@ public class EnhancedAccountSecurityActivity extends
             Intent privacyTerms = new Intent(
                     EnhancedAccountSecurityActivity.this,
                     PrivacyTermsLanding.class);
+            
+                     
             privacyTerms.putExtra("is_enhance", true);
+            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
+            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+            privacyTerms.putExtra(FORGOT_BOTH_FLOW, forgotBoth);
+            privacyTerms.putExtra(FORGOT_PASSWORD_FLOW, forgotPassword);            
+            privacyTerms.putExtra(ANSWER_ERROR_VISIBILITY, errorMessage.getVisibility());
+            privacyTerms.putExtra(ANSWER_ERROR_TEXT, errorMessage.getText().toString());
+            
+            privacyTerms.putExtra(YES_RADIOBUTTON_SEL, yes_radiobutton);
+            privacyTerms.putExtra(ANSWER_TEXT, questionAnswerField.getText().toString());
+            
+            
             //privacyTerms.putExtra("is_enhance", true);
             //privacyTerms.putExtra("is_enhance", true);
             
@@ -405,9 +424,11 @@ public class EnhancedAccountSecurityActivity extends
                         final RadioButton checkedRadioButton = (RadioButton) group
                                 .findViewById(checkedId);
                         if (checkedRadioButton.equals(radioButtonOne)) {
+                            yes_radiobutton =true;
                             radioButtonOne.setTextColor(subCopyColor);
                             radioButtonTwo.setTextColor(fieldCopyColor);
                         } else {
+                            yes_radiobutton =false;
                             radioButtonOne.setTextColor(fieldCopyColor);
                             radioButtonTwo.setTextColor(subCopyColor);
                         }
@@ -437,6 +458,50 @@ public class EnhancedAccountSecurityActivity extends
             // Defect id 95164
             forgotBoth = extras.getBoolean(FORGOT_BOTH_FLOW);
             forgotPassword = extras.getBoolean(FORGOT_PASSWORD_FLOW);
+            
+            if(extras.getBoolean("is_enhance"))
+            {
+                String errmsg = extras.getString(ANSWER_ERROR_TEXT);
+                int errvisib = extras
+                        .getInt(ANSWER_ERROR_VISIBILITY);
+            errorMessage.setText(errmsg);
+            errorMessage.setVisibility(errvisib);
+            
+            if (errorMessage.getVisibility() == View.VISIBLE)
+                questionAnswerField.updateAppearanceForInput();
+            
+            }
+            answer = extras.getString(ANSWER_TEXT); 
+            
+            yes_radiobutton = extras.getBoolean(YES_RADIOBUTTON_SEL,true);
+                    
+            if(answer  != null && !answer.equals(""))
+            {
+                questionAnswerField.setText(answer);
+            }
+            final int subCopyColor = getResources().getColor(
+                    R.color.sub_copy);
+            final int fieldCopyColor = getResources().getColor(
+                    R.color.field_copy);
+            if(!yes_radiobutton)
+            {
+                radioButtonOne.setChecked(false);
+                radioButtonTwo.setChecked(true);
+                radioButtonOne.setTextColor(fieldCopyColor);
+                radioButtonTwo.setTextColor(subCopyColor);
+            }
+            else
+            {  
+                radioButtonOne.setChecked(true);
+                radioButtonTwo.setChecked(false);
+                radioButtonOne.setTextColor(subCopyColor);
+                radioButtonTwo.setTextColor(fieldCopyColor);
+                
+                
+                
+                
+            }
+            //restoreState(extras);
             // Defect id 95164
             questionLabel.setText(strongAuthQuestion);
 
@@ -542,7 +607,7 @@ public class EnhancedAccountSecurityActivity extends
         // Store answer in a string
         final String answer = questionAnswerField.getText().toString();
 
-        if (!Strings.isNullOrEmpty(answer)) {
+        if (!Strings.isNullOrEmpty(answer) && !questionAnswerField.isSpaceEntered()) {
             // Find out which radio button is pressed.
             final int radioButtonId = securityRadioGroup
                     .getCheckedRadioButtonId();

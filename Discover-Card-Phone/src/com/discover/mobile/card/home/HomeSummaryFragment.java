@@ -64,6 +64,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 	private LinearLayout currentBalance, lastStatement, bonusBalance;
 	private RelativeLayout bonusOffer;
 	private View statusBarView;
+	private boolean isDeeplinkMode = false;
 	private boolean isCashback = true;
 	HashMap<String, String> rewardsInfo = new HashMap<String, String>();
 	HashMap<String, String> rewardsOffer = new HashMap<String, String>();
@@ -152,11 +153,29 @@ public class HomeSummaryFragment extends BaseFragment implements
 		if (bundle != null) {
 			String deeplink = bundle.getString(CardNavigationMenuFragment.DEEPLINK, null);
 			if(deeplink != null && deeplink.equals(CardNavigationMenuFragment.DEEPLINK_PASSCODE)) {
+				isDeeplinkMode = true;
 				new PasscodeRouter(this).getStatusAndRoute();
 			}
 		}
 		return view;
 	}
+	
+	
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (isDeeplinkMode) {
+			//don't show home screen if there is a delay in loading deeplink
+			view.setVisibility(View.INVISIBLE);
+			Utils.showSpinner(getActivity(), "Discover", "Loading");
+			isDeeplinkMode = false;
+		} else {
+			view.setVisibility(View.VISIBLE);
+		}
+	}
+
+
 
 	/**
 	 * To fetch the account name from the account details object

@@ -1,100 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView1"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="fill_parent"
-    android:fillViewport="true" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:background="@color/card_body_color"
-        android:orientation="vertical" >
+    <RelativeLayout
+        android:id="@+id/sa_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/field_stroke" >
 
-        <RelativeLayout
-            android:id="@+id/sa_action_bar"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:background="@color/field_stroke" >
+        <TextView
+            android:id="@+id/title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:maxLines="1"
+            android:paddingRight="64dp"
+            android:text="@string/sa_title"
+            android:textColor="@color/blue_grey"
+            android:textSize="18dp"
+            android:textStyle="normal" />
 
-            <TextView
-                android:id="@+id/title_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:maxLines="1"
-                android:paddingRight="64dp"
-                android:text="@string/sa_title"
-                android:textColor="@color/blue_grey"
-                android:textSize="18sp"
-                android:textStyle="normal" />
+        <Button
+            android:id="@+id/logout_button"
+            style="@style/logout_actionbar_button"
+            android:layout_width="64dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/card_logout_button"
+            android:text="@string/log_out"
+            android:textSize="12dp" />
 
-            <Button
-                android:id="@+id/logout_button"
-                android:layout_width="64dp"
-                android:layout_height="fill_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/card_logout_button"
-                android:text="@string/log_out"
-                android:textColor="@color/sub_copy"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:id="@+id/gradient_line"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/stroke_ruling_line"
-                android:src="@drawable/header_bottomline" />
-        </RelativeLayout>
-
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/gradient_line"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/stroke_ruling_line"
+            android:src="@drawable/header_bottomline" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/selectquestiontitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="22dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:text="@string/sa_option_select"
-                android:textColor="#3d484d"
-                android:textSize="18sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sa_action_bar"
+        android:background="@color/card_body_color"
+        android:orientation="vertical"
+        android:paddingBottom="18dp" >
 
-            <View
-                android:id="@+id/general_list_item_separator_line_start"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@+id/selectquestiontitle"
-                android:background="#c0c8cc" />
+        <TextView
+            android:id="@+id/selectquestiontitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="22dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/sa_option_select"
+            android:textColor="#3d484d"
+            android:textSize="18sp" />
 
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/general_list_item_separator_line_start"
-                android:choiceMode="singleChoice"
-                android:divider="@color/stroke_rulink_link"
-                android:dividerHeight="1dp" />
+        <View
+            android:id="@+id/general_list_item_separator_line_start"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/selectquestiontitle"
+            android:background="#c0c8cc" />
 
-            <View
-                android:id="@+id/general_list_item_separator_line_end"
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_below="@android:id/list"
-                android:background="#c0c8cc" />
-        </RelativeLayout>
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/general_list_item_separator_line_start"
+            android:divider="@color/stroke_rulink_link"
+            android:dividerHeight="1dp" />
+
+        <View
+            android:id="@+id/general_list_item_separator_line_end"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@android:id/list"
+            android:background="#c0c8cc" />
 
         <include
             android:id="@+id/enter_info_footer"
-            android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:layout_marginBottom="18dp"
+            android:layout_below="@+id/general_list_item_separator_line_end"
             layout="@layout/card_fragment_footer" />
-    </LinearLayout>
+    </RelativeLayout>
 
-</ScrollView>
+</RelativeLayout>

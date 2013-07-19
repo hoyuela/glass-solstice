@@ -140,7 +140,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new AccountDetails(), "Discover", null, this);
         Utils.isSpinnerAllowed = true;
-        Utils.showSpinner(context, "Discover", "Authenticating...");
+        Utils.showSpinner(context, "Discover", "Loading...");
         serviceCall.execute(request);
 
         listener = new StrongAuthListener() {
@@ -462,7 +462,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         request.setHeaderValues(headers);
 
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new BankPayload(), "Discover", "Authenticating...", listener);
+                new BankPayload(), "Discover", "Loading...", listener);
         serviceCall.execute(request);
 
     }
@@ -514,7 +514,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
 
             }
-        }, "Discover", "Authenticating......");
+        }, "Discover", "Loading......");
     }
 
     @Override
@@ -994,7 +994,7 @@ private int convertStringToInt(String str) {
 	                cardErrorResHandler.handleCardError((CardErrorBean) data);
 	
 	            }
-	        }, "Discover", "Authenticating......");
+	        }, "Discover", "Loading......");
          }
     }
 

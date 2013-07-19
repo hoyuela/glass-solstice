@@ -3,7 +3,6 @@ package com.discover.mobile.card.auth.strong;
 import android.content.Context;
 
 import com.discover.mobile.card.R;
-import com.discover.mobile.card.common.net.error.CardErrorCallbackListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -11,8 +10,6 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 
 public abstract class StrongAuthDefaultResponseHandler implements
 		StrongAuthListener {
-
-	private CardErrorCallbackListener errorCallbackListener;
 
 	@Override
     public abstract void onStrongAuthSucess(final Object data);
@@ -38,23 +35,13 @@ public abstract class StrongAuthDefaultResponseHandler implements
     
     @Override
 	public void onStrongAuthError(Object data) {
-		// TODO Auto-generated method stub
+    	onStrongAuthSkipped(data);
 	}
 
 	@Override
 	public void onStrongAuthNotEnrolled(Object data) {
-		// TODO Auto-generated method stub
+    	onStrongAuthSkipped(data);
 	}
-
-//    @Override
-//    public void onStrongAuthError(final Object data) {
-//    	if (null!=errorHandlerUI && errorHandlerUI instanceof CardErrorHandlerUi)
-//    	{
-//	        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-//	        		errorHandlerUI);
-//	        cardErrorResHandler.handleCardError((CardErrorBean) data);
-//    	}
-//    }
 
     @Override
     public void onStrongAuthCardLock(final Object data) {

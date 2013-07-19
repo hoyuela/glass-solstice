@@ -193,6 +193,7 @@ public class PasscodeMenuFragment extends BaseFragment {
 					R.string.passcode_dialog_disabled_title, 
 					R.string.passcode_dialog_disabled_content, 
 					R.string.home_text,
+					new NavigateACHomeAction(),
 					new NavigateACHomeAction());
 			modal.hideNeedHelpFooter();
 			((NavigationRootActivity)activeActivity).showCustomAlert(modal);

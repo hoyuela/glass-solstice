@@ -42,12 +42,14 @@ public class WhatsNewAvailable extends LinearLayout implements
         final LayoutInflater vi = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         switch (pageID) {
-        case QUICK_VIEW_INFO:
-            final View quickview = vi.inflate(R.layout.whats_new_layout1, null);
-            setGravity(Gravity.FILL_VERTICAL);
-            addView(quickview);
-            setPageOneContent();
-            break;
+        /* 13.4 Defect ID 105326 start */
+        /*
+         * case QUICK_VIEW_INFO: final View quickview =
+         * vi.inflate(R.layout.whats_new_layout1, null);
+         * setGravity(Gravity.FILL_VERTICAL); addView(quickview);
+         * setPageOneContent(); break;
+         */
+        /* 13.4 Defect ID 105326 end */
         case MANAGE_BANK_INFO:
             final View bankaccountview = vi.inflate(R.layout.whats_new_layout1,
                     null);
@@ -86,28 +88,27 @@ public class WhatsNewAvailable extends LinearLayout implements
         linkLabel = (TextView) findViewById(R.id.whats_new_label);
 
         switch (pageID) {
-        case QUICK_VIEW_INFO:
-            title.setText(R.string.quickview_content_heading);
-            linkLabel.setText(R.string.quickview_gotolink);
-            if (cardType.equalsIgnoreCase("CBB")
-                    || cardType.equalsIgnoreCase("SBC")) {
-                contentDescription
-                        .setText(R.string.quickview_content_description_cbb);
-                imageView.setImageDrawable(getResources().getDrawable(
-                        R.drawable.quick_view));
-            } else if (cardType.equalsIgnoreCase("NOR")) {
-                contentDescription
-                        .setText(R.string.quickview_content_description_dbc_corp);
-                imageView.setImageDrawable(getResources().getDrawable(
-                        R.drawable.quick_view));
-
-            } else {
-                contentDescription
-                        .setText(R.string.quickview_content_description_mi);
-                imageView.setImageDrawable(getResources().getDrawable(
-                        R.drawable.quick_view));
-            }
-            break;
+        /* 13.4 Defect ID 105326 start */
+        /*
+         * case QUICK_VIEW_INFO:
+         * title.setText(R.string.quickview_content_heading);
+         * linkLabel.setText(R.string.quickview_gotolink); if
+         * (cardType.equalsIgnoreCase("CBB") ||
+         * cardType.equalsIgnoreCase("SBC")) { contentDescription
+         * .setText(R.string.quickview_content_description_cbb);
+         * imageView.setImageDrawable(getResources().getDrawable(
+         * R.drawable.quick_view)); } else if (cardType.equalsIgnoreCase("NOR"))
+         * { contentDescription
+         * .setText(R.string.quickview_content_description_dbc_corp);
+         * imageView.setImageDrawable(getResources().getDrawable(
+         * R.drawable.quick_view));
+         * 
+         * } else { contentDescription
+         * .setText(R.string.quickview_content_description_mi);
+         * imageView.setImageDrawable(getResources().getDrawable(
+         * R.drawable.quick_view)); } break;
+         */
+        /* 13.4 Defect ID 105326 end */
         case MANAGE_BANK_INFO:
             title.setText(R.string.manage_bankacc_content_heading);
             linkLabel.setText(R.string.manage_bankacc_gotolink);

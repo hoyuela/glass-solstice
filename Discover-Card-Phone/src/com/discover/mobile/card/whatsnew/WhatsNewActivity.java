@@ -109,7 +109,10 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants {
 
         public MyPagerAdapter(final Context context) {
             views = new ArrayList<View>();
-            views.add(new WhatsNewAvailable(context, QUICK_VIEW_INFO, cardType));
+            /* 13.4 Defect ID 105326 start */
+            // views.add(new WhatsNewAvailable(context, QUICK_VIEW_INFO,
+            // cardType));
+            /* 13.4 Defect ID 105326 start */
             views.add(new WhatsNewAvailable(context, PASSCODE_INFO, cardType));
             views.add(new WhatsNewAvailable(context, MANAGE_BANK_INFO, cardType));
             views.add(new WhatsNewAvailable(context, MANAGE_PAYMENT_INFO,

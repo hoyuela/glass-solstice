@@ -357,7 +357,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
                 new RegistrationConfirmationDetails(), "Discover",
-                "Authenticating...", this);
+                "Loading...", this);
         serviceCall.execute(request);
     }
 

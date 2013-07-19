@@ -249,10 +249,10 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         return valueMatched;
     }
 
-    public boolean isNull() {
+   /* public boolean isNull() {
 
         return Strings.isNullOrEmpty(this.getText().toString());
-    }
+    }*/
 
     /**
      * Update the error state of the field. If the input field is valid - hide
@@ -277,11 +277,20 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         final String currentInput = this.getText().toString();
         boolean isSpaceEntered = false;
 
-        if (currentInput.contains(" ")) {
-            isSpaceEntered = true;
-        } else {
-            isSpaceEntered = false;
-        }
+        /* 13.4 Defect ID 105360 start */
+        /* if (currentInput.contains(" ")) {
+             isSpaceEntered = true;
+         } else {
+             isSpaceEntered = false;
+         }*/
+         if(currentInput.startsWith(" ")||currentInput.endsWith(" ")){
+         	isSpaceEntered = true;
+         }else
+         {
+         	isSpaceEntered = false;
+         }
+         /* 13.4 Defect ID 105360 End */	
+         
         return isSpaceEntered;
     }
 

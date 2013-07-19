@@ -141,7 +141,7 @@ public class CardFacadeImpl implements CardFacade {
                         // TODO Auto-generated method stub
 
                     }
-                }, "Discover", "Authenticating......");
+                }, "Discover", "Loading......");
             }
 
             return cardInfo;

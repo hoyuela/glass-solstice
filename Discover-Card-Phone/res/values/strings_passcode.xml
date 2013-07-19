@@ -14,7 +14,7 @@
     <string name="passcode_dialog_updated_title">Passcode Updated</string>
     <string name="passcode_dialog_updated_content">
         <![CDATA[
-        Your Passcode Has been successfully updated! The next time you enter the app you\'ll be asked to log in with your updated Passcode.
+        Your Passcode has been successfully updated! The next time you enter the app you\'ll be asked to log in with your updated Passcode.
         <br/><br/>
         <b>If you have other Passcode-enabled devices, they have been updated wtih your new Passcode.</b>
 		]]>
@@ -59,11 +59,11 @@
     <string name="passcode_enable_step1_paragraph_1">Our records show that you have an existing Passcode enabled on other devices.  In order to enable Passcode login on this device you must enter that same Passcode on this device.</string>
     <string name="passcode_enable_step1_paragraph_2">Would you like to enable Passcode Login for this device?</string>
     <string name="passcode_enable_step1_button_yes">Yes</string>
-    <string name="passcode_enable_step1_link_no_thanks">No Thanks</string>
+    <string name="passcode_enable_step1_link_no_thanks">No, Thanks</string>
     <string name="passcode_remove_paragraph_1">Passcode has been previously set up on this device. It may have been created by another user or for a different account.</string>
     <string name="passcode_remove_paragraph_2">Do you want to remove Passcode from this device and proceed to create your own?</string>
     <string name="passcode_remove_button">Remove Passcode</string>
-    <string name="passcode_remove_link_no_thanks">No Thanks</string>
+    <string name="passcode_remove_link_no_thanks">No, Thanks</string>
     <string name="passcode_menu_header">Your Passcode is currently enabled on this device.</string>
     <string name="passcode_menu_change_passcode">Change Passcode</string>
     <string name="passcode_menu_disable_passcode">Disable Passcode</string>
