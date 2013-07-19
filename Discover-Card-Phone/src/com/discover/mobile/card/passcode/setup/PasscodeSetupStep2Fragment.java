@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 	}
 
 	protected void showPasscodeCreatedModal() {
-//		dialogHelper(MODAL_PASSCODE_CREATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
-
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_created_title, 
@@ -112,5 +111,13 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 			getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	};
+
+	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
+		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
+			makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
+			return true;
+		}
+		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
+	}
 	 
 }

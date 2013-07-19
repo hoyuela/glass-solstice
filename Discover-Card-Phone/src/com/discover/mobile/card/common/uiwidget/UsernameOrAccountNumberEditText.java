@@ -6,10 +6,12 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.View;
 
 import com.discover.mobile.common.utils.CommonUtils;
 
 import com.discover.mobile.card.common.InputValidator;
+import com.google.common.base.Strings;
 
 /**
  * This class is an edit text which will function as either a Username field or
@@ -251,5 +253,24 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField {
         return InputValidator.validateCardAccountNumber(CommonUtils
                 .getSpacelessString(cardAccountNumber));
     }
+    
+    /*public boolean isNull() {
+
+        return Strings.isNullOrEmpty(this.getText().toString());
+    }
+    
+	@Override
+	protected void showErrorLabel() {
+		// TODO Auto-generated method stub
+		if (errorLabel != null) {
+			if (isNull()) {
+				errorLabel.setVisibility(View.GONE);
+			} else
+			{
+				errorLabel.setVisibility(View.VISIBLE);
+			}
+		}
+
+	}*/
 
 }

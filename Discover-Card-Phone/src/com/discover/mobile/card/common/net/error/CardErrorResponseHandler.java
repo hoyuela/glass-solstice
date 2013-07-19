@@ -150,41 +150,41 @@ public final class CardErrorResponseHandler {
             	pUtils.deletePasscodeToken();
             }
 
+            final Bundle bundle = new Bundle();
+            bundle.putString(IntentExtraKey.ERROR_CODE, cardErrorHold.getErrorCode());
+            bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, cardErrorHold.getErrorMessage());
             if (lockoutErrors.contains(errorCodeNumber) && passcodeDisabledErrors.contains(errorCode)) {
             	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4032112, R.string.E_4032112, R.string.close_text);
             	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
             	modalUIDAndPasscodeLockout.setGrayButton();
             	modalUIDAndPasscodeLockout.showErrorIcon();
             	showCustomAlert(modalUIDAndPasscodeLockout);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
             	EnhancedContentModal modalLockout = new EnhancedContentModal(context, R.string.E_T_4031101, R.string.E_4031101, R.string.close_text);
             	modalLockout.hideNeedHelpFooter();
             	modalLockout.setGrayButton();
             	modalLockout.showErrorIcon();
             	showCustomAlert(modalLockout);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (errorCodeNumber == PASSCODE_NOT_BOUND) {
             	EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
             	modal.hideNeedHelpFooter();
             	showCustomAlert(modal);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (passcodeDisabledErrors.contains(errorCodeNumber)) {
             	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.close_text);
             	modalPasscodeDisabled.hideNeedHelpFooter();
             	modalPasscodeDisabled.setGrayButton();
             	modalPasscodeDisabled.showErrorIcon();
             	showCustomAlert(modalPasscodeDisabled);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lastAttemptErrors.contains(errorCodeNumber) || errorCodeNumber == INCORRECT_USERID_PASSWORD) {
             	if(CardLoginFacadeImpl.class.isInstance(errorHandlerUi))
             	{
-            		final LoginActivityFacade loginFacade = FacadeFactory
-    						.getLoginFacade();
-
+            		final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
             		Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
-            		Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
-    				final Bundle bundle = new Bundle();
-    				bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE,
-    						cardErrorHold.getErrorMessage());
-    				loginFacade.navToLoginWithMessage(
-    						DiscoverActivityManager.getActiveActivity(), bundle);
+    				loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             	}
             	else
             	{

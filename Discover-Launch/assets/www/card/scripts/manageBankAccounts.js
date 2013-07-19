@@ -195,7 +195,7 @@ try {
 function manageBankAccountsDetailsLoad(){
 try{
 		var validPriorPages = new Array("manageBankAccConfirmDetails","updateComplete","manageBankAccounts",
-		"removeComplete","removeAccountConfirmPending","removeAccountConfirmNoPending","manageBankAccUpdateDetails");
+		"removeComplete","removeAccountConfirmPending","removeAccountConfirmNoPending","manageBankAccUpdateDetails","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPages) > -1) {
 			var accountDetails = getDataFromCache("SELECTED_BANK_ACCOUNT_SERVICE_RESPONSE");
 			if(!jQuery.isEmptyObject(accountDetails)){
@@ -358,7 +358,7 @@ try {
 
 function manageBankAccUpdateDetailsLoad(){
 try {
-		var validPriorPages = new Array("manageBankAccountsDetails");
+		var validPriorPages = new Array("manageBankAccountsDetails","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPages) > -1) {
 			if($(document).jqmData("editFlag") == true){
 				//if the acc exists and user wants to edit account
@@ -400,7 +400,7 @@ try {
 
 function updateCompleteLoad(){
 try {
-		var validPriorPages = new Array("manageBankAccUpdateDetails");
+		var validPriorPages = new Array("manageBankAccUpdateDetails","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPages) > -1) {
 			var accountsList = getDataFromCache("POST_EDIT_UPDATED_ACCOUNT_LIST");
 			if(!jQuery.isEmptyObject(accountsList)){
@@ -418,7 +418,7 @@ try {
 
 function manageBankAccConfirmDetailsLoad(){
 try {
-		var validPriorPages = new Array("manageBankAccEnterDetails");
+		var validPriorPages = new Array("manageBankAccEnterDetails","moreLanding");
 		if (addBankAccDataPosted && (jQuery.inArray(fromPageName, validPriorPages) > -1)) {
 			var accountsList = getDataFromCache("POST_ADD_UPDATED_ACCOUNT_LIST");
 			addBankAccDataPosted = false;
@@ -544,7 +544,7 @@ try{
 
 function removeAccountConfirmPendingLoad(){
 try {
-		var validPriorPages = new Array("manageBankAccountsDetails");
+		var validPriorPages = new Array("manageBankAccountsDetails","moreLanding");
 		if (jQuery.inArray(fromPageName, validPriorPages) > -1) {
 			dfs.crd.pymt.populateRemoveAccountPendingPageDivs();
 		}else {
@@ -597,7 +597,7 @@ try{
 
 function removeAccountConfirmNoPendingLoad(){
 try {
-		var validPriorPages = new Array("manageBankAccountsDetails");
+		var validPriorPages = new Array("manageBankAccountsDetails","moreLanding");
 		if (!(jQuery.inArray(fromPageName, validPriorPages) > -1)) {
 			cpEvent.preventDefault();
 			navigation('../payments/manageBankAccounts');

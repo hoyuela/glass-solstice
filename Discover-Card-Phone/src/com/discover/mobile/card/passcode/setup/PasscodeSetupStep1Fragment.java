@@ -44,7 +44,6 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 			Log.v(TAG, "Firing off server request");
 			new GetSyntaxValidityRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new SyntaxValidityRequestListener());
 		} else {
-//			onPasscodeErrorEvent();
 			passcodeResponse(false);
 		}
 	}
@@ -57,16 +56,14 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		Log.v(TAG,  "passing passcode: " + getPasscodeString());
 		pStep2.setArguments(b);
 		
-		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, pStep2).commit();
+		makeFragmentVisible(pStep2, false);
+//		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, pStep2).commit();
 	}
 		
 	private final class SyntaxValidityRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
 			Log.e(TAG, "ERROR fetching passcode validity");
-			//TODO sgoff0 - enhance error processing
-			//400 bad request
-			//status - 2102
 			//message - passcode not provided or does not meet security requirements
 			Log.v(TAG, "Data: " + data.toString());
 			passcodeResponse(false);
@@ -74,8 +71,6 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 
 		@Override
 		public void onSuccess(Object data) {
-//			VerifySyntax vs = (VerifySyntax) data;
-			//200 no response must be good
 			passcodeResponse(true);
 		}
 	};

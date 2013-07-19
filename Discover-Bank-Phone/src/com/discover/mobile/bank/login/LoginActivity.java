@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -157,6 +158,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	PasscodeUtils pUtils;
 	protected EditText[] fieldTVs = new EditText[4];
 	protected ImageView validationIV;
+	protected ImageView splashLogo;
 	private TextView welcomeTV;
 	private TextView passcodeCardPrivacyLink;
 	private TextView passcodeForgot;
@@ -332,6 +334,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		vPasscodeLink3 = (TextView) this.findViewById(R.id.passcode_privacy_and_security_button_card);
 		
 		//passcode
+		splashLogo = ((ImageView) findViewById(R.id.splash_logo));
 		validationIV = ((ImageView) findViewById(R.id.validation));
 		welcomeTV = (TextView) findViewById(R.id.welcome);
 		fieldTVs[0] = (EditText)findViewById(R.id.passcode01);
@@ -422,10 +425,20 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		/** Verify error text is not shown already and intent has a bundle with the specified message to display */
+		Log.v(TAG, "MaybeShowError");
+		/**
+		 * Verify error text is not shown already and intent has a bundle with
+		 * the specified message to display
+		 */
 		if (errorTextView.getVisibility() != View.VISIBLE && extras != null) {
-			final String errorMessage = extras.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
-			if( !Strings.isNullOrEmpty(errorMessage) ){
+			final String errorMessage = extras
+					.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
+			final String errorCode = extras
+					.getString(IntentExtraKey.ERROR_CODE);
+			Log.v(TAG, "ErrorCode: " + errorCode);
+			if (!Strings.isNullOrEmpty(errorCode)) {
+				showErrorMessage(errorCode, errorMessage);
+			} else if (!Strings.isNullOrEmpty(errorMessage)) {
 				showErrorMessage(errorMessage);
 				getIntent().putExtra(IntentExtraKey.SHOW_ERROR_MESSAGE, StringUtility.EMPTY);
 				errorTextView.setTextColor(extras.getInt(ERROR_MESSAGE_COLOR));
@@ -440,21 +453,47 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	public void showErrorMessage(final String errorMessage) {
 		Log.v(TAG, "Setting error message.");
-		exclamationIV.setVisibility(View.GONE);
+		hideExclamation();
 		if (isPasscodeLogin()) {
 			Log.v(TAG, "Error message hidden: " + errorMessage);
-			//TODO passcode sgoff0 - make more elegant, potentially pass and check
-			//for error 1103 "Last signon attempt"
-			if (errorMessage.contains("more attempt")) {
-				BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
-			}
+			// TODO passcode sgoff0 - make more elegant, potentially pass and
+			// check
+			// for error 1103 "Last signon attempt"
+			// if (errorMessage.contains("more attempt")) {
+			// BankErrorHandler.getInstance().showErrorsOnScreen(this,
+			// errorMessage);
+			// }
 			guiValidationError();
-		} else {
-			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
 		idField.clearFocus();
 		passField.clearFocus();
 		setCheckMark(false, false);
+	}
+
+	public void showErrorMessage(final String errorCode,
+			final String errorMessage) {
+		// Need to show a unique message for invalid login attempt when on
+		// passcode, can't determine from CardErrorResponseHandler
+		Log.v(TAG, "Error Code: " + errorCode);
+		
+		if (isCardLogin() && !isUserIDLogin && !pUtils.doesDeviceTokenExist()) {
+			//if passcode was disabled but user interface not yet in sync
+			displayActiveLoginMode();
+		} 
+		if (isPasscodeLogin()) {
+			guiValidationError();
+			if ("401".equals(errorCode)) {
+				//do nothing specific
+			} else if ("4011103".equals(errorCode)) {
+				//show icon
+				showRedExclamation();
+				BankErrorHandler.getInstance().showErrorsOnScreen(this, "To protect your security, you have one attempt remaining.");
+			} else {
+				clearAllFields();
+			}
+		} else {
+			showErrorMessage(errorMessage);
+		}
 	}
 
 	/**
@@ -486,6 +525,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		errorTextView.setVisibility(View.VISIBLE);
 		
 		startFadeOutAnimationForView(errorTextView, halfSecond, View.GONE, tenSeconds);
+		startFadeInAnimationForView(welcomeTV, halfSecond, tenSeconds);
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
@@ -544,6 +584,36 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 
+	private void startFadeInAnimationForView(final View viewToFade, 
+														final long duration, 
+														final long animationDelay) {
+		if(viewToFade != null) {
+			final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+			
+			fadeIn.setDuration(duration);
+			fadeIn.setAnimationListener(new AnimationListener() {
+				
+				@Override
+				public void onAnimationStart(final Animation animation) {
+					viewToFade.setVisibility(View.GONE);
+				}
+				
+				@Override
+				public void onAnimationRepeat(final Animation animation) {				
+				}
+				
+				@Override
+				public void onAnimationEnd(final Animation animation) {
+					viewToFade.setVisibility(View.VISIBLE);
+				}
+			});
+			fadeIn.setStartOffset(animationDelay);
+			
+			viewToFade.startAnimation(fadeIn);
+		}
+	}
+	
+	
 	/**
 	 * Called as a result of the activity's being brought to the front when
 	 * using the Intent flag FLAG_ACTIVITY_REORDER_TO_FRONT.
@@ -648,6 +718,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		cardForgotAndPrivacySection.setVisibility(View.INVISIBLE);
 		//Default to the last path user chose for login Card or Bank
 		setApplicationAccount();
+
+		if (isPasscodeLogin()) {
+			//Show soft keyboard for passcode login page
+			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+		}
 	}
 
 	/**
@@ -793,8 +868,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void executeLogin(final View v){
 		CommonUtils.setViewGone(errorTextView);
-		CommonUtils.setViewGone(exclamationIV);
-		
+		hideExclamation();
+
 		try {
 			final String encryptedUsername = EncryptionUtil.encrypt(idField.getText().toString());
 			DiscoverApplication.getLocationPreference().setMostRecentUser(encryptedUsername);
@@ -879,14 +954,15 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		passcodeForgot.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				
-				//set exclamation
-				exclamationIV.setBackgroundResource(R.drawable.exclamation_gray_img);
-				exclamationIV.setVisibility(View.VISIBLE);
-				
-				//Show user id login
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				errorTextView.setText("Log in with your User ID and Password to create your new Passcode.");
+
+				// set exclamation
+				showGrayExclamation();
+
+				// Show user id login
+				errorTextView.setTextColor(getResources().getColor(
+						R.color.black));
+				errorTextView
+						.setText("Log in with your User ID and Password to create your new Passcode.");
 				errorTextView.setVisibility(View.VISIBLE);
 				isUserIDLogin = true;
 				displayActiveLoginMode();
@@ -1157,7 +1233,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			Globals.setCurrentUser(StringUtility.EMPTY);
 			errorTextView.setText(StringUtility.EMPTY);
 			errorTextView.setVisibility(View.GONE);
-			exclamationIV.setVisibility(View.GONE);
+			hideExclamation();
 
 			//Delete saved use if toggle is made and save user ID is not checked.
 			if(!saveUserId){
@@ -1670,21 +1746,19 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			clearAllFields();
 			showPasscodeLogin();
 			hideUIDLogin();
-			Log.v(TAG, "Show passcode keyboard");
-			final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(fieldTVs[0], InputMethodManager.SHOW_IMPLICIT);
+			forceSoftKeyboardShown(0);
+			splashLogo.setVisibility(View.INVISIBLE);
 		} else {
 			hidePasscodeLogin();
 			showUIDLogin();
+			splashLogo.setVisibility(View.VISIBLE);
 		}
 	}
 	
 	private void guiValidationError() {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundResource(R.drawable.rectangle_red);
-//			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_red));
 		}
-//		validationIV.setImageResource(R.drawable.x_red);
 		validationIV.setVisibility(View.VISIBLE);
 		
 		new Handler().postDelayed(new Runnable() {
@@ -1699,7 +1773,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void guiValidationReset(){
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundResource(R.drawable.rectangle);
-//			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle));
 		}
 		validationIV.setVisibility(View.INVISIBLE);
 	}
@@ -1736,25 +1809,37 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		at.setLayoutParams(p);
 	}
 	
+	private void showRedExclamation() {
+		exclamationIV.setImageResource(R.drawable.exclamation_red_img);
+		showExclamation();
+	}
+	
+	private void showGrayExclamation() {
+		exclamationIV.setImageResource(R.drawable.exclamation_gray_img);
+		showExclamation();
+	}
+	
+	private void showExclamation() {
+		exclamationIV.setVisibility(View.VISIBLE);
+		errorTextView.setPadding(0, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
+	}
+	
+	private void hideExclamation() {
+		exclamationIV.setVisibility(View.GONE);
+		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
+//		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
+	}
+
 	private void showPasscodeLogin() {
 		vPasscode.setVisibility(View.VISIBLE);
 		vPasscodeLinks.setVisibility(View.VISIBLE);
 		vPasscodeLink3.setVisibility(View.VISIBLE);
-		//shrink layout height for passcode
-//		ViewGroup layout = (ViewGroup)findViewById(R.id.login_table);
-//		LayoutParams params = layout.getLayoutParams();
-//		int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 650, getResources().getDisplayMetrics());
-//		int height = ((RelativeLayout)findViewById(R.id.account_toggle)).getHeight() + vPasscode.getHeight();
-//		params.height = height;
+		// shrink layout height for passcode
 		setToggleBelow(R.id.passcode_login);
-		
-//		LayoutParams params = layout.getLayoutParams();
-//		// Changes the height and width to the specified *pixels*
-//		int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 650, getResources().getDisplayMetrics());
-//		params.height = height;
 	}
-	
-	//Start Passcode Setup Functionality
+
+	// Start Passcode Setup Functionality
 	private boolean isPasscodeLogin() {
 		return isCardLogin() && pUtils.doesDeviceTokenExist() && !isUserIDLogin;
 	}
@@ -2197,7 +2282,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			if (pUtils.isForgotPasscode()) {
 				pUtils.setForgotPasscode(false);
 				errorTextView.setVisibility(View.GONE);
-				exclamationIV.setVisibility(View.GONE);
+				hideExclamation();
 				isUserIDLogin = false;
 				displayActiveLoginMode();
 				return true;

@@ -152,7 +152,9 @@
                     android:drawableLeft="@drawable/card_radio_orange"
                     android:drawablePadding="@dimen/forms_inner_padding"
                     android:padding="@dimen/forms_inner_padding"
-                    android:text="@string/account_security_remember_me_text" />
+                    android:text="@string/account_security_remember_me_text" 
+                    android:textColor="@color/blue_grey"
+                    />
 
                 <!--
                      <View

@@ -197,7 +197,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         }
 
         mNoTextImage = BitmapFactory.decodeResource(this.getResources(),
-                R.drawable.strengthmeter_grey);
+                R.drawable.card_strengthmeter_grey);
         mStrengthMeter = mNoTextImage;
         this.setBackgroundResource(R.drawable.card_textfield_normal_holo_light);
     }
@@ -575,27 +575,27 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         // Load All Imgaes
         if (mInvalidImage == null) {
             mInvalidImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_invalid);
+                    R.drawable.card_strengthmeter_invalid);
         }
         if (mStrengthMeter == null) {
             mStrengthMeter = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_lightgrey);
+                    R.drawable.card_strengthmeter_lightgrey);
         }
         if (mStrongImage == null) {
             mStrongImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_green);
+                    R.drawable.card_strengthmeter_green);
         }
         if (mModerateImage == null) {
             mModerateImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_yellow);
+                    R.drawable.card_strengthmeter_yellow);
         }
         if (mWeakImage == null) {
             mWeakImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_red);//strength_meter_red
+                    R.drawable.card_strengthmeter_red);//strength_meter_red
         }
         if (mNoTextImage == null) {
             mNoTextImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.strengthmeter_grey);
+                    R.drawable.card_strengthmeter_grey);
         }
     }
 

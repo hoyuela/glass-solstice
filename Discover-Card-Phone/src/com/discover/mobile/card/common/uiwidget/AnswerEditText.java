@@ -85,10 +85,10 @@ public class AnswerEditText extends ValidatedInputField {
      * This method validates the current input for the letters and numeric value
      */
    
-    public boolean isNull(){
+   /* public boolean isNull(){
         
         return Strings.isNullOrEmpty(this.getText().toString());
-    }
+    }*/
     
     public boolean isSpecialCharacterEntered() {
         final String currentInput = this.getText().toString();
@@ -104,11 +104,20 @@ public class AnswerEditText extends ValidatedInputField {
         final String currentInput = this.getText().toString();
         boolean isSpaceEntered = false;
 
-        if (currentInput.contains(" ")) {
+        /* 13.4 Defect ID 105360 start */
+       /* if (currentInput.contains(" ")) {
             isSpaceEntered = true;
         } else {
             isSpaceEntered = false;
+        }*/
+        if(currentInput.startsWith(" ")||currentInput.endsWith(" ")){
+        	isSpaceEntered = true;
+        }else
+        {
+        	isSpaceEntered = false;
         }
+        /* 13.4 Defect ID 105360 End */	
+        	
         return isSpaceEntered ;
     }
 

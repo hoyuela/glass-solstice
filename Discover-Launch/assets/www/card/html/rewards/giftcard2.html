@@ -20,9 +20,9 @@
             <div id="pgPadding"></div>
             <div class="progress-indicator">
 		<ul>
-		    <li><a href="#" class="visited">1. Review/Edit</a></li>
-                    <li><a href="#" class="active">2. Verify</a></li>
-                    <li><a href="#">3. Confirmation</a></li>
+		    <li><a href="#" class="visited">Review/Edit</a></li>
+                    <li><a href="#" class="active">Verify</a></li>
+                    <li><a href="#">Confirmation</a></li>
 		</ul>
 		<div class="clearboth"></div>
 	    </div>
@@ -32,8 +32,9 @@
                 <div>
                     <div class="repeater-border">
                     <div class="details-section-container">
+                       <!-- 13.3 global change -->
                         <div class="shipping-detl-content">
-                        	<span class="details-title">details</span>
+                        	<span class="details-title" id="detailsLabel">DETAILS</span>
                     		<!--<h1><span class="cbb-redem" id="selected-redeem-cbb"></span>  Discover Gift Card</h1>-->
                             <div class="shipping-details">
 						<div class="card-design-lft" >
@@ -67,20 +68,20 @@
 									<p id="cbb-curr-balance" class="col2"></p></li>
 								<li class="borderBottomGrey"><p class="col1"><i>Cashback Bonus</i> to be Redeemed:</p>
                                     <p id="cbb-redem" class="col2"></p></li>
-								<li><p class="noBorderBottom col1"><i>Cashback Bonus</i> Remaining (after transaction):</p>
+								<li><p class="noBorderBottom col1"><i>Cashback Bonus</i> Remaining:</br> (after transaction)</p>
 									<p class="boldnum noBorderBottom col2" id="cbb-balance"></p></li>
 							</ul>
 	</div>
-    <p class="padd-all-10 terms-note">Not for sale or shipment to residents of CO, CT, HI, ME, NH, NJ, RI, TN and VT. A $2.50 per month servicing fee applies after 12 consecutive months of non-use after activation except where prohibited by law.</p>
+    <p class="padd-all-10 terms-note">Not for sale or shipment to residents of CO, CT, HI, ME, NH, NJ, TN and VT. A $2.50 per month servicing fee applies after 12 consecutive months of non-use after activation except where prohibited by law.</p>
    				         <div class="padd-all-10 terms-note">
                         	<p>By clicking Redeem, you hereby agree to the</p>
                             <a href="#" data-transition="pop" class="link-style-3" id="gcTerms">Discover Gift Card terms &amp; conditions.</a>
                         </div>
                     </div>
                     </div>
-					<div class="textcenter">
+					<div class="textcenter txtcenteraln r3matchbtn">
                     	<a href="#" data-role="button" id="giftCard2Redeem" class="common-btn">Redeem</a><br/>
-						<div class="margintop10px"><a href="#" id="giftCard2Cancel">Cancel</a></div>
+						<div class="1margintop10px"><a href="#" id="giftCard2Cancel">Cancel</a></div>
 					</div>
                     <!--<div class="cardverify-note">-->
                     <p class="padd-all-10 terms-note"><b>Note:</b> In the unlikely event that the design you select is out of stock, we will substitute the Gold Bow card design to ensure timely delivery.</p>

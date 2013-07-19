@@ -3,6 +3,7 @@ package com.discover.mobile.common;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -246,4 +247,18 @@ public abstract class LoggedInRoboActivity extends BaseFragmentActivity {
 	{
 		navigationToggle.setVisibility(View.VISIBLE);
 	}
+
+	@Override
+	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_MENU:
+			if (null != navigationToggle) {
+				toggle();
+			}
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return super.onKeyDown(keyCode, event);
+	}
+
 }

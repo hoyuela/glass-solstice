@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -119,6 +120,14 @@ public class StrongAuthQuestionList extends ListActivity implements OnClickListe
         
     }
 
+    @Override
+    protected void onResume() {
+    	// TODO Auto-generated method stub
+    	super.onResume();
+    	StrongAuthQuestionList.this.getWindow().setSoftInputMode(
+                LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+    
     private void handlingClickEvents() {
         // TODO Auto-generated method stub
         logout.setOnClickListener(this);

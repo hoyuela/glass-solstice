@@ -58,7 +58,7 @@ public class SSOAuthenticate {
         request.setUrl(url);
 
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                new BankPayload(), "Discover", "Authenticating...", listener);
+                new BankPayload(), "Discover", "Loading...", listener);
         serviceCall.execute(request);
 
     }

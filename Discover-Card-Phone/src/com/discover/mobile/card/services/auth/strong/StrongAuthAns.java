@@ -106,7 +106,7 @@ public class StrongAuthAns {
 		request.setInput(baos.toByteArray());
 
 		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
-				"Discover", "Authenticating...", listener);
+				"Discover", "Loading...", listener);
 		serviceCall.execute(request);
 	}
 }

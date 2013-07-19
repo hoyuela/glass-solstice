@@ -503,7 +503,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             // submitFormInfo();
             submit();
         } else {
-            showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+        	/*Defect id 95859*/
+        	if(!(accountIdentifierField.isNull()&& ssnField.isNull() && birthDatePicker.isNull() && cardExpDatePicker.isNull())){
+        		showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+        	}
+            
             resetScrollPosition();
         }
 

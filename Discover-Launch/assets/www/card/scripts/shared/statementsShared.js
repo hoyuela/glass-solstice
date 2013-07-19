@@ -7,7 +7,6 @@
 
 var ssns = namespace('dfs.crd.stmt.shared');
 dfs.crd.stmt.shared.constant = dfs.crd.stmt.shared.constant || {};
-dfs.crd.stmt.shared.firstSelectVal = "";
 
 /**
  * General Statements constants
@@ -199,6 +198,43 @@ ssns.ajax = (function () {
 		});
 		//return searchResultData;
 	};//==>getSearchResults
+	/**
+	 * Get Search Results
+	 */
+	_getSearchResults = function(searchOptions) {
+
+		var dfd = $.Deferred();
+		var fullSearchURL = encodeURI ( dfs.crd.stmt.shared.constant.url.SEARCH_URL + searchOptions + dfs.crd.stmt.shared.common.dtParm(false) );
+		//console.log("submitSearchForm.fullSearchURL (after encodeURI)="+fullSearchURL);
+		//var searchResultData = new Object();
+		$.ajax({    
+			type : "GET",
+			url : fullSearchURL,
+			async : true,
+			dataType : 'json',
+			headers :prepareGetHeader(),                  
+			success : function(responseData, status, jqXHR) 
+			{           
+//				console.log("statementShared _getSearchResults.done");
+				dfd.resolve(responseData);
+			//	dfd.reject();
+				
+				
+			},
+			error : function(jqXHR, textStatus, errorThrown) 
+			{     
+//				hideSpinner();
+//				cpEvent.preventDefault();
+				var code=getResponseStatusCode(jqXHR);
+//				dfs.crd.stmt.shared.errorHandlerHelper(code,'','cardHome-pg','HM');
+//				console.log("Inside _getSearchResults error: code == " + code);
+				dfd.reject(code);
+			}
+		});
+//		console.log("statementShared _getSearchResults return promise");
+		return dfd.promise();
+		//return searchResultData;
+	};//==>getSearchResults
 
 	/**
 	 * Fetch transactions for the 'Load More' link.
@@ -322,17 +358,20 @@ ssns.ajax = (function () {
 	 	return stmtJson;	
 	};//==>getStmtsContent	
 
+        getHealthCheck = function() {
+            var url = dfs.crd.stmt.shared.constant.url.STATEMENTS_URL + "/healthCheck";
+            $.ajax({
+                type : "GET",
+                url : url
+            });
+        };
+
 	fetchStatements = function() {
 		var statements = getDataFromCache(dfs.crd.stmt.shared.constant.cache.STATEMENTS);
 		if (!_.isEmpty(statements)) { return; }
 
-		//TODO temp
-		//For now return hard coded list to test against
-	//	var testResult = {"statements":[{"date":"20101223","pageCount":4},{"date":"20091223","pageCount":4},{"date":"20120123","pageCount":4},{"date":"20121123","pageCount":4},{"date":"20121023","pageCount":4},{"date":"20120923","pageCount":4},{"date":"20120823","pageCount":4},{"date":"20120723","pageCount":4},{"date":"20120623","pageCount":4},{"date":"20120523","pageCount":4},{"date":"20111223","pageCount":4}]};		
-	//	return;
-		//end temp
-
-		var url = dfs.crd.stmt.shared.constant.url.STATEMENTS_URL;
+                //since request is browser cached, cachebuster is used in case two cardmembers share a device in a row
+		var url = dfs.crd.stmt.shared.constant.url.STATEMENTS_URL + "?cb=" + globalLastFourAcctNbr;
 		try {
 			showSpinner();
 
@@ -363,19 +402,6 @@ ssns.ajax = (function () {
 		}
 	};
 
-	/*fetchStatementsV2 = function() {
-		$.ajax({
-			type : "GET",
-			url : BASEURL + dfs.crd.stmt.shared.constant.url.STATEMENTS_URL,
-			async : false,
-			dataType : 'json',
-			success: function(a,b,c) { 
-				start();
-			},
-			error:function(a,b,c) {}
-		});
-	};*/
-
 	//public functions
 	return {
 		getIdentifiers    : getIdentifiers,
@@ -386,8 +412,9 @@ ssns.ajax = (function () {
 		getPayWarningData : getPayWarningData,
 		getPayWarningTxt  : getPayWarningTxt,
 		getStmtsContent   : getStmtsContent,
+		_getSearchResults  : _getSearchResults,
+		getHealthCheck    : getHealthCheck,
 		fetchStatements   : fetchStatements
-		//fetchStatementsV2 : fetchStatementsV2
 	};//==> return
 	
 })();//==> ajax
@@ -417,16 +444,12 @@ ssns.acctactiv = (function () {
 				var part2HTML = "";
 				var part3HTML = "";
 				var firstDate = true;
-				
 				for(var idx in actvSelListData.dates){
 					var desc = actvSelListData.dates[idx].displayDate;
 					var value = actvSelListData.dates[idx].stmtDate;
 					var isDate = DATE_RE.test(value);
 					var selected = option === value;
 					if(value === dfs.crd.stmt.shared.constant.CTD_OPTION){
-						dfs.crd.stmt.shared.firstSelectVal = desc;
-						desc = desc.split(" ");
-						desc = desc[0]+" "+desc[1]; 
 						part1HTML += dfs.crd.stmt.shared.common.createOption(value, desc, selected);
 					}else if(isDate && firstDate){
 						firstDate = false;
@@ -447,9 +470,7 @@ ssns.acctactiv = (function () {
 				if( notEmpty(part3HTML) ){
 					finalHTML +=  (dfs.crd.stmt.shared.constant.DASH_OPTION + part3HTML);
 				}
-				
 				activitySelect.html(finalHTML).selectmenu("refresh");
-				$("#activitySelection .ui-btn-text").text(dfs.crd.stmt.shared.firstSelectVal);
 			}
 		}catch(err){
 			showSysException(err);
@@ -774,11 +795,16 @@ ssns.common = (function () {
 //-----------------------------------------------------------------------------
 ssns.util = {
 
-	getXMonthsAgo:  (function(monthsBack) {
-		var today = new Date();
-		today.setMonth(today.getMonth() - monthsBack);
-		return today.prettyPrint();
-	}),
+getXMonthsAgo:  (function(monthsBack,stmtArr) {
+                 var dateString  = stmtArr[0].date;
+                 var year        = dateString.substring(0,4);
+                 var month       = dateString.substring(4,6);
+                 var day         = dateString.substring(6,8);                 
+                 var today        = new Date(year, month-1, day);         
+               today.setMonth(today.getMonth() - monthsBack);
+                 return today.prettyPrint();
+                 }),
+
 
 	getStatements: (function() {
 		console.log("getStatements called...");
@@ -822,13 +848,13 @@ ssns.util = {
 	}),
 
 	StatementsCache: (function(stmtArr) {
-		var today = new Date().prettyPrint();
-		//var stmtArr = _.filter(stmtArr, function(o){ return o.date <= today });
-
+        var today = new Date();
 		this.array = _.sortBy(stmtArr, function(o){ return o.date; }).reverse();
 		this.map = _.groupBy(this.array, function(o){ return o.date.substring(0, 4); });
 		this.sixMonthArray = _.chain(stmtArr)
-			.filter(function(o){ return o.date >= dfs.crd.stmt.shared.util.getXMonthsAgo(6) })
+                      .filter(function(o){
+                              return o.date >= dfs.crd.stmt.shared.util.getXMonthsAgo(5,stmtArr);
+                              })
 			.sortBy(function(o){ return o.date; })
 			.reverse()
 			.value();
@@ -843,7 +869,7 @@ ssns.util = {
 	}),
 
 //statements zoom functionality (from FE team but modified by me)
-/*	initZoomer: (function(){
+	initZoomer: (function(){
 		var zoomConfigOrientation = {};
 		var originalBackground = "";
 		var render = (function(zoomTo) {  
@@ -888,7 +914,6 @@ ssns.util = {
 			window.onorientationchange = detectOrientation;
 		})();
 	})
-	*/
 };
 
 ssns.statementDetail = {

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
+import com.google.common.base.Strings;
 
 /**
  * An abstract class to handle input fields with specific input types. Allows
@@ -394,5 +395,10 @@ public abstract class ValidatedInputField extends EditText {
 		FIELD_ERROR_APPEARANCE = errorStyle;
 		
 	}
+	
+	public boolean isNull() {
+
+	        return Strings.isNullOrEmpty(this.getText().toString());
+	    }
 
 }

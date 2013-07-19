@@ -10,11 +10,10 @@
     <TextView
         android:id="@+id/headerTV"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:paddingTop="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textSize="18sp"
         android:typeface="sans" />

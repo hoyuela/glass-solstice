@@ -220,7 +220,7 @@ function fnOverlay(customSettings){
 					
 			$('.overlay').show(function(){ 			
 				if( parentPageId !='' && defaultSettings.resize){
-					$('.tooltip').hide();
+					//$('.tooltip').hide();  /* backlog changes */
 					parentPageIdObj.hide();
 					tmpHeight = $("html").css("min-height");
 					$("html").css("min-height", "100%");
@@ -529,27 +529,27 @@ $("#redeem-history").live('pageshow', function (event){
 			doOverlayClose();
 		});
 		
-		$('.tooltip').hide();
+		//$('.tooltip').hide();  /* backlog changes */
 		/*
          * Click Handler for "Notification Icon". 
          */
 
-        $('.rd-faq-main').click(function (e)
+       /* $('.rd-faq-main').click(function (e)
         {
 			$('.tooltip').fadeIn(400).show();
 			$('.rd-faq-main').css("opacity","0.5");
             return false;
-        });
+        });    backlog changes */
 
 		/* 
          * Close tooltip if user clicks outside 
          */
-        $('body').click(function (){
+       /* $('body').click(function (){
 			if ($('.tooltip').css("display") == "block") {
 				$('.tooltip').fadeOut(300);
 				$('.rd-faq-main').css("opacity","1");
 			}
-        });
+        });  backlog changes */
 	/** For Redemption overview Overlay End **/
 });
 
@@ -663,29 +663,29 @@ $("#rd-faqs, #redemption-landing, #cashbackBonusLanding-pg").live('pageshow', fu
 		$('#open-overview-rdl').die("click").live("click",  doOverlayOpen );
 		// close it when closeLink is clicked
 		$('.close-overlay').click( function(){ doOverlayClose(); } );
-		$('.tooltip').hide();
+		//$('.tooltip').hide(); /* backlog changes */
 		/*
          * Click Handler for "Notification Icon". 
          */
 
-        $('.rd-faq-main').click(function (e)
+      /*  $('.rd-faq-main').click(function (e)
         {
 			dfs.crd.sct.redemptionHelpQuestionIcon();//passing sitecatalyst variables for Help with Redemption (Question Button) Click
 			$('.tooltip').fadeIn(400).show();
 			$('.rd-faq-main').css("opacity","0.5");
             return false;
-        });
+        });  backlog changes */
 
 		/* 
          * Close tooltip if user clicks outside 
          */
-        $('body').click(function ()
+      /*  $('body').click(function ()
         {
 			if ($('.tooltip').css("display") == "block") {
 				$('.tooltip').fadeOut(300);
 				$('.rd-faq-main').css("opacity","1");
 			}
-        });	
+        });	backlog changes */
 	/** For redemption overview overlay End **/
 });
 

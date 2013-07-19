@@ -30,5 +30,32 @@ public class NonEmptyEditText extends ValidatedInputField {
     public boolean isValid() {
         return !Strings.isNullOrEmpty(this.getText().toString());
     }
+    
+    /* 13.4 Defect ID 104309 start */
+    
+    /**
+     * This method validates the current input for space entered
+     */
+    public boolean isSpaceEntered() {
+        final String currentInput = this.getText().toString();
+        boolean isSpaceEntered = false;
+
+        /* 13.4 Defect ID 104309 start */
+        /* if (currentInput.contains(" ")) {
+             isSpaceEntered = true;
+         } else {
+             isSpaceEntered = false;
+         }*/
+         if(currentInput.startsWith(" ")||currentInput.endsWith(" ")){
+         	isSpaceEntered = true;
+         }else
+         {
+         	isSpaceEntered = false;
+         }
+         /* 13.4 Defect ID 104309 End */	
+         
+        return isSpaceEntered;
+    }
+    /* 13.4 Defect ID 104309 End */
 
 }
