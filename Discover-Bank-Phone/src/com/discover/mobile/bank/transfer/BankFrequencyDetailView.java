@@ -271,7 +271,6 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				disableDate();
 				disableTransaction();
 				enableAmount();
-				showKeyboard();
 				break;
 			default:
 				break;
@@ -405,9 +404,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		index = AMOUNT;
 		dollar.setChecked(true);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
+		dollarAmount.setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		dollarAmount.setEnabled(true);
 		dollarAmount.requestFocus();
-		showKeyboard();
 	}
 
 	/**
