@@ -37,7 +37,7 @@ import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
-
+import com.discover.mobile.bank.util.OnPreProcessListener;
 /**
  * Root activity for the application after login. This will transition fragment
  * on and off the screen as well as show the sliding bar as well as the action
@@ -75,14 +75,41 @@ implements OnPaymentCanceledListener {
 	public void makeFragmentVisible(final Fragment fragment){
 		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
-		super.makeFragmentVisible(fragment);
+		//check to see if we need to do processing before we transition from the current fragment
+		if (getCurrentContentFragment() instanceof OnPreProcessListener) {
+			//runnable contains call to make new fragment visible
+			final Runnable r = new Runnable(){
+				@Override
+				public void run() {
+					BankNavigationRootActivity.super.makeFragmentVisible(fragment);
+				}
+			};
+			//call preprocess function
+			((OnPreProcessListener) getCurrentContentFragment()).preProcess(r);
+		} else {
+			super.makeFragmentVisible(fragment);
+		}
 	}
 
 	@Override
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory){
 		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
-		super.makeFragmentVisible(fragment, addToHistory);
+		//check to see if we need to do processing before we transition from the current fragment
+		if (getCurrentContentFragment() instanceof OnPreProcessListener) {
+			//runnable contains call to make new fragment visible
+			final Runnable r = new Runnable(){
+				@Override
+				public void run() {
+					BankNavigationRootActivity.super.makeFragmentVisible(fragment, addToHistory);
+				}
+			};
+			//call preprocess function
+			((OnPreProcessListener) getCurrentContentFragment()).preProcess(r);
+		} else {
+			super.makeFragmentVisible(fragment, addToHistory);
+		}
+		
 	}
 	
 	/**

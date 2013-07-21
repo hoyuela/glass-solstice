@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -47,6 +48,7 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.ui.widgets.CustomProgressDialog;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.bank.util.OnPreProcessListener;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
@@ -69,7 +71,8 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 public abstract class AtmMapFragment extends BaseFragment 
 implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDialog {
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, 
+CustomProgressDialog, OnPreProcessListener {
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
 	 * to get the users location.  Defaults to NOT_ENABLED.
@@ -1394,5 +1397,25 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		showCustomDialog = show;
 	}
 	
-	
+	/*
+	 * This allows for the map to be hidden before the 
+	 * user navigates aways from the atm locator.
+	 */
+	public void preProcess(final Runnable r){
+		//set the global layout listener
+		final ViewTreeObserver vto = getView().getViewTreeObserver();
+		final ViewTreeObserver.OnGlobalLayoutListener listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				r.run();
+				//must use the deprecated version as new verion
+				//is only available in api 16+
+				vto.removeGlobalOnLayoutListener(this);
+			}
+		};
+		vto.addOnGlobalLayoutListener(listener);
+		//hide the map
+		showMapView(false);
+	}
 }
