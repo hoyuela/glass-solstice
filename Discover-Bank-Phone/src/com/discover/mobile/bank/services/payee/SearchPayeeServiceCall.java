@@ -16,6 +16,7 @@ import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Used for invoking the Bank - Payee Search Service API invoked via GET /api/payees/search. The JSON
@@ -78,7 +79,10 @@ public class SearchPayeeServiceCall extends
 	 * @return Returns a GetCallParams that is to be provided to the NetworkServiceCall<> base class in the constructor.
 	 */
 	private static GetCallParams generateCallParams(final String name) {
-		final String url = BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY)+"search?q=" +name;
+		/** Must Url encode search */
+		final String url = BankUrlManager.getUrl(BankUrlManager.PAYEES_URL_KEY) + "search?q="
+				+ name.replaceAll(StringUtility.SPACE, StringUtility.ENCODED_SPACE);
+
 		final GetCallParams callParams = new GetCallParams(url);
 		// This service call is made after authenticating and receiving
 		// a token,
