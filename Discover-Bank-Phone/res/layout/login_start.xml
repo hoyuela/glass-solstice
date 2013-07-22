@@ -24,7 +24,8 @@
     <com.discover.mobile.common.ui.widgets.NonFocusingScrollView
         android:id="@+id/login_pane"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/login_bottom_button_row" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -475,7 +476,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/login_table"
                 android:layout_centerHorizontal="true"
-                android:paddingBottom="80dp"
+                android:paddingBottom="@dimen/forms_inner_padding"
                 android:text="@string/discover_copyright_text"
                 android:textColor="@color/fdic_disclaimer_text_color"
                 android:textSize="@dimen/fdic_disclaimer_text_size" />
