@@ -464,6 +464,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			// errorMessage);
 			// }
 			guiValidationError();
+		} else {
+			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
 		idField.clearFocus();
 		passField.clearFocus();
