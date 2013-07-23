@@ -113,6 +113,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/bank_mail_address_list"
+            custom:footerType="3" />
             custom:footerType="11" />
         
         <com.discover.mobile.common.help.HelpWidget
