@@ -198,7 +198,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
     @Override
     protected Drawable getGrayX() {
-        return getDownArrow();
+        return null;
     }
 
     /**
@@ -252,8 +252,11 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
         this.setHint(getPlaceholderText());
         this.setEms(DATE_PICKER_EMS_LENGTH);
 
+        /*this.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                getDownArrow(), null);*/
+        
         this.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                getDownArrow(), null);
+                null, null);
     }
 
     /**

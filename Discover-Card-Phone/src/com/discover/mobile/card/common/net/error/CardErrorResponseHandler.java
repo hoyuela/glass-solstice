@@ -176,7 +176,6 @@ public final class CardErrorResponseHandler {
             	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.close_text);
             	modalPasscodeDisabled.hideNeedHelpFooter();
             	modalPasscodeDisabled.setGrayButton();
-            	modalPasscodeDisabled.showErrorIcon();
             	showCustomAlert(modalPasscodeDisabled);
             	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lastAttemptErrors.contains(errorCodeNumber) || errorCodeNumber == INCORRECT_USERID_PASSWORD) {

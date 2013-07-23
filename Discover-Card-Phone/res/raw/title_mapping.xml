@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<titles>
+    <!-- Example for showing Title "Hi" instead of "Account Summary" 
+	<title>
+	    <from>Account Summary</from>
+	    <to>Hi</to>
+	</title>
+	 -->
+	<title>
+	    <from>Make a Payment</from>
+	    <to>Payments</to>
+	</title>
+	<title>
+	    <from>Manage Payments</from>
+	    <to>Payments</to>
+	</title>
+</titles>
