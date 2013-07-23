@@ -165,12 +165,14 @@
 						    android:layout_width="wrap_content"
 						    android:layout_height="wrap_content"
 						    android:layout_marginRight="@dimen/between_related_elements_padding"
+						    android:layout_marginLeft="@dimen/between_related_elements_padding"
 						    android:text="@string/remember_user_id"
 						    android:textSize="16sp"
 						    android:textColor="@color/field_copy"
 						    android:layout_toLeftOf="@+id/remember_user_id_toggle"
 						    android:paddingRight="@dimen/between_related_elements_padding"
-						    android:layout_centerVertical="true"/>
+						    android:layout_centerVertical="true"
+						    android:layout_alignParentLeft="true"/>
 						
 	                    <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
 	                        android:id="@+id/remember_user_id_toggle"
