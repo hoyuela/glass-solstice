@@ -119,8 +119,8 @@
             <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
                 android:id="@+id/filter_enable"
                 style="@style/bank_switch_light"
-                android:layout_width="75dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/between_related_elements_padding" />
         </LinearLayout>
 
