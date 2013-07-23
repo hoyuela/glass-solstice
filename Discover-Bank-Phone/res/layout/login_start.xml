@@ -189,7 +189,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
-                        android:text="@string/login_button_text" />
+                        android:text="@string/login_button_text"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
 
                     <!-- Link section - BANK -->
 
