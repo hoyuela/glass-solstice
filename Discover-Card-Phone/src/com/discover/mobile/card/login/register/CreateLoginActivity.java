@@ -379,11 +379,15 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         } else {
             mainScrollView.smoothScrollTo(0, 0);
             //Defect id 95719
-            CommonUtils
-                    .showLabelWithStringResource(mainErrorMessageLabelTwo,
-                            R.string.account_info_bad_input_error_text,
-                            currentActivity);
-            CommonUtils.setViewVisible(errorIcon);
+            /* 13.4 Defect id 95859*/
+            if(!(idField.isNull() && idConfirmField.isNull() && passField.isNull() && passConfirmField.isNull() && emailField.isNull())){
+            	 CommonUtils
+                 .showLabelWithStringResource(mainErrorMessageLabelTwo,
+                         R.string.account_info_bad_input_error_text,
+                         currentActivity);
+            	 CommonUtils.setViewVisible(errorIcon);
+            }
+           
             //Defect id 95719
         }
 

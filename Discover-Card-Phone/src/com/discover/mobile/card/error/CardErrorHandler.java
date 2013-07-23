@@ -70,7 +70,7 @@ public class CardErrorHandler extends BaseErrorHandler {
         // Set the input fields to be highlighted in red and clears text
         if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
             for (final EditText text : errorHandlerUi.getInputFields()) {
-                text.setBackgroundResource(R.drawable.edit_text_red);
+                text.setBackgroundResource(R.drawable.card_textfield_invalid_holo_light);
                 text.setText("");
             }
 
@@ -102,7 +102,7 @@ public class CardErrorHandler extends BaseErrorHandler {
             for (int i = errorHandlerUi.getInputFields().size() - 1; i >= 0; i--) {
                 final EditText text = errorHandlerUi.getInputFields().get(i);
                 text.setText("");
-                text.setBackgroundResource(R.drawable.edit_text_default);
+                text.setBackgroundResource(R.drawable.card_edit_text_holo_light);
             }
 
         }
