@@ -85,10 +85,16 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 		load.stopAnimation();
 		go.setVisibility(View.GONE);
 		line.setVisibility(View.GONE);
-		
+	}
+	
+	/**
+	 * Centers the Privacy & Terms textView
+	 */
+	public void centerPrivacyText() {
 		/** Center Justify Privacy & Terms */
 		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) privacy.getLayoutParams();
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
+		params.setMargins(0, 0, 0, 0);
 		privacy.setLayoutParams(params);
 	}
 
