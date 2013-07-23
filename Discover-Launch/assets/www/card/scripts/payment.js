@@ -199,10 +199,6 @@ dfs.crd.pymt.populatePendingPayment = function(pageName)
 {
 	try {
 		dfs.crd.pymt.getPendingPaymentData(pageName);
-		var pendingPymt = getDataFromCache("PENDINGPAYMENTS");
-		if (!jQuery.isEmptyObject(pendingPymt))
-			dfs.crd.pymt.populatePendingPaymentDivs(pendingPymt,pageName);
-
 	} catch (err) {
 		showSysException(err);
 	}
@@ -235,6 +231,9 @@ dfs.crd.pymt.getPendingPaymentSuccessHandler = function(pendingTrans, pageId)
 			var pendingPymt = pendingTrans;
 			putDataToCache("PENDINGPAYMENTS", pendingPymt);
 			putDataToCache("pendingPaymentError",false);
+			var pendingPymt = getDataFromCache("PENDINGPAYMENTS");
+			if (!jQuery.isEmptyObject(pendingPymt))
+				dfs.crd.pymt.populatePendingPaymentDivs(pendingPymt,pageId);
 
 		}
 	} catch (err) {
@@ -412,10 +411,6 @@ dfs.crd.pymt.populatePaymentHistory = function(pageName)
 {
 	try {
 		dfs.crd.pymt.getPaymentHistoryData(pageName);
-		var paymentHistory = getDataFromCache("PAYMENTHISTORY");
-		if (!jQuery.isEmptyObject(paymentHistory))
-			dfs.crd.pymt.populatePaymentHistoryDivs(paymentHistory, pageName);
-
 	} catch (err) {
 		showSysException(err);
 	}
@@ -450,6 +445,11 @@ dfs.crd.pymt.getPaymentHistorySuccessHandler = function(paymentHistory, pageId)
 			var pendingPymt = paymentHistory;
 			putDataToCache("PAYMENTHISTORY", paymentHistory);
 			putDataToCache("paymentHistoryError",false);
+			var paymentHistory = getDataFromCache("PAYMENTHISTORY");
+			if (!jQuery.isEmptyObject(paymentHistory))
+				dfs.crd.pymt.populatePaymentHistoryDivs(paymentHistory, pageId);
+
+			
 		}
 	} catch (err) {
 		showSysException(err);
@@ -1520,14 +1520,19 @@ dfs.crd.pymt.bankSelected = function()
 					console.log("*****NUMBER OF MONTHS FOR THE USER is ****:- "+numberOfMonths);
 					calendar.datepicker( "option", "numberOfMonths", [ numberOfMonths, 1 ] );
 					if(dfs.crd.pymt.pendingPaymentEdit){
-						calendar.datepicker( "setDate" , new Date(paymentBankInfo.editPaymentDate));
-//						dfs.crd.pymt.paymentDateSet(paymentBankInfo.editPaymentDate);
+						var dataForPendingPay = getDataFromCache("PENDINGPAYSLTDATA");
+						if(!isEmpty(dataForPendingPay)){
+							calendar.datepicker( "setDate" , new Date(dataForPendingPay.editPaymentDate));
+							//dfs.crd.pymt.paymentDateSet(paymentBankInfo.editPaymentDate);
+						}
 					}else{
 						if(!isEmpty(getDataFromCache("OPTION_SELECTED_ON_MAP1"))){
 							calendar.datepicker( "setDate" , new Date(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE));
+							if(!isEmpty(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE))
 							dfs.crd.pymt.paymentDateSet(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE);
 						}else{
 							calendar.datepicker( "setDate" , new Date(dfs.crd.pymt.validDays[0]));
+							if(!isEmpty(dfs.crd.pymt.validDays[0]))
 							dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 						}//						dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 					}
@@ -1535,6 +1540,7 @@ dfs.crd.pymt.bankSelected = function()
 				}
 			}else{
 				dfs.crd.pymt.validDays = paymentBankInfo[option.index() - 1].openDates;
+				if(!isEmpty(dfs.crd.pymt.validDays[0]))
 				dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 //				paymentBankInfo[option.index() - 1].openDates
 			}
@@ -1990,9 +1996,7 @@ dfs.crd.pymt.populateMakePaymenttwoActivity = function(pageName)
 				$("#amount_value").text(numberWithCommas(steptwo.Amount));
 			else
 				$("#amount_value").text("$ 0.00");
-
-			$("#paymentStep2_posting_date").text(formatPaymentDueDate(steptwo.PostingDate));
-
+			$("#paymentStep2_posting_date").text(steptwo.PostingDate);
 		}
 	} catch (err) {
 		showSysException(err);
@@ -2503,8 +2507,7 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 		var newBankDetails = dfs.crd.pymt.truncateBankDetails(
 				stepThree.maskedBankAccountNumber, stepThree.bankName);
 		$("#payStep3AmountValue").text("$" + stepThree.paymentAmount);
-		$("#paymentStep3PostingDate").text(
-				formatPostingDueDate_MakePaymentStep2(stepThree.paymentDate));
+		$("#paymentStep3PostingDate").text(stepThree.paymentDate);
 		var shortAccountText = jQuery.trim(stepThree.maskedBankAccountNumber).split('*');
 		shortAccountText = shortAccountText[shortAccountText.length - 1];
 		$("#accountEndingNum").text("Account Ending in "+shortAccountText);
@@ -2779,7 +2782,7 @@ dfs.crd.pymt.verifyPendingPayment = function(pendingPaySltdData){
 		if(!isEmpty(pendingPaySltdData)){
 			if(!pendingPaySltdData.isAutoPayPayment){
 				if(!pendingPaySltdData.isHaMode){
-					if(!getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable){
+					if(!(getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable)){
 						if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
 							navigation('../payments/paymentsEligible');		
 						}else{
@@ -2956,10 +2959,10 @@ dfs.crd.pymt.editPaymentToMAPStep1 = function(){
 			if(pendingPaymentList.length >1){
 				pendingPayDtlData["SELECTEDINDEX"] = "choice-3";
 			}else{
-				 if(pendingPaymentDetail.minimumPayment <= 0 || pendingPaymentDetail.hasScheduledPayments || isAutoPayPayment){
+				 if(pendingPaymentDetail.minimumPayment <= 0 || pendingPaymentDetail.haveSchedulePayments || isAutoPayPayment){
 					 conditionOne = true;
 				 }
-				 if(pendingPaymentDetail.hasScheduledPayments || isAutoPayPayment || pendingPaymentDetail.currentBalance < 0.01) {
+				 if(pendingPaymentDetail.haveSchedulePayments || isAutoPayPayment || pendingPaymentDetail.currentBalance < 0.01) {
 					 conditionTwo = true;
 				 }
 				 if(conditionOne && conditionTwo){
