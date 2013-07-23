@@ -195,6 +195,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 				header.setMessage(getEmptyStringText());
 				showNothingToLoad();
 				getLoadMoreFooter().hideAll();
+				getLoadMoreFooter().centerPrivacyText();
 			} else {
 				getTable().setMode(Mode.PULL_FROM_END);
 				header.clearMessage();
