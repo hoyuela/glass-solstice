@@ -22,7 +22,7 @@
          
     </RelativeLayout>
 
-    <WebView
+    <FrameLayout
         android:id="@+id/agreement_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
