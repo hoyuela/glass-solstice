@@ -244,6 +244,7 @@ public class EnhancedAccountSecurityActivity extends
                         // change question
                         if (bean.getQuestionText() != null) {
                             strongAuthQuestion = bean.getQuestionText();
+                            questionAnswerField.setText("");
                             questionLabel.setText(strongAuthQuestion);
                             strongAuthQuestionId = bean.getQuestionId();
                             // submitSecurityInfo(null);
@@ -277,7 +278,22 @@ public class EnhancedAccountSecurityActivity extends
                     // Tell calling activity that account has been locked.
                     // activityResult = STRONG_AUTH_LOCKED;
                     // finish();
-                } else {
+                    
+                    /* 13.4 Defect ID 104309 start */
+                } else if (!bean.isAppError()
+                        && bean != null
+                        && bean.getErrorCode()
+                                .contains(
+                                        ""
+                                                + RegistrationErrorCodes.SPACE_ENTERED)){
+                	
+                	 errorMessage
+                     .setText(R.string.error_space_strongauth_noanswer);
+                	  questionAnswerField.setText("");
+                      questionAnswerField.setErrors();
+                }    
+                  /* 13.4 Defect ID 104309 start */
+                else {
                     // If there is any other error, send error code to calling
                     // activity
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -382,6 +398,8 @@ public class EnhancedAccountSecurityActivity extends
                     EnhancedAccountSecurityActivity.this,
                     PrivacyTermsLanding.class);
             
+            int errvis =errorMessage.getVisibility();
+            String errmsg =errorMessage.getText().toString();
                      
             privacyTerms.putExtra("is_enhance", true);
             privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
@@ -607,7 +625,7 @@ public class EnhancedAccountSecurityActivity extends
         // Store answer in a string
         final String answer = questionAnswerField.getText().toString();
 
-        if (!Strings.isNullOrEmpty(answer) && !questionAnswerField.isSpaceEntered()) {
+        if (!Strings.isNullOrEmpty(answer)) {
             // Find out which radio button is pressed.
             final int radioButtonId = securityRadioGroup
                     .getCheckedRadioButtonId();

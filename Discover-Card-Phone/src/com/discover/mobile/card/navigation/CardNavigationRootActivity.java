@@ -4,11 +4,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.Activity;
 import android.content.Context;
@@ -122,6 +129,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     private ArrayList<String> navigationlist;
     private ArrayList<String> nativeList;
     
+    private Hashtable<String, String> titleMap = new Hashtable<String, String>();
+    
     /***
 	 * Private contentObserver for settings -> display -> screen rotation setting.
 	 * For Defect: 101121
@@ -138,6 +147,50 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        try
+        {
+	        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+	        factory.setNamespaceAware(true);
+	        XmlPullParser xpp = factory.newPullParser();
+	        InputStream in = getResources().openRawResource(R.raw.title_mapping);
+	        InputStreamReader inR = new InputStreamReader(in);
+	        xpp.setInput(inR);
+	        int eventType = xpp.getEventType();
+	        boolean isFrom = false, isTo = false;
+	        String strCurrentTag="", strKey=null, strVal=null;
+	        while (eventType != XmlPullParser.END_DOCUMENT) {
+		         if(eventType == XmlPullParser.START_DOCUMENT) {
+		         } else if(eventType == XmlPullParser.END_DOCUMENT) {
+		         } else if(eventType == XmlPullParser.START_TAG) {
+		        	 strCurrentTag = xpp.getName();
+		         } else if(eventType == XmlPullParser.END_TAG) {
+		        	 strCurrentTag="";
+		        	 if ("title".equalsIgnoreCase(xpp.getName()))
+		        	 {
+			        	 isFrom=false;
+			        	 isTo=false;
+			        	 if (null != strKey)
+			        		 titleMap.put(strKey, strVal);
+			        	 strKey = null;
+			        	 strVal = null;
+		        	 }
+		         } else if(eventType == XmlPullParser.TEXT) {
+		        	 if ("from".equalsIgnoreCase(strCurrentTag))
+		            	 strKey = xpp.getText();
+		        	 else if ("to".equalsIgnoreCase(strCurrentTag))
+		            	 strVal = xpp.getText();
+		         }
+		         eventType = xpp.next();
+	        }
+        }
+        catch (Exception e)
+        {
+        	
+        }
+
+        
+        
         cordovaState = CORDOVA_LOADING;
         navToJQMPage=null;
         setNavigationList();
@@ -610,7 +663,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         if (title.equalsIgnoreCase(getString(R.string.error_no_title)))
             showActionBarLogo();
         else
-            super.setActionBarTitle(title);
+        {
+        	String strTitle = titleMap.get(title);
+        	if (null != strTitle)
+        		super.setActionBarTitle(strTitle);
+        	else
+        		super.setActionBarTitle(title);
+        }
 
         if (null != title) {
             Utils.log("CardNavigationRootActivity",

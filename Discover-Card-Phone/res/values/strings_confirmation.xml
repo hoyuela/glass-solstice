@@ -64,4 +64,8 @@
 <string name="second_paragraph_information">
 	    Your discover.com account password has also been changed.
 	</string>
+	
+	<!--  13.4 Defect ID 104309 start  -->
+    <string name="error_space_strongauth_noanswer">Answer is required.</string>	
+
 </resources>

@@ -9,25 +9,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardSessionContext;
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
-
-import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.CardSessionContext;
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
 /**
  * This class handles a user's choice and navigation to the first step of forgot
@@ -45,9 +45,10 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
     final Activity currentContext = this;
     protected TextView helpNumber;
     protected TextView provideFeedback;
-  //Defect id 95853
-    protected TextView privacy_terms ;
-  //Defect id 95853
+    // Defect id 95853
+    protected TextView privacy_terms;
+
+    // Defect id 95853
 
     /**
      * Load list options into the list and setup an OnClickListener to wait for
@@ -63,13 +64,14 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
                 android.R.id.text1, Option.values());
         helpNumber = (TextView) findViewById(R.id.help_number_label);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
-      //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
         provideFeedback.setOnClickListener(this);
         privacy_terms.setOnClickListener(this);
-      //Defect id 95853
+        // Defect id 95853
 
         choicesList.setAdapter(optionAdapter);
+        setListViewHeightBasedOnChildren(choicesList);
 
         choicesList.setOnItemClickListener(new OnItemClickListener() {
 
@@ -88,13 +90,33 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
                             .setForgotCreds(true);
                 }
                 startActivity(new Intent(currentContext, intentClass));
-                //endActivity();
+                // endActivity();
             }
         });
         setupClickablePhoneNumbers();
 
         TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSWORD_MENU);
 
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 
     /**
@@ -111,7 +133,6 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
             }
         });
     }
-  
 
     /**
      * An enumerated type that contains list items and the class/activity that
@@ -225,20 +246,22 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotCredentialsActivity.this,
                     REFERER);
-        	/*Intent newsampel =  new Intent(ForgotCredentialsActivity.this , CreateLoginActivity.class );
-        	startActivity(newsampel);*/
-        	
-          //Defect id 95853
-        }else if(v.getId() == R.id.privacy_terms)
-        {
-            
-            //Changes for 13.4 start
-//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-          Intent privacyTerms = new Intent(ForgotCredentialsActivity.this , PrivacyTermsLanding.class);
-          startActivity(privacyTerms);
-          //Changes for 13.4 end
+            /*
+             * Intent newsampel = new Intent(ForgotCredentialsActivity.this ,
+             * CreateLoginActivity.class ); startActivity(newsampel);
+             */
+
+            // Defect id 95853
+        } else if (v.getId() == R.id.privacy_terms) {
+
+            // Changes for 13.4 start
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(ForgotCredentialsActivity.this,
+                    PrivacyTermsLanding.class);
+            startActivity(privacyTerms);
+            // Changes for 13.4 end
         }
-      //Defect id 95853
+        // Defect id 95853
     }
 
 }
