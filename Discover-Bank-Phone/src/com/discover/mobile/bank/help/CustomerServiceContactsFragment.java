@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 public class CustomerServiceContactsFragment extends BaseFragment {
@@ -39,7 +41,15 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		if(card){
 			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
 		}
-
+		Bundle args = getArguments();
+		if (args.containsKey(BankInfoNavigationActivity.GO_BACK_TO_LOGIN)) {
+			final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
+			help.setVisibility(View.VISIBLE);
+			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
+			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)help.getLayoutParams();
+			params.height = (int) this.getResources().getDimension(R.dimen.help_bar_height_three_items);
+			help.setLayoutParams(params);
+		}
 		return mainView;
 	}
 
