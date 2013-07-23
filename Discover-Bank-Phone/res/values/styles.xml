@@ -28,6 +28,13 @@
         <item name="android:height">@dimen/login_bottom_button_height</item>
          <item name="android:background">#00000000</item>
     </style>
+    
+    <style name="fastcheck_bottom_bar_divider">
+        <item name="android:textSize">@dimen/small_copy_max</item>
+        <item name="android:textColor">#8B3E2F</item>
+        <item name="android:height">@dimen/login_bottom_button_height</item>
+        <item name="android:background">#00000000</item>
+    </style>
 
     <style name="simple_white_button">
         <item name="android:textColor">@color/sub_copy</item>

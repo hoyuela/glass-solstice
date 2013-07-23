@@ -126,6 +126,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private static final String IS_USER_ID_LOGIN = "k";
 	private static final String IS_FORGOT_PASSCODE = "l";
 	private static final String ERROR_EXCLAMATION_VISIBILITY= "m";
+	private static final String ERROR_EXCLAMATION_COLOR_RED = "n";
 
 	/**
 	 * A state flag so that we don't run this twice.
@@ -171,6 +172,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private ViewGroup vPasscodeLinks;
 	private TextView vPasscodeLink3;
 	protected ImageView exclamationIV;
+	private boolean	exclamationColorRed;
 
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
@@ -488,6 +490,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				//show icon
 				showRedExclamation();
 				BankErrorHandler.getInstance().showErrorsOnScreen(this, "To protect your security, you have one attempt remaining.");
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
 			} else {
 				clearAllFields();
 			}
@@ -764,6 +767,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		outState.putBoolean(IS_USER_ID_LOGIN, isUserIDLogin);
 		outState.putBoolean(IS_FORGOT_PASSCODE, pUtils.isForgotPasscode());
 		outState.putInt(ERROR_EXCLAMATION_VISIBILITY, exclamationIV.getVisibility());
+		outState.putBoolean(ERROR_EXCLAMATION_COLOR_RED, exclamationColorRed);
 
 		super.onSaveInstanceState(outState);
 	}
@@ -808,7 +812,15 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if(!errorIsVisible() && errorTextView.length() > 0) {
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
-		exclamationIV.setVisibility(savedInstanceState.getInt(ERROR_EXCLAMATION_VISIBILITY));
+
+		boolean showExclamation = savedInstanceState.getInt(ERROR_EXCLAMATION_VISIBILITY) == View.VISIBLE;
+		if (showExclamation) {
+			if (savedInstanceState.getBoolean(ERROR_EXCLAMATION_COLOR_RED)) {
+				showRedExclamation();
+			} else {
+				showGrayExclamation();
+			}
+		}
 		restoreError = savedInstanceState.getInt(ERROR_MESSAGE_VISIBILITY) == View.VISIBLE;
 	}
 
@@ -868,6 +880,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void executeLogin(final View v){
 		CommonUtils.setViewGone(errorTextView);
+		//sgoff0 DEFECT 105439
+		errorTextView.setText("");
 		hideExclamation();
 
 		try {
@@ -1810,11 +1824,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	}
 	
 	private void showRedExclamation() {
+		exclamationColorRed = true;
 		exclamationIV.setImageResource(R.drawable.exclamation_red_img);
 		showExclamation();
 	}
 	
 	private void showGrayExclamation() {
+		exclamationColorRed = false;
 		exclamationIV.setImageResource(R.drawable.exclamation_gray_img);
 		showExclamation();
 	}

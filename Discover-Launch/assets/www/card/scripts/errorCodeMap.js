@@ -189,7 +189,7 @@ var errorCodeMap={
 		"Over_Limit":"You are $ !~overLimitAmount~! over  your Account's credit line.",
 		"PARM_PAY_ZERO":"You are unable to make a payment at this time.  </br> No payment is due at this time. You have a zero or credit balance. For assistance, please call <a href='tel:18777427822' class='eCertBlueLink'>1-877-742-7822</a>. ",
 		"NO_MIN_PAY":"You have no payment due at this time.",
-		"Is_cutoff":"If you make your payment before 5:00 p.m. Eastern Time today, it will post to your account today.",
+		"Is_cutoff":"If you make your payment by 5:00 p.m. Eastern Time today, it will post to your account today.",
 		"Is_cutoffPB":"Select an available date and your payment will be credited to your account as of that day.",
 		"safeSecure":"For the safety and security of your account, if you make payments more often than every 3 days, your payments may not be reflected in your available credit for up to 8 days.",
 		"BAD_DATE":"We cannot process 2 payments from the same bank account on the same day.If you would like to make a payment on the date you selected you'll need to choose a different account or cancel your previously scheduled payment.",
