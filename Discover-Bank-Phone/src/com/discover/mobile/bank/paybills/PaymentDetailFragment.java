@@ -77,35 +77,9 @@ public class PaymentDetailFragment extends DetailFragment{
 
 				@Override
 				public void onClick(final View v) {
-					editPayment();
+					BankConductor.navigateToEditPayment(getArguments());
 				}
 			});
-		}
-	}
-
-	/**
-	 * This method will trigger a service call to download payees if they are not cached. If payees are already cached
-	 * the application navigates to the edit payment screen.
-	 * 
-	 */
-	public void editPayment() {
-		/**
-		 * Specify edit mode in the bundle so upon receiving the response the handler will have context as to why this
-		 * service call was made and handle it appropriately.
-		 */
-		final Bundle bundle = getArguments();
-		bundle.putBoolean(BankExtraKeys.EDIT_MODE, true);
-
-		/**
-		 * Check if payees are cached otherwise download payees to fetch the earliest payment date for the payment being
-		 * edited.
-		 */
-		if (BankUser.instance().hasPayees()) {
-			BankConductor.navigateToPayBillStepTwo(bundle);
-		} else {
-			final GetPayeeServiceCall payeeService = BankServiceCallFactory.createGetPayeeServiceRequest();
-			payeeService.getExtras().putAll(bundle);
-			payeeService.submit();
 		}
 	}
 }

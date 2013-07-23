@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.json.Money;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
@@ -236,6 +237,10 @@ public class ActivityDetail implements Serializable{
 		paymentDetail.links = this.links;
 		paymentDetail.amount = this.amount;
 		paymentDetail.description = this.description;
+		paymentDetail.deliverBy = this.deliverBy;
+		paymentDetail.payee = this.payee;
+		paymentDetail.memo = this.memo;
+		paymentDetail.paymentAccount = this.paymentMethod;
 		
 		return paymentDetail;
 	}
