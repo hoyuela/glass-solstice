@@ -133,11 +133,12 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		super.onResume();
 		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
-		scrollToPosition(loadBundle.getInt(BankExtraKeys.LISTVIEW_POSITION));
-		if (loadBundle.getBoolean(BankExtraKeys.IS_LOADING_MORE)) {
-			footer.showLoading();
+		if( null != loadBundle) {
+			scrollToPosition(loadBundle.getInt(BankExtraKeys.LISTVIEW_POSITION, 0));
+			if (loadBundle.getBoolean(BankExtraKeys.IS_LOADING_MORE)) {
+				footer.showLoading();
+			}
 		}
-
 		new Handler().postDelayed(asyncUpdateData, 100);
 	}
 
