@@ -788,6 +788,10 @@ CustomProgressDialog, OnPreProcessListener {
 
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		//if we are on the map then we need to reset the current index 
+		if (isOnMap) {
+			currentIndex = 0;
+		}
 		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
 			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());			
