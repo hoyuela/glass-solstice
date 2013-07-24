@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.push.history.NotificationDetail;
-import com.discover.mobile.card.services.push.history.PostNotificationRead;
 import com.discover.mobile.card.services.push.history.PostReadDetail;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericAsyncCallback;
@@ -118,7 +117,8 @@ public class PushHistoryItem extends RelativeLayout{
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.build();
 		
-		new PostNotificationRead(activity, callback, detail).submit();
+		/*  13.4 Code CleanUp*/
+/*		new PostNotificationRead(activity, callback, detail).submit();*/
 	}
 
 	/**

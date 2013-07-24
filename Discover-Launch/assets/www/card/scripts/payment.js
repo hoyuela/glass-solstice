@@ -50,7 +50,6 @@ dfs.crd.pymt.getPaymentSummaryData = function(pageId)
 		var newDate = new Date();
 		var PAYMENTSSUMMARYURL = RESTURL + "pymt/v1/paymentsummary?" + newDate
 				+ "";
-		var pmtSummary = getDataFromCache(pageId);
 		var paymentSummaryJSON ={
 				"serviceURL" : PAYMENTSSUMMARYURL,
 				"isASyncServiceCall" :false,
@@ -1981,11 +1980,14 @@ dfs.crd.pymt.populateMakePaymenttwoActivity = function(pageName)
 					$("#paymentStep2-pg .hidden").removeClass("hidden");
 				}
 
-				if (!hasRecentPayment.isHaMode && hasRecentPayment.isCutOffAvailable ) {
-					if(projectBeyondCard)
-						$("#cuttOff_Note").text(errorCodeMap["Is_cutoffPB"]);
-					else
+				if (!hasRecentPayment.isHaMode  ) {
+					if(projectBeyondCard){
+						if(hasRecentPayment.isCutOffAvailable){
+							$("#cuttOff_Note").text(errorCodeMap["Is_cutoffPB"]);
+						}
+					}else{
 						$("#cuttOff_Note").text(errorCodeMap["Is_cutoff"]);
+					}
 				}
 
 				steptwo.isHAMode = hasRecentPayment.isHaMode;
@@ -2444,7 +2446,7 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 			var errorMessage = errorCodeMap["1257"];
 			if(projectBeyondCard)
 				errorMessage = errorCodeMap["1257_PB"];
-			if (!isEmpty(parseContentText))
+			if (!isEmpty(errorMessage))
 				errorHandler(code, errorMessage,
 				"paymentStep1");
 			else
@@ -2475,7 +2477,7 @@ dfs.crd.pymt.returnCorrectValue = function(errorMsgData, keyValue)
 function paymentStep3Load()
 {
 	try {
-		var validPriorPagesOfpayStep3 = new Array("paymentStep2","pageError");
+		var validPriorPagesOfpayStep3 = new Array("paymentStep2","pageError","paymentSaveToPhotos");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfpayStep3) > -1) {
 			dfs.crd.pymt.populateMakePaymentthreeActivity("MAKEPAYMENTTHREE");
 		}
@@ -2595,6 +2597,9 @@ function paymentInformationLoad(){
 
 dfs.crd.pymt.MAPStep1PayWarnClick = function(){
 	var MAPStep1Data = getDataFromCache("MAKEPAYMENTONE");
+	if(dfs.crd.pymt.pendingPaymentEdit){
+		MAPStep1Data = getDataFromCache("PENDINGPAYSLTDATA");
+	}
 	if(!isEmpty(MAPStep1Data)){
 	 dfs.crd.pymt.prepareMAPStep1Data();
 	 var lateMinPayWarn1Data = dfs.crd.pymt.getPaymentWarningData("LatePayWarnMAPStep1");
@@ -2782,14 +2787,22 @@ dfs.crd.pymt.verifyPendingPayment = function(pendingPaySltdData){
 		if(!isEmpty(pendingPaySltdData)){
 			if(!pendingPaySltdData.isAutoPayPayment){
 				if(!pendingPaySltdData.isHaMode){
-					if(!(getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable)){
+					if(projectBeyondCard){
+						if(!(getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable)){
+							if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
+								navigation('../payments/paymentsEligible');		
+							}else{
+								navigation('../payments/paymentsNotEligible');
+							}
+						}else{
+							navigation('../payments/paymentsNotEligible');
+						}
+					}else{
 						if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
 							navigation('../payments/paymentsEligible');		
 						}else{
 							navigation('../payments/paymentsNotEligible');
 						}
-					}else{
-						navigation('../payments/paymentsNotEligible');
 					}
 				}else{
 					navigation('../payments/paymentsNotEligible');
@@ -3201,4 +3214,67 @@ dfs.crd.pymt.populatecancelPayment1ErrorPageDivs = function(){
 		showSysException(err);
 	}
 }
+//Save To Photos Changes //
+
+function paymentSaveToPhotosLoad(){
+     try {
+            var validPriorPagesOfSaveToPhotos = new Array("paymentStep3");
+            if (jQuery.inArray(fromPageName, validPriorPagesOfSaveToPhotos) > -1) {
+                   dfs.crd.pymt.populatPaymentSaveToPhotos("MAKEPAYMENTTHREE");
+            }
+            else {
+                   cpEvent.preventDefault();
+                   history.back();
+            }
+            
+            
+     }catch (err){
+            showSysException(err);
+            
+     }
+     
+}
+
+dfs.crd.pymt.populatPaymentSaveToPhotos=function (pageName){
+     
+     try{
+     var saveToPhotosPageData = getDataFromCache(pageName);
+     if (!jQuery.isEmptyObject(saveToPhotosPageData))
+            dfs.crd.pymt.populateConfirmSaveToPhotos(saveToPhotosPageData, pageName);
+     }catch (err) {
+            showSysException(err);
+            
+     }
+     
+}
+
+dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
+{
+     try {
+            var newBankDetails = dfs.crd.pymt.truncateBankDetails(
+                         saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
+            $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
+            $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
+            $("#savePaymentPhotosPosting_date").text(formatPostingDueDate_MakePaymentStep2(saveTophotosData.paymentDate));
+            $("#savePaymentPhotosAccountEndingNum").text(newBankDetails.accountNumber);
+            $("#savePaymentPhotosBankDetail").text(newBankDetails.bankName);
+            
+     } catch (err) {
+            showSysException(err);
+     }
+}
+
+
+
+function ClickPaymentPhoto()
+{
+     try {
+     Screenshot.prototype.takeScreenshot(function success() {}, null);
+     history.back();
+     }catch (err){
+            
+            showSysException(err);
+     }
+}
+
 

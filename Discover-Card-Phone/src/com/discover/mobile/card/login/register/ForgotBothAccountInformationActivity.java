@@ -16,7 +16,6 @@ import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
-import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 
 /**
@@ -58,14 +57,15 @@ public class ForgotBothAccountInformationActivity extends
         details.acctNbr = CommonUtils.getSpacelessString(value);
     }
 
-    @Override
+    /*  13.4 Code CleanUp*/
+  /*  @Override
     protected NetworkServiceCall<?> createServiceCall(
             final AsyncCallback<Object> callback,
             final AccountInformationDetails details) {
 
         return new AccountInformationCall(this, callback, details);
     }
-
+*/
     /**
      * The Activity that will appear after a successful Strong Auth challenge.
      */

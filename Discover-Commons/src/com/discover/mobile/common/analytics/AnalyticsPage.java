@@ -85,5 +85,12 @@ public interface AnalyticsPage {
 	static final String PASSCODE_FORGOT_STEP1 = "passcode-forgot-step1-pg";
 	static final String PASSCODE_FORGOT_STEP2 = "passcode-forgot-step2-pg";
 	
+	//Strong Auth Enroll pages
+	
+	static final String SETUP_ENHANCED_AUTH = "SetUp_enhanced_auth-Populated-pg";
+	static final String SETUP_ENHANCED_AUTH_NOT_POPULATED = "SetUp_enhanced_auth-Not_populated-pg";
+	static final String SETUP_ENHANCED_AUTH_CHECKPOINT= "SetUp_enhanced_auth-Checkpoint-pg";
+	static final String SETUP_ENHANCED_SELECT_QUESTION = "SetUp_enhanced_auth_SelectAQuestion-pg";
+	static final String SETUP_ENHANCED_AUTH_CONFIRMATION = "SetUp_enhanced_auth_Confirmation-pg";
 	
 }

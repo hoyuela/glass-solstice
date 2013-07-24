@@ -283,10 +283,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
 		if (paramKeyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			Log.v(TAG, "Action Down");
+//			Log.v(TAG, "Action Down");
 			return false;
 		} else {
-			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
+//			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
 		}
 		// delete key
 		if (fieldInt == KEY_DELETE) {
