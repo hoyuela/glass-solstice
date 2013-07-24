@@ -465,8 +465,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			// BankErrorHandler.getInstance().showErrorsOnScreen(this,
 			// errorMessage);
 			// }
+			//Invalid erro rpasscode
+			//"Invalid Passcode entered. Please try again."
+			errorTextView.setVisibility(View.VISIBLE);
+			errorTextView.setText("Invalid Passcode entered. Please try again.");
+			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			guiValidationError();
-		} else {
+		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
 		idField.clearFocus();
@@ -488,6 +493,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			guiValidationError();
 			if ("401".equals(errorCode)) {
 				//do nothing specific
+				errorTextView.setVisibility(View.VISIBLE);
+				errorTextView.setText("Invalid Passcode entered. Please try again.");
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				welcomeTV.setVisibility(View.GONE);
 			} else if ("4011103".equals(errorCode)) {
 				//show icon
 				showRedExclamation();
@@ -495,6 +504,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
 			} else {
 				clearAllFields();
+				//sgoff0 DEFECT 105439
+				errorTextView.setText("");
+				hideExclamation();
 			}
 		} else {
 			showErrorMessage(errorMessage);
@@ -815,7 +827,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
 
-		boolean showExclamation = savedInstanceState.getInt(ERROR_EXCLAMATION_VISIBILITY) == View.VISIBLE;
+		final boolean showExclamation = savedInstanceState.getInt(ERROR_EXCLAMATION_VISIBILITY) == View.VISIBLE;
 		if (showExclamation) {
 			if (savedInstanceState.getBoolean(ERROR_EXCLAMATION_COLOR_RED)) {
 				showRedExclamation();
@@ -882,9 +894,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void executeLogin(final View v){
 		CommonUtils.setViewGone(errorTextView);
-		//sgoff0 DEFECT 105439
-		errorTextView.setText("");
-		hideExclamation();
 
 		try {
 			final String encryptedUsername = EncryptionUtil.encrypt(idField.getText().toString());
@@ -1844,7 +1853,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private void hideExclamation() {
 		exclamationIV.setVisibility(View.GONE);
-		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
+		final int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
 //		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
 		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
 	}
