@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class StrongAuthQuestionList extends ListActivity implements
         OnClickListener {
@@ -105,6 +107,9 @@ public class StrongAuthQuestionList extends ListActivity implements
             }
         });
 
+        /* 13.4 site cat tagging*/
+    	TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_SELECT_QUESTION);
+    	 /* 13.4 site cat tagging*/
     }
 
     @Override

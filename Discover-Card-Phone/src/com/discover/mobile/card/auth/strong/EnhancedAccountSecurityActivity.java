@@ -186,7 +186,12 @@ public class EnhancedAccountSecurityActivity extends
         setContentView(R.layout.strongauth_page);
         loadAllViews();
         setupRadioGroupListener();
-        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+       /* 13.4 site cat tagging*/
+        
+        //TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+        TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CHECKPOINT);
+        
+        /* 13.4 site cat tagging*/
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
@@ -253,8 +258,8 @@ public class EnhancedAccountSecurityActivity extends
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
                         // errorMessage.setVisibility(View.VISIBLE);
-                        questionAnswerField.setText("");
                         questionAnswerField.setErrors();
+                        questionAnswerField.setText("");
                         // questionAnswerField.updateAppearanceForInput();
                     }
                 }
@@ -289,8 +294,9 @@ public class EnhancedAccountSecurityActivity extends
                 	
                 	 errorMessage
                      .setText(R.string.error_space_strongauth_noanswer);
+                	 questionAnswerField.setErrors();
                 	  questionAnswerField.setText("");
-                      questionAnswerField.setErrors();
+                      
                 }    
                   /* 13.4 Defect ID 104309 start */
                 else {
@@ -625,7 +631,7 @@ public class EnhancedAccountSecurityActivity extends
         // Store answer in a string
         final String answer = questionAnswerField.getText().toString();
 
-        if (!Strings.isNullOrEmpty(answer)) {
+        if (!Strings.isNullOrEmpty(answer) && !questionAnswerField.isSpaceEntered()) {
             // Find out which radio button is pressed.
             final int radioButtonId = securityRadioGroup
                     .getCheckedRadioButtonId();
@@ -637,11 +643,23 @@ public class EnhancedAccountSecurityActivity extends
             submitAns(selectedIndex, answer);
 
         } else {
-            CardErrorHandler.getInstance().showErrorsOnScreen(
-                    this,
-                    this.getResources().getString(
-                            R.string.error_strongauth_noanswer));
+        	 /* 13.4 Defect ID 104309 start */
+        	if(questionAnswerField.isSpaceEntered()){
+           	  errorMessage
+                .setText(R.string.error_space_strongauth_noanswer);
+           	  questionAnswerField.setErrors();
+           	  questionAnswerField.setText("");
+              
+              /* 13.4 Defect ID 104309 end */
+        	}else{
+        		   CardErrorHandler.getInstance().showErrorsOnScreen(
+                           this,
+                           this.getResources().getString(
+                                   R.string.error_strongauth_noanswer));
+        	}
+         
         }
+        
 
     }
 
