@@ -40,10 +40,7 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.push.register.PushRegistrationStatusErrorHandler;
-import com.discover.mobile.card.push.register.PushRegistrationStatusSuccessListener;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.card.services.push.registration.GetPushRegistrationStatus;
 import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 
 import com.xtify.sdk.api.XtifySDK;
@@ -123,12 +120,13 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
 
     }
 
-    /**
+    /*  13.4 Code CleanUp*/
+   /* *//**
      * Do a GET request to the server to check to see if this vendor id is
      * registered to this user.
      * 
      * @author jthornton
-     */
+     *//*
     protected void getXtifyRegistrationStatus() {
         if (XtifySDK.getXidKey(this) != null) {
             final AsyncCallback<PushRegistrationStatusDetail> callback = GenericAsyncCallback
@@ -158,9 +156,11 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
             finish();
         }
 
-    }
+    }*/
+    
+    
 
-    /**
+/*    *//**
      * The original success listener needed to be extended to support navigating
      * to another screen on success. This specific class handles navigating to
      * the home screen after a user completes registration and the push
@@ -168,42 +168,43 @@ public class ForgotOrRegisterFinalStep extends NotLoggedInRoboActivity
      * 
      * @author scottseward
      * 
-     */
+     *//*
     private class PushConfirmationSuccessListener extends
             PushRegistrationStatusSuccessListener implements
             SuccessListener<PushRegistrationStatusDetail> {
 
-        /**
+        *//**
          * Constructor that takes in a context so that it can manipulate the
          * flow of the app.
-         */
+         *//*
         public PushConfirmationSuccessListener() {
         }
 
-        /**
+        *//**
          * Set the priority level of the success handler
          * 
          * @return CallbackPriority - the priority of the callback
-         */
+         *//*
         @Override
         public CallbackPriority getCallbackPriority() {
             return CallbackPriority.LAST;
         }
 
-        /**
+        *//**
          * Send the app on the correct path when the call is successful
          * 
          * @param value
          *            - the returning push registration detail from the server
-         */
+         *//*
         @Override
         public void success(final NetworkServiceCall<?> sender,
                 final PushRegistrationStatusDetail value) {
             super.success(sender, value);
             navigateToConfirmationScreenWithResponseData(confirmationDetails);
         }
-    }
+    }*/
 
+    /*  13.4 Code CleanUp*/
     /**
      * If the server call succeeds then we navigate the user to the account home
      * page with a confirmation dialog presented.

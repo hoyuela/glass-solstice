@@ -64,6 +64,8 @@ import com.discover.mobile.card.services.auth.strong.StrongAuthUpdateUser;
 
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.FacadeFactory;
 
 public class StrongAuthEnterInfoActivity extends Activity implements
@@ -179,6 +181,9 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 		restoreState(savedInstanceState);
 		PageTimeOutUtil.getInstance(StrongAuthEnterInfoActivity.this)
 				.startPageTimer();
+		 /* 13.4 site cat tagging*/
+		TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_NOT_POPULATED);
+		 /* 13.4 site cat tagging*/
 	}
 
 	@Override
@@ -814,6 +819,9 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 		}
 
 		if (validForm) {
+			 /* 13.4 site cat tagging*/
+			TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH);
+			 /* 13.4 site cat tagging*/
 
 			strongAuthReviewQueAnsDetails.saAnswer1 = firstAnswer.getText()
 					.toString();
@@ -870,6 +878,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 													final Intent accountHomeScreen = new Intent(
 															StrongAuthEnterInfoActivity.this,
 															CardNavigationRootActivity.class);
+													
 													startActivity(accountHomeScreen);
 													finish();
 												}
@@ -939,7 +948,9 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 			super(context, attrs);
 			mainView = (RelativeLayout) LayoutInflater.from(context).inflate(
 					R.layout.strongauthconfirm, null);
-
+			 /* 13.4 site cat tagging*/
+			TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CONFIRMATION);
+			 /* 13.4 site cat tagging*/
 			done = (Button) mainView.findViewById(R.id.sa_done);
 			addView(mainView);
 

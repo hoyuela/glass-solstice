@@ -21,8 +21,6 @@ import android.widget.TextView;
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.services.push.manage.GetNotificationPreferences;
-import com.discover.mobile.card.services.push.manage.PostNotificationPreferences;
 import com.discover.mobile.card.services.push.manage.PostPrefDetail;
 import com.discover.mobile.card.services.push.manage.PostPreferencesDetail;
 import com.discover.mobile.card.services.push.manage.PreferencesDetail;
@@ -269,7 +267,8 @@ public class PushManageFragment extends BaseFragment {
                 .withExceptionFailureHandler(new BaseExceptionFailureHandler())
                 .build();
 
-        new GetNotificationPreferences(this.context, callback).submit();
+        /*  13.4 Code CleanUp*/
+        /*new GetNotificationPreferences(this.context, callback).submit();*/
     }
 
     /**
@@ -560,14 +559,16 @@ public class PushManageFragment extends BaseFragment {
                                 R.string.push_progress_registration_loading),
                         true)
                 .withSuccessListener(new PostPrefsSuccessListener(this))
-                .withErrorResponseHandler(
+                /*  13.4 Code CleanUp*/
+            /*    .withErrorResponseHandler(
                         new PushPrefsErrorHandler(
-                                (CardNavigationRootActivity) this.getActivity()))
+                                (CardNavigationRootActivity) this.getActivity()))*/
                 .withExceptionFailureHandler(new BaseExceptionFailureHandler())
                 .build();
 
-        new PostNotificationPreferences(this.context, callback,
-                getPreferences()).submit();
+/*        new PostNotificationPreferences(this.context, callback,
+                getPreferences()).submit();*/
+        /*  13.4 Code CleanUp*/
     }
 
     /**

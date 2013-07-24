@@ -13,7 +13,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthDefaultResponseHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;

@@ -164,9 +164,10 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             AccountInformationDetails details, String value);
 
     protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-
-    protected abstract NetworkServiceCall<?> createServiceCall(
-            AsyncCallback<Object> callback, AccountInformationDetails details);
+    
+    /*  13.4 Code CleanUp*/
+/*    protected abstract NetworkServiceCall<?> createServiceCall(
+            AsyncCallback<Object> callback, AccountInformationDetails details);*/
 
     protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
         ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
