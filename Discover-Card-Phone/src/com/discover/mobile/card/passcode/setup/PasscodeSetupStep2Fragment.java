@@ -58,7 +58,7 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 	public void onPasscodeErrorEvent() {
 		clearAllFields();
 		//Per RTM 14.2.4.3
-        getActivity().getSupportFragmentManager().popBackStackImmediate();
+//        getActivity().getSupportFragmentManager().popBackStackImmediate();
         makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
 	}
 
@@ -108,16 +108,16 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 			createPasscodeToken(this.deviceToken);
 			//also store user's first name on device
 			storeFirstName();
-			getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+//			getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	};
 
-	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
-		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
-			makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
-			return true;
-		}
-		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
-	}
+//	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
+//		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
+//			makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
+//			return true;
+//		}
+//		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
+//	}
 	 
 }

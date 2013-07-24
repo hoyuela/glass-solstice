@@ -88,7 +88,8 @@ public class ChooseDateRangeFragment extends BaseFragment {
         if (null != manager && null != outState && null != fragment) {
             manager.putFragment(outState, FRAGMENT, fragment);
             super.onSaveInstanceState(outState);
-            CardSessionContext.getCurrentSessionDetails().setPeriods(periods);
+            /*  13.4 Code CleanUp*/
+            /*CardSessionContext.getCurrentSessionDetails().setPeriods(periods);*/
         }
     }
 
@@ -106,8 +107,9 @@ public class ChooseDateRangeFragment extends BaseFragment {
         if (null != manager) {
             fragment = (AccountRecentActivityFragment) manager.getFragment(
                     savedInstanceState, FRAGMENT);
-            periods = CardSessionContext.getCurrentSessionDetails()
-                    .getPeriods();
+            /*  13.4 Code CleanUp*/
+         /*   periods = CardSessionContext.getCurrentSessionDetails()
+                    .getPeriods();*/
         }
     }
 

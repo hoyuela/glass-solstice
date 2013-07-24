@@ -2,7 +2,6 @@ package com.discover.mobile.card;
 
 import java.util.List;
 
-import com.discover.mobile.card.services.account.recent.RecentActivityPeriodsDetail;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.history.NotificationDetail;
 import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
@@ -22,7 +21,8 @@ public final class CardSessionContext {
     private List<NotificationDetail> notifications;
 
     /** Time periods that can be displayed for the recent account activity */
-    private RecentActivityPeriodsDetail periods;
+    	/*  13.4 Code CleanUp*/
+    /*private RecentActivityPeriodsDetail periods;*/
 
     /**
      * Boolean used to determine if the user is registering or changing their
@@ -86,9 +86,10 @@ public final class CardSessionContext {
      * @return the time periods that can be displayed for the recent account
      *         activity
      */
-    public RecentActivityPeriodsDetail getPeriods() {
+    /*  13.4 Code CleanUp*/
+   /* public RecentActivityPeriodsDetail getPeriods() {
         return periods;
-    }
+    }*/
 
     /**
      * Set the time periods that can be displayed for the recent account
@@ -98,9 +99,10 @@ public final class CardSessionContext {
      *            - the time periods that can be displayed for the recent
      *            account activity
      */
-    public void setPeriods(final RecentActivityPeriodsDetail periods) {
+    /*  13.4 Code CleanUp*/
+  /*  public void setPeriods(final RecentActivityPeriodsDetail periods) {
         this.periods = periods;
-    }
+    }*/
 
     /**
      * @return the forgotCreds
