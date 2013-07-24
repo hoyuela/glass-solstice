@@ -666,7 +666,7 @@ line-height: 17px;}*/
 	width: 76%;
 }
 #paymentStep1-pg #datepicker-val {
-	width: 90%;
+	width: 95%!important;
 	float: left;
 	margin: 0 0 0 5px;
 	font-size: 17px !important;
@@ -835,19 +835,23 @@ line-height: 17px;}*/
 	margin-top: 22px;
 	float: left;
 	width: 100%;
+	position:relative;
 }
 .payments .emptyText {
-	margin-top: 23px;
+	/*margin-top: 23px;*/
 	position: absolute;
-	right: 19px;
+	right: 3px;
 	cursor: pointer;
-	display: none;
+	visibility: hidden;
+	bottom:5px;
+	float:right;
+	display:inline-block;
 }
 .payments input.textInput, .payments input.numInput {
 	outline: none;
 	border: none;
 	background: transparent;
-	display: block;
+	display: inline-block;
 	position: relative;
 	bottom: 20px;
 	font-size: 18px !important;
@@ -1374,6 +1378,9 @@ background: radial-gradient(ellipse at center,  rgba(255,102,0,1) 44%,rgba(71,33
 	color: #b4b4b4;
 	font-size: 20px;
 }
+#manageBankAccEnterDetails-pg li.dd{
+	margin-top:4px !important;
+}
 #manageBankAccUpdateDetails-pg .dd .ddTitle .ddTitleText .description {
 	color: #b4b4b4;
 	font-size: 20px;
@@ -1488,4 +1495,58 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 }
 #confirmCancelPayment1-pg .wraper .goHome {
 	width: 160px;
+}
+#paymentStep1-pg input.ui-input-text {
+	width:84% !important;
+}
+/******************Save To Photos Page***********************/
+#paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a, #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-b {
+	margin:0px;
+	width:50% !important;
+	padding:0;
+	box-shadow: none !important;
+	border:none !important;
+}
+#paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a .ui-btn-inner {background-color:#dce3e5 !important;}
+#paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a .ui-btn-text{color:#3D484D !important;}
+
+#paymentSaveToPhotos-pg .ui-btn-corner-all {
+border-radius: 0px !important;
+}
+#paymentSaveToPhotos-pg .ui-btn-inner .ui-btn-text{
+	font-size: 20px !important;
+}
+#paymentSaveToPhotos-pg #saveCloseBtn {
+	position: absolute;
+width: 100%;
+bottom: 0px;
+}
+#paymentSaveToPhotos-pg #saveCloseBtn #closeBtn .ui-btn-inner {
+	font-weight:normal;
+}
+#paymentSaveToPhotos-pg .discoverLogo {
+	background:url(../images/handset-discover-logo-small.png) no-repeat;
+	width: 105px;
+	height: 18px;
+	margin: 50px auto;
+	
+}
+#paymentSaveToPhotos-pg .r3matchbtn {
+	padding: 0px 10px 0px 10px;
+	line-height: 26px;
+	min-width: 75px;
+	border-radius: 0;
+	background: #ff6600 !important;
+	width: auto;
+	border: none !important;
+	-webkit-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8) !important;
+	-moz-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
+	box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
+}
+
+#paymentSaveToPhotos-pg .r3matchbtn:hover{
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #ed4c0c !important;
+	background-image: none !important;
 }
