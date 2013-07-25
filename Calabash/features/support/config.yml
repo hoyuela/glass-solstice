@@ -1,0 +1,84 @@
+:asys:
+    :bank:
+        :asystest502:
+            :username: "asystest502"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Jennifer"
+            :strongauth: true
+        :asystest505:
+            :username: "asystest505"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Angela"
+            :strongauth: true
+        :asystest507:
+            :username: "asystest507"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Angela"
+            :strongauth: true
+        :asystest508:
+            :username: "asystest508"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Jodi"
+            :strongauth: true
+        :asystest520:
+            :username: "asystest520"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Alfreda"
+            :strongauth: true
+    :card:
+        :6011000017009840:
+            :username: "6011000017009840"
+            :password: "solstice123"
+            :security_answer: "test"
+            :name: "Ln457301238"
+            :strongauth: false
+    :sso:
+        :asysssocred3:
+            :username: "asysssocred3"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+        :asysssocred4:
+            :username: "asysssocred4"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "A"
+            :strongauth: true
+        :asyssso100:
+            :username: "asyssso100"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+:msto:
+    :bank:
+        :mstomulti001:
+            :username: "mstomulti001"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Orin"
+            :strongauth: true
+    :card:
+        :000000830111:
+            :username: "000000830111"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+    :sso:
+        :mstonew7:
+            :username: "mstonew7"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+
+:loading_label: "In progress"
+:afternoon_hour: 12
+:evening_hour: 18
