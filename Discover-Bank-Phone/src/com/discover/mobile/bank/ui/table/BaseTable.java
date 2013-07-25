@@ -73,6 +73,7 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		setUpTable();
 		
 		isViewCreated = true;
+		
 		return view;
 	}
 
@@ -140,21 +141,31 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 
 		new Handler().postDelayed(asyncUpdateData, 100);
 	}
-
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		saveDataToArgumentsBundle();
+	}
+	
 	/**
 	 * Save all the data on the screen in a bundle
 	 * @param outState -  bundle containing all the data
 	 */
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
+		saveDataToArgumentsBundle();
+		super.onSaveInstanceState(outState);
+	}
+	
+	private void saveDataToArgumentsBundle() {
 		final Bundle bundle = saveDataInBundle();
 		if(null != bundle){
 			getArguments().putAll(saveDataInBundle());
 			getArguments().putInt(BankExtraKeys.LISTVIEW_POSITION, (isLoadingMore) ? getLastVisibleScrollPosition() : 
-																					 getFirstVisibleScrollPosition());
+				 getFirstVisibleScrollPosition());
 			getArguments().putBoolean(BankExtraKeys.IS_LOADING_MORE, isLoadingMore);
 		}
-		super.onSaveInstanceState(outState);
 	}
 
 	/**
@@ -232,7 +243,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * @return returns the first visible row position.
 	 */
 	protected int getFirstVisibleScrollPosition() {
-		return table.getRefreshableView().getFirstVisiblePosition();
+		return (table != null && table.getRefreshableView() != null) ? table.getRefreshableView().getFirstVisiblePosition() :
+																	  0;
 	}
 	
 	/**
@@ -241,7 +253,8 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	 * @return returns the last visible row position.
 	 */
 	protected int getLastVisibleScrollPosition() {
-		return table.getRefreshableView().getLastVisiblePosition();
+		return (table != null && table.getRefreshableView() != null) ? table.getRefreshableView().getLastVisiblePosition() :
+																	  0;
 	}
 
 	/**
