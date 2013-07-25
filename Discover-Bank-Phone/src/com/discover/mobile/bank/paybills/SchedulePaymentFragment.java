@@ -158,6 +158,19 @@ public class SchedulePaymentFragment extends BaseFragment
 	private static final Pattern R8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2}))((\\+|-)(\\d{4}))");
+	
+	//A runnable that will dismiss the calendar fragment.
+	private final Runnable closeCalendarRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(null != calendarFragment && calendarFragment.isVisible()) {
+				calendarFragment.dismiss();
+	
+				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
+				calendarFragment = null;
+			}
+		}
+	};
 
 	/** Amount of time to wait when closing the calendar to finish selection animation. */
 	private static final int CALENDAR_DELAY = 500;
@@ -760,6 +773,9 @@ public class SchedulePaymentFragment extends BaseFragment
 				if(!amountEdit.isValid()) {
 					amountEdit.setErrors();
 				}
+				
+				//in the rare case that the user managed to submit the payment while the calendar was still opening, this will close it
+				handler.postDelayed(closeCalendarRunnable, 250);
 
 				if( amountEdit.isValid() && !isDateError) {
 					amountEdit.clearFocus();
@@ -779,17 +795,32 @@ public class SchedulePaymentFragment extends BaseFragment
 						payment.memo = memo;
 					}
 
-					//Check if user is adding payment
-					if( payee != null ) {		
-						BankServiceCallFactory.createMakePaymentCall(payment).submit();
-					}
-					//Check if user is editing a payment
-					else if( paymentDetail != null ){
-						BankServiceCallFactory.updatePaymentCall(payment, paymentDetail.id).submit();
-					}
+					//submit the payment after 500 millis. this gives the calendar time to close in the case that the user
+					//managed to click schedule payment before the calendar opens after hitting "next"
+					handler.postDelayed(submitPaymentRunnable(payment), 500);
 				}
 			}
 		});
+	}
+	
+	private Runnable submitPaymentRunnable(final CreatePaymentDetail thePayment) 
+	{
+		return new Runnable() 
+		{		
+			final CreatePaymentDetail payment = thePayment;
+			
+			@Override
+			public void run() {
+				//Check if user is adding payment
+				if( payee != null ) {		
+					BankServiceCallFactory.createMakePaymentCall(payment).submit();
+				}
+				//Check if user is editing a payment
+				else if( paymentDetail != null ){
+					BankServiceCallFactory.updatePaymentCall(payment, paymentDetail.id).submit();
+				}
+			}
+		};
 	}
 
 	private void setSelectedAccountTitle(final Account account) {
@@ -952,16 +983,6 @@ public class SchedulePaymentFragment extends BaseFragment
 	}
 
 	private CalendarListener createCalendarListener() {	
-		//A runnable that will dismiss the calendar fragment.
-		final Runnable closeCalendarRunnable = new Runnable() {
-			@Override
-			public void run() {
-				calendarFragment.dismiss();
-
-				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
-				calendarFragment = null;
-			}
-		};
 
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
