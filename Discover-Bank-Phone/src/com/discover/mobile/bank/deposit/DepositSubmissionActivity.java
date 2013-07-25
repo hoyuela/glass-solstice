@@ -84,7 +84,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 				detail = new DepositDetail();
 				detail.amount = new Money();
 				detail.amount.value = extras.getInt(BankExtraKeys.AMOUNT);
-				detail.account = Integer.parseInt(account.id);		
+				detail.account = account.id;		
 
 				detail.frontImage = getCompressedImageFromPath(CheckDepositCaptureActivity.FRONT_PICTURE);
 				detail.backImage = getCompressedImageFromPath(CheckDepositCaptureActivity.BACK_PICTURE);
