@@ -105,7 +105,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	protected void onActionLinkClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 
-		final Account account = BankUser.instance().getAccount( Integer.toString(depositDetail.account) );
+		final Account account = BankUser.instance().getAccount( depositDetail.account );
 
 		//Navigate to Scheduled Transactions Activity Page
 		if( account != null ) {
