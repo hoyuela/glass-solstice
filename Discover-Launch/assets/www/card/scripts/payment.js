@@ -50,7 +50,6 @@ dfs.crd.pymt.getPaymentSummaryData = function(pageId)
 		var newDate = new Date();
 		var PAYMENTSSUMMARYURL = RESTURL + "pymt/v1/paymentsummary?" + newDate
 				+ "";
-		var pmtSummary = getDataFromCache(pageId);
 		var paymentSummaryJSON ={
 				"serviceURL" : PAYMENTSSUMMARYURL,
 				"isASyncServiceCall" :false,
@@ -199,10 +198,6 @@ dfs.crd.pymt.populatePendingPayment = function(pageName)
 {
 	try {
 		dfs.crd.pymt.getPendingPaymentData(pageName);
-		var pendingPymt = getDataFromCache("PENDINGPAYMENTS");
-		if (!jQuery.isEmptyObject(pendingPymt))
-			dfs.crd.pymt.populatePendingPaymentDivs(pendingPymt,pageName);
-
 	} catch (err) {
 		showSysException(err);
 	}
@@ -235,6 +230,9 @@ dfs.crd.pymt.getPendingPaymentSuccessHandler = function(pendingTrans, pageId)
 			var pendingPymt = pendingTrans;
 			putDataToCache("PENDINGPAYMENTS", pendingPymt);
 			putDataToCache("pendingPaymentError",false);
+			var pendingPymt = getDataFromCache("PENDINGPAYMENTS");
+			if (!jQuery.isEmptyObject(pendingPymt))
+				dfs.crd.pymt.populatePendingPaymentDivs(pendingPymt,pageId);
 
 		}
 	} catch (err) {
@@ -412,10 +410,6 @@ dfs.crd.pymt.populatePaymentHistory = function(pageName)
 {
 	try {
 		dfs.crd.pymt.getPaymentHistoryData(pageName);
-		var paymentHistory = getDataFromCache("PAYMENTHISTORY");
-		if (!jQuery.isEmptyObject(paymentHistory))
-			dfs.crd.pymt.populatePaymentHistoryDivs(paymentHistory, pageName);
-
 	} catch (err) {
 		showSysException(err);
 	}
@@ -450,6 +444,11 @@ dfs.crd.pymt.getPaymentHistorySuccessHandler = function(paymentHistory, pageId)
 			var pendingPymt = paymentHistory;
 			putDataToCache("PAYMENTHISTORY", paymentHistory);
 			putDataToCache("paymentHistoryError",false);
+			var paymentHistory = getDataFromCache("PAYMENTHISTORY");
+			if (!jQuery.isEmptyObject(paymentHistory))
+				dfs.crd.pymt.populatePaymentHistoryDivs(paymentHistory, pageId);
+
+			
 		}
 	} catch (err) {
 		showSysException(err);
@@ -1520,14 +1519,19 @@ dfs.crd.pymt.bankSelected = function()
 					console.log("*****NUMBER OF MONTHS FOR THE USER is ****:- "+numberOfMonths);
 					calendar.datepicker( "option", "numberOfMonths", [ numberOfMonths, 1 ] );
 					if(dfs.crd.pymt.pendingPaymentEdit){
-						calendar.datepicker( "setDate" , new Date(paymentBankInfo.editPaymentDate));
-//						dfs.crd.pymt.paymentDateSet(paymentBankInfo.editPaymentDate);
+						var dataForPendingPay = getDataFromCache("PENDINGPAYSLTDATA");
+						if(!isEmpty(dataForPendingPay)){
+							calendar.datepicker( "setDate" , new Date(dataForPendingPay.editPaymentDate));
+							//dfs.crd.pymt.paymentDateSet(paymentBankInfo.editPaymentDate);
+						}
 					}else{
 						if(!isEmpty(getDataFromCache("OPTION_SELECTED_ON_MAP1"))){
 							calendar.datepicker( "setDate" , new Date(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE));
+							if(!isEmpty(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE))
 							dfs.crd.pymt.paymentDateSet(getDataFromCache("OPTION_SELECTED_ON_MAP1").PAYMENTPOSTINGDATE);
 						}else{
 							calendar.datepicker( "setDate" , new Date(dfs.crd.pymt.validDays[0]));
+							if(!isEmpty(dfs.crd.pymt.validDays[0]))
 							dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 						}//						dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 					}
@@ -1535,6 +1539,7 @@ dfs.crd.pymt.bankSelected = function()
 				}
 			}else{
 				dfs.crd.pymt.validDays = paymentBankInfo[option.index() - 1].openDates;
+				if(!isEmpty(dfs.crd.pymt.validDays[0]))
 				dfs.crd.pymt.paymentDateSet(dfs.crd.pymt.validDays[0]);
 //				paymentBankInfo[option.index() - 1].openDates
 			}
@@ -1975,11 +1980,14 @@ dfs.crd.pymt.populateMakePaymenttwoActivity = function(pageName)
 					$("#paymentStep2-pg .hidden").removeClass("hidden");
 				}
 
-				if (!hasRecentPayment.isHaMode && hasRecentPayment.isCutOffAvailable ) {
-					if(projectBeyondCard)
-						$("#cuttOff_Note").text(errorCodeMap["Is_cutoffPB"]);
-					else
+				if (!hasRecentPayment.isHaMode  ) {
+					if(projectBeyondCard){
+						if(hasRecentPayment.isCutOffAvailable){
+							$("#cuttOff_Note").text(errorCodeMap["Is_cutoffPB"]);
+						}
+					}else{
 						$("#cuttOff_Note").text(errorCodeMap["Is_cutoff"]);
+					}
 				}
 
 				steptwo.isHAMode = hasRecentPayment.isHaMode;
@@ -1990,9 +1998,7 @@ dfs.crd.pymt.populateMakePaymenttwoActivity = function(pageName)
 				$("#amount_value").text(numberWithCommas(steptwo.Amount));
 			else
 				$("#amount_value").text("$ 0.00");
-
-			$("#paymentStep2_posting_date").text(formatPaymentDueDate(steptwo.PostingDate));
-
+			$("#paymentStep2_posting_date").text(steptwo.PostingDate);
 		}
 	} catch (err) {
 		showSysException(err);
@@ -2440,7 +2446,7 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 			var errorMessage = errorCodeMap["1257"];
 			if(projectBeyondCard)
 				errorMessage = errorCodeMap["1257_PB"];
-			if (!isEmpty(parseContentText))
+			if (!isEmpty(errorMessage))
 				errorHandler(code, errorMessage,
 				"paymentStep1");
 			else
@@ -2471,7 +2477,7 @@ dfs.crd.pymt.returnCorrectValue = function(errorMsgData, keyValue)
 function paymentStep3Load()
 {
 	try {
-		var validPriorPagesOfpayStep3 = new Array("paymentStep2","pageError");
+		var validPriorPagesOfpayStep3 = new Array("paymentStep2","pageError","paymentSaveToPhotos");
 		if (jQuery.inArray(fromPageName, validPriorPagesOfpayStep3) > -1) {
 			dfs.crd.pymt.populateMakePaymentthreeActivity("MAKEPAYMENTTHREE");
 		}
@@ -2503,8 +2509,7 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 		var newBankDetails = dfs.crd.pymt.truncateBankDetails(
 				stepThree.maskedBankAccountNumber, stepThree.bankName);
 		$("#payStep3AmountValue").text("$" + stepThree.paymentAmount);
-		$("#paymentStep3PostingDate").text(
-				formatPostingDueDate_MakePaymentStep2(stepThree.paymentDate));
+		$("#paymentStep3PostingDate").text(stepThree.paymentDate);
 		var shortAccountText = jQuery.trim(stepThree.maskedBankAccountNumber).split('*');
 		shortAccountText = shortAccountText[shortAccountText.length - 1];
 		$("#accountEndingNum").text("Account Ending in "+shortAccountText);
@@ -2592,6 +2597,9 @@ function paymentInformationLoad(){
 
 dfs.crd.pymt.MAPStep1PayWarnClick = function(){
 	var MAPStep1Data = getDataFromCache("MAKEPAYMENTONE");
+	if(dfs.crd.pymt.pendingPaymentEdit){
+		MAPStep1Data = getDataFromCache("PENDINGPAYSLTDATA");
+	}
 	if(!isEmpty(MAPStep1Data)){
 	 dfs.crd.pymt.prepareMAPStep1Data();
 	 var lateMinPayWarn1Data = dfs.crd.pymt.getPaymentWarningData("LatePayWarnMAPStep1");
@@ -2779,14 +2787,22 @@ dfs.crd.pymt.verifyPendingPayment = function(pendingPaySltdData){
 		if(!isEmpty(pendingPaySltdData)){
 			if(!pendingPaySltdData.isAutoPayPayment){
 				if(!pendingPaySltdData.isHaMode){
-					if(!getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable){
+					if(projectBeyondCard){
+						if(!(getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable)){
+							if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
+								navigation('../payments/paymentsEligible');		
+							}else{
+								navigation('../payments/paymentsNotEligible');
+							}
+						}else{
+							navigation('../payments/paymentsNotEligible');
+						}
+					}else{
 						if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
 							navigation('../payments/paymentsEligible');		
 						}else{
 							navigation('../payments/paymentsNotEligible');
 						}
-					}else{
-						navigation('../payments/paymentsNotEligible');
 					}
 				}else{
 					navigation('../payments/paymentsNotEligible');
@@ -2956,10 +2972,10 @@ dfs.crd.pymt.editPaymentToMAPStep1 = function(){
 			if(pendingPaymentList.length >1){
 				pendingPayDtlData["SELECTEDINDEX"] = "choice-3";
 			}else{
-				 if(pendingPaymentDetail.minimumPayment <= 0 || pendingPaymentDetail.hasScheduledPayments || isAutoPayPayment){
+				 if(pendingPaymentDetail.minimumPayment <= 0 || pendingPaymentDetail.haveSchedulePayments || isAutoPayPayment){
 					 conditionOne = true;
 				 }
-				 if(pendingPaymentDetail.hasScheduledPayments || isAutoPayPayment || pendingPaymentDetail.currentBalance < 0.01) {
+				 if(pendingPaymentDetail.haveSchedulePayments || isAutoPayPayment || pendingPaymentDetail.currentBalance < 0.01) {
 					 conditionTwo = true;
 				 }
 				 if(conditionOne && conditionTwo){
@@ -3198,4 +3214,67 @@ dfs.crd.pymt.populatecancelPayment1ErrorPageDivs = function(){
 		showSysException(err);
 	}
 }
+//Save To Photos Changes //
+
+function paymentSaveToPhotosLoad(){
+     try {
+            var validPriorPagesOfSaveToPhotos = new Array("paymentStep3");
+            if (jQuery.inArray(fromPageName, validPriorPagesOfSaveToPhotos) > -1) {
+                   dfs.crd.pymt.populatPaymentSaveToPhotos("MAKEPAYMENTTHREE");
+            }
+            else {
+                   cpEvent.preventDefault();
+                   history.back();
+            }
+            
+            
+     }catch (err){
+            showSysException(err);
+            
+     }
+     
+}
+
+dfs.crd.pymt.populatPaymentSaveToPhotos=function (pageName){
+     
+     try{
+     var saveToPhotosPageData = getDataFromCache(pageName);
+     if (!jQuery.isEmptyObject(saveToPhotosPageData))
+            dfs.crd.pymt.populateConfirmSaveToPhotos(saveToPhotosPageData, pageName);
+     }catch (err) {
+            showSysException(err);
+            
+     }
+     
+}
+
+dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
+{
+     try {
+            var newBankDetails = dfs.crd.pymt.truncateBankDetails(
+                         saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
+            $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
+            $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
+            $("#savePaymentPhotosPosting_date").text(formatPostingDueDate_MakePaymentStep2(saveTophotosData.paymentDate));
+            $("#savePaymentPhotosAccountEndingNum").text(newBankDetails.accountNumber);
+            $("#savePaymentPhotosBankDetail").text(newBankDetails.bankName);
+            
+     } catch (err) {
+            showSysException(err);
+     }
+}
+
+
+
+function ClickPaymentPhoto()
+{
+     try {
+     Screenshot.prototype.takeScreenshot(function success() {}, null);
+     history.back();
+     }catch (err){
+            
+            showSysException(err);
+     }
+}
+
 

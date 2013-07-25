@@ -1,36 +1,53 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/default_list_item"
+    style="@style/fastcheck_error_body"
     android:paddingBottom="@dimen/table_inner_padding">
 
     <Button 
 	    android:id="@+id/fastcheck_display_back_button"
 	    android:layout_width="wrap_content"
+	    android:layout_marginLeft="12dp"
+	    android:layout_marginTop="12dp"
 	    android:layout_height="wrap_content"
 	    android:text="@string/back_button_text"
 	    style="@style/back_button_style"
 	    android:layout_alignParentTop="true"
-	    android:layout_alignParentLeft="true" 
-	    android:background="@drawable/back_normal_btn"/>
+	    android:background="@drawable/back_normal_btn" />
+        
+	<ImageView
+    	android:id="@+id/divider_line"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/fastcheck_display_back_button"
+        android:layout_marginTop="20dp"
+        android:background="@color/field_stroke"
+        android:paddingLeft="0dip"
+        android:paddingRight="0dip"
+        android:visibility="visible" />
         
     <ImageView
 	    android:id="@+id/error_img"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:src="@drawable/error_img"
-		android:layout_below="@id/fastcheck_display_back_button"
+		android:layout_below="@id/divider_line"
 		android:layout_marginTop="20dp"
+		android:paddingRight="12dp"
+		android:paddingBottom="12dp"
+		android:layout_alignLeft="@id/fastcheck_display_back_button"
 		android:contentDescription="@string/fast_check_error_img_desc"/>
     
     <TextView
         android:id="@+id/fastcheck_error_msg"
     	style="@style/field_copy_small"
-    	android:layout_marginLeft="12dp"
+    	android:paddingRight="12dp"
+    	android:paddingBottom="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/error_img"
-        android:layout_below="@id/fastcheck_display_back_button"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@id/divider_line"
+        android:layout_marginTop="12dp"/>
     
 </RelativeLayout>

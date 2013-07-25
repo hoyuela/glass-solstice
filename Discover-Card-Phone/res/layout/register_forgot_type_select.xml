@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/card_body_color" >
+    android:background="@color/card_body_color"
+    android:fillViewport="true" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/forms_inner_padding"
-       >
+        android:paddingBottom="@dimen/forms_inner_padding" >
 
         <LinearLayout
             android:id="@+id/linear_layout_one"
@@ -22,19 +22,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
+                android:paddingLeft="16dp"
                 android:text="@string/forgot_credentials_text"
                 android:textColor="@color/title"
                 android:textSize="24sp"
-                android:textStyle="normal" 
-                android:paddingLeft="16dp"
-                />
+                android:textStyle="normal" />
 
             <View
                 android:id="@+id/general_list_item_separator_line_start"
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
                 android:layout_height="2dp"
-                android:background="@color/card_line_separator"/>
+                android:layout_marginTop="16dp"
+                android:background="@color/card_line_separator" />
 
             <ListView
                 android:id="@android:id/list"
@@ -43,8 +42,7 @@
                 android:background="@color/card_body_color"
                 android:divider="@color/card_line_separator"
                 android:dividerHeight="1dp"
-                android:scrollbars="none"
-                >
+                android:scrollbars="none" >
             </ListView>
 
             <View
@@ -54,38 +52,23 @@
                 android:background="@color/card_line_separator" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/need_help_footer"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linear_layout_one"
-            android:layout_marginTop="50dp" >
-
-            <include layout="@layout/old_general_need_help_footer" />
-        </RelativeLayout>
-        <!-- Defect id 95853 -->
-        <!--
-             <TextView
-            android:id="@+id/provide_feedback_button"
-            style="@style/blue_hyperlink_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/need_help_footer"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/orange_button_margin_top"
-            android:layout_marginTop="@dimen/orange_button_margin_top"
-            android:text="@string/feedback_text"/>        -->
-
-        <RelativeLayout
-            android:id="@+id/provide_feedback_footer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/need_help_footer" >
+        <LinearLayout
+            android:id="@+id/provide_feedback_footer"  android:layout_marginTop="20dp"
+            android:layout_width="match_parent" android:layout_below="@+id/linear_layout_one"
+            android:layout_height="wrap_content" android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
 
             <include
-                android:id="@+id/home_footer"
+                android:layout_height="86dp"
+                layout="@layout/old_general_need_help_footer" />
+
+            <include
+                android:id="@+id/home_footer" android:layout_marginTop="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 layout="@layout/card_fragment_footer" />
-        </RelativeLayout>
+        </LinearLayout>
         <!-- Defect id 95853 -->
     </RelativeLayout>
 

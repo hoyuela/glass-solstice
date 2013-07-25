@@ -8,40 +8,39 @@ $("div[data-role='page']").live("pageshow",function(){
 		
 		if($(this).val().toString().length == 0){
 			console.log('keyup if');
-			$(this).parent().siblings(".emptyText").hide();	
-			$(this).parent(".wrapperSpan").css("width","100%");
+			$(this).siblings(".emptyText").css({"visibility": "hidden"});	
+			//$(this).parent(".wrapperSpan").css("width","100%");
 		}else{
 			console.log('keyup else');
-				$(this).parent().siblings(".emptyText").show();
-				$(this).parent(".wrapperSpan").css("width","89%");
+				$(this).siblings(".emptyText").css({"visibility": "visible"});
+				//$(this).parent(".wrapperSpan").css("width","89%");
 		}
 	});
 	$(".emptyText").mousedown(function(e){
-		var siblingsVar = $(this).siblings(".wrapperSpan");
+		var parentVar = $(this).parent(".wrapperSpan");
 		e.preventDefault();
-		siblingsVar.children(".textInput,.numInput").val("");		
+		parentVar.children(".textInput,.numInput").val("");
 		$(this).siblings(".errormsg").hide();
-		siblingsVar.children(".textInput,.numInput").focus();
-		siblingsVar.siblings(".emptyText").hide();
-		siblingsVar.css("width","100%");
+		parentVar.children(".textInput,.numInput").focus();
+		parentVar.children(".emptyText").css({"visibility": "hidden"});
+		//siblingsVar.css("width","100%");
 	});
-	
 	$(".textInput,.numInput").blur(function(){
 		var parentVar = $(this).parent(".wrapperSpan");
 		parentVar.css({"border-bottom": "solid 1px #b3b3b3","border-left": "solid 1px #b3b3b3","border-right": "solid 1px #b3b3b3"});
 		parentVar.siblings(".detailName").css({"color":"#777777"});
-		parentVar.siblings(".emptyText").hide();
-		parentVar.css("width","100%");
+		parentVar.children(".emptyText").css({"visibility": "hidden"});
+		//parentVar.css("width","100%");
 	});
 	$(".textInput,.numInput").keyup(function(){
 		if($(this).val().toString().length == 0){
 			console.log('keyup if');
-			$(this).parent().siblings(".emptyText").hide();	
-			$(this).parent(".wrapperSpan").css("width","100%");
+			$(this).siblings(".emptyText").css({"visibility": "hidden"});;	
+			//$(this).parent(".wrapperSpan").css("width","100%");
 		}else{
 			console.log('keyup else');
-				$(this).parent().siblings(".emptyText").show();
-				$(this).parent(".wrapperSpan").css("width","89%");
+				$(this).siblings(".emptyText").css({"visibility": "visible"});
+				//$(this).parent(".wrapperSpan").css("width","89%");
 		}
 	});
 	

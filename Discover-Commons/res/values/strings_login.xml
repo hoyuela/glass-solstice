@@ -59,7 +59,7 @@
         We\'ve logged you out to protect your account security.  Please log in again.
     </string>
     <string name="session_expired_header">Secure Logout</string>
-    <string name="session_expired_button">Ok</string>
+    <string name="session_expired_button">OK</string>
 <!--  LOGIN ERRORS -->
 	<string name="id_invalid">
 	    Please check your ID and try again.

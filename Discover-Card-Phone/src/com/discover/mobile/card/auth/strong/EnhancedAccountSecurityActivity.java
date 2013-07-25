@@ -186,7 +186,12 @@ public class EnhancedAccountSecurityActivity extends
         setContentView(R.layout.strongauth_page);
         loadAllViews();
         setupRadioGroupListener();
-        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+       /* 13.4 site cat tagging*/
+        
+        //TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+        TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CHECKPOINT);
+        
+        /* 13.4 site cat tagging*/
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
@@ -244,6 +249,7 @@ public class EnhancedAccountSecurityActivity extends
                         // change question
                         if (bean.getQuestionText() != null) {
                             strongAuthQuestion = bean.getQuestionText();
+                            questionAnswerField.setText("");
                             questionLabel.setText(strongAuthQuestion);
                             strongAuthQuestionId = bean.getQuestionId();
                             // submitSecurityInfo(null);
@@ -252,8 +258,8 @@ public class EnhancedAccountSecurityActivity extends
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
                         // errorMessage.setVisibility(View.VISIBLE);
-                        questionAnswerField.setText("");
                         questionAnswerField.setErrors();
+                        questionAnswerField.setText("");
                         // questionAnswerField.updateAppearanceForInput();
                     }
                 }
@@ -277,7 +283,23 @@ public class EnhancedAccountSecurityActivity extends
                     // Tell calling activity that account has been locked.
                     // activityResult = STRONG_AUTH_LOCKED;
                     // finish();
-                } else {
+                    
+                    /* 13.4 Defect ID 104309 start */
+                } else if (!bean.isAppError()
+                        && bean != null
+                        && bean.getErrorCode()
+                                .contains(
+                                        ""
+                                                + RegistrationErrorCodes.SPACE_ENTERED)){
+                	
+                	 errorMessage
+                     .setText(R.string.error_space_strongauth_noanswer);
+                	 questionAnswerField.setErrors();
+                	  questionAnswerField.setText("");
+                      
+                }    
+                  /* 13.4 Defect ID 104309 start */
+                else {
                     // If there is any other error, send error code to calling
                     // activity
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -382,6 +404,8 @@ public class EnhancedAccountSecurityActivity extends
                     EnhancedAccountSecurityActivity.this,
                     PrivacyTermsLanding.class);
             
+            int errvis =errorMessage.getVisibility();
+            String errmsg =errorMessage.getText().toString();
                      
             privacyTerms.putExtra("is_enhance", true);
             privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
@@ -619,11 +643,23 @@ public class EnhancedAccountSecurityActivity extends
             submitAns(selectedIndex, answer);
 
         } else {
-            CardErrorHandler.getInstance().showErrorsOnScreen(
-                    this,
-                    this.getResources().getString(
-                            R.string.error_strongauth_noanswer));
+        	 /* 13.4 Defect ID 104309 start */
+        	if(questionAnswerField.isSpaceEntered()){
+           	  errorMessage
+                .setText(R.string.error_space_strongauth_noanswer);
+           	  questionAnswerField.setErrors();
+           	  questionAnswerField.setText("");
+              
+              /* 13.4 Defect ID 104309 end */
+        	}else{
+        		   CardErrorHandler.getInstance().showErrorsOnScreen(
+                           this,
+                           this.getResources().getString(
+                                   R.string.error_strongauth_noanswer));
+        	}
+         
         }
+        
 
     }
 

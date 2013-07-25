@@ -19,12 +19,14 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 	
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
+		Log.v(TAG, "onCreate");
 		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_SETUP_STEP1);
 	}
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
+		Log.v(TAG, "onCreateView");
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_setup_step1_header);
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);

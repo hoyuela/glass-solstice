@@ -325,10 +325,13 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             if (!passOneField.isValid()) {
                 passOneField.setStrengthMeterInvalid();
             }
-
-            CommonUtils.showLabelWithStringResource(errorMessageLabel,
-                    R.string.account_info_bad_input_error_text, this);
-            CommonUtils.setViewVisible(errorIcon);
+            /*13.4 Defect id 95859*/
+            if(!(passOneField.isNull()&& passTwoField.isNull())){
+            	   CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                           R.string.account_info_bad_input_error_text, this);
+                   CommonUtils.setViewVisible(errorIcon);
+            }
+         
         }
 
     }

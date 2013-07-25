@@ -24,7 +24,8 @@
     <com.discover.mobile.common.ui.widgets.NonFocusingScrollView
         android:id="@+id/login_pane"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/login_bottom_button_row" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -164,12 +165,14 @@
 						    android:layout_width="wrap_content"
 						    android:layout_height="wrap_content"
 						    android:layout_marginRight="@dimen/between_related_elements_padding"
+						    android:layout_marginLeft="@dimen/between_related_elements_padding"
 						    android:text="@string/remember_user_id"
 						    android:textSize="16sp"
 						    android:textColor="@color/field_copy"
 						    android:layout_toLeftOf="@+id/remember_user_id_toggle"
 						    android:paddingRight="@dimen/between_related_elements_padding"
-						    android:layout_centerVertical="true"/>
+						    android:layout_centerVertical="true"
+						    android:layout_alignParentLeft="true"/>
 						
 	                    <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
 	                        android:id="@+id/remember_user_id_toggle"
@@ -189,7 +192,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
-                        android:text="@string/login_button_text" />
+                        android:text="@string/login_button_text"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
 
                     <!-- Link section - BANK -->
 
@@ -473,7 +478,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/login_table"
                 android:layout_centerHorizontal="true"
-                android:paddingBottom="80dp"
+                android:paddingBottom="@dimen/forms_inner_padding"
                 android:text="@string/discover_copyright_text"
                 android:textColor="@color/fdic_disclaimer_text_color"
                 android:textSize="@dimen/fdic_disclaimer_text_size" />

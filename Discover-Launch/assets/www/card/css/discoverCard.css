@@ -1617,6 +1617,9 @@ input.ui-input-text,textarea.ui-input-text {
 	 width: 96%;
 	 -webkit-box-shadow:none !important;
 }
+.wrapperSpan input.ui-input-text {
+	width:91%;
+}
 .paymentinputtext {height:18px !important; font-weight:bold;}
 #card-login input.ui-input-text {
 line-height: 15px;

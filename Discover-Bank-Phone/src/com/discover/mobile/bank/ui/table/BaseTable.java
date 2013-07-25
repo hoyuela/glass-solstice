@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.DynamicDataFragment;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseFragment;
@@ -132,7 +133,12 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		super.onResume();
 		loadDataFromBundle(loadBundle);
 		table.setAdapter(getAdapter());
-
+		if( null != loadBundle) {
+			scrollToPosition(loadBundle.getInt(BankExtraKeys.LISTVIEW_POSITION, 0));
+			if (loadBundle.getBoolean(BankExtraKeys.IS_LOADING_MORE)) {
+				footer.showLoading();
+			}
+		}
 		new Handler().postDelayed(asyncUpdateData, 100);
 	}
 
@@ -145,6 +151,9 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 		final Bundle bundle = saveDataInBundle();
 		if(null != bundle){
 			getArguments().putAll(saveDataInBundle());
+			getArguments().putInt(BankExtraKeys.LISTVIEW_POSITION, (isLoadingMore) ? getLastVisibleScrollPosition() : 
+																					 getFirstVisibleScrollPosition());
+			getArguments().putBoolean(BankExtraKeys.IS_LOADING_MORE, isLoadingMore);
 		}
 		super.onSaveInstanceState(outState);
 	}
@@ -210,8 +219,35 @@ public abstract class BaseTable extends BaseFragment  implements DynamicDataFrag
 	}
 
 	/**
+	 * Scrolls the list view to a given list view row.
+	 * 
+	 * @param position - Row to scroll too
+	 */
+	protected void scrollToPosition(final int position) {
+		table.getRefreshableView().setSelectionFromTop(position, table.getRefreshableView().getTop());
+	}
+
+	/**
+	 * Gets the position of the first visible row.
+	 * 
+	 * @return returns the first visible row position.
+	 */
+	protected int getFirstVisibleScrollPosition() {
+		return table.getRefreshableView().getFirstVisiblePosition();
+	}
+	
+	/**
+	 * Gets the position of the last visible row.
+	 * 
+	 * @return returns the last visible row position.
+	 */
+	protected int getLastVisibleScrollPosition() {
+		return table.getRefreshableView().getLastVisiblePosition();
+	}
+
+	/**
 	 * Show the empty message in the footer
-	 * @return 
+	 * @return
 	 */
 	public abstract void showFooterMessage();
 

@@ -172,6 +172,7 @@ public final class BankExtraKeys {
 
 	/** Key used for managing loading of a view pager inner fragment */
 	public static final String POSITION = "position";
+	public static final String	LISTVIEW_POSITION			= "listview_position";
 
 	/**
 	 * NOT INSTANTIABLE

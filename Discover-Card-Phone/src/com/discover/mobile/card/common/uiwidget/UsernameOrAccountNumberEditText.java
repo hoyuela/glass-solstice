@@ -254,11 +254,8 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField {
                 .getSpacelessString(cardAccountNumber));
     }
     
-    /*public boolean isNull() {
-
-        return Strings.isNullOrEmpty(this.getText().toString());
-    }
-    
+    /* 13.4 Baclklog items start*/
+       
 	@Override
 	protected void showErrorLabel() {
 		// TODO Auto-generated method stub
@@ -271,6 +268,7 @@ public class UsernameOrAccountNumberEditText extends ValidatedInputField {
 			}
 		}
 
-	}*/
+	}
+	  /*    13.4 Baclklog items end*/
 
 }

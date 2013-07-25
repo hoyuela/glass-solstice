@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -55,13 +56,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	public void onResume() {
 		super.onResume();
-//		Log.v(TAG, "Resume");
-		// this also helps when back button navigates to resume previous
-		// activity
+		// this also helps when back button navigates to resume previous activity
 		clearAllFields();
-		// show keyboard
-
 		forceSoftKeyboardShown(0);
+		//sgoff0 DEFECT 103719
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 	}
 
 	@Override
@@ -69,6 +68,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 			final ViewGroup container, final Bundle savedInstanceState) {
 		final View view = inflater.inflate(R.layout.passcode_base_activity,
 				null);
+		setupUI(view);
+		return view;
+	}
+	
+	private void setupUI(View view){
 		validationIV = ((ImageView) view.findViewById(R.id.validation));
 		validationIV.setVisibility(View.INVISIBLE);
 		passcodeGuidelinesTV = ((TextView) view.findViewById(R.id.passcodeGuidelines));
@@ -76,7 +80,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						showPasscodeGuidelines();
-//						dialogHelper(MODAL_PASSCODE_GUIDELINES, "Close", false, new NoNavigateAction());
 					}
 				});
 		passcodeGuidelinesTV.setVisibility(View.INVISIBLE);
@@ -87,13 +90,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i] = ((EditText) view.findViewById(fieldIds[i]));
 		}
-		
 		//TODO sgoff0 - look into, seems to stop the problem of double submit on removing fragment from back stack
 //		if (!isStopping) {
 			setupAllFields();
 			clearAllFields();
 //		}
-		return view;
 	}
 	
 	@Override
@@ -258,15 +259,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		return 0;
 	}
 		
-	private EditText getNextInputField() {
-		for (int i = 0; i < fieldTVs.length; i++) {
-			if (fieldTVs[i].length() == 0) {
-				return fieldTVs[i];
-			}
-		}
-		return fieldTVs[0];
-	}
-
 	// advances input to next field
 	private TextView advanceInput(int currentIndex) {
 		if (currentIndex < fieldTVs.length - 1) {
@@ -277,7 +269,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 			return fieldTVs[fieldTVs.length - 1];
 		}
 	}
-
+	
 	protected void showPasscodeGuidelines() {
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
@@ -291,10 +283,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
 		if (paramKeyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-			Log.v(TAG, "Action Down");
+//			Log.v(TAG, "Action Down");
 			return false;
 		} else {
-			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
+//			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
 		}
 		// delete key
 		if (fieldInt == KEY_DELETE) {
