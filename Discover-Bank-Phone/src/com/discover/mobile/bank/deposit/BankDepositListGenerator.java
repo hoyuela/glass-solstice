@@ -74,8 +74,8 @@ public final class BankDepositListGenerator {
 	 * @param accountID ID of the account to use for displaying account information in cell.
 	 * @return Reference to newly created SelectListItem object.
 	 */
-	public static RelativeLayout createAccountItem(final Context context, final int accountID ) {
-		final Account account = BankUser.instance().getAccount( Integer.toString(accountID) );
+	public static RelativeLayout createAccountItem(final Context context, final String accountID ) {
+		final Account account = BankUser.instance().getAccount( accountID );
 		
 		/**Top text shows account number*/
 		String topText = context.getResources().getString(R.string.account_ending_in) +" ";
