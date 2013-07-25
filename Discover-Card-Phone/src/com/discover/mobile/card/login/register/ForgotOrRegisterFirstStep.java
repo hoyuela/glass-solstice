@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -164,9 +164,10 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             AccountInformationDetails details, String value);
 
     protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-
-    protected abstract NetworkServiceCall<?> createServiceCall(
-            AsyncCallback<Object> callback, AccountInformationDetails details);
+    
+    /*  13.4 Code CleanUp*/
+/*    protected abstract NetworkServiceCall<?> createServiceCall(
+            AsyncCallback<Object> callback, AccountInformationDetails details);*/
 
     protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
         ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
@@ -503,7 +504,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             // submitFormInfo();
             submit();
         } else {
-            showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+        	/*Defect id 95859*/
+        	if(!(accountIdentifierField.isNull()&& ssnField.isNull() && birthDatePicker.isNull() && cardExpDatePicker.isNull())){
+        		showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+        	}
+            
             resetScrollPosition();
         }
 

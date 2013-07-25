@@ -21,12 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.common.AccountType;
-import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-
+import com.discover.mobile.PushConstant;
+import com.discover.mobile.card.CommonMethods;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -34,13 +31,17 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.CardAccountToggleView;
 import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.CommonMethods;
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardMenuInterface;
+import com.discover.mobile.card.navigation.CardNavigationMenuFragment;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.services.auth.AccountDetails;
-import com.discover.mobile.PushConstant;
+import com.discover.mobile.common.AccountType;
+import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class HomeSummaryFragment extends BaseFragment implements
 		OnClickListener {
@@ -63,6 +64,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 	private LinearLayout currentBalance, lastStatement, bonusBalance;
 	private RelativeLayout bonusOffer;
 	private View statusBarView;
+	private boolean isDeeplinkMode = false;
 	private boolean isCashback = true;
 	HashMap<String, String> rewardsInfo = new HashMap<String, String>();
 	HashMap<String, String> rewardsOffer = new HashMap<String, String>();
@@ -146,8 +148,34 @@ public class HomeSummaryFragment extends BaseFragment implements
 
 		provideFeedback.setOnClickListener(this);
 		termsOfUse.setOnClickListener(this);
+		
+		Bundle bundle = this.getArguments();
+		if (bundle != null) {
+			String deeplink = bundle.getString(CardNavigationMenuFragment.DEEPLINK, null);
+			if(deeplink != null && deeplink.equals(CardNavigationMenuFragment.DEEPLINK_PASSCODE)) {
+				isDeeplinkMode = true;
+				new PasscodeRouter(this).getStatusAndRoute();
+			}
+		}
 		return view;
 	}
+	
+	
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (isDeeplinkMode) {
+			//don't show home screen if there is a delay in loading deeplink
+			view.setVisibility(View.INVISIBLE);
+			Utils.showSpinner(getActivity(), "Discover", "Loading");
+			isDeeplinkMode = false;
+		} else {
+			view.setVisibility(View.VISIBLE);
+		}
+	}
+
+
 
 	/**
 	 * To fetch the account name from the account details object

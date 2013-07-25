@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.DynamicDataFragment;
@@ -36,7 +37,7 @@ import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnClosedListener;
-
+import com.discover.mobile.bank.util.OnPreProcessListener;
 /**
  * Root activity for the application after login. This will transition fragment
  * on and off the screen as well as show the sliding bar as well as the action
@@ -53,6 +54,9 @@ implements OnPaymentCanceledListener {
 
 	private static final String BANK_USER_KEY = "bankUser";
 	private static final String BANK_SESSION_KEY = "session";
+	/** Key used to store the last time the user interacted with the application while logged in. */
+	private static final String BANK_PREV_TIME = "prev-time";
+
 
 	/**
 	 * Resume the activity to the state that it was when the activity went to
@@ -71,14 +75,41 @@ implements OnPaymentCanceledListener {
 	public void makeFragmentVisible(final Fragment fragment){
 		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
-		super.makeFragmentVisible(fragment);
+		//check to see if we need to do processing before we transition from the current fragment
+		if (getCurrentContentFragment() instanceof OnPreProcessListener) {
+			//runnable contains call to make new fragment visible
+			final Runnable r = new Runnable(){
+				@Override
+				public void run() {
+					BankNavigationRootActivity.super.makeFragmentVisible(fragment);
+				}
+			};
+			//call preprocess function
+			((OnPreProcessListener) getCurrentContentFragment()).preProcess(r);
+		} else {
+			super.makeFragmentVisible(fragment);
+		}
 	}
 
 	@Override
 	public void makeFragmentVisible(final Fragment fragment, final boolean addToHistory){
 		Log.i("Tracking Helper", "Passed class name: " + fragment.getClass().getSimpleName());
 		BankTrackingHelper.trackPage(fragment.getClass().getSimpleName());
-		super.makeFragmentVisible(fragment, addToHistory);
+		//check to see if we need to do processing before we transition from the current fragment
+		if (getCurrentContentFragment() instanceof OnPreProcessListener) {
+			//runnable contains call to make new fragment visible
+			final Runnable r = new Runnable(){
+				@Override
+				public void run() {
+					BankNavigationRootActivity.super.makeFragmentVisible(fragment, addToHistory);
+				}
+			};
+			//call preprocess function
+			((OnPreProcessListener) getCurrentContentFragment()).preProcess(r);
+		} else {
+			super.makeFragmentVisible(fragment, addToHistory);
+		}
+		
 	}
 	
 	/**
@@ -92,13 +123,15 @@ implements OnPaymentCanceledListener {
 		 * status bar.
 		 */
 		setContentView(R.layout.bank_content_view);
-		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
+		final RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
+		mainLayout.requestTransparentRegion(mainLayout);
+ 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
 	}
 
 	/**
 	 * Refreshes the sliding menu when its closed. This ensures that the highlighting on the menu is accurate
 	 */
-	private void updateMenuOnClose() {
+	public void updateMenuOnClose() {
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setOnClosedListener(new OnClosedListener() {
 
@@ -147,15 +180,26 @@ implements OnPaymentCanceledListener {
 			.setNewLinks(BankUser.instance().getCustomerInfo().links);
 			SessionTokenManager.setToken(savedInstanceState
 					.getString(BANK_SESSION_KEY));
+
+			/** Restore the last time the user interacted with the application */
+			Globals.setOldTouchTimeInMillis(savedInstanceState.getLong(BANK_PREV_TIME));
 		}
 	}
 
 	@Override
 	public void onSaveInstanceState(final Bundle outState) {
 		super.onSaveInstanceState(outState);
-		BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
+		if(BankUser.instance() != null && BankUser.instance().getCustomerInfo() != null) {
+			BankUser.instance().getCustomerInfo().links = BankUrlManager.getLinks();
+		}
 		outState.putSerializable(BANK_USER_KEY, BankUser.instance());
 		outState.putString(BANK_SESSION_KEY, SessionTokenManager.getToken());
+
+		/**
+		 * Store the last time the user interacted with the application in the event volatile memory is wiped out by
+		 * Android OS
+		 */
+		outState.putLong(BANK_PREV_TIME, Globals.getOldTouchTimeInMillis());
 	}
 	
 	@Override
@@ -300,6 +344,9 @@ implements OnPaymentCanceledListener {
 	public void onBackPressed() {
 		if( !isBackPressDisabled()) {
 			super.onBackPressed();
+			//When we go back make sure to clear the previously tracked page for analytics so that
+			//whenever the user navigates somehwere, the page is sure to be tracked.
+			BankTrackingHelper.clearPreviousTrackedPage();
 		}
 		else if(isBackPressFragment()){
 			((FragmentOnBackPressed)currentFragment).onBackPressed();

@@ -17,10 +17,9 @@
             android:background="@drawable/light_gray_bkgrd"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" 
             android:paddingBottom="16dp"
-            >
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" >
 
             <TextView
                 android:id="@+id/account_security_server_error"
@@ -152,8 +151,7 @@
                     android:maxLines="@integer/ZERO"
                     android:text="@string/account_security_whats_this_detail_text"
                     android:textColor="@color/black" />
-            </RelativeLayout>
-            -->
+            </RelativeLayout> -->
             <!-- Defect ID: 95466 -->
 
             <RadioGroup
@@ -177,21 +175,7 @@
                     android:drawablePadding="@dimen/forms_inner_padding"
                     android:padding="@dimen/forms_inner_padding"
                     android:text="@string/account_security_remember_me_text" />
-
-                <!--
-                     <View
-                    android:id="@+id/account_security_separator_line_one"
-                    android:layout_width="fill_parent"
-                    android:layout_height="4dp"
-                    android:background="@drawable/row_shadow" />
-
-                <View
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/home_list_item" />
-                -->
-
-                <View
+			 <View
                     android:id="@+id/account_security_separator_line_one"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -212,7 +196,7 @@
             <Button
                 android:id="@+id/account_security_continue_button"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/account_security_choice_radio_group"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
@@ -220,11 +204,22 @@
                 android:layout_marginTop="@dimen/orange_button_margin_top"
                 android:background="@drawable/card_action_orange_button"
                 android:onClick="submitSecurityInfo"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:paddingLeft="52dp"
+                android:paddingRight="52dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:text="@string/continue_text"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
+
+            <include
+                android:id="@+id/enter_info_footer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/account_security_continue_button"
+                android:layout_marginBottom="20dp"
+                layout="@layout/card_fragment_footer" />
         </RelativeLayout>
     </RelativeLayout>
 

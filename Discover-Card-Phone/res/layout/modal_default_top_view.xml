@@ -4,11 +4,12 @@
     android:layout_height="fill_parent"
   >
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:paddingLeft="24dp"
-	    android:paddingRight="24dp">
+	    android:paddingRight="24dp"
+	    >
 	   
 		<ImageView
 	        android:id="@+id/error_icon"
@@ -16,7 +17,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:adjustViewBounds="true"
-	        android:src="@drawable/esclamation_red_img"
+	        android:src="@drawable/exclamation_red_img"
 	        android:visibility="gone"
 	        android:layout_marginRight="8dp"
 	        android:layout_marginTop="24dp"/>

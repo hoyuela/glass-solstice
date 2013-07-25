@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments-Manage Bank Information</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="manageBankAccEnterDetails-pg" class="payments">
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+				<div class="errorText hide">
+                    	<span class="alertImage"></span>
+                        <div>
+                            <p id="errorMsg">The financial institution associated with your Bank Routing Number does not currently accept this form of online payment.</p>
+                        </div>
+                </div>
+				<div class="helpLink bluelink">	
+				
+                    <div class="helpImg">
+						<img src="../../images/helpImgExpanded.png" width="296" height="135" alt="account/routing help image" usemap="#highlightNum" />
+						<map name="highlightNum">
+							<area shape="rect" coords="52,8,141,24" alt="routing number" > 
+							<area shape="rect" coords="156,8,265,24" alt="account number" >
+							<area shape="rect" coords="53,87,141,104" alt="routing number expanded" >
+							<area shape="rect" coords="158,87,164,104" alt="account number expanded" >
+						</map>						
+					</div>
+                </div>
+				
+				<ul class="detailsList">
+					<li>
+                    	<span class="detailName">Routing #</span>
+                        <span class="wrapperSpan">
+                            <input type="number" class="textInput numberInput" maxlength="9" id="routing" />
+                        	<img src='../../images/emptyTextBox.png' width='15' height='15' alt='empty' class='emptyText' />
+                        </span>
+                        <p class="errormsg">Bank Routing Number must be 9 digits.</p>
+						<!--p class="servererrormsg" id="routingErr"></p-->
+						<div class="clearboth"></div>
+                    </li>
+					
+                    <li>
+                    	<span class="detailName">Account #</span>
+                        <span class="wrapperSpan">
+                            <input type="number" class="textInput numberInput" maxlength="17" id="accountNumber" />
+                        	<img src='../../images/emptyTextBox.png' width='15' height='15' alt='empty' class='emptyText' />
+                        </span>
+                        <p class="errormsg">Bank Account Number and Confirm Bank Account didn't match.</p>
+                        <!-- p class="acctnumerrormsg" id="accNumErr"></p -->
+						<div class="clearboth"></div>
+                    </li>
+                     <li>
+                    	<span class="detailName">Confirm Account #</span>
+                        <span class="wrapperSpan">
+                         <input type="number"" class="textInput numberInput" maxlength="17" id="confirmAccountNumber" />
+                         <img src='../../images/emptyTextBox.png' width='15' height='15' alt='empty' class='emptyText' />
+                        </span>
+                        <div class="clearboth"></div>
+                    </li>
+                     <li>
+                    	<span class="detailName">Account Type</span>
+                        <select name="selectAccType" data-native-menu="false" data-theme="d" style="margin-top:10px;">
+                        	<option data-description=""></option>
+                        	<option value="Checking">Checking Account</option>
+                            <option value="Savings">Savings Account</option>
+                        </select>
+						<div class="clearboth"></div>
+                    </li>
+                     <li>
+                    	<span class="detailName">Account Nickname (Optional)</span>
+                        <span class="wrapperSpan">
+                            <input type="text" class="textInput numberInput" id="accountNickname" maxlength="48"/>
+                        	<img src='../../images/emptyTextBox.png' width='15' height='15' alt='empty' class='emptyText' />
+                        </span>
+                        <p class="errormsg">This nickname is in use on another bank account</p>
+						<div class="clearboth"></div>
+                    </li>
+                </ul>
+				<div class="txtcenteraln r3matchbtn">
+					<a href="#" data-role="button" data-theme="c" id="continueBtn" onClick= "dfs.crd.pymt.validateUserInput();">Add Account</a>
+                    <a href="#" onClick= "navigation('../payments/manageBankAccounts');" class="cancelBtn bluelink boldtext ">Cancel</a>
+				</div>
+			</div>
+			
+        </div>
+        <div class="dropDownLayer"></div>
+		<div id="footnotes" class="footnotes"></div>
+		<!-- content end -->
+		<!-- content end -->
+	</div>
+	<!--page end -->
+</body>
+</html>

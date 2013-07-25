@@ -1,10 +1,12 @@
 package com.discover.mobile.card.common.ui.modals;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,11 +17,6 @@ public class EnhancedContentModal extends SimpleContentModal{
 
 	private Runnable backAction = null;
 	
-	public EnhancedContentModal(Context context) {
-		super(context);
-		// TODO Auto-generated constructor stub
-	}
-
 	public EnhancedContentModal(final Context context, 
 			final int title, final int content,
 			final int buttonText) {
@@ -47,16 +44,13 @@ public class EnhancedContentModal extends SimpleContentModal{
 		getButton().setOnClickListener(new MyClickListener(okAction));
 	}
 	
-//	public void setBackButton(Runnable backAction){
-//		super.setOnKeyListener(new MyKeyListener(backAction));
-//	}
-	
 	public void setOrangeTitle() {
 		((TextView) view.findViewById(R.id.modal_alert_title)).setTextColor(getContext().getResources().getColor(R.color.orange));
 	}
 	
 	public void setGrayButton() {
-		getButton().setBackgroundColor(getContext().getResources().getColor(R.color.passcodeGray));
+		getButton().setBackgroundColor(getContext().getResources().getColor(R.color.action_button_gray));
+		getButton().setTextColor(getContext().getResources().getColor(R.color.black));
 	}
 	
 	public void setContentHtml(final int content){
@@ -64,8 +58,37 @@ public class EnhancedContentModal extends SimpleContentModal{
 	}
 
 	public void setContentHtml(String content){
-		((TextView) view.findViewById(R.id.modal_alert_text)).setText(Html.fromHtml(content));
+		TextView tv = ((TextView) view.findViewById(R.id.modal_alert_text));
+		tv.setText(Html.fromHtml(content));
+        Linkify.addLinks(tv, Linkify.PHONE_NUMBERS);
+        stripUnderlines(tv);
 	}
+
+	private class URLSpanNoUnderline extends URLSpan {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+        @Override public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
+	
+	private void stripUnderlines(TextView textView) {
+		if (!(textView.getText() instanceof Spannable)) {
+			return;
+		}
+        Spannable s = (Spannable)textView.getText();
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
 	
 	//regular button
 	private class MyClickListener implements View.OnClickListener {
@@ -91,8 +114,6 @@ public class EnhancedContentModal extends SimpleContentModal{
 			dismiss();
 		}
 	}
-	
-	
 	
 	@Override
 	public void onBackPressed() {

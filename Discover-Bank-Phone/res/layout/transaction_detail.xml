@@ -133,14 +133,26 @@
             </LinearLayout>
         </LinearLayout>
 
+        <Button 
+        	android:id="@+id/edit_button"
+        	style="@style/common_call_to_action_theme_orange"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_below="@+id/content_table"
+        	android:layout_centerHorizontal="true"
+        	android:layout_marginTop="@dimen/orange_button_margin_top"
+        	android:text="@string/edit_payment"
+        	android:visibility="gone"
+        />
+        
         <RelativeLayout
             android:id="@+id/delete_transfer_button_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/content_table"
+            android:layout_below="@+id/edit_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/groups_of_elements_padding"
-            android:layout_marginTop="@dimen/groups_of_elements_padding" >
+            android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/forms_inner_padding" >
 
             <Button
                 android:id="@+id/delete_one_time_transfer_button"
@@ -155,7 +167,7 @@
 
             <Button
                 android:id="@+id/delete_recurring_transfer_button"
-                style="@style/call_to_action_theme"
+                style="@style/common_call_to_action_theme_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"

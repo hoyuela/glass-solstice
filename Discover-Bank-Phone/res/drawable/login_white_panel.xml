@@ -2,9 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <!-- Gradient -->
-    <item android:drawable="@drawable/login_white_bkgrd_gradient">
-        
-    </item>
+    <item android:drawable="@drawable/login_white_bkgrd_gradient"/>
 
     <!-- White Panel -->
     <item

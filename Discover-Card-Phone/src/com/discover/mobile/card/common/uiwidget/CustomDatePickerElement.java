@@ -15,6 +15,7 @@ import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.card.common.InputValidator;
 
 import com.discover.mobile.card.R;
+import com.google.common.base.Strings;
 
 /**
  * The parent class for any date picker
@@ -198,7 +199,7 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
 
     @Override
     protected Drawable getGrayX() {
-        return getDownArrow();
+        return null;
     }
 
     /**
@@ -252,8 +253,11 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
         this.setHint(getPlaceholderText());
         this.setEms(DATE_PICKER_EMS_LENGTH);
 
+        /*this.setCompoundDrawablesWithIntrinsicBounds(null, null,
+                getDownArrow(), null);*/
+        
         this.setCompoundDrawablesWithIntrinsicBounds(null, null,
-                getDownArrow(), null);
+                null, null);
     }
 
     /**
@@ -295,5 +299,22 @@ public abstract class CustomDatePickerElement extends ValidatedInputField {
     protected int getMonthOffset() {
         return 0;
     }
+    
+    /* 13.4 Baclklog items start*/
+       
+	@Override
+	protected void showErrorLabel() {
+		// TODO Auto-generated method stub
+		if (errorLabel != null) {
+			if (isNull()) {
+				errorLabel.setVisibility(View.GONE);
+			} else
+			{
+				errorLabel.setVisibility(View.VISIBLE);
+			}
+		}
+
+	}
+	  /*    13.4 Baclklog items end*/
 
 }

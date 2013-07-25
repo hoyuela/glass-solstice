@@ -40,6 +40,9 @@ public final class BankExtraKeys {
 	/**Used to send the selected category to the detail screen*/
 	public static final String CATEGORY_SELECTED = "category-selected";
 
+	/** Used to specify delete is allowed for a transaction from a screen */
+	public static final String DELETE_ALLOWED = "delete-allowed";
+
 	/**Used to send the sorting of the table to the detail fragment and back*/
 	public static final String SORT_ORDER = "sort-order";
 
@@ -169,6 +172,7 @@ public final class BankExtraKeys {
 
 	/** Key used for managing loading of a view pager inner fragment */
 	public static final String POSITION = "position";
+	public static final String	LISTVIEW_POSITION			= "listview_position";
 
 	/**
 	 * NOT INSTANTIABLE

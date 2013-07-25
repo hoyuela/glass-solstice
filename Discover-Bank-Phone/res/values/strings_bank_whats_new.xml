@@ -15,7 +15,7 @@
     
         <!-- List of content that will be displayed in the view pager -->
     <array name="bank_whats_new_content">
-        <item>ATMs are grouped for an easier search.  Just tap on the &quot;Multiple Pin&quot; icon to zoom into the group and find an ATM.</item>
+        <item>ATMs are grouped for an easier search.  Just tap on the \"Multiple Pin\" icon to zoom into the group and find an ATM.</item>
         <item>Tap and hold anywhere on the map for a new search to find an ATM.</item>
     </array>
     

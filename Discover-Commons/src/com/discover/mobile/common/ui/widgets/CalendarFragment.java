@@ -164,7 +164,7 @@ public class CalendarFragment extends CaldroidFragment {
 		final TextView monthTitle = (TextView) layout.findViewById(R.id.calendar_month_year_textview);
 		final LinearLayout titleHeader = (LinearLayout) inflater.inflate(R.layout.calendar_title_header, container, false);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, 
-																					RelativeLayout.LayoutParams.WRAP_CONTENT);
+																				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		titleHeader.setLayoutParams(params);
 		layout.addView(titleHeader);
@@ -355,9 +355,15 @@ public class CalendarFragment extends CaldroidFragment {
 	 * 
 	 * @return True if cal holds the date to a weekend, false otherwise.
 	 */
-	public boolean isWeekend(final Calendar cal) {
-		final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-		return (Calendar.SATURDAY == dayOfWeek || Calendar.SUNDAY == dayOfWeek);	
+	public static boolean isWeekend(final Calendar cal) {
+		boolean isWeekend = false;
+		
+		if(cal != null) {
+			final int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+			isWeekend = (Calendar.SATURDAY == dayOfWeek || Calendar.SUNDAY == dayOfWeek);
+		}
+		
+		return isWeekend;
 	}
 	
 
@@ -433,15 +439,21 @@ public class CalendarFragment extends CaldroidFragment {
 	 * @param days	the # of business days to add to the Calendar
 	 * @param disabledDates   this is a list of holidays. they will not be treated as business days.
 	 */
-	public static Calendar addBusinessDays(final Calendar cal, final int days, final ArrayList<Date> disabledDates) {
-		//Set the date to the first valid date for a transfer.
-		Calendar tempCal =  CalendarFragment.getFirstValidDateCalendar(cal, disabledDates);
-		
-		// Add Business Days
-		for( int i = 0; i < days; i++) {	
-			tempCal.add(Calendar.DAY_OF_MONTH, 1);	
-			tempCal = CalendarFragment.getFirstValidDateCalendar(tempCal, disabledDates);
+	public static Calendar addBusinessDays(final Calendar cal, final int days, final List<Date> disabledDates) {
+		int daysToAdvanceCalendar = days;
+
+		//Add Business Days
+		for( int i = 0; i < daysToAdvanceCalendar; i++) {
+			cal.add(Calendar.DAY_OF_MONTH, 1);
+			
+			//Don't count a weekend or holiday as a business day, so increment
+			//the value of daysToAdvanceCalendar by one so we can go one more day in the if statement.
+			if(isWeekend(cal) || isHoliday(cal, disabledDates)) {
+				daysToAdvanceCalendar++;
+			}
 		}
-		return tempCal;
+
+		return cal;
 	}
+	
 }

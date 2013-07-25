@@ -2,9 +2,9 @@
 <resources>
 
     <!-- Labels -->
-    <string name="sa_security_question">Security Question 1</string>
-    <string name="sa_security_question_second">Security Question 2</string>
-    <string name="sa_security_question_third">Security Question 3</string>
+    <string name="sa_security_question">Question 1</string>
+    <string name="sa_security_question_second">Question 2</string>
+    <string name="sa_security_question_third">Question 3</string>
     <string name="sa_answer">Answer</string>
     <string name="sa_confirm_answer">Confirm Answer</string>
     <string name="sa_question_label">Question 1</string>

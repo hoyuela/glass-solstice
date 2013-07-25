@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -46,6 +47,7 @@ import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 
 import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
+import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.phonegap.plugins.ResourceDownloader;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
@@ -733,10 +735,42 @@ public class Utils {
                 R.string.logOut_url);
         request.setUrl(url);
         request.setMethodtype("POST");
+        Utils.showSpinner(cur_Activity, "Discover", "Signing Out...");
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(cur_Activity,
-                null, "Discover", "Signing Out...", logoutCardEventListener);
+                null, "Discover", null, logoutCardEventListener);
         serviceCall.execute(request);
     }
+    
+    private static final String REFERER = "cardHome-pg";	
+	/***
+	 * Initialize and set action to Footer Items privacy menu & Term condition
+	 * 
+	 * @param mainView
+	 */
+	public static void setFooter(View mainView, final Activity activity) {
+		final TextView provideFeedback = (TextView) mainView
+				.findViewById(R.id.provide_feedback_button);
+		provideFeedback.setTextColor(activity.getResources().getColor(
+				R.color.footer_link));
+		provideFeedback.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Utils.createProvideFeedbackDialog(activity, REFERER);
+			}
+		});
+		final TextView termsOfUse = (TextView) mainView
+				.findViewById(R.id.privacy_terms);
+		termsOfUse.setTextColor(activity.getResources().getColor(
+				R.color.footer_link));
+		termsOfUse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				((CardMenuInterface) activity)
+				.sendNavigationTextToPhoneGapInterface(activity.getString(R.string.privacy_terms_title));
+			}
+		});
+	}
     /*
      * Changes for 13.4 end
      */

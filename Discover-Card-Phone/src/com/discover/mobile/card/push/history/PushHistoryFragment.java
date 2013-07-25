@@ -15,7 +15,6 @@ import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.CardSessionContext;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.push.manage.PushManageFragment;
-import com.discover.mobile.card.services.push.history.GetAlertHistory;
 import com.discover.mobile.card.services.push.history.NotificationDetail;
 import com.discover.mobile.card.services.push.history.NotificationListDetail;
 import com.discover.mobile.common.BaseFragment;
@@ -154,8 +153,8 @@ public class PushHistoryFragment extends BaseFragment{
 				.withErrorResponseHandler(new PushHistoryErrorHandler())
 				.withExceptionFailureHandler(new BaseExceptionFailureHandler())
 				.build();
-		
-		new GetAlertHistory(getActivity(), callback, begin, amount).submit();
+		/*  13.4 Code CleanUp*/
+		/*new GetAlertHistory(getActivity(), callback, begin, amount).submit();*/
 	}
 	
 	/**

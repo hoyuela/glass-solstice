@@ -1646,7 +1646,7 @@ try{
             
 			$('.overlay').show(function(){ 			
                                if( parentPageId !='' && defaultSettings.resize){
-                               $('.tooltip').hide();
+                               // $('.tooltip').hide();  /* backlog changes */
                                parentPageIdObj.hide();
                                tmpHeight = $("html").css("min-height");
                                $("html").css("min-height", "100%");

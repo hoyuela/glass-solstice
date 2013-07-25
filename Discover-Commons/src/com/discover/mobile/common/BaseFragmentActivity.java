@@ -72,8 +72,6 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 	 */
 	private boolean resumed = false;
 	
-	private static boolean progressDialogIsCancellable = false;
-	
 	/**
 	 * lock used to synchronize with threads attempting to update activity
 	 */
@@ -135,7 +133,7 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 		if(DiscoverModalManager.isAlertShowing() && null != DiscoverModalManager.getActiveModal()){
 			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
 				startProgressDialog(DiscoverModalManager.isProgressDialogCancelable());
-			} else if(!DiscoverModalManager.getActiveModal().isShowing()){
+			} else {
 				DiscoverModalManager.getActiveModal().show();
 			}
 			DiscoverModalManager.setAlertShowing(true);
@@ -159,9 +157,13 @@ implements RoboContext, ErrorHandlerUi, AlertDialogParent, SyncedActivity{
 
 		eventManager.fire(new OnPauseEvent());
 		
-		//Close the modal if it is showing
+		// Close the modal if it is showing
 		if(DiscoverModalManager.hasActiveModal()){
-			DiscoverModalManager.getActiveModal().dismiss();
+			if (DiscoverModalManager.getActiveModal() instanceof ProgressDialog) {
+				DiscoverModalManager.getActiveModal().dismiss();
+			} else {
+				DiscoverModalManager.getActiveModal().hide();
+			}
 			DiscoverModalManager.setAlertShowing(true);
 		} else {
 			DiscoverModalManager.clearActiveModal();

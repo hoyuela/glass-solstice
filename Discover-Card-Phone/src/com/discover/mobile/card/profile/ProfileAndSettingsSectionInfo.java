@@ -25,6 +25,10 @@ public class ProfileAndSettingsSectionInfo extends GroupComponentInfo {
 	 */
 	public ProfileAndSettingsSectionInfo() {
 		super(R.string.section_title_profile_and_settings,
+				new FragmentComponentInfo(
+       				 R.string.sub_section_title_passcode,
+        				//TODO sgoff0 update this to update where navigation happens
+        				PasscodeLandingFragment.class),
 				// 13.3 quick view start
 				new FragmentComponentInfo(R.string.sub_section_title_fast_view,
 						QuickViewSetupFragment.class),
@@ -54,12 +58,7 @@ public class ProfileAndSettingsSectionInfo extends GroupComponentInfo {
 							public void onClick(View v) {
 
 							}
-						}),
-
-				new FragmentComponentInfo(
-                       				 R.string.sub_section_title_passcode,
-                        				//TODO sgoff0 update this to update where navigation happens
-                        				PasscodeLandingFragment.class));    
+						}));    
 
 	}
 

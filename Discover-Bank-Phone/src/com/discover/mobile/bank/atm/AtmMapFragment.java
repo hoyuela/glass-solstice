@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -47,11 +48,13 @@ import com.discover.mobile.bank.services.atm.AtmServiceHelper;
 import com.discover.mobile.bank.ui.modals.AtmSearchingForAtmsModal;
 import com.discover.mobile.bank.ui.widgets.CustomProgressDialog;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
+import com.discover.mobile.bank.util.OnPreProcessListener;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverApplication;
 import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
@@ -68,7 +71,8 @@ import com.slidingmenu.lib.SlidingMenu;
  */
 public abstract class AtmMapFragment extends BaseFragment 
 implements LocationFragment, AtmMapSearchFragment, FragmentOnBackPressed,
-DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDialog {
+DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, 
+CustomProgressDialog, OnPreProcessListener {
 	/**
 	 * Location status of the fragment. Is set based off of user input and the ability
 	 * to get the users location.  Defaults to NOT_ENABLED.
@@ -83,6 +87,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Key to get the state of the help modal from the bundle*/
 	private static final String ATM_HELP_MODAL = "atmModal";
+	
+	/**Key to get the state of the no results modal from the bundle*/
+	private static final String NO_RESULTS_MODAL = "noResultsModal";
 
 	/**Key to get the state of the Leaving App modal from the bundle*/
 	private static final String LEAVING_APP_MODAL = "leaveApp";
@@ -95,6 +102,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Modal that lets the user know that getting of their location failed*/
 	private SimpleTwoButtonModal locationFailureModal;
+	
+	/**Modal that lets the user know that no ATMs were found*/
+	private SimpleContentModal noResultsModal;
 
 	/**Boolean set to true when the app has loaded the atms to that the app does not trigger the call more than one time*/
 	private boolean hasLoadedAtms = false;
@@ -119,6 +129,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Boolean that is true if the map is showing*/
 	private boolean isOnMap = true;
+	
+	/* Boolean that says whether atm locator was on the map or list view before heading to street view.  We are unable to 
+	 * change isOnMap's value to work in the fashion as required by the street view work flows so this variable is now used.
+	 */
+	private boolean streetViewWasOnMap = true;
 
 	/**Wrapper around the map*/
 	private DiscoverMapWrapper mapWrapper;
@@ -172,6 +187,9 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 	/**Boolean true if the help menu alert menu is showing*/
 	private boolean helpModalShowing = false;
+	
+	/**Boolean true if the no atm results modal is showing*/
+	private boolean noResultsModalShowing = false;
 
 	private boolean processingOnBackpress = false;
 
@@ -213,7 +231,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState){
 		final View view = inflater.inflate(getLayout(), null);
-
 		/**
 		 * The map and list fragments should only be added if they aren't already on the back stack. These
 		 * are the only nested fragments that should be on the back stack of the child fragment manager for this fragment.
@@ -268,6 +285,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 		overlay = (AtmTapAndHoldCoachOverlay)view.findViewById(R.id.tap_and_hold_coach);
 
+		
+		
 		return view;
 	}
 
@@ -279,53 +298,84 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		setHelpModalShowing(true);
 	}
 
+	/*
+	 * Loads and initiliazes the map.  This function not
+	 * only loads the map for the first time but also 
+	 * resumes the maps state, and therefore this function
+	 * should be called in onResume() 
+	 */
+	public void loadMapAndDisplay() {
+		//map needs to be shown before we can start interacting with it.
+		showMapView(true);
+		setUpMap();
+		disableMenu();
+		setupMapOrListView();
+		/**
+		 * Verify that the bundle used to populate the map fragment has data.
+		 */
+		resumeStateOfFragment(savedState);
+		final Bundle bundle = getArguments();
+		if (bundle.containsKey(OVERLAY_SHOWING) && bundle.getBoolean(OVERLAY_SHOWING)) {
+			overlay.showCoach();
+		}
+		determineNavigationStatus();
+		if(shouldGoBack){
+			streetView.showWebView();
+		}
+		if( fragment.getView() != null && fragment.getMap() != null ) {
+			setMapTransparent((ViewGroup)fragment.getView());
 
+		}
+		if(isHelpModalShowing()){
+			HelpMenuListFactory.instance().showAtmHelpModal(this);
+			setHelpModalShowing(true);
+		} else if (isLeavingModalShowing) {
+			showTerms();
+		} else if (isNoResultsModalShowing()) {
+			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());
+			showCustomAlertDialog(noResultsModal);
+		}
+		
+		restoreCameraView();
+		adjustMapZoomIfNeeded();
+		fadeInMap();
+	}
+
+	/*
+	 * This function delays showing the map until the fragment is completely loaded.
+	 * This helps reduce the cpu load and interference with the transitions between 
+	 * fragments.
+	 */
+	private void loadAndDisplayMapDelayed() {
+		//make sure the map is hidden
+		showMapView(false);
+		//wait one second then load the map and display it 
+		//to user
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				loadMapAndDisplay();
+			}}, 1000);
+	}
 	/**
 	 * Resume the fragment
 	 */
 	@Override
 	public void onResume(){
 		super.onResume();
-
 		final NavigationRootActivity activity = (NavigationRootActivity)getActivity();
 		activity.setCurrentFragment(this);
-		setUpMap();
-		disableMenu();
-
-		setupMapOrListView();
-
-		/**
-		 * Verify that the bundle used to populate the map fragment has data.
-		 */
-		resumeStateOfFragment(savedState);
-
-		final Bundle bundle = getArguments();
-		if (bundle.containsKey(OVERLAY_SHOWING) && bundle.getBoolean(OVERLAY_SHOWING)) {
-			overlay.showCoach();
+		if (savedState == null){
+			//if the saved state is null, this is the first time the 
+			//map fragment is being loaded.  Delay showing the map to avoid
+			//interference with the transitions.
+			loadAndDisplayMapDelayed();
+		} else {
+			//savedState in not null so the map should already 
+			//be initialized, we just need to resume the state
+			loadMapAndDisplay();
 		}
-
-		determineNavigationStatus();
-
-		if(shouldGoBack){
-			streetView.showWebView();
-		}
-
-		if( fragment.getView() != null && fragment.getMap() != null ) {
-			setMapTransparent((ViewGroup)fragment.getView());
-
-		}
-
-		if(isHelpModalShowing()){
-			HelpMenuListFactory.instance().showAtmHelpModal(this);
-			setHelpModalShowing(true);
-		} else if (isLeavingModalShowing) {
-			showTerms();
-		}
-
-		restoreCameraView();
-		adjustMapZoomIfNeeded();
-
-		fadeInMap();
+		
 	}
 
 	/**
@@ -508,7 +558,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 * @param text - search text
 	 */
 	@Override
-	public void performSearch(final String text) {		
+	public void performSearch(final String text) {
+		setShowCustomDialog(true);
 		isLoading = false;
 		((NavigationRootActivity)getActivity()).startProgressDialog(true);
 		final AtmServiceHelper helper = new AtmServiceHelper(text);
@@ -626,6 +677,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			currentIndex = savedInstanceState.getInt(BankExtraKeys.DATA_SELECTED_INDEX, 0);
 			listFragment.handleReceivedData(savedInstanceState);
 			setHelpModalShowing(savedInstanceState.getBoolean(ATM_HELP_MODAL, false));
+			setNoResultsModalShowing(savedInstanceState.getBoolean(NO_RESULTS_MODAL, false));
 			isLeavingModalShowing = savedInstanceState.getBoolean(LEAVING_APP_MODAL, false);
 			if(0.0 == lat && 0.0 == lon){
 				mapWrapper.focusCameraOnLocation(MAP_CENTER_LAT, MAP_CENTER_LONG);
@@ -736,9 +788,15 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 
 		isLoading = true;
 		results = (AtmResults)bundle.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+		//if we are on the map then we need to reset the current index 
+		if (isOnMap) {
+			currentIndex = 0;
+		}
 		int endIndex = currentIndex + INDEX_INCREMENT;
 		if(isListEmpty()){
-			showCustomAlertDialog(AtmModalFactory.getNoResultsModal(getActivity()));
+			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());			
+			showCustomAlertDialog(noResultsModal);
+			
 			endIndex = 0;
 		}else if(endIndex > results.results.atms.size()){
 			endIndex = results.results.atms.size();
@@ -847,7 +905,6 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		locationManagerWrapper.stopGettingLocaiton();
 
 		searchBar.saveState(outState);
-		hideModalIfNeeded();
 
 		if(null != mapWrapper.getMap()){
 			outState.putFloat(MAP_ZOOM, mapWrapper.getCurrentMapZoom());
@@ -866,6 +923,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			outState.putSerializable(BankExtraKeys.DATA_LIST_ITEM, results);
 		}
 		outState.putBoolean(ATM_HELP_MODAL, isHelpModalShowing());
+		outState.putBoolean(NO_RESULTS_MODAL, isNoResultsModalShowing());
 		outState.putBoolean(LEAVING_APP_MODAL, isLeavingModalShowing);
 		outState.putInt(BankExtraKeys.DATA_SELECTED_INDEX, currentIndex);
 		outState.putBoolean(BUTTON_KEY, isOnMap);
@@ -873,6 +931,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		if(shouldGoBack){
 			streetView.bundleData(outState);
 		}
+		
+		hideModalIfNeeded();
 	}
 
 	/**
@@ -885,6 +945,8 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 			settingsModal.dismiss();
 		} else if(null != locationFailureModal && locationFailureModal.isShowing()){
 			locationFailureModal.dismiss();
+		} else if(null != noResultsModal && noResultsModal.isShowing()){
+			noResultsModal.dismiss();
 		} else if(isHelpModalShowing()){
 			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.clearActiveModal();
@@ -895,6 +957,10 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	@Override
 	public void onPause(){
 		super.onPause();
+		
+		if(null != noResultsModal) {
+			setNoResultsModalShowing(noResultsModal.isShowing());
+		}
 
 		location = mapWrapper.getCurrentLocation();
 		enableMenu();
@@ -1019,6 +1085,11 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 */
 	@Override
 	public void showStreetView(final Bundle bundle){
+		streetViewWasOnMap = isOnMap;
+		if (isOnMap) {
+			showList();	
+		}
+		
 		shouldGoBack = true;
 		streetView.show();
 		streetView.loadStreetView(bundle);
@@ -1068,7 +1139,16 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		if(helpModalShowing){
 			DiscoverModalManager.getActiveModal().dismiss();
 			setHelpModalShowing(false);
-		}if(shouldGoBack){
+		}
+		
+		if(shouldGoBack){
+			
+			//There is an issue where the map gets garbage collected so in order to prevent this we swap to the list
+			//view when going to street view than upon return we swap back.   
+			if (streetViewWasOnMap) {
+				showMap();
+			}
+			
 			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
@@ -1164,12 +1244,26 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	public boolean isHelpModalShowing() {
 		return helpModalShowing;
 	}
+	
+	/**
+	 * @return the noResultsModalShowing
+	 */
+	public boolean isNoResultsModalShowing() {
+		return noResultsModalShowing;
+	}
 
 	/**
 	 * @param helpModalShowing the helpModalShowing to set
 	 */
 	public void setHelpModalShowing(final boolean helpModalShowing) {
 		this.helpModalShowing = helpModalShowing;
+	}
+	
+	/**
+	 * @param noResultsModalShowing the noResultsModalShowing boolean to set
+	 */
+	public void setNoResultsModalShowing(final boolean noResultsModalShowing) {
+		this.noResultsModalShowing = noResultsModalShowing;
 	}
 
 	private void zoomToLocation(final Location location) {
@@ -1231,7 +1325,7 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 	 */
 	private void showMapView(final boolean value) {
 		final FrameLayout mapLayout = (FrameLayout) getView().findViewById(R.id.discover_map);
-
+		mapLayout.requestTransparentRegion(mapLayout);
 		if (value) {
 			mapLayout.setVisibility(View.VISIBLE);
 		} else {
@@ -1307,5 +1401,25 @@ DynamicDataFragment, OnTouchListener, OnGlobalLayoutListener, CustomProgressDial
 		showCustomDialog = show;
 	}
 	
-	
+	/*
+	 * This allows for the map to be hidden before the 
+	 * user navigates aways from the atm locator.
+	 */
+	public void preProcess(final Runnable r){
+		//set the global layout listener
+		final ViewTreeObserver vto = getView().getViewTreeObserver();
+		final ViewTreeObserver.OnGlobalLayoutListener listener = new ViewTreeObserver.OnGlobalLayoutListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onGlobalLayout() {
+				r.run();
+				//must use the deprecated version as new verion
+				//is only available in api 16+
+				vto.removeGlobalOnLayoutListener(this);
+			}
+		};
+		vto.addOnGlobalLayoutListener(listener);
+		//hide the map
+		showMapView(false);
+	}
 }

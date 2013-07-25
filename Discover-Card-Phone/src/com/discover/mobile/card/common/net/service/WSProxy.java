@@ -28,13 +28,12 @@ import android.content.Context;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.conn.ConnectionManager;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 
 /**
  * This class will prepare the connection object from WSRequest which will be
@@ -106,22 +105,18 @@ public final class WSProxy {
 
         if (deviceIdentifiers == null) {
             setupDeviceIdentifiers(context);
-        }
-        else
-        {
-        	final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+        } else {
+            final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                     .getInstance(context);
             cardShareDataStoreObj.addToAppCache(
-                    context.getString(R.string.SID),
-                    deviceIdentifiers.sid);
+                    context.getString(R.string.SID), deviceIdentifiers.sid);
             cardShareDataStoreObj.addToAppCache(
-                    context.getString(R.string.OID),
-                    deviceIdentifiers.oid);
+                    context.getString(R.string.OID), deviceIdentifiers.oid);
             cardShareDataStoreObj.addToAppCache(
-                    context.getString(R.string.DID),
-                    deviceIdentifiers.did);
-            
-            Utils.log("SID:" + deviceIdentifiers.sid + " DID:" + deviceIdentifiers.did + " OID:" + deviceIdentifiers.oid);
+                    context.getString(R.string.DID), deviceIdentifiers.did);
+
+            Utils.log("SID:" + deviceIdentifiers.sid + " DID:"
+                    + deviceIdentifiers.did + " OID:" + deviceIdentifiers.oid);
         }
         connection = createConnection(requestDetail);
 
@@ -137,7 +132,9 @@ public final class WSProxy {
             }
         } catch (final IOException e) {
             e.printStackTrace();
-            if (e.getMessage().indexOf("Received authentication challenge is null") >=0 ) throw e;
+            if (e.getMessage().indexOf(
+                    "Received authentication challenge is null") >= 0)
+                throw e;
         }
 
         return response;
@@ -170,6 +167,7 @@ public final class WSProxy {
 
             // connection timeout to 10 secs
             connection.setConnectTimeout(requestDetail.getConnectionTimeOut());
+            connection.setReadTimeout(requestDetail.getConnectionReadTimeOut());
             // Setting method type
             if (requestDetail.getMethodtype() != null
                     && requestDetail.getMethodtype().length() > 0) {
@@ -185,8 +183,6 @@ public final class WSProxy {
             if (headers != null) {
                 final Set<String> keys = headers.keySet();
                 for (final String key : keys) {
-                    System.out.println("Headers========> " + key + " "
-                            + headers.get(key));
                     connection.setRequestProperty(key, headers.get(key));
                 }
             }
@@ -313,20 +309,18 @@ public final class WSProxy {
                 if (null == did)
                     did = "null";
 
-                oid = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID); //Will be same as phonegap
-                
+                oid = Secure.getString(context.getContentResolver(),
+                        Secure.ANDROID_ID); // Will be same as phonegap
+
                 final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                         .getInstance(context);
                 cardShareDataStoreObj.addToAppCache(
-                        context.getString(R.string.SID),
-                        sid);
+                        context.getString(R.string.SID), sid);
                 cardShareDataStoreObj.addToAppCache(
-                        context.getString(R.string.OID),
-                        oid);
+                        context.getString(R.string.OID), oid);
                 cardShareDataStoreObj.addToAppCache(
-                        context.getString(R.string.DID),
-                        did);
-                
+                        context.getString(R.string.DID), did);
+
                 Utils.log("SID:" + sid + " DID:" + did + " OID:" + oid);
             }
         };

@@ -77,6 +77,7 @@ import com.discover.mobile.bank.services.auth.BankSSOLoginDetails;
 import com.discover.mobile.bank.services.auth.strong.BankStrongAuthDetails;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.deposit.GetDepositEnrollStatus;
+import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payee.PayeeDetail;
 import com.discover.mobile.bank.services.payee.SearchPayeeResultList;
@@ -109,7 +110,6 @@ import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.auth.KeepAlive;
-import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.framework.CacheManager;
@@ -352,8 +352,6 @@ public final class BankConductor  extends Conductor {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 		if(currentActivity instanceof BankNavigationRootActivity) {
 			final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-
-			activity.getCurrentContentFragment();
 
 			/**Check if user is already viewing FAQ*/
 			if( !BankNavigationHelper.isViewingMenuSection(BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP,
@@ -1152,9 +1150,9 @@ public final class BankConductor  extends Conductor {
 				navActivity.getSupportFragmentManager().popBackStack();
 				nextVisibleFragment = new BankTransferStepOneFragment();
 				nextVisibleFragment.setArguments(args);
-				navActivity.makeFragmentVisible(nextVisibleFragment);
+				navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);
 			} else {
-				navActivity.makeFragmentVisible(nextVisibleFragment);
+				navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);
 			}
 		}
 
@@ -1932,5 +1930,26 @@ public final class BankConductor  extends Conductor {
 		}
 	}
 
+	/**
+	 * This method will trigger a service call to download payees if they are not cached. If payees are already cached
+	 * the application navigates to the edit payment screen.
+	 * 
+	 * @param Bundle bundle containing payment information and that we are in edit mode.
+	 */
+	public static void navigateToEditPayment(final Bundle bundle) {
+		bundle.putBoolean(BankExtraKeys.EDIT_MODE, true);
+
+		/**
+		 * Check if payees are cached otherwise download payees to fetch the earliest payment date for the payment being
+		 * edited.
+		 */
+		if (BankUser.instance().hasPayees()) {
+			BankConductor.navigateToPayBillStepTwo(bundle);
+		} else {
+			final GetPayeeServiceCall payeeService = BankServiceCallFactory.createGetPayeeServiceRequest();
+			payeeService.getExtras().putAll(bundle);
+			payeeService.submit();
+		}
+	}
 }
 

@@ -51,7 +51,7 @@
                 <ImageView
                     android:id="@+id/discoverLogo"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="@dimen/table_inner_padding"
                     android:contentDescription="@string/discover_copyright_text"
@@ -71,6 +71,17 @@
                     android:background="@drawable/quick_view_button"
                     android:text="@string/gotoFastcheckBtnText" />
 
+                <ImageView 
+                    android:id="@+id/error_exclamation"
+                    android:src="@drawable/exclamation_red_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_alignTop="@+id/error_text_view"
+                    android:visibility="gone"
+                    />
+
                 <TextView
                     android:id="@+id/error_text_view"
                     style="@style/error_label"
@@ -78,9 +89,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/discoverLogo"
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
+                    android:layout_toRightOf="@+id/error_exclamation"
                     android:gravity="center_horizontal"
-                    android:paddingLeft="@dimen/element_side_padding"
                     android:paddingRight="@dimen/element_side_padding"
+                    android:paddingLeft="@dimen/element_side_padding"
                     android:visibility="gone" />
 
                 <RelativeLayout
@@ -99,7 +111,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/table_inner_padding"
-                        android:text="@string/user_id"
+                        android:text="@string/empty"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold"
                         android:typeface="sans" />
@@ -109,7 +121,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_id_label"
-                        android:hint="@string/empty"
+                        android:hint="@string/user_id"
+                        android:textColorHint="@color/transparentGray"
                         android:imeOptions="actionNext|flagNoExtractUi"
                         android:inputType="textNoSuggestions"
                         android:maxLength="16"
@@ -123,7 +136,7 @@
                         android:layout_below="@+id/username_field"
                         android:layout_marginRight="14dp"
                         android:layout_marginTop="@dimen/groups_of_elements_padding"
-                        android:text="@string/password"
+                        android:text="@string/empty"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textStyle="bold" />
 
@@ -133,7 +146,8 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/password_label"
                         android:layout_marginBottom="20dp"
-                        android:hint="@string/empty"
+                        android:hint="@string/password"
+                        android:textColorHint="@color/transparentGray"
                         android:inputType="textPassword"
                         android:maxLength="32"
                         android:textCursorDrawable="@null"
@@ -151,12 +165,14 @@
 						    android:layout_width="wrap_content"
 						    android:layout_height="wrap_content"
 						    android:layout_marginRight="@dimen/between_related_elements_padding"
+						    android:layout_marginLeft="@dimen/between_related_elements_padding"
 						    android:text="@string/remember_user_id"
 						    android:textSize="16sp"
 						    android:textColor="@color/field_copy"
 						    android:layout_toLeftOf="@+id/remember_user_id_toggle"
 						    android:paddingRight="@dimen/between_related_elements_padding"
-						    android:layout_centerVertical="true"/>
+						    android:layout_centerVertical="true"
+						    android:layout_alignParentLeft="true"/>
 						
 	                    <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
 	                        android:id="@+id/remember_user_id_toggle"
@@ -176,7 +192,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="20dp"
                         android:layout_marginTop="@dimen/orange_button_margin_top"
-                        android:text="@string/login_button_text" />
+                        android:text="@string/login_button_text"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp" />
 
                     <!-- Link section - BANK -->
 
@@ -248,19 +266,22 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="20dp"
-                        android:text="Welcome message" />
+                        android:textColor="@color/black"
+                        />
 
                     <LinearLayout
                         android:id="@+id/passcodeFields"
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/welcome"
+                        android:layout_centerHorizontal="true"
                         android:gravity="center" >
 
                         <EditText
                             android:id="@+id/passcode01"
                             style="@style/PasscodeDigit"
                             android:inputType="phone" >
+				            <requestFocus />
                         </EditText>
 
                         <EditText
@@ -277,27 +298,27 @@
                             android:id="@+id/passcode04"
                             style="@style/PasscodeDigit"
                             android:inputType="phone" />
-
-                        <ImageView
-                            android:id="@+id/validation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="3dp"
-                            android:src="@drawable/tick_green"
-                            android:visibility="invisible" />
+                        
                     </LinearLayout>
-
-                    <EditText
-                        android:id="@+id/holdFocus"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:inputType="phone" />
+                    
+                    <ImageView
+                        android:id="@+id/validation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="3dp"
+                        android:src="@drawable/x_red"
+                        android:layout_toRightOf="@+id/passcodeFields"
+                        android:layout_alignBottom="@+id/passcodeFields"
+                        android:layout_alignTop="@+id/passcodeFields"
+                        android:visibility="invisible" />
 
                     <LinearLayout
                         android:id="@+id/passcode_links"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:layout_below="@+id/passcodeFields"
                         android:orientation="horizontal" >
 
@@ -309,7 +330,7 @@
                             android:layout_weight="1.0"
                             android:clickable="true"
                             android:gravity="center"
-                            android:text="Forgot Passcode"
+                            android:text="@string/passcode_forgot"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/blue"
                             android:textSize="@dimen/small_copy_mid" />
@@ -322,7 +343,7 @@
                             android:layout_weight="1.0"
                             android:clickable="true"
                             android:gravity="center"
-                            android:text="User ID Login"
+                            android:text="@string/passcode_uid_login"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/blue"
                             android:textSize="@dimen/small_copy_mid" />
@@ -349,6 +370,7 @@
                 <!-- Toggle Account Section -->
 
                 <RelativeLayout
+                    android:id="@+id/account_toggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"

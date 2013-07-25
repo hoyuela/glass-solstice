@@ -148,6 +148,6 @@
     <string name="register_btn">Register</string>
     
     <!-- toggle switch strings -->
-    <string name="textOff">Off</string>
-    <string name="textOn">On</string>
+    <string name="textOff">OFF</string>
+    <string name="textOn">ON</string>
 </resources>

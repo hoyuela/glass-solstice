@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>Discover - Payments History</title>
+        </head>
+        <body>
+<!-- page start  -->
+<div data-role="page" id="removeAccountConfirmPending-pg" class="payments"> 
+               <!--header start  -->
+    <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+    <header id="header" class="cmn_header"> </header>
+  </div>
+          <!-- header end -->
+          
+          <!-- content start  -->
+          <div data-role="content" class="ui-content-internalpages ui-content" role="main">
+   	<div class="wraper"> 
+    <div class="accInstruction" id="removeMsg"> <span class="light">If you remove your bank account, it <span class="heighlight">will not be available to complete the following payments:</span></span> </div>
+              
+       
+              <!-- list showing pending payments -->
+             <ul class="transactionTable" data-role="listview" data-filter="false" data-filter-placeholder="Search these results">
+              </ul>
+              
+              <!-- options div ( remove or not remove Account)  statrted-->
+              <div class="option">
+        <div class="txtcenteraln r3matchbtn"> <a href="#" onClick= "navigation('removeComplete');dfs.crd.sct.removeBtnOnRemoveAccountConfirmPendingPage();" data-role="button" data-theme="c" id="removeAccount">Remove Account</a> 
+               
+                </div>
+        <div class="lastText"> <a href="#" onClick= "navigation('../payments/manageBankAccounts');dfs.crd.sct.cancelOnRemoveAccountConfirmPendingPage();" class="bluelink boldtext removeAcc">Do Not Remove Account</a> </div>
+      </div>
+              <!-- option div end --> 
+              
+            </div>
+    <!-- wraper ends --> 
+	
+  </div>
+          <div class="dropDownLayer"></div>
+		  <div id="footnotes" class="footnotes"></div>
+          <!-- content end  --> 
+</div>
+<!-- page end  -->
+
+</body>
+</html>
+</body>
+</html>

@@ -29,7 +29,7 @@ body.ui-mobile-viewport,div.ui-mobile-viewport {
 }
 #changenumber .ui-block-b {float:right;/*margin-right:10%;*/width: 40%;margin-top: -0.5%;}
 #changenumber .ui-block-b input {border: 1px solid #bbb;border-radius:4px !important}
-.pn-page h1 a{float:right;background: url("../images/icon_faqs.png") center center no-repeat;}
+/*.pn-page h1 a{float:right;background: url("../images/icon_faqs.png") center center no-repeat;} backlog changes */
 /*.pn-page #VALUE{width:85%}*/
 .pn-page .push-alerts .ui-select .ui-btn-down-d { border:1px solid #bbb !important}
 .pn-page .push-alerts .ui-select {width: 90px; height:40px; background:none; top:2px;}

@@ -177,9 +177,23 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			dollarAmount.setText(savedAmount);
 			dollarAmount.enableBankAmountTextWatcher(true);
 			disableCancelled();
-			enableCell(index, bundle);
-			
+			new Handler().postDelayed(enableCellRunnable(bundle), 1000);
 		}
+	}
+	
+	/**
+	 * 
+	 * @return a runnable that enables the proper radio button cell when resuming state. This runnable gets postDelayed because
+	 * the soft input keyboard cannot be opened while state is still being restored.
+	 */
+	private Runnable enableCellRunnable(final Bundle bundle) {
+		return new Runnable() {
+			
+			@Override
+			public void run() {
+				enableCell(index, bundle);
+			}
+		};
 	}
 
 	/**
@@ -264,14 +278,12 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				disableDate();
 				enableTransaction();
 				disableAmount();
-				showKeyboard();
 				break;
 			case AMOUNT:
 				disableCancelled();
 				disableDate();
 				disableTransaction();
 				enableAmount();
-				showKeyboard();
 				break;
 			default:
 				break;
@@ -393,7 +405,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		index = TRANSACTION;
 		transaction.setChecked(true);
 		((TextView)view.findViewById(R.id.transactions_label)).setTextColor(res.getColor(R.color.body_copy));
-		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		transactionAmount.setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		transactionAmount.setEnabled(true);
 		transactionAmount.requestFocus();
 	}
@@ -405,9 +417,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		index = AMOUNT;
 		dollar.setChecked(true);
 		((TextView)view.findViewById(R.id.dollar)).setTextColor(res.getColor(R.color.body_copy));
+		dollarAmount.setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		dollarAmount.setEnabled(true);
 		dollarAmount.requestFocus();
-		showKeyboard();
 	}
 
 	/**
@@ -560,5 +572,4 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		}
 		return isHandled;
 	}
-
 }

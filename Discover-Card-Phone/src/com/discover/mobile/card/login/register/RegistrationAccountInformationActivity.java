@@ -15,7 +15,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -23,7 +23,6 @@ import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
-import com.discover.mobile.card.services.auth.registration.AccountInformationCall;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 
 /**
@@ -48,6 +47,7 @@ public class RegistrationAccountInformationActivity extends
         Utils.hideSpinner();
         /*13.4 Changes Start */
         welcomeHeading.setText(R.string.registration_title);
+        welcomeHeading.setVisibility(View.GONE);
     }
 
     public RegistrationAccountInformationActivity() {
@@ -64,13 +64,14 @@ public class RegistrationAccountInformationActivity extends
         details.acctNbr = CommonUtils.getSpacelessString(value);
     }
 
-    @Override
+    /*  13.4 Code CleanUp*/
+ /*   @Override
     protected NetworkServiceCall<?> createServiceCall(
             final AsyncCallback<Object> callback,
             final AccountInformationDetails details) {
 
         return new AccountInformationCall(this, callback, details);
-    }
+    }*/
 
     @Override
     public void goBack() {

@@ -13,7 +13,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical" >
-	
+        		
 	        <TextView
 	            android:id="@+id/title"
 	            style="@style/title_copy"
@@ -21,7 +21,7 @@
 	            android:layout_height="wrap_content"
 	            android:padding="@dimen/forms_inner_padding"
 	            android:text="@string/edit" />
-	
+			
 	        <LinearLayout
 	            android:id="@+id/content_table"
 	            android:layout_width="fill_parent"
@@ -31,7 +31,7 @@
 	        </LinearLayout>
 	    </LinearLayout>
 	    
-	     <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
+	    <com.discover.mobile.bank.ui.widgets.BankLayoutFooter
 	        android:id="@+id/bank_footer"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"

@@ -1617,6 +1617,9 @@ input.ui-input-text,textarea.ui-input-text {
 	 width: 96%;
 	 -webkit-box-shadow:none !important;
 }
+.wrapperSpan input.ui-input-text {
+	width:91%;
+}
 .paymentinputtext {height:18px !important; font-weight:bold;}
 #card-login input.ui-input-text {
 line-height: 15px;
@@ -1733,6 +1736,12 @@ height:19px;
 input[type="text"].errormsg,input[type="number"].errormsg{
 	color: #000 !important;
 	border: 1px solid red !important;
+}
+
+span.errormsg {
+	border-left:1px solid red !important;
+	border-right:1px solid red !important;
+	border-bottom:1px solid red !important;
 }
 
 input[type="password"].errormsg {

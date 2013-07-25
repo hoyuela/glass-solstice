@@ -89,7 +89,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:paddingRight="16dp"
-            android:src="@drawable/blue_arrow_right" />
+            android:src="@drawable/card_forwardarrow_btn" />
 
         <View
             android:id="@id/general_list_item_separator_line"

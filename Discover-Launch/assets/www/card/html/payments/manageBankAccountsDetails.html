@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Manage Bank Information</title>
+</head>
+<body>
+	<!--page start  -->
+	<div data-role="page" id="manageBankAccDetails-pg" class="payments">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+			<header id="header" class="cmn_header"> </header>
+		</div>
+        <!-- header end -->
+		<!-- content start -->
+		<div data-role="content" class="ui-content-internalpages">
+        	<div class="wraper">
+            	<ul class="accountList accountDetails">
+                	<li>
+                    	<div class="ui-grid-a">
+                            <div class="ui-block-a">
+                            	<span class="accEnding detailName" >Routing #</span>
+                            	<span class="accName detailValue" id="editRouting">*****1111</span>
+                            </div>
+                            <div class="ui-block-b"></div>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="ui-grid-a">
+                            <div class="ui-block-a">
+                            	<span class="accEnding detailName" >Account #</span>
+                            	<span class="accName detailValue" id="editAccount">*******2121</span>
+                            </div>
+                            <div class="ui-block-b"></div>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="ui-grid-a">
+                            <div class="ui-block-a">
+                            	<span class="accEnding detailName">Account Type</span>
+                            	<span class="accName detailValue" id="editAccType">Checking</span>
+                            </div>
+                            <div class="ui-block-b"></div>
+                        </div>
+                    </li>
+                    <li>
+                    	<div class="ui-grid-a">
+                            <div class="ui-block-a">
+                            	<span class="accEnding detailName">Account Nickname</span>
+                            	<span class="accName detailValue" id="editAccNickname">Joint Checking</span>
+                            </div>
+                            <div class="ui-block-b"></div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="pendingPaymentMsg">
+                	<div class="errorText"><span class="alertImage"></span><div><p> When you edit the bank information, it will update the bank information for associated pending payments as well.</p></div></div>
+                </div>
+				<div class="txtcenteraln r3matchbtn">
+					<a href="#" data-role="button" data-theme="c" id="editAccount">Edit Account Details</a>
+                    <a href="#" onClick="dfs.crd.pymt.removeSelectedBankAccount();dfs.crd.sct.removeBankAccount();" class="removeAcc bluelink boldtext ">Remove Account</a>
+				</div>
+			</div>
+			
+		</div>
+        <div class="dropDownLayer"></div>
+		<div id="footnotes" class="footnotes"></div>
+		<!-- content end -->
+		<!-- content end -->
+	</div>
+	<!--page end -->
+</body>
+</html>

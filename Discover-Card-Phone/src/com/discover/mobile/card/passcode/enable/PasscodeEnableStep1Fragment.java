@@ -1,7 +1,6 @@
 package com.discover.mobile.card.passcode.enable;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,9 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthDefaultResponseHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -52,9 +52,12 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 		linkNoThanks.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				makeFragmentVisible(new HomeSummaryFragment());
-				getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+				//TODO this seems to show make a payment page rather than home page.
+				//if I call just the popBackStack logic the first time I click no thanks it goes back properly but side menu is wrong, second time paymetn summary shows
+//				getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			}
 		});
+		Utils.setFooter(view, getActivity());
 		return view;
 	}
 
@@ -73,7 +76,8 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 		return CardMenuItemLocationIndex.PASSCODE_SECTION;
 	}
 	
-	private final class EnablePasscodeStrongAuthFlow implements StrongAuthListener {
+	private final class EnablePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler{
+
 		@Override
 		public void onStrongAuthSucess(Object data) {
 			Log.v(TAG, "Success");
@@ -83,31 +87,12 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 		@Override
 		public void onStrongAuthError(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "Error");
-//			final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-//					PasscodeUpdateStep1Fragment.this);
-//            cardErrorResHandler.handleCardError((CardErrorBean) data);
-			
-		}
-
-		@Override
-		public void onStrongAuthCardLock(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Lock");
-			
-		}
-
-		@Override
-		public void onStrongAuthSkipped(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Skipped");
 			
 		}
 
 		@Override
 		public void onStrongAuthNotEnrolled(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "NotEnrolled");
 			
 		}
 		

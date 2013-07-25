@@ -14,10 +14,12 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
+import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
@@ -76,8 +78,24 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		final ListItemGenerator generator = new ListItemGenerator(fragmentView.getContext());
 		final LinearLayout contentTable = (LinearLayout)fragmentView.findViewById(R.id.content_table);
 		List<ViewPagerListItem> items = null;
+		final ReceivedUrl recievedUrl = item.links.get(SELF);
 		contentTable.removeAllViews();
 		if(ActivityDetail.TYPE_PAYMENT.equalsIgnoreCase(item.type)) {
+			if (recievedUrl.method.contains(XHttpMethodOverrideValues.PUT.toString())) {
+				final Button editPaymentButton = (Button)fragmentView.findViewById(R.id.edit_button);
+				editPaymentButton.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						Bundle bundle = getArguments();
+						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item.toPaymentDetail());
+						
+						BankConductor.navigateToEditPayment(bundle);
+					}
+				});
+				editPaymentButton.setVisibility(View.VISIBLE);
+			}
+			
 			items = generator.getScheduledBillPayList(item);
 			showDeleteButonForDetailIfNeeded(item, fragmentView);
 		}
@@ -85,11 +103,14 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			items = generator.getScheduledDepositList(item);
 		}
 		else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(item.type)) {
+			/** Verify if delete is allowed, currently this flag is used to disable/enable delete option */
+			final boolean isDeleteAllowed = getArguments().getBoolean(BankExtraKeys.DELETE_ALLOWED);
 			final TransferType type = (TransferType)getArguments().getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
 			items = generator.getTransferDetailList(item, type);
 
-			final ReceivedUrl recievedUrl = item.links.get(SELF);
-			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString())) {
+
+			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString()) && isDeleteAllowed) {
+
 				//If the Activity is of frequency One Time we want to use the "link" button type whereas if it a 
 				//recurring transfer we want to allow the user
 				//access to the "See Options" button so they can either delete the entire series or a single transfer.

@@ -15,6 +15,7 @@ import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
@@ -52,6 +53,24 @@ public class StrongAuthUtil {
         this.context = context;
     }
 
+   /* *//**
+     * This method get deviceId, simId and subscriberId from telephone manager
+     * and return strong Authentication data.
+     * 
+     * @return StrongAuthBean
+     * @throws NoSuchAlgorithmException
+     *//*
+    public StrongAuthBean getStrongAuthData() throws NoSuchAlgorithmException {
+        final TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        final StrongAuthBean authBean = new StrongAuthBean();
+        authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
+        authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
+        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
+        return authBean;
+    }*/
+    
+    
     /**
      * This method get deviceId, simId and subscriberId from telephone manager
      * and return strong Authentication data.
@@ -63,11 +82,23 @@ public class StrongAuthUtil {
         final TelephonyManager telephonyManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
         final StrongAuthBean authBean = new StrongAuthBean();
-        authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
+    /*    authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
         authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
-        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
+        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));*/
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+        Utils.log("StrongAuthBean", "DID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.DID)).toString());
+        Utils.log("StrongAuthBean", "SID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.SID)).toString());
+        Utils.log("StrongAuthBean", "OID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.OID)).toString());
+        authBean.setDeviceId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.DID)).toString()));
+        authBean.setSimId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.SID)).toString()));
+        authBean.setSubscriberId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.OID)).toString()));
+        
+     
         return authBean;
     }
+
+    
 
     /**
      * This method will get string data and create message digest

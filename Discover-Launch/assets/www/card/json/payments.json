@@ -1,4 +1,4 @@
 {
-    "pendingPayments" : "<li class ='borderbottom '><div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>!~paymentAmount~!</div></div></li>",
-	"paymentsHistory" : "<li class ='borderbottom'><div><div class='accountsearchresult'><div class='toprow1'>!~bank~!</div></div><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div class='col3'>$!~paymentAmount~!</div></div></li>"
+    "pendingPayments" : "<li class='listLi' onclick='dfs.crd.pymt.verifyPendingPayment(!~PendingPaymentObj~!);'><div class='ui-grid-b'><div class='ui-block-a'> <span>!~paymentDate~!</span> </div><div class='ui-block-b '> <span>!~paymentMethod~!</span> </div><div class='ui-block-c '> <span class='greenValues'>!~paymentAmount~!</span> </div><div class='ui-block-d '> <span>!~bank~!</span><span class='payArr'></span></div></div></li>",
+	"paymentsHistory" : "<li class='rh_header ui-li ui-li-static ui-body-c'><div class='col1'>!~paymentDate~!</div><div class='col2'>!~paymentMethod~!</div><div style='text-align: center;' class='col3'>$!~paymentAmount~!</div></li>"
 }

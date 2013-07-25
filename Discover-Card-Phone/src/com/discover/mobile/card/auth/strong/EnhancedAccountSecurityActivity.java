@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,17 +22,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.auth.EnhanceSecurityConstant;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.help.HelpItemGenerator;
-import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.error.RegistrationErrorCodes;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -39,14 +30,21 @@ import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
-
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.EnhanceSecurityConstant;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.help.HelpItemGenerator;
+import com.discover.mobile.common.help.HelpWidget;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.google.common.base.Strings;
 
 /**
  * Class Description of EnhancedAccountSecurity
@@ -75,14 +73,15 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 
 // @ContentView(R.layout.strongauth_page)
 public class EnhancedAccountSecurityActivity extends
-        CardNotLoggedInCommonActivity implements EnhanceSecurityConstant {
+        CardNotLoggedInCommonActivity implements EnhanceSecurityConstant,
+        OnClickListener {
 
     /**
      * Field Description of HELP_DROPDOWN_LINE_HEIGHT The Strong Auth screen has
      * an expandable menu that provides help to the user, this value is used to
      * define the number of vertical lines that the menu will occupy when it is
      * expanded. (When collapsed it is set to 0)
-     */    
+     */
 
     private static final String TAG = EnhancedAccountSecurityActivity.class
             .getSimpleName();
@@ -98,10 +97,10 @@ public class EnhancedAccountSecurityActivity extends
      * method of this activity or via updateQuestion().
      */
 
-    
-    private RadioGroup securityRadioGroup;    
+    private RadioGroup securityRadioGroup;
     private TextView questionLabel;
-    
+    private TextView privacyTerms, provideFeedback;
+
     /**
      * Holds reference to the button that triggers the NetworkServiceCall<> to
      * POST the answer in the TextView with id
@@ -111,7 +110,6 @@ public class EnhancedAccountSecurityActivity extends
 
     private String inputErrorText;
     private int inputErrorVisibility;
-    
 
     // INPUT FIELDS
     private NonEmptyEditText questionAnswerField;
@@ -129,11 +127,15 @@ public class EnhancedAccountSecurityActivity extends
 
     private int activityResult = RESULT_CANCELED;
 
-    private static final String SERVER_ERROR_VISIBILITY = "a";
-    private static final String SERVER_ERROR_TEXT = "c";
-    private static final String ANSWER_ERROR_VISIBILITY = "b";
-    private static final String ANSWER_ERROR_TEXT = "d";
+    public static final String SERVER_ERROR_VISIBILITY = "a";
+    public static final String SERVER_ERROR_TEXT = "c";
+    public static final String ANSWER_ERROR_VISIBILITY = "b";
+    public static final String ANSWER_ERROR_TEXT = "d";
+    public static final String YES_RADIOBUTTON_SEL = "e";
+    public static final String ANSWER_TEXT = "f";
     
+    private static String answer ;
+    public static boolean yes_radiobutton =true;
     /**
      * Minimum string length allowed to be sent as an answer to a Strong Auth
      * Challenge Question
@@ -180,16 +182,21 @@ public class EnhancedAccountSecurityActivity extends
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        yes_radiobutton =true;
         setContentView(R.layout.strongauth_page);
         loadAllViews();
         setupRadioGroupListener();
-        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+       /* 13.4 site cat tagging*/
+        
+        //TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+        TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CHECKPOINT);
+        
+        /* 13.4 site cat tagging*/
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
         // Disabling continue button only applies to Bank
-       // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
+        // if (Globals.getCurrentAccount() == AccountType.BANK_ACCOUNT)
         {
             // Add text change listener to determine when the user has entered
             // text
@@ -199,7 +206,7 @@ public class EnhancedAccountSecurityActivity extends
             // Disable continue button by default
             continueButton.setEnabled(false);
         }
-        
+
         // Adding Tool Tip menu
         // setupClickableHelpItem();
         /**
@@ -226,6 +233,8 @@ public class EnhancedAccountSecurityActivity extends
                  * if ans is incorrect then ask user to enter it again if ans is
                  * wrong consecutive three times then get the another question
                  **/
+                Log.d("13.4", "error code" + bean.getErrorCode() + " message: "
+                        + bean.getErrorMessage());
                 if (!bean.isAppError()
                         && bean != null
                         && bean.getErrorCode()
@@ -240,6 +249,7 @@ public class EnhancedAccountSecurityActivity extends
                         // change question
                         if (bean.getQuestionText() != null) {
                             strongAuthQuestion = bean.getQuestionText();
+                            questionAnswerField.setText("");
                             questionLabel.setText(strongAuthQuestion);
                             strongAuthQuestionId = bean.getQuestionId();
                             // submitSecurityInfo(null);
@@ -248,8 +258,8 @@ public class EnhancedAccountSecurityActivity extends
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
                         // errorMessage.setVisibility(View.VISIBLE);
-                        questionAnswerField.setText("");
                         questionAnswerField.setErrors();
+                        questionAnswerField.setText("");
                         // questionAnswerField.updateAppearanceForInput();
                     }
                 }
@@ -273,7 +283,23 @@ public class EnhancedAccountSecurityActivity extends
                     // Tell calling activity that account has been locked.
                     // activityResult = STRONG_AUTH_LOCKED;
                     // finish();
-                } else {
+                    
+                    /* 13.4 Defect ID 104309 start */
+                } else if (!bean.isAppError()
+                        && bean != null
+                        && bean.getErrorCode()
+                                .contains(
+                                        ""
+                                                + RegistrationErrorCodes.SPACE_ENTERED)){
+                	
+                	 errorMessage
+                     .setText(R.string.error_space_strongauth_noanswer);
+                	 questionAnswerField.setErrors();
+                	  questionAnswerField.setText("");
+                      
+                }    
+                  /* 13.4 Defect ID 104309 start */
+                else {
                     // If there is any other error, send error code to calling
                     // activity
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -306,17 +332,19 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     private void restoreState(final Bundle savedInstanceState) {
-        if (savedInstanceState != null) {            
+        if (savedInstanceState != null) {
 
             inputErrorVisibility = savedInstanceState
                     .getInt(ANSWER_ERROR_VISIBILITY);
-            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);            
-
+            inputErrorText = savedInstanceState.getString(ANSWER_ERROR_TEXT);
+           //if(inputErrorText != null && !inputErrorText.equals(""))
+           {
             errorMessage.setText(inputErrorText);
             errorMessage.setVisibility(inputErrorVisibility);
             Utils.log(TAG, "inputErrorText " + inputErrorText
                     + " inputErrorVisibility " + inputErrorVisibility);
             restoreInputField();
+           }
 
             // restoreExpandableHelpMenu();
         }
@@ -357,6 +385,52 @@ public class EnhancedAccountSecurityActivity extends
         if (inputErrorText == null || inputErrorText.equalsIgnoreCase("")) {
             questionAnswerField.attachErrorLabel(errorMessage);
         }
+        privacyTerms = (TextView) findViewById(R.id.privacy_terms);
+        provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        handlingClickEvents();
+    }
+
+    private void handlingClickEvents() {
+        privacyTerms.setOnClickListener(this);
+        provideFeedback.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        if (v.getId() == R.id.privacy_terms) {
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(
+                    EnhancedAccountSecurityActivity.this,
+                    PrivacyTermsLanding.class);
+            
+            int errvis =errorMessage.getVisibility();
+            String errmsg =errorMessage.getText().toString();
+                     
+            privacyTerms.putExtra("is_enhance", true);
+            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION, strongAuthQuestion);
+            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID, strongAuthQuestionId);
+            privacyTerms.putExtra(FORGOT_BOTH_FLOW, forgotBoth);
+            privacyTerms.putExtra(FORGOT_PASSWORD_FLOW, forgotPassword);            
+            privacyTerms.putExtra(ANSWER_ERROR_VISIBILITY, errorMessage.getVisibility());
+            privacyTerms.putExtra(ANSWER_ERROR_TEXT, errorMessage.getText().toString());
+            
+            privacyTerms.putExtra(YES_RADIOBUTTON_SEL, yes_radiobutton);
+            privacyTerms.putExtra(ANSWER_TEXT, questionAnswerField.getText().toString());
+            
+            
+            //privacyTerms.putExtra("is_enhance", true);
+            //privacyTerms.putExtra("is_enhance", true);
+            
+            startActivity(privacyTerms);
+        } else if (v.getId() == R.id.provide_feedback_button) {
+            Utils.createProvideFeedbackDialog(this, "strongAuthEnroll-pg");
+        } else if (v.getId() == R.id.logout_button) {
+
+            // Changes for 13.4 start
+            Utils.logoutUser(this, false);
+
+        }
     }
 
     private void setupRadioGroupListener() {
@@ -374,9 +448,11 @@ public class EnhancedAccountSecurityActivity extends
                         final RadioButton checkedRadioButton = (RadioButton) group
                                 .findViewById(checkedId);
                         if (checkedRadioButton.equals(radioButtonOne)) {
+                            yes_radiobutton =true;
                             radioButtonOne.setTextColor(subCopyColor);
                             radioButtonTwo.setTextColor(fieldCopyColor);
                         } else {
+                            yes_radiobutton =false;
                             radioButtonOne.setTextColor(fieldCopyColor);
                             radioButtonTwo.setTextColor(subCopyColor);
                         }
@@ -396,7 +472,6 @@ public class EnhancedAccountSecurityActivity extends
         if (extras != null) {
             // Determine if the activity was created from a Card or a Bank
             // logical path
-            
 
             // Check if activity was created via a Card or Bank logical path
 
@@ -407,6 +482,50 @@ public class EnhancedAccountSecurityActivity extends
             // Defect id 95164
             forgotBoth = extras.getBoolean(FORGOT_BOTH_FLOW);
             forgotPassword = extras.getBoolean(FORGOT_PASSWORD_FLOW);
+            
+            if(extras.getBoolean("is_enhance"))
+            {
+                String errmsg = extras.getString(ANSWER_ERROR_TEXT);
+                int errvisib = extras
+                        .getInt(ANSWER_ERROR_VISIBILITY);
+            errorMessage.setText(errmsg);
+            errorMessage.setVisibility(errvisib);
+            
+            if (errorMessage.getVisibility() == View.VISIBLE)
+                questionAnswerField.updateAppearanceForInput();
+            
+            }
+            answer = extras.getString(ANSWER_TEXT); 
+            
+            yes_radiobutton = extras.getBoolean(YES_RADIOBUTTON_SEL,true);
+                    
+            if(answer  != null && !answer.equals(""))
+            {
+                questionAnswerField.setText(answer);
+            }
+            final int subCopyColor = getResources().getColor(
+                    R.color.sub_copy);
+            final int fieldCopyColor = getResources().getColor(
+                    R.color.field_copy);
+            if(!yes_radiobutton)
+            {
+                radioButtonOne.setChecked(false);
+                radioButtonTwo.setChecked(true);
+                radioButtonOne.setTextColor(fieldCopyColor);
+                radioButtonTwo.setTextColor(subCopyColor);
+            }
+            else
+            {  
+                radioButtonOne.setChecked(true);
+                radioButtonTwo.setChecked(false);
+                radioButtonOne.setTextColor(subCopyColor);
+                radioButtonTwo.setTextColor(fieldCopyColor);
+                
+                
+                
+                
+            }
+            //restoreState(extras);
             // Defect id 95164
             questionLabel.setText(strongAuthQuestion);
 
@@ -512,7 +631,7 @@ public class EnhancedAccountSecurityActivity extends
         // Store answer in a string
         final String answer = questionAnswerField.getText().toString();
 
-        if (!Strings.isNullOrEmpty(answer)) {
+        if (!Strings.isNullOrEmpty(answer) && !questionAnswerField.isSpaceEntered()) {
             // Find out which radio button is pressed.
             final int radioButtonId = securityRadioGroup
                     .getCheckedRadioButtonId();
@@ -524,11 +643,23 @@ public class EnhancedAccountSecurityActivity extends
             submitAns(selectedIndex, answer);
 
         } else {
-            CardErrorHandler.getInstance().showErrorsOnScreen(
-                    this,
-                    this.getResources().getString(
-                            R.string.error_strongauth_noanswer));
+        	 /* 13.4 Defect ID 104309 start */
+        	if(questionAnswerField.isSpaceEntered()){
+           	  errorMessage
+                .setText(R.string.error_space_strongauth_noanswer);
+           	  questionAnswerField.setErrors();
+           	  questionAnswerField.setText("");
+              
+              /* 13.4 Defect ID 104309 end */
+        	}else{
+        		   CardErrorHandler.getInstance().showErrorsOnScreen(
+                           this,
+                           this.getResources().getString(
+                                   R.string.error_strongauth_noanswer));
+        	}
+         
         }
+        
 
     }
 
@@ -605,6 +736,7 @@ public class EnhancedAccountSecurityActivity extends
      *            been detected
      */
     private void onTextChanged(final CharSequence newText) {
+
         if (newText != null && newText.length() >= MIN_ANSWER_LENGTH) {
             continueButton.setEnabled(true);
         } else {
@@ -661,16 +793,16 @@ public class EnhancedAccountSecurityActivity extends
             strongAuthAns.sendRequest(answer, strongAuthQuestionId,
                     selectedIndex);
         } catch (JsonGenerationException e) {
-        	e.printStackTrace();
-            //handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (NoSuchAlgorithmException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (IOException e) {
-        	e.printStackTrace();
-           // handleError(e);
+            e.printStackTrace();
+            // handleError(e);
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             handleError(e);
         }
     }

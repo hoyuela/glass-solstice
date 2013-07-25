@@ -1,11 +1,21 @@
 package com.discover.mobile.card.navigation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 
 import org.apache.cordova.api.CordovaInterface;
 import org.apache.cordova.api.CordovaPlugin;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +25,9 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -43,6 +55,8 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
+import com.discover.mobile.card.passcode.PasscodeLandingFragment;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep2Fragment;
 import com.discover.mobile.card.passcode.menu.PasscodeMenuFragment;
@@ -115,6 +129,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     private ArrayList<String> navigationlist;
     private ArrayList<String> nativeList;
     
+    private Hashtable<String, String> titleMap = new Hashtable<String, String>();
+    
     /***
 	 * Private contentObserver for settings -> display -> screen rotation setting.
 	 * For Defect: 101121
@@ -131,6 +147,50 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        try
+        {
+	        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+	        factory.setNamespaceAware(true);
+	        XmlPullParser xpp = factory.newPullParser();
+	        InputStream in = getResources().openRawResource(R.raw.title_mapping);
+	        InputStreamReader inR = new InputStreamReader(in);
+	        xpp.setInput(inR);
+	        int eventType = xpp.getEventType();
+	        boolean isFrom = false, isTo = false;
+	        String strCurrentTag="", strKey=null, strVal=null;
+	        while (eventType != XmlPullParser.END_DOCUMENT) {
+		         if(eventType == XmlPullParser.START_DOCUMENT) {
+		         } else if(eventType == XmlPullParser.END_DOCUMENT) {
+		         } else if(eventType == XmlPullParser.START_TAG) {
+		        	 strCurrentTag = xpp.getName();
+		         } else if(eventType == XmlPullParser.END_TAG) {
+		        	 strCurrentTag="";
+		        	 if ("title".equalsIgnoreCase(xpp.getName()))
+		        	 {
+			        	 isFrom=false;
+			        	 isTo=false;
+			        	 if (null != strKey)
+			        		 titleMap.put(strKey, strVal);
+			        	 strKey = null;
+			        	 strVal = null;
+		        	 }
+		         } else if(eventType == XmlPullParser.TEXT) {
+		        	 if ("from".equalsIgnoreCase(strCurrentTag))
+		            	 strKey = xpp.getText();
+		        	 else if ("to".equalsIgnoreCase(strCurrentTag))
+		            	 strVal = xpp.getText();
+		         }
+		         eventType = xpp.next();
+	        }
+        }
+        catch (Exception e)
+        {
+        	
+        }
+
+        
+        
         cordovaState = CORDOVA_LOADING;
         navToJQMPage=null;
         setNavigationList();
@@ -469,6 +529,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
     @Override
     public void logout() {
+    	takeScreenShot();
         Utils.log("CardNavigationRootActivity", "inside logout...");
         // super.logout();
         Utils.isSpinnerAllowed = true;
@@ -518,7 +579,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        
+        /* 13.4 changes start*/
+        isTimeout = false;
         Utils.hideSpinner();
         
         finish();
@@ -536,7 +598,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        
+        /* 13.4 changes start*/
+        isTimeout = false;
         Utils.hideSpinner();
         
         finish();
@@ -600,7 +663,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         if (title.equalsIgnoreCase(getString(R.string.error_no_title)))
             showActionBarLogo();
         else
-            super.setActionBarTitle(title);
+        {
+        	String strTitle = titleMap.get(title);
+        	if (null != strTitle)
+        		super.setActionBarTitle(strTitle);
+        	else
+        		super.setActionBarTitle(title);
+        }
 
         if (null != title) {
             Utils.log("CardNavigationRootActivity",
@@ -670,15 +739,10 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 .equalsIgnoreCase("RedeemMilesFragment")) {
             return;
         } else if (fragment.getClass().getSimpleName().equalsIgnoreCase("PasscodeLandingFragment")) {
-        	//TODO sgoff0 - is there a cleaner way to handle this?
-        	//don't keep this fragment in back stack
-        	Log.v("CardNavigationRootActivity", "navigate passcode landing fragment without backstack");
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(fragment)
-                    .add(R.id.navigation_content, fragment,
-                            fragment.getClass().getSimpleName())
-                    .commit();
+        	//TODO figure out a cleaner way to handle this.  PasscodeLandingFragment is used as a placeholder fragment but never invoked, instead
+        	//this logic is invoked to route passcode directly.  Without this there were quirks with the side menu and action bar title saying passcode
+        	//when it shouldn't have.  Plus there is no reason this routing logic needs it's own fragment.
+        	new PasscodeRouter(this).getStatusAndRoute();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -770,6 +834,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         Utils.log("CardNavigationRootActivity", "frag count is " + fragCount);
 
+        String TAG = "CardnavigationRootActivity";
+        Log.v(TAG, "Frag Count: " + fragCount);
         if (fragCount > 2) {
             String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
                     .getName();
@@ -779,6 +845,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                     + isPopped);
             //13.3 QuicView Changes Start
             if (nativeList.contains(fragTag)) {
+            	Log.v(TAG, "Native List Contains Frag: " + fragTag);
                 Fragment fragment = fragManager
                         .findFragmentByTag(fragTag);
                 makeFragmentVisible(fragment, false);
@@ -788,6 +855,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                 }
 
             } else {
+            	Log.v(TAG, "Native List DOES NOT Contain Frag: " + fragTag);
                 if (fragTag
                         .equalsIgnoreCase(getString(R.string.enhanced_account_security_title))
                         || fragTag.equalsIgnoreCase("No Title")) {
@@ -994,4 +1062,35 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     	setOrientation();
     	super.onConfigurationChanged(newConfig);
     }
+    
+    public void takeScreenShot()
+	{
+        View mView = getWindow().getDecorView().getRootView();
+        //View mView = view.findViewById(R.id.cardRootLayout); 
+        if (null!=mView)
+        {
+			mView.setDrawingCacheEnabled(true);
+			Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
+			mView.setDrawingCacheEnabled(false);
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+			File f = new File(Environment.getExternalStorageDirectory() + File.separator + "Discover_ScreenShot.jpg");
+			try {
+				f.createNewFile();
+				FileOutputStream fo = new FileOutputStream(f);
+				fo.write(bytes.toByteArray()); 
+				fo.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			finally
+			{
+				mView.setDrawingCacheEnabled(false);
+				bitmap = null;
+				mView=null;
+				f = null;
+			}
+        }
+	}
 }

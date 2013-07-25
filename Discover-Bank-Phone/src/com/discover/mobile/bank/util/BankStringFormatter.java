@@ -13,7 +13,6 @@ import android.util.Log;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
@@ -34,6 +33,7 @@ public final class BankStringFormatter {
 	
 	public static final String DATE_YYYY_MM_DD = "yyyy-MM-dd";
 	public static final String DATE_MM_DD_YYYY = "MM/dd/yyyy";
+	public static final String DATE_MM_DD_YY = "MM/dd/yy";
 	public static final String DATE_ISO8601 = "yyyy-MM-dd'T'HH:mm:ssZ";
 	
 	/**
@@ -193,8 +193,8 @@ public final class BankStringFormatter {
 		if(!Strings.isNullOrEmpty(needsCapitalization)) {
 			final String[] words = needsCapitalization.split(StringUtility.SPACE);
 			
-			for(int i = 0; i < words.length; ++i) {
-				capitalStringBuilder.append(capitalize(words[i]));
+			for (final String word : words) {
+				capitalStringBuilder.append(capitalize(word));
 				capitalStringBuilder.append(StringUtility.SPACE);
 			}
 			
@@ -241,11 +241,11 @@ public final class BankStringFormatter {
 	}
 	
 	/**
-	 * Method used to convert a date stored in a string from format yyyy-MM-dd'T'HH:mm:ss.SSSZ to mm/dd/yyyy.
+	 * Method used to convert a date stored in a string from format yyyy-MM-dd'T'HH:mm:ss.SSSZ to mm/dd/yy.
 	 * 
 	 * @param formattedDate
 	 *            a String in the format yyyy-MM-dd'T'HH:mm:ss.SSSZ
-	 * @return a String in the format mm/dd/yyyy in the eastern time zone
+	 * @return a String in the format mm/dd/yy in the eastern time zone
 	 */
 	public static String convertFromISO8601Date(final String formattedDate) {
 		String selectedDate = "";
@@ -259,7 +259,7 @@ public final class BankStringFormatter {
 
 			final SimpleDateFormat submissionDateFormat;
 
-			submissionDateFormat = new SimpleDateFormat(DATE_MM_DD_YYYY, Locale.getDefault());
+			submissionDateFormat = new SimpleDateFormat(DATE_MM_DD_YY, Locale.getDefault());
 			submissionDateFormat.setTimeZone(TimeZone.getTimeZone(easternTime));
 
 			try {
@@ -327,12 +327,26 @@ public final class BankStringFormatter {
 									   .replaceAll(colon, StringUtility.EMPTY)
 									   .length();
 		
-		final int countOfSpaces = CommonUtils.countOccurancesOfCharInString(StringUtility.SPACE, text);
-		final int countOfColons = CommonUtils.countOccurancesOfCharInString(colon, text);
-		
 		if(rawInputLength >= ellipsesLimit) {
-			ellipsesBuilder = new StringBuilder(StringUtility.EMPTY);
-			ellipsesBuilder.append(text.subSequence(0, ellipsesLimit + countOfSpaces + countOfColons));
+			int ellipsizeAtIndex = 0;
+			int numOfCharsLeft = ellipsesLimit;
+			
+			/**
+			 * Count the number of characters in the String that are letters, and
+			 * make the 13th letter the ellipsis index. (Things that are not colons or spaces are characters.)
+			 */
+			for(int i = 0; i < text.length() && numOfCharsLeft > 0; ++i) {
+				final char currentCharacter = text.charAt(i);
+				final boolean isCurrentCharacterLetter = !(':' == currentCharacter) && 
+															!(' ' == currentCharacter);
+				if(isCurrentCharacterLetter) {
+					numOfCharsLeft--;
+				}
+				ellipsizeAtIndex++;
+			}
+			
+			ellipsesBuilder = new StringBuilder();
+			ellipsesBuilder.append(text.subSequence(0, ellipsizeAtIndex));
 			ellipsesBuilder.append("...");
 		}
 		

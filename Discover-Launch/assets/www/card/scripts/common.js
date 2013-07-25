@@ -1392,6 +1392,7 @@ function postSiteCatGlobalData()
 function moreLandingLoad(){
 	try{
 		getMenuItems();
+        fromConfirmationPage = true;
 		var moreHTML="";
 		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
 			for (var key in moreNav) 
@@ -2269,11 +2270,13 @@ try{
 function populateGlobalCache()
 {						
 				HybridControl.prototype.getAccountDetails(function successAccountDetail (arg) {achomeData = arg;}, null);
+				HybridControl.prototype.getSecToken(function successToken (arg) {sectoken = arg;}, null);
 				achomeData = $.parseJSON(achomeData);				
 				if(!jQuery.isEmptyObject(achomeData)){					
 				putDataToCache("ACHOME", achomeData);
 				getDataAsync();			   					                   
 					// save card type and data in global variables
+					sectoken = sectoken;
 					
 					incentiveCode = achomeData["incentiveCode"];                        
 					//13.3 changes-start

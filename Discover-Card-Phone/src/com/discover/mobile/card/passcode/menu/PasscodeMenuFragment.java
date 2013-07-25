@@ -17,11 +17,12 @@ import android.widget.ListView;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthDefaultResponseHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.common.ui.modals.EnhancedTwoButtonModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.request.DeletePasscodeRequest;
 import com.discover.mobile.card.passcode.update.PasscodeUpdateStep1Fragment;
@@ -30,8 +31,6 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.SimpleContentModal;
-import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeMenuFragment extends BaseFragment {
@@ -125,11 +124,12 @@ public class PasscodeMenuFragment extends BaseFragment {
 		      }
 		    });
 
+		Utils.setFooter(view, getActivity());
 		return view;
 	}
 	
-	private final class UpdatePasscodeStrongAuthFlow implements StrongAuthListener {
-		
+	private final class UpdatePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler {
+
 		@Override
 		public void onStrongAuthSucess(Object data) {
 			Log.v(TAG, "Success");
@@ -138,29 +138,16 @@ public class PasscodeMenuFragment extends BaseFragment {
 
 		@Override
 		public void onStrongAuthError(Object data) {
-			Log.v(TAG, "Error");
-		}
-
-		@Override
-		public void onStrongAuthCardLock(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "Lock");
 			
-		}
-
-		@Override
-		public void onStrongAuthSkipped(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Skipped");
-						
 		}
 
 		@Override
 		public void onStrongAuthNotEnrolled(Object data) {
 			// TODO Auto-generated method stub
-			Log.v(TAG, "NotEnrolled");
 			
 		}
+
 	}
 	
 	private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -206,6 +193,7 @@ public class PasscodeMenuFragment extends BaseFragment {
 					R.string.passcode_dialog_disabled_title, 
 					R.string.passcode_dialog_disabled_content, 
 					R.string.home_text,
+					new NavigateACHomeAction(),
 					new NavigateACHomeAction());
 			modal.hideNeedHelpFooter();
 			((NavigationRootActivity)activeActivity).showCustomAlert(modal);

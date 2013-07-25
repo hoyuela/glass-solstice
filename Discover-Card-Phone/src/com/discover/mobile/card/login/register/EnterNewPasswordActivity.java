@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.nav.HeaderProgressIndicator;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -325,10 +325,13 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             if (!passOneField.isValid()) {
                 passOneField.setStrengthMeterInvalid();
             }
-
-            CommonUtils.showLabelWithStringResource(errorMessageLabel,
-                    R.string.account_info_bad_input_error_text, this);
-            CommonUtils.setViewVisible(errorIcon);
+            /*13.4 Defect id 95859*/
+            if(!(passOneField.isNull()&& passTwoField.isNull())){
+            	   CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                           R.string.account_info_bad_input_error_text, this);
+                   CommonUtils.setViewVisible(errorIcon);
+            }
+         
         }
 
     }

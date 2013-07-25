@@ -408,6 +408,8 @@ public final class BankUser extends CacheManager implements Serializable {
 	}
 
 	/**
+	 * Returns whether or not the Customer's Accounts are out dated.
+	 * 
 	 * @return the accountOutDated
 	 */
 	public boolean isAccountOutDated() {
@@ -415,6 +417,8 @@ public final class BankUser extends CacheManager implements Serializable {
 	}
 
 	/**
+	 * Sets whether or not the Customer's Accounts are out dated and needs to recall the Get Customer Accounts server call. 
+	 * 
 	 * @param accountOutDated the accountOutDated to set
 	 */
 	public void setAccountOutDated(final boolean accountOutDated) {

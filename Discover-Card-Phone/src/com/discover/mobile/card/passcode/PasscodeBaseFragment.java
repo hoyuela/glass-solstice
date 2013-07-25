@@ -1,5 +1,8 @@
 package com.discover.mobile.card.passcode;
 
+import java.util.Locale;
+
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +14,10 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +27,7 @@ import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.event.OnPasscodeErrorEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSubmitEventListener;
@@ -35,6 +41,62 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 public abstract class PasscodeBaseFragment extends BaseFragment implements View.OnKeyListener, OnPasscodeErrorEventListener,
 OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState){
+		super.onCreate(savedInstanceState);
+		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
+	}
+	
+	public void onStop() {
+		super.onStop();
+		Log.v(TAG, "Stop");
+		this.isStopping = true;
+	}
+	
+	public void onResume() {
+		super.onResume();
+		// this also helps when back button navigates to resume previous activity
+		clearAllFields();
+		forceSoftKeyboardShown(0);
+		//sgoff0 DEFECT 103719
+		getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+	}
+
+	@Override
+	public View onCreateView(final LayoutInflater inflater,
+			final ViewGroup container, final Bundle savedInstanceState) {
+		final View view = inflater.inflate(R.layout.passcode_base_activity,
+				null);
+		setupUI(view);
+		return view;
+	}
+	
+	private void setupUI(View view){
+		validationIV = ((ImageView) view.findViewById(R.id.validation));
+		validationIV.setVisibility(View.INVISIBLE);
+		passcodeGuidelinesTV = ((TextView) view.findViewById(R.id.passcodeGuidelines));
+		passcodeGuidelinesTV
+				.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						showPasscodeGuidelines();
+					}
+				});
+		passcodeGuidelinesTV.setVisibility(View.INVISIBLE);
+		headerTV = ((TextView) view.findViewById(R.id.headerTV));
+
+		Utils.setFooter(view, getActivity());
+		mContext = getActivity();
+		for (int i = 0; i < 4; i++) {
+			fieldTVs[i] = ((EditText) view.findViewById(fieldIds[i]));
+		}
+		//TODO sgoff0 - look into, seems to stop the problem of double submit on removing fragment from back stack
+//		if (!isStopping) {
+			setupAllFields();
+			clearAllFields();
+//		}
+	}
+	
 	@Override
 	public int getActionBarTitle() {
         return R.string.sub_section_title_passcode;
@@ -67,11 +129,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	protected int validationDelay = 1000;
 
-	// private static final String digits = "0123456789";
 	private static final int[] fieldIds;
-	// protected TextView[] fieldTVs = new TextView[4];
 	protected EditText[] fieldTVs = new EditText[4];
-	protected EditText holdFocus;
 	private static String TAG = "PasscodeBaseFragment";
 	protected ImageView validationIV;
 	protected TextView headerTV;
@@ -125,9 +184,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	private void setupSubmit() {
 		Log.v(TAG, "Setup Submit");
-		TextView localTextView = fieldTVs[3];
+		int fieldInt = 3;
+		TextView localTextView = fieldTVs[fieldInt];
 		// for hardware keys
 		localTextView.setOnKeyListener(this);
+		localTextView.setOnTouchListener(new PasscodeTouchListner(fieldInt));
 		localTextView.setTransformationMethod(PasswordTransformationMethod
 				.getInstance());
 		// for software keyboards
@@ -141,9 +202,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
-
-				// move focus to dummy field
-				holdFocus.requestFocus();
+				
+				fieldTVs[0].requestFocus();
 
 				// dynamic success/error functions
 				onPasscodeSubmitEvent();
@@ -176,7 +236,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	// remove text from field
 	private void clearField(TextView paramTextView) {
-//		Log.v(TAG, "Calling clearField()");
 		paramTextView.setText("");
 	}
 
@@ -190,7 +249,16 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 		return fieldTVs[0];
 	}
-
+	
+	private int getNextInput() {
+		for (int i = 0; i < fieldTVs.length; i++) {
+			if (fieldTVs[i].length() == 0) {
+				return i;
+			}
+		}
+		return 0;
+	}
+		
 	// advances input to next field
 	private TextView advanceInput(int currentIndex) {
 		if (currentIndex < fieldTVs.length - 1) {
@@ -202,88 +270,36 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 	}
 	
-	
-	@Override
-	public void onCreate(final Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
-		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
-	}
-	
-	public void onStop() {
-		super.onStop();
-		Log.v(TAG, "Stop");
-		this.isStopping = true;
-	}
-	
-	public void onResume() {
-		super.onResume();
-//		Log.v(TAG, "Resume");
-		// this also helps when back button navigates to resume previous
-		// activity
-		clearAllFields();
-		// show keyboard
-		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(fieldTVs[0], InputMethodManager.SHOW_IMPLICIT);
-	}
-
-	@Override
-	public View onCreateView(final LayoutInflater inflater,
-			final ViewGroup container, final Bundle savedInstanceState) {
-		final View view = inflater.inflate(R.layout.passcode_base_activity,
-				null);
-		validationIV = ((ImageView) view.findViewById(R.id.validation));
-		validationIV.setVisibility(View.INVISIBLE);
-		passcodeGuidelinesTV = ((TextView) view.findViewById(R.id.passcodeGuidelines));
-		passcodeGuidelinesTV
-				.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						showPasscodeGuidelines();
-//						dialogHelper(MODAL_PASSCODE_GUIDELINES, "Close", false, new NoNavigateAction());
-					}
-				});
-		passcodeGuidelinesTV.setVisibility(View.INVISIBLE);
-		headerTV = ((TextView) view.findViewById(R.id.headerTV));
-		holdFocus = (EditText) view.findViewById(R.id.holdFocus);
-
-		mContext = getActivity();
-		for (int i = 0; i < 4; i++) {
-			fieldTVs[i] = ((EditText) view.findViewById(fieldIds[i]));
-		}
-		
-		//TODO sgoff0 - look into, seems to stop the problem of double submit on removing fragment from back stack
-//		if (!isStopping) {
-			setupAllFields();
-			clearAllFields();
-//		}
-		return view;
-	}
-
 	protected void showPasscodeGuidelines() {
-//		dialogHelper(MODAL_PASSCODE_GUIDELINES, "Close", false, new NoNavigateAction());
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_guidelines_title, 
 				R.string.passcode_dialog_guidelines_content, 
-				R.string.ok);
+				R.string.close_text);
 		modal.hideNeedHelpFooter();
+		modal.setGrayButton();
 		((NavigationRootActivity)context).showCustomAlert(modal);
 	}
 	
-	public boolean onKey(View paramView, int paramInt, KeyEvent paramKeyEvent) {
-		// TODO understand better what this does
-		if (paramKeyEvent.getAction() == 0) {
+	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
+		if (paramKeyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+//			Log.v(TAG, "Action Down");
 			return false;
+		} else {
+//			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
 		}
 		// delete key
-		if (paramInt == KEY_DELETE) {
+		if (fieldInt == KEY_DELETE) {
 			deleteLatestInput().requestFocus();
 		}
-		return super.getActivity().onKeyUp(paramInt, paramKeyEvent);
+		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
+			printFragmentsInBackStack();
+		}
+		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
 	}
 
 	// returns input fields as string
 	protected String getPasscodeString() {
-//		Log.v(TAG, "Calling passcodeString()");
 		String retVal = "";
 		for (int i = 0; i < fieldTVs.length; i++) {
 			retVal += fieldTVs[i].getText();
@@ -296,11 +312,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 
 	/*
-	 * Returns true if at id paramInt is valid 0-9. If not it clears the field
+	 * Returns true if at id fieldInt is valid 0-9. If not it clears the field
 	 * and returns false.
 	 */
-	protected boolean validatePasscodeField(int paramInt, Editable paramEditable) {
-		TextView localTextView = PasscodeBaseFragment.this.fieldTVs[paramInt];
+	protected boolean validatePasscodeField(int fieldInt, Editable paramEditable) {
+		TextView localTextView = PasscodeBaseFragment.this.fieldTVs[fieldInt];
 		// if transformation method isn't password set it anyways
 		if (!(localTextView.getTransformationMethod() instanceof PasswordTransformationMethod)) {
 			localTextView.setTransformationMethod(PasswordTransformationMethod
@@ -309,7 +325,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 		// validate input is exactly 1 character and 0-9
 		if (isCharNumeric(paramEditable)) {
-			advanceInput(paramInt).requestFocus();
+			advanceInput(fieldInt).requestFocus();
 			return true;
 		} else if (isCharEmpty(paramEditable)) {
 			// do nothing
@@ -321,20 +337,41 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 	}
 
+	private class PasscodeTouchListner implements View.OnTouchListener {
+
+		private int fieldInt;
+
+		public PasscodeTouchListner(int fieldInt) {
+			this.fieldInt = fieldInt;
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			int nextInput = getNextInput();
+			if (fieldInt != nextInput) {
+				fieldTVs[fieldInt].clearFocus();
+				fieldTVs[nextInput].requestFocus();
+				forceSoftKeyboardShown(nextInput);
+				return true;
+			}
+			return false;
+		}
+		
+	}
 	/*
 	 * Executed on the first 3 input fields to condition them handles password
 	 * masking handles navigating to next item
 	 */
-	protected void setupPasscodeField(final int paramInt) {
-//		Log.v(TAG, "Entering setup Passcode");
-		TextView localTextView = fieldTVs[paramInt];
+	protected void setupPasscodeField(final int fieldInt) {
+		EditText localTextView = fieldTVs[fieldInt];
 		localTextView.setOnKeyListener(this);
+		localTextView.setOnTouchListener(new PasscodeTouchListner(fieldInt));
 		localTextView.setTransformationMethod(PasswordTransformationMethod
 				.getInstance());
 		localTextView.addTextChangedListener(new TextWatcher() {
 			// Logic to mask input and go to next item
 			public void afterTextChanged(Editable paramAnonymousEditable) {
-				validatePasscodeField(paramInt, paramAnonymousEditable);
+				validatePasscodeField(fieldInt, paramAnonymousEditable);
 			}
 
 			// REQUIRED EVEN THOUGHT LEFT EMPTY
@@ -400,10 +437,28 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		pUtils.createPasscodeToken(token);
 	}
 
+	protected void forceSoftKeyboardShown(int inputId) {
+		InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(fieldTVs[inputId], InputMethodManager.SHOW_IMPLICIT);
+	}
+	protected void forceSoftKeyboardHidden() {
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
+		View currentFocus = activity.getCurrentFocus();
+		if (currentFocus != null){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+		}
+	}
+	
 	protected class NavigateACHomeAction implements Runnable {
 		public NavigateACHomeAction() {}
 		@Override
 		public void run() {
+			forceSoftKeyboardHidden();
 			makeFragmentVisible(new HomeSummaryFragment());
 		}
 	}
@@ -412,6 +467,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		public NavigatePasscodeLandingAction() {}
 		@Override
 		public void run() {
+			forceSoftKeyboardHidden();
 			makeFragmentVisible(new PasscodeLandingFragment());
 		}
 	}
@@ -420,6 +476,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		public NoNavigateAction() {}
 		@Override
 		public void run() {
+			forceSoftKeyboardHidden();
 			//don't navigate anywhere
 		}
 	}
@@ -429,12 +486,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				.setText(Html.fromHtml(getResources().getString(stringId)));
 	}
 
-//	protected void slideTransition() {
-//		getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//	}
-	
 	protected void storeFirstName() {
-//		PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
 		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(getActivity());
 		AccountDetails accountDetails = (AccountDetails) cardShareDataStoreObj
@@ -451,7 +503,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 				}
 			}
 		}
-		pUtils.storeFirstName(fname);
+		if (fname != null && fname.length() > 1) {
+			char first = Character.toUpperCase(fname.charAt(0));
+			String retVal = first + fname.substring(1).toLowerCase(Locale.ENGLISH);
+			pUtils.storeFirstName(retVal);
+		}
 	}
-	
 }
