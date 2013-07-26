@@ -72,6 +72,7 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 				fragment = new TermsLandingPageFragment();
 			} else if (bundle.containsKey(PROVIDE_FEEDBACK)) {
 				fragment = new ProvideFeedbackFragment();
+				((ProvideFeedbackFragment)fragment).setProvideFeedbackUrl(getString(R.string.card_provide_feedback_url));
 			}
 
 			if (fragment != null) {
@@ -87,7 +88,9 @@ public class BankInfoNavigationActivity extends NavigationRootActivity implement
 			} else if( bundle.containsKey(PRIVACY_AND_TERMS)) {
 				makeFragmentVisible(new TermsLandingPageFragment());
 			} else if( bundle.containsKey(PROVIDE_FEEDBACK)) {
-				makeFragmentVisible(new ProvideFeedbackFragment());
+				ProvideFeedbackFragment fragment = new ProvideFeedbackFragment();
+				fragment.setProvideFeedbackUrl(getString(R.string.bank_login_provide_feedback_url));
+				makeFragmentVisible(fragment);
 			}
 		}
 		

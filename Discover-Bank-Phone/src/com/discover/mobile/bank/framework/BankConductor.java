@@ -826,7 +826,7 @@ public final class BankConductor  extends Conductor {
 	/**
 	 * Navigation method used to display feedback landing page
 	 */
-	public static void navigateToFeedback(final boolean isCard) {
+	public static void navigateToFeedback(final boolean isCard, final String bankProvideFeedbackUrl) {
 		final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
@@ -853,6 +853,7 @@ public final class BankConductor  extends Conductor {
 			else if(currentActivity instanceof NavigationRootActivity) {
 				final Fragment provideFeedback = new ProvideFeedbackFragment();
 				provideFeedback.setArguments(bundle);
+				((ProvideFeedbackFragment)provideFeedback).setProvideFeedbackUrl(bankProvideFeedbackUrl);
 				((NavigationRootActivity) currentActivity).makeFragmentVisible(provideFeedback);
 			}
 		}
