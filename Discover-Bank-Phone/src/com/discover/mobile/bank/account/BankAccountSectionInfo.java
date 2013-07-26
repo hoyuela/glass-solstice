@@ -17,10 +17,9 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 	public BankAccountSectionInfo() {
 		super(R.string.section_title_account,
 				new ClickComponentInfo(R.string.sub_section_title_account_summary, openAccountSummary()), 
-				new ClickComponentInfo(R.string.sub_section_title_statement,
-						externalLink(BankUrlManager.getStatementsUrl())),
 				new ClickComponentInfo(R.string.sub_section_title_open_new_account,true, 
-													externalLink(BankUrlManager.getOpenAccountUrl())));
+													externalLink(BankUrlManager.getOpenAccountUrl())),
+				new ClickComponentInfo(R.string.sub_section_title_statement, openViewStatements()));
 	}
 
 	private static OnClickListener externalLink(final String url){
@@ -48,5 +47,14 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 			}
 		};
 
+	}
+	
+	private static OnClickListener openViewStatements() {
+		return new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				BankConductor.navigateToViewStatementsHome();
+			}
+		};
 	}
 }

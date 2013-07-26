@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="statements_action_title">View Statements</string>
+    <string name="statements_home_page_title">Accounts</string>
+    <string name="no_statements_title">No Current Statements Are Available</string>
+    <string name="no_statements_body">A current statement may be unavailable for new accounts which 
+        have not completed a billing period.</string>
+</resources>

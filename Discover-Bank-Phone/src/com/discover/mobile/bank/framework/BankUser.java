@@ -22,7 +22,7 @@ import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.LoadMoreList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.framework.CacheManager;
-
+import com.discover.mobile.bank.statements.StatementList;
 /**
  * Class used to maintain session information for a user logged into a Bank
  * account. This class follows a singleton design pattern allowing only one
@@ -87,6 +87,9 @@ public final class BankUser extends CacheManager implements Serializable {
 	/**A HashMap used for caching user activity (LoadMoreLists) to avoid repeated unnecessary service calls.*/
 	private final HashMap<Enum<?>, LoadMoreList> cachedActivityMap = new HashMap<Enum<?>, LoadMoreList>();
 
+	
+	/*A Map Used for caching the account statements*/
+	private HashMap<String, StatementList> accountsToStatementsMap = new HashMap<String, StatementList>();
 	/**
 	 * List of listeners notified when a change event occurs on BankUser
 	 */
@@ -492,5 +495,12 @@ public final class BankUser extends CacheManager implements Serializable {
 				this.setCachedListWithKey(transferTypes[i], null);
 			}
 		}
+	}
+	
+	/*
+	 * Get the accountsStatements Map
+	 */
+	public HashMap<String, StatementList> getAccountsToStatementsMap() {
+		return this.accountsToStatementsMap;
 	}
 }

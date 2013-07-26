@@ -89,6 +89,10 @@ import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
+import com.discover.mobile.bank.statements.AccountStatementsLandingFragment;
+import com.discover.mobile.bank.statements.BankStatementsHomeFragment;
+import com.discover.mobile.bank.statements.NoStatementsAvailableFragment;
+import com.discover.mobile.bank.statements.StatementList;
 import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
 import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferFrequencyWidget;
@@ -1928,6 +1932,55 @@ public final class BankConductor  extends Conductor {
 				serviceCall.submit();
 			}
 		}
+	}
+	
+	/*
+	 * This method is called when a user selects "view statements" on from the navigation menu
+	 * This method checks to see if there is more than one account.  If so, the user
+	 * is directed to the home page where they can select an account.  If not
+	 * it takes the user directly to the statements landing page for that account.
+	 */
+	public static void navigateToViewStatementsHome () {
+		//get the account list to tell if we should go
+		//directly to account landing or home screen
+		int numAccounts = BankUser.instance().getAccounts().accounts.size();
+		if (numAccounts > 1) {
+			//if more than one account go to home screen
+			BankStatementsHomeFragment fragment = new BankStatementsHomeFragment();
+			((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		} else {
+			//only one account, go straight to the account landing page
+			//first get the account number
+			Account account = BankUser.instance().getAccounts().accounts.get(0);
+			//navigate to the account landing page
+			navigateToAccountStatements(account);
+		}
+	}
+	
+	/*
+	 * This method directs the user to the statement landing page for a particular account
+	 * If the statements for the particular are not cached, the function will execute a service 
+	 * call to obtain statement information and return.  This function is called when the service call
+	 * completes, which should ensure the statement information is cached.
+	 */
+	public static void navigateToAccountStatements(final Account account) {
+		//1. check the cache to see if the service call is necessary
+		if (!BankUser.instance().getAccountsToStatementsMap().containsKey(account.id)) {
+			//2. if necassary execute the service call
+			BankServiceCallFactory.createGetAccountStatementsCall(account).submit();
+			return;
+		}
+		//statements have been successfully cached.  From here either
+		//display statements, or notify user no statements are available
+		final StatementList statementList = BankUser.instance().getAccountsToStatementsMap().get(account.id);
+		Fragment fragment;
+		//determine whether there are statements available to display to the user
+		if ((null == statementList.statementList) || statementList.statementList.isEmpty()) {
+			fragment = new NoStatementsAvailableFragment();
+		} else {
+			fragment = new AccountStatementsLandingFragment();
+		}
+		((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
 
 	/**
