@@ -1853,8 +1853,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private void hideExclamation() {
 		exclamationIV.setVisibility(View.GONE);
-		final int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
-//		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		final int paddingLeft = getResources().getDimensionPixelSize(R.dimen.element_side_padding);
 		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
 	}
 
