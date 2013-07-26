@@ -121,7 +121,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private BankUser bankUser;
 
 	/** Id for currently selected account */
-	private int accountId;
+	private String accountId;
 	/** Earliest payment date */
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
@@ -254,7 +254,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 					
 					// Double check for instance type (do not assume BankNavigationRootActivity)
 					// Due to possibility of timeout occurring when coming from background
@@ -432,7 +432,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * Otherwise, does not alter the current selection.
 	 * @param account - {@link Account} you wish to select.
 	 */
-	private void setSpinnerSelectedAccount(Account account) {
+	private void setSpinnerSelectedAccount(final Account account) {
 		// Parse all items in the Adapter and determine if one matches the requested Account.
 		for (int x=0; x<paymentAccountSpinner.getAdapter().getCount(); ++x) {
 			if (paymentAccountSpinner.getItemAtPosition(x).equals(account)) {
@@ -455,7 +455,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			payeeText.setText(payee.nickName);
 
 			setSpinnerSelectedAccount(getDefaultAccount());
-			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
+			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 		}
 		/**Check if page is displayed to edit a payment*/
 		else if( paymentDetail != null ) {
@@ -464,9 +464,9 @@ public class SchedulePaymentFragment extends BaseFragment
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
 
-			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
+			accountId = paymentDetail.paymentAccount.id;
 			setSpinnerSelectedAccount(paymentDetail.paymentAccount); 
-			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
+			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
@@ -498,13 +498,13 @@ public class SchedulePaymentFragment extends BaseFragment
 	private Account getDefaultAccount() {
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
-				accountId = Integer.valueOf(a.id);
+				accountId = a.id;
 				return a;
 			}
 		}
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
-				accountId = Integer.valueOf(a.id);
+				accountId = a.id;
 				return a;
 			}
 		}
@@ -541,11 +541,11 @@ public class SchedulePaymentFragment extends BaseFragment
 		if (!payeeAddedMode) {
 			new CancelThisActionModal(this).showModal();	
 		} else {
-			CancelThisActionModal cancelAction = new CancelThisActionModal(this);
+			final CancelThisActionModal cancelAction = new CancelThisActionModal(this);
 			cancelAction.setOnConfirmAction(new OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
+				public void onClick(final View v) {
 					((BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity())
 																		.getSupportFragmentManager().popBackStackImmediate();
 					BankAddManagedPayeeFragment.setCameFromPayBills(true);
@@ -711,8 +711,8 @@ public class SchedulePaymentFragment extends BaseFragment
 		
 		paymentAccountSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(IcsAdapterView<?> parent, View view, 
-					int position, long id) {
+			public void onItemSelected(final IcsAdapterView<?> parent, final View view, 
+					final int position, final long id) {
 
 				// Retrieve the newly selected account
 				final Account selectedAccount = (Account) paymentAccountSpinner.getSelectedItem();
@@ -721,14 +721,14 @@ public class SchedulePaymentFragment extends BaseFragment
 					return;
 				}
 				
-				accountId = Integer.valueOf(selectedAccount.id);
+				accountId = selectedAccount.id;
 
 				// Update the title above the spinner
 				setSelectedAccountTitle(selectedAccount);
 			}
 
 			@Override
-			public void onNothingSelected(IcsAdapterView<?> parent) {
+			public void onNothingSelected(final IcsAdapterView<?> parent) {
 			}
 		});
 
@@ -788,7 +788,7 @@ public class SchedulePaymentFragment extends BaseFragment
 					payment.payee.id = (payee != null ) ? payee.id : paymentDetail.payee.id;
 					payment.amount = formatAmount(amountEdit.getText()
 							.toString());
-					payment.paymentMethod.id = Integer.toString(accountId);
+					payment.paymentMethod.id = accountId;
 					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString(),true);
 
 					if ( !Strings.isNullOrEmpty(memo)) {
