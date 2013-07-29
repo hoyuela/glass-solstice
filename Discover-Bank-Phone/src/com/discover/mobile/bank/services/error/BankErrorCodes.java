@@ -50,7 +50,7 @@ public final class BankErrorCodes {
 	 * Error Code used to describe when a Strong Auth Skipped Error
 	 */
 	//TODO: This may change
-	public static final String ERROR_SA_SKIPPED_ERROR = "Skipped_error";
+	public static final String ERROR_SA_SKIPPED_ERROR = "Auth.SA.NoAnalyzeRequest";
 
 	/**
 	 * Error code used to describe when a Strong Auth No Enrolled

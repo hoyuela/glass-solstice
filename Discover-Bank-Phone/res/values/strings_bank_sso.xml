@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    
+    <string name="bank_sso_strong_auth_skipped_text">Some of our website features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
+    <string name="bank_sso_strong_auth_skipped_title">We\'re Sorry</string>
+    <string name="bank_sso_strong_auth_skipped_button">OK</string>
+    <string name="bank_sso_strong_auth_skipped_number">1&#8211;800&#8211;347&#8211;2683</string>
+    
+    
+    <string name="sso_bad_bank_status_title">We\'re Sorry</string>
+    <string name="sso_bad_bank_status_content">Due to special conditions related to your bank account, we can\'t provide you with access to your bank account at this time.  To login to Discover Card only please select Continue below.</string>
+	<string name="sso_bad_bank_button">Continue</string>
+    
+</resources>

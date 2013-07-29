@@ -690,9 +690,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
                 // Strong auth need. Done skip checking with server if SA
                 // required or not.
-                StrongAuthHandler authHandler = new StrongAuthHandler(context,
-                        listener, false);
-                authHandler.strongAuth();
+//                StrongAuthHandler authHandler = new StrongAuthHandler(context,
+//                        listener, false);
+//                authHandler.strongAuth();
+                doCardNormalFlow();
             }
         } else {
             doCardNormalFlow();

@@ -13,7 +13,6 @@ import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
@@ -25,8 +24,8 @@ public final class BankDepositChecksSectionInfo extends GroupComponentInfo {
 
 
 	public BankDepositChecksSectionInfo() {
-		super(R.string.section_title_deposit_checks,
-				new ClickComponentInfo(R.string.sub_section_title_deposit_a_check, getCheckDepositLandingClickListener()));
+		// Deposit checks sets the listener directly to the GroupComponent since it has no children.
+		super(R.string.section_title_deposit_checks, getCheckDepositLandingClickListener());
 	}
 
 
