@@ -25,6 +25,12 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
  */
 public class ProvideFeedbackFragment extends TermsConditionsFragment {
 
+	private String bankProvideFeedbackUrl;
+
+	public ProvideFeedbackFragment() {
+		 bankProvideFeedbackUrl = BankUrlManager.getProvideFeedbackUrl();
+	 }
+	 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -74,7 +80,7 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		if (isCardMode()) {
 			return BankUrlManager.getCardProvideFeedbackUrl();
 		} else {
-			return BankUrlManager.getProvideFeedbackUrl();
+			return bankProvideFeedbackUrl;
 		}
 	}
 
@@ -136,4 +142,12 @@ public class ProvideFeedbackFragment extends TermsConditionsFragment {
 		//this is not used in this class
 	}
 
+	public String getProvideFeedbackUrl() {
+		return bankProvideFeedbackUrl;
+	}
+
+	public void setProvideFeedbackUrl(String bankProvideFeedbackUrl) {
+		this.bankProvideFeedbackUrl = (bankProvideFeedbackUrl != null) ? bankProvideFeedbackUrl : 
+																		 this.bankProvideFeedbackUrl;
+	}
 }

@@ -10,6 +10,7 @@ Before do |scenario|
     scenario = scenario.scenario_outline 
   end 
 
+  # Reinstalls app if RESET_BETWEEN_SCENARIOS flag is set or if running the first scenario
   feature_name = scenario.feature.title
   if FeatureNameMemory.feature_name != feature_name \
       or ENV["RESET_BETWEEN_SCENARIOS"] == "1"
@@ -22,7 +23,9 @@ Before do |scenario|
     uninstall_apps
     install_app(ENV["TEST_APP_PATH"])
     install_app(ENV["APP_PATH"])
-    FeatureNameMemory.feature_name = feature_name
+    start_test_server_in_background
+
+  FeatureNameMemory.feature_name = feature_name
 	FeatureNameMemory.invocation = 1
   else
     FeatureNameMemory.invocation += 1

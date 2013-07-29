@@ -74,6 +74,7 @@ public final class BankPayConfirmFragment extends BankOneButtonFragment {
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setProvideFeedbackUrl(getString(R.string.bank_bill_pay_feedback_url));
 
 		if((null != bundle) && getArguments().containsKey(BankExtraKeys.EDIT_MODE)){
 			final TextView success = (TextView) view.findViewById(R.id.success_note_text);

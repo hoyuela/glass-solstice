@@ -64,6 +64,8 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setProvideFeedbackUrl(getString(R.string.bank_check_deposit_feedback_url));
+		
 		return view;
 	}
 
@@ -105,7 +107,7 @@ public class BankDepositConfirmFragment extends BankDepositBaseFragment {
 	protected void onActionLinkClick() {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)this.getActivity();
 
-		final Account account = BankUser.instance().getAccount( Integer.toString(depositDetail.account) );
+		final Account account = BankUser.instance().getAccount( depositDetail.account );
 
 		//Navigate to Scheduled Transactions Activity Page
 		if( account != null ) {

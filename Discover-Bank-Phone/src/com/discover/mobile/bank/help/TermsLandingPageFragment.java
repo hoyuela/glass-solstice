@@ -7,6 +7,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +33,8 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class TermsLandingPageFragment extends BaseFragment {
+	
+	private static final int DIVIDER_HEIGHT_DP = 1;
 
 	/* STRING ARRAY INDEXES */
 	private static final int INDEX_PRIVACY = 0;
@@ -119,6 +122,8 @@ public class TermsLandingPageFragment extends BaseFragment {
 			final TextView label = (TextView) item.findViewById(android.R.id.text1);
 			label.setText(values.get(i));
 			item.setOnClickListener(getBankListClickListener(item));
+			item.setBackgroundResource(0);
+
 			// Add the constructed list item to the table.
 			list.addView(item);
 		}
@@ -201,8 +206,12 @@ public class TermsLandingPageFragment extends BaseFragment {
 	 */
 	private void insertDividerLine(final LinearLayout view) {
 		final View divider = new View(getActivity(), null);
-		divider.setBackgroundResource(R.drawable.table_dotted_line);
-		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, 1);
+		divider.setBackgroundResource(R.drawable.common_table_list_item_pressed);
+		
+		// Convert divider size to pixels
+        final int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, DIVIDER_HEIGHT_DP, 
+        		getResources().getDisplayMetrics());
+		final LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, height > 0 ? height : 1);
 
 		view.addView(divider, params);
 	}

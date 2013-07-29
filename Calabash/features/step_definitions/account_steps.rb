@@ -1,5 +1,25 @@
 # STEPS SPECIFIC TO THE "ACCOUNT" PAGES
 
+# Asserts the presence of the gretting "greeting(based on time of day), [first name]"
+# Uses the default credentials from config.yml
+Given /^I see my salutation$/ do
+	name = CONFIG[@userEnv.to_sym][@userType.to_sym][@userName.to_sym][:name]
+	
+	greeting = "Hi," + " " + name
+	currentHour = Time.new.hour
+
+	if currentHour < CONFIG[:afternoon_hour]
+		salutation = "Good morning,"
+	elsif currentHour < CONFIG[:evening_hour]
+		salutation = "Good afternoon,"
+	else
+		salutation = "Good evening,"
+	end
+	
+	greeting = salutation + " " + name
+	performAction('wait_for_text', greeting)
+end
+
 # Selects the first Account in a list
 # Must already be on a screen with a list of accounts.
 # This is a special case since Calabash is not recognizing it as a ListView

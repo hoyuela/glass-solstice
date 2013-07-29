@@ -8,18 +8,17 @@
     <RelativeLayout
         android:id="@+id/terms_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:paddingTop="@dimen/forms_inner_padding"
+        android:paddingBottom="@dimen/forms_inner_padding">
 
         <LinearLayout
             android:id="@+id/terms_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/status_bar_height"
-            android:background="@drawable/rounded_table_corners_no_padding"
-            android:orientation="vertical"
-            android:padding="1dp" >
+            android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:background="@drawable/common_table_background"
+            android:orientation="vertical">
         </LinearLayout>
 
         <com.discover.mobile.bank.ui.widgets.BankLayoutFooter

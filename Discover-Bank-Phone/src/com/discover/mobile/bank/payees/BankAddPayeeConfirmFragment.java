@@ -90,6 +90,7 @@ public class BankAddPayeeConfirmFragment extends BankOneButtonFragment {
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setProvideFeedbackUrl(getString(R.string.bank_bill_pay_feedback_url));
 
 		/**Check if confirmation page is for a payee update or addition*/
 		if( isUpdate ) {

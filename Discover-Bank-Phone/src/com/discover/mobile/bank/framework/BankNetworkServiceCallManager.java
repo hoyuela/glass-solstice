@@ -68,6 +68,7 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.statements.GetAccountStatementsServerCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
@@ -75,6 +76,7 @@ import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.services.transfer.TransferType;
+import com.discover.mobile.bank.statements.StatementList;
 import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -695,6 +697,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 
 			//Update list of payees
 			BankServiceCallFactory.createManagePayeeServiceRequest().submit();
+		} else if (sender instanceof GetAccountStatementsServerCall) {
+			Account account = ((GetAccountStatementsServerCall) sender).getAccount();
+			//successfully cached the response.  call navigateToAccountStatements to display correct landing
+			BankConductor.navigateToAccountStatements(account);
 		}
 		// Ignore success
 		else {

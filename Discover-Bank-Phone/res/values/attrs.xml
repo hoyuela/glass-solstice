@@ -6,5 +6,6 @@
         <attr name="footerType" format="integer"/>
         <attr name="helpNumber" format="string"/>
         <attr name="helpPrompt" format="boolean"/>
+        <attr name="provideFeedbackUrl" format="string" />
     </declare-styleable>
 </resources>

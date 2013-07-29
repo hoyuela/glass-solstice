@@ -1,5 +1,4 @@
 Given /^I select a(?: from| to) and(?: to| from)? account$/ do
-
         # The textviews that are present in the cells for selecting accounts cannot be referenced directly
         # so we are tapping on the caret imageviews
 

@@ -121,7 +121,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	private BankUser bankUser;
 
 	/** Id for currently selected account */
-	private int accountId;
+	private String accountId;
 	/** Earliest payment date */
 	private Calendar earliestPaymentDate;
 	/** Chosen payment date */
@@ -158,6 +158,19 @@ public class SchedulePaymentFragment extends BaseFragment
 	private static final Pattern R8601 = Pattern
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2}))((\\+|-)(\\d{4}))");
+	
+	//A runnable that will dismiss the calendar fragment.
+	private final Runnable closeCalendarRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if(null != calendarFragment && calendarFragment.isVisible()) {
+				calendarFragment.dismiss();
+	
+				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
+				calendarFragment = null;
+			}
+		}
+	};
 
 	/** Amount of time to wait when closing the calendar to finish selection animation. */
 	private static final int CALENDAR_DELAY = 500;
@@ -183,7 +196,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountTitle = (TextView)view.findViewById(R.id.payment_acct_title);
 		amountEdit = (AmountValidatedEditField) view.findViewById(R.id.amount_edit);
 		amountEdit.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-		amountEdit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		amountEdit.setImeOptions(EditorInfo.IME_ACTION_NEXT | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		amountError = (TextView) view.findViewById(R.id.amount_error);
 		dateText = (TextView) view.findViewById(R.id.date_text);
 		dateError = (TextView) view.findViewById(R.id.date_error);
@@ -241,7 +254,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Activity currentActivity = DiscoverActivityManager.getActiveActivity();
+					final Activity currentActivity = DiscoverActivityManager.getActiveActivity();
 					
 					// Double check for instance type (do not assume BankNavigationRootActivity)
 					// Due to possibility of timeout occurring when coming from background
@@ -419,7 +432,7 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * Otherwise, does not alter the current selection.
 	 * @param account - {@link Account} you wish to select.
 	 */
-	private void setSpinnerSelectedAccount(Account account) {
+	private void setSpinnerSelectedAccount(final Account account) {
 		// Parse all items in the Adapter and determine if one matches the requested Account.
 		for (int x=0; x<paymentAccountSpinner.getAdapter().getCount(); ++x) {
 			if (paymentAccountSpinner.getItemAtPosition(x).equals(account)) {
@@ -442,7 +455,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			payeeText.setText(payee.nickName);
 
 			setSpinnerSelectedAccount(getDefaultAccount());
-			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
+			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 		}
 		/**Check if page is displayed to edit a payment*/
 		else if( paymentDetail != null ) {
@@ -451,9 +464,9 @@ public class SchedulePaymentFragment extends BaseFragment
 			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
 			memoEdit.setText(paymentDetail.memo);
 
-			accountId = Integer.parseInt(paymentDetail.paymentAccount.id);
+			accountId = paymentDetail.paymentAccount.id;
 			setSpinnerSelectedAccount(paymentDetail.paymentAccount); 
-			setSelectedAccountTitle(BankUser.instance().getAccount(Integer.toString(accountId)));
+			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 
 			/**Update Pay Now Button Text*/
 			payNowButton.setText(R.string.schedule_pay_save_payment);
@@ -485,13 +498,13 @@ public class SchedulePaymentFragment extends BaseFragment
 	private Account getDefaultAccount() {
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
-				accountId = Integer.valueOf(a.id);
+				accountId = a.id;
 				return a;
 			}
 		}
 		for (final Account a : bankUser.getAccounts().accounts) {
 			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
-				accountId = Integer.valueOf(a.id);
+				accountId = a.id;
 				return a;
 			}
 		}
@@ -528,11 +541,11 @@ public class SchedulePaymentFragment extends BaseFragment
 		if (!payeeAddedMode) {
 			new CancelThisActionModal(this).showModal();	
 		} else {
-			CancelThisActionModal cancelAction = new CancelThisActionModal(this);
+			final CancelThisActionModal cancelAction = new CancelThisActionModal(this);
 			cancelAction.setOnConfirmAction(new OnClickListener() {
 				
 				@Override
-				public void onClick(View v) {
+				public void onClick(final View v) {
 					((BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity())
 																		.getSupportFragmentManager().popBackStackImmediate();
 					BankAddManagedPayeeFragment.setCameFromPayBills(true);
@@ -698,8 +711,8 @@ public class SchedulePaymentFragment extends BaseFragment
 		
 		paymentAccountSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 			@Override
-			public void onItemSelected(IcsAdapterView<?> parent, View view, 
-					int position, long id) {
+			public void onItemSelected(final IcsAdapterView<?> parent, final View view, 
+					final int position, final long id) {
 
 				// Retrieve the newly selected account
 				final Account selectedAccount = (Account) paymentAccountSpinner.getSelectedItem();
@@ -708,14 +721,14 @@ public class SchedulePaymentFragment extends BaseFragment
 					return;
 				}
 				
-				accountId = Integer.valueOf(selectedAccount.id);
+				accountId = selectedAccount.id;
 
 				// Update the title above the spinner
 				setSelectedAccountTitle(selectedAccount);
 			}
 
 			@Override
-			public void onNothingSelected(IcsAdapterView<?> parent) {
+			public void onNothingSelected(final IcsAdapterView<?> parent) {
 			}
 		});
 
@@ -760,6 +773,9 @@ public class SchedulePaymentFragment extends BaseFragment
 				if(!amountEdit.isValid()) {
 					amountEdit.setErrors();
 				}
+				
+				//in the rare case that the user managed to submit the payment while the calendar was still opening, this will close it
+				handler.postDelayed(closeCalendarRunnable, 250);
 
 				if( amountEdit.isValid() && !isDateError) {
 					amountEdit.clearFocus();
@@ -772,24 +788,39 @@ public class SchedulePaymentFragment extends BaseFragment
 					payment.payee.id = (payee != null ) ? payee.id : paymentDetail.payee.id;
 					payment.amount = formatAmount(amountEdit.getText()
 							.toString());
-					payment.paymentMethod.id = Integer.toString(accountId);
+					payment.paymentMethod.id = accountId;
 					payment.deliverBy = BankStringFormatter.convertToISO8601Date(dateText.getText().toString(),true);
 
 					if ( !Strings.isNullOrEmpty(memo)) {
 						payment.memo = memo;
 					}
 
-					//Check if user is adding payment
-					if( payee != null ) {		
-						BankServiceCallFactory.createMakePaymentCall(payment).submit();
-					}
-					//Check if user is editing a payment
-					else if( paymentDetail != null ){
-						BankServiceCallFactory.updatePaymentCall(payment, paymentDetail.id).submit();
-					}
+					//submit the payment after 500 millis. this gives the calendar time to close in the case that the user
+					//managed to click schedule payment before the calendar opens after hitting "next"
+					handler.postDelayed(submitPaymentRunnable(payment), 500);
 				}
 			}
 		});
+	}
+	
+	private Runnable submitPaymentRunnable(final CreatePaymentDetail thePayment) 
+	{
+		return new Runnable() 
+		{		
+			final CreatePaymentDetail payment = thePayment;
+			
+			@Override
+			public void run() {
+				//Check if user is adding payment
+				if( payee != null ) {		
+					BankServiceCallFactory.createMakePaymentCall(payment).submit();
+				}
+				//Check if user is editing a payment
+				else if( paymentDetail != null ){
+					BankServiceCallFactory.updatePaymentCall(payment, paymentDetail.id).submit();
+				}
+			}
+		};
 	}
 
 	private void setSelectedAccountTitle(final Account account) {
@@ -952,16 +983,6 @@ public class SchedulePaymentFragment extends BaseFragment
 	}
 
 	private CalendarListener createCalendarListener() {	
-		//A runnable that will dismiss the calendar fragment.
-		final Runnable closeCalendarRunnable = new Runnable() {
-			@Override
-			public void run() {
-				calendarFragment.dismiss();
-
-				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
-				calendarFragment = null;
-			}
-		};
 
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {

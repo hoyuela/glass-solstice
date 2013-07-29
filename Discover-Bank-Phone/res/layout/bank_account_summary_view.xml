@@ -53,7 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/content" 
             style="@style/bank_layout_footer_style"
-            custom:footerType="3"/>
+            custom:footerType="3"
+            custom:provideFeedbackUrl="@string/bank_account_summary_feedback_url"/>
       
     </RelativeLayout>
 
