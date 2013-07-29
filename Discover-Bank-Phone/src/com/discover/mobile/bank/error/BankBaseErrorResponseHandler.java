@@ -197,7 +197,6 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 	 * @return the modal
 	 */
 	private AlertDialog getSsoSaSkippedModal(){
-		Log.e("Allie", "SSO SKIPPED MODAL");
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final SimpleContentModal modal = new SimpleContentModal(context);
 		modal.setTitle(R.string.bank_sso_strong_auth_skipped_title);
