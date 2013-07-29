@@ -88,7 +88,6 @@
         android:layout_below="@+id/divider_line3"
         android:orientation="horizontal"
         android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
         android:weightSum="5" >
 
         <RadioButton
@@ -139,7 +138,7 @@
             android:layout_height="fill_parent"
             android:layout_weight=".5"
             android:contentDescription="@string/caret_description"
-            android:paddingBottom="@dimen/between_related_elements_padding"
+            android:layout_gravity="center_vertical"
             android:paddingRight="@dimen/between_related_elements_padding"
             android:scaleType="center"
             android:src="@drawable/gray_right_arrow" />

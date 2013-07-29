@@ -263,6 +263,7 @@
                         android:layout_alignLeft="@+id/memo_title"
                         android:layout_below="@id/memo_title"
                         android:inputType="textWebEditText"
+                        android:imeOptions="flagNoExtractUi"
                         android:maxLength="40"
                         android:scrollHorizontally="false"
                         android:textColor="@color/black"
