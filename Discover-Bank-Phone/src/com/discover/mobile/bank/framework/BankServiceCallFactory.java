@@ -3,6 +3,7 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.account.TransferDeletionType;
@@ -65,6 +66,7 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.statements.GetAccountStatementsServerCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
 import com.discover.mobile.bank.services.transfer.GetTransferEnrollStatus;
@@ -73,6 +75,7 @@ import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
+import com.discover.mobile.bank.statements.StatementList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.callback.GenericCallbackListener.CompletionListener;
@@ -114,7 +117,20 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return  new CustomerServiceCall(activity, callback);
 	}
-
+	/*
+	 * Create the service call to obtain the statement information for one account.
+	 * param account - account object, used to obtain account id.
+	 */
+	public static GetAccountStatementsServerCall createGetAccountStatementsCall(final Account account) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		final AsyncCallback<StatementList> callback = 
+					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(StatementList.class,
+													activity,
+													(ErrorHandlerUi) activity)
+													.build();
+		return new GetAccountStatementsServerCall(activity, callback, account);
+	}
+	
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
