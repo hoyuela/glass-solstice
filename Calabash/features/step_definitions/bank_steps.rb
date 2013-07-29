@@ -1,4 +1,4 @@
-# Steps specific to the bank side of the Discover App
+# Steps specific to the Android bank side of the Discover App
 
 # Steps that are specific to the bank part of the Discover app
 
@@ -39,10 +39,6 @@ Given /^I verify external browser modals$/ do
   	performAction('assert_text', "You're Leaving this Application", true) 
   	performAction('go_back')
 
-	performAction('click_on_text', "View Statements")
-  	performAction('assert_text', "You're Leaving this Application", true) 
-  	performAction('go_back')
-
 	performAction('click_on_text', "Transfer Money")
 	performAction('click_on_text', "Manage External Accounts")
   	performAction('assert_text', "You're Leaving this Application", true) 
@@ -64,7 +60,8 @@ Given /^I verify managing payees$/ do
 
 	# Use "carrot" images as a reference for row since Calabash can't detect this list view
 	# Tap first payee
-	performAction('wait', 2)
+	performAction('wait_for_view_by_id', "carrot")
+
 	touch("imageView marked:'carrot'")[0]
   	performAction('wait', 2)
 
@@ -189,6 +186,7 @@ Given /^I verify review payments$/ do
 	macro %Q[I navigate to "Review Payments" under "Pay Bills"]
 	# Select the first scheduled payment
 	# Calabash does not recognize the list view so must tap on the first occurence of "/" which selects the first transactions
+	performAction('wait_for_text', "/")
 	performAction('click_on_text', "/")
   	performAction('assert_text', "Scheduled Payment", true) 
   	performAction('go_back')
@@ -196,6 +194,7 @@ Given /^I verify review payments$/ do
 	# Verify Completed Payments
 	touch("textView marked:'Completed\nPayments'")
 	# Tap first payment
+	performAction('wait_for_text', "/")
 	performAction('click_on_text', "/")
   	performAction('assert_text', "Completed Payment", true) 
 	performAction('go_back')
@@ -203,6 +202,7 @@ Given /^I verify review payments$/ do
 	# Verify Cancelled Payments
 	touch("textView marked:'Cancelled\nPayments'")
 	# Tap first payment
+	performAction('wait_for_text', "/")
 	performAction('click_on_text', "/")
   	performAction('assert_text', "Cancelled Payment", true) 
 	performAction('go_back')
@@ -211,27 +211,33 @@ end
 
 Given /^I make a payment$/ do
 	macro %Q[I navigate to "Pay Bills" under "Pay Bills"]
-	performAction('wait',2)
 
 	# Select first payee
+	performAction('wait_for_view_by_id', "carrot")
 	touch("imageView marked:'carrot'")[0]
-
-	performAction('enter_text_into_id_field', "4", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
+	
+	@amount = "3"
+	performAction('enter_text_into_id_field', "#{@amount}", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
 	performAction('enter_text_into_id_field', "0", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
 	performAction('enter_text_into_id_field', "0", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
+	
 	performAction('wait',2)
+
+	# Try to tap earlier day than the currently selected day 3..4 gives us only the day (e.g. 08/05/2013 -> 5)
+	selectedDay = query("textView marked:'date_text'","text")[0][3..4].to_i
 
 	# Touch calendar icon
 	touch("android.widget.RelativeLayout marked:'date_item'")
 	performAction('wait',2)
 
-	# Try to tap today (should be grayed out)
-	currentDay = Time.new.day
-	touch query("com.caldroid.SquareTextView marked:'#{currentDay}'")[0]
+	if(selectedDay != 1)
+		previousDay = selectedDay - 1
+		touch("com.caldroid.SquareTextView marked:'#{previousDay}'")[0]
 
-	# Verify we are still on the calendar screen
-	performAction('assert_text', "Deliver by Date", true) 
-
+		# Verify we are still on the calendar screen
+		performAction('assert_text', "Deliver by Date", true) 
+	end
+	
 	performAction('go_back')
 	performAction('scroll_down')
 
@@ -248,25 +254,45 @@ Given /^I make a payment$/ do
 	performAction('assert_text', "Confirmation Number", true) 
 end
 
-# Delete the most recent pyament
+# Delete the payment we just made by looking up the amount
+# NOTE this will work better when we use a calabash specific user
 Given /^I verify I can delete a payment$/ do
 	macro %Q[I navigate to "Review Payments" under "Pay Bills"]
 
-	# Select the first payment and delete it
-	performAction('wait_for_text', "/")
-	performAction('click_on_text', "/")
-	performAction('scroll_down')
-	performAction('scroll_down')
-	performAction('wait',1)
-	performAction('click_on_view_by_id',"delete_payment_button")
-	touch("button marked:'Yes, Delete'")
-	performAction('wait_for_dialog_to_close')
-  	
-  	performAction('assert_text', "Scheduled Payment Deleted", true) 
+	searchString = "$" + "#{@amount}" + ".00"
+	amounts = query("textView marked:'#{searchString}'")
+	if (amounts.size != 0)
+		touch(query("textView marked:'#{searchString}'")[0])
+	else
+		# Scroll until amount is found (max of 10 scrolls)
+		counter = 0
+		while amounts.size == 0 && counter <= 10 do
+			counter = counter + 1
+			performAction('scroll_down')
+			amounts = query("textView marked:'#{searchString}'")
+		end
+		touch(query("textView marked:'#{searchString}'")[0])
+	end
+
+	performAction("scroll_down")
+	performAction('wait',2)
+	performAction("scroll_down")
+	performAction('wait',2)
+
+	if element_exists("button marked:'delete_payment_button'")
+		performAction('click_on_view_by_id',"delete_payment_button")
+		touch("button marked:'Yes, Delete'")
+		performAction('wait_for_dialog_to_close')
+  		
+  		performAction('wait_for_text', "Scheduled Payment Deleted")
+  		performAction('assert_text', "Scheduled Payment Deleted", true) 
+  	else
+		screenshot_and_raise "Payment Cannot Be Deleted"
+	end
 end
 
 # Start a weekly transfer and verify in the calendar that 
-# TODO Find good way to test the calendar
+# TODO Find good way of testing the calendar
 Given /^I verify the calendar in transfer money$/ do
 	macro %Q[I navigate to "Transfer Money" under "Transfer Money"]
 	performAction('wait_for_text', "Transfer Money")

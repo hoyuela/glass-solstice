@@ -73,7 +73,7 @@ Feature: Android Bank Smoke Test
 	@bank_sso
 	Scenario: SSO		
 		Given The splash screen is finished
-]
+
 		Then I log in as a "normal" "asys" "sso" user
 		
 		Then I switch to card
