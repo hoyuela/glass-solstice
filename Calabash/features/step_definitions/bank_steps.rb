@@ -7,8 +7,9 @@ Given /^I verify transactions$/ do
 	#Tap the first account in the list
 	# Calabash does not recognize the list view so must tap on the "acct_carat" icon
 	performAction('click_on_view_by_id', "acct_carat")
+	performAction('wait', 3)
 
-  	performAction('assert_text', "Transactions", true) 
+	performAction('wait_for_text', "Transactions")
 
 	# Tap the first transaction
 	# Calabash does not recognize the list view so must tap on the first occurence of "/" which selects the first transactions
@@ -65,32 +66,46 @@ Given /^I verify managing payees$/ do
 	# Tap first payee
 	performAction('wait', 2)
 	touch("imageView marked:'carrot'")[0]
+  	performAction('wait', 2)
 
-	# TODO find way to get data from the payee list view
-	# 
 	# Get the first payee name and then verify that it is not equal to the next payee
-	#labelQuery = query("label", "text")
-	#payeeIndex = labelQuery.index("Payee Name")+1
-	#firstPayeeName = labelQuery[payeeIndex]
+	labelQuery = query("textView", "text")
+	payeeIndex = labelQuery.index("Payee Name")+1
+	firstPayeeName = labelQuery[payeeIndex]
 
 	# Test swipe
   	performAction('swipe', 'right')
-  	performAction('wait', 4)
+  	performAction('wait', 3)
+  	performAction('swipe', 'right')
+  	performAction('wait', 3)
 
 	# Now compare the two payee names
-	#labelQuery = query("label", "text")
-	#payeeIndex = labelQuery.index("Payee Name")+1
-	#secondPayeeName = labelQuery[payeeIndex]
+	labelQuery = query("textView", "text")
+	payeeIndex = labelQuery.index("Payee Name")+1
+	secondPayeeName = labelQuery[payeeIndex]
 
-	#if (firstPayeeName == secondPayeeName)
-	#	screenshot_and_raise "After swipe payees are the same"
-	#end
+	if (firstPayeeName == secondPayeeName)
+		screenshot_and_raise "After swipe payees are the same"
+	end
 	performAction('go_back')
+	performAction('wait', 2)
 end
 
 # Test the features in adding a payee but don't actually add a payee
 Given /^I verify adding a payee$/ do
-	touch("button marked:'Add New Payee'")
+	buttons = query("button marked:'Add New Payee'")
+	if (buttons.size != 0)
+		touch("button marked:'Add New Payee'")
+	else
+		# Scroll until button is found (max of 10 scrolls)
+		counter = 0
+		while buttons.size == 0 && counter <= 10 do
+			counter = counter + 1
+			performAction('scroll_down')
+			buttons = query("button marked:'Add New Payee'")
+		end
+		touch("button marked:'Add New Payee'")
+	end
 
 	# Try invalid characters
 	performAction('enter_text_into_id_field', "!!@@##$$%%", "search_field")
@@ -238,6 +253,7 @@ Given /^I verify I can delete a payment$/ do
 	macro %Q[I navigate to "Review Payments" under "Pay Bills"]
 
 	# Select the first payment and delete it
+	performAction('wait_for_text', "/")
 	performAction('click_on_text', "/")
 	performAction('scroll_down')
 	performAction('scroll_down')
@@ -253,7 +269,7 @@ end
 # TODO Find good way to test the calendar
 Given /^I verify the calendar in transfer money$/ do
 	macro %Q[I navigate to "Transfer Money" under "Transfer Money"]
-	performAction('wait',6)
+	performAction('wait_for_text', "Transfer Money")
 
 	touch("textView marked:'Frequency'")
 	touch("textView marked:'Weekly'")

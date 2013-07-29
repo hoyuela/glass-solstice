@@ -1,26 +1,39 @@
 # Steps for testing the ATM Locator
+# Only the first step is converted to calabash-android the other two still have calabash-ios elements
 #
-# Everything below is just iOS calabash code that needs to be modified for Android
-# STILL IN PROGRESS
-# DOES NOT WORK IN EMULATOR
+# Map View does not work in emulator
 
 # Goes to ATM Locator either from login screen or from the side menu
 # then searches an address and views the streetview of a specific pin
 Given /^I verify ATM locator from the (login screen|menu)$/ do |where|
-	#if where == "menu"
-	#	macro %Q[I navigate to "Search By Location" under "ATM Locator"]
+	if where == "menu"
+		macro %Q[I navigate to "Search By Location" under "ATM Locator"]
+		performAction('wait', 3)
+
+		if (element_exists("button marked:'modal_alert_cancel'"))	
+			performAction('click_on_view_by_id', "modal_alert_cancel")
+		end
+		performAction('wait_for_text', "ATM Locator")
+
 	#	macro %Q[I verify ATM locator search a location]
 	#
 	#	macro %Q[I navigate to "Find Nearby" under "ATM Locator"]
 	#	macro %Q[I verify ATM locator find nearby]
-	#else
-	#	touch("button marked:'RegisterNowATMLocatorButton'")
+	else
+		performAction('click_on_view_by_id', "register_now_or_atm_button")
+		performAction('wait', 3)
+
+		if (element_exists("button marked:'modal_alert_cancel'"))	
+			performAction('click_on_view_by_id', "modal_alert_cancel")
+		end
+		performAction('wait_for_text', "ATM Locator")
+
 	#	macro %Q[I verify ATM locator search a location]
 	#	macro %Q[I press the back button]
 	#
 	#	touch("button marked:'RegisterNowATMLocatorButton'")
 	#	macro %Q[I verify ATM locator find nearby]
-	#end
+	end
 end
 
 # Searches for solstices address and views street view of nearby pin
