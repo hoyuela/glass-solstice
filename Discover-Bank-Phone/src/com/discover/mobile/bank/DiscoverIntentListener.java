@@ -15,6 +15,7 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
+import com.discover.mobile.common.utils.StringUtility;
 
 /**
  * Activity used to intercept intents raised with the scheme com.discover.mobile. Used for prompting a user with a modal
@@ -60,7 +61,7 @@ public final class DiscoverIntentListener extends BaseActivity {
 			if (data.getScheme().equalsIgnoreCase(METHOD_SCHEME)) {
 				final String method = data.getSchemeSpecificPart();
 				if (method.contains(PROVIDE_FEEDBACK)) {
-					BankConductor.navigateToFeedback(true);
+					BankConductor.navigateToFeedback(true, StringUtility.EMPTY);
 				} else if (method.contains(PRIVACY_STATEMENT)) {
 					this.finish();
 					final long halfSecond = 500;

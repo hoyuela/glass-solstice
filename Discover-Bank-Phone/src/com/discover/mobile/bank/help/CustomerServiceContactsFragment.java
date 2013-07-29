@@ -11,8 +11,10 @@ import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -38,8 +40,15 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		loadViewsIn(mainView);
 		loadLists(mainView);
 
+		// If we are in card we need to set the mode for the layout footer otherwise set the appropriate provide feedback
+		// url for whether you are in a logged in or logged out state. 
 		if(card){
 			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
+		} else {
+			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).
+										setProvideFeedbackUrl((Globals.isLoggedIn()) ? 
+															   getString(R.string.bank_contact_us_logged_in_feedback_url) : 
+															   getString(R.string.bank_contact_us_logged_out_feedback_url));
 		}
 		Bundle args = getArguments();
 		if (args.containsKey(BankInfoNavigationActivity.GO_BACK_TO_LOGIN)) {
@@ -50,6 +59,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 			params.height = (int) this.getResources().getDimension(R.dimen.help_bar_height_three_items);
 			help.setLayoutParams(params);
 		}
+		
 		return mainView;
 	}
 

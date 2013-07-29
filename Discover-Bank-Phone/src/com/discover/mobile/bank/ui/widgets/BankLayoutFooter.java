@@ -22,6 +22,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	private Button privacyTerms;
 	private TextView copyRight;
 	private BankNeedHelpFooter helpFooter;
+	private String provideFeedbackUrl;
 
 	/**Set to true when the footer needs to send the user to card pages*/
 	private boolean cardMode = false;
@@ -64,14 +65,17 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 		for (int i = 0; i < N; ++i) {
 			final int attr = a.getIndex(i);
 			switch (attr) {
-			case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_footerType:
-				final int footerType = a.getInt(attr,FooterType.PRIVACY_TERMS);
-				this.setFooterType(footerType);
-				break;
-			case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_helpNumber:
-				final String helpNumber = a.getString(attr);
-				helpFooter.setToDialNumberOnClick(helpNumber);
-				break;
+				case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_footerType:
+					final int footerType = a.getInt(attr,FooterType.PRIVACY_TERMS);
+					this.setFooterType(footerType);
+					break;
+				case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_helpNumber:
+					final String helpNumber = a.getString(attr);
+					helpFooter.setToDialNumberOnClick(helpNumber);
+					break;
+				case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_provideFeedbackUrl:
+					provideFeedbackUrl = a.getString(attr);
+					break;
 			}
 		}
 		a.recycle();
@@ -156,7 +160,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	@Override
 	public void onClick(final View sender) {
 		if (provideFeedback.getId() == sender.getId()) {
-			BankConductor.navigateToFeedback(cardMode);
+			BankConductor.navigateToFeedback(cardMode, provideFeedbackUrl);
 		} else if (privacyTerms.getId() == sender.getId()) {
 			if(!cardMode){
 				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
@@ -178,5 +182,15 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	 */
 	public void setCardMode(final boolean cardMode) {
 		this.cardMode = cardMode;
+	}
+
+	
+	public String getProvideFeedbackUrl() {
+		return provideFeedbackUrl;
+	}
+
+	
+	public void setProvideFeedbackUrl(String provideFeedbackUrl) {
+		this.provideFeedbackUrl = provideFeedbackUrl;
 	}
 }

@@ -41,6 +41,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
+		getFooter().setProvideFeedbackUrl(getString(R.string.bank_transfer_funds_feedback_url));
 
 		showSuccessfulTransferTitle(view);
 

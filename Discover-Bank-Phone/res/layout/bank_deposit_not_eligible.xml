@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.bank"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
@@ -53,7 +55,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/openAccount" 
-            style="@style/bank_layout_footer_style"/>
+            style="@style/bank_layout_footer_style"
+            custom:provideFeedbackUrl="@string/bank_check_deposit_feedback_url"/>
 
     </RelativeLayout>
 
