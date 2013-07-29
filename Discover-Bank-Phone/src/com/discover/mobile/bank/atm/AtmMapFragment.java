@@ -155,6 +155,9 @@ CustomProgressDialog, OnPreProcessListener {
 
 	/**Boolean that is false if the app should allow the back button press*/
 	private boolean shouldGoBack = false;
+	
+	/**True if user is entering the report atm flow. If true, upon returning from AtmWebView, we know user was in list view and should go back to list*/
+	private boolean isReportingAtm = false;
 
 	/**Panel containing the buttons*/
 	private LinearLayout navigationPanel;
@@ -1127,6 +1130,7 @@ CustomProgressDialog, OnPreProcessListener {
 	 */
 	public void reportAtm(final String id){
 		shouldGoBack = true;
+		isReportingAtm = true;
 		streetView.show();
 		streetView.reportAtm(id);
 	}
@@ -1144,14 +1148,16 @@ CustomProgressDialog, OnPreProcessListener {
 		if(shouldGoBack){
 			
 			//There is an issue where the map gets garbage collected so in order to prevent this we swap to the list
-			//view when going to street view than upon return we swap back.   
-			if (streetViewWasOnMap) {
+			//view when going to street view than upon return we swap back. However, if the user was reporting an ATM,
+			//we should stay in the list view, since that is where they would have entered AtmWebView from.
+			if (streetViewWasOnMap && !isReportingAtm) {
 				showMap();
 			}
 			
 			streetView.clearWebview();
 			streetView.hide();
 			shouldGoBack = false;
+			isReportingAtm = false;
 		}else if(isListLand){
 			toggleButton();
 		}else{	
