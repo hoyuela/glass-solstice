@@ -48,7 +48,7 @@ public class DepositDetail implements Serializable {
 	public Money amount;
 	
 	@JsonProperty("account")
-	public int account;
+	public String account;
 	
 	@JsonProperty("confirmation")
 	public String confirmation;
