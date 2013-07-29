@@ -334,6 +334,8 @@ CustomProgressDialog, OnPreProcessListener {
 		} else if (isNoResultsModalShowing()) {
 			noResultsModal = AtmModalFactory.getNoResultsModal(getActivity());
 			showCustomAlertDialog(noResultsModal);
+		} else if (useCustomDialog()){
+			startProgressDialog(false, DiscoverActivityManager.getActiveActivity());
 		}
 		
 		restoreCameraView();
@@ -817,6 +819,7 @@ CustomProgressDialog, OnPreProcessListener {
 			resultEndIndex = endIndex;
 		}
 		isLoading = false;
+		setShowCustomDialog(false);
 	}
 
 	/**
@@ -951,6 +954,8 @@ CustomProgressDialog, OnPreProcessListener {
 			DiscoverModalManager.getActiveModal().dismiss();
 			DiscoverModalManager.clearActiveModal();
 			setHelpModalShowing(true);
+		} else if (useCustomDialog()){
+			DiscoverModalManager.clearActiveModal();
 		}
 	}
 
