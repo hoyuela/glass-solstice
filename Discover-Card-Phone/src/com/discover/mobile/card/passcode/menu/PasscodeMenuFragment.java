@@ -115,11 +115,6 @@ public class PasscodeMenuFragment extends BaseFragment {
 		    				  new NavigateACHomeAction());
 		    		  modal.hideNeedHelpFooter();
 		    		  ((NavigationRootActivity)context).showCustomAlert(modal);
-		    		  
-		    		  /*
-		    		  PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
-		    		  new DeletePasscodeRequest(getActivity(), pUtils.getPasscodeToken()).loadDataFromNetwork(new DisableRequestListener());
-		    		  */
 		    	  }
 		      }
 		    });
@@ -129,25 +124,10 @@ public class PasscodeMenuFragment extends BaseFragment {
 	}
 	
 	private final class UpdatePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler {
-
 		@Override
 		public void onStrongAuthSucess(Object data) {
-			Log.v(TAG, "Success");
 			makeFragmentVisible(new PasscodeUpdateStep1Fragment());
 		}
-
-		@Override
-		public void onStrongAuthError(Object data) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onStrongAuthNotEnrolled(Object data) {
-			// TODO Auto-generated method stub
-			
-		}
-
 	}
 	
 	private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -174,9 +154,6 @@ public class PasscodeMenuFragment extends BaseFragment {
 	    }
 	  }
 	
-	private final void showDisableModal(){
-	}
-
 	private final class DisableRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {

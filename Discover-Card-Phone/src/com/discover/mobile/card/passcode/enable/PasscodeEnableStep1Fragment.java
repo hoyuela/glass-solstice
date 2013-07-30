@@ -19,7 +19,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeEnableStep1Fragment extends BaseFragment  {
-	static final String TRACKING_PAGE_NAME = "PasscodeEnableStep1";
 	private static String TAG = "PasscodeEnableStep1Fragment";
 	
 	@Override
@@ -77,25 +76,11 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 	}
 	
 	private final class EnablePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler{
-
 		@Override
 		public void onStrongAuthSucess(Object data) {
 			Log.v(TAG, "Success");
 			makeFragmentVisible(new PasscodeEnableStep2Fragment());
 		}
-
-		@Override
-		public void onStrongAuthError(Object data) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void onStrongAuthNotEnrolled(Object data) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 
 }

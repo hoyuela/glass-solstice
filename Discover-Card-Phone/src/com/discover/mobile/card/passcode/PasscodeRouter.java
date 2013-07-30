@@ -58,8 +58,7 @@ public class PasscodeRouter {
 	private void route() {
 		if (pUtils.isForgotPasscode() && doesAccountHavePasscode) {
 			//only allow forgot passcode flow if account has passcode already setup
-			//when logged in via forgot passcode flow delete passcode and set status back to false
-//			pUtils.deletePasscodeToken();
+			//when logged in via forgot passcode flow set status back to false
         	pUtils.setForgotPasscode(false);
         	navigateForgot();
 		} else if (pUtils.doesDeviceTokenExist()) {
@@ -88,7 +87,6 @@ public class PasscodeRouter {
 
 	private void navigateSetup(){
 		Log.v(TAG, "Navigate Setup");
-		//TODO sgoff0 - properly configure SA
 		final StrongAuthHandler authHandler = new StrongAuthHandler(
         		activity,
         		new PasscodeStrongAuthFlow(new PasscodeSetupStep1Fragment(), this), false);
@@ -115,7 +113,7 @@ public class PasscodeRouter {
 		@Override
 		public void OnError(Object data) {
 			Log.e(TAG, "ERROR fetching passcode status");
-			//TODO show error page
+			//TODO error fetching passcode status
 		}
 
 		@Override
@@ -128,8 +126,7 @@ public class PasscodeRouter {
 		}
 	};
 	
-	private static final class PasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler{
-		
+	private static final class PasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler {
 		private PasscodeBaseFragment frag;
 		private PasscodeRouter pr;
 		
@@ -140,27 +137,10 @@ public class PasscodeRouter {
 
 		@Override
 		public void onStrongAuthSucess(Object data) {
-			// TODO Auto-generated method stub
 			Log.v(TAG, "StrongAuth success: about to make fragment visible");
-//			makeFragmentVisible(new PasscodeSetupStep1Fragment());
 			if (frag != null) {
 				pr.makeFragmentVisible(frag);
 			}
 		}
-
-
-		@Override
-		public void onStrongAuthNotEnrolled(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "NotEnrolled");
-			
-		}
-
-		@Override
-		public void onStrongAuthError(Object data) {
-			// TODO Auto-generated method stub
-			
-		}
-		
 	}
 }
