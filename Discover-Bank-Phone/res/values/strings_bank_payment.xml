@@ -63,7 +63,7 @@
  	<string name="schedule_pay_memo_opt">Memo (Optional)</string>
  	<string name="schedule_pay_button">Schedule Payment</string>
  	<string name="schedule_pay_memo">Memo</string>
- 	<string name="schedule_pay_spinner_body">Account Ending in</string>
+ 	<string name="schedule_pay_spinner_body">Ending in</string>
  	<string name="schedule_pay_cancel_title">Cancel This Action?</string>
  	<string name="schedule_pay_cancel_body">Are you sure you want to cancel? All information you have entered will be lost.</string>
  	<string name="schedule_pay_cancel_button_confirm">Cancel This Action</string>

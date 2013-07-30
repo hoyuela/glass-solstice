@@ -91,7 +91,7 @@
     <string name ="back_button_text">Back</string>
 	<string name="fast_check_token_key_in_ps">FastcheckToken1.0</string>
 	<string name="fast_check_error_tech_diff">We\'re currently experiencing technical difficulties. We apologize for any incovenience.</string>
-	<string name="fast_check_error_cannot_access">Due to special conditions related to your account, this page is not available.&lt;br/&gt;&lt;br/&gt;Please contact customer service at &lt;a href=\"tel://18003472683\"&gt;1&#8211;800&#8211;347&#8211;2683&lt;/a&gt; for assistance.</string>
+	<string name="fast_check_error_cannot_access">Due to specific conditions related to your account, this page is currently unavailable.&lt;br/&gt;&lt;br/&gt;Please contact Customer Service at &lt;a href=\"tel://18003472683\"&gt;1&#8211;800&#8211;347&#8211;2683&lt;/a&gt; for assistance.</string>
 	<string name="fast_check_error_no_token">You recently requested to disable your quick view settings. If you\'d like to enable this option, please log in and navigate to
 						\"Quick View\" under Profile and Settings.</string>
 	<string name="fast_check_rewards_outage_msg">Rewards Balance cannot be updated at this time.</string>

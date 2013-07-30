@@ -35,7 +35,10 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.net.HttpHeaders;
+import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /***
@@ -47,7 +50,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class QuickViewSetupFragment extends BaseFragment {
 
-    private ImageView toggleImage;
+    private DiscoverToggleSwitch toggleImage;
     private TextView qvinfoTextView, qvfaqTextView;
     private String new_token = "";
     private View mainView;
@@ -75,7 +78,8 @@ public class QuickViewSetupFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mainView = inflater.inflate(R.layout.quick_view_settings, null);
 
-        toggleImage = (ImageView) mainView.findViewById(R.id.quick_toggle);
+        toggleImage = (DiscoverToggleSwitch) mainView
+                .findViewById(R.id.quick_toggle);
 
         // Change CBB/MILES Texts
         final ImageView faqImage = (ImageView) mainView
@@ -94,10 +98,14 @@ public class QuickViewSetupFragment extends BaseFragment {
 
             @Override
             public void onClick(View v) {
+                toggleImage.toggle();
                 try {
                     updateQuickViewStatus();
                 } catch (Exception e) {
-                    CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+                    CardErrorBean bean = new CardErrorBean(
+                            QuickViewSetupFragment.this
+                                    .getString(R.string.fast_check_error_tech_diff),
+                            true);
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             (CardErrorHandlerUi) getActivity());
                     cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -155,7 +163,8 @@ public class QuickViewSetupFragment extends BaseFragment {
                                                                                 // invalid
                                                                                 // token
                         CardErrorBean bean = new CardErrorBean(
-                                getString(R.string.fast_check_error_tech_diff),
+                                QuickViewSetupFragment.this
+                                        .getString(R.string.fast_check_error_tech_diff),
                                 true);
                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                 (CardErrorHandlerUi) getActivity());
@@ -177,10 +186,16 @@ public class QuickViewSetupFragment extends BaseFragment {
                 if (null != decryptedToken) {
                     checkBindingStatus(decryptedToken);
                 } else {
+                    // analytics code
+                    TrackingHelper
+                            .trackPageView(AnalyticsPage.QUICKVIEW_SETUP_OFF);
                     showQVwithOffState();
                 }
             } catch (Exception e) {
-                CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+                CardErrorBean bean = new CardErrorBean(
+                        QuickViewSetupFragment.this
+                                .getString(R.string.fast_check_error_tech_diff),
+                        true);
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         (CardErrorHandlerUi) getActivity());
                 cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -208,7 +223,10 @@ public class QuickViewSetupFragment extends BaseFragment {
                 try {
                     showQVwithOnState();
                 } catch (Exception e) {
-                    CardErrorBean bean = new CardErrorBean(e.getMessage(), true);
+                    CardErrorBean bean = new CardErrorBean(
+                            QuickViewSetupFragment.this
+                                    .getString(R.string.fast_check_error_tech_diff),
+                            true);
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             (CardErrorHandlerUi) getActivity());
                     cardErrorResHandler.handleCardError((CardErrorBean) bean,
@@ -275,7 +293,9 @@ public class QuickViewSetupFragment extends BaseFragment {
                 View.VISIBLE);
         mainView.findViewById(R.id.qvalready_main_relative_view).setVisibility(
                 View.GONE);
-        toggleImage.setBackgroundResource(R.drawable.swipe_off);
+        if (toggleImage.isChecked()) {
+            toggleImage.toggle();
+        }
         setQVInfoText();
         quickviewOn = false;
     }
@@ -290,7 +310,9 @@ public class QuickViewSetupFragment extends BaseFragment {
                 View.VISIBLE);
         mainView.findViewById(R.id.qvalready_main_relative_view).setVisibility(
                 View.GONE);
-        toggleImage.setBackgroundResource(R.drawable.swipe_on);
+        if (!toggleImage.isChecked()) {
+            toggleImage.toggle();
+        }
         setQVInfoText();
         quickviewOn = false;
         qvinfoTextView.setText(R.string.quick_view_info_on);
@@ -346,9 +368,13 @@ public class QuickViewSetupFragment extends BaseFragment {
                                         R.id.qvsetup_main_relative_view)
                                         .setVisibility(View.VISIBLE);
                             quickviewOn = true;
-                            toggleImage
-                                    .setBackgroundResource(R.drawable.swipe_on);
+                            if (!toggleImage.isChecked()) {
+                                toggleImage.toggle();
+                            }
                             qvinfoTextView.setText(R.string.quick_view_info_on);
+                            // analytics code
+                            TrackingHelper
+                                    .trackPageView(AnalyticsPage.QUICKVIEW_SETUP_ON);
                         } else {
                             if ((mainView.findViewById(
                                     R.id.qvsetup_main_relative_view)
@@ -452,8 +478,30 @@ public class QuickViewSetupFragment extends BaseFragment {
             URL = urlStringBuffer.toString();
             headers.put(HttpHeaders.XHttpMethodOveride,
                     WSConstant.METHOD_DELETE);
-            obj.put(WSConstant.DEVICETOKEN_COOKIE, FastcheckUtil
-                    .decrypt(FastcheckUtil.readFastcheckToken(getActivity())));
+            try {
+                obj.put(WSConstant.DEVICETOKEN_COOKIE, FastcheckUtil
+                        .decrypt(FastcheckUtil
+                                .readFastcheckToken(getActivity())));
+            } catch (Exception e) {
+                CardErrorBean bean = new CardErrorBean(
+                        QuickViewSetupFragment.this
+                                .getString(R.string.fast_check_error_tech_diff),
+                        true);
+                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                        (CardErrorHandlerUi) getActivity());
+                cardErrorResHandler.handleCardError((CardErrorBean) bean,
+                        new CardErrorCallbackListener() {
+                            @Override
+                            public void onButton2Pressed() {
+                                removeQVFragment();
+                            }
+
+                            @Override
+                            public void onButton1Pressed() {
+                                removeQVFragment();
+                            }
+                        });
+            }
         } else {
             new_token = FastcheckUtil.genClientBindingToken();
             obj.put(WSConstant.DEVICETOKEN_COOKIE, new_token);
@@ -469,8 +517,9 @@ public class QuickViewSetupFragment extends BaseFragment {
                     public void onSuccess(Object data) {
                         Utils.log(LOG_TAG, "On Sucess()");
                         if (quickviewOn) {
-                            toggleImage
-                                    .setBackgroundResource(R.drawable.swipe_off);
+                            if (toggleImage.isChecked()) {
+                                toggleImage.toggle();
+                            }
                             FastcheckUtil.storeFastcheckToken(getActivity(),
                                     null);
                             setQVInfoText();
@@ -490,8 +539,9 @@ public class QuickViewSetupFragment extends BaseFragment {
                                 cardErrorResHandler
                                         .handleCardError((CardErrorBean) bean);
                             }
-                            toggleImage
-                                    .setBackgroundResource(R.drawable.swipe_on);
+                            if (!toggleImage.isChecked()) {
+                                toggleImage.toggle();
+                            }
                             qvinfoTextView.setText(R.string.quick_view_info_on);
                             quickviewOn = true;
                         }

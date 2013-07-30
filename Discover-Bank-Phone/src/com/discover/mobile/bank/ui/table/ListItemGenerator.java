@@ -38,6 +38,7 @@ public class ListItemGenerator {
 	private static final String STATUS_CANCELLED = "CANCELLED";
 
 	private ViewPagerListItem listItem;
+	private ReverseViewPagerListItem reverseListItem;
 	private Context context = null;
 
 	public ListItemGenerator(final Context context) {
@@ -46,6 +47,10 @@ public class ListItemGenerator {
 
 	private void initNewListItem() {
 		listItem = new ViewPagerListItem(context);
+	}
+	
+	private void initNewReverseListItem() {
+		reverseListItem = new ReverseViewPagerListItem(context);
 	}
 
 	public ViewPagerListItem getTwoItemCell(final int topLabelResource, final String middleLabelText) {
@@ -56,6 +61,16 @@ public class ListItemGenerator {
 			listItem.getBottomLabel().setVisibility(View.GONE);
 		}
 		return listItem;
+	}
+	
+	public ReverseViewPagerListItem getReverseTwoItemCell(final int topLabelResource, final String middleLabelText) {
+		initNewReverseListItem();
+		if(middleLabelText != null) {
+			reverseListItem.getTopLabel().setText(topLabelResource);
+			reverseListItem.getMiddleLabel().setText(middleLabelText);
+			reverseListItem.getBottomLabel().setVisibility(View.GONE);
+		}
+		return reverseListItem;
 	}
 
 	/** Same as a Two Item Cell but with a decreased text size for the middle label. */

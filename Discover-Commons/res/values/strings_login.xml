@@ -86,5 +86,7 @@
     
 	<!-- Fastcheck, aka QuickView -->
 	<string name="gotoFastcheckBtnText">Quick view</string>
+	<string name="passcodeInvalidAttempt">Invalid Passcode entered. Please try again.</string>
+	<string name="forgotPasscodeText">Log in with your User ID and Password to create your new Passcode.</string>
     
 </resources>

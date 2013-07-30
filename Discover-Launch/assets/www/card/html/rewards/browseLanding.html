@@ -21,11 +21,13 @@
             <!-- Middle content start from here-->
             <div data-role="content" class="pglist">
             <div id="pgPadding"></div>
+	    <div class="innerWrapper">
             <h1>Partner Gift Cards and eCertificates</h1>
-               <ul class="suggestions whitebg-list-view" >
+	    </div>
+               <ul class="suggestions whitebg-list-view" data-role="listview" data-theme="d" data-inset="true" id="list1" >
                     <li>
 						 <div class="arrow" id="browse-all-partners">
-                        <a href="#"><span class="giftName" id="allpartners"></span></a>
+                        <a href="#" class="ui-link"><span class="giftName" id="allpartners"></span></a>
 						</div>
                     </li>
                     <li>
@@ -44,8 +46,10 @@
 						</div>
                     </li>
                 </ul><br/>
+	       <div class="innerWrapper">
                 <h2>Categories</h2>
-               <ul class="suggestions whitebg-list-view">
+	       </div>
+               <ul class="suggestions whitebg-list-view" data-role="listview" data-theme="d" data-inset="true" id="newList">
                     <li>
 						 <div class="arrow" id="RST">
                         <a href="#"><span class="giftName">Restaurants</span></a>

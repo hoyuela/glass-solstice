@@ -185,8 +185,8 @@ dfs.crd.push.manage.CachePageData = function()
 		dfs.crd.push.manage.pageCachingVal["CRLT"] = crltVal;
 		
 	// save Slider status	
-		pnSliderParam = $('select#alertsetting').val();
-        if (pnSliderParam == "off")
+/*13.3 Global Change*/	pnSliderParam = $(document).jqmData("flipval");
+        if (pnSliderParam == "off" || pnSliderParam == "no" )/*13.3 Global Change*/
         {
             dfs.crd.push.manage.pageCachingVal["pushSlider"] = "P";
         }
@@ -318,13 +318,13 @@ var errEmptyPhoneNumber = 'Please enter a valid mobile number.';
 			{
 				$('#global-errors').html(errOtherCustomCarrier).addClass('redtext boldtext').show();
 				$('body').animate({scrollTop:0}, 'slow');
-				$("#changenumber #custom-carrier").addClass("input_hightlight_error");
+				$("#changenumber #custom-carrier").parent().addClass("inputOnError");   /* 13.3 global change */
 				return false;
 			}
 			else
 			{
-				if($('#changenumber #custom-carrier').hasClass('input_hightlight_error'))
-					$('#changenumber #custom-carrier').removeClass("input_hightlight_error");
+				if($('#changenumber #custom-carrier').parent().hasClass('inputOnError'))   /* 13.3 global change */
+					$('#changenumber #custom-carrier').parent().removeClass("inputOnError");    /* 13.3 global change */
 			}
 		}
 if( $('[name=balaDefAmt]').val() < dfs.crd.push.manage.balaMinAmt && ($.inArray("BALA",dfs.crd.push.manage.pushCheckedPost)>=0 || $.inArray("BALA",dfs.crd.push.manage.smsCheckedPost)>= 0)) {
@@ -450,7 +450,7 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
         var index = $("#addnumber select").get(0).selectedIndex;
 	 	/*96028*/
 		if(isEmpty(str)){
-		$('.add_phone_number').addClass("input_hightlight_error");
+		$('.add_phone_number').parent().addClass("inputOnError");    /* 13.3 global change 26/07/13 */
 		$('#global-errors').html(errEmptyPhoneNumber).addClass('redtext boldtext').show();		
 		 return false;
 		}
@@ -460,13 +460,13 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
                 { 
                     $('#global-errors').html(errEmptyPhoneNumber).addClass('redtext boldtext').show();
                     $('body').animate({scrollTop:0}, 'slow');
-                    $("#txt-phone-number").addClass("input_hightlight_error");
+                    $("#txt-phone-number").parent().addClass("inputOnError");	/*13.3 Global Change*/
                     return false;
                 }
             else
                 {
-                    if($("#txt-phone-number").hasClass('input_hightlight_error'))
-                        $("#txt-phone-number").removeClass("input_hightlight_error"); 
+                    if($("#txt-phone-number").parent().hasClass('inputOnError'))	/*13.3 Global Change*/
+                        $("#txt-phone-number").parent().removeClass("inputOnError"); 	/*13.3 Global Change*/
                 }
         }
     }
@@ -476,14 +476,14 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
 	}*/
     if(dfs.crd.push.manage.changeTextNumber)
     {
-        if($("#txt-phone-number").hasClass('input_hightlight_error'))
-            $("#txt-phone-number").removeClass("input_hightlight_error");
+        if($("#txt-phone-number").parent().hasClass('inputOnError'))   /* 13.3 global change */
+            $("#txt-phone-number").parent().removeClass("inputOnError");   /* 13.3 global change */
         
         var str = $("#txt-change-phone-number").val();
         var index = $("#changenumber select").get(0).selectedIndex;
         /*96028*/
 		if(isEmpty(str)){
-		$('.phone_number').addClass("input_hightlight_error");
+		$('.phone_number').parent().addClass("inputOnError");    /* 13.3 global change 26/07/13 */
 		 return false;
 		}
         if(str.length > 0)
@@ -492,14 +492,14 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
                 {
                     $('#global-errors').html(errEmptyPhoneNumber).addClass('redtext boldtext').show();
                     $('body').animate({scrollTop:0}, 'slow');
-                    $("#txt-change-phone-number").addClass("input_hightlight_error");
+                    $("#txt-change-phone-number").parent().addClass("inputOnError");   /* 13.3 global change */
                     return false;
 					trackInlineError();
                 }
             else
                 {
-                    if($("#txt-change-phone-number").hasClass('input_hightlight_error'))
-                        $("#txt-change-phone-number").removeClass("input_hightlight_error"); 
+                    if($("#txt-change-phone-number").parent().hasClass('inputOnError'))   /* 13.3 global change */
+                        $("#txt-change-phone-number").parent().removeClass("inputOnError");   /* 13.3 global change */
 					//$('#global-errors').html("");
 					$('#global-errors').html(errEmptyPhoneNumber).hide();
                 }
@@ -508,8 +508,8 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
 
     if(dfs.crd.push.manage.addnumberChange)
         {
-            if($("#txt-phone-number").hasClass('input_hightlight_error'))
-                $("#txt-phone-number").removeClass("input_hightlight_error");
+            if($("#txt-phone-number").parent().hasClass('inputOnError'))   /* 13.3 global change */
+                $("#txt-phone-number").parent().removeClass("inputOnError");    /* 13.3 global change */
             var str = $("#txt-phone-number").val();
             var index = $("#addnumber select").get(0).selectedIndex;
 			/*96028*/
@@ -522,14 +522,14 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
                 if (!dfs.crd.push.manage.validatePhoneNumbers(str))
                 {
                     $('#global-errors').html(errEmptyPhoneNumber).addClass('redtext boldtext').show();
-                    $("#txt-phone-number").addClass("input_hightlight_error");
+                    $("#txt-phone-number").parent().addClass("inputOnError");   /* 13.3 global change */
                     return false;
 					trackInlineError();
                 }
                 else
                 {
-                    if($("#txt-phone-number").hasClass('input_hightlight_error'))
-                        $("#txt-phone-number").removeClass("input_hightlight_error"); 
+                    if($("#txt-phone-number").parent().hasClass('inputOnError'))    /* 13.3 global change */
+                        $("#txt-phone-number").parent().removeClass("inputOnError");     /* 13.3 global change */
                 }
             }
         }
@@ -797,8 +797,11 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 			
 			$.each(crltAmtOptions, function(index,value) {
                var options = '<option value='+value+'>$'+value+'</option>';
-               $("#notifsettings").find('[id^=CRLT]').find('[id^=VALUE]').append(options);
+               /*13.3 Global Change */ $("#notifsettings").find('[id^=CRLT]').find('[id^=VALUE1]').append(options);
                });
+			/*13.3 Global Change:Starts*/console.log($("#VALUE1").html());
+			$("select#VALUE1").msDropdown().data("dd");
+			/*13.3 Global Change:Ends*/
         		
 	    dfs.crd.push.manage.balaMaxAmt = preferenceDetails["balaMaxAmt"];
         dfs.crd.push.manage.balaMinAmt = preferenceDetails["balaMinAmt"];
@@ -817,16 +820,20 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         	if (dfs.crd.push.manage.userOverride == true)
 			{
 				textglobalStatus = "<h3 class='redtext'>Previous account settings will be removed once your preferences are saved. </h3>";
-				$("#alertsetting").attr('disabled', false);
-				$("#alertsetting").val('on').slider('refresh'); 
-				
+				$("#alertsetting").attr('disabled', false);				
+				/*13.3 Global Change : Starts*/ //$("#alertsetting").val('on').slider('refresh'); 
+				$('.slider-button').addClass('on').html('ON');
+				$(document).jqmData("flipval",'yes');/*13.3 Global Change : Ends*/
+		
 			}
 			else if (dfs.crd.push.manage.userOverride == false)
 			{
 				textglobalStatus = "<h3 class='redtext boldtext'>Another account is registered for this device. Override previous account to enable push alerts.</h3>";
 				$("#alertsetting").attr('disabled', true);
-				$("#alertsetting").val('off').slider('refresh');
-			}
+				/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
+				$('.slider-button').removeClass('on').html('OFF');
+				$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/			
+				}
 			else
 			{
 				// normal user login by registered user, remove any global error status
@@ -835,7 +842,9 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 				if (dfs.crd.push.manage.pushEnabled == "P")
 				{
 					// user has not accepted Push T&C, turn off push enable slider
-					$("#alertsetting").val('off').slider('refresh');
+					/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
+					$('.slider-button').removeClass('on').html('OFF');
+					$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/
 					// move the T&C Links div from the top to bottom
 					$('#registered-tnclinks').hide();
 					$('#unregistered-tnclinks').show();
@@ -844,11 +853,15 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 				{
 					if (dfs.crd.push.manage.pushEnabled == "Y")
 					{
-						$("#alertsetting").val('on').slider('refresh');
+						/*13.3 Global Change : Starts*/ //$("#alertsetting").val('on').slider('refresh');
+						$('.slider-button').addClass('on').html('ON');
+						$(document).jqmData("flipval",'yes');/*13.3 Global Change : Ends*/
 					}
 					else
 					{
-						$("#alertsetting").val('off').slider('refresh');
+						/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
+						$('.slider-button').removeClass('on').html('OFF');
+						$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/
 					}
 				}
 			}
@@ -858,7 +871,9 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 			if (dfs.crd.push.manage.pushEnabled == "P")
 				{
 					// user has not accepted Push T&C, turn off push enable slider
-					$("#alertsetting").val('off').slider('refresh');
+					/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
+					$('.slider-button').removeClass('on').html('OFF');
+					$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/
 					// move the T&C Links div from the top to bottom
 					$('#registered-tnclinks').hide();
 					$('#unregistered-tnclinks').show();
@@ -867,11 +882,15 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 				{
 					if (dfs.crd.push.manage.pushEnabled == "Y")
 					{
-						$("#alertsetting").val('on').slider('refresh');
+						/*13.3 Global Change : Starts*/ //$("#alertsetting").val('on').slider('refresh');
+						$('.slider-button').addClass('on').html('ON');
+						$(document).jqmData("flipval",'yes');/*13.3 Global Change : Ends*/
 					}
 					else
 					{
-						$("#alertsetting").val('off').slider('refresh');
+						/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
+						$('.slider-button').removeClass('on').html('OFF');
+						$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/
 					}
 				}
 		}
@@ -1048,20 +1067,25 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
          * Utility function to validate 'amount' field. 
          * This doesn't accepts character data in the input form. If User does, warn him by showing a standard error message.
          */
+/* 13.3 global change starts */	 
          $(".textbox_alertspage,.phone_number").keypress(function(event) {
                                                         dfs.crd.push.manage.isChangeMade = true;
                                                         var controlKeys = [8, 9, 13, 35, 36, 37, 39];
                                                         var isControlKey = controlKeys.join(",").match(new RegExp(event.which));
                                                         if (!event.which || (49 <= event.which && event.which <= 57) || (48 == event.which && $(this).attr("value")) ||  isControlKey) { 
-                                                        if($(this).hasClass('input_hightlight_error')) {
-                                                         $(this).removeClass("input_hightlight_error");
+
+
+                                                        if($(this).parent().hasClass('inputOnError')) {
+                                                         $(this).parent().removeClass("inputOnError");
                                                         }
                                                         return;
                                                         } else {
-                                                         $(this).addClass("input_hightlight_error");
+
+                                                         $(this).parent().addClass("inputOnError");
                                                          event.preventDefault();
                                                         }                                            
-                                                        });        
+                                                        });  
+	/* 13.3 global change ends */
        $(".textbox_alertspage,.phone_number,#changenumber #custom-carrier,#addnumber #custom-carrier").focusout(function() {
 														$('#global-errors').html('');
                                                         dfs.crd.push.manage.isChangeMade = true;
@@ -1095,7 +1119,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 	$('.phone_number').attr("placeholder",stored_number);
 	}
     if(chkForNumberRepeat(stored_number) == true) {        
-        $('.phone_number').addClass("input_hightlight_error");
+        $('.phone_number').parent().addClass("inputOnError");  /* 13.3 global change */
     }
 	dfs.crd.push.manage.checkLengthofTextbox();
 	});
@@ -1146,10 +1170,10 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 								    },
                                     function(){
 										setValChangeNumClose()
-if($("#txt-change-phone-number").hasClass('input_hightlight_error'))
-				$("#txt-change-phone-number").removeClass("input_hightlight_error"); 												
-			if($("#changenumber #custom-carrier").hasClass('input_hightlight_error')){											
-				$("#changenumber #custom-carrier").removeClass("input_hightlight_error");
+			if($("#txt-change-phone-number").parent().hasClass('inputOnError'))     /* 13.3 global change */
+				$("#txt-change-phone-number").parent().removeClass("inputOnError"); 	/* 13.3 global change */ 											
+			if($("#changenumber #custom-carrier").parent().hasClass('inputOnError')){		/* 13.3 global change */									
+				$("#changenumber #custom-carrier").parent().removeClass("inputOnError");      /* 13.3 global change */
 				$('#global-errors').html('');
 			}
 			});
@@ -1179,9 +1203,10 @@ if($("#txt-change-phone-number").hasClass('input_hightlight_error'))
         /*
          *Check the current state of the checkbox and Enable / disable accordingly.
          */
-        var val = $('select#alertsetting').val();
-        
-        if (val == "off") {
+       /*13.3 Global Change : Starts*/        //var val = $('select#alertsetting').val();
+        var val = $(document).jqmData("flipval");
+		
+        if (val == "off" || val == "no") { /*13.3 Global Change : Ends*/
             $("#notifsettings").find(':checkbox[id^=PNRM]').attr('disabled', true);
             $("#notifsettings .ui-grid-b .ui-block-b").css("opacity","0.3");
         } else if (val == "on") {
@@ -1189,19 +1214,25 @@ if($("#txt-change-phone-number").hasClass('input_hightlight_error'))
             $("#notifsettings .ui-grid-b .ui-block-b").css("opacity","1.0");
         }
         
-        $('select#alertsetting').change(function () {
-                                        if ($(this).val() == 'on')
+/*13.3 Global Change : Starts*/ $('#manageAlerts-pg #alertsetting .slider-button').click(function(){
+			//alert("in");
+      //  $('select#alertsetting').change(function () {
+                                        if ($(document).jqmData("flipval") == 'off' || $(document).jqmData("flipval") == 'no')/*13.3 Global Change : Ends*/
                                         {
+											/*13.3 Global Change : Starts*/ //alert('on'); /*13.3 Global Change : Ends*/
 											$("#notifsettings").find(':checkbox[id^=PNRM]').attr('disabled', false);
 											$("#notifsettings .ui-grid-b .ui-block-b").css("opacity","1");
                                         }
                                         else
                                         {
+											/*13.3 Global Change : Starts*/ //alert('off'); /*13.3 Global Change : Ends*/
 											$("#notifsettings").find(':checkbox[id^=PNRM]').attr('disabled', true);
 											$("#notifsettings .ui-grid-b .ui-block-b").css("opacity","0.3");
                                         }
                                         dfs.crd.push.manage.isChangeMade = true;
-                                    });
+                                /*13.3 Global Change : Starts*/  //  });
+									
+							});	/*13.3 Global Change : Ends*/
         /* 
          * Show / Hide the Phone Number block based on Text Type checkbox on manage Alert page if number is not registered.
          */
@@ -1245,7 +1276,7 @@ if($("#txt-change-phone-number").hasClass('input_hightlight_error'))
                 dfs.crd.push.manage.validateTextNumber = false;
             }
         }
-        $("#notifsettings").find('[id^=CRLT]').find('[id^=VALUE]').change(function() {
+        /*13.3 Global Change*/        $("#notifsettings").find('[id^=CRLT]').find('[id^=VALUE1]').change(function() {
                                           var errSel = 'You selected more than a maximum limit.';
                                           if( $(this).val() > dfs.crd.push.manage.crltMaxAmt) 
                                           { 
@@ -1386,8 +1417,9 @@ dfs.crd.push.manage.postPushPreferenceData = function()
         }        
         // get the status of Push Notification slider and find if the user has changed his status
         // if so set the params as "" in JSON so that EContact Service will not be called by the REST Service         
-        pnSliderParam = $('select#alertsetting').val();        
-        if (pnSliderParam == "off")
+        /*13.3 Global Change : Starts*/ // pnSliderParam = $('select#alertsetting').val();   
+	   pnSliderParam = $(document).jqmData("flipval");      
+        if (pnSliderParam == "off" || pnSliderParam == "no" ) /*13.3 Global Change : Ends*/
         {
             if(dfs.crd.push.manage.pushEnabled != "Y" && !dfs.crd.push.manage.userOverride)
                 pnSliderParam = ""; 

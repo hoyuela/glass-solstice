@@ -4,15 +4,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.request.CreatePasscodeRequest;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
@@ -24,7 +27,6 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 	static final String TRACKING_PAGE_NAME = "PasscodeSetupStep2";
 	private static String TAG = "PasscodeSetupStep2Activity";
 	private static String mStep1Answer;
-	
 	
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
@@ -57,20 +59,15 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onPasscodeErrorEvent() {
 		clearAllFields();
-		//Per RTM 14.2.4.3
-//        getActivity().getSupportFragmentManager().popBackStackImmediate();
+        getActivity().getSupportFragmentManager().popBackStack();
         makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
 	}
 
 	@Override
 	public void onPasscodeSubmitEvent() {
-		Log.v(TAG, "Does input: " + getPasscodeString() + " equal step1 answer: " + mStep1Answer);
 		boolean isMatch = getPasscodeString().equals(mStep1Answer);
 		boolean isValid = isPasscodeValidLocally(getPasscodeString());
 		
-		Log.v(TAG, "isMatch? " + isMatch);
-		Log.v(TAG, "isValid? " + isValid);
-
 		//generate new client token
 		String deviceToken = PasscodeUtils.genClientBindingToken();
 		if (isMatch && isValid) {
@@ -86,6 +83,8 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 		getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	
+
+	final PasscodeSetupStep2Fragment thisFrag = this;
 	private final class CreatePasscodeRequestListener implements CardEventListener {
 		
 		private String deviceToken;
@@ -97,8 +96,17 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 		@Override
 		public void OnError(Object data) {
 			Log.e(TAG, "ERROR fetching passcode validity");
-			//TODO show error page
-			passcodeResponse(false);
+			CardErrorBean cardErrorBean = (CardErrorBean) data;
+			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+			
+			//if Account is already registered
+			if (cardErrorBean.getErrorCode().contains("4092103")) {
+				//TODO warn them first with error message?
+				new PasscodeRouter(thisFrag).getStatusAndRoute();
+				getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			} else {
+				passcodeResponse(false);
+			}
 		}
 
 		@Override
@@ -108,16 +116,7 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 			createPasscodeToken(this.deviceToken);
 			//also store user's first name on device
 			storeFirstName();
-//			getActivity().getSupportFragmentManager().popBackStack(PasscodeSetupStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	};
-
-//	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
-//		if (fieldInt == KeyEvent.KEYCODE_BACK ) {
-//			makeFragmentVisible(new PasscodeSetupStep1Fragment(), false);
-//			return true;
-//		}
-//		return super.getActivity().onKeyUp(fieldInt, paramKeyEvent);
-//	}
 	 
 }

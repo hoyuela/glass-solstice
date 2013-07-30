@@ -32,13 +32,13 @@ public class ViewPagerListItemWithImage extends ViewPagerListItem {
 		doSetup();
 	}
 	
-	private void doSetup() {
+	protected void doSetup() {
 		this.removeAllViews();
 		this.addView(getInflatedLayout());
 		super.loadViews();
 	}
 	
-	private RelativeLayout getInflatedLayout() {
+	protected RelativeLayout getInflatedLayout() {
 		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.view_pager_list_item_with_image, null);
 	}
 }

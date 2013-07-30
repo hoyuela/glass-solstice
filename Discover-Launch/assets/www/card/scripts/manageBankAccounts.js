@@ -220,7 +220,7 @@ try{
 		var hasPendingPayments = accountDetails.hasPendingPayments;
 
 		if(accntNickName == "" || isEmpty(accntNickName)){
-			accntNickName = "N/A";
+			accntNickName = " ";
 		}	
 		$("#editRouting").text(accountDetails.maskedBankRoutingNbr);
 		$("#editAccount").text(accountDetails.maskedBankAcctNbr);

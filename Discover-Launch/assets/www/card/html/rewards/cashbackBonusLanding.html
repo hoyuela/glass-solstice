@@ -15,31 +15,46 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 		<div class="wraper">
+			<div class="innerWrapper">
 					<div>
 						<h1><i>Cashback Bonus</i></h1>
 					</div>
+			</div>	
+					
+				<!--	<ul class="whitebg-list-view">
+		<li><a href="#" onclick="navigation('../achome/accountSummary');" class="ui-link"><span class="amt_bold" id="">Account Summary</span><span class="payArr"></span></a></li>
+		<li><a href="#" onclick="navigation('../statements/accountActivity');" class="ui-link"><span class="amt_bold" id="">Account Activity</span><span class="payArr"></span></a></li>
+                <li><a href="#" onclick="navigation('../statements/searchTrans');" class="ui-link"><span class="amt_bold" id="">Search Transactions</span><span class="payArr"></span></a></li>
+                <li><a href="#" onclick="navigation('../statements/statementLanding');" class="ui-link"><span class="amt_bold" id="">Statements</span><span class="payArr"></span></a></li>
+		</ul> -->
 
 					<ul data-role="listview" data-theme="d" data-inset="true"
-						id="list1" class="account-list-view">
-						<li data-icon="false"><a href="#"
-							onclick="s.prop1='HANDSET_CBB_SIGNUP_BTN';navigation('../rewards/cashbackBonusSignup1');" class="bluelink buttonBorderSupress">Sign Up for <i>Cashback Bonus</i></a> <span class="floatright arrow"> &gt; </span>
+						id="list1" class="account-list-view whitebg-list-view">
+					<li data-icon="false">
+						<a href="#"
+						   onclick="s.prop1='HANDSET_CBB_SIGNUP_BTN';navigation('../rewards/cashbackBonusSignup1');" class="ui-link"><span class="amt_bold">Sign Up for <i>Cashback Bonus</i></span><span class="payArr"></span></a>
 						</li>
+					
 						<li data-icon="false">
 							<a href="#"
-							onclick="navigation('../rewards/redemptionLanding');" class="bluelink buttonBorderSupress">Redeem <i>Cashback Bonus</i></a> <span class="floatright arrow"> &gt; </span> 
+							onclick="navigation('../rewards/redemptionLanding');" class="ui-link"><span class="amt_bold">Redeem <i>Cashback Bonus</i></span><span class="payArr"></span></a>  
 						
 						</li>
+						
 						<li data-icon="false"><a href="#"
-							onclick="navigation('../rewards/redemption_History');" class="bluelink buttonBorderSupress">Redemption History </a> <span class="floatright arrow"> &gt; </span>
+							onclick="navigation('../rewards/redemption_History');" class="ui-link"><span class="amt_bold">Redemption History</span> <span class="payArr"></span></a> 
 						</li>
+						
 						<li data-icon="false" class="extras"><a href="#"
-							onclick="navigation('../edo/edoLandingPage');" class="bluelink buttonBorderSupress">Extras</a></span>
+							onclick="navigation('../edo/edoLandingPage');" class="ui-link"><span class="amt_bold">Extras</span><span class="payArr"></span></a>
 						</li>
+						
 						<li data-icon="false"><a id="cbbReferAFriend" href="#"
-							onclick="s.prop1='HANDSET_CBB_RAF_BTN';dfs.crd.raf.navFromCBBLanding();" class="bluelink buttonBorderSupress">Refer a Friend </a> <span class="floatright arrow"> &gt; </span>
+							onclick="s.prop1='HANDSET_CBB_RAF_BTN';dfs.crd.raf.navFromCBBLanding();" class="ui-link"><span class="amt_bold">Refer a Friend </span><span class="payArr"></span></a> 
 						</li>
+						
 						<li data-icon="false"><a  href="#"
-							onclick="s.prop1='HANDSET_CBB_FAQS_BTN';navigation('../rewards/redeemFaqs');" class="bluelink buttonBorderSupress">FAQs</a></span>
+							onclick="s.prop1='HANDSET_CBB_FAQS_BTN';navigation('../rewards/redeemFaqs');" class="ui-link"><span class="amt_bold">FAQs</span><span class="payArr"></span></a>
 						</li>						
 					</ul>
 					</div>

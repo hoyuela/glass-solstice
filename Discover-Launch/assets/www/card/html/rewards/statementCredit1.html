@@ -19,9 +19,9 @@
 					<div id="pgPadding"></div>
 <div class="progress-indicator pos-center">
 		<ul>
-		    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="ui-link">2. Verify</a></li>
-                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		    <li><a href="#" class="active ui-link">Review/Edit</a></li>
+                    <li><a href="#" class="ui-link">Verify</a></li>
+                    <li><a href="#" class="ui-link">Confirmation</a></li>
 		</ul>
 		<div class="clearboth"></div>
 	    </div>
@@ -39,21 +39,34 @@
 				<p>
 					Use your Cashback Bonus Rewards to credit your Discover card account in $50 increments.<br/> This action is final and cannot be undone.
 				</p>
-				<ul class="white-box-rd-corner ui-listview ui-listview-inset ui-corner-all ui-shadow" data-inset="true" data-theme="d" data-role="listview">
-					<li data-icon="false" class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom">
+                <!--  13.3 global change -->
+				<!--<ul class="white-box-rd-corner ui-listview ui-listview-inset ui-corner-all ui-shadow" data-inset="true" data-theme="d" data-role="listview">
+					<li data-icon="false" class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom">-->
 						<h3 class="fontsize13px">Choose a $<span id="statement_credit_minDisbIncrAmt"></span> increment to Your Discover Card ending <span id="statementCredit1_CreditCardEnding"></span>:</h3>									
-						<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span class="ui-btn-text" id="ui-btn-text">Choose a $<span id="statement_credit_minDisbIncrAmt"></span> increment...</span><span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span></span>
+						<!--<div class="ui-select"><div data-theme="d" class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d"><span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true">-->
+						<!--<span class="ui-btn-text" id="ui-btn-text">Choose a $<span id="statement_credit_minDisbIncrAmt"></span> increment...</span>
+						<span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span>
+                        -->
+                        <!--</span>-->
 						
-						<span id="statementCredit1_AmoutSelectField"></span>
+                        <!-- select list populates here -->
+						<div id="statementCredit1_AmoutSelectField" data-theme="d">
+                        </div>
 							
-						</div></div>				
-					</li>
-				</ul>
-				<div class="txtcenteraln">
+						<!--</div></div>-->				
+					<!--</li>
+				</ul>-->
+				<div class="txtcenteraln r3matchbtn continueBtn">
 				<span class="small_btn_150px">
-				<input onclick="dfs.crd.cbb.redeemStatementCredit2();" id="statement_Credit_continue_btn" type='button' value='Continue' disabled="disabled"  />
+				<input onclick="dfs.crd.cbb.redeemStatementCredit2();" id="statement_Credit_continue_btn" type='button' value='Continue' disabled="disabled"/>
 				</span>
 				</div><br/>
+                
+                
+                <!-- <div class="txtcenteraln r3matchbtn">
+                                    <a href="#" id="statement_Credit_continue_btn" data-role="button" data-theme="c"
+                                        onclick="dfs.crd.cbb.redeemStatementCredit2();">Continue</a>
+                 </div>-->
 
 				<p class="boldtext">Credits will post to your account with in 72 hours.</p>
 				<p class="bottomPara">Have a redemption question? Please call <a href='tel:8003472683' class='eCertBlueLink'>1-800-347-2683</a></p>				

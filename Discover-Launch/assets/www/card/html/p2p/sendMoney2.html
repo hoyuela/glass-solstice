@@ -7,7 +7,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="sendMoney2-pg" class="sm-page">
+	<div data-role="page" id="sendMoney2-pg" class="sm-page contentSetting">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
 			data-position="fixed">
@@ -16,20 +16,26 @@
 		<!-- header end -->
         <div class="progress-indicator pos-center">
 			<ul>
-			    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
-                <li><a href="#" class="active ui-link">2. Verify</a></li>
-                <li><a href="#" class="ui-link">3. Confirmation</a></li>
+			    <li><a href="#" class="visited ui-link">Review/Edit</a></li>
+                <li><a href="#" class="active ui-link">Verify</a></li>
+                <li><a href="#" class="ui-link">Confirmation</a></li>
 			</ul>
 			<div class="clearboth"></div>
 		</div>
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<div class="floatleft" id="name">
-					<!-- h1>Send Money:</h1 -->
+            
+             <div class="subHeader innerWrapper">
+                  <div class="text">MONEY MESSENGER</div>
+                  <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                  <div class="smallText">POWERED BY</div>
+               </div>  
+			<!--	<div class="floatleft" id="name">
+					<h1>Send Money:</h1 >
 				</div>
 				<div class="floatright pay-pal-logo"></div>
-				<div class="clearboth"></div>
+				<div class="clearboth"></div>-->
 				<div id="card-info">
 					<!-- PayPal image required here -->
 				</div>
@@ -50,41 +56,40 @@
 
 				</div>
 				<div id="EnteredInfo">
-					<p>
-						<h1>Verify Information.</h1>
+					<p class="titleText">
+						<h1 class="boldtext bigger innerWrapper">Verify Information</h1>
 					</p>
 
 
 					<ul class="whitebg-list-view">
 						<li id="recipientName">Recipient's Name <span
-							class="boldtext" id='nickname'></span></li>
-						<li>Recipient's E-mail <span class="boldtext" id='mail_id'></span>
+							class="boldtext bigger" id='nickname'></span></li>
+						<li>Recipient's E-mail <span class="boldtext bigger" id='mail_id'></span>
 						</li>
 
-						<li>Amount <span class="boldtext" id="amount"></span>
+						<li>Amount <span class="boldtext bigger" id="amount"></span>
 							<div class="clearboth"></div>
 							<div class="floatleft note">
 								<span id="bonusType" class="italic_text" style="float: left !important; margin-right: 5px;"></span>
 								earned on this transaction!
 							</div>
 						</li>
-						<li>Transaction Type<span class="boldtext"
+						<li>Transaction Type<span class="boldtext bigger"
 							id='transaction_Type'></span>
 							<div>
 								<label id="related_content1" class="floatleft"></label>
 							</div></li>
 						<li>
-							<div id="note">Note: <label style="display:block" id="confirm_note">							
+							<div id="note">Note <label style="display:block" id="confirm_note">							
 							</label>
 							</div>
-							<div class="txtcenteraln" style="line-height: 50px;">
-								<a class="textcenter bluelink" href="#"
-									onclick="dfs.crd.p2p.editInformationCall();">Edit Information</a>
-							</div>
+							
 						</li>
 					</ul>
-
-					<p class="note">
+				 <div class="txtcenteraln" style="line-height: 50px;">
+								<a class="textcenter bluelink" href="#" onclick="dfs.crd.p2p.editInformationCall();">Edit Information</a>
+					</div>
+					<p class="note innerWrapper">
 						Clicking "Send Money" implies that you have verified the above
 						information and read and agreed to Discover Money Messenger <a
 							href="#" class="bluelink note"
@@ -95,9 +100,11 @@
 					<div class="txtcenteraln r3matchbtn margintop20px">
 						
 							 <a href="#"  class="adjustHeader"  onclick="dfs.crd.p2p.postSendMoneyData3();" data-role="button">Send Money</a><br/>
-                             <a href="#" class="bluelink boldtext" onclick="navigation('../p2p/cancelTransaction',false);">Cancel</a>
+                           <!--13.3 global change --> <!-- <a href="#" class="bluelink boldtext" onclick="navigation('../p2p/cancelTransaction',false);">Cancel</a>-->
 					</div>
-				</div>
+                    
+                   
+				</div>   
 
 				<div class="clearboth"></div>
 			</div>

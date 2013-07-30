@@ -22,7 +22,7 @@
     <string name="section_title_earn_cashback_bonus">Earn <i>Cashback Bonus</i></string> 
     <string name="sub_section_title_signup_for_2"><i>Cashback Bonus</i> Promos</string>
     <string name="sub_section_title_extras">Extras</string>
-    <string name="sub_section_title_refer_a_friend">Refer A Friend</string>
+    <string name="sub_section_title_refer_a_friend">Refer a Friend</string>
     
     <string name="section_title_redeem_cashback_bonus">Redeem <i>Cashback Bonus</i></string>  
     <string name="sub_section_title_partner_gift_cards">Partner Gift Cards &amp; eCerts</string>
@@ -49,7 +49,7 @@
     <string name="section_title_miles">Earn Miles</string>
     <string name="sub_section_title_sign_up_for_miles">Miles Promotions</string>
     <string name="sub_section_title_miles_extras">Extras</string>
-    <string name="sub_section_title_miles_refer_a_friend">Refer A Friend</string>
+    <string name="sub_section_title_miles_refer_a_friend">Refer a Friend</string>
     
     <string name="section_title_redeem_miles">Redeem Miles</string>
     <string name="privacy_terms_title">Privacy &amp; Terms</string>

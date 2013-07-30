@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.account.Account;
+import com.discover.mobile.common.utils.StringUtility;
 
 public class AccountAdapter extends ArrayAdapter<Account> {
 
@@ -53,7 +54,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			
 			// Display Account number
 			if (accountNumber != null && item.accountNumber != null && !item.accountNumber.ending.isEmpty()) {
-				accountNumber.setText(accountNumberPrefix + " " + item.accountNumber.ending);
+				String accountNumberEnding = accountNumberPrefix + StringUtility.SPACE + item.accountNumber.ending; 
+				
+				accountNumber.setText((item.balance != null) ? accountNumberEnding  + " - " + item.balance.formatted : 
+															   accountNumberEnding);
 			}
 		}
 

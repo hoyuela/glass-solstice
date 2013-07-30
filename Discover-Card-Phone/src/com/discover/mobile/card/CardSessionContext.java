@@ -3,8 +3,6 @@ package com.discover.mobile.card;
 import java.util.List;
 
 import com.discover.mobile.card.services.auth.AccountDetails;
-import com.discover.mobile.card.services.push.history.NotificationDetail;
-import com.discover.mobile.card.services.push.manage.PushNotificationPrefsDetail;
 
 public final class CardSessionContext {
 
@@ -14,11 +12,12 @@ public final class CardSessionContext {
 
     private boolean isNotCurrentUserRegisteredForPush = false;
 
-    /** Push prefs retrieved from the server */
+    //13.4 Code Clean Up
+   /* *//** Push prefs retrieved from the server *//*
     private PushNotificationPrefsDetail prefs;
 
-    /** List of notifications (used to help with rotation) */
-    private List<NotificationDetail> notifications;
+    *//** List of notifications (used to help with rotation) *//*
+    private List<NotificationDetail> notifications;*/
 
     /** Time periods that can be displayed for the recent account activity */
     	/*  13.4 Code CleanUp*/
@@ -59,7 +58,8 @@ public final class CardSessionContext {
         this.isNotCurrentUserRegisteredForPush = isNotCurrentUserRegisteredForPush;
     }
 
-    public PushNotificationPrefsDetail getPrefs() {
+    //13.4 Code Clean Up
+/*    public PushNotificationPrefsDetail getPrefs() {
         return prefs;
     }
 
@@ -77,7 +77,7 @@ public final class CardSessionContext {
 
     public void clearNotifications() {
         notifications.clear();
-    }
+    }*/
 
     /**
      * Get the time periods that can be displayed for the recent account

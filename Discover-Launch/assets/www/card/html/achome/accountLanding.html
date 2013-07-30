@@ -15,36 +15,45 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-                <!--<h1>Statements</h1> -->
-				<!-- ul data-role="listview" data-theme="d" data-inset="true" id="list1"
-					class="account-list-view">
+               	<h1>Account</h1>
+				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
+					class="whitebg-list-view account-list-view">
 					<li data-icon="false">
-						<a href="#" onclick="navigation('../achome/accountSummary');"  class="bluelink buttonBorderSupress">Account Summary</a> <span class="floatright arrow"> &gt; </span>
+						<a href="#" onclick="navigation('../achome/accountSummary');"  class="buttonBorderSupress">
+                        <span class="amt_bold">Account Summary</span></a> <span class="payArr"></span>
 					</li>
 					<li data-icon="false">
-						<a href="#" onclick="navigation('../statements/accountActivity');" class="bluelink buttonBorderSupress" >Account Activity </a> 
-						<span class="floatright arrow"> &gt; </span>
+						<a href="#" onclick="navigation('../statements/accountActivity');" class="buttonBorderSupress">
+                        <span class="amt_bold">Account Activity</span></a> 
+						<span class="payArr"></span>
 					</li>
 					<li data-icon="false">
-						<a href="#" onclick="navigation('../statements/searchTrans');" class="bluelink buttonBorderSupress">Search Transactions </a> 
-						<span class="floatright arrow"> &gt; </span> 
+						<a href="#" onclick="navigation('../statements/searchTrans');" class="buttonBorderSupress">
+                        <span class="amt_bold">Search Transactions</span></a> 
+						<span class="payArr"></span>
 					</li>
 					<li data-icon="false" id="statementsNav">
-						<a href="#" onclick="navigation('../statements/statementLanding');" class="bluelink buttonBorderSupress">Statements </a> 
-						<span class="floatright arrow"> &gt; </span>
+						<a href="#" onclick="navigation('../statements/statementLanding');" class="buttonBorderSupress"><span class="amt_bold">Statements</span></a> 
+						<span class="payArr"></span>
 					</li>
-			    </ul -->
-			    <div id="statementsNav"></div> 
+			    </ul>
+                
+               <!--ul class="whitebg-list-view">
+		<li><a href="#" onclick="navigation('../achome/accountSummary');" class="ui-link"><span class="amt_bold" id="">Account Summary</span><span class="payArr"></span></a></li>
+		<li><a href="#" onclick="navigation('../statements/accountActivity');" class="ui-link"><span class="amt_bold" id="">Account Activity</span><span class="payArr"></span></a></li>
+                <li><a href="#" onclick="navigation('../statements/searchTrans');" class="ui-link"><span class="amt_bold" id="">Search Transactions</span><span class="payArr"></span></a></li>
+                <li><a href="#" onclick="navigation('../statements/statementLanding');" class="ui-link"><span class="amt_bold" id="">Statements</span><span class="payArr"></span></a></li>
+		</ul-->
+                
+                
 			</div>
-			<div id="footnotes" class="footnotes">
-			</div>
-		</div>
-		<!-- content end -->
-		<div data-role="footer" id="pg-footer" data-position="fixed"
-		data-id="myfooter" data-tap-toggle="false">
-            <footer id="footer" class="mnu_footer">
-			</footer>
-		</div>
+	
+		</div>	<!-- content end -->
+        <div id="footnotes" class="footnotes footerAlign"></div>
+				<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
+           			 <footer id="footer" class="mnu_footer"></footer>
+				</div>
+  
 	</div>
 	<!-- page end -->
 </body>

@@ -34,8 +34,8 @@ public abstract class ValidatedInputField extends EditText {
 	 * R.drawable.edit_text_default; protected final int FIELD_ERROR_APPEARANCE
 	 * = R.drawable.edit_text_red;
 	 */
-	//protected int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_holo_light;
-	/*	13.4 Start*/
+	// protected int FIELD_DEFAULT_APPEARANCE = R.drawable.edit_text_holo_light;
+	/* 13.4 Start */
 	protected int FIELD_DEFAULT_APPEARANCE = R.drawable.card_edit_text_holo_light;
 	protected int FIELD_ERROR_APPEARANCE = R.drawable.card_textfield_invalid_holo_light;
 
@@ -180,21 +180,34 @@ public abstract class ValidatedInputField extends EditText {
 		});
 	}
 
+	/*13.4 Global UI*/
+	/** Converts DP int into px for setting drawable padding */
+	protected int getRightDrawablePadding() {
+		final int paddingInDp = 10;
+		final float padding = 0.5f;
+		final float scale = getResources().getDisplayMetrics().density;
+		final int paddingInPx = (int) (paddingInDp * scale + padding);
+		return paddingInPx;
+	}
+
 	/** Sets the right drawable to the gray X image */
 	protected void setRightDrawableGrayX() {
-		
-		  this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(),
-		  null);
-		 
+
+		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getGrayX(),
+				null);
+		this.setCompoundDrawablePadding(getRightDrawablePadding());
+
 	}
 
 	/** Sets the right drawable to the red X image */
 	protected void setRightDrawableRedX() {
-		
-		  this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(),
-		  null);
-		 
+
+		this.setCompoundDrawablesWithIntrinsicBounds(null, null, getRedX(),
+				null);
+		this.setCompoundDrawablePadding(getRightDrawablePadding());
+
 	}
+	/*13.4 Global UI*/
 
 	/** Clears the right drawable so that no image is present */
 	protected void clearRightDrawable() {
@@ -388,17 +401,17 @@ public abstract class ValidatedInputField extends EditText {
 		isInDefaultState = true;
 	}
 
-		/*	13.4 Start*/
-	
+	/* 13.4 Start */
+
 	public void setUpSpinnerStyle(final int defaultStyle, final int errorStyle) {
-		FIELD_DEFAULT_APPEARANCE = defaultStyle; 
+		FIELD_DEFAULT_APPEARANCE = defaultStyle;
 		FIELD_ERROR_APPEARANCE = errorStyle;
-		
+
 	}
-	
+
 	public boolean isNull() {
 
-	        return Strings.isNullOrEmpty(this.getText().toString());
-	    }
+		return Strings.isNullOrEmpty(this.getText().toString());
+	}
 
 }

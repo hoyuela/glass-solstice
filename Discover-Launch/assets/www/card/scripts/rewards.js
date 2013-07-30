@@ -147,7 +147,8 @@ dfs.crd.rwds.populateCBBLandingPromitionsList = function(cashbackbonusSignupDeta
 								signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
 							}
 							else{
-								signupStatusText= "<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
+								/*13.3 global changes for button*/
+								signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c txtcenteraln r3matchbtn' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
 						}
 					promoCodeTextData['signupStatusText'] = signupStatusText;
 					promoCodeTextData['CBBPromotionObj'] = promotionInfoString;	
@@ -538,8 +539,9 @@ dfs.crd.rwds.populateMilesLandingPromitionsList = function(milesSignupDetails){
 					var bdayPromoText;
 					if(isEnrolled){
 						signupStatusText="<span class='signin orangetxt'>You&#39;re Signed Up!</span>";
-					}else{
-						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showMI2DetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
+					}else{/*13.3 global changes*/
+
+						signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c txtcenteraln r3matchbtn' onclick='dfs.crd.rwds.showMI2DetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Sign Up</span></span></a>";
 					}					
 					promoCodeTextData['signupStatusText'] = signupStatusText;
 					promoCodeTextData['CBBPromotionObj'] = promotionInfoString;			
