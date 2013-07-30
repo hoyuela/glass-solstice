@@ -119,7 +119,7 @@
 				$("#giftCard1_CashBackBonusBalance").html("$"+ globalEarnRewardAmount);	
 				var gcRedemptionAmount = giftCardResData["disbAmts"];
 				var gcDesignList = giftCardResData["discoverGiftCards"];
-				var dynamicSelectForGCAmt = "<select data-theme='d' id='select-amount'>";
+				var dynamicSelectForGCAmt = "<select data-theme='d' id='select-amount' data-native-menu='false'>"; /* 13.3 Global change */
 				var defaultGiftCardAmount = '$'+ (gcRedemptionAmount[0].split(".")[0]);
 				/*Dynamic creation of the amount select dropdown*/				
 				for(i=0;i<gcRedemptionAmount.length;i++){

@@ -20,11 +20,14 @@
 				<div class="errormsg" id="wrongAnswer"></div>
 				<p class="boldtext" id="firstQues" style="font-size:12px;"></p>
 				<div>
+                    <span class="wrapperSpan">
 					<input type="text" name="name" id="answer" value="" placeholder="Your Answer"
-                                    class="inputtext" onkeyup="dfs.crd.sa.showHideContinueBtn(this);"/>
-				</div>
-				<p class="boldtext"  style="font-size:12px;">Would you like us to remember this device?</p>
-				<ul class="collapsible" style="display: none;">
+                                    class="inputtext textInput numberInput" onkeyup="dfs.crd.sa.showHideContinueBtn(this);"/>
+                     <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText answerInput' />  <!-- 13.3 global change  -->
+					</span>
+                </div>
+				<p class="boldtext"  style="font-size:12px; display:inline-block">Would you like us to remember this device?</p>
+				<ul class="collapsible">
 					<li>
 						<a href="#" class="collapslink deactive" rel="strongAuthFirstQues_WhatThis"><b>What's this?</b></a>
 						<p id="strongAuthFirstQues_WhatThis" style="display: none;">
@@ -45,7 +48,7 @@
 							value="choice-3" checked="true"/><label for="radio-choice-4" >Yes.
 							This is my mobile device that I use to access my Account.</label>
 					</div>
-					<div class="clearboth borderbottom"></div>
+					<div class="clearboth separator"></div>
 					<div>
 						<input type="radio" name="radio1" id="radio-choice-3"
 							value="choice-3" /> <label for="radio-choice-3">

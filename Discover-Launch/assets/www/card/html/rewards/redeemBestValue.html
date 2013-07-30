@@ -7,7 +7,7 @@
         
         <body>
                 <!--page start -->
-                <div data-role="page" id="best-value" class="cbb-page rd-page browse-partners">
+                <div data-role="page" id="best-value" class="cbb-page rd-page browse-partners contentSetting">
                         <!--header start -->
             <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
                  <header id="header" class="cmn_header">
@@ -26,8 +26,10 @@
                                         <h1 class="mT27">Best Value</h1>
                                         <div class="navtabs ui-grid-c">
                                         	<div class="ui-block-a bv-tabs" id="amnt20">
-                                            	<p>Extra</p>
-                                                <p>$20+</p>
+												<div class="amtWrap">	<!--R13.3 Global Change-->
+													<p>Extra</p>
+													<p>$20+</p>
+												</div>
                                             </div>
                                             <!--
                                             <div class="ui-block-b bv-tabs" id="amnt15">
@@ -35,28 +37,32 @@
                                                 <p>$15</p>
                                             </div>-->
                                             <div class="ui-block-c bv-tabs" id="amnt10">
-                                            	<p>Extra</p>
-                                                <p>$10</p>
+												<div class="amtWrap">	<!--R13.3 Global Change-->
+													<p>Extra</p>
+													<p>$10</p>
+												</div>
                                             </div>
                                             <div class="ui-block-d bv-tabs" id="amnt5">
-                                            	<p>Extra</p>
-                                                <p>$5</p>
+                                            	<div class="amtWrap">	<!--R13.3 Global Change-->
+													<p>Extra</p>
+													<p>$5</p>
+												</div>
                                             </div>
                                         </div><!--end navtabs-->
-                                        <div class="browseAllPartners">
-											<div class="partner-list" id="partner-amnt20">
+                                        <div class="browseAllPartners ">
+											<div class="partner-list commonList" id="partner-amnt20">
 												
 											</div><!--end partner-amnt20-->
 											
-											<div class="partner-list display-none" id="partner-amnt15">
+											<div class="partner-list commonList display-none" id="partner-amnt15">
 												
 											</div><!--end partner-amnt15-->
 											
-											<div class="partner-list display-none" id="partner-amnt10">
+											<div class="partner-list commonList display-none" id="partner-amnt10">
 												
 											</div><!--end partner-anmt10-->
 											
-											<div class="partner-list display-none" id="partner-amnt5">
+											<div class="partner-list commonList display-none" id="partner-amnt5">
 												
 											</div><!--end partner-anmt5-->
                                         </div>

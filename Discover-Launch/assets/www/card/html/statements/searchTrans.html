@@ -2,146 +2,162 @@
 <html>
 <head>
 <title>Discover - Search Transactions</title>
-</head> 
+</head>
 <body>
-	<!--page start  -->
-	<div data-role="page" id="search">
-		<!--header start  -->
-		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
-			<header id="header" class="cmn_header"></header>
-		</div>
-		<!-- header end -->
-		<!-- content start -->
-        <div data-role="content" class="ui-content-internalpages" id="pageContent">
-			<div class="wraper" id="js-pageHideWrap">
-			 <div id="r4-wrap"> 
-        			<div id="js-searchResults-container">
-        				<!-- Dynamically filled out  -->
-        			</div><!-- /#searchResultsContainer -->
-                <!--<h1>Search Transactions</h1>-->
-                <form action="javascript:void(0)" name="search-form" id="js-search-form" data-transition="none"  data-ajax="false">
-	                <ul id ="searchParams">
-	                    <li>
-	                    	<label>
-	                    		<span class="inlineBlock"><span class="boldtext">Keywords</span> (optional):</span>
-	                    	</label>
-	                    		<input type="text" name="keywords" id="keywords"/>
-	                    </li>
-	                    <li class="setfont">
-	                    	<label>
-	                    		<span class="inlineBlock exampleText"> <span class="boldtext">Date : </span> Up to <span id="js-search-history"></span> of history are available.</span>
-	                    		<select data-theme="d" name="dateSelection" id="js-dateType-selection">
-	                    			<option value="all">All Available Dates</option>
+<!--page start  -->
+<div data-role="page" id="search" class="payments contentSetting"> 
+  <!--header start  -->
+  <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+    <header id="header" class="cmn_header"></header>
+  </div>
+  <!-- header end --> 
+  <!-- content start -->
+  <div data-role="content" class="ui-content-internalpages" id="pageContent">
+    <div class="wraper" id="js-pageHideWrap">
+      <div id="r4-wrap">
+        <div id="js-searchResults-container"> 
+          <!-- Dynamically filled out  --> 
+        </div>
+        <!-- /#searchResultsContainer --> 
+        <!--<h1>Search Transactions</h1>-->
+        
+        <div class="innerWrapper">
+          <form action="javascript:void(0)" name="search-form" id="js-search-form" data-transition="none"  data-ajax="false">
+            <ul id ="searchParams">
+              <li>
+                <label> <span class="inlineBlock"><span class="boldtext">Keywords (optional)</span></span> </label>
+                <span class="wrapperSpan payDate">
+                <input type="text"  name="keywords" id="keywords" class="textInput numberInput"/>
+                <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                 </span> 
+                
+                <!--<input type="text" name="keywords" id="keywords"/>--> 
+              </li>
+              
+              <!--                         6011000874798238 --> 
+              <!--          <span class="subHeadings">Account Type</span>              
+                        <select name="selectAccType" id="activity-selection" data-native-menu="false" data-theme="d" style="margin-top:10px;"><option value="all">All Available Dates</option>
 	                    			<option value="specific">Specific Date</option>
 	                    			<option value="range">Date Range</option>
-	                    		</select>
-	                    	</label>
-	                    	<div id="js-date-picker-specific" class="hide">
-		                    	<label>
-		                    		<span class="block error-message"></span>
-		                    		<input type="text" maxlength="14" name="date" autocorrect="off" class="picker-input js-date-input" id="specificDate"/>
-		                    	</label>
-		                  	<a href="#" class="js-date-picker-input inlineBlock" data-rel="dialog" data-transition="pop" id="button-specDate" >
-		                   		<img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" />
-		                    </a>
-		                    <span class="block exampleText">(e.g., MM/DD/YYYY)</span>
-		                    </div><!-- /#js-date-picker-specific -->
-		                    <div id="js-date-picker-range" class="hide">
-		                    	<div class="from-selection fl">
-			                    	<label>
-			                    		<span class="block error-message"></span>
-			                    		<span class="inlineBlock">From:</span>
-			                    		<input type="text" name="datefrom" maxlength="14" autocorrect="off" class="picker-input js-date-input" id="fromDate"/>
-			                    	</label>
-			                    	<a href="#" class="js-date-picker-input inlineBlock"  data-rel="dialog" data-transition="pop" id="button-fromDate" >
-			                    		<img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" />
-			                    	</a>
-		                    		<span class="block exampleText">(e.g., MM/DD/YYYY)</span>
-		                    	</div><!-- /.fl -->
-		                    	<div class="to-selection fl">
-			                    	<label>
-			                    		<span class="block error-message"></span>
-			                    		<span class="inlineBlock">To:</span>
-			                    		<input type="text" name="dateto" maxlength="14" autocorrect="off" class="picker-input js-date-input" id="toDate"/>
-			                    	</label>
-			                    	<a href="#" class="js-date-picker-input inlineBlock"  data-rel="dialog" data-transition="pop" id="button-toDate">
-			                    		<img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" />
-			                    	</a>
-		                    	</div><!-- /.fl -->
-		                    	<div class="clr"><!-- --></div>
-		                    </div><!-- /#js-date-picker-range -->
-	                    </li>
-	                    
-	                    <li class="amountList">
-	                    	<label>
-	                    		<span class="inlineBlock boldtext">Amount:</span>
-	                    		<select data-theme="d" name="amountSelection" id="js-amountType-selection">
-	                    			<option value="all">All Amounts</option>
-	                    			<option value="specific">Specific Amount</option>
-	                    			<option value="range">Amount Range</option>
-	                    		</select>
-	                    	</label>
-	                    </li>
-	                    
-                       <li id="js-amount-picker-specific" class="hide">
-	                    	<label>
-	                    		<span class="inlineLabel">$</span>
-	                    		<input type="number" name="amount"  class="picker-input js-amount-picker-input" id="specificAmount"/>
-	                    		<span class="block exampleText">(e.g., 1250 or 1360.12)</span>
-	                    	</label>
-	                    </li><!-- /#js-amount-picker-specific -->
-	                    
-	                    <li id="js-amount-picker-range" class="hide">
-	                    	<div class="from-a-selection fl">
-		                    	<label>
-		                    		<span class="inlineBlock">From:</span>
-		                    		<span class="inlineLabel">$</span>
-		                    		<input type="number" name="amountfrom" class="picker-input js-amount-picker-input" id="fromAmount"/>
-		                    		<span class="block exampleText">(e.g., 1250 or 1360.12)</span>
-		                    	</label>
-	                    	</div><!-- /.fl -->
-	                    	<div class="to-date-selection fl">
-		                    	<label>
-		                    		<span class="inlineBlock">To:</span>
-		                    		<span class="inlineLabel">$</span>
-		                    		<input type="number" name="amountto" class="picker-input js-amount-picker-input" id="toAmount"/>   	
-		                    	</label>
-	                    	</div><!-- /.fl -->
-	                    	<div class="clr"><!-- --></div>
-	                    </li><!-- /#js-amount-picker-range -->
-	                    
-	                    <li class="category">
-	                    	<label>
-	                    		<span class="inlineBlock boldtext">Category:</span>
-	                    		<select data-theme="d" name="categorySelection" id="js-categoryType-selection">
-	                    			<option value="all">All Categories</option>
-	                    		</select>
-	                    	</label>
-	                    </li>
-	                </ul>
-					
-	                <div id="submit-container">
-	                	<input type="submit" value="Search"  aria-disabled="false" id="js-search-submit" data-theme="c" data-role="button" />
-	                </div><!-- /#submit-container -->
-                </form><!-- /#js-search-form -->
-        	</div>
-		   </div>
-		  <div class="wraper js-calHideWrap" style="display: none">
-				<h3 id="js-date-title">Select Date</h3>
-				<div id="calendar"></div>
-				<div class="txtcenteraln r3matchbtn"></div>
-				<div class="txtcenteraln">
-					<a href="#" class="bluelink normaltext boldtext cancelbtnarea ui-link" id="calendar-cancel">Cancel</a>
-				</div>
-		  </div>
-		  <div id="footnotes" class="footnotes" ></div>
-	    </div>
-        <!-- content end -->
-		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
-			<footer id="footer" class="mnu_footer">
-			</footer>
-		</div>
-	</div>
-	<!--page end -->
+                        	         </select>
+						<div class="clearboth"></div>-->
+              
+              <li class="setfont">
+                <label> <span class="inlineBlock exampleText"> <span class="boldtext">Date </span>(up to <span id="js-search-history"></span> of history are available)</span>
+                  <select data-theme="d" name="dateSelection" data-native-menu="false" style="margin-top:10px;" id="js-dateType-selection">
+                    <option value="all">All Available Dates</option>
+                    <option value="specific">Specific Date</option>
+                    <option value="range">Date Range</option>
+                  </select>
+                </label>
+                <div id="js-date-picker-specific" class="hide">
+                  <label>
+                  <span class="block error-message"></span>
+                  <div class="wrapperSpan wrapperSpanDate">
+                     <input type="text" maxlength="14" name="date" autocorrect="off" class="picker-input js-date-input textInput numberInput" id="specificDate" readonly />
+                  </div>
+                  </label>
+                  <a href="#" class="js-date-picker-input inlineBlock" data-rel="dialog" data-transition="pop" id="button-specDate" > <img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" /> </a> <span class="block exampleText">(e.g., MM/DD/YYYY)</span> </div>
+                <!-- /#js-date-picker-specific -->
+                <div id="js-date-picker-range" class="hide">
+                  <div class="from-selection fl">
+                    <label>
+                    <span class="inlineBlock boldtext">From:</span>
+                    <span class="block error-message"></span>
+                    <div class="wrapperSpan wrapperSpanDate3"> 
+                      <input type="text" name="datefrom" maxlength="14" autocorrect="off" class="picker-input js-date-input textInput numberInput" id="fromDate" readonly />
+                    </div>
+                    </label>
+                    <a href="#" class="js-date-picker-input inlineBlock"  data-rel="dialog" data-transition="pop" id="button-fromDate" > <img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" /> </a> <span class="block exampleText">(e.g., MM/DD/YYYY)</span> </div>
+                  <!-- /.fl -->
+                  <div class="to-selection fl">
+                    <label>
+                    <span class="inlineBlock boldtext">To:</span>
+                    <span class="block error-message"></span>
+                    <div class="wrapperSpan wrapperSpanDate2">
+                      <input type="text" name="dateto" maxlength="14" autocorrect="off" class="picker-input js-date-input textInput numberInput" id="toDate" readonly />
+                    </div>
+                    </label>
+                    <a href="#" class="js-date-picker-input inlineBlock"  data-rel="dialog" data-transition="pop" id="button-toDate"> <img src="../../images/calendar_icon.png" alt="calender" width="21" class="datepicker-trigger" /> </a> </div>
+                  <!-- /.fl -->
+                  <div class="clr"><!-- --></div>
+                </div>
+                <!-- /#js-date-picker-range --> 
+              </li>
+              <li class="amountList">
+                <label> <span class="inlineBlock boldtext">Amount</span>
+                  <select data-theme="d" name="amountSelection" id="js-amountType-selection" data-native-menu="false" style="margin-top:10px;">
+                    <option value="all">All Amounts</option>
+                    <option value="specific">Specific Amount</option>
+                    <option value="range">Amount Range</option>
+                  </select>
+                </label>
+              </li>
+              <li id="js-amount-picker-specific" class="hide">
+                <label> <span class="inlineLabel dollerMargin">$</span> 
+                <span class="wrapperSpan wrapperSpanDate4">
+                  <input type="number" name="amount"  class="textInput numberInput picker-input js-amount-picker-input" id="specificAmount"/>
+                  <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                   </span> <!--13.3 global change X image -->
+                  <span class="block exampleText crossAlign">(e.g., 1250 or 1360.12)</span> </label>
+              </li>
+              <!-- /#js-amount-picker-specific -->
+              
+              <li id="js-amount-picker-range" class="hide">
+                <div class="from-a-selection fl">
+                  <label> <span class="inlineBlock">From:</span> <span class="inlineLabel">$</span> <span class="wrapperSpan wrapperSpanDate5">
+                    <input type="number" name="amountfrom" class="textInput numberInput picker-input js-amount-picker-input" id="fromAmount"/>
+                     <!--13.3 global change X image -->
+                  <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRange' />
+                    </span> 
+                    <span class="block exampleText">(e.g., 1250 or 1360.12)</span> </label>
+                </div>
+                <!-- /.fl -->
+                <div class="to-date-selection fl">
+                  <label> <span class="inlineBlock">To:</span> <span class="inlineLabel">$</span> <span class="wrapperSpan wrapperSpanDate5">
+                    <input type="number" name="amountto" class="textInput numberInput picker-input js-amount-picker-input" id="toAmount"/>
+                     <!--13.3 global change X image -->
+                  <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRange' /> 
+                  </span>
+				 </label>
+                </div>
+                <!-- /.fl -->
+                <div class="clr"><!-- --></div>
+              </li>
+              <!-- /#js-amount-picker-range -->
+              
+              <li class="category">
+                <label> <span class="inlineBlock boldtext">Category</span>
+                  <select data-theme="d" name="categorySelection" id="js-categoryType-selection" data-native-menu="false" style="margin-top:10px;">
+                    <!-- <option data-description=""></option>-->
+                    <option value="all">All Categories</option>
+                  </select>
+                </label>
+              </li>
+            </ul>
+            <div id="submit-container" class="r3matchbtn">
+              <input type="submit" value="Search"  aria-disabled="false" id="js-search-submit" data-theme="c" data-role="button" />
+            </div>
+            <!-- /#submit-container -->
+          </form>
+          <!-- /#js-search-form --> 
+        </div><!--/innerWrapper -->
+      </div>
+    </div>
+    <div class="wraper js-calHideWrap" style="display: none">
+      <h3 id="js-date-title">Select Date</h3>
+      <div id="calendar"></div>
+      <div class="txtcenteraln r3matchbtn"></div>
+      <div class="txtcenteraln"> <a href="#" class="bluelink normaltext boldtext cancelbtnarea ui-link" id="calendar-cancel">Cancel</a> </div>
+    </div>
+
+  </div>
+  <!-- content end -->
+  <div id="footnotes" class="footnotes footerAlign"></div>
+  <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
+    <footer id="footer" class="mnu_footer"> </footer>
+  </div>
+</div>
+<!--page end -->
 </body>
 </html>

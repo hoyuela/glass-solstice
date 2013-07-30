@@ -17,8 +17,8 @@ var pageTitle={'accountSummary-pg':'Account Summary',
 			   'cashbackSignup1-pg':'Cashback Bonus Promos',
 			   'edoLandingPage-pg':'Extras',
 			   'tech-issue':'Extras',
-			   'raf-dollar':'Refer A Friend',
-			   'raf-miles':'Refer A Friend',
+			   'raf-dollar':'Refer a Friend',
+			   'raf-miles':'Refer a Friend',
 			   'browse-landing':'Partner Gift Cards & eCerts',
 			   'redm-error-pg':'Partner Gift Cards & eCerts',
 			   'redeem-gift-card':'Discover Gift Card',
@@ -41,9 +41,10 @@ var pageTitle={'accountSummary-pg':'Account Summary',
 			   'milesSignup1-pg':'Miles Promotions',
 			   'milesRedeem-pg':'Redeem Miles',
 			   'moreLandingrevised-pg':'Privacy & Terms',
-			   'raf-error-pg':'Refer A Friend',
-			   'raf-status':'Refer A Friend',
-			   'updateEmail-pg':'Send Money'			   	
+			   'raf-error-pg':'Refer a Friend',
+			   'raf-status':'Refer a Friend',
+			   'updateEmail-pg':'Send Money',
+			  'raf-status-dollar':'Refer a Friend'			   
 			    };
 
 

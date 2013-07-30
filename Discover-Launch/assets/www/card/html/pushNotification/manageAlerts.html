@@ -20,7 +20,7 @@
                         </div>
                         <!-- body text area star -->
 						<!--<div class="faqWraper"><a href="#" onclick= "dfs.crd.sct.globalFaqLinks();navigation('../pushNotification/faqDeviceAlerts');" class="i_icon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>-->
-                        <div id='global-errors'></div>
+                        <!--<div id='global-errors'></div>-->
                         <div id="phonenumber-block">
                             <p class="changenumber">
                                 <span>Text Alerts are sent to: <br/></span>
@@ -30,11 +30,15 @@
                             <div id="changenumber">
                                 <div class="ui-grid-b">
                                     <div class="ui-block-b">
-                                        <input type="tel" id="txt-change-phone-number" placeholder="Phone number" class="phone_number" maxlength="10" />
+										<span class="wrapperSpan">	<!--R13.3 Global Change-->
+											<input type="tel" id="txt-change-phone-number" placeholder="Phone number" class="phone_number textInput" maxlength="10" />
+										<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                                        </span>	<!--R13.3 Global Change-->
+                                        
                                     </div>
                                     <div class="ui-block-a addnumberSelect">
 										<div class="select-range" data-theme="d" id="activitySelection" >
-											<select id="changenumberSelect" data-theme="d" name="changenumber-select">
+											<select id="changenumberSelect" data-theme="d" name="changenumber-select" data-native-menu="false">
 												<option value="">Select Carrier</option>
 												<option value="message.alltel.com">Alltel</option>
 												<option value="txt.att.net">ATT</option>
@@ -53,14 +57,17 @@
 									<div class="ui-grid-b gridwidth">
 										<div class="ui-block-a otherInputWidth"></div>
 										<div class="ui-block-b change-msg-dot-com hidden">
-											<div>
 												<div class="at-rate">
 													<span class="at_align">@&nbsp;</span>
-													<input id="custom-carrier" type="email" placeholder="" class="dot-com"/><br/>
+										<span class="wrapperSpan atRateSpan">	<!--R13.3 Global Change-->
+											<input id="custom-carrier" type="email" placeholder="" class="dot-com textInput"/>
+										<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                                        </span>	<!--R13.3 Global Change-->
+													
 													<span class="eg-msg">(e.g.,messaging.nextel.com)</span>
 												</div>
-											</div>
 										</div>
+                                        <div class="clearboth"></div>
 									</div>
 								</div>
 							</div>
@@ -71,10 +78,16 @@
                         </div>
                         <div id="slider">
                             <div data-role="fieldcontain" style="border:0px">
-                                <select name="alertsetting" id="alertsetting" data-role="slider" style="float:right">
+                                <!--select name="alertsetting" id="alertsetting" data-role="slider" style="float:right">
                                     <option value="off">OFF</option>
                                     <option value="on">ON</option>
-                                </select>
+                                </select-->
+								
+								<section class="stage" name="alertsetting" id="alertsetting" style="float:right">
+									<div class="slider-frame">
+										<span class="slider-button">OFF</span>
+									</div>
+                                </section>
                                 <h2 for="alertsetting" class="boldtext textalign">Enable Push Alerts</h2>
 							</div>
                         </div>
@@ -95,16 +108,18 @@
 												<div class="ui-grid-b">
 													<div class="ui-block-a">
 														<fieldset data-role="controlgroup" data-theme="b">
-															<input type="checkbox" id="SMRM" class="custom pn-txt-chk alert-chk" name="SMRM" data-role="none">
-                                                        </fieldset>
+															<input type="checkbox" id="SMRM" class="custom pn-txt-chk alert-chk" name="SMRM" data-role="none" />
+														</fieldset>
 														<label for="SMRM">Text</label>
+														
 													</div>
 													<div class="ui-block-b">
 														<fieldset data-role="controlgroup" data-theme="b">
-															<input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none"
-															data-theme="a">
+															<input id="PNRM" type="checkbox" class="custom alert-chk" name="alerts" value="" data-role="none" data-theme="a" />
+															
+															
                                                         </fieldset>
-														<label for="alerts">Push Alerts</label>
+														<label for="PNRM">Push Alerts</label>
 													</div>
 													<div class="ui-block-c">
 														<p>
@@ -117,7 +132,9 @@
 												<div class="ui-grid-b">
 													<div class="ui-block-a">
 														<fieldset data-role="controlgroup" data-theme="b">
-															<input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none">
+															<input id="SMRM" type="checkbox" name="SMRM" class="custom pn-txt-chk alert-chk" value="" data-role="none" />
+															
+															
                                                         </fieldset>
 														<label for="SMRM">Text</label>
 													</div>
@@ -225,6 +242,7 @@
 														</p>
 													</div>
 												</div>
+                                                <div class="clearboth"></div> <!--- 13.3 global changes --->
 											</li>
 										</div>
 									</ul>
@@ -246,13 +264,20 @@
 															<label for="alerts">Push Alerts</label>
 														</div>
 														<div class="ui-block-c">
-															<p>
+															<p style="float:left;">
 																<span class="boldtext">Transaction Exceeds a Specified Amount</span>
-															<br/>
-																<span class="boldtext">$
-																	<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage"
-																	type="tel" name='tamtDefAmt' placeholder="300.00" data-inline="true" maxlength="5" />
-																</span>or more<br/>Minimum amount is $<span id='tamtDefAmt'> </span></p>
+																<br>
+																<span class="dollarSign">$</span>
+																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
+																	<!--R13.3 Global Change-->
+																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="tel" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
+																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                                                </span>
+																
+																	
+																<!--R13.3 Global Change-->
+																<span class="orMoreText">or more</span>
+																<span class="minAmountText">Minimum amount is $</span><span id="tamtDefAmt">300</span></p>
 														</div>
 													</div>
 												</li>
@@ -275,10 +300,14 @@
 															<p>
 																<span class="boldtext">Account Balance Exceeds a Specified Amount</span>
 															<br/>
-																<span class="boldtext">$
-																	<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt  textbox_alertspage"
-																		type="tel" name='balaDefAmt' placeholder="500.00" data-inline="true" maxlength="5" />
-																</span>or more<br/>Minimum amount is $<span id='balaDefAmt'> </span></p>
+																<span class="dollarSign">$</span>
+																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
+																	<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt  textbox_alertspage textInput" type="tel" name='balaDefAmt' placeholder="500.00" data-inline="true" maxlength="5" />
+																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                                                </span>
+																																<!--R13.3 Global Change-->
+																<span class="orMoreText">or more</span>
+																<span class="minAmountText">Minimum amount is $</span><span id='balaDefAmt'> </span></p>
 														</div>
 													</div>
 												</li>                                    
@@ -302,7 +331,9 @@
 																<span class="boldtext">Nearing Account Credit Line</span><br/>Learn when you account balance is within
 																<br/>
 															</p>
-															<div class="ui-select">
+															<select name="crltDefAmt" class='crltDefAmt accCreditDD' onchange="updateValcrltDefAmt(this.value)" id='VALUE1' data-theme="d" data-native-menu="false">														
+															</select>
+															<!--div class="ui-select">
 																<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="arrow-d" data-iconpos="right" data-theme="d" class="ui-btn ui-shadow ui-btn-corner-all ui-btn-icon-right ui-btn-up-d">
 																	<span class="ui-btn-inner ui-btn-corner-all">
 																		<span class="ui-btn-text">
@@ -310,19 +341,18 @@
 																		</span>
 																		<span class="ui-icon ui-icon-arrow-d ui-icon-shadow">&nbsp;</span>
 																	</span>
-																	<select name="crltDefAmt" class='crltDefAmt' onchange="updateValcrltDefAmt(this.value)" id='VALUE' data-role="none">														
+																	<select name="crltDefAmt" class='crltDefAmt' onchange="updateValcrltDefAmt(this.value)" id='VALUE' data-theme="d" data-native-menu="false">														
 																	</select>
 																</div>
-															</div>
+															</div-->
 															</br> of your credit line
 														</div>
 													</div>
+                                                    <div class="clearboth"></div>   <!--- 13.3 global changes --->
 												</li>
 											</div>
 									</ul>
-									<!--13.3 Change Defect Fix :97620 -->
-									<ul class="whitebg-list-view" id="conditionalRewardHide">
-									  <!--13.3 Change Defect Fix :97620 -->
+									<ul class="whitebg-list-view">
 										<li class="hideLiMain 5CBB"><span class="pn-plus" style="background-position: 0px 0px;"></span><h3 class="bluetext">Maximize Your Rewards</h3></li>
 											<div class="hidden-element">
 												<li id="5CBB" class="hideLi 5CBB">
@@ -387,9 +417,11 @@
 															<p>
 																<span class="boldtext">Cashback Bonus Reaches Specified Amount</span>
 																<br/>
-																<span class="boldtext">$
-																	<input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt" type="tel" placeholder="100.00" data-inline="true" name='mrrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
-																</span>
+																<span class="dollarSign">$</span>
+																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
+																	<input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt textInput" type="tel" placeholder="100.00" data-inline="true" name='mrrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
+																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                                                </span><!--R13.3 Global Change-->
 															</p>
 														</div>
 													</div>
@@ -427,10 +459,13 @@
 								<p class="mL2">Phone # required for text message notifications:</p>
 								<div class="ui-grid-a">
 									<div class="ui-block-a">
-										<input type="tel" id='txt-phone-number' placeholder="Phone number" class="add_phone_number" maxlength="10"/>
+										<span class="wrapperSpan giftTextAlign">	<!--R13.3 Global Change-->
+											<input type="tel" id='txt-phone-number' placeholder="Phone number" class="add_phone_number textInput" maxlength="10"/>
+										<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                        </span>	<!--R13.3 Global Change-->
 									</div>
 									<div class="ui-block-b addnumberSelect">
-										<select id="addnumberSelect">
+										<select id="addnumberSelect" data-theme="d" data-native-menu="false">
 											<option value="">Select</option>
 											<option value="message.alltel.com">Alltel</option>
 											<option value="txt.att.net">ATT</option>
@@ -468,7 +503,7 @@
 							</div>
 							<div class="center_align"> 
 								<div class="savecancel ui-grid-a" style="text-align:center">
-									<div class="ui-block-b" style="width:100%">
+									<div class="ui-block-b r3matchbtn" style="width:100%">
 										<a href="#" data-role="button" data-inline="false" id="id-notify-save" class="notifsave savenumber">Save Changes</a>
 									</div>
 									<div class="ui-block-a" style="width:100%">
@@ -479,8 +514,8 @@
 							</br>
 							<div id="unregistered-tnclinks">
 								<p>
-									<span class="mL2">By clicking on the Save button I agree to the </span>
-									<a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" >Mobile Alerts Terms of Use</a>
+									<span class="mL2">By clicking on the Save button I agree to the Mobile Alerts </span>
+									<a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" >Terms of Use</a>
 								</p>
 							</div> 
 						</div>  

@@ -8,7 +8,7 @@
 </head>
 <body>
       <!--page start  -->
-      <div data-role="page" id="transactionHistory-pg">
+      <div data-role="page" id="transactionHistory-pg" class="contentSetting">
             <!--header start  -->
             <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
                   <header id="header" class="cmn_header">
@@ -17,42 +17,57 @@
             <!-- header end -->
             <!-- content start -->
             <div data-role="content" class="ui-content-internalpages">
-                  <div class="wraper">
-                        <div class="floatleft" id="name">
+            
+                  <div>
+						<!--<div class="floatright1 pay-pal-logo"> </div>
+                         <div class="floatleft1" id="name">
                               <h1>Transaction History</h1>
                         </div>
-						<div class="floatright pay-pal-logo"> </div>
-                        <div class="clearboth"></div>
-						<ul data-theme="d" data-inset="true" style="margin-bottom:10px !important;">
-						<li>
+                        <div class="clearboth"></div>-->
+						<!--<ul data-theme="d" data-inset="true" style="margin-bottom:10px !important;">
+						<li>-->
+                        <div class="innerWrapper">
+                        <div class="subHeader">
+		                  <div class="text">MONEY MESSENGER</div>
+        		          <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                	    <div class="smallText">POWERED BY</div>
+                        
+                  </div>
+                
+                 <div id="name">
+							<p class="boldtext bigger">Transaction History</p>
+						</div>
+                        
+                        
 							<div id="gri1">
 								<div id="grid11">
-									<div id="minpay">
-										<b>Show:</b>
+									<div id="minpay" class="subHeadings">
+										Show
 									</div>
 									<div id="showTransactionsStatus"  data-icon="arrow-d"></div>
 								</div>
 							</div>
-						</li>
-						</ul>						  
+						<!--</li>
+						</ul>--></div> 						  
 							  <div id="historyFilter"> test data</div>
-							  
+							 
 							  <div class="txtcenteraln">
 							    <center>
                                     <a href="#" id="loadmore" onclick="dfs.crd.p2p.loadMoreTransactions();" data-role="button" 
-									style="display:none" class="small_btn_180px" data-inline="true"  data-theme="c">Load More Transactions</a>
+									 class="small_btn_180px" data-inline="true"  data-theme="c">Load More Transactions</a>
 							    </center>
                               </div>
                               <div class="txtcenteraln">
 							    <center>
-                                    <a href="#" id="moremoney" onclick="navigation('../p2p/sendMoney1');"  data-inline="true" data-role="button" data-theme="c" style="display:none" class="small_btn_180px">Send More Money</a>
+                                    <a href="#" id="moremoney" onclick="navigation('../p2p/sendMoney1');"  data-inline="true" data-role="button" data-theme="c" class="small_btn_180px">Send More Money</a>
 							    </center>
                               </div>
                    </div>
+                   
 
                   <div id="footnotes" class="footnotes" ></div>
             </div>
-
+        
             <!-- content end -->
 
             <div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">

@@ -18,28 +18,34 @@
 			<p class="cbb-panel">Current Cashback Bonus: <span id="redeemPartner1_CBB"></span>&nbsp;</p>
                     </section>
             <div id="pgPadding"></div>
-            <div class="progress-indicator pos-center">
-		<ul>
-		    <li><a href="#" class="active">1. Review/Edit</a></li>
-                    <li><a href="#">2. Verify</a></li>
-                    <li><a href="#">3. Confirmation</a></li>
-		</ul>
-		<div class="clearboth"></div>
-	    </div>
+            <div class="progress-indicator pos-center">		<!--R13.3 Global Change-->
+				<ul>
+					<li><a href="#" class="active">Review/Edit</a></li>
+					<li><a href="#">Verify</a></li>
+					<li><a href="#">Confirmation</a></li>
+				</ul>
+				<div class="clearboth"></div>
+			</div>
             <!-- header end --> 
   <!-- Middle content start from here-->
   <div data-role="content" class="ui-content-internalpages">
     <div class="details-section-container pos-center">
       <div class="detl-view-content">      	
-        <div class="redeem-description"> <span class="floatleft"><img id="partnerImg" width="77" height="39" alt="" data-default-image='../../images/DefaultImage_87X55.png' onerror='defaultImage(this);'></span> <span class="bold-text" id="pmodeDesc"></span>
-          <ul class="collapsible">
-            <li> <a href="#" class="collapslink deactive" rel="collaps12">See partner description</a> </li>
-          </ul>
+        <div class="redeem-description"> <span class="floatleft"><img id="partnerImg" width="72" height="72" alt="" data-default-image='../../images/DefaultImage_87X55.png' onerror='defaultImage(this);'></span>
+		<!--R13.3 Global Change start-->
+		<div class="contentContainer">
+			<span class="bold-text" id="pmodeDesc"></span>
+			<ul class="collapsible">
+				<li> <a href="#" class="collapslink deactive" rel="collaps12">See partner description</a> </li>
+			</ul>
+		</div>
+		<!--R13.3 Global Change end-->
           <div id="collaps12" class="display-none">
                     <div id="merchantDesc"></div>
 
             </div>
         </div>
+		<div class="clearboth"></div>
       </div>
       
       
@@ -47,7 +53,7 @@
       <div class="detl-view-content">
       	<p class="redtext padd-none" id="inSuffError">You do not have sufficient <i>Cashback Bonus</i> for this transaction.</p>
         <div class="floatleft paddr10">
-          <p class="text bold-text">Type:</p>
+          <p class="text bold-text">Type</p>
           <span class="amt-btn" id="giftCardPresent"></span> </div>
         <div id="ecertFloat" class="floatright ecertificate-btn"> </div>
            <div class="clearboth"></div>
@@ -55,7 +61,7 @@
       
       
       
-      <div class="detl-view-content">
+      <div class="detl-view-content dummyTextDisplay"> <!--R13.3 Global Change-->
         <div class="rd-txt"><span class="normal-font floatleft">Redeem This</span> <span class="gry-org-small-btn floatleft">&nbsp;</span> <span class="normal-font floatleft">Get This</span>
           <div class="clearboth"></div>
         </div>
@@ -68,7 +74,7 @@
       </div>
 	  <div class="detl-view-content noborder">
 		 <div class="stepperContainer">
-          <p class="bold-text margin-none padd-none">Quantity:</p>
+          <p class="bold-text margin-none padd-none">Quantity</p>
           <p data-role="stepper" class="counter" style="width:133px">
             <input type="text" name="stepper1" id="stepper1" class="quantity" value="" size="2" min="1" max="5" data-role="none"  readonly="readonly" />
           </p>
@@ -83,6 +89,8 @@
 		</div>
     <p align="center" class="padd-top-btm-10"><a href="#" id="redeemPartner1_terms" data-transition="pop">Partner Terms &amp; Conditions</a></p>
     <div id="footnotes" class="footnotes"></div>
+	
+	
   </div>
   <!-- Middle content end here-->
    <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">

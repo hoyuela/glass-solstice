@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Discover - Account Activity</title>
+
 </head> 
 <body>
 	<!--page start  -->
@@ -15,41 +16,83 @@
 		 <div data-role="content" class="ui-content-internalpages ui-content" role="main">
 		   <div id="r4-wrap">
 			 <div class="wraper">
+              <div class="innerWrapper">
 				<h1>Refine Activity</h1>
 				<p class="view-message">View Transactions by Activity Period:</p>
-				<div class="select-range" data-theme="d" id="activitySelection">
+           
+               
+				<!--<div class="select-range" data-theme="d" id="activitySelection">
 					<select data-theme="d" id="activity-selection"></select>
+				</div>-->
+                
+                <!-- Added for Global Change -->
+                
+				<div class="select-range" data-theme="d" id="activitySelection">
+					<span class="subHeadings">Account Type</span>
+                        <select name="selectAccType" id="activity-selection" data-native-menu="false" data-theme="d" style="margin-top:10px;">
+                        <!--<option data-description=""></option>-->
+                        	         </select>
+						<div class="clearboth"></div>
 				</div>
+                </div><!-- /innerWrapper -->
+               <!-- <ul class="detailsList">
+                 <li>
+                  	<span class="detailName">Account Type</span>
+                        <select name="selectAccType" id="activity-selection" data-native-menu="false" data-theme="d" style="margin-top:10px;">
+                        	<option data-description=""></option>
+                        	<option>Checking Account</option>
+                            <option>Online Checking</option>
+                            <option>Savings Account</option>
+                        </select>
+						<div class="clearboth"></div>
+                 </li>
+                 </ul>-->
+                
+                
+                
 				<!--<p>To narrow list,</p>-->
 				<div class="landingPgLi">
-				<ul data-role="listview" data-theme="d" data-inset="true" id="list1" class="account-list-view">
+				<!--<ul data-role="listview" data-theme="d" data-inset="true" id="list1" class="account-list-view">
 					<li data-icon="false">
 						<a href="#" id="js-search-transactions-link" class="bluelink buttonBorderSupress">Search transactions</a> <span class="floatright arrow"> &gt; </span>
 					</li>
-				</ul>
+				</ul>-->
+                <!-- Global changes -->
+                <!--<ul class="whitebg-list-view account-list-view" data-theme="d" data-inset="true">-->
+                 <ul data-role="listview" data-theme="d" data-inset="true" id="list1" class="whitebg-list-view account-list-view">
+					<li data-icon="false"><a href="#" id="js-search-transactions-link" class="ui-link"><span class="amt_bold" id="">Search Transactions</span><span class="payArr"></span></a></li>
+                 </ul>
+                 
 				</div>
+               
 				<!-- Developer's Note: add the hidden class below to hide pending transactions. -->
 				<div id="pending-transactions">
 					<h1>Pending Transactions</h1>
-					<p>
+					<p class="alignNote">
 						Pending transactions are transactions that have been deducted from your available credit but have not yet posted to your account.
 					</p>
+                    
 					<div class="show-hide">	
 						<p class="show-hide-content" style="display: none; ">
 		               			Transactions may take up to three calendar days to post.<strong> Pending descriptions and amounts may differ once posted </strong>
 		               			due to merchants sending authorization requests before the final purchase amount is known. This commonly occurs with hotel, restaurant, gas station 
 		               			or car rental transactions.<br/><br/>Transactions cannot be disputed until they post to your account.
 		                </p>
+                   
 		                <p>
 							<a class="show-hide-link" data-text-on="View Less" data-text-off="Pending Transaction Details" href="#">Pending Transaction Details</a>
 						</p>
+                         
+                       
 					</div>
 					<ul class="transaction-list" data-role="listview" data-theme="d" data-inset="true" id="js-pending-list"> </ul>
 					<!-- / .transaction-list -->
 				</div>
+               
 				<!-- / .pending-transactions -->
 				<div id="posted-transactions">
 					<h1 id="js-transactions-title">Posted Transactions</h1>
+                    
 					<ul class="transaction-list" data-role="listview" data-theme="d" data-inset="true" id="js-trans-list"> </ul>
 					<div class="clr"><!-- --></div>
 					<!-- / .transaction-list -->
@@ -59,12 +102,14 @@
 				</div><!-- / .posted-transactions -->
 			 </div><!-- / .wrapper -->
 		 </div>
-			<div id="footnotes" class="footnotes" ></div>
+			
 		 </div>
 		 <!-- content end -->
-		<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
-			<footer id="footer" class="mnu_footer">	</footer>
-		</div>
+		       <div id="footnotes" class="footnotes footerAlign"></div>
+				<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
+           			 <footer id="footer" class="mnu_footer"></footer>
+				</div>
+  
 	</div>
 	<!--page end -->
 </body>

@@ -33,9 +33,12 @@
 	text-decoration: none;
 	color: #267bb1
 }
-#edoLandingPage-pg .navtabs,#edoHistory-pg .navtabs{
+/*#edoLandingPage-pg .navtabs,#edoHistory-pg .navtabs{
 	margin-top:5px;
 	}
+/*13.3 Global Change:Starts*/#edoLandingPage-pg .navtabs {
+	margin-left:17px;
+}/*13.3 Global Change:Ends*/
 .edo-page .dtl-view-wrap {
 	min-height: 400px;
 	border-radius: 3px;
@@ -96,6 +99,10 @@ font-weight: bold;
 }
 .edoDetailInformation{display: block;
 margin-top: 10px;}
+.viewMapText {
+	font-weight:bold;
+	line-height:14px;
+}
 /*#edoDetailTerm{font-size: 15px;
 color: rgb(82, 94, 102);}*/
 .edo-page .dtl-view-wrap .expiry-dt div span {
@@ -277,15 +284,18 @@ width: 100%;}
 }
 
 .edo-page .rd-faq-question-list,.faq-page .rd-faq-question-list {
-	background-color: white;
-	border-radius: 3px;
+	background-color: transparent;
+	/*border-radius: 3px; 13.3 Global Change 
 	border: 1px solid #DADADA;
-	/*padding: 7px 0px;*/
-	-webkit-border-radius: 3px;
+	/*padding: 7px 0px;
+	-webkit-border-radius: 3px;*/
 	margin-top: 10px;
+	border-top: 2px solid #d0d0d0;
+	border-bottom: 2px solid #d0d0d0;
+	border-radius: 0px;
 }
 
-.edo-page .rdfaq-plus,.faq-page .rdfaq-plus{
+.edo-page .rdfaq-plus,.faq-page .rdfaq-plus, #strongAuthFirstQues-pg .rdfaq-plus {
 	height: 17px;
 	width: 20px;
 	float: left;
@@ -298,8 +308,8 @@ width: 100%;}
 }
 
 .edo-page .rd-faq-question-list li,.faq-page .rd-faq-question-list li {
-	border-bottom: 1px solid #f6f6f6;
-	width:95%;
+	border-bottom: 1px solid #d0d0d0; /* 13.3 Global Change */
+	/*width:95%;*//* 13.3 Global Change */
 	margin: 0 auto;
 	padding: 12px 12px;
 }
@@ -368,7 +378,7 @@ width: 100%;}
 	top: 85px;
 	z-index: 9999;
 	display: none;
-}  backlog changes*/
+} backlog changes*/
 
 .edo-page .arrow_head {
 	width: 0;
@@ -462,14 +472,14 @@ width: 100%;}
 
 .overlay-header {
 	width: 100%;
-	text-align: center;
+	/*text-align: center;*/ /*13.3 global change*/
 	background-color: #fff !important
 }
 
 .overlay-content {
 	background-color: #fff;
-	padding-top: 5%;
-	padding:10px;
+	/*padding-top: 5%;*/  /*13.3 global change*/
+	padding:0 10px 10px 10px;
 	font-family: Helvetica, Arial, sans-serif;
 	overflow-y: auto;
 }
@@ -482,9 +492,9 @@ width: 100%;}
 }
 
 .overlay-header .hdr-text span {
-font-size: 60px;
+font-size: 24px;        /*13.3 global change*/
 font-weight: normal;
-text-align: center;
+/*text-align: center;*/  /*13.3 global change*/
 margin-top: 73px;
 }
 .edo-page .overlay-content .innerText {
@@ -493,13 +503,17 @@ margin-top: 73px;
 }
 .edo-page .overlay-content .innerText p {
                 font-weight: normal !important;
+				/*13.3 global change*/
+				line-height: 18px;
 }
 
 .overlay-header .hdr-text .punchLine {
 	font-size: 14px;
 color: #576166;
 font-weight: bold;
-text-align: center;
+/*13.3 global change*/
+padding-top:14px;
+/*text-align: center; /*13.3 global change*/
 /*margin-top: 15px;*/
 }
 
@@ -520,18 +534,53 @@ text-align: center;
 }
 
 .overlay-content .innerText p {
-	font-size: 16px;
-color: #576166;
-margin: 20px 15px 0 10px;
+	/*font-size: 16px;*/
+	font-size:14px;  /*13.3 global change*/
+	color: #576166;
+	margin: 8px 15px 0px 10px; /*13.3 global change*/
 }
 
 .overlayBtn {
 	width: 100%;
 	text-align: center;
-	margin-bottom: 12px;
-	top: 90%;
+	/*margin-bottom: 12px;*/
+	/*top: 90%;*/	/*13.3 global change*/
+	/*13.3 global change*/
+	margin-top:100px;
 	/*position: absolute;*/
 }
+/*13.3 global change starts*/
+#edoLandingPage-pg .ui-grid-a .ui-block-a, #edoLandingPage-pg .ui-grid-a .ui-block-b, #edoHistory-pg .overlayBtn .ui-block-a, #edoHistory-pg .overlayBtn .ui-block-b {
+	margin:0px;
+	width:50% !important;
+	padding:0;
+}
+#edoLandingPage-pg .hstrybtn {/*13.3 global change*/
+	width:46% !important;
+}
+
+#edoLandingPage-pg .showListview {	/*13.3 global change*/
+	border-top:2px solid #d0d0d0;
+}
+.ui-btn-corner-all{border-radius:0px !important;}
+
+/*#edoLandingPage-pg .ui-grid-a{margin-top:100px !important;}*/		/*13.3 global change*/
+#closebutn .ui-btn-inner, #edoHistory-pg #overlay_wraper .ui-btn-inner {padding:12px 0px !important;}
+#closebutn .ui-btn-inner .ui-btn-text{font-size:16px !important;}
+#strongAuthFirstQues-pg .white-form .separator{border-bottom:1px solid #b9bcbd; margin:0px -5px; }
+#edoLandingPage-pg .overlay-content{padding-bottom:130px !important;}
+
+#edoLandingPage-pg .r3matchbtn .ui-btn-text, #edoHistory-pg .r3matchbtn .ui-btn-text{margin:0px !important;} 
+#edoLandingPage-pg #closebtn_landing, #edoHistory-pg #closebtn{padding:0 !important;}
+#closebutn .ui-block-a .ui-btn-inner {background-color:#dce3e5 !important;}
+#closebutn .ui-block-a .ui-btn-text{color:#3D484D !important;}
+
+#closebutn .ui-btn-up-c:hover, #edoLandingPage-pg #closebutn .ui-btn-hover-c{
+	/*background-color:#dce3e5 !important;*/
+	-webkit-box-shadow: none !important;
+-moz-box-shadow: none !important;
+box-shadow: none !important;	}
+/*13.3 global change ends*/
 
 .overlayBtn #overlayShowExtras {
 	width: 124px;
@@ -576,11 +625,11 @@ margin: 20px 15px 0 10px;
 	cursor: pointer;
 	float: left;
 }
-.divider {
+/*.divider {
 border-top: 1px solid #c0c8cc;
 padding-top: 15px;
 -webkit-box-shadow: 0px -5px 5px #F3F5F6;
-}
+} 13.3 global change*/
 .edo-page .navtabs a,.edo-page .navtabs a:hover,.edo-page .navtabs a:visited
 	{
 	text-decoration: none !important;
@@ -616,8 +665,13 @@ padding-top: 15px;
 }
 
 .edo-page .selectedTab {
-	background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.27, #9BA2A4
-		), color-stop(1, #404649) ) !important;
+	background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.14, #9D9D9D),
+	color-stop(0.79, #4A4A4A)
+) !important;
 }
 
 .edo-page .selectedTab span {
@@ -744,7 +798,7 @@ background:none;font-size:14px;color:#50555a}
 
 .edo-page .navBtns { /*margin-top:20px; */
 width:90px;
-float: right;
+/*float: right;*/		/*13.3 global change*/
 margin-top:5px;
 }
 
@@ -781,36 +835,37 @@ margin-top:5px;
 	-webkit-border-bottom-left-radius: 5px;
 }
 
-.edo-page .showListview .items {
+.edo-page .showListview .items {		/*13.3 global change*/
 	padding: 0;
-	padding-left: 13px;
+	padding-left: 17px;
 	border-bottom: 1px solid #dee1e0;
 	/*-webkit-box-shadow: #F3F5F6 0 0 5px 4px inset;*/
 	cursor: pointer;
 }
 
-.edo-page .showListview .items .partnerLogo {
+.edo-page .showListview .items .partnerLogo {		/*R13.3 Global Change*/
 	width: 21%;
-	border: 2px solid #eaebec;
+	/*order: 2px solid #eaebec;*/
 	float: left;
 	text-align: center;
-	margin-top: 10px;
-	margin-bottom: 8px;
+	margin-top: 17px;
+	margin-bottom: 13px;
+	-webkit-box-shadow: 0 0 5px #888;
 }
-
-.edo-page .showListview .items .offersInfo {
+	
+.edo-page .showListview .items .offersInfo {		/*R13.3 Global Change*/
 	float: left;
 	width: 67%;
-	margin-top: 9px;
-	margin-left: 2%;
-	font-size: 12px;
+	margin-top: 17px;
+	margin-left: 5%;
+	font-size: 17px;
 	/*font-weight: bold;*/
-	color: #3b4750;
+	color: #3d484d;
 	text-align: left;
 	font-weight:bold;
 }
 
-.edo-page .showListview .items .offersInfo .expiryDot {
+.edo-page .showListview .items .offersInfo .expiryDot {		/*R13.3 Global Change*/
 	clear: left;
 	float: left;
 	/*border: 1px solid #c4c5c8;
@@ -820,16 +875,16 @@ margin-top:5px;
 	padding-top: 2px;
 	padding-left: 2px;
 	margin-right: 3%;
-	margin-top: 3px;
+	margin-top: 10px;
 }
 
 .edo-page .showListview .items .offersInfo .merchantName {
 	/*float: left;*/
 }
 
-.edo-page .showListview .items .offersInfo .expiryDot .expiryDotInner {
-	width: 11px;
-	height: 11px;
+.edo-page .showListview .items .offersInfo .expiryDot .expiryDotInner {		/*R13.3 Global Change*/
+	width: 12px;
+	height: 12px;
 	-webkit-border-radius: 10px;
 }
 
@@ -845,11 +900,11 @@ background-color:#8ed500
 	background-color:#f21923
 }
 
-.edo-page .showListview .items .offersInfo .expDate {
-	color: #6b6b6b;
+.edo-page .showListview .items .offersInfo .expDate {		/*R13.3 Global Change*/
+	color: #8a9499;
 	float: left;
-	margin-top: 3px;
-	font-size: 11px;
+	margin-top: 10px;
+	font-size: 12px;
 	font-weight:normal !important;
 }
 
@@ -870,7 +925,7 @@ background-color:#8ed500
 }
 
 .edo-page .navBtns .ui-block-a .ui-select {
-	float: right;
+	/*float: right;*/		/*R13.3 Global Change*/
 }
 
 .edo-page .navBtns .ui-block-a .ui-select .ui-btn {
@@ -898,15 +953,15 @@ background-color:#8ed500
 	display: none;
 }
 
-.edo-page .navBtns .ui-block-b .changeView {
+.edo-page .navBtns .ui-block-b .changeView {	/*13.3 global change*/
 	height: 34px;
 	width: 36px;
 background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.19, #fefefe
 		), color-stop(1, #f6f6f6) );
 	/*-webkit-border-radius: 5px;*/
 	border: 1px solid #c0c8cc;
-	float: right;
-	margin-right: -21%;
+	/float: right;/
+	/*margin-right: -21%;*/		
 	text-align: center;
 }
 
@@ -1487,8 +1542,8 @@ border-bottom: 2px solid #d0ceca;
 		width: 290px;
 	}*/
 	/*#edoLandingPage-pg .edoDetailsDisplay_showGridview {width:282px !important}*/
-	#edoLandingPage-pg .overlay_wraper {
-	width:87% !important;
+	#edoLandingPage-pg .overlay_wraper {  
+	width:85.5% !important;   /* 13.3 global change*/
 	background-color: #fff;
 	color: #fa6904;
 	font-size: 12px;
@@ -1496,7 +1551,7 @@ border-bottom: 2px solid #d0ceca;
 	display: none;
 	z-index: 99999;
 	overflow-y: auto;
-	border-radius:4px;
+	/*border-radius:4px;*/        /* 13.3 global change*/
 	-webkit-border-top-left-radius: 0px !important;
 	overflow: visible;
 	/*height:54%;*/
@@ -1513,7 +1568,7 @@ border-bottom: 2px solid #d0ceca;
 	z-index: 99999;
 	overflow-y: auto;
 	overflow: visible;
-	border-radius:4px;
+	/*border-radius:4px; 13.3 global change
 	-webkit-border-top-left-radius: 0px !important;
 	/*height:88%;*/
 	/*left:7%;
@@ -1530,7 +1585,7 @@ border-bottom: 2px solid #d0ceca;
 	/* } */
 }
 
-.partnerLogo img {width:49px; height:49px;}
+.partnerLogo img {width:62px; height:62px;}
 .edoDetailsNameBlock {
 /* commenting below for bugfix and changing white-space to normal from no wrap*/
 /*text-overflow: ellipsis;*/
@@ -1549,12 +1604,12 @@ margin: 0px;
 /*#edoHistory-pg .tooltip {
 top: 38px;
 right: 25px;
-}
+} 
 
 #edoLandingPage-pg .tooltip {
 top: 40px;
 right: 25px;
-} backlog changes*/
+}backlog changes*/
 
 #edoLandingPage-pg .filedetail{color:#ff6600;}
 #edoLandingPage-pg .rd-landing-bubble-data, #edoLandingPage-pg .rd-landing-bubble-data ul {margin-top: 0px; padding-top:0px;}
@@ -1566,4 +1621,7 @@ right: 25px;
 	font-size: 12px;
 	font-weight: bold;
 	margin-bottom: 5px
+}
+.edolandingoverlay div#closebutn div.ui-block-b{/*13.3 global change*/
+	width:50% !important;
 }

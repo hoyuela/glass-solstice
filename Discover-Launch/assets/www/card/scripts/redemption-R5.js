@@ -444,6 +444,7 @@ $("#redeem-history").live('pageshow', function (event){
 			$("#rd-history-list li").show();
 	}
 	$("#rd-history-ecert").click(function(){
+		$(this).addClass("curnt").siblings().removeClass("curnt"); /* 13.3 Global Change */
 		 if($('.rd-ecert').length==0){
 					$("#rd-history-list").hide();
 					$(".errormsg-ecert").show();
@@ -455,6 +456,7 @@ $("#redeem-history").live('pageshow', function (event){
 		}
 	});
 	$("#rd-history-all").click(function(){ 
+		$(this).addClass("curnt").siblings().removeClass("curnt"); /* 13.3 Global Change */
 		$(".errormsg-ecert").hide();
 		if ($("#rd-history-list li").length==0){
 					$("#rd-history-list").hide();

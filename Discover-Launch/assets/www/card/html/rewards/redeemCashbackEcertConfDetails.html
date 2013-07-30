@@ -6,9 +6,9 @@
          
     </head>
 
-    <body>
+   <body>
         <!--page start -->
-        <div data-role="page" id="rd-history-ios" class="cbb-page rd-page">
+        <div data-role="page" id="rd-history-ios" class="cbb-page rd-page contentSetting">
             <!--header start -->
              <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
                  <header id="header" class="cmn_header">
@@ -22,7 +22,7 @@
                    <div class="ecert-info rd-history-wraper">
                     	<div class="ecert-info1-cnfrm">
                             <div class="ecert-code" id="ecrtificateConfDetails">
-                                
+                               
                             </div>
                             <div class="ecert-amnt-cnfrm">
                                 <span id="ectConfdisbAmt"></span>
@@ -48,17 +48,34 @@
                         </div>
                     </div><!--ecert-info ends here-->
                    
+                  <!-- <div class="btns">
+					<p class="red-error-msg" id="passErr">We're Sorry.Please attempt to <br/>Add to Passbook at another time.</p>
+					<div class="ui-grid-a">		
+						<a href="#" id="emailEcert" data-role="button" class="ui-block-a">Email eCert</a>
+						<a href="#" id="saveEcert" data-role="button" class="ui-block-b">Save to Photos</a>                         
+					</div>		
+					
+					<div class="clearboth"></div>                   
+					<div class="clearboth"></div>
+				</div>-->
+                   
+                   
+                   
                      <div class="btns">
                      	<p class="red-error-msg" id="passErr">We're Sorry.Please attempt to <br/>Add to Passbook at another time.</p>
-                    	 <a href="#" id="emailEcert" data-role="button">Email eCertificate</a>
-                         <a href="#" id="saveEcert"  data-role="button">Save to Photos</a>
+                        <div class="ui-grid-a">	<!--R13.3 Global Change-->
+                    	 <a href="#" id="emailEcert" data-role="button" class="ui-block-a">Email eCertificate</a>
+                         <a href="#" id="saveEcert"  data-role="button" class="ui-block-b">Save to Photos</a>
                          <!-- a href="#" id="passBookEcert" data-role="button"><img class="passBookImg" src="../../images/passbook-image1.png" width="25" height="25" />Add To Passbook</a -->
-                    	
+                    	</div><!--R13.3 Global Change-->
                     	 <div class="clearboth"></div>                   
                          <div class="clearboth"></div>
                     </div>
+                    
+                    
                     <div class="bottom-text bluelink" >
                     	<a href="#" data-transition="pop" id="redeemConfIns">How do I use this code?</a>
+
                         <div class="bottom-text-tnc">
                        	   <a href="#" data-transition="pop" id="redeemConfTerms">Partner Terms & Conditions</a>
                         </div>
@@ -77,5 +94,4 @@
 
         <!--page end -->
     </body>
-
 </html>

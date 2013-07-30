@@ -6,7 +6,7 @@
   
   <body>
     <!--page start -->
-    <div data-role="page" id="alertHistory-pg" class="pn-page">
+    <div data-role="page" id="alertHistory-pg" class="pn-page contentSetting">
       <!--header start -->
         <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
             <header id="header" class="cmn_header">
@@ -17,13 +17,13 @@
         <div data-role="content" class="ui-content-internalpages">
             <div class="wraper">
 			<!-- h1>Push Alert History</h1 -->
-			<a href="#" id="ma-link" class="bluelink margin_top15" data-transition="slide">Manage Alerts</a>
+			<a href="#" id="ma-link" class=" innerWrapper bluelink margin_top15" data-transition="slide">Manage Alerts</a>
                 <div id="deleted_messages"></div>
-                <div id="red_textfont" style="color:#82868a"></div>
-                <div id="no_settings_saved" style="display: none" >Your changes have not been saved.</div>
-                <!--<p class="main_heading_paragraph">Alerts over 45 days will be automatically deleted.
+                <div  class="innerWrapper" id="red_textfont" style="color:#82868a"></div>
+                <div id="no_settings_saved" class="innerWrapper" style="display: none" >Your changes have not been saved.</div>
+                <p class="main_heading_paragraph innerWrapper">Alerts over 45 days old will be automatically deleted.
                 <br/>
-                </p>-->
+                </p>
                 
                 <div class="main_content" id="id-main-content">
                     <div class="ui-grid-c">
@@ -41,11 +41,8 @@
                     <div id="alerthistory">
                         <ul class="whitebg-list-view" id="comments-list"></ul>
                     </div>
-                    <div class="main_heading_paragraph">Alerts over 45 days old will be automatically deleted.
-                	<span id="specialNotes">Dates are displayed in ET.</span> 
-                	</div>
                     <!-- Edit / Cancel / Delete Link Buttons -->
-					<div class="textcenter">
+					<div class="textcenter r3matchbtn">
                     <a href="javascript:void(0)" data-role="button" data-inline="false" id="id_edit_btn" class="edit_btn">Edit</a>
                     <a href="javascript:void(0)" data-role="button" data-inline="false" id="id_can_btn"  class="can_btn">Cancel</a>
                     <a href="javascript:void(0)" data-role="button" data-inline="false" id="id_del_btn" class="delete_btn">Delete</a>
@@ -53,8 +50,8 @@
 					</div>
                     <!-- Edit / Cancel / Delete Link buttons Ends here -->
                 </div>
-                <br/>               
- 
+                <br/>
+                <div id="specialNotes">* Dates are displayed in ET</div> 
                 <br/>
                 <div id="footnotes" class="footnotes" >
                 </div>
@@ -67,5 +64,6 @@
           </div>
 	<!--footer ends here -->
       </div>
+	 </div>
   </body>
 </html>

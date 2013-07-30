@@ -360,7 +360,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 
 /*inputs*/
 #r4-wrap input.ui-input-text {
-	margin-top: 10px;
+	margin-left: 2px !important; /* 13.3 global change */
 	margin-bottom: 10px;
 }
 
@@ -508,7 +508,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 	margin-bottom: 10px;
 }
 
-#r4-wrap ul.whitebg-list-view li:first-child {
+/*#r4-wrap ul.whitebg-list-view li:first-child {              removed for Global Change
 	-moz-border-top-left-radius: 4px !important;
 	-moz-border-top-right-radius: 4px !important;
 	-webkit-border-top-left-radius: 4px  !important;
@@ -531,7 +531,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 	font-weight: normal; 
 	background: #fff !important; 
 	padding: 10px !important;
-}
+}*/
 
 #r4-wrap ul.whitebg-list-view li.grayheading {
 	background: #d2d4d6 !important; 
@@ -545,7 +545,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 	cursor: default !important;
 }
 
-#r4-wrap .whitebg-list-view li {
+/*#r4-wrap .whitebg-list-view li {
 	text-align: left;  
 	color: #000 !important;
 }
@@ -556,11 +556,11 @@ only screen and (min-device-pixel-ratio: 1.5)
 	color: rgb(36, 137, 206) !important; 
 }
 
-#r4-wrap .whitebg-list-view li span { 
+#r4-wrap .whitebg-list-view li span {               removed for Global Change
 	text-align: right !important; 
 	float: right; 
 	padding-right: 10px;
-}
+}*/
 
 #r4-wrap .whitebg-list-view li .ui-icon, 
 #r4-wrap .whitebg-list-view li .ui-icon-shadow {
@@ -837,18 +837,18 @@ only screen and (min-device-pixel-ratio: 1.5)
 	margin: 7px 0;
 }
 
-#r4-wrap input.ui-input-text, 
+/*#r4-wrap input.ui-input-text, 
 #r4-wrap textarea.ui-input-text { 
 	font-size:12px !important;
-}
+} 
 
 #r4-wrap .ui-header .ui-btn-left{
 	top: 9px !important;
 	left: 21px !important;
-}
+}global change*/
 
 #r4-wrap .landingPgLi .account-list-view li a {
-		margin: 6px 6px 6px 6px !important;
+		/*margin: 6px 6px 6px 6px !important;*/ /*13.3 global change*/
 		padding: 0px;
 		color:#474e55 !important;
 }
@@ -1198,13 +1198,24 @@ only screen and (min-device-pixel-ratio: 1.5)
 }
 #search #r4-wrap .searchresults-data p{margin:0px; border-radius:4px; -webkit-border-radius:4px; cursor:pointer;}
 /* #search #r4-wrap .searchresults-data{font-size: 13px;}*/
- #search #r4-wrap .inlineLabel{display:inline-block; margin:0 5px 2px 0;}
+ #search #r4-wrap .inlineLabel {
+	 display:inline-block; 
+	 margin: 8px 5px 2px 0;
+	/*float: left;*/ /* 13.3 Global change */
+}
+
+/*13.3 global change*/
+#search #r4-wrap .dollerMargin{margin-top:0px !important;}
+.dollerMargin{margin-top:0px !important;}
+
  #search #r4-wrap .searchresultsresponse{width: 350px; margin: 0 0 6px 0;}
  #search #r4-wrap #search-sortContainer{margin: 8px 0 0 0;}
  #search #r4-wrap #sortByLabel{font-weight:bold;}
 
  #search #r4-wrap .invalid{
     border:1px solid red !important;
+	display:block !important;
+	bottom:40px !important;
 }
 
 #search #r4-wrap .transaction-list .ui-li-desc{
@@ -1266,8 +1277,10 @@ only screen and (min-device-pixel-ratio: 1.5)
 	text-align:center;
 	margin: 0 0 40px 0;
 } */
+/*13.3 global change*/
+#r4-wrap .block{display:block;
 
-#r4-wrap .block{display:block;}
+}
 
 #r4-wrap .hide{display:none;}
 
@@ -1278,16 +1291,24 @@ only screen and (min-device-pixel-ratio: 1.5)
 }*/
 /*space manaagement */ 
 
-#r4-wrap .inlineBlock{
+/*#r4-wrap .inlineBlock{
 	display:inline-block;
+}*/
+/* global change - date */
+#r4-wrap .inlineBlock{
+	display:block;
 }
+
 /*#r4-wrap .from-selection .inlineBlock{
 	width:50%;
 }*/
 #r4-wrap .from-selection label span.inlineBlock, #r4-wrap .to-selection label span.inlineBlock{
 	width:50%;
 }
-#r4-wrap .from-a-selection label span.inlineBlock, #r4-wrap .to-date-selection label span.inlineBlock{width:100%;}
+#r4-wrap .from-a-selection label span.inlineBlock, #r4-wrap .to-date-selection label span.inlineBlock{
+	width:100%;
+	color:#8a9499; /*13.3 global changes*/
+}
 
 #r4-wrap .link-button {
 	padding:0.625em 0;
@@ -1601,10 +1622,17 @@ only screen and (min-device-pixel-ratio: 1.5)
 }
 
 #search #r4-wrap input{
-	width:99%; 
+	width:92%; 
 	padding: 0; 
 	margin: 0;
 }
+/* 13.3 global change */
+#search #r4-wrap #js-amount-picker-range input{
+	width:72%; 
+	padding: 0; 
+	margin: 0;
+}
+/* 13.3 global change */
 
 /*#search #r4-wrap select{
 	width:100%; 
@@ -1612,39 +1640,40 @@ only screen and (min-device-pixel-ratio: 1.5)
 	margin: 0; 
 }*/
 
-#search #r4-wrap #searchParams li{
+/*#search #r4-wrap #searchParams li{
 	margin: 0 0 15px 0;
-	padding: 0;
-}
+	padding: 0; 
+}/* global change */
 
 #search #r4-wrap #searchParams li.amountList{
 	margin:0;
 }
 
-#search #r4-wrap #searchParams li.category{
+/*#search #r4-wrap #searchParams li.category{
 	margin:15px 0 0 0;
-}
+}*/ /*13.3 global changes*/
 
 #search #r4-wrap label{
 	margin: 0 0 5px 0;
-	font-size: 17px;
+	font-size: 15px;
 	display: inline;
 	line-height:1;
+	
 }
 
-#search #r4-wrap label input,.rd-page #amountCombo input,#search #r4-wrap #keywords{
+/*#search #r4-wrap label input,.rd-page #amountCombo input,#search #r4-wrap #keywords{
 	display: inline-block;
 	font-size: 12px;
 	height: 26px;
 	line-height: 26px;
-	padding: 4px;
+	padding: 4px;  
 	margin: 5px 3px 0 0;
 	max-width: 95%;
 }
-#search #r4-wrap #keywords{margin:5px 3px 0 0 !important; padding:4px !important;}
+#search #r4-wrap #keywords{margin:5px 3px 0 0 !important; padding:4px !important;} global change*/
 	
 #search #r4-wrap #js-date-picker-range input {
-	width: 85px;
+	width: 65px;
 	font-size: 13px !important;
 }	
 	
@@ -1655,28 +1684,35 @@ only screen and (min-device-pixel-ratio: 1.5)
 #search #r4-wrap .picker-input{
 	font-size: 14px !important;
 	height: 26px; 
-	width:102px;
+	width:75%;/* 13.3 Global Change */
+	display:inline-block;
+	
+}
+
+#search #js-date-picker-specific .picker-input{
+	width:94% !important;
 }
 
 #search #r4-wrap .ui-select{
 	margin: 3px 0 5px 0;
 }
 
-#search #r4-wrap .exampleText{
+#search #r4-wrap .exampleText{     /*13.3 global changes*/
 	margin: 5px 0 1px 0;
-	font-size: 10px;
-	color:#576166;
+	color:#8a9499;
+	display:inline-block;
 }
-#search .setfont label span.exampleText{ font-size:14px !important;}
+/*13.3 global changes*/
+#search .setfont label span.exampleText{ font-size:15px !important;}
 
 #search #r4-wrap .from-selection,#search #r4-wrap .from-a-selection{
 /*	width: 155px;*/
-    width: 148px;
+    width: 49%;
 }
 	
 #search #r4-wrap .to-selection,#search #r4-wrap .to-date-selection{ 
-	margin-left: 16px;
-	width: 134px;
+	/*margin-left: 16px;*/
+	width: 49%;
 	float:right;
 }
 #search #r4-wrap .from-selection span.block, #search #r4-wrap .from-a-selection span.block{ font-size:10px; }
@@ -1684,7 +1720,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 #search #r4-wrap img.datepicker-trigger{
 	width: 30px; 
 	vertical-align: middle; 
-	margin: -5px 0 0 1px;
+	margin: 0 0 0 1px;
 	cursor:pointer;
 }
 
@@ -1694,9 +1730,9 @@ only screen and (min-device-pixel-ratio: 1.5)
 }
 #tnc-confirmation  .ui-block-b{width:100% !important; text-align:center;}
 .rd-page .gift-card-selection div{text-align: center;}
-#search #r4-wrap #submit-container .ui-btn-inner{
+/*#search #r4-wrap #submit-container .ui-btn-inner{
 	padding: 5px 32px;
-}
+ }          removed for global change  */
 
 #r4-wrap #pageFooterSecureWrap{
 	margin: 4px 0 0 0 !important;
@@ -1738,7 +1774,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 
 #search #r4-wrap .to-date-selection
 {
-	margin-left: 15px;
+	/*margin-left: 15px;*/
 }
 
 
@@ -1825,7 +1861,12 @@ only screen and (min-device-pixel-ratio: 1.5)
 	padding: 0;
 	display: block;
 	margin: 0 0 15px 0;
-	-webkit-border-radius: 4px;
+	/*-webkit-border-radius: 4px;*/
+}
+/* 13.3 Global Change */
+#js-transactionsResults-list {
+	border-top: 2px solid #d0d0d0;
+	border-radius: 0px;
 }
 
 #r4-wrap .transaction-list li p.zero-results-message,
@@ -2565,7 +2606,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 #forgot-both-step1-pg #forgot-both-page-1 #r4-wrap .dob-year, #forgot-password-step1-pg #forgot-password-page-1 #r4-wrap .dob-year{
             margin-top:5px !important;
 }
-#r4-wrap #js-searchResults-container #loadTransactions-container a.small_btn:hover{padding:0 15px 0 15px !important;}
+/*#r4-wrap #js-searchResults-container #loadTransactions-container a.small_btn:hover{padding:0 15px 0 15px !important;}*/
 /*#updateEmail-pg  .whitebg-list-view,#personalizeCashPin1-pg ul{ border:none;}*/
 #updateEmail-pg  ul,#personalizeCashPin1-pg ul { background:none; padding:0px; border:none;}
 #updateEmail-pg  ul li{background:none !important;border:none; border-bottom:none !important; padding:5px 0 10px 0px !important; margin:0;}
@@ -2579,14 +2620,18 @@ only screen and (min-device-pixel-ratio: 1.5)
 #personalizeCashPin1-pg .white-box-rd-corner label{ font-size:13px;}
 #personalizeCashPin1-pg ul.white-box-rd-corner li div input{margin-top:5px; height:20px;}
 #personalizeCashPin1-pg ul{margin-top:0;}
-#paymentsHistory-pg .ui-li-static.ui-li,#pendingPayments-pg .ui-li-static.ui-li{padding:10px;}
+#paymentsHistory-pg .ui-li-static.ui-li,#pendingPayments-pg .ui-li-static.ui-li{padding:10px;
+/*13.3 Global Change*/ border-radius:0px !important;}
 #personalizeCashPin1-pg.faq-page .rd-faq-question-list li{ padding:5px 0px 15px 0px; margin-left:0px !important;}
 #personalizeCashPin1-pg.faq-page .rdfaq-plus{ width:13px;}
 #personalizeCashPin1-pg.faq-page .rd-faq-question-list .ui-grid-a .ui-block-b{width:93% !important;}
 #personalizeCashPin2-pg .bluelink{ font-size:12px !important;}
 #paymentStep1-pg .white-form .ui-radio .ui-icon{ top:19px;}
 #strongAuthFirstQues-pg .ui-radio span span.ui-btn-text{ font-size:12px;}
-#strongAuthFirstQues-pg .ui-radio .ui-btn-up-c,#strongAuthFirstQues-pg .ui-radio .ui-btn-hover-c{ line-height:20px !important;}
+#strongAuthFirstQues-pg .ui-radio .ui-btn-up-c,#strongAuthFirstQues-pg .ui-radio .ui-btn-hover-c{ -webkit-box-shadow:none !important;
+-moz-box-shadow:none !important;
+box-shadow: none !important;
+line-height:20px !important;}/*13.3 global change*/
 #strongAuthFirstQues_WhatThis{ font-size:12px; padding-top:10px; padding-bottom:0px !important; padding-left: 20px;}
 #share-mail-app #comments{ padding-left:0px;}
 .marginbottom15px{ margin-bottom:15px;}
@@ -2615,16 +2660,17 @@ padding-top: 12px;}*/
 .textalign{ float:left !important;}
 #manageAlerts-pg .ui-field-contain{ margin:0px; padding:0px;}
 #manageAlerts-pg #alertsetting{padding:0px !important;}
-#manageAlerts-pg #changenumber .change-msg-dot-com{ width:100% !important; }
-.at_align{padding-top:16px; float:left;}
+#manageAlerts-pg #changenumber .change-msg-dot-com{ width:126px !important; float:left; margin-right:0%;} /* 13.3 global change */
+.at_align{padding-top:10px; float:left;width:18px;}  /* 13.3 global change */
+.atRateSpan {width:76%;}  /* 13.3 global change (added) */
 #manageAlerts-pg.pn-page #changenumber .ui-grid-b .ui-block-b .at-rate{float:left; padding-top:0px;}
-#manageAlerts-pg.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com{ width:52%;}
-#manageAlerts-pg .gridwidth{ width:100% !important;}
-#manageAlerts-pg #custom-carrier{ margin-bottom:0px; border:1px solid #bbb;}
-#manageAlerts-pg #changenumber .ui-block-b{ margin-top:0px;}
-#changenumber .ui-block-b input.input_hightlight_error,#txt-phone-number .ui-block-a input.input_hightlight_error{ border:2px solid #fd0202 !important;}
+#manageAlerts-pg.pn-page #changenumber .ui-grid-b .ui-block-b .dot-com{ width:75%;}  /* 13.3 global change */
+#manageAlerts-pg .gridwidth{ width:57% !important;}  /* 13.3 global change */
+#manageAlerts-pg #custom-carrier{ margin-bottom:0px;} /* 13.3 global change */
+#manageAlerts-pg #changenumber .ui-block-b{ margin-top:10px;} /* 13.3 global change */
+#changenumber .ui-block-b input.input_hightlight_error{ border:2px solid #fd0202 !important;}
 #manageAlerts-pg #activitySelection .ui-btn-down-d  {border:1px solid #bbb !important} 
-#manageAlerts-pg.pn-page #addnumber input[type="tel"] { margin-top:7px !important; border:1px solid #bbb;}
+#manageAlerts-pg.pn-page #addnumber input[type="tel"] { /*margin-top:7px !important; border:1px solid #bbb;*/}		/*R13.3 Global Change*/
 
 .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCsRed,
 .ui-datepicker-other-month.ui-datepicker-unselectable.ui-state-disabled.dueDateParCs{border:1px solid #CED6D7 !important;}
