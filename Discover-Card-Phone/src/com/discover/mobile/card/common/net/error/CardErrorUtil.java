@@ -14,7 +14,6 @@ import android.content.res.Resources.NotFoundException;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSResponse;
 import com.discover.mobile.card.common.utils.Utils;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -63,29 +62,18 @@ final public class CardErrorUtil {
         Utils.log("handleCardErrorforResponse",
                 "RespCode:" + response.getResponseCode());
         switch (response.getResponseCode()) {
-        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid
-                                                                 // user id
-                                                                 // password
-            final CardErrorBean cardErrBean = getCardErrorBeanwithResponseStatus(
-                    response, false);
-            if (null == cardErrBean.getErrorCode()) {
-                cardErrBean.setErrorCode("" + response.getResponseCode());
-            }
-            return cardErrBean;
+        case 409:
+        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid user id  password
         case CardErrorResponseHandler.INVALID_INPUT: // 500 http status code
         case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
-            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(
-                    response, false);
+            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
             if (null == cardErrBean1.getErrorCode()) {
                 cardErrBean1.setErrorCode("" + response.getResponseCode());
             }
             return cardErrBean1;
-        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503:
-                                                                 // maintenance
-                                                                 // error
-            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(
-                    response, true);
+        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503: maintenance error
+            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(response, true);
             if (null == cardErrBean2.getErrorCode()) {
                 cardErrBean2.setErrorCode("" + response.getResponseCode());
             }

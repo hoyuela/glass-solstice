@@ -149,11 +149,38 @@ public class CredentialStrengthEditText extends ValidatedInputField {
                 if (!hasFocus && !isValid()) {
                     loadResources();
                     mStrengthMeter = mInvalidImage;
+                	/*13.4 Global UI*/
+                }else
+                {
+                	setRightDrawableGrayX();
                 }
+            	/*13.4 Global UI*/
             }
         });
     }
+    
+	/*13.4 Global UI*/
+    @Override
+    protected int getRightDrawablePadding() {
+		final int paddingInDp = 90;
+		final float padding = 0.5f;
+		final float scale = getResources().getDisplayMetrics().density;
+		final int paddingInPx = (int) (paddingInDp * scale + padding);
+		return paddingInPx;
+	}
 
+    
+    @Override
+    /** Sets the right drawable to the gray X image */
+	protected void setRightDrawableGrayX() {
+
+		this.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.card_blank_drawable,
+				0);
+		this.setCompoundDrawablePadding(getRightDrawablePadding());
+
+	}
+	/*13.4 Global UI*/
+    
     /** Inherited method from ValidatedInputField, overridden to disable */
     @Override
     protected void setupTextChangedListener() {

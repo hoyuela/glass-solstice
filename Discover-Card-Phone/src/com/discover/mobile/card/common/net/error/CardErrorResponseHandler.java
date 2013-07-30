@@ -173,9 +173,9 @@ public final class CardErrorResponseHandler {
             	showCustomAlert(modal);
             	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (passcodeDisabledErrors.contains(errorCodeNumber)) {
-            	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.close_text);
+            	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.ok);
             	modalPasscodeDisabled.hideNeedHelpFooter();
-            	modalPasscodeDisabled.setGrayButton();
+//            	modalPasscodeDisabled.setGrayButton();
             	showCustomAlert(modalPasscodeDisabled);
             	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lastAttemptErrors.contains(errorCodeNumber) || errorCodeNumber == INCORRECT_USERID_PASSWORD) {
@@ -193,6 +193,8 @@ public final class CardErrorResponseHandler {
                 handleGenericError(cardErrorHold.getErrorTitle(),
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
+                //lets login page know there was an error shown, this info is used to clear out passcode fields 
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             }
         }
     }
