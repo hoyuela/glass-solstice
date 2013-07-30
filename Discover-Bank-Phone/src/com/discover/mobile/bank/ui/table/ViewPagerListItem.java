@@ -36,12 +36,12 @@ public class ViewPagerListItem extends RelativeLayout {
 		doSetup();
 	}
 
-	private void doSetup() {
+	protected void doSetup() {
 		addView(getInflatedLayout());
 		loadViews();
 	}
 	
-	private RelativeLayout getInflatedLayout() {
+	protected RelativeLayout getInflatedLayout() {
 		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.view_pager_list_item, null);
 	}
 	

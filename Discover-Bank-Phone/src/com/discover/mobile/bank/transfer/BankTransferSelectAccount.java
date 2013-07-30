@@ -23,9 +23,11 @@ import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
+import com.discover.mobile.bank.ui.table.ReverseViewPagerListItem;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 /**
@@ -359,19 +361,25 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private ViewPagerListItem getListItemFromAccount(final Account account) {
 		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
-		final ViewPagerListItem item = generator.getTwoItemCell(R.string.empty, account.nickname);
-		item.getMiddleLabel().setSingleLine(false);
-		item.getMiddleLabel().setMaxLines(2);
+		final ReverseViewPagerListItem item = generator.getReverseTwoItemCell(R.string.empty, StringUtility.EMPTY);
+
+		item.getTopLabel().setSingleLine(false);
+		item.getTopLabel().setMaxLines(2);
+		item.getTopLabel().setText(account.nickname);
+		
 		if(account.accountNumber != null){
-			item.getTopLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
+			item.getMiddleLabel().setText(
+				 getAccountEndingTextForAccount((account.balance != null) ? 
+				   							     account.accountNumber.ending + " - " + account.balance.formatted :
+				   							     account.accountNumber.ending));
 		}
 		
 		if((account.equals(getOtherSelectedAccount()) && getTotalAccountSize() > 2) ||
 			(account.equals(getOtherSelectedAccount()) && getTotalAccountSize() == 1)) { 
-			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.field_copy));
+			item.getTopLabel().setTextColor(getResources().getColor(R.color.field_copy));
 			item.setOnClickListener(null);
 		}else{
-			item.getMiddleLabel().setTextColor(getResources().getColor(R.color.black));
+			item.getTopLabel().setTextColor(getResources().getColor(R.color.black));
 		
 			item.setOnClickListener(new OnClickListener() {
 				@Override
@@ -380,6 +388,7 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 				}
 			});
 		}
+		
 		return item;
 	}
 
@@ -491,7 +500,7 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 	 */
 	private String getAccountEndingTextForAccount(final String accountEndingNumber) {
 		final StringBuilder accountEndingIn = new StringBuilder();
-		final String prefix = getResources().getString(R.string.account_ending_in_first_two_caps);
+		final String prefix = getResources().getString(R.string.ending_in);
 
 		if(!Strings.isNullOrEmpty(accountEndingNumber) && !Strings.isNullOrEmpty(prefix)) {
 			accountEndingIn.append(prefix);
