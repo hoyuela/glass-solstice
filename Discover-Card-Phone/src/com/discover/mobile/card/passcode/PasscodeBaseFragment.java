@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -17,18 +18,20 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.passcode.event.OnPasscodeErrorEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSubmitEventListener;
 import com.discover.mobile.card.passcode.event.OnPasscodeSuccessEventListener;
@@ -41,6 +44,8 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 public abstract class PasscodeBaseFragment extends BaseFragment implements View.OnKeyListener, OnPasscodeErrorEventListener,
 OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
+
+	private View activityRootView;
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
@@ -56,6 +61,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	public void onResume() {
 		super.onResume();
+		this.isStopping = false;
+		Log.v(TAG, "onResume");
 		// this also helps when back button navigates to resume previous activity
 		clearAllFields();
 		forceSoftKeyboardShown(0);
@@ -73,6 +80,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	private void setupUI(View view){
+
+		activityRootView = view.findViewById(R.id.passcode_root_view);
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
+
 		validationIV = ((ImageView) view.findViewById(R.id.validation));
 		validationIV.setVisibility(View.INVISIBLE);
 		passcodeGuidelinesTV = ((TextView) view.findViewById(R.id.passcodeGuidelines));
@@ -90,26 +101,40 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i] = ((EditText) view.findViewById(fieldIds[i]));
 		}
-		//TODO sgoff0 - look into, seems to stop the problem of double submit on removing fragment from back stack
-//		if (!isStopping) {
+
+		//Stops the problem of double submit on removing fragment from back stack
+		if (!isStopping) {
 			setupAllFields();
 			clearAllFields();
-//		}
+		}
 	}
 	
 	@Override
 	public int getActionBarTitle() {
-        return R.string.sub_section_title_passcode;
+       // return R.string.sub_section_title_passcode;
+	    FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil.getActionBarTitle();
 	}
 
 	@Override
 	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+		//return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
+	    Utils.log(TAG, "inside getGroupMenuLocation ");
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil
+                .getGroupMenuLocation(R.string.sub_section_title_passcode);
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.PASSCODE_SECTION;
+		//return CardMenuItemLocationIndex.PASSCODE_SECTION;
+	    Utils.log(TAG, "inside getSectionMenuLocation");
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil
+                .getSectionMenuLocation(R.string.sub_section_title_passcode);
 	}
 	
 	public void printFragmentsInBackStack() {
@@ -507,6 +532,23 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 			char first = Character.toUpperCase(fname.charAt(0));
 			String retVal = first + fname.substring(1).toLowerCase(Locale.ENGLISH);
 			pUtils.storeFirstName(retVal);
+		}
+	}
+
+	private class ShowHideKeyboardListener implements OnGlobalLayoutListener {
+		@Override
+		public void onGlobalLayout() {
+//			Rect r = new Rect();
+//			activityRootView.getWindowVisibleDisplayFrame(r);
+//
+//			final ViewGroup footer = (ViewGroup)getActivity().findViewById(R.id.footer);
+//			int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+//			if (heightDiff > 100) {
+//				//most likely keyboard is visible
+//				footer.setVisibility(View.GONE);
+//			} else {
+//				footer.setVisibility(View.VISIBLE);
+//			}
 		}
 	}
 }

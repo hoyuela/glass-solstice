@@ -8,6 +8,8 @@ import java.net.HttpURLConnection;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.discover.mobile.card.common.CardEventListener;
@@ -19,6 +21,7 @@ import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity;
 import com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCheck;
 import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthQuestion;
@@ -47,6 +50,7 @@ public class StrongAuthHandler {
     private CardEventListener strongAuthQuestionListener;
     private int requestCode;
     public static StrongAuthListener authListener;
+    public static Bundle enhancedAccountSecurityFragmentBundle;
     private final int SALOCKED = 1401;
     private final int NOTENROLLED = 1402;
     private final int SKIPPED = 1404;
@@ -115,8 +119,8 @@ public class StrongAuthHandler {
 
                 Log.i(TAG, "In Strong auth --" + context.getClass());
                 if (authListener != null) {
-                	Utils.hideSpinner();
-                    context.startActivity(strongAuth);
+                    Utils.hideSpinner();
+                    //
                     Log.i(TAG, "In Strong auth " + context.getClass());
                     if (context instanceof ForgotPasswordAccountInformationActivity
                             || context instanceof ForgotBothAccountInformationActivity
@@ -127,8 +131,25 @@ public class StrongAuthHandler {
                         Activity activity = (Activity) context;
                         activity.finish();
                     }
+
+                    if (context instanceof CardNavigationRootActivity) {
+                        CardNavigationRootActivity cnrv = (CardNavigationRootActivity) context;
+                        Fragment easf = new EnhancedAccountSecurityFragment();
+                        enhancedAccountSecurityFragmentBundle = new Bundle();
+                        enhancedAccountSecurityFragmentBundle.putString(
+                                IntentExtraKey.STRONG_AUTH_QUESTION,
+                                authDetails.questionText);
+                        enhancedAccountSecurityFragmentBundle.putString(
+                                IntentExtraKey.STRONG_AUTH_QUESTION_ID,
+                                authDetails.questionId);
+                        easf.setArguments(enhancedAccountSecurityFragmentBundle);
+                        cnrv.makeFragmentVisible(easf);
+
+                    } else {
+                        context.startActivity(strongAuth);
+                    }
                 } else {
-                	Utils.hideSpinner();
+                    Utils.hideSpinner();
                     ((Activity) context).startActivityForResult(strongAuth,
                             requestCode);
                 }
@@ -137,29 +158,29 @@ public class StrongAuthHandler {
 
             @Override
             public void OnError(final Object data) {
-                
-                /*  13.4 changes Start*/ 
+
+                /* 13.4 changes Start */
                 final CardErrorBean bean = (CardErrorBean) data;
                 final CardShareDataStore cardShareDataStore = CardShareDataStore
                         .getInstance(context);
                 final String cache = (String) cardShareDataStore
                         .getValueOfAppCache("WWW-Authenticate");
-               if (bean.getErrorCode().contains(
+                if (bean.getErrorCode().contains(
                         "" + HttpURLConnection.HTTP_FORBIDDEN)
-                         && cache != null
-                                && cache.contains("skipped")) {
+                        && cache != null && cache.contains("skipped")) {
                     if (authListener != null) {
                         authListener.onStrongAuthSkipped(data);
                     }
-                }else {                 
-                /*    13.4 changes End*/ 
-                if (authListener != null) {
-                    authListener.onStrongAuthError(data);
                 } else {
-                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                            (CardErrorHandlerUi) context);
-                    cardErrorResHandler.handleCardError((CardErrorBean) data);
-                }
+                    /* 13.4 changes End */
+                    if (authListener != null) {
+                        authListener.onStrongAuthError(data);
+                    } else {
+                        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                (CardErrorHandlerUi) context);
+                        cardErrorResHandler
+                                .handleCardError((CardErrorBean) data);
+                    }
                 }
             }
         };

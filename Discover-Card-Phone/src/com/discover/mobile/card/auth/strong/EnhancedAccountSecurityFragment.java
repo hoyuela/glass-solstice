@@ -5,14 +5,16 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -26,19 +28,21 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
-import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
-import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
+import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
+import com.discover.mobile.card.common.utils.FragmentActionBarMenuTitleUtil;
 import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
-import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
-import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
+import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.navigation.CardMenuInterface;
+import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.auth.EnhanceSecurityConstant;
+import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
 import com.discover.mobile.common.help.HelpWidget;
@@ -72,9 +76,8 @@ import com.google.common.base.Strings;
  */
 
 // @ContentView(R.layout.strongauth_page)
-public class EnhancedAccountSecurityActivity extends
-        CardNotLoggedInCommonActivity implements EnhanceSecurityConstant,
-        OnClickListener {
+public class EnhancedAccountSecurityFragment extends BaseFragment implements
+        EnhanceSecurityConstant, OnClickListener, ErrorHandlerUi {
 
     /**
      * Field Description of HELP_DROPDOWN_LINE_HEIGHT The Strong Auth screen has
@@ -83,7 +86,7 @@ public class EnhancedAccountSecurityActivity extends
      * expanded. (When collapsed it is set to 0)
      */
 
-    private static final String TAG = EnhancedAccountSecurityActivity.class
+    private static final String TAG = EnhancedAccountSecurityFragment.class
             .getSimpleName();
     // Defect id 95164
     public static final String FORGOT_BOTH_FLOW = "forgotbothflow";
@@ -125,8 +128,6 @@ public class EnhancedAccountSecurityActivity extends
     // SCROLL VIEW
     private ScrollView mainScrollView;
 
-    private int activityResult = RESULT_CANCELED;
-
     public static final String SERVER_ERROR_VISIBILITY = "a";
     public static final String SERVER_ERROR_TEXT = "c";
     public static final String ANSWER_ERROR_VISIBILITY = "b";
@@ -156,6 +157,7 @@ public class EnhancedAccountSecurityActivity extends
     private boolean forgotBoth = false;
     private boolean forgotPassword = false;
     // Defect id 95164
+    private View mainView;
 
     /**
      * Callback to watch the text field for empty/non-empty entered text from
@@ -171,7 +173,7 @@ public class EnhancedAccountSecurityActivity extends
         @Override
         public void onTextChanged(final CharSequence s, final int start,
                 final int before, final int after) {
-            EnhancedAccountSecurityActivity.this.onTextChanged(s);
+            EnhancedAccountSecurityFragment.this.onTextChanged(s);
         }
 
         @Override
@@ -180,19 +182,15 @@ public class EnhancedAccountSecurityActivity extends
     };
 
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(final LayoutInflater inflater,
+            final ViewGroup container, final Bundle savedInstanceState) {
+        CardShareDataStore mCardStoreData = CardShareDataStore.getInstance(this
+                .getActivity().getApplicationContext());
         yes_radiobutton = true;
-        setContentView(R.layout.strongauth_page);
+        mainView = inflater.inflate(R.layout.strongauth_page, null);
         loadAllViews();
         setupRadioGroupListener();
-        /* 13.4 site cat tagging */
-
-        // TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
-        TrackingHelper
-                .trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CHECKPOINT);
-
-        /* 13.4 site cat tagging */
+        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
@@ -217,13 +215,9 @@ public class EnhancedAccountSecurityActivity extends
 
             @Override
             public void onSuccess(Object data) {
-                // Strong Authentication successed, get back to last activity
                 if (authListener != null) {
                     authListener.onStrongAuthSucess(data);
                 }
-                finish();
-                // activityResult = RESULT_OK;
-                // finish();
             }
 
             @Override
@@ -258,10 +252,10 @@ public class EnhancedAccountSecurityActivity extends
                     } else {
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
-                        // errorMessage.setVisibility(View.VISIBLE);
-                        questionAnswerField.setErrors();
+
                         questionAnswerField.setText("");
-                        // questionAnswerField.updateAppearanceForInput();
+                        questionAnswerField.setErrors();
+
                     }
                 }
 
@@ -272,11 +266,6 @@ public class EnhancedAccountSecurityActivity extends
                                 .contains(
                                         ""
                                                 + RegistrationErrorCodes.STRONG_AUTH_STATUS_INVALID)) {
-                    // Check if it's valid
-                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                            EnhancedAccountSecurityActivity.this);
-                    cardErrorResHandler.handleCardError((CardErrorBean) data);
-
                     if (authListener != null) {
                         authListener.onStrongAuthCardLock(data);
                     }
@@ -284,34 +273,19 @@ public class EnhancedAccountSecurityActivity extends
                     // Tell calling activity that account has been locked.
                     // activityResult = STRONG_AUTH_LOCKED;
                     // finish();
-
-                    /* 13.4 Defect ID 104309 start */
-                } else if (!bean.isAppError()
-                        && bean != null
-                        && bean.getErrorCode().contains(
-                                "" + RegistrationErrorCodes.SPACE_ENTERED)) {
-
-                    errorMessage
-                            .setText(R.string.error_space_strongauth_noanswer);
-                    questionAnswerField.setErrors();
-                    questionAnswerField.setText("");
-
-                }
-                /* 13.4 Defect ID 104309 start */
-                else {
+                } else {
                     // If there is any other error, send error code to calling
                     // activity
-                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                            EnhancedAccountSecurityActivity.this);
-                    cardErrorResHandler.handleCardError((CardErrorBean) data);
                     if (authListener != null) {
-                        authListener.onStrongAuthError(data);
+                        authListener.onStrongAuthSkipped(data);
                     }
                     // activityResult = RESULT_CANCELED;
                     // finish();
                 }
             }
         };
+        setBundleValues(getArguments());
+        return mainView;
     }
 
     @Override
@@ -351,8 +325,10 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     private void loadAllViews() {
-        questionAnswerField = (NonEmptyEditText) findViewById(R.id.account_security_question_answer_field);
-        securityRadioGroup = (RadioGroup) findViewById(R.id.account_security_choice_radio_group);
+        questionAnswerField = (NonEmptyEditText) mainView
+                .findViewById(R.id.account_security_question_answer_field);
+        securityRadioGroup = (RadioGroup) mainView
+                .findViewById(R.id.account_security_choice_radio_group);
 
         // Defect ID: 95466
         // detailHelpLabel = (TextView)
@@ -360,12 +336,17 @@ public class EnhancedAccountSecurityActivity extends
         // detailHelpLabel = (TextView)
         // findViewById(R.id.account_security_whats_this_detail_label);
         // Defect ID: 95466
-        errorMessage = (TextView) findViewById(R.id.error_message_strong_auth);
+        mainView.findViewById(R.id.account_security_label).setVisibility(
+                View.GONE);
+
+        errorMessage = (TextView) mainView
+                .findViewById(R.id.error_message_strong_auth);
         // Defect ID: 95466
         // statusIconLabel = (TextView)
         // findViewById(R.id.account_security_plus_label);
         // Defect ID: 95466
-        questionLabel = (TextView) findViewById(R.id.account_security_question_placeholder_label);
+        questionLabel = (TextView) mainView
+                .findViewById(R.id.account_security_question_placeholder_label);
 
         // Defect ID: 95466
         /*
@@ -378,10 +359,13 @@ public class EnhancedAccountSecurityActivity extends
                 .findViewById(R.id.account_security_choice_one_radio);
         radioButtonTwo = (RadioButton) securityRadioGroup
                 .findViewById(R.id.account_security_choice_two_radio);
-        serverErrorLabel = (TextView) findViewById(R.id.account_security_server_error);
-        mainScrollView = (ScrollView) findViewById(R.id.scrollView1);
-        continueButton = (Button) findViewById(R.id.account_security_continue_button);
+        serverErrorLabel = (TextView) mainView
+                .findViewById(R.id.account_security_server_error);
+        mainScrollView = (ScrollView) mainView.findViewById(R.id.scrollView1);
+        continueButton = (Button) mainView
+                .findViewById(R.id.account_security_continue_button);
         continueButton.setOnClickListener(new OnClickListener() {
+
             @Override
             public void onClick(View arg0) {
                 submitSecurityInfo(arg0);
@@ -390,8 +374,9 @@ public class EnhancedAccountSecurityActivity extends
         if (inputErrorText == null || inputErrorText.equalsIgnoreCase("")) {
             questionAnswerField.attachErrorLabel(errorMessage);
         }
-        privacyTerms = (TextView) findViewById(R.id.privacy_terms);
-        provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
+        privacyTerms = (TextView) mainView.findViewById(R.id.privacy_terms);
+        provideFeedback = (TextView) mainView
+                .findViewById(R.id.provide_feedback_button);
         handlingClickEvents();
     }
 
@@ -404,40 +389,16 @@ public class EnhancedAccountSecurityActivity extends
     public void onClick(View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.privacy_terms) {
-            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(
-                    EnhancedAccountSecurityActivity.this,
-                    PrivacyTermsLanding.class);
+            ((CardMenuInterface) getActivity())
+                    .sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
 
-            int errvis = errorMessage.getVisibility();
-            String errmsg = errorMessage.getText().toString();
-
-            privacyTerms.putExtra("is_enhance", true);
-            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION,
-                    strongAuthQuestion);
-            privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION_ID,
-                    strongAuthQuestionId);
-            privacyTerms.putExtra(FORGOT_BOTH_FLOW, forgotBoth);
-            privacyTerms.putExtra(FORGOT_PASSWORD_FLOW, forgotPassword);
-            privacyTerms.putExtra(ANSWER_ERROR_VISIBILITY,
-                    errorMessage.getVisibility());
-            privacyTerms.putExtra(ANSWER_ERROR_TEXT, errorMessage.getText()
-                    .toString());
-
-            privacyTerms.putExtra(YES_RADIOBUTTON_SEL, yes_radiobutton);
-            privacyTerms.putExtra(ANSWER_TEXT, questionAnswerField.getText()
-                    .toString());
-
-            // privacyTerms.putExtra("is_enhance", true);
-            // privacyTerms.putExtra("is_enhance", true);
-
-            startActivity(privacyTerms);
         } else if (v.getId() == R.id.provide_feedback_button) {
-            Utils.createProvideFeedbackDialog(this, "strongAuthEnroll-pg");
+            Utils.createProvideFeedbackDialog(getActivity(),
+                    "strongAuthEnroll-pg");
         } else if (v.getId() == R.id.logout_button) {
 
             // Changes for 13.4 start
-            Utils.logoutUser(this, false);
+            Utils.logoutUser(getActivity(), false);
 
         }
     }
@@ -473,11 +434,8 @@ public class EnhancedAccountSecurityActivity extends
      * Moved intent logic to onResume instead of onCreate. onNewIntent will
      * update the intent before onResume is called.
      */
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        final Bundle extras = getIntent().getExtras();
+    public void setBundleValues(Bundle savedInstanceState) {
+        final Bundle extras = savedInstanceState;
         if (extras != null) {
             // Determine if the activity was created from a Card or a Bank
             // logical path
@@ -536,16 +494,6 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     /**
-     * When the activity is finished, set the result so that the calling
-     * activity knows if strong auth exited properly or not.
-     */
-    @Override
-    public void finish() {
-        setResult(activityResult);
-        super.finish();
-    }
-
-    /**
      * Restore the sate of the input field based on its error label. If the
      * label is present, its in an error state and must be updated.
      */
@@ -558,31 +506,6 @@ public class EnhancedAccountSecurityActivity extends
 
     }
 
-    // Defect ID: 95466
-    // /**
-    // * When orientation changes, we need to restore the state of the dropdown
-    // menu.
-    // * This is done by comparing the String character of the menu to known
-    // open and close
-    // * characters. Then we open or close the menu based on that.
-    // */
-    // private void restoreExpandableHelpMenu() {
-    // statusIconLabel.setText(dropdownSymbol);
-    // if("+".equals(statusIconLabel.getText().toString()))
-    // closeHelpMenu();
-    // else
-    // openHelpMenu();
-    // }
-    // Defect ID: 95466
-
-    @Override
-    protected void onNewIntent(final Intent intent) {
-        super.onNewIntent(intent);
-
-        // Grab the updated intent
-        setIntent(intent);
-    }
-
     /**
      * Toggles the help menu based on its current state. If the menu is closed
      * and it is clicked, it gets opened. If the menu is open and its gets
@@ -591,7 +514,7 @@ public class EnhancedAccountSecurityActivity extends
 
     // Defect ID: 95466
     // public void expandHelpMenu(final View v) {
-    //			if ("+".equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
+    //          if ("+".equals(statusIconLabel.getText().toString())) { //$NON-NLS-1$
     // openHelpMenu();
     // } else {
     // closeHelpMenu();
@@ -643,20 +566,10 @@ public class EnhancedAccountSecurityActivity extends
             submitAns(selectedIndex, answer);
 
         } else {
-            /* 13.4 Defect ID 104309 start */
-            if (questionAnswerField.isSpaceEntered()) {
-                errorMessage.setText(R.string.error_space_strongauth_noanswer);
-                questionAnswerField.setErrors();
-                questionAnswerField.setText("");
-
-                /* 13.4 Defect ID 104309 end */
-            } else {
-                CardErrorHandler.getInstance().showErrorsOnScreen(
-                        this,
-                        this.getResources().getString(
-                                R.string.error_strongauth_noanswer));
-            }
-
+            CardErrorHandler.getInstance().showErrorsOnScreen(
+                    (ErrorHandlerUi) getActivity(),
+                    getActivity().getResources().getString(
+                            R.string.error_strongauth_noanswer));
         }
 
     }
@@ -684,43 +597,7 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     private void startHomeFragment() {
-        FacadeFactory.getCardFacade().navToHomeFragment(this);
-    }
-
-    /**
-     * If the back button is pressed then cancel the strong auth activity and
-     * notify the calling activity that this activity was canceled.
-     */
-    @Override
-    public void onBackPressed() {
-        activityResult = RESULT_CANCELED;
-        // Defect id 95164
-        if (forgotBoth || forgotPassword) {
-            final Intent forgotCredentialsActivity = new Intent(this,
-                    ForgotCredentialsActivity.class);
-            startActivity(forgotCredentialsActivity);
-            forgotBoth = false;
-            forgotPassword = false;
-        }
-        finish();
-        // Defect id 95164
-    }
-
-    /**
-     * If Strong Auth finishes with success, notify the calling activity of this
-     * and close.
-     */
-    private void finishWithResultOK() {
-        activityResult = RESULT_OK;
-        finish();
-    }
-
-    /**
-     * If the software back button is pressed, call the onBackPressed() method.
-     */
-    @Override
-    public void goBack() {
-        onBackPressed();
+        FacadeFactory.getCardFacade().navToHomeFragment(getActivity());
     }
 
     /**
@@ -752,24 +629,6 @@ public class EnhancedAccountSecurityActivity extends
         return FacadeFactory.getCardFacade().getCardErrorHandler();
     }
 
-    @Override
-    public void onSuccess(Object data) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void OnError(Object data) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public CardErrHandler getCardErrorHandler() {
-        // TODO Auto-generated method stub
-        return CardErrorUIWrapper.getInstance();
-    }
-
     /**
      * This method will submit strong auth ans to server and if it's correct
      * then it will replay calling activity with Success. On error it will check
@@ -784,8 +643,8 @@ public class EnhancedAccountSecurityActivity extends
         mainScrollView.smoothScrollTo(0, 0);
         errorMessage.setVisibility(View.GONE);
         questionAnswerField.updateAppearanceForInput();
-        StrongAuthAns strongAuthAns = new StrongAuthAns(
-                EnhancedAccountSecurityActivity.this, authAnsListener);
+        StrongAuthAns strongAuthAns = new StrongAuthAns(getActivity(),
+                authAnsListener);
 
         try {
             strongAuthAns.sendRequest(answer, strongAuthQuestionId,
@@ -814,7 +673,7 @@ public class EnhancedAccountSecurityActivity extends
         e.printStackTrace();
         CardErrorBean cardErrorBean = new CardErrorBean(e.toString(), true);
         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                EnhancedAccountSecurityActivity.this);
+                (CardErrorHandlerUi) getActivity());
         cardErrorResHandler.handleCardError(cardErrorBean);
     }
 
@@ -829,7 +688,7 @@ public class EnhancedAccountSecurityActivity extends
                 getAllFaqListener());
         helpFaq = new HelpItemGenerator(R.string.help_all_faq, true, true,
                 getAllFaqListener());
-        help = (HelpWidget) findViewById(R.id.help);
+        help = (HelpWidget) mainView.findViewById(R.id.help);
         help.showHelpItems(getEnhancedHelpItems());
     }
 
@@ -855,21 +714,82 @@ public class EnhancedAccountSecurityActivity extends
         return new OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Toast.makeText(EnhancedAccountSecurityActivity.this,
-                        "comming soon ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "comming soon ",
+                        Toast.LENGTH_SHORT).show();
             }
         };
     }
 
     @Override
     public int getEnhanceSecurityRequestCodeForAccountLock() {
-        // TODO Auto-generated method stub
         return STRONG_AUTH_LOCKED;
     }
 
     @Override
-    public Context getContext() {
+    public void showCustomAlert(AlertDialog alert) {
         // TODO Auto-generated method stub
-        return this;
+
     }
+
+    @Override
+    public void showOneButtonAlert(int title, int content, int buttonText) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void showDynamicOneButtonAlert(int title, String content,
+            int buttonText) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public Context getContext() {
+        return getActivity();
+    }
+
+    @Override
+    public void setLastError(int errorCode) {
+
+    }
+
+    @Override
+    public int getLastError() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getActionBarTitle() {
+       // return R.string.account_security_text;
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil.getActionBarTitle();
+    }
+
+    /**
+     * Return GrupMenuLocation
+     */
+    @Override
+    public int getGroupMenuLocation() {
+        Utils.log(TAG, "inside getGroupMenuLocation ");
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil
+                .getGroupMenuLocation(R.string.section_title_home);
+    }
+
+    /**
+     * Return selected Menu Location
+     */
+    @Override
+    public int getSectionMenuLocation() {
+        Utils.log(TAG, "inside getSectionMenuLocation");
+        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
+                ((CardNavigationRootActivity) getActivity()));
+        return barMenuTitleUtil
+                .getSectionMenuLocation(R.string.section_title_home);
+    }
+
 }

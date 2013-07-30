@@ -12,6 +12,19 @@
         android:orientation="vertical"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding" >
+        
+        	<!-- 13.4 Changes start -->
+        <TextView 
+            android:id="@+id/strengthtype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:textColor="@color/title"
+            android:textSize="24sp"
+            android:layout_marginTop="14dp"
+            />
+        
+     <!--    13.4 Changes end -->
 
         <include
             android:id="@+id/reg_help_weak_pswd"

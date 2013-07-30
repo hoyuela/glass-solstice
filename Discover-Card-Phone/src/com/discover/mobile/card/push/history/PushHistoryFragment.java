@@ -108,7 +108,8 @@ public class PushHistoryFragment extends BaseFragment{
 	@Override
 	public void onSaveInstanceState(final Bundle outState){
 		outState.putBoolean(ROTATED, true);
-		CardSessionContext.getCurrentSessionDetails().setNotifications(notifications);
+		//13.4 Code CleanUp
+	/*	CardSessionContext.getCurrentSessionDetails().setNotifications(notifications);*/
 		outState.putInt(INDEX, currentIndex);
 		super.onSaveInstanceState(outState);
 	}
@@ -119,11 +120,13 @@ public class PushHistoryFragment extends BaseFragment{
 	 */
 	private void resumeFragment(final Bundle savedInstanceState) {
 		currentIndex = savedInstanceState.getInt(INDEX);
-		notifications = CardSessionContext.getCurrentSessionDetails().getNotifications();
+		//13.4 Code CleanUp
+		/*notifications = CardSessionContext.getCurrentSessionDetails().getNotifications();*/
 		final NotificationListDetail details = new NotificationListDetail();
 		details.notifications = this.notifications;
 		addToList(details);
-		CardSessionContext.getCurrentSessionDetails().getNotifications().clear();
+		//13.4 Code CleanUp
+		/*CardSessionContext.getCurrentSessionDetails().getNotifications().clear();*/
 	}
 	
 	/**

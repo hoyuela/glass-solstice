@@ -6,7 +6,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
-import com.discover.mobile.card.push.manage.PushManageFragment;
 import com.discover.mobile.card.services.push.GetPushData;
 import com.discover.mobile.card.services.push.PostPushRegistration;
 import com.discover.mobile.common.BaseFragment;
@@ -83,6 +82,7 @@ public abstract class BasePushRegistrationUI extends BaseFragment implements Pus
 		}
 	}
 	public void changeToAcceptScreen(final String tag) {
-		this.makeFragmentVisible(new PushManageFragment());
+		//13.4 Code CleanUp
+		//this.makeFragmentVisible(new PushManageFragment());
 	}
 }
