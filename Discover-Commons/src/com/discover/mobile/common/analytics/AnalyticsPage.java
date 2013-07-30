@@ -6,6 +6,7 @@ public interface AnalyticsPage {
 	static final String STARTING = "login-pg";
 	
 	static final String CARD_LOGIN = "cardLogin-pg";
+	static final String PASSCODE_LOGIN = "passcodeLogin-pg";
 	static final String LOGIN_ERROR = "loginErrorPage-Pg";
 	static final String FORGOT_PASSWORD_MENU = "forgot-uid-or-password-menu-pg";
 	static final String FORGOT_BOTH_STEP1 = "forgot-both-step1-pg";
@@ -16,6 +17,8 @@ public interface AnalyticsPage {
 	static final String FORGOT_PASSWORD_CONFIRMATION = "forgot-password-confirmation-pg";
 	static final String FORGOT_UID = "forgot-uid-pg";
 	static final String FOROGT_UID_CONFIRMATION = "forgot-uid-confirmation-pg";
+	static final String FORGOT_PASSCODE = "forgot-passcode-pg";
+
 	
 	static final String PASSWORD_STRENGTH_HELP = "password-strength-meter-pg";
 	static final String UID_STRENGTH_HELP = "uid-strength-meter-pg";
@@ -84,6 +87,9 @@ public interface AnalyticsPage {
 	static final String PASSCODE_ENABLE_STEP2 = "passcode-enable-step2-pg";
 	static final String PASSCODE_FORGOT_STEP1 = "passcode-forgot-step1-pg";
 	static final String PASSCODE_FORGOT_STEP2 = "passcode-forgot-step2-pg";
+	static final String PASSCODE_RED_X = "passcode-red-x";
+	static final String PASSCODE_OVERLAY = "passcode-overlay";
+
 	
 	//Strong Auth Enroll pages
 	
