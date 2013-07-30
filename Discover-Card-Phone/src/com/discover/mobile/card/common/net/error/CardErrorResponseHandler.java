@@ -194,7 +194,7 @@ public final class CardErrorResponseHandler {
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
                 //lets login page know there was an error shown, this info is used to clear out passcode fields 
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), null);
             }
         }
     }

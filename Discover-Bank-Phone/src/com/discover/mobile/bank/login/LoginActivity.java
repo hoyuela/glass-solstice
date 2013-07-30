@@ -213,7 +213,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private boolean restoreError = false;
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
-	 
+	
 	private View activityRootView;
 	
 
@@ -243,10 +243,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		DiscoverActivityManager.setActiveActivity(this);
 		
 		setupPasswordField();
-	
-		//detect keyboard and hide footer when visible
-		activityRootView = findViewById(R.id.login_start_layout);
-		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
+		
+		if (isPasscodeLogin()) {
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_LOGIN);
+		}
 	 }
 	
 	private void setupPasswordField() {
@@ -473,10 +473,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			welcomeTV.setVisibility(View.GONE);
 			startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
 			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
+			errorTextView.setText("Invalid Passcode entered. Please try again.");
+			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			guiValidationError();
-		} else {
+		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
+		startDefaultErrorFadeOut(); // Fade out error text view after six seconds
 		idField.clearFocus();
 		passField.clearFocus();
 		setCheckMark(false, false);
@@ -496,15 +499,15 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			guiValidationError();
 			if ("401".equals(errorCode)) {
 				//do nothing specific
+				errorTextView.setVisibility(View.VISIBLE);
+				errorTextView.setText("Invalid Passcode entered. Please try again.");
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				getErrorHandler().showErrorsOnScreen(this, "Invalid Passcode entered. Please try again.");
 				welcomeTV.setVisibility(View.GONE);
 			} else if ("4011103".equals(errorCode)) {
 				//show icon
 				showRedExclamation();
-				getErrorHandler().showErrorsOnScreen(this, "To protect your security, you have one attempt remaining.");
+				BankErrorHandler.getInstance().showErrorsOnScreen(this, "To protect your security, you have one attempt remaining.");
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				welcomeTV.setVisibility(View.GONE);
 			} else {
 				clearAllFields();
 				//sgoff0 DEFECT 105439
@@ -512,7 +515,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				hideExclamation();
 			}
 		} else {
-			Log.d(TAG, "ShowErrorMessage");
 			showErrorMessage(errorMessage);
 		}
 	}
@@ -816,10 +818,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
 
 			restoreErrorTextView(savedInstanceState);
-			
-			if (!pUtils.isForgotPasscode()) {
-				resetInputFieldColors();
-			}
+			resetInputFieldColors();
 
 			restoreToggle = savedInstanceState.getInt(TOGGLE_KEY, NO_TOGGLE_TO_RESTORE);
 		}
@@ -992,10 +991,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			@Override
 			public void onClick(final View v) {
 
+				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSCODE);
 				// set exclamation
 				showGrayExclamation();
+
 				// Show user id login
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
+				errorTextView.setTextColor(getResources().getColor(
+						R.color.black));
 				errorTextView.setText(getString(R.string.forgotPasscodeText));
 				errorTextView.setVisibility(View.VISIBLE);
 				isUserIDLogin = true;
@@ -1776,6 +1778,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void displayActiveLoginMode() {
 		Log.v(TAG, "DisplayActiveLoginMode");
+		Log.v(TAG, "isForgot? " + pUtils.isForgotPasscode());
 		if(isPasscodeLogin()) {
 			clearAllFields();
 			showPasscodeLogin();
@@ -1862,8 +1865,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private void hideExclamation() {
 		exclamationIV.setVisibility(View.GONE);
-		final int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
-//		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		final int paddingLeft = getResources().getDimensionPixelSize(R.dimen.element_side_padding);
 		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
 	}
 
@@ -2326,25 +2328,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				isUserIDLogin = false;
 				displayActiveLoginMode();
 				return true;
-			}
+			} 
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	private class ShowHideKeyboardListener implements OnGlobalLayoutListener {
-		@Override
-		public void onGlobalLayout() {
-			final Rect r = new Rect();
-			activityRootView.getWindowVisibleDisplayFrame(r);
 
-			final ViewGroup toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
-			final int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-			if (heightDiff > 100) {
-				//most likely keyboard is visible
-				toolbar.setVisibility(View.GONE);
-			} else {
-				toolbar.setVisibility(View.VISIBLE);
-			}
-		}
-	}
 }	
+	

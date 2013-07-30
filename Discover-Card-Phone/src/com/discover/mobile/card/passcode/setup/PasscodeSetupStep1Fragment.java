@@ -14,7 +14,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeSetupStep1";
 	private static String TAG = "PasscodeSetupStep1Fragment";
 	
 	public void onCreate(Bundle paramBundle) {
@@ -32,8 +31,6 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
 		return view;
 	}
-	
-	
 
 	@Override
 	public void onResume() {

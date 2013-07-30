@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
-import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
-import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.request.CreatePasscodeRequest;
@@ -24,7 +22,6 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeSetupStep2";
 	private static String TAG = "PasscodeSetupStep2Activity";
 	private static String mStep1Answer;
 	

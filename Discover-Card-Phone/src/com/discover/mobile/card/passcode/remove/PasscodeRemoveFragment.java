@@ -11,17 +11,13 @@ import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
-import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
-
 public class PasscodeRemoveFragment extends BaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeRemove";
-	private static String TAG = "PasscodeRemoveFragment";
 	protected PasscodeUtils pUtils;
 	
 	@Override
@@ -45,7 +41,6 @@ public class PasscodeRemoveFragment extends BaseFragment {
 				pUtils.deletePasscodeToken();
 				getActivity().getSupportFragmentManager().popBackStack();
 				new PasscodeRouter(prf).getStatusAndRoute();
-//				makeFragmentVisible(new PasscodeLandingFragment());
 			}
 		});
 

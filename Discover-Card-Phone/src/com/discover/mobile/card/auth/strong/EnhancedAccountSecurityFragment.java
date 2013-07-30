@@ -190,7 +190,13 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         mainView = inflater.inflate(R.layout.strongauth_page, null);
         loadAllViews();
         setupRadioGroupListener();
-        TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+        /* 13.4 site cat tagging */
+
+        // TrackingHelper.trackPageView(AnalyticsPage.STRONG_AUTH_FIRST_QUESTION);
+        TrackingHelper
+                .trackPageView(AnalyticsPage.SETUP_ENHANCED_AUTH_CHECKPOINT);
+
+        /* 13.4 site cat tagging */
         Utils.hideSpinner();
         restoreState(savedInstanceState);
 
@@ -252,9 +258,8 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                     } else {
                         errorMessage
                                 .setText(R.string.account_security_answer_doesnt_match);
-
-                        questionAnswerField.setText("");
                         questionAnswerField.setErrors();
+                        questionAnswerField.setText("");
 
                     }
                 }
@@ -273,7 +278,21 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                     // Tell calling activity that account has been locked.
                     // activityResult = STRONG_AUTH_LOCKED;
                     // finish();
-                } else {
+
+                    /* 13.4 Defect ID 104309 start */
+                } else if (!bean.isAppError()
+                        && bean != null
+                        && bean.getErrorCode().contains(
+                                "" + RegistrationErrorCodes.SPACE_ENTERED)) {
+
+                    errorMessage
+                            .setText(R.string.error_space_strongauth_noanswer);
+                    questionAnswerField.setErrors();
+                    questionAnswerField.setText("");
+
+                }
+                /* 13.4 Defect ID 104309 start */
+                else {
                     // If there is any other error, send error code to calling
                     // activity
                     if (authListener != null) {
@@ -566,10 +585,20 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
             submitAns(selectedIndex, answer);
 
         } else {
-            CardErrorHandler.getInstance().showErrorsOnScreen(
-                    (ErrorHandlerUi) getActivity(),
-                    getActivity().getResources().getString(
-                            R.string.error_strongauth_noanswer));
+            /* 13.4 Defect ID 104309 start */
+            if (questionAnswerField.isSpaceEntered()) {
+                errorMessage.setText(R.string.error_space_strongauth_noanswer);
+                questionAnswerField.setErrors();
+                questionAnswerField.setText("");
+
+                /* 13.4 Defect ID 104309 end */
+            } else {
+                CardErrorHandler.getInstance().showErrorsOnScreen(
+                        this,
+                        this.getResources().getString(
+                                R.string.error_strongauth_noanswer));
+            }
+
         }
 
     }
@@ -762,7 +791,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
     @Override
     public int getActionBarTitle() {
-       // return R.string.account_security_text;
+        // return R.string.account_security_text;
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
                 ((CardNavigationRootActivity) getActivity()));
         return barMenuTitleUtil.getActionBarTitle();

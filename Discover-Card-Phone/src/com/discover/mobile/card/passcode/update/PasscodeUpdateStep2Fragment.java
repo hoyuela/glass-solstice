@@ -15,7 +15,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeUpdateStep2";
 	private static String TAG = "PasscodeUpdateStep2Fragment";
 
 	@Override
@@ -52,19 +51,7 @@ public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 		b.putString("passcode", getPasscodeString());
 		pStep3.setArguments(b);
 		
-//		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, pStep3).commit();
-//		currentFragment = fragment;
-		getActivity().
-		getSupportFragmentManager()
-		.beginTransaction()
-		.setCustomAnimations(R.anim.fragment_slide_in_right , R.anim.fragment_slide_out_left, R.anim.fragment_slide_in_left, R.anim.fragment_slide_out_right)
-		.replace(R.id.navigation_content, pStep3)
-		//Adds the class name and fragment to the back stack
-//		.addToBackStack(pStep3.getClass().getSimpleName())
-		.commit();
-
-//		makeFragmentVisible(new PasscodeUpdateStep3Fragment(), false);
-
+		makeFragmentVisible(pStep3, false);
 	}
 	
 	private final class SyntaxValidityRequestListener implements CardEventListener {
@@ -79,12 +66,7 @@ public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 		public void onSuccess(Object data) {
 			VerifySyntax vs = (VerifySyntax) data;
 			Log.v(TAG, vs.toString());
-//			if (vs.isValid) {
-				onPasscodeSuccessEvent();
-//			} else {
-//				onPasscodeErrorEvent();
-//			}
-			
+			onPasscodeSuccessEvent();
 		}
 	};
 
