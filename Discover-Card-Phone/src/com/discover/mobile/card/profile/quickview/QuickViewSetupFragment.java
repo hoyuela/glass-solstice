@@ -86,12 +86,15 @@ public class QuickViewSetupFragment extends BaseFragment {
                 .findViewById(R.id.faqimage);
         qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
         qvfaqTextView = (TextView) mainView.findViewById(R.id.quick_view_faq);
-        if (getCardType().equalsIgnoreCase(MILES)
-                || getCardType().equalsIgnoreCase(SML)) {
-            faqImage.setBackgroundResource(R.drawable.quickviewsetupmile);
-        } else if (getCardType().equalsIgnoreCase(NOR)) {
-            faqImage.setBackgroundResource(R.drawable.quickviewsetup_dbc_corp);
-        }
+        // 13.4 No images from UI Team hence use single image
+        /*
+         * if (getCardType().equalsIgnoreCase(MILES) ||
+         * getCardType().equalsIgnoreCase(SML)) {
+         * faqImage.setBackgroundResource(R.drawable.quickviewsetupmile); } else
+         * if (getCardType().equalsIgnoreCase(NOR)) {
+         * faqImage.setBackgroundResource(R.drawable.quickviewsetup_dbc_corp); }
+         */
+        // 13.4 No images from UI Team
         setQVInfoText();
 
         toggleImage.setOnClickListener(new OnClickListener() {
