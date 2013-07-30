@@ -69,7 +69,7 @@ public class JQMResourceMapper {
         temp.put("Cashback Bonus Promos",
                 R.string.sub_section_title_signup_for_2);
         temp.put("Extras", R.string.sub_section_title_extras);
-        temp.put("Refer A Friend", R.string.sub_section_title_refer_a_friend);
+        temp.put("Refer a Friend", R.string.sub_section_title_refer_a_friend);
 
         temp.put("Partner Gift Cards & eCerts",
                 R.string.sub_section_title_partner_gift_cards);
@@ -84,6 +84,7 @@ public class JQMResourceMapper {
         temp.put("Redemption History",
                 R.string.sub_section_title_redemption_history);
         temp.put("Quick View", R.string.sub_section_title_fast_view);
+        temp.put("Passcode", R.string.sub_section_title_passcode);
         temp.put("Manage Text & Alerts",
                 R.string.sub_section_title_manage_alerts);
         temp.put("Push Alerts History",

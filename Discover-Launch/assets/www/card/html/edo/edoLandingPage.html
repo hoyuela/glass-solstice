@@ -6,7 +6,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" class="edo-page" id="edoLandingPage-pg" >
+	<div data-role="page" class="edo-page contentSetting" id="edoLandingPage-pg" >
 		 <!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 			<header id="header" class="cmn_header">
@@ -38,7 +38,7 @@
                     <a class="ui-block-a navtabsStyle selectedTab">
                         <span>Extras</span>
                     </a>
-                    <a class="ui-block-b navtabsStyle" href="#" onClick="dfs.crd.sct.extrasHistoryTabSwitch('History Tab');navigation('edoHistory');" >
+                    <a class="ui-block-b navtabsStyle hstrybtn" href="#" onClick="dfs.crd.sct.extrasHistoryTabSwitch('History Tab');navigation('edoHistory');" >  <!--13.3 global change (added hstryBtn class)--->
                         <span>History</span>
                     </a>
                 </div>
@@ -77,7 +77,7 @@
 		</div>
 		
     <!--tooltip-->
-    <!--div class="tooltip">
+    <!--<div class="tooltip">
     	<span class="arrow_head"></span>
         <div class="bubble_data">
           <div class="cls_all_parent"></div>
@@ -93,7 +93,7 @@
         </div>
     </div>  backlog changes -->
    <div class="overlay"></div>
-   <div id="overlay_wraper" class="overlay_wraper">
+   <div id="overlay_wraper" class="overlay_wraper edolandingoverlay">
             	<div class="overlay-header">
                 	<div class="hdr-text">	
                 		<span>EXTRAS</span>
@@ -110,11 +110,29 @@
                     </div>
                     
                 </div>
-                <div class="overlayBtn divider txtcenteraln r3matchbtn">
+                <!--<div class="overlayBtn divider txtcenteraln r3matchbtn">-->
+                <!-- 13.3 global change -->
+                
+                <!-- ***************************************** -->
+                
+               
+                	<div class="ui-grid-a" id="closebutn">
+                        
+                    <a href="#" class="ui-block-a close-overlay" id="closebtn_landing" data-role="button">Cancel</a>
+                     <div class="ui-block-b r3matchbtn close-overlay" id="overlayShowExtras" data-role="button">Show Extras</div>
+              
+                    </div>
+                
+                
+                <!-- ***************************************** -->
+                
+                
+                
+                 <!--<div class="overlayBtn txtcenteraln r3matchbtn">
                 	<div data-role="button" id="overlayShowExtras" class="close-overlay">Show Extras</div>
 					 <br/>
 					   <a href="#" id="closebtn_landing" class="bluelink boldtext ui-link close-overlay" >Cancel</a>  
-                </div>
+                </div>-->
             </div>
   </div>
 </body>

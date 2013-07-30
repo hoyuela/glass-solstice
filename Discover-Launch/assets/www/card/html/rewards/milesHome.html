@@ -5,7 +5,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="milesHome-pg">
+	<div data-role="page" id="milesHome-pg" class="contentSetting">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 			<header id="header" class="cmn_header">
@@ -15,19 +15,33 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<h1>Miles Rewards</h1>
-
-				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
-					class="account-list-view">
-					<li data-icon="false"><a href="#"
-						onclick="navigation('../rewards/milesSignup1');" class="bluelink">Earn More Miles Rewards</a> <span class="floatright arrow"> &gt; </span></li>
-					<li data-icon="false"><a href="#"
-						onclick="navigation('../rewards/milesRedeem');" class="bluelink">Redeem
-							Miles </a> <span class="floatright arrow"> &gt; </span></li>
-							<li data-icon="false"><a href="#"
-							onclick="navigation('../edo/edoLandingPage');" class="bluelink">Extras</a><span class="floatright arrow"> &gt; </span></li>
-					<li data-icon="false"><a id="milesReferAFriend" href="#"
-						onclick="dfs.crd.raf.navFromMilesLanding();" class="bluelink">Refer a Friend </a> <span class="floatright arrow"> &gt; </span></li>
+				<h1 class="innerWrapper">Miles Rewards</h1>
+     				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
+                    	class="whitebg-list-view account-list-view">
+                    
+					<li data-icon="false">
+                   	 	<a href="#" onclick="navigation('../rewards/milesSignup1');" class="buttonBorderSupress">
+                    	<span class="amt_bold">Earn More Miles Rewards</span></a>
+                    	<span class="payArr"></span>
+                    </li>
+                         
+                   	<li data-icon="false">
+                    	<a href="#" onclick="navigation('../rewards/milesRedeem');" class="buttonBorderSupress">
+	                    <span class="amt_bold">Redeem Miles</span></a> 
+                        <span class="payArr"></span>
+                    </li>
+                    
+					<li data-icon="false">
+                    	<a href="#" onclick="navigation('../edo/edoLandingPage');" class="buttonBorderSupress">
+                    	<span class="amt_bold">Extras</span></a>
+                    	<span class="payArr"></span>
+                    </li>
+                    
+					<li data-icon="false">
+                    	<a id="milesReferAFriend" href="#" onclick="dfs.crd.raf.navFromMilesLanding();" class="buttonBorderSupress">
+                    	<span class="amt_bold">Refer a Friend</span></a> 
+                    	<span class="payArr"></span>
+                    </li>
 		
 				</ul>
 			</div>

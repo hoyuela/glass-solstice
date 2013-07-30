@@ -132,7 +132,9 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
             final View clickedView, final int position, final long id) {
         TextView textView = (TextView) clickedView.findViewById(R.id.title);
         final String text =  textView.getText().toString();
-    	if (text.equals(mCardStoreData.getValueOfAppCache("currentPageTitle")))
+        super.onListItemClick(listView, clickedView, position, id);
+        //commented code for 13.4 SIT defect fixed 105428
+    	/*if (text.equals(mCardStoreData.getValueOfAppCache("currentPageTitle")))
     	{
     		BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
                     .getActiveActivity();
@@ -140,9 +142,9 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
             // hlin0 20130530 integrate with new sliding menu
             baseFragmentActivity.showContent();
    			return;
-    	}
+    	}*/
 
-    	super.onListItemClick(listView, clickedView, position, id);
+    	//super.onListItemClick(listView, clickedView, position, id);
 
         try {
 

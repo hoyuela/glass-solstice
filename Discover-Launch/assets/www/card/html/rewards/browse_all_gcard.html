@@ -4,7 +4,7 @@
         <title>Browse Gift Card Partners</title>
 	</head>
 <body>
-<div data-role="page" class="cbb-page rd-page browse-partners" id="browse-all-giftcards">
+<div data-role="page" class="cbb-page rd-page browse-partners contentSetting" id="browse-all-giftcards">
 	<!--header start -->
             <div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed" data-tap-toggle="false">
                 <header id="header" class="cmn_header">
@@ -16,9 +16,11 @@
 					<p class="cbb-panel">Current Cashback Bonus: <span id="browseAllGiftCard_CBB"></span>&nbsp;</p>
                  </section>
     <div data-role="content" >
+	<div class="innerWrapper">
     <div id="pgPadding"></div>
-	<h1 class="mT27">Browse All Gift Cards</h1>
-    <div id="ALLGCARDS" class="browseAllPartners"></div>
+	<h1 class="mT27 subHeadings">Browse All Gift Cards</h1>
+	</div>
+    <div id="ALLGCARDS" class="browseAllPartners commonList"></div>
     <div id="no-results">
     	<p>No Results for "<span id="searchTerm">searchTerm</span>"</p>
         <p>Please try again.</p>

@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
+import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
 import com.discover.mobile.card.passcode.request.GetMatchRequest;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -45,7 +47,6 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isValid) {
 			String deviceToken = PasscodeUtils.genClientBindingToken();
-			//TODO make sure service is updated to accept passcode as well with this call
 			new GetMatchRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new MatchRequestListener(deviceToken));
 //			new CreateBindingRequest(this.getActivity(), deviceToken).loadDataFromNetwork(new EnableRequestListener(deviceToken));
 		} else {
@@ -55,8 +56,6 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-//		dialogHelper(MODAL_PASSCODE_ENABLED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
-
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_enabled_title, 
@@ -75,6 +74,7 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		clearAllFields();
 	}
 
+	final PasscodeEnableStep2Fragment thisFrag = this;
 	private final class MatchRequestListener implements CardEventListener {
 		private String deviceToken;
 		
@@ -83,7 +83,17 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		}
 		@Override
 		public void OnError(Object data) {
-			passcodeResponse(false);
+			CardErrorBean cardErrorBean = (CardErrorBean) data;
+			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+
+			if (cardErrorBean.getErrorCode().contains("4002105")) {
+				//fringe case when passcode is removed prior to user finising enable flow
+				//TODO warn them first with error message that account doesn't have passcode?
+				new PasscodeRouter(thisFrag).getStatusAndRoute();
+				getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			} else {
+				passcodeResponse(false);
+			}
 		}
 
 		@Override
@@ -100,13 +110,21 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		}
 		@Override
 		public void OnError(Object data) {
-			// TODO Auto-generated method stub
-			passcodeResponse(false);
+			CardErrorBean cardErrorBean = (CardErrorBean) data;
+			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+
+			if (cardErrorBean.getErrorCode().contains("4002105")) {
+				//fringe case when passcode is removed prior to user finising enable flow
+				//TODO warn them first with error message that account doesn't have passcode?
+				new PasscodeRouter(thisFrag).getStatusAndRoute();
+				getActivity().getSupportFragmentManager().popBackStack(PasscodeEnableStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			} else {
+				passcodeResponse(false);
+			}
 		}
 
 		@Override
 		public void onSuccess(Object data) {
-			//TODO make this result accurate from the service call
 			passcodeResponse(true);
 			//if successful store token on device
 			createPasscodeToken(this.deviceToken);

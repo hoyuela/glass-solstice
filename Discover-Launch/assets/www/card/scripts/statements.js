@@ -389,12 +389,12 @@ dfs.crd.stmt.search = (function () {
 	 */
 	displayValidationError = function(input, errorMessage) {
 		if(input){
-			if(input.siblings(".error-message").html() === ""){
+			if(input.parent().siblings(".error-message").html() === ""){ /* 13.3 Global Change */
 				errorCount++;
 			}
-			input.siblings(".error-message").html( "Invalid value" );
-			input.parent().parent().parent().find(".error-message").css("height", "20px");
-			input.addClass('invalid');
+			input.parent().siblings(".error-message").html( "Invalid value" ); /* 13.3 Global Change */
+			//input.parent().parent().parent().find(".error-message").css("height", "20px"); /* 13.3 Global Change */
+			input.parent().addClass('inputOnError'); // invalid
 		}
 	};//==>displayValidationError	
 
@@ -402,9 +402,9 @@ dfs.crd.stmt.search = (function () {
 	 *
 	 */
 	clearValidationError = function(input) {
-		if(input && input.siblings('.error-message').html().length > 0){
-			input.siblings('.error-message').html( "" );
-			input.removeClass('invalid');
+		if(input && input.parent().siblings('.error-message').html().length > 0){ /* 13.3 Global Change */
+			input.parent().siblings('.error-message').html( "" ); /* 13.3 Global Change */
+			input.parent().removeClass('inputOnError'); // invalid /* 13.3 Global Change */
 			if(errorCount <= 1){
 				input.parent().parent().parent().find(".error-message").css("height", "auto");
 			}
@@ -620,8 +620,8 @@ dfs.crd.stmt.search = (function () {
 				var totalTransactions = searchResultData.totalTransactions;
 				var totalTransactionAmount = searchResultData.totalTxnAmt;
 							 
-				var searchResults = "<h1>Search Results</h1>";
-				searchResults += "<div class=\"searchresults-data\">";
+				var searchResults = "<h1 class=\"innerWrapper\">Search Results</h1>"; /* 13.3 Global Change */
+				searchResults += "<div class=\"searchresults-data innerWrapper\">"; /* 13.3 Global Change */
 				var loadMore = false;
 				if(totalTransactions === 0){
 					searchResults += "<p><span class=\"inlineLabel\">We did not find any matching transactions.</span></p>";
@@ -650,10 +650,10 @@ dfs.crd.stmt.search = (function () {
 					
 					searchResults += "<p class=\"notes\">Pending Transactions will not appear in search results.</p>";
 					searchResults += "</div>";
-					searchResults += "<div id=\"search-sortContainer\">";
+					searchResults += "<div id=\"search-sortContainer\" class=\"innerWrapper\" >"; /* 13.3 Global Change */
 					searchResults += "	<label>";
 					searchResults += "		<p id=\"sortByLabel\">Sort By</p>";
-					searchResults += "			<select data-theme=\"d\" name=\"searchResultsSortBy\" id=\"js-search-results-sortby\">";
+					searchResults += "			<select  data-theme=\"d\" name=\"searchResultsSortBy\" id=\"js-search-results-sortby\" data-native-menu=\"false\">"; /* 13.3 Global Change */
 					if(sortOrder=="dateNewest"){
 						searchResults += "					<option selected value=\"dateNewest\">Date: New to Old</option>";
 					}else{
@@ -690,7 +690,7 @@ dfs.crd.stmt.search = (function () {
 					searchResults += "<ul id=\"js-transactionsResults-list\" class=\"transaction-list\" data-role=\"listview\" data-theme=\"d\" data-inset=\"true\">";
 					searchResults += generateTransHtml(searchResultData.postedTransactions);
 					searchResults += "</ul>";
-					searchResults += "<div id=\"loadTransactions-container\" class=\"js-loadTransactions-container\">";
+					searchResults += "<div id=\"loadTransactions-container\" class=\"js-loadTransactions-container r3matchbtn\">"; /* 13.3 Global Change */
 					if(searchResultData.loadMoreLink !=null && searchResultData.loadMoreLink.length > 0){
 						searchResults += '<a href="#" data-role="button" class="small_btn" id="js-loadMoreTransactions-button" data-transition="none"  data-ajax="false">Load More Transactions</a>';
 						loadMore = true;
@@ -715,6 +715,12 @@ dfs.crd.stmt.search = (function () {
 				loadMoreTransactionsListContainer = $("#js-transactionsResults-list", "#js-searchResults-container");
 				(loadMoreTransactionsButton).button();
 
+				/* 13.3 Global Change DD starts */
+				$("#js-search-results-sortby").msDropdown();
+				
+				$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+				$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+				/* 13.3 Global Change DD ends */
 				 // The header is pushed down on iOS 4.3.3, this fixes it
 				$('#pg-header').css('top', '0px');
 
@@ -977,7 +983,8 @@ dfs.crd.stmt.statementLanding.renderStatementNavList = function($el, date, state
 	var liElement = function(date) {
 		var d = dfs.crd.stmt.shared.util.getFormattedDate(date);
 
-		var li = document.createElement("li");
+/* previous code */ /* 13.3 Global Change starts */
+/*		var li = document.createElement("li");
 		li.setAttribute("data-icon", "false");
 		var a = document.createElement("a");
 		a.className = "bluelink ui-link-inherit";
@@ -988,8 +995,28 @@ dfs.crd.stmt.statementLanding.renderStatementNavList = function($el, date, state
 		span.textContent = "&gt;";
 		li.appendChild( a.cloneNode(true) );
 		li.appendChild( span.cloneNode(true) );
+/* /previous code */	
+/* updated code for global change */ 
+		var li = document.createElement("li");
+		li.setAttribute("data-icon", "false");
+		var a = document.createElement("a");
+		a.className = "ui-link";
+		a.className = "amt_bold";
+		a.setAttribute("href","#"); /* 13.3 Global Change */
+		a.setAttribute("data-date", date);
+		a.textContent = d.monthName + " " + d.year;
+		var span = document.createElement("span");
+		span.className = "payArr";
+		/*span.textContent = "&gt;";*/
+		
+		/*var span1 = document.createElement("span");
+		span1.className = "amt_bold";*/
+		
+		li.appendChild( a.cloneNode(true) );
+		li.appendChild( span.cloneNode(true) );
+  		/* /updated code */ /* 13.3 Global Change ends */
 		return li;	
-	};
+	};	
 
 	var frag = document.createDocumentFragment();
 	
@@ -1016,7 +1043,7 @@ function accountLandingLoad() {
 		var dom = {
 			$statementsNav: $("#accountLanding-pg #statementsNav"),
 				//TODO ideally clean this up so btn classes are generated automatically by JQM, prob spent ~2hrs playing around with .listview('refresh') and .trigger('create') but hardcoded like this for sake of time.		
-			noStatements: '<h1>There are no statement for your account.</h1><p>Please check back after your statement closing date. Or view recent activity. </p>'
+			noStatements: '<div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#" class="graylink buttonBorderSupress ui-link-inherit"><span class="amt_bold">No statements are available</span></a><span class="adjheight"></span></div></div>'  /*13.3 global change*/
 		};
 		console.log("Account landing load calling getStatements");
 		var statements = dfs.crd.stmt.shared.util.getStatements(); 

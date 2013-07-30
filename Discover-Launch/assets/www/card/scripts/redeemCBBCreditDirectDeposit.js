@@ -113,7 +113,8 @@ dfs.crd.cbb.populateStatementCredit1PageDiv = function(redeemCashBackInfo){
 				minDisbIncrAmt=minDisbIncrAmt.split(".")[0];
 			}			
 			$("#statement_credit_minDisbIncrAmt,#statement_credit_minDisbIncrAmt").html(minDisbIncrAmt);
-			var dyanmicSelectFieldForAmount="<select id='redeemCashbackCredit_DirectDeposit1_Amount' onchange='dfs.crd.cbb.changeStatCreditAmtDropDownLabel();'><option value=''>Choose a $"+minDisbIncrAmt+" increment...</option>";
+			/* 13.3 Global Change */
+			var dyanmicSelectFieldForAmount="<select id='redeemCashbackCredit_DirectDeposit1_Amount' onchange='dfs.crd.cbb.changeStatCreditAmtDropDownLabel();' data-native-menu='false' ><option value=''>Choose a $"+minDisbIncrAmt+" increment...</option>";
 			for(disbAmtsVal in disbAmts){
 				var disbAmtval=disbAmts[disbAmtsVal];
 				if(!isEmpty(disbAmtval)){
@@ -125,6 +126,11 @@ dfs.crd.cbb.populateStatementCredit1PageDiv = function(redeemCashBackInfo){
 			$("#statementCredit1_AmoutSelectField").html(dyanmicSelectFieldForAmount);
 			$("#statementCredit1_CreditCardEnding").html(globalLastFourAcctNbr);
 			$("#statementCredit1_CashBackBonusBalance").html("$"+globalEarnRewardAmount);
+			/*13.3 global change starts */
+			$("#redeemCashbackCredit_DirectDeposit1_Amount").msDropdown().data("dd");
+			$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+			$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+			/*13.3 global change ends */
 			if(!isEmpty(redeemCashBackInfo.programTerms)){
 				$("#statementCredit1_TermsConditions").html(redeemCashBackInfo.programTerms);
 			}
@@ -560,7 +566,7 @@ dfs.crd.cbb.populateDirectDeposit1PageDiv = function(redeemCbbDirectData){
 			}else{
 				$("#directDeposit1_BankAccountNumber").html();
 			}
-
+			/*13.3 global change*/ //alert("acoounts : " + dropDownForAcctNbrAndBankName);
 			$("#directDeposit1_AccountNumberList").html(dropDownForAcctNbrAndBankName);	
 			//$("#directDeposit1_BankAccountNumber").html(redeemCbbDirectData.bankInfo[0].bankAcctNbr);
 
@@ -568,6 +574,18 @@ dfs.crd.cbb.populateDirectDeposit1PageDiv = function(redeemCbbDirectData){
 			//$("#directDeposit1_CreditCardEnding").html(globalLastFourAcctNbr);
 			$("#directDeposit1_CashBackBonusBalance").html("$"+globalEarnRewardAmount);
 			$("#directDeposit1_TermsConditions").html(redeemCbbDirectData.programTerms);
+			/* 13.3 Global Change */
+			//alert($("#directDeposit1_DirectDeposit1_Amount"));
+			var directDeposit1AmountSelect = $("#directDeposit1_DirectDeposit1_Amount").msDropdown();
+			//directDeposit1AmountSelect.visibleRows(5);
+			
+			var directDeposit1AmountSelect = $("#direct_DirectDeposit1_AccntnbrAndBankName").msDropdown();
+			//directDeposit1AmountSelect.visibleRows(5);
+	
+			$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+			$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+			
+			/* 13.3 Global Change */
 		}
 	}catch(err) {
 		showSysException(err);
