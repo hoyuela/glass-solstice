@@ -9,7 +9,7 @@
     <RelativeLayout 
         android:id="@+id/whats_new_relative"
         android:layout_width="match_parent"
-        android:layout_height="521dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/light_gray_bkgrd"
         android:focusable="true"
         android:focusableInTouchMode="true" >

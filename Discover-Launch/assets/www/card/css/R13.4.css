@@ -417,6 +417,19 @@
 .payments .ui-btn-inner {
 	padding: 8px 30px !important;
 }
+
+#loadTransactions-container .ui-btn-inner {
+	padding: 8px 10px !important;
+}
+
+#loadTransactions-container .ui-btn-hover-c{
+	padding: 8px 10px !important;
+}
+
+#loadTransactions-container .small_btn {
+	padding: 0px !important;
+}
+
 .payments .txtcenteraln .ui-btn-hover-c, .payments .txtcenteraln .ui-btn-down-c {
 	border: 0px solid !important;
 	border-radius: 0px !important;
@@ -522,7 +535,7 @@
 #paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-c span,#pendingPayments-pg #pendingPayments_pendingList li .ui-grid-b .ui-block-c span{
 	color: #669900;
 }
-#paymentsHistory-pg .transactionTable li:first-child .ui-grid-b .ui-block-c span {
+#paymentsHistory-pg .transactionTable li:first-child .ui-grid-b .ui-block-c span,#pendingPayments-pg .transactionTable li:first-child .ui-grid-b .ui-block-c span {
 	color: #293033 !important;
 }
 #paymentsHistory-pg .transactionTable li .ui-grid-b .ui-block-a, #pendingPayments-pg .transactionTable li .ui-grid-b .ui-block-a {
@@ -613,9 +626,9 @@ line-height: 17px;}*/
 	background: none !important;
 }
 #paymentStep1-pg .ui-radio label.ui-btn {
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
 }
 #paymentStep1-pg .ui-content .white-form .detailsList {
 	margin: 0px 0px 8px 0px;
@@ -627,7 +640,7 @@ line-height: 17px;}*/
 	margin-top: 32px;
 }
 #paymentStep1-pg .ui-content .white-form .col1 {
-	width: 75%;/*payments issue 15-July, changed from 35% to 75%*/
+	width: 65%;/*payments issue 15-July, changed from 35% to 75%*/
 }
 #paymentStep1-pg .ui-content .white-form .lastStmtBal {
 	width:65% !important;
@@ -666,7 +679,7 @@ line-height: 17px;}*/
 	width: 76%;
 }
 #paymentStep1-pg #datepicker-val {
-	width: 95%!important;
+	width: 98%;/*Defect: 106042*/
 	float: left;
 	margin: 0 0 0 5px;
 	font-size: 17px !important;
@@ -830,28 +843,24 @@ line-height: 17px;}*/
 	border-right: solid 1px #b3b3b3;
 	overflow: visible;
 	max-height: 0.1em;
-	display: block;
+	display: inline-block;
 	padding: 2px;
 	margin-top: 22px;
-	float: left;
+	/*float: left;*/
 	width: 100%;
-	position:relative;
 }
 .payments .emptyText {
-	/*margin-top: 23px;*/
+	margin-top: 23px;
 	position: absolute;
-	right: 3px;
+	right: 19px;
 	cursor: pointer;
-	visibility: hidden;
-	bottom:5px;
-	float:right;
-	display:inline-block;
+	display: none;
 }
 .payments input.textInput, .payments input.numInput {
 	outline: none;
 	border: none;
 	background: transparent;
-	display: inline-block;
+	display: block;
 	position: relative;
 	bottom: 20px;
 	font-size: 18px !important;
@@ -1104,7 +1113,9 @@ line-height: 17px;}*/
 }
 .payments .errorText, .payments .errorText1, .payments .errorText2, .payments .errorText3, .payments .errorText4 {
 	float: left;
-}
+	padding: 0 12px; /* Defect_106092_New */
+	width: 100%; /* Defect_106330_New_24th July */
+} 
 #manageBankAccounts-pg .errorText {
 	margin-top: 15px;
 	padding: 0 10px 0px 10px;
@@ -1124,6 +1135,13 @@ line-height: 17px;}*/
 	width: 22px;
 	height: 22px;
 	float: left;
+}
+#paymentStep1-pg .alertGreyImage {
+//Added for defect 105431
+	background: url(../images/alertImgGrey.png) no-repeat top left;
+	background-size: 100%;
+	width: 22px;
+	height: 22px;
 }
 #paymentStep2-pg .alertImage {
 	background: url(../images/alertImgGrey.png) no-repeat top left;
@@ -1389,7 +1407,7 @@ background: radial-gradient(ellipse at center,  rgba(255,102,0,1) 44%,rgba(71,33
 	text-align: center;
 	margin: 50px 0;
 }
-#noPendingPayments-pg .noPendingMsg {
+.noPendingMsg {
 	font-size: 17px;
 	color: #3293033;
 	margin-left: 13px;
@@ -1493,11 +1511,34 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 #cancelPayment-pg .wraper .noBtn {
 	width: 170px;
 }
+/* 13.3 Global Change - 26-Jul-2013 - Start */
+/*
 #confirmCancelPayment1-pg .wraper .goHome {
 	width: 160px;
+}*/
+
+#confirmCancelPayment1-pg .wraper .yesNo .ui-btn-text{
+	margin:0px !important;
 }
-#paymentStep1-pg input.ui-input-text {
-	width:84% !important;
+	
+#confirmCancelPayment1-pg .wraper .yesNo {
+	width: 167px;
+}
+/* 13.3 Global Change - 26-Jul-2013 - End */
+
+#paymentStep1-pg .wraper2 #calendar {
+    max-width: 100% !important;
+}
+.ui-datepicker-multi .ui-datepicker-group table {
+    width: 95%;
+    margin: 0 auto .4em;
+}
+/* Defect_106367_New */
+#pendingPayments-pg .wraper .txtcenteraln {
+	margin-top:20px;
+}
+.payments .wraper .accountList li span.accName#editAccNickname {
+height: 22px;
 }
 /******************Save To Photos Page***********************/
 #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a, #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-b {
@@ -1510,17 +1551,26 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a .ui-btn-inner {background-color:#dce3e5 !important;}
 #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a .ui-btn-text{color:#3D484D !important;}
 
+
 #paymentSaveToPhotos-pg .ui-btn-corner-all {
 border-radius: 0px !important;
 }
+
+
+
 #paymentSaveToPhotos-pg .ui-btn-inner .ui-btn-text{
 	font-size: 20px !important;
 }
+
+
+
 #paymentSaveToPhotos-pg #saveCloseBtn {
 	position: absolute;
 width: 100%;
 bottom: 0px;
 }
+
+
 #paymentSaveToPhotos-pg #saveCloseBtn #closeBtn .ui-btn-inner {
 	font-weight:normal;
 }

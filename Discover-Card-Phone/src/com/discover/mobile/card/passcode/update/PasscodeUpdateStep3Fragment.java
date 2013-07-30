@@ -21,7 +21,6 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 
 public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	
-	static final String TRACKING_PAGE_NAME = "PasscodeUpdateStep3";
 	private static String TAG = "PasscodeUpdateStep3Fragment";
 	private static String mStep2Answer;
 	 

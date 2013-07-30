@@ -19,9 +19,9 @@
 			<div id="pgPadding"></div>
 			<div class="progress-indicator pos-center">
 		<ul>
-		    <li><a href="#" class="active ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="ui-link">2. Verify</a></li>
-                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		    <li><a href="#" class="active ui-link">Review/Edit</a></li>
+                    <li><a href="#" class="ui-link">Verify</a></li>
+                    <li><a href="#" class="ui-link">Confirmation</a></li>
 		</ul>
 		<div class="clearboth"></div>
 	    </div>
@@ -37,46 +37,42 @@
 				<h1>Direct Deposit</h1>
 				<!-- h2>Review</h2 -->
 
-				<p class="fontsize13px">Deposit your <i>Cashback Bonus</i> Rewards directly into your bank account in $50.00 increments. The requested deposit should be presented to your designated financial institution within 72 hours.</p>
-				<ul
-					class="white-box-rd-corner ui-listview ui-listview-inset ui-corner-all ui-shadow"
-					data-inset="true" data-theme="d" data-role="listview">
-					<li data-icon="false"
-						class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom" id="bankAmountLi" style="border-bottom-width: 0px !important;">
+				<p class="fontsize13px para">Deposit your <i>Cashback Bonus</i> Rewards directly into your bank account in $50.00 increments. The requested deposit should be presented to your designated financial institution within 72 hours.</p>
 					
-					<h3 class="fontsize13px">
+                    <div id="bankAmountLi" style="border-bottom-width: 0px !important;">
+						<h3 class="fontsize13px">
 							Choose a $<span id="directDeposit1_minDisbIncrAmt"></span>
 							increment to deposit<span id="singleAccountDetails"></span>:
 						</h3>
-						<div class="ui-select">
+						<!--div class="ui-select">
 							<div data-theme="d"
 								class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d">
-								<span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span
-									class="ui-btn-text" id="DD1">Choose a $<span
-										id="directDeposit1_minDisbIncrAmt"></span> increment...</span><span
-									class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> <span
-									id="directDeposit1_AmoutSelectField"></span>
+								<span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true">
+                                	<span class="ui-btn-text" id="DD1">
+                                    	Choose a $<span id="directDeposit1_minDisbIncrAmt"></span> increment...
+                                    </span>
+                                    <span class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> 
+                                    <span id="directDeposit1_AmoutSelectField"></span>
 							</div>
-						</div>
-					</li>
+						</div commented for 13.3 -->
+                        <div id="directDeposit1_AmoutSelectField"></div>
+					</div>
 
-					<li data-icon="false" class="ui-li ui-li-static ui-body-d ui-corner-top ui-corner-bottom" id="bankAccountLi">
+					<div id="bankAccountLi">
 						<h3>Select a Bank Account:</h3>
-						<div class="ui-select">
+						<!--div class="ui-select">
 							<div data-theme="d"
 								class="ui-btn ui-btn-icon-right ui-btn-corner-all ui-shadow ui-btn-up-d">
 								<span class="ui-btn-inner ui-btn-corner-all" aria-hidden="true"><span
 									class="ui-btn-text" id="DD2">Select a Bank Account</span><span
-									class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> <span
-									id="directDeposit1_AccountNumberList"></span>
+									class="ui-icon ui-icon-arrow-d ui-icon-shadow"></span> </span> 
+                                    <span id="directDeposit1_AccountNumberList"></span>
 							</div>
+						</div-->
+                        <div id="directDeposit1_AccountNumberList"></div>
+					</div>
 
-
-						</div>
-					</li>
-
-				</ul>
-				<div class="txtcenteraln">
+				<div class="txtcenteraln continueBtn r3matchbtn">
 					<span class="small_btn_150px"> <input
 						onclick="dfs.crd.cbb.redeemDirectDeposit2();" id="direct1_continue_btn"
 						type='button' value='Continue' disabled="disabled" /> </span>

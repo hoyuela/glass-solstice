@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -212,6 +214,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
 	
+	private View activityRootView;
 	
 
 	@Override
@@ -240,6 +243,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		DiscoverActivityManager.setActiveActivity(this);
 		
 		setupPasswordField();
+		
+		if (isPasscodeLogin()) {
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_LOGIN);
+		}
 	 }
 	
 	private void setupPasswordField() {
@@ -458,17 +465,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Log.v(TAG, "Setting error message.");
 		hideExclamation();
 		if (isPasscodeLogin()) {
-			Log.v(TAG, "Error message hidden: " + errorMessage);
-			// TODO passcode sgoff0 - make more elegant, potentially pass and
-			// check
-			// for error 1103 "Last signon attempt"
-			// if (errorMessage.contains("more attempt")) {
-			// BankErrorHandler.getInstance().showErrorsOnScreen(this,
-			// errorMessage);
-			// }
-			//Invalid erro rpasscode
-			//"Invalid Passcode entered. Please try again."
+			final long sixSeconds = 6000;
+			errorTextView.invalidate();
+			errorTextView.setText(getString(R.string.passcodeInvalidAttempt));
+			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			errorTextView.setVisibility(View.VISIBLE);
+			welcomeTV.setVisibility(View.GONE);
+			startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
+			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			errorTextView.setText("Invalid Passcode entered. Please try again.");
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			guiValidationError();
@@ -987,14 +991,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			@Override
 			public void onClick(final View v) {
 
+				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSCODE);
 				// set exclamation
 				showGrayExclamation();
 
 				// Show user id login
 				errorTextView.setTextColor(getResources().getColor(
 						R.color.black));
-				errorTextView
-						.setText("Log in with your User ID and Password to create your new Passcode.");
+				errorTextView.setText(getString(R.string.forgotPasscodeText));
 				errorTextView.setVisibility(View.VISIBLE);
 				isUserIDLogin = true;
 				displayActiveLoginMode();

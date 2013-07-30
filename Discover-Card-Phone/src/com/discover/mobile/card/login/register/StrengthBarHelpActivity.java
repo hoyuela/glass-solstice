@@ -109,6 +109,10 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
      */
     private void setHelpIdStrengthViewAttr() {
         // Set Weak View Attributes
+    	/*13.4 Changes start*/
+    	TextView title =(TextView)findViewById(R.id.strengthtype);
+    	title.setText(R.string.user_id_strength);
+    	/*13.4 Changes end*/
         View view = this.findViewById(R.id.reg_help_weak_pswd);
         if (null != view) {
             setViewItemAttr(view, R.string.account_info_help_level1,
@@ -144,6 +148,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
      */
     private void setHelpPswdStrengthViewAttr() {
         // Set Weak View Attributes
+    	TextView title =(TextView)findViewById(R.id.strengthtype);
+    	title.setText(R.string.password_strength);
+    	
         View view = this.findViewById(R.id.reg_help_weak_pswd);
         if (null != view) {
             setViewItemAttr(view, R.string.account_info_help_level1,

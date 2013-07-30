@@ -41,7 +41,6 @@ import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-import com.discover.mobile.card.services.push.registration.PushRegistrationStatusDetail;
 
 import com.xtify.sdk.api.XtifySDK;
 

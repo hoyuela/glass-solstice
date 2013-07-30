@@ -29,23 +29,24 @@
 	<!-- 4032114 & 4032111 - Passcode Disabled but Login attempts remaining -->
     <string name="E_4032114">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
     <string name="E_4032111">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
     <!-- 4032110 - Passcode and ULR Lockout -->
     <string name="E_4032110">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
+	<string name="E_4031112">We are unable to load your Discover Bank Account(s). Please contact Customer Service at 1-800-347-2683 so we can verify your social security number.</string>
     <string name="E_4031104">Your online access is still being set up. Please try back again	later.</string>
     <string name="E_4031105">We\'re sorry, you may no longer use this Discover card account number to access the app. Instead, please visit www.discover.com to create User ID and password. If you have any questions, please contact Customer Service at 1-877-742-7822</string>
     <string name="E_4031105_WITHUSERID">We\'re Sorry, you may no longer use this Discover Card account number	to access the app. Instead, please log in using	your User ID and Password. !~~! "&lt;br&#47;&gt;""&lt;br&#47;&gt; If you have any questions, please contact Customer Service at 1-877-742-7822</string>
@@ -274,6 +275,7 @@
     <string name="E_T_4031102_SSO">We\'re Sorry</string>
     <string name="E_T_4031401_DENY">We\'re Sorry</string>
     <string name="E_T_4031106">We\'re Sorry</string>
+    <string name="E_T_4031112">We\'re Sorry</string>
     <string name="E_T_4031101"> You\'ve Been Locked Out</string>
     <string name="E_T_4032112"> You\'ve Been Locked Out</string>
     <string name="E_T_4032110"> You\'ve Been Locked Out</string>
@@ -459,6 +461,8 @@
     <string name="E_H_5031007">0</string>
     <string name="E_H_5031108">4</string>
     <string name="E_H_4031104">3</string>
+     <string name="E_H_4031112">0</string>
+   
     <string name="E_H_4031401_NOTENROLLED">3</string>
     <string name="E_H_4031401_UNLOCKED">3</string>
     <string name="E_H_4031401_UNVERIFIED">3</string>
@@ -472,5 +476,7 @@
     <string name="E_104">Could not connect to the server!</string>
     <string name="E_SA_SKIPPED_CONTENT">Some of our website features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
     <string name="E_SA_SKIPPED_TITLE">We\'re Sorry</string>
+    
+    
 
 </resources>

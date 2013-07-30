@@ -14,7 +14,6 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeSetupStep1";
 	private static String TAG = "PasscodeSetupStep1Fragment";
 	
 	public void onCreate(Bundle paramBundle) {
@@ -31,6 +30,11 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		setHeaderText(R.string.passcode_setup_step1_header);
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 	@Override
@@ -58,16 +62,13 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		Log.v(TAG,  "passing passcode: " + getPasscodeString());
 		pStep2.setArguments(b);
 		
-		makeFragmentVisible(pStep2, false);
-//		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, pStep2).commit();
+		//must call step2 fragment putting it on back stack, otherwise step2 back nav will take you one page prior to this
+		makeFragmentVisible(pStep2);
 	}
 		
 	private final class SyntaxValidityRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode validity");
-			//message - passcode not provided or does not meet security requirements
-			Log.v(TAG, "Data: " + data.toString());
 			passcodeResponse(false);
 		}
 
@@ -76,5 +77,4 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 			passcodeResponse(true);
 		}
 	};
-	
 }

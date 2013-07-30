@@ -5,23 +5,23 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="directDeposit2-pg" class="rd-page">
+	<div data-role="page" id="directDeposit2-pg" class="rd-page contentSetting"><!-- 13.3 global change-->
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 			<header id="header" class="cmn_header"></header>
 			<div class="clearboth"></div>
 		</div>
 		<section id="cbbSection">
-		<p class="cbb-panel">Current Cashback Bonus: <span id="directDeposit2_CashBackBonusBalance"></span>&nbsp;</p>
-		</section>
+				<p class="cbb-panel">Current Cashback Bonus: <span id="directDeposit2_CashBackBonusBalance"></span>&nbsp;</p>
+			</section>
 		<!-- header end -->
 		<!-- content start -->
 		<div id="pgPadding"></div>
 		<div class="progress-indicator">
 		<ul>
-		    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
-                    <li><a href="#" class="active ui-link">2. Verify</a></li>
-                    <li><a href="#" class="ui-link">3. Confirmation</a></li>
+		    <li><a href="#" class="visited ui-link">Review/Edit</a></li>
+                    <li><a href="#" class="active ui-link">Verify</a></li>
+                    <li><a href="#" class="ui-link">Confirmation</a></li>
 		</ul>
 		<div class="clearboth"></div>
 	    </div>
@@ -33,10 +33,11 @@
 					</div>
 					<h2>Step 2 of 3</h2 -->
 					<!-- h2>Verify</h2 -->
+                    <div class="innerWrapper"><!-- 13.3 global change-->
 					<p><!--Please confirm to redeem you Cashback Bonus for the following Direct Deposit.-->
                     	Electronic Deposits cannot be stopped or reversed once processing begins. The requested deposit should be presented to your designated financial institution within 72 hours. By tapping 'Confirm' you hereby authorize Discover Bank to make a one-time credit of your rewards to the chosen account.
                     </p>
-					
+					</div>
 						<ul class="whitebg-list-view">
 							<li>Date <span id="div11" class="boldtext fontsize13px"><span id="directDeposit2_RedeemDate"></span></span></li>
 							<li>Reward Type<span id="div21" class="boldtext fontsize13px"><span id="directDeposit2_RewardType"></span></span></li>
@@ -49,7 +50,8 @@
 								</ul>
 							</li>
 						</ul>
-					<div class="txtcenteraln">
+                        
+					<div class="txtcenteraln r3matchbtn"><!-- 13.3 global change-->
 				<!-- a onclick="navigation('../rewards/directDepositCancelTrans')" class="bluelink boldtext">Cancel</a -->
 				<a href="#" onclick="dfs.crd.cbb.renderDirectDeposit3Page();" data-role="button"  >Confirm</a>
 				</div>

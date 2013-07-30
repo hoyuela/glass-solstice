@@ -18,9 +18,9 @@
             <div id="pgPadding"></div>
             <div class="progress-indicator">
                 <ul>
-                    <li><a href="#" class="active">1. Review/Edit</a></li>
-                    <li><a href="#">2. Verify</a></li>
-                    <li><a href="#">3. Confirmation</a></li>
+                    <li><a href="#" class="active">Review/Edit</a></li>
+                    <li><a href="#">Verify</a></li>
+                    <li><a href="#">Confirmation</a></li>
                 </ul>
                 <div class="clearboth"></div>
             </div>   
@@ -39,27 +39,46 @@
                             <p class="small-font">Touch card to choose design</p>
                         </div>
                         <div class="clearboth" id="amountCombo">
-                            <label for="giftcard1_AmountSelectField">Amount:</label>
+                            <label for="giftcard1_AmountSelectField">Amount</label>
+			    
                             <span id="giftcard1_AmountSelectField"></span>
                              <div class="gift-card-error-msg">The first or last name is not valid. Please update the first or last name or call 1-800-DISCOVER for assistance.</div>
-                            <label>First Name: <span>(Optional)</span></label>
-                            <input type="text" name="first-name" id="first-name" class="error-field" value="" maxlength="10"/>
-                            <label>Last Name: <span>(Optional)</span></label>
-                            <input type="text" name="last-name" id="last-name" class="error-field" value="" maxlength="15" />
+			     
+         
+        <!-- 13.3 global change --> 
+        <div>
+        <label>First Name <span>(Optional)</span></label>
+		<span class="wrapperSpan giftTextAlign">
+		 <input type="text" name="first-name" id="first-name" class="error-field textInput numberInput" value="" maxlength="10"/><!-- 13.3 global change --> 
+        <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' /><!-- 13.3 global change --> 
+        </span>
+        <div class="clearboth"></div>
+		</div>
+        
+        <div>	    
+           <label>Last Name <span>(Optional)</span></label>
+		   <span class="wrapperSpan giftTextAlign">
+           <input type="text" name="last-name" id="last-name" class="error-field textInput numberInput" value="" maxlength="15" /><!-- 13.3 global change --> 
+           <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' /><!-- 13.3 global change --> 
+            </span>
+		</div>
+        	    
                         </div>
-                        <div class="textcenter">
+			
+                        <div class="textcenter txtcenteraln r3matchbtn">
                             <a href="#" data-role="button" id="dgcard-continue-btn" class="common-btn">Continue</a>
 						</div>
 						<div class="textcenter margintop20px">
 							<a href="#" data-transition="pop" id="giftcard1terms" class="fontsize14px" >Terms &amp; Conditions</a>
 						</div>
                         </div>
-                        <div id="footnotes" class="footnotes"></div>
+                         <div id="footnotes" class="footnotes"></div>
                     </div>
             </div>
             <div id="overlay"></div>
-			<div id="overlay_wraper"></div>
-			<!-- Middle content end here-->
+            <div id="overlay_wraper"></div>
+          
+            <!-- Middle content end here-->
             <div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter" data-tap-toggle="false">
                 <footer id="footer" class="mnu_footer">
        			 </footer>

@@ -107,8 +107,6 @@ $('body').live('pagebeforeshow',function(event){
 	
 
 
-
-
 	//Footnote for index page
 	var footnotesHtml="<p id='footer-links'><a href='javascript:void(0);' onclick='navigation(\"card/html/common/privacyPolicy\")'>Privacy Statement </a><a href='javascript:void(0);' onclick='navigation(\"card/html/common/termsUse\")' class='registerNow'>| Terms of Use</a></p><p data-theme='e' class='footer-text-icon'><span><span id='copyRightYear'>&copy; 2013 </span>Discover Bank, Member FDIC<span class='secured'> | SECURED</span></span></p>";
 	$("#login-pg .footnotes").html(footnotesHtml);
@@ -493,3 +491,93 @@ $('input.picker-input').live("click", function (e){
 					  e.preventDefault();
 			      $(this).focus();
 				  });
+/*13.3 global change starts */
+
+/* Global Changes : Select Box*/
+var callDropdownFn = function(){
+	$("select").msDropdown();
+	$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+	$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+	/*script for custom drop down plugin*/
+	/*$("select").change(function(){
+		$(this).parent(".ddOutOfVision").siblings(".dd").css("border-bottom","1px solid #8a9499");
+		$(this).parent(".ddOutOfVision").siblings(".dd").find(".arrow").css({"border-bottom": "12px solid #8a9499"});
+	});*/
+}
+
+$("#search, #statementLanding, #redeem-gift-card, #strongAuthFirstQues-pg, #sendMoneyStep1-pg" ).live("pagebeforeshow", function(){
+	callDropdownFn();	
+});
+
+$("#account-activity").live("pagebeforeshow", function(){
+	var activitySelect = $("#activity-selection").msDropdown({"visibleRows": 8}).data("dd");
+	$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+	$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+});
+$("#manageAlerts-pg").live("pagebeforeshow", function(){
+	$("#addnumberSelect").msDropdown({"visibleRows": 6}).data("dd");   /* 13.3 global change 26/07/13 */
+	$("#changenumberSelect").msDropdown({"visibleRows": 8}).data("dd");
+	//$("select#VALUE").msDropdown({"visibleRows": 8}).data("dd");
+	$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+	$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
+});
+/* script for cross image on input text field */
+$("div[data-role='page']").live("pageshow",function(){
+	/**********  Global Change  22-July [STARTS HERE] C1**************/
+	$(".customsearchfilter .textInput").focus(function(){
+		// $(this).parent(".wrapperSpan").siblings("a.ui-btn").css("visibility","visible")
+	}).blur(function(){
+	//	$(this).parent(".wrapperSpan").siblings("a.ui-btn").css("visibility","hidden")
+	});/**********  Global Change  22-July [ENDS HERE] **************/
+ 
+	/*script for new textbox*/
+	$(".textInput,.numInput").focus(function(){
+		$(this).parent(".wrapperSpan").css({"border-bottom": "solid 1px #303030","border-left": "solid 1px #303030","border-right": "solid 1px #303030"});
+		$(this).parent(".wrapperSpan").siblings(".detailName").css({"color":"#293033"});
+
+		if($(this).val().toString().length == 0){
+			console.log('keyup if');
+			$(this).siblings(".emptyText").css({"visibility": "hidden"});	
+			//$(this).parent(".wrapperSpan").css("width","100%");
+		}else{
+			console.log('keyup else');
+				$(this).siblings(".emptyText").css({"visibility": "visible"});
+				//$(this).parent(".wrapperSpan").css("width","89%");
+		}
+	});
+	
+	$(".emptyText").mousedown(function(e){
+		var parentVar = $(this).parent(".wrapperSpan");
+		e.preventDefault();
+		$(this).siblings(".textInput,.numInput").val("");	
+		$(this).siblings(".errormsg").hide();
+		parentVar.children(".textInput,.numInput").focus();
+		$(this).css({"visibility": "hidden"});
+		//siblingsVar.css("width","100%");
+});
+	
+	$(".textInput,.numInput").blur(function(){
+		var parentVar = $(this).parent(".wrapperSpan");
+		parentVar.css({"border-bottom": "solid 1px #b3b3b3","border-left": "solid 1px #b3b3b3","border-right": "solid 1px #b3b3b3"});
+		parentVar.siblings(".detailName").css({"color":"#777777"});
+		$(this).siblings(".emptyText").css({"visibility": "hidden"});
+		//parentVar.css("width","100%");
+	});
+	
+	$(".textInput,.numInput").keyup(function(){
+		if($(this).val().toString().length == 0){
+			console.log('keyup if');
+			$(this).siblings(".emptyText").css({"visibility": "hidden"});;	
+			//$(this).parent(".wrapperSpan").css("width","100%");
+		}else{
+			console.log('keyup else');
+				$(this).siblings(".emptyText").css({"visibility": "visible"});
+				//$(this).parent(".wrapperSpan").css("width","89%");
+		}
+	});
+});
+
+$("#manageAlerts-pg").live("pageshow",function(){
+	$('#notifsettings .hidden-element .ui-controlgroup-controls').jqTransform({imgPath:'images/'});
+});
+/* Global Changes ends here */

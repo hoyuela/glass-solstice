@@ -6,9 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutorService;
 
@@ -43,6 +42,7 @@ import android.widget.TextView;
 import com.discover.mobile.PushConstant;
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityFragment;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
@@ -55,7 +55,6 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.hybrid.CacheManagerUtil;
-import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep2Fragment;
@@ -105,15 +104,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     private boolean isLogout = false;
 
     public StatusBarFragment statusBarFragment;
-    private CardShareDataStore mCardStoreData;  
+    private CardShareDataStore mCardStoreData;
     private CordovaPlugin activityResultCallback;
-    
 
     private static final int DISPLAY_STATEMENTS = 1;
     private static final int PICK_CONTACT = 5;
     private static final int PICK_CREDENTIAL = 6;
     private Bundle extras;
-    //private boolean pushStatus;
+    // private boolean pushStatus;
     private final String LOG_TAG = CardNavigationRootActivity.class
             .getSimpleName();
     private int redirect;
@@ -123,76 +121,72 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public static final int CORDOVA_LOADING = 1;
     public static final int CORDOVA_LOADED = 2;
     public static final int CORDOVA_ERROR = 3;
-    
-    private String navToJQMPage=null;
-    
+
+    private String navToJQMPage = null;
+
     private ArrayList<String> navigationlist;
-    private ArrayList<String> nativeList;
-    
+    private HashMap<String, String> nativeList;
+
     private Hashtable<String, String> titleMap = new Hashtable<String, String>();
-    
+
     /***
-	 * Private contentObserver for settings -> display -> screen rotation setting.
-	 * For Defect: 101121
-	 * 
-	 */
-	private ContentObserver contentObserver = new ContentObserver(new Handler()) {
-		@Override
-		public void onChange(boolean selfChange) {
-			if (!selfChange) {
-				setOrientation();
-			}
-		}
-	};
+     * Private contentObserver for settings -> display -> screen rotation
+     * setting. For Defect: 101121
+     * 
+     */
+    private ContentObserver contentObserver = new ContentObserver(new Handler()) {
+        @Override
+        public void onChange(boolean selfChange) {
+            if (!selfChange) {
+                setOrientation();
+            }
+        }
+    };
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        try
-        {
-	        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-	        factory.setNamespaceAware(true);
-	        XmlPullParser xpp = factory.newPullParser();
-	        InputStream in = getResources().openRawResource(R.raw.title_mapping);
-	        InputStreamReader inR = new InputStreamReader(in);
-	        xpp.setInput(inR);
-	        int eventType = xpp.getEventType();
-	        boolean isFrom = false, isTo = false;
-	        String strCurrentTag="", strKey=null, strVal=null;
-	        while (eventType != XmlPullParser.END_DOCUMENT) {
-		         if(eventType == XmlPullParser.START_DOCUMENT) {
-		         } else if(eventType == XmlPullParser.END_DOCUMENT) {
-		         } else if(eventType == XmlPullParser.START_TAG) {
-		        	 strCurrentTag = xpp.getName();
-		         } else if(eventType == XmlPullParser.END_TAG) {
-		        	 strCurrentTag="";
-		        	 if ("title".equalsIgnoreCase(xpp.getName()))
-		        	 {
-			        	 isFrom=false;
-			        	 isTo=false;
-			        	 if (null != strKey)
-			        		 titleMap.put(strKey, strVal);
-			        	 strKey = null;
-			        	 strVal = null;
-		        	 }
-		         } else if(eventType == XmlPullParser.TEXT) {
-		        	 if ("from".equalsIgnoreCase(strCurrentTag))
-		            	 strKey = xpp.getText();
-		        	 else if ("to".equalsIgnoreCase(strCurrentTag))
-		            	 strVal = xpp.getText();
-		         }
-		         eventType = xpp.next();
-	        }
-        }
-        catch (Exception e)
-        {
-        	
+
+        try {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            XmlPullParser xpp = factory.newPullParser();
+            InputStream in = getResources()
+                    .openRawResource(R.raw.title_mapping);
+            InputStreamReader inR = new InputStreamReader(in);
+            xpp.setInput(inR);
+            int eventType = xpp.getEventType();
+            boolean isFrom = false, isTo = false;
+            String strCurrentTag = "", strKey = null, strVal = null;
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_DOCUMENT) {
+                } else if (eventType == XmlPullParser.END_DOCUMENT) {
+                } else if (eventType == XmlPullParser.START_TAG) {
+                    strCurrentTag = xpp.getName();
+                } else if (eventType == XmlPullParser.END_TAG) {
+                    strCurrentTag = "";
+                    if ("title".equalsIgnoreCase(xpp.getName())) {
+                        isFrom = false;
+                        isTo = false;
+                        if (null != strKey)
+                            titleMap.put(strKey, strVal);
+                        strKey = null;
+                        strVal = null;
+                    }
+                } else if (eventType == XmlPullParser.TEXT) {
+                    if ("from".equalsIgnoreCase(strCurrentTag))
+                        strKey = xpp.getText();
+                    else if ("to".equalsIgnoreCase(strCurrentTag))
+                        strVal = xpp.getText();
+                }
+                eventType = xpp.next();
+            }
+        } catch (Exception e) {
+
         }
 
-        
-        
         cordovaState = CORDOVA_LOADING;
-        navToJQMPage=null;
+        navToJQMPage = null;
         setNavigationList();
         setNativeList();
         statusBarFragment = (StatusBarFragment) getSupportFragmentManager()
@@ -238,69 +232,90 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         extras = getIntent().getExtras();
         Utils.hideSpinner();
-    	// 13.3 changes start
- 		mCardStoreData.addToAppCache("onBackPressed", false);
- 		// 13.3 changes end
- 		
- 		// Add Content Change Observer or orientation change setting
- 		// For Defect: 101121 Start
- 		getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION),true, contentObserver);
- 		setOrientation();
- 		// For Defect: 101121 End
+        // 13.3 changes start
+        mCardStoreData.addToAppCache("onBackPressed", false);
+        // 13.3 changes end
+
+        // Add Content Change Observer or orientation change setting
+        // For Defect: 101121 Start
+        getContentResolver()
+                .registerContentObserver(
+                        Settings.System
+                                .getUriFor(Settings.System.ACCELEROMETER_ROTATION),
+                        true, contentObserver);
+        setOrientation();
+        // For Defect: 101121 End
     }
 
     /**
-     * For Defect: 101121
-     * Set Orientation of screen according to System Rotation Settings.
+     * For Defect: 101121 Set Orientation of screen according to System Rotation
+     * Settings.
      */
-    private void setOrientation(){
-    	if (android.provider.Settings.System.getInt(
-				getContentResolver(),
-				Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
-		// Rotation is ON	
-			CardNavigationRootActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-		} else {
-			// Rotation is OFF
-			final Configuration currentConfig = getResources()
-					.getConfiguration();
-			//Request Activity to set default screen orientation
-			CardNavigationRootActivity.this.setRequestedOrientation(currentConfig.orientation);
-		}
-	}
+    private void setOrientation() {
+        if (android.provider.Settings.System.getInt(getContentResolver(),
+                Settings.System.ACCELEROMETER_ROTATION, 0) == 1) {
+            // Rotation is ON
+            CardNavigationRootActivity.this
+                    .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            // Rotation is OFF
+            final Configuration currentConfig = getResources()
+                    .getConfiguration();
+            // Request Activity to set default screen orientation
+            CardNavigationRootActivity.this
+                    .setRequestedOrientation(currentConfig.orientation);
+        }
+    }
+
     private void setNativeList() {
-    	nativeList = new ArrayList<String>();
-    	nativeList.add(HomeSummaryFragment.class.getSimpleName());
-    	nativeList.add(QuickViewSetupFragment.class.getSimpleName());
-    	nativeList.add(PasscodeEnableStep1Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeEnableStep2Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeMenuFragment.class.getSimpleName());
-    	nativeList.add(PasscodeRemoveFragment.class.getSimpleName());
-    	nativeList.add(PasscodeSetupStep1Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeSetupStep2Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeUpdateStep1Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeUpdateStep2Fragment.class.getSimpleName());
-    	nativeList.add(PasscodeUpdateStep3Fragment.class.getSimpleName());
-	}
+        nativeList = new HashMap<String, String>();
+        nativeList.put(HomeSummaryFragment.class.getSimpleName(), "Home");
+        nativeList.put(QuickViewSetupFragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_fast_view));
+        nativeList.put(PasscodeEnableStep1Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeEnableStep2Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeMenuFragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeRemoveFragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeSetupStep1Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeSetupStep2Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeUpdateStep1Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeUpdateStep2Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(PasscodeUpdateStep3Fragment.class.getSimpleName(),
+                getString(R.string.sub_section_title_passcode));
+        nativeList.put(EnhancedAccountSecurityFragment.class.getSimpleName(),
+                getString(R.string.account_security_title_text));
+    }
 
     private void setNavigationList() {
-    	navigationlist = new ArrayList<String>();
-    	navigationlist.add(getString(R.string.section_title_account));
-    	navigationlist.add(getString(R.string.section_title_payments));
-    	navigationlist.add(getString(R.string.section_title_earn_cashback_bonus));
-    	navigationlist.add(getString(R.string.section_title_redeem_cashback_bonus));
-    	navigationlist.add(getString(R.string.section_title_profile_and_settings));
+        navigationlist = new ArrayList<String>();
+        navigationlist.add(getString(R.string.section_title_account));
+        navigationlist.add(getString(R.string.section_title_payments));
+        navigationlist
+                .add(getString(R.string.section_title_earn_cashback_bonus));
+        navigationlist
+                .add(getString(R.string.section_title_redeem_cashback_bonus));
+        navigationlist
+                .add(getString(R.string.section_title_profile_and_settings));
         // 13.3 fast view start
-    	navigationlist.add(getString(R.string.sub_section_title_fast_view));
-		// 13.3 fast view end
-    	navigationlist.add(getString(R.string.section_title_customer_service));
-    	navigationlist.add(getString(R.string.section_title_miles));
-    	navigationlist.add(getString(R.string.section_title_home));
-    	//13.4 passcode
-    	navigationlist.add(getString(R.string.sub_section_title_passcode));
-		
-	}
+        navigationlist.add(getString(R.string.sub_section_title_fast_view));
+        // 13.3 fast view end
+        navigationlist.add(getString(R.string.section_title_customer_service));
+        navigationlist.add(getString(R.string.section_title_miles));
+        navigationlist.add(getString(R.string.section_title_home));
+        // 13.4 passcode
+        navigationlist.add(getString(R.string.sub_section_title_passcode));
 
-	@Override
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
     }
@@ -355,13 +370,13 @@ public class CardNavigationRootActivity extends NavigationRootActivity
                     e.printStackTrace();
                 }
             }
-            //redirect = R.string.sub_section_title_make_a_payment;
+            // redirect = R.string.sub_section_title_make_a_payment;
             if (redirect > 0) {
-                	 Editor editor = pushSharedPrefs.edit();
-                     editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
-                     editor.commit();
-                     sendNavigationTextToPhoneGapInterface(getString(redirect));
-            } 
+                Editor editor = pushSharedPrefs.edit();
+                editor.putInt(PushConstant.pref.PUSH_NAVIGATION, 0);
+                editor.commit();
+                sendNavigationTextToPhoneGapInterface(getString(redirect));
+            }
         }
 
     }
@@ -439,7 +454,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
     @Override
     public void sendNavigationTextToPhoneGapInterface(final String text) {
-    	
+
         if (!(navigationlist.contains(text))) {
             /*
              * cordovaWebFrag = (CordovaWebFrag)
@@ -447,42 +462,38 @@ public class CardNavigationRootActivity extends NavigationRootActivity
              * .findFragmentByTag("CordovaWebFrag");
              */
             if (cordovaWebFrag != null) {
-            	if (cordovaState == CORDOVA_LOADING)
-            	{
-        			Utils.isSpinnerAllowed = true;
-        			Utils.showSpinner(this, "Discover", "Loading...");
-        			Utils.isSpinnerAllowed = false;
-        			navToJQMPage = text;
-            	}
-            	else if (cordovaState != CORDOVA_ERROR)
-            	{
-	            	if (text.indexOf("javascript")>-1)
-	            	{
-	            		cordovaWebFrag.getCordovaWebviewInstance().loadUrl(text);
-	            		Utils.isSpinnerAllowed = true;
-	        			Utils.hideSpinner();
-	            	}
-	            	else
-	            	{
-	                    try {
+                if (cordovaState == CORDOVA_LOADING) {
+                    Utils.isSpinnerAllowed = true;
+                    Utils.showSpinner(this, "Discover", "Loading...");
+                    Utils.isSpinnerAllowed = false;
+                    navToJQMPage = text;
+                } else if (cordovaState != CORDOVA_ERROR) {
+                    if (text.indexOf("javascript") > -1) {
+                        cordovaWebFrag.getCordovaWebviewInstance()
+                                .loadUrl(text);
+                        Utils.isSpinnerAllowed = true;
+                        Utils.hideSpinner();
+                    } else {
+                        try {
                             Utils.isSpinnerAllowed = true;
-	                        Handler handler = new Handler();
-	                        handler.postDelayed(new Runnable() {
-	                            @Override
-	                            public void run() {
-	                                Utils.showSpinner(CardNavigationRootActivity.this,
-	                                        "Discover", "Loading...");
-	
-	                            }
-	                        }, 500);
-	                    } catch (Exception e) {
-	                        e.printStackTrace();
-	                    }
-		                // hlin0, 20130530, integrate with new slidingmenu
-		                this.showContent();
-	                    cordovaWebFrag.javascriptCall(text);
-	            	}
-            	}
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utils.showSpinner(
+                                            CardNavigationRootActivity.this,
+                                            "Discover", "Loading...");
+
+                                }
+                            }, 500);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        // hlin0, 20130530, integrate with new slidingmenu
+                        this.showContent();
+                        cordovaWebFrag.javascriptCall(text);
+                    }
+                }
             }
         }
     }
@@ -529,7 +540,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
     @Override
     public void logout() {
-    	takeScreenShot();
+        takeScreenShot();
         Utils.log("CardNavigationRootActivity", "inside logout...");
         // super.logout();
         Utils.isSpinnerAllowed = true;
@@ -569,20 +580,20 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         // this);
         // cardErrorResHandler.handleCardError((CardErrorBean) data);
 
-    	clearNativeCache();
+        clearNativeCache();
         clearJQMCache(); // Call this method to clear JQM cache.
-        /* 13.4 changes start*/
-        //isTimeout = false;
+        /* 13.4 changes start */
+        // isTimeout = false;
         PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 
         final Bundle bundle = new Bundle();
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        /* 13.4 changes start*/
+        /* 13.4 changes start */
         isTimeout = false;
         Utils.hideSpinner();
-        
+
         finish();
     }
 
@@ -590,18 +601,18 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public void onSuccess(final Object data) {
         clearNativeCache();
         clearJQMCache(); // Call this method to clear JQM cache.
-       /* 13.4 changes start*/
-        //isTimeout = false;
+        /* 13.4 changes start */
+        // isTimeout = false;
         PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
 
-    	final Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
         bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, isTimeout);
         FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        /* 13.4 changes start*/
+        /* 13.4 changes start */
         isTimeout = false;
         Utils.hideSpinner();
-        
+
         finish();
     }
 
@@ -662,13 +673,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
     public void setActionBarTitle(final String title) {
         if (title.equalsIgnoreCase(getString(R.string.error_no_title)))
             showActionBarLogo();
-        else
-        {
-        	String strTitle = titleMap.get(title);
-        	if (null != strTitle)
-        		super.setActionBarTitle(strTitle);
-        	else
-        		super.setActionBarTitle(title);
+        else {
+            String strTitle = titleMap.get(title);
+            if (null != strTitle)
+                super.setActionBarTitle(strTitle);
+            else
+                super.setActionBarTitle(title);
         }
 
         if (null != title) {
@@ -738,11 +748,17 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         } else if (fragment.getClass().getSimpleName()
                 .equalsIgnoreCase("RedeemMilesFragment")) {
             return;
-        } else if (fragment.getClass().getSimpleName().equalsIgnoreCase("PasscodeLandingFragment")) {
-        	//TODO figure out a cleaner way to handle this.  PasscodeLandingFragment is used as a placeholder fragment but never invoked, instead
-        	//this logic is invoked to route passcode directly.  Without this there were quirks with the side menu and action bar title saying passcode
-        	//when it shouldn't have.  Plus there is no reason this routing logic needs it's own fragment.
-        	new PasscodeRouter(this).getStatusAndRoute();
+        } else if (fragment.getClass().getSimpleName()
+                .equalsIgnoreCase("PasscodeLandingFragment")) {
+            // TODO figure out a cleaner way to handle this.
+            // PasscodeLandingFragment is used as a placeholder fragment but
+            // never invoked, instead
+            // this logic is invoked to route passcode directly. Without this
+            // there were quirks with the side menu and action bar title saying
+            // passcode
+            // when it shouldn't have. Plus there is no reason this routing
+            // logic needs it's own fragment.
+            new PasscodeRouter(this).getStatusAndRoute();
         } else {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -761,15 +777,15 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             getSupportFragmentManager().beginTransaction().remove(pushFrag)
                     .commit();
         }
-        
-        //13.3 QuickView Change Start
-        if (fragment.getClass().getSimpleName()
-				.equalsIgnoreCase("QuickViewSetupFragment")) {
-			sendNavigationTextToPhoneGapInterface("javascript:quickView()");
-			mCardStoreData.addToAppCache("currentPageTitle", "Quick View");
-		}
-        //13.3 QuickView Change End
-        
+
+        // 13.3 QuickView Change Start
+        if (nativeList.containsKey(fragment.getClass().getSimpleName()) && !fragment.getClass().getSimpleName().equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName())) {
+            sendNavigationTextToPhoneGapInterface("javascript:quickView()");
+            mCardStoreData.addToAppCache("currentPageTitle",
+                    nativeList.get(fragment.getClass().getSimpleName()));
+        }
+        // 13.3 QuickView Change End
+
         hideSlidingMenuIfVisible();
     }
 
@@ -795,14 +811,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
         }
 
-      //13.3 QuickView Change Start
-        if (fragment.getClass().getSimpleName()
-				.equalsIgnoreCase("QuickViewSetupFragment")) {
-			sendNavigationTextToPhoneGapInterface("javascript:quickView()");
-			mCardStoreData.addToAppCache("currentPageTitle", "Quick View");
-		}
-        //13.3 QuickView Change End
-        
+        // 13.3 QuickView Change Start
+        if (nativeList.containsKey(fragment.getClass().getSimpleName()) && !fragment.getClass().getSimpleName().equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName())) {
+            sendNavigationTextToPhoneGapInterface("javascript:quickView()");
+            mCardStoreData.addToAppCache("currentPageTitle",
+                    nativeList.get(fragment.getClass().getSimpleName()));
+        }
+        // 13.3 QuickView Change End
+
         PushNowAvailableFragment pushFrag = (PushNowAvailableFragment) this
                 .getSupportFragmentManager().findFragmentByTag(
                         "PushNowAvailableFragment");
@@ -823,9 +839,9 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Utils.log("CardNavigationRootActivity", "inside onBackPressed()");
 
         DiscoverModalManager.clearActiveModal();
-		// 13.3 changes start
-		mCardStoreData.addToAppCache("onBackPressed", true);
-		// 13.3 changes end        
+        // 13.3 changes start
+        mCardStoreData.addToAppCache("onBackPressed", true);
+        // 13.3 changes end
         cordovaWebFrag.setTitle(null);
         mCardStoreData.addToAppCache("currentPageTitle", null);
         cordovaWebFrag.setM_currentLoadedJavascript(null);
@@ -840,45 +856,55 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
                     .getName();
 
+            String fragTagOne = fragManager.getBackStackEntryAt(fragCount - 1)
+                    .getName();
+            // 13.4 Strong Auth Fragment
+            if (fragTag.equals("EnhancedAccountSecurityFragment")
+                    && !fragTagOne.equals("Privacy & Terms")) {
+                fragTag = fragManager.getBackStackEntryAt(fragCount - 3)
+                        .getName();
+
+            }
+
             boolean isPopped = fragManager.popBackStackImmediate();
             Utils.log("CardNavigationRootActivity", "is fragment popped"
                     + isPopped);
-            //13.3 QuicView Changes Start
-            if (nativeList.contains(fragTag)) {
-            	Log.v(TAG, "Native List Contains Frag: " + fragTag);
-                Fragment fragment = fragManager
-                        .findFragmentByTag(fragTag);
+
+            // 13.3 QuicView Changes Start
+            if (nativeList.containsKey(fragTag)) {
+                Log.v(TAG, "Native List Contains Frag: " + fragTag);
+                Fragment fragment = fragManager.findFragmentByTag(fragTag);
                 makeFragmentVisible(fragment, false);
-                //13.3 QuicView Changes End
+                // 13.3 QuicView Changes End
                 if (fragManager.getBackStackEntryCount() == 2) {
-                	sendNavigationTextToPhoneGapInterface("javascript:acHome()");
+                    sendNavigationTextToPhoneGapInterface("javascript:acHome()");
                 }
 
             } else {
-            	Log.v(TAG, "Native List DOES NOT Contain Frag: " + fragTag);
-                if (fragTag
+                Log.v(TAG, "Native List DOES NOT Contain Frag: " + fragTag);
+                /*if (fragTag
                         .equalsIgnoreCase(getString(R.string.enhanced_account_security_title))
                         || fragTag.equalsIgnoreCase("No Title")) {
                     Utils.log("CardNavigationRootActivity",
-                            "inside onBackPressed()");
+                            "inside onBackPressed()##############");
                     onBackPressed();
-                } else {
+                } else */{
                     sendNavigationTextToPhoneGapInterface(fragTag);
                     super.onBackPressed();
                 }
 
             }
         } else {
-        	sendNavigationTextToPhoneGapInterface("javascript:acHome()");
+            sendNavigationTextToPhoneGapInterface("javascript:acHome()");
             Fragment homeFragment = fragManager
                     .findFragmentByTag("HomeSummaryFragment");
             makeFragmentVisible(homeFragment, false);
 
         }
-        
-		// 13.3 changes start
-		mCardStoreData.addToAppCache("onBackPressed", false);
-		// 13.3 changes end
+
+        // 13.3 changes start
+        mCardStoreData.addToAppCache("onBackPressed", false);
+        // 13.3 changes end
     }
 
     /**
@@ -994,24 +1020,22 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      * This method will be called once PhoneGap is ready to take request.
      */
     public void isDeviceReady() {
-    	cordovaState = CORDOVA_LOADED;
-    	if (null!=navToJQMPage)
-    	{
-    		Handler handler = new Handler();
+        cordovaState = CORDOVA_LOADED;
+        if (null != navToJQMPage) {
+            Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                	sendNavigationTextToPhoneGapInterface(navToJQMPage);
+                    sendNavigationTextToPhoneGapInterface(navToJQMPage);
                 }
             }, 200);
-    	}
+        }
     }
-    
-    public void onErrorOfCordovaLoading()
-    {
-    	cordovaState = CORDOVA_ERROR;
+
+    public void onErrorOfCordovaLoading() {
+        cordovaState = CORDOVA_ERROR;
     }
-    
+
     /*
      * (non-Javadoc)
      * 
@@ -1053,44 +1077,42 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         }
         hideSlidingMenuIfVisible();
     }
+
     /***
-	 * For Defect: 101121
-	 * onConfigurationChanged need to handle
-	 */
+     * For Defect: 101121 onConfigurationChanged need to handle
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-    	setOrientation();
-    	super.onConfigurationChanged(newConfig);
+        setOrientation();
+        super.onConfigurationChanged(newConfig);
     }
-    
-    public void takeScreenShot()
-	{
+
+    public void takeScreenShot() {
         View mView = getWindow().getDecorView().getRootView();
-        //View mView = view.findViewById(R.id.cardRootLayout); 
-        if (null!=mView)
-        {
-			mView.setDrawingCacheEnabled(true);
-			Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
-			mView.setDrawingCacheEnabled(false);
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-			File f = new File(Environment.getExternalStorageDirectory() + File.separator + "Discover_ScreenShot.jpg");
-			try {
-				f.createNewFile();
-				FileOutputStream fo = new FileOutputStream(f);
-				fo.write(bytes.toByteArray()); 
-				fo.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			finally
-			{
-				mView.setDrawingCacheEnabled(false);
-				bitmap = null;
-				mView=null;
-				f = null;
-			}
+        // View mView = view.findViewById(R.id.cardRootLayout);
+        if (null != mView) {
+            mView.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
+            mView.setDrawingCacheEnabled(false);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40,
+                    bytes);
+            File f = new File(Environment.getExternalStorageDirectory()
+                    + File.separator + "Discover_ScreenShot.jpg");
+            try {
+                f.createNewFile();
+                FileOutputStream fo = new FileOutputStream(f);
+                fo.write(bytes.toByteArray());
+                fo.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } finally {
+                mView.setDrawingCacheEnabled(false);
+                bitmap = null;
+                mView = null;
+                f = null;
+            }
         }
-	}
+    }
 }
