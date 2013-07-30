@@ -673,7 +673,7 @@ function browseAllPartnersLoad() {
 									+ dfs.crd.rwd.availablePartners
 									+ ""
 									+ partnerModeCode
-									+ ".png' data-default-image='../../images/DefaultImage_87X55.png' onerror='defaultImage(this);'";
+/*13.3 Global Change*/				+ ".png' data-default-image='../../images/DefaultImage_87X551.png' onerror='defaultImage(this);'";
 								activePartnerLi += "><h3>"
 									+ partnerModeDesc + "</h3></a>";
 								activePartnerLi += "</li>";
@@ -687,7 +687,7 @@ function browseAllPartnersLoad() {
 									+ dfs.crd.rwd.unavailablePartners
 									+ ""
 									+ partnerModeCode
-									+ ".png' data-default-image='../../images/DefaultImage_87X55.png' onerror='defaultImage(this);'";
+									/*13.3 Global Change*/	+ ".png' data-default-image='../../images/DefaultImage_87X551.png' onerror='defaultImage(this);'";
 								activePartnerLi += "><h3>"
 									+ partnerModeDesc + "</h3>";
 								activePartnerLi += unavailableStr;
@@ -1220,11 +1220,11 @@ function redeemPartner1Load() {
 				defaultDisbAmt = (defaultAmount.disbAmt).split(".")[0];
 				var defaultQuantity = defaultAmount.maxQty;
 				var defaultSpan = '';
-				defaultSpan += "<p class='bold-text'>Amount:</p>";
+				/*13.3 Global Change*/ defaultSpan += "<p class='bold-text'>Amount</p>";
 				defaultSpan += "<section data-amount-pay=" + defaultModeAmt
 				+ " data-amount-get=" + defaultDisbAmt
 				+ " data-max-qty=" + defaultQuantity + ">";
-				defaultSpan += "<span class='amt-btn'> <a href='#' id='default' class='blk-wht-btn yellow-bg r5-btn ui-link'> <span class='chk chk-icon'></span><span> <span class='white-doller'>$"
+				/*13.3 Global Change*/ defaultSpan += "<span class='amt-btn'> <a href='#' id='default' class='blk-wht-btn yellow-bg r5-btn ui-link'> <span class='chk chk-icon'></span><span class='dollarWrapper'> <span class='white-doller'>$"
 					+ defaultModeAmt
 					+ "</span> <span class='yellow-doller'>$"
 					+ defaultDisbAmt + "</span> </span> </a> </span>"
@@ -1244,7 +1244,7 @@ function redeemPartner1Load() {
 						+ " data-max-qty=" + maxQuantity + ">";
 						amtSpan += "<span class='amt-btn'><a href='#' id='"
 							+ modeAmt
-							+ "' class='yellow-bg r5-btn ui-link'> <span class='chk'></span><span> <span class='white-doller'>$"
+							/*13.3 Global Change*/+ "' class='yellow-bg r5-btn ui-link'> <span class='chk'></span><span class='dollarWrapper'> <span class='white-doller'>$"
 							+ modeAmt
 							+ "</span> <span class='yellow-doller'>$"
 							+ disbAmt + "</span> </span></a></span>";
@@ -1252,7 +1252,7 @@ function redeemPartner1Load() {
 
 					} else {
 						amtSpan += "<section data-amount-pay='' data-amount-get='' data-max-qty=''>";
-						amtSpan += "<span><a href='#' class='r5-btn disabled-btn ui-link'> <span class='chk'></span><span> <span class='white-doller'>$"
+						/*13.3 Global Change*/amtSpan += "<span><a href='#' class='r5-btn disabled-btn ui-link'> <span class='chk'></span><span class='dollarWrapper'> <span class='white-doller'>$"
 							+ modeAmt
 							+ "</span> <span class='yellow-doller'>$"
 							+ disbAmt + "</span> </span> </a></span>"
@@ -3427,8 +3427,8 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 									+ dsbrstAmt + "')>";
 								redeemHistLi += "<div class='ui-grid-c'>";
 								redeemHistLi += "<div class='ui-block-a'>";
-								redeemHistLi += "<p class='ecert-icon'><b> "
-									+ itemDesc + " </b></p>";
+								redeemHistLi += "<p class='ecert-icon'> "	/*R13.3 Global Change*/
+									+ itemDesc + " </p>";		/*R13.3 Global Change*/
 								redeemHistLi += "<a href='#' data-transition='slide' class='rd-right-arrow' id='EecrtConfirm' onClick=dfs.crd.rwd.getEcetDetailsFromModeCode('"
 									+ mediaCode
 									+ "','"
@@ -3456,7 +3456,7 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 								}
 								redeemHistLi += "</div>";
 								redeemHistLi += "<div class='ui-block-b'>";
-								redeemHistLi += "<span>Order: #"
+								redeemHistLi += "<span>Order #: "		/*R13.3 Global Change*/
 									+ orderId + "</span><p>"
 									+ orderDate + "</p>";
 								redeemHistLi += "</div>";
@@ -3524,8 +3524,8 @@ dfs.crd.rwd.populatRedeemptionHistory = function(responseData) {
 								redeemHistLi += "<li>";
 								redeemHistLi += "<div class='ui-grid-c'>";
 								redeemHistLi += "<div class='ui-block-a'>";
-								redeemHistLi += "<p><strong> "
-									+ itemDesc + " </strong></p>";
+								redeemHistLi += "<p>" /*13.3 Global Change*/ //<strong> "
+									+ itemDesc + /*</strong>*/ /*13.3 Global Change*/ "</p>";
 								if (accountEarnsMiles(orderhistIncentiveTypeCd)) {
 									redeemHistLi += "<p>"
 										+ numberWithCommas(dsbrstAmtDisp)

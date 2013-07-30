@@ -92,17 +92,20 @@ body.ui-mobile-viewport,div.ui-mobile-viewport {
 	/*background-image: -webkit-linear-gradient(#ffc053, #f97a23 50%, #f36a0f 51%, #ef6713);*/
 	/*background-image: -webkit-gradient(linear, left top, left bottom, from(#ffc053), to(#fc510b), color-stop(0.5, #f97a23), color-stop(0.51, #f36a0f) );*/
 	/*background-image: -webkit-gradient(linear, left top, left bottom, from(#fe8738), to(#ed4b0b), color-stop(0.5, #ed4b0b), color-stop(0.51, #ed4b0b) ) !important;*/
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#fe8738), to(#ed4b0b), color-stop(0.5, #ed4b0b), color-stop(0.51, #ed4b0b) ) !important;
-	border: 1px solid #fff !important;
+	/*background-image: -webkit-gradient(linear, left top, left bottom, from(#fe8738), to(#ed4b0b), color-stop(0.5, #ed4b0b), color-stop(0.51, #ed4b0b) ) !important;
+	/*border: none !important; 
+	border-radius: none !important;
+	-webkit-border-radius: none !important;*/
+	background-image:none !important;
 	color: white;
-	border-radius: 4px !important;
-	-webkit-border-radius: 4px !important;
 	font-weight: bold;
 	font-size: 12px;
 	text-shadow: none;
 	display: inline-block;
 	padding: 0 5px 0 5px;
 	line-height:26px;
+	
+	
 }
 
 .white-box-rd-corner .small_btn_110px {
@@ -241,13 +244,27 @@ span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hove
  font-size: 12px; /* JQM UC1 */
 }
 /* JQM UC1 */
-.ui-btn-up-c:visited, .ui-btn-up-c:hover, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-hover-c:hover, .ui-btn-hover-c:visited, .ui-btn-down-c:visited, .ui-btn-down-c:hover, .ui-btn-down-c  {
+.ui-btn-up-c:visited, .ui-btn-up-c:hover, .ui-btn-up-c, .r3matchbtn .ui-btn-hover-c, .ui-btn-hover-c, .ui-btn-hover-c:hover, .ui-btn-hover-c:visited, .ui-btn-down-c:visited, .ui-btn-down-c:hover, .ui-btn-down-c  {
  color: #fff; 
+ border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #ed4c0c;
+	
+	
+-webkit-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8) !important;
+-moz-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
+box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
+	
+/*	background-image: none !important;*/
 }
+
+
 /* JQM UC1 */
 
-#login-pg .ui-btn-inner .ui-btn-text { font-size:12px }
-.ui-btn-inner .ui-btn-text{	font-size:15px }
+#login-pg .ui-btn-inner .ui-btn-text { font-size:12px; margin:0 !important; }
+.ui-btn-inner .ui-btn-text{font-size:15px;   }
+
+.r3matchbtn .ui-btn-text{margin:0px 20px 0px 20px;}
 /*logo*/
 #logo {
 	display: block;
@@ -262,8 +279,13 @@ span input.small_btn_150px .ui-btn-up-c, span input.small_btn_150px .ui-btn-hove
 	padding: 0px;
 	text-shadow: 0 -1px 2px #935023;
 	display: block !important;
+	background-color:#ff6600 !important;
 	margin: 0 auto;
 	width: 290px;
+	border: none !important;
+-webkit-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8) !important;
+-moz-box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
+box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
 }
 
 #cc-login  .arrow,#bank-login .arrow {
@@ -557,7 +579,6 @@ padding: 3px 8px 3px 8px;
                 color: #09C !important;
                 text-decoration: none;
 }
-
 /***R13.4 Change for MAP Step 1 Button disable***/
 #paymentStep1-pg .ui-disabled {	
 	border-radius: 0px !important;

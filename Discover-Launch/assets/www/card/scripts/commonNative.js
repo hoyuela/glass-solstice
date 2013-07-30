@@ -103,7 +103,7 @@ function extras()
 	navigation('../edo/edoLandingPage');
 }
 
-function referAFriend()
+function referaFriend()
 {
 	preventBack = false;
 	populateGlobalCache();

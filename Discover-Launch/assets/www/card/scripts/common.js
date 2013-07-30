@@ -642,27 +642,55 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 //Ankit's Changes for flip Switch toggle image
 
 var fnChangeSwitchStyle = function(){
-	$("#alertsetting").die("change").live("change", function(){
-		var switchValue = $(this).val();
+/*13.3 Global Change : Starts*/ /*	$("#alertsetting").die("change").live("change", function(){
+		//var switchValue = $(this).val();
+		var switchValue = $(document).jqmData("flipval");
 		if(switchValue == 'yes' || switchValue == 'on'){
-			$(this).siblings(".ui-slider").addClass('activeSwitch');
+			//$(this).siblings(".ui-slider").addClass('activeSwitch');
+				$('.slider-button').addClass('on').html('ON');
+				$(document).jqmData("flipval",'yes');
 			}
 		else{
-			$(this).siblings(".ui-slider").removeClass('activeSwitch');
-	
+			//$(this).siblings(".ui-slider").removeClass('activeSwitch');
+				$('.slider-button').removeClass('on').html('OFF');
+				$(document).jqmData("flipval",'no');
+
 			}
-		$("#alertsetting").slider('refresh');	
+		//$("#alertsetting").slider('refresh');	
 	
 	});
+*/	
+/*  toggle switch functionality  */
+	$(document).jqmData("flipval",'no');
+		$('.slider-button').toggle(function(){
+				$(this).addClass('on').html('ON');
+				$(document).jqmData("flipval",'yes');
+			},function(){
+				$(this).removeClass('on').html('OFF');
+				$(document).jqmData("flipval",'no');
+		});	
+
+		$(".slider-frame").bind('touchmove click swipe',function(){
+			$('.slider-button').trigger('click');
+		})	
+		 $.event.special.swipe.horizontalDistanceThreshold = 3;
+	
+/*  toggle switch functionality  */	
+	/*13.3 Global Change : Ends*/
 }
 $('#manageAlerts-pg').live("pagebeforeshow",function(){
 
-	var switchValue = $("#alertsetting").val();
+	/*13.3 Global Change : Starts*/ //var switchValue = $("#alertsetting").val();
+	var switchValue = $(document).jqmData("flipval");/*13.3 Global Change : Ends*/
 		if(switchValue == 'yes' || switchValue == 'on'){
-			$("#alertsetting").siblings(".ui-slider").addClass('activeSwitch');
+			/*13.3 Global Change : Starts*/ //$("#alertsetting").siblings(".ui-slider").addClass('activeSwitch');
+				$('.slider-button').addClass('on').html('ON');
+				$(document).jqmData("flipval",'yes');
 		}else{
-			$("#alertsetting").siblings(".ui-slider").removeClass('activeSwitch');	
-		}
+			//$("#alertsetting").siblings(".ui-slider").removeClass('activeSwitch');
+				$('.slider-button').removeClass('on').html('OFF');
+				$(document).jqmData("flipval",'no');
+		}/*13.3 Global Change : Ends*/
 });
 $('#cardLogin-pg,#manageAlerts-pg').live("pageshow",function(){
 fnChangeSwitchStyle();
@@ -1394,7 +1422,7 @@ function moreLandingLoad(){
 		getMenuItems();
         fromConfirmationPage = true;
 		var moreHTML="";
-		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
+		moreHTML="<ul data-role='listview' data-theme='d' data-inset='true' id='list1' class='whitebg-list-view account-list-view ui-listview ui-listview-inset ui-corner-all ui-shadow'>"
 			for (var key in moreNav) 
 			{
 				if(moreNav[key] =="PS" || moreNav[key] =="TU"){

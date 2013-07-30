@@ -15,30 +15,55 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
+            
+            
+       <!--      <ul class="whitebg-list-view">
+					<li><a href="#" onclick="navigation('../achome/accountSummary');" class="ui-link"><span class="amt_bold" id="">Account Summary</span><span class="payArr"></span></a></li>
+					<li><a href="#" onclick="navigation('../statements/accountActivity');" class="ui-link"><span class="amt_bold" id="">Account Activity</span><span class="payArr"></span></a></li>
+                    <li><a href="#" onclick="navigation('../statements/searchTrans');" class="ui-link"><span class="amt_bold" id="">Transactions</span><span class="payArr"></span></a></li>
+                     <li><a href="#" onclick="navigation('../statements/statementLanding');" class="ui-link"><span class="amt_bold" id="">Statements</span><span class="payArr"></span></a></li>
+                     
+                     <li><a href="#"><span>Checking Ending in 1111</span><br/><span class="amt_bold" id="amount_value">Account Nickname 1</span><span class="payArr"></span></a></li>
+                     
+				</ul>-->
+            
+            
+            
 				<!--<h1>Account Summary</h1>-->
 				<ul class="whitebg-list-view" id="accountSummary_rewardsDiv">
-					<li>Current Balance <span class="amt_bold" id="accountSummary_currentBalance"></span></li>
-					<li>Last Statement Balance <span class="amt_bold" id="accountSummary_statementBalance"></span></li>
-					<li><span id="accountSummary_minpay" style="float:left">Min. Payment Due </span>&nbsp;<span class="amt_bold" id="accountSummary_minimumPaymentDue"></span>
+                
+	<li><span class="subHeadings">Current Balance</span><br/><span class="amt_bold" id="accountSummary_currentBalance"></span>
+    </li>
+                    
+					<li><span class="subHeadings">Last Statement Balance</span><br/><span class="amt_bold" id="accountSummary_statementBalance"></span></li>
+                    
+					<li><span id="accountSummary_minpay" style="float:left" class="subHeadings">Min. Payment Due </span><br/><span class="amt_bold" id="accountSummary_minimumPaymentDue"></span>
                    		<!-- div class="learnmore"><a href="#" onClick="navigation('latePayWarn');" class="bluelink" >Late Payment Warning</a></div -->
 					</li>
-					<li id="lastpaymentLine"><span id="accountSummary_lastpay" style="float:left">Last Payment </span><span class="amt_bold" id="accountSummary_lastPaymentAmount"></span>
+					<li id="lastpaymentLine"><span id="accountSummary_lastpay" style="float:left" class="subHeadings">Last Payment </span><br/><span class="amt_bold" id="accountSummary_lastPaymentAmount"></span>
 					</li>
-					<li data-icon="false">Credit Available <!--<a  href="#" onClick="navigation('creditLineLearnMore');" class="bluelink">&nbsp;Learn More</a>--><span class="amt_bold" id="accountSummary_availableCredit"></span>
+                    
+					<li data-icon="false"><span class="subHeadings">Credit Available</span><br/> <!--<a  href="#" onClick="navigation('creditLineLearnMore');" class="bluelink">&nbsp;Learn More</a>--><span class="amt_bold" id="accountSummary_availableCredit"></span>
                      <div class="learnmore">
                     <a  href="#" onClick="navigation('creditLineLearnMore');" class="bluelink">Credit Line Details</a></div>
                     </li>
                 </ul>
-				<div class="txtcenteraln bigboldBTN">
+			<!--	<div class="txtcenteraln bigboldBTN">
 					<input  type="button" onclick="navigation('../payments/paymentStep1');" id="accSumm_makePayBtn" value="Make a Payment" />
-                </div>
+                </div>-->
+                
+                   <div class="txtcenteraln r3matchbtn"> <a href="#" onClick="navigation('../payments/paymentStep1');"  data-role="button" data-theme="c" id="removeAccount">Make a Payment</a> </div>
+                
+                
 			</div>
 			<div id="footnotes" class="footnotes"></div>
 		</div>
 		<!-- content end -->
-		<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
-            <footer id="footer" class="mnu_footer">	</footer>
-		</div>
+		
+				<div data-role="footer" id="pg-footer" data-position="fixed" data-id="myfooter" data-tap-toggle="false">
+           			 <footer id="footer" class="mnu_footer"></footer>
+				</div>
+  
 	</div>
 	<!--page end -->
 </body>

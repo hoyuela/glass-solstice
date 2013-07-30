@@ -34,7 +34,6 @@ function profileManageContactLoad() {
 }
 
 function personalizeCashPin1Load() {
-    console.log("Discover-Pun personalize cash pin1 load...");
 	if (!dfs.crd.profile.verifyPriorPageForStep1()) return;
     if (!dfs.crd.profile.isCardTypeEligible()) {
 		cpEvent.preventDefault();
@@ -110,11 +109,13 @@ function personalizeCashPin2Load() {
 dfs.crd.profile.createPersonalPinUrl = RESTURL + "personalprofile/v1/personalizepin";
 
 dfs.crd.profile.moveToDiscoverSiteReminder = function() {
-	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/emailreminder/showEmailProfile";
+	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen);
 }
 
 dfs.crd.profile.moveToDiscoverSiteProfile = function() {
-	window.location.href = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	strURLToOpen = EXT_HREF_URL + "cardmembersvcs/loginlogout/app/ac_main?link=/cardmembersvcs/personalprofile/pp/GetInitialInfo";
+	HybridControl.prototype.showOnBrowser(function successToken(args){ showOnBrowser = args;},function failCallBack(args){},strURLToOpen);
 }
 
 dfs.crd.profile.personalizeCashPin2 = function(enterPin, confirmPin) {
