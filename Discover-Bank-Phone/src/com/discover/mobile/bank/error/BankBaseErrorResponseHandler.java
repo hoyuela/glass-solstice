@@ -13,6 +13,7 @@ import android.view.WindowManager.LayoutParams;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.paybills.SchedulePaymentFragment;
 import com.discover.mobile.bank.services.auth.BankSchema;
@@ -144,6 +145,10 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 					errCode.equals(BankErrorCodes.ERROR_NO_ACCOUNTS_FOUND)){
 				mErrorHandler.handleHttpFraudNotFoundUserErrorModal(mErrorHandlerUi, msgErrResponse.getErrorMessage());
 			}
+			//SSO Strong auth skipper error
+			else if(errCode.equals(BankErrorCodes.ERROR_SA_SKIPPED_ERROR) && BankUser.instance().isSsoUser()){
+				showCustomAlert(getSsoSaSkippedModal());
+			}
 			//Strong Auth Errors
 			else if( errCode.equals(BankErrorCodes.ERROR_INVALID_STRONG_AUTH) || 
 					errCode.equals(BankErrorCodes.ERROR_LAST_ATTEMPT_STRONG_AUTH) ) {
@@ -185,6 +190,28 @@ public final class BankBaseErrorResponseHandler implements ErrorResponseHandler 
 		}
 
 		return handled;
+	}
+	
+	/**
+	 * Get the modal that is shown when an SSO user gets a strong auth skipped
+	 * @return the modal
+	 */
+	private AlertDialog getSsoSaSkippedModal(){
+		final Context context = DiscoverActivityManager.getActiveActivity();
+		final SimpleContentModal modal = new SimpleContentModal(context);
+		modal.setTitle(R.string.bank_sso_strong_auth_skipped_title);
+		modal.setContent(R.string.bank_sso_strong_auth_skipped_text);
+		modal.showErrorIcon();
+		modal.getHelpFooter().setToDialNumberOnClick(R.string.bank_sso_strong_auth_skipped_number);
+		modal.setButtonText(R.string.bank_sso_strong_auth_skipped_button);
+		modal.getButton().setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(final View v) {
+				goToCardHome();
+				modal.dismiss();
+			}
+		});
+		return modal;
 	}
 
 	/**

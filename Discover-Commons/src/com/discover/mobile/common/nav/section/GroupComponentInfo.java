@@ -2,6 +2,8 @@ package com.discover.mobile.common.nav.section;
 
 import javax.annotation.concurrent.Immutable;
 
+import android.view.View.OnClickListener;
+
 import com.google.common.collect.ImmutableList;
 /**
  * This is the object that creates a group of component infos. This object is what is 
@@ -20,6 +22,11 @@ public class GroupComponentInfo extends ComponentInfo {
 	public GroupComponentInfo(final int titleResource, final ComponentInfo... subSections) {
 		super(titleResource);
 
+		this.subSections = ImmutableList.<ComponentInfo>copyOf(subSections);
+	}
+	
+	public GroupComponentInfo(final int titleResource, final OnClickListener clickListener, final ComponentInfo... subSections) {
+		super(titleResource, false, clickListener);
 		this.subSections = ImmutableList.<ComponentInfo>copyOf(subSections);
 	}
 

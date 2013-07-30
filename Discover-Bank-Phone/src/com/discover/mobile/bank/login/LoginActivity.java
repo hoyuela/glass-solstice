@@ -107,8 +107,9 @@ import com.slidingmenu.lib.SlidingMenu;
 public class LoginActivity extends NavigationRootActivity implements LoginActivityInterface, CompletionListener, InputEnablerListener {
 	/* TAG used to print logs for the LoginActivity into logcat */
 	private static final String TAG = LoginActivity.class.getSimpleName();
-	final long halfSecond = 500;
-	final int threeFifty = 350;
+	private static final long HALF_SECOND = 500;
+	private static final int THREE_FIFTY = 350;
+	private static final long SIX_SECONDS = 6000;
 	
 	/**
 	 * These are string values used when passing extras to the saved instance
@@ -359,10 +360,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void setupTextSwitcher() {
 		final AlphaAnimation inAnimation = new AlphaAnimation(0.0f, 1.0f);
-		inAnimation.setDuration(halfSecond);
+		inAnimation.setDuration(HALF_SECOND);
 		
 		final AlphaAnimation outAnimation = new AlphaAnimation(1.0f, 0.0f);
-		outAnimation.setDuration(halfSecond);
+		outAnimation.setDuration(HALF_SECOND);
 		
 		registerOrAtmButton.setInAnimation(inAnimation);
 		registerOrAtmButton.setOutAnimation(outAnimation);
@@ -474,6 +475,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
+		startDefaultErrorFadeOut(); // Fade out error text view after six seconds
 		idField.clearFocus();
 		passField.clearFocus();
 		setCheckMark(false, false);
@@ -535,14 +537,19 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display succesful logout message at top of the screen
 	 */
 	public void showLogoutSuccessful() {
-		final long tenSeconds = 10000;
 		errorTextView.invalidate();
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		errorTextView.setVisibility(View.VISIBLE);
 		
-		startFadeOutAnimationForView(errorTextView, halfSecond, View.GONE, tenSeconds);
-		startFadeInAnimationForView(welcomeTV, halfSecond, tenSeconds);
+		// Logout message fades out after six seconds
+		startDefaultErrorFadeOut();
+		startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
+	}
+	
+	/** Starts the fade out animation on the error text view after six seconds. */
+	private void startDefaultErrorFadeOut() {
+		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
@@ -1125,6 +1132,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			errorTextView.setTextColor(getResources().getColor(R.color.red));
 			errorTextView.setText(getString(R.string.cannot_save_account_number));
 			errorTextView.setVisibility(View.VISIBLE);
+			startDefaultErrorFadeOut();
 			clearInputs();
 			toggleSaveUserIdSwitch(idField, true);
 			idField.updateAppearanceForInput();
@@ -1345,7 +1353,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			translation = new TranslateAnimation(-getXDistanceToCenterForView(logo), 0, 0, 0);
 		}
 					
-		translation.setDuration(halfSecond);
+		translation.setDuration(HALF_SECOND);
 
 		logo.startAnimation(translation);
 	}
@@ -1432,7 +1440,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void animateCardSetup() {
 		final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-		fadeIn.setDuration(halfSecond);
+		fadeIn.setDuration(HALF_SECOND);
 		forgotUserIdOrPassText.startAnimation(fadeIn);
 		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
 		cardPrivacyLink.startAnimation(AnimationUtils.loadAnimation(getContext(), 
@@ -1449,11 +1457,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			if(isCardLogin()) {
 				animateLogoSlide();
 				final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-				fadeIn.setDuration(threeFifty);
+				fadeIn.setDuration(THREE_FIFTY);
 				gotoFastcheckButton.startAnimation(fadeIn);
 			}else if(!isCardLogin()) {
 				animateLogoSlide();
-				startFadeOutAnimationForView(gotoFastcheckButton, threeFifty);
+				startFadeOutAnimationForView(gotoFastcheckButton, THREE_FIFTY);
 			}
 		}
 		
@@ -1521,7 +1529,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			
 			@Override
 			public void onAnimationStart(final Animation animation) {
-				startFadeOutAimationForView(forgotLink, threeFifty, View.INVISIBLE);
+				startFadeOutAimationForView(forgotLink, THREE_FIFTY, View.INVISIBLE);
 			}
 			
 			@Override
@@ -1853,8 +1861,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private void hideExclamation() {
 		exclamationIV.setVisibility(View.GONE);
-		final int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDimension(R.dimen.element_side_padding), getResources().getDisplayMetrics());
-//		int paddingLeft = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics());
+		final int paddingLeft = getResources().getDimensionPixelSize(R.dimen.element_side_padding);
 		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
 	}
 
