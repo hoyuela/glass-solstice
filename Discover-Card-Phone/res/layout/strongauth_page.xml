@@ -203,7 +203,6 @@
                 android:layout_marginBottom="@dimen/orange_button_margin_top"
                 android:layout_marginTop="@dimen/orange_button_margin_top"
                 android:background="@drawable/card_action_orange_button"
-                android:onClick="submitSecurityInfo"
                 android:paddingLeft="52dp"
                 android:paddingRight="52dp"
                 android:paddingTop="15dp"

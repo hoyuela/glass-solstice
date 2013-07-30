@@ -5,7 +5,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="contactUs-pg" >
+	<div data-role="page" id="contactUs-pg" class="contentSetting" >
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -17,9 +17,9 @@
 		<div class="wraper">           	
 				<!-- body text area star -->
 				<!--<h1>Contact Us</h1>-->
-				<h1>By Phone</h1>
+				<h1 class="innerWrapper">By Phone</h1>
 				<!--<ul data-role="listview" data-theme="d" data-inset="true" class="rounded-list-box-simple rounded-list-box-information plain">-->
-				<ul data-role="listview" data-theme="d" data-inset="true" class="whitebg-list-view">
+				<ul data-role="listview" id="list1" data-theme="d" data-inset="true" class="whitebg-list-view">
 					<li>
 						<div>U.S. </div>
 						<div><a href='tel:18003472683' onClick='trackThis(); return true' class='bluelink'>1-800-347-2683</a></div>
@@ -42,10 +42,10 @@
 				
 			
 				
- 				<h1>By Mail</h1>
+ 				<h1 class="innerWrapper">By Mail</h1>
 
  				<!--<ul data-role="listview" data-theme="d" data-inset="true" class="rounded-list-box-simple rounded-list-box-mail-info plain">-->
-				<ul data-role="listview" data-theme="d" data-inset="true" class="whitebg-list-view contactusCols">
+				<ul data-role="listview" id="list1" data-theme="d" data-inset="true" class="whitebg-list-view contactusCols">
 					<li>
 						<div>Payment Address</div>
 						<div class="col2">

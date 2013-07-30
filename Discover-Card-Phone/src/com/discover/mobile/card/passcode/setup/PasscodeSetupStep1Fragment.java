@@ -32,6 +32,13 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
 		return view;
 	}
+	
+	
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
 
 	@Override
 	public void onPasscodeErrorEvent() {
@@ -58,16 +65,13 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 		Log.v(TAG,  "passing passcode: " + getPasscodeString());
 		pStep2.setArguments(b);
 		
-		makeFragmentVisible(pStep2, false);
-//		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, pStep2).commit();
+		//must call step2 fragment putting it on back stack, otherwise step2 back nav will take you one page prior to this
+		makeFragmentVisible(pStep2);
 	}
 		
 	private final class SyntaxValidityRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode validity");
-			//message - passcode not provided or does not meet security requirements
-			Log.v(TAG, "Data: " + data.toString());
 			passcodeResponse(false);
 		}
 
@@ -76,5 +80,4 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 			passcodeResponse(true);
 		}
 	};
-	
 }

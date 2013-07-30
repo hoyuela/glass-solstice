@@ -7,7 +7,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="sendMoneyLanding-pg">
+	<div data-role="page" id="sendMoneyLanding-pg" class="contentSetting">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
 		<header id="header" class="cmn_header">
@@ -17,29 +17,38 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<div class="floatleft" id="name">
-					<h1>Send Money</h1>
+                     <div><div class="innerWrapper">
+                        <div class="subHeader">
+		                  <div class="text">MONEY MESSENGER</div>
+        		          <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                	    <div class="smallText">POWERED BY</div>
+                       </div> </div>
+                <div id="name" class="innerWrapper">
+					<!--<h1 class="innerWrapper">Send Money</h1>-->
+                    <p class="boldtext bigger">Send Money</p>
 				</div>
+              
+                <!--
 				<div class="floatright pay-pal-logo"> </div>
 				<div class="clearboth"></div>
 				<div id="card-info">
-					<!-- PayPal image required here -->
-				</div>
+					
+				</div>--><!-- PayPal image required here -->
 				<ul data-role="listview" data-theme="d" data-inset="true" id="list1"
-					class="account-list-view">
+					class="whitebg-list-view account-list-view">
 					<li data-icon="false"><a href="#"
-						onclick="killDataFromCache('SENDMONEY'),navigation('../p2p/sendMoney1');" class="bluelink">Send
-							Money</a> <span class="floatright arrow"> &gt; </span></li>
-					<li data-icon="false"><a href="#" class="bluelink"
+						onclick="killDataFromCache('SENDMONEY'),navigation('../p2p/sendMoney1');" class="amt_bold">Send
+							Money</a> <span class="floatright payArr"></span></li>
+					<li data-icon="false"><a href="#" class="amt_bold"
 						onclick="killDataFromCache('SM1_DATA'),navigation('../p2p/transactionHistory');">Transaction
 							History</a> <!-- onclick="explore_discover();" --> <span
-						class="floatright arrow"> &gt; </span></li>
-					<li data-icon="false"><a href="#" class="bluelink"
+						class="floatright payArr"></span></li>
+					<li data-icon="false"><a href="#" class="amt_bold"
 						onclick="killDataFromCache('SM1_DATA'),navigation('../p2p/howItWorks');">How it Works </a> 
-						<span class="floatright arrow"> &gt; </span></li>
-					<li data-icon="false"><a href="#" class="bluelink"
+						<span class="floatright payArr"></span></li>
+					<li data-icon="false"><a href="#" class="amt_bold"
 						onclick="killDataFromCache('SM1_DATA'),navigation('../p2p/sendMoneyFAQ');">FAQs</a> <!-- onclick="profile();" -->
-						<span class="floatright arrow"> &gt; </span></li>
+						<span class="floatright payArr"></span></li>
 				</ul>
 			</div>
 

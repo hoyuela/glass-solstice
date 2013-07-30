@@ -43,7 +43,7 @@ img.fnone{float:none !important}
 .ddcommon .noBorderTop{border-top:none 0  !important; padding:0; margin:0;}
 
 /*************** default theme **********************/
-.dd{/*border:1px solid #c3c3c3;*/border-bottom: 1px solid #b5b5b5;margin-top: 20px;cursor: pointer;position: relative;outline:none;width:100% !important;}
+.dd{/*border:1px solid #c3c3c3;*/border-bottom: 1px solid #b5b5b5;margin-top: 5px;cursor: pointer;position: relative;outline:none;width:100% !important;}
 .dd .divider{border-left:1px solid #c3c3c3; border-right:1px solid #fff;; right:24px;display:none;}
 /*.dd .arrow{width:16px;height:16px; margin-top:-8px; background:url(../../images/msdropdown/skin1/dd_arrow.gif) no-repeat;}*/
 .dd .arrow:hover{background-position:0 100%;}
@@ -59,12 +59,12 @@ img.fnone{float:none !important}
 .dd .ddChild li{padding:18px 11px; background-color:#fff; border-bottom:1px solid #c3c3c3;}
 .dd .ddChild li .description{color:#777777;font-size:14px;}
 .dd .ddChild li .ddlabel{color: #383838;font-size:20px;}
-.dd .ddChild li.hover{background-color:#f2f2f2}
+.dd .ddChild li.hover{background-color:#f2f2f2 !important;}
 .dd .ddChild li img{padding:0 6px 0 0;}
 .dd .ddChild li.optgroup{padding:0;}
 .dd .ddChild li.optgroup .optgroupTitle{padding:0 5px; font-weight:bold; font-style:italic}
 .dd .ddChild li.optgroup ul li{padding:5px 5px 5px 15px}
-.dd .ddChild li.selected{-webkit-box-shadow: inset 0 0 5px 2px #cdd3d6; color:#000; background:#ebeff0;}
+.dd .ddChild li.selected{-webkit-box-shadow: inset 0 0 5px 2px #cdd3d6 !important; color:#000 !important; background:#ebeff0 !important;}
 .dd .ddChild li:first-child{
 	display:none !important;
 }

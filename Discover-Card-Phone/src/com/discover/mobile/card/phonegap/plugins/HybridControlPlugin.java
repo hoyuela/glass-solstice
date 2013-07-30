@@ -308,12 +308,71 @@ public class HybridControlPlugin extends CordovaPlugin {
                     }
                 });
             } else {
-                cnrAct.runOnUiThread(new Runnable() {
+				// 13.4 SIT defect fixed 105428
+            	 Fragment fragmentByTag = fragmentManager
+                         .findFragmentByTag("CordovaWebFrag");
+                 if (fragmentByTag == null) {
+                     fragmentByTag = new CordovaWebFrag();
+                 }
+                 final Fragment cordovaFrag = fragmentByTag;
+
+                 frag123 = cordovaFrag;
+
+                 
+                 
+                 cnrAct.runOnUiThread(new Runnable() {
+                     @Override
+                     public void run() {
+
+                         fragmentManager
+                                 .beginTransaction()
+                                 /* .hide(statusBarFragment) */
+                                 .remove(cordovaFrag)
+                                 .add(R.id.navigation_content, cordovaFrag,
+                                         "CordovaWebFrag").commit();
+                         fragmentManager.executePendingTransactions();
+
+                         String topfragName = fragmentManager
+                                 .getBackStackEntryAt(
+                                         fragmentManager
+                                                 .getBackStackEntryCount() - 1)
+                                 .getName();
+                         Fragment topFragment = fragmentManager
+                                 .findFragmentByTag(topfragName);
+                         /********** Hemang **********/
+                         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                             if (null != topFragment) {
+                                 String topFragmentTag = topFragment.getTag();
+                                 if (!topFragmentTag
+                                         .equalsIgnoreCase("CordovaWebFrag")
+                                         && null != strLastTitleDisplayed
+                                         && !strLastTitleDisplayed
+                                                 .equalsIgnoreCase(title)) {
+                                     ((CordovaWebFrag) cordovaFrag)
+                                             .getCordovaWebviewInstance()
+                                             .clearView();
+
+                                     ((CordovaWebFrag) cordovaFrag)
+                                             .getCordovaWebviewInstance()
+                                             .invalidate();
+                                     strLastTitleDisplayed = title;
+                                 } else
+                                     strLastTitleDisplayed = title;
+                             } else
+                                 strLastTitleDisplayed = title;
+                         }
+                         /********** Hemang **********/
+                         Utils.hideSpinner();
+
+                     }
+                 });
+            	
+                /*cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Utils.hideSpinner();
                     }
-                });
+                });*/ // 13.4 SIT defect fixed 105428
             }
 
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);

@@ -23,54 +23,54 @@
 			<div class="wraper">
 				<!--<h1>Personalize Cash PIN:</h1>
 				<h2>Step 1 of 2</h2>-->
-				<p>Customize a secure Cash PIN that you can use to make cash advances at participating ATMs worldwide.</p>
-				<div id="errormsg" class="errormsg" style="display:block">
+				<p class="customPinText">Customize a secure PIN that you can use to make cash advances at participating ATMs worldwide.</p>
+				<div id="errormsg" class="errormsg">
 						Sorry. Your new PIN and re-entered PIN must match.<br/>Please re-enter it again.  
 				</div>
 				<div class="pinCashEnter">
 					<div class="col" style="margin-right:5px">
 						<label class="boldtext">Enter New PIN:</label>
-						<div>
-							<input type="password" name="enterPin" id="enterPin" value=""
-								maxlength="4" class="inputtext" />
-						</div>
-					</div>	
+                        <span class="wrapperSpanOther payDate">
+               				 <input type="password"  name="enterPin" id="enterPin" class="textInput numberInput inputtext" value=""	maxlength="4"/>
+							 <img src="card/images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+               			 </span> 
+                	</div>	
 					<div class="col">
 						<label class="boldtext">RE-enter New PIN:</label>
-						<div>
-							<input type="password" name="confirmPin" id="confirmPin" value=""
-								maxlength="4" class="inputtext" />
-						</div>
-					</div>
+                        <span class="wrapperSpanOther payDate">
+                			<input type="password"  name="confirmPin" id="confirmPin" class="textInput numberInput inputtext" value="" maxlength="4"/>
+							<img src="card/images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                		</span> 
+               		</div>
 				</div>
 				<!--<h3>Tips for a Secure PIN</h3>-->
 				
-				<div>
-				<ul  data-theme="d" class="rd-faq-question-list">
-					<li class="rdfaq-que-link-whole">
-						<div class="ui-grid-a">
-						<div class="ui-block-b">
-							<a href="javascript:void(0)" class="rdfaq-que-link">Tips for a Secure PIN</a>
-							<div class="rdfaq-hidden-element">
-								<ul class="bullate01">
-					<li>It is more secure to enter a combination of varying
-						numbers.Try to avoid repeated numbers of common
-						sequences.Examples:2222,1234</li>
-					<li>Avoid easily identifiable dates and numbers.Example:Date
-						of birth, address</li>
-					<li>Do not write your PIN on your card.</li>
-					<li>Memorize your PIN and do not disclose it to anyone.</li>
-					<li>You may update your PIN as often as you like.</li>
-				</ul>
+				<div class="securePinTipsWrapper">
+					<ul  data-theme="d" class="rd-faq-question-list">
+						<li class="rdfaq-que-link-whole">
+							<div class="ui-grid-a">
+								<div class="ui-block-a">
+									<span class="rdfaq-plus"></span>
+								</div>
+								<div class="ui-block-b">
+									<a href="javascript:void(0)" class="rdfaq-que-link securePinTipsLink">Tips for a Secure PIN</a>
+									<div class="rdfaq-hidden-element">
+										<ul class="bullate01">
+										<li>It is more secure to enter a combination of varying
+											numbers.Try to avoid repeated numbers of common
+											sequences.Examples:2222,1234</li>
+										<li>Avoid easily identifiable dates and numbers.Example:Date
+											of birth, address</li>
+										<li>Do not write your PIN on your card.</li>
+										<li>Memorize your PIN and do not disclose it to anyone.</li>
+										<li>You may update your PIN as often as you like.</li>
+									</ul>
+									</div>
+								</div>
 							</div>
-                        </div>
-						<div class="ui-block-a">
-							<span class="rdfaq-plus"></span>
-						</div>
-						</div>
-					</li>
-				</ul>
-			</div>		
+						</li>
+					</ul>
+				</div>		
 			<div class="txtcenteraln r3matchbtn">
 						<!--<a href="#" id="cancelBtn" class="bluelink normaltext">Cancel</a>-->
 						<input  type="button" href="#" id="updateBtn" value="Update"/><br/>
@@ -82,16 +82,17 @@
 				
 			</div>
 
-			<div id="footnotes" class="footnotes" ></div>
+			
 		</div>
-
+		<div id="footnotes" class="footnotes" ></div>
 		<!-- content end -->
 		<div data-role="footer" id="pg-footer" data-position="fixed"  data-id="myfooter">
 			<footer id="footer" class="mnu_footer">
 			</footer>
 		</div>
 	</div>
+
+
 	<!--page end -->
 		
-</body>
-</html>
+</body></html>

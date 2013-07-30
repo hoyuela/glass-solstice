@@ -7,7 +7,7 @@
 </head>
 <body>
 	<!--page start  -->
-	<div data-role="page" id="ssendMoney3-pg" class="sm-page">
+	<div data-role="page" id="ssendMoney3-pg" class="sm-page contentSetting">
 		<!--header start  -->
 		<div data-role="header" id="pg-header" data-id="myHeaderDiscover"
 			data-position="fixed">
@@ -16,26 +16,28 @@
 		<!-- header end -->
         <div class="progress-indicator pos-center">
 			<ul>
-			    <li><a href="#" class="visited ui-link">1. Review/Edit</a></li>
-                <li><a href="#" class="visited ui-link">2. Verify</a></li>
-                <li><a href="#" class="active ui-link">3. Confirmation</a></li>
+			    <li><a href="#" class="visited ui-link">Review/Edit</a></li>
+                <li><a href="#" class="visited ui-link">Verify</a></li>
+                <li><a href="#" class="active ui-link">Confirmation</a></li>
 			</ul>
 			<div class="clearboth"></div>
 		</div>
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<div class="floatleft" id="name">
-					<!-- h1>Send Money:</h1 -->
-				</div>
-				<div class="floatright pay-pal-logo"></div>
-				<div class="clearboth"></div>
+              <div class="innerWrapper">
+				 <div class="subHeader">
+                  <div class="text">MONEY MESSENGER</div>
+                  <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                  <div class="smallText">POWERED BY</div>
+               </div>
+              </div>  
 				<div id="card-info">
 					<!-- PayPal image required here -->
 				</div>
 				<!--<h2>Step 3 of 3</h2>-->
-				<div>
-					<h1>Confirmation</h1>
+				<div class="innerWrapper">
+					<h1 class="boldtext bigger">Confirmation</h1>
 					<p>
 						A notification will be sent by Paypal to <span id="recve_name">&nbsp;</span>
 						at <span id='mail_id_3'> &nbsp;</span> with instructions on how to
@@ -58,20 +60,19 @@
 						</div>
 						<span class="boldtext" id="trans_amount"></span>
 					</li>
-					<li id='recipient_name'>Recepient's Name<span class="boldtext"
+					<li id='recipient_name'>Recepient's Name<span class="boldtext bigger"
 						id="trans_name"></span>
 					</li>
-					<li>Recepient's E-mail <span class="boldtext" id="trans_email"></span>
+					<li>Recepient's E-mail <span class="boldtext bigger" id="trans_email"></span>
 					</li>
-					<li>Transaction Date<span class="boldtext" id="transdate"></span>
+					<li>Transaction Date<span class="boldtext bigger" id="transdate"></span>
 					</li>
 					
 
-					<li>Transaction Type<span class="boldtext" id="trans_type"></span>
+					<li>Transaction Type<span class="boldtext bigger" id="trans_type"></span>
 					</li>
-					<li id="trans_note"><div>
-							<b>Note</b><label class="marginleft10px" id="confirm_note_3"></label>
-						</div></li>
+					<li id="trans_note">Note<span id="confirm_note_3" class="boldtext bigger"></span>
+						</li>
 				</ul>
 				<div class="txtcenteraln r3matchbtn margintop20px" id="sendmoremoney">
 					<a href="#" onclick="dfs.crd.p2p.goToSendMoney1();" data-role="button"

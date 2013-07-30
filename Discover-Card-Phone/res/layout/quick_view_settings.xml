@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/qvsetup_scroll_view"
-    android:background="@drawable/light_gray_bkgrd"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:clickable="true"
-    android:fillViewport="true"
-    android:orientation="vertical" >
+    android:background="@drawable/light_gray_bkgrd"
+    android:fillViewport="true" >
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/qvsetup_scroll_view"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.2"
-        android:fillViewport="true" >
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:fillViewport="true"
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:layout_width="fill_parent"
@@ -28,12 +27,12 @@
                 android:paddingRight="12dp"
                 android:visibility="gone" >
 
-                <ImageView
+                <com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch
                     android:id="@+id/quick_toggle"
+                    style="@style/common_switch_light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/swipe_off" />
+                    android:layout_alignParentRight="true" />
 
                 <TextView
                     android:id="@+id/quick_view_info"
@@ -86,8 +85,8 @@
 
                 <Button
                     android:id="@+id/yes"
-                    style="@style/call_to_action_theme"
-                    android:layout_width="wrap_content"
+                    style="@style/common_call_to_action_theme_orange"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/quick_view_info_detail"
                     android:layout_centerHorizontal="true"
@@ -108,18 +107,17 @@
                     android:textSize="17sp" />
             </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="0.8"
-        android:gravity="bottom"
-        android:overScrollMode="never" >
+        <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:gravity="bottom"
+            android:overScrollMode="never" >
 
-        <include layout="@layout/card_fragment_footer" />
-    </RelativeLayout>
+            <include layout="@layout/card_fragment_footer" />
+        </RelativeLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

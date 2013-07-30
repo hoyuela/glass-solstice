@@ -15,8 +15,10 @@
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:paddingLeft="@dimen/forms_inner_padding"
-            android:paddingRight="@dimen/forms_inner_padding" >
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" 
+            android:paddingBottom="18dp"
+            >
 
             <TextView
                 android:id="@+id/forgot_id_title_label"

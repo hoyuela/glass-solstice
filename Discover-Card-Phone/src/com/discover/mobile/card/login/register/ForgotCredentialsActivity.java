@@ -244,12 +244,12 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
     public void onClick(final View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
+        	
             Utils.createProvideFeedbackDialog(ForgotCredentialsActivity.this,
                     REFERER);
-            /*
-             * Intent newsampel = new Intent(ForgotCredentialsActivity.this ,
-             * CreateLoginActivity.class ); startActivity(newsampel);
-             */
+            
+           /*  Intent newsampel = new Intent(ForgotCredentialsActivity.this ,
+             CreateLoginActivity.class ); startActivity(newsampel);*/
 
             // Defect id 95853
         } else if (v.getId() == R.id.privacy_terms) {

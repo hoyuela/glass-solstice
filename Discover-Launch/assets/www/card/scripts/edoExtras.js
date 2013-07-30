@@ -362,8 +362,8 @@ edoMaps.initialize2 = function() {
 		showSysException(err);
 	}
 };
-
-$("#edo-faqs,#customerServiceFaqs-pg,#qvFaqs-pg, #sendMoneyFAQ-pg, #rd-faqs,#updateEmail-pg,#personalizeCashPin1-pg").live('pageshow',function(event) {
+/*13.3 Global Change*/
+$("#edo-faqs,#customerServiceFaqs-pg,#qvFaqs-pg, #sendMoneyFAQ-pg, #rd-faqs,#updateEmail-pg,#personalizeCashPin1-pg,#strongAuthFirstQues-pg").live('pageshow',function(event) {
 	try{
 //		Hide all the Answers of all Questions
 		$(".rdfaq-hidden-element").hide();

@@ -223,11 +223,14 @@ dfs.crd.p2p.populateSendMoney1 = function(responseData) {
 			$("#daylimit").html(dailyLimit1[0]);
 			$("#monthLimit").html(monthlyLimit1[0]);
 			$("#bonusTypes").html(responseData.bonusType);
-			var selectHtml = "<select name='select-choice-0' onchange='dfs.crd.p2p.changeTransTypeText(),dfs.crd.p2p.handleTransactionType(this.value);' id='TransactionType'>"
+			var selectHtml = "<select data-native-menu='false' name='select-choice-0' onchange='dfs.crd.p2p.changeTransTypeText(),dfs.crd.p2p.handleTransactionType(this.value);' id='TransactionType'>"
 					+ "<option id ='friendsFamily' value='Friends or Family'>Friends or Family</option>"
 					+ "<option id='goodsServices' value='Goods or Services'>Goods or Services</option></select>";
 
 			$("#sendMoney1_TransTypeSelectField").html(selectHtml);
+			$("#TransactionType").msDropdown();
+			$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+			$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();
 			dfs.crd.p2p.isSM1DataAvailable();
 			dfs.crd.p2p.sendMoney1Flag = true;
 		}
@@ -1085,8 +1088,8 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 							+ transactionDate
 							+ "</span></div><div class='floatleft'>Status<span class='boldtext'>"
 							+ status + "</span></div></li>";
-					if (status == "PENDING") {
-						divForStatus = "<div class='floatright boldtext' id='divRefreshCancel"
+					if (status == "PENDING") {/*13.3 global change*/
+						divForStatus = "<div class='floatright boldtext' style='color:#293033;' id='divRefreshCancel"
 								+ loopCount
 								+ "'><a href='#' class='bluelink boldtext' id ='arefresh"
 								+ loopCount
@@ -1094,9 +1097,10 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 								+ loopCount
 								+ "' onclick='dfs.crd.p2p.goToNav(this)'>Cancel</a></div>"
 						status = entityList[loopCount].displayStatus;
+						/*13.3 global change*/
 						statushtml = "<li class='trans_history noborder'><div class='floatleft'>Status</div><div>"
 								+ divForStatus
-								+ "<div class='floatright boldtext' style='margin-right:5px;' id='divStatus"
+								+ "<div class='floatright boldtext' style='margin-right:5px; color:#293033;' id='divStatus"
 								+ loopCount
 								+ "'>"
 								+ status
@@ -1112,7 +1116,8 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 								+ status
 								+ " </div></div></li>";
 					}
-					var UL = "<ul class='whitebg-list-view collapsible' id='historyId' ><li> Transaction Date<span class='amt_bold' id='spanTransDate"
+					/*13.3 global change 26/7/2013 -> collapsible class removed from ul*/
+					var UL = "<ul class='whitebg-list-view' id='historyId' ><li> Transaction Date<span class='amt_bold' id='spanTransDate"
 							+ loopCount
 							+ "'>"
 							+ transactionDate
@@ -1133,11 +1138,11 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 					listTransactionHistory += UL;
 				}
 				$("#historyFilter").html(listTransactionHistory);
-				if (!dfs.crd.p2p.filterFlag) {
-					var dropdown = "<div class='ui-select'><div data-corners='true' data-shadow='true' data-iconshadow='true' data-wrapperels='span' data-icon='arrow-d' data-iconpos='right' data-theme='d' data-inline='false' data-mini='false' class='ui-btn ui-shadow ui-btn-corner-all ui-fullsize ui-btn-block ui-btn-icon-right ui-btn-up-d'><span class='ui-btn-inner ui-btn-corner-all'><span class='ui-btn-text'  id='transactionDataAvail'>All Transactions ("
-							+ allCount
-							+ ")</span><span class='ui-icon ui-icon-arrow-d ui-icon-shadow'>&nbsp;</span></span>"
-							+ "<select name='select-choice-0' id='select-choice-1' onchange='dfs.crd.p2p.getFilteredTransactionHistory(this.value);'>"
+				if (!dfs.crd.p2p.filterFlag) { /* 13.3 Global Change */
+
+
+
+					var dropdown = "<select name='select-choice-0' data-native-menu='false' id='select-choice-1' onchange='dfs.crd.p2p.getFilteredTransactionHistory(this.value);'>"
 							+ "<option id='allTrans' value='All Transactions ("
 							+ allCount
 							+ ")'>All Transactions ("
@@ -1167,10 +1172,15 @@ dfs.crd.p2p.populateHistoryData = function(statusSelected, responseData) {
 							+ refundCount
 							+ ")'>Refunded ("
 							+ refundCount
-							+ ")</option>" + "</select></div></div>";
+							+ ")</option>" + "</select>";
 					$("#showTransactionsStatus").html(dropdown);
-					dfs.crd.p2p.setHistoryDropDownSelection(pendingCount,
-							allCount);
+					dfs.crd.p2p.setHistoryDropDownSelection(pendingCount, allCount);/*13.3 Global Change */
+					/* 13.3 Global Change starts */
+					$("#select-choice-1").msDropdown();
+					$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
+					$('div.dd.ddcommon.borderRadius').parent().find('input.text.shadow.borderRadius').remove();			
+					/* 13.3 Global Change ends */
+
 				}
 				dfs.crd.p2p.filterFlag = false;
 				dfs.crd.p2p.toggleLoadMoreButton(
@@ -1352,7 +1362,8 @@ dfs.crd.p2p.displayMoreTransactions = function(statusSelected, indexValue,
 								+ status
 								+ " </div></div></li>";
 					}
-					var UL = "<ul class='whitebg-list-view collapsible' id='historyId' ><li> Transaction Date<span class='amt_bold' id='spanTransDate"
+					/*13.3 global change 26/7/2013 -> collapsible class removed from ul*/
+					var UL = "<ul class='whitebg-list-view' id='historyId' ><li> Transaction Date<span class='amt_bold' id='spanTransDate"
 							+ loopElements
 							+ "'>"
 							+ transactionDate
