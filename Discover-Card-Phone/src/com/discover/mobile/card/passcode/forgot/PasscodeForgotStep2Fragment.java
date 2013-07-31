@@ -17,11 +17,8 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.utils.PasscodeUtils;
 
 public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
-	
-	static final String TRACKING_PAGE_NAME = "PasscodeForgotStep2";
 	private static String TAG = "PasscodeForgotStep2Fragment";
 	private static String mStep1Answer;
 
@@ -51,7 +48,6 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		boolean isMatch = this.getPasscodeString().equals(mStep1Answer);
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isMatch && isValid) {
-//			String deviceToken = PasscodeUtils.genClientBindingToken();
 			new CreateResetRequest(this.getActivity(), getPasscodeString(), getPasscodeToken()).loadDataFromNetwork(new ResetPasscodeRequestListener());
 		} else {
 			passcodeResponse(false);
@@ -60,7 +56,6 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-//		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_forgot_title, 
@@ -75,11 +70,7 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 	}
 	
 	private final class ResetPasscodeRequestListener implements CardEventListener {
-//		private String deviceToken;
-//		
-//		public ResetPasscodeRequestListener(String deviceToken) {
-//			this.deviceToken = deviceToken;
-//		}
+
 		@Override
 		public void OnError(Object data) {
 			passcodeResponse(false);
@@ -89,7 +80,6 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 		public void onSuccess(Object data) {
 			passcodeResponse(true);
 			storeFirstName();
-//			createPasscodeToken(this.deviceToken);
 			getActivity().getSupportFragmentManager().popBackStack(PasscodeForgotStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 	};
