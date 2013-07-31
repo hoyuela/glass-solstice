@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -91,6 +92,9 @@ public class AccountActivityHeader extends RelativeLayout{
 
 	/**Title of the header*/
 	private final TextView title;
+	
+	/**The linear layout that houses the title and arrow*/
+	private final ViewGroup titleLayout;
 
 	/**Group holding the buttons*/
 	final TableButtonGroup group;
@@ -137,6 +141,7 @@ public class AccountActivityHeader extends RelativeLayout{
 		currentBalance = (TextView) view.findViewById(R.id.value2);
 		interestRateOrTotalDueValue = (TextView) view.findViewById(R.id.interest_or_totaldue_value);
 		interestRateOrTotalDueLabel = (TextView) view.findViewById(R.id.interest_or_totaldue_label);
+		titleLayout = (ViewGroup) view.findViewById(R.id.title_layout);
 		title = (TextView) view.findViewById(R.id.title_text);
 		group = (TableButtonGroup) view.findViewById(R.id.buttons);
 		labels = (RelativeLayout) view.findViewById(R.id.header_labels);
@@ -157,7 +162,8 @@ public class AccountActivityHeader extends RelativeLayout{
 		titles.setLabel2(getResources().getString(R.string.recent_activity_description));
 		titles.setLabel3(getResources().getString(R.string.recent_activity_amount));
 
-		title.setOnClickListener(getTitleOnClickListener());
+		titleLayout.setOnClickListener(getTitleOrArrowOnClickListener());
+		
 		account = BankUser.instance().getCurrentAccount();
 
 		refreshAccountInfo();
@@ -358,7 +364,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	 * Get image on click listener
 	 * @return image on click listener
 	 */
-	public final OnClickListener getTitleOnClickListener(){
+	public final OnClickListener getTitleOrArrowOnClickListener(){
 		return new OnClickListener(){
 			@Override
 			public void onClick(final View v){
@@ -436,6 +442,7 @@ public class AccountActivityHeader extends RelativeLayout{
 
 		if(isHeaderExpanded){
 			final View arrow = findViewById(R.id.arrow);
+			
 			if (animate) {
 				arrow.startAnimation(Animator.createRotationAnimation(false, EXPAND_ANIMATION_DURATION + 100));
 				labels.startAnimation(new ExpandCollapseAnimation(labels, false, EXPAND_ANIMATION_DURATION));
