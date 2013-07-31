@@ -59,6 +59,7 @@ public class LoadMoreTableHeader extends LinearLayout {
 	private void inflateLayout() {
 		final Resources res = getContext().getResources();
 		final int formsInnerPadding = (int) res.getDimension(R.dimen.forms_inner_padding);
+		final int tableInnerPadding = (int) res.getDimension(R.dimen.table_inner_padding);
 		final int groupsOfElementsPadding = (int) res.getDimension(R.dimen.groups_of_elements_padding);
 		statusView = new StatusMessageView(getContext());
 		titles = new TableTitles(getContext(), null);
@@ -75,6 +76,7 @@ public class LoadMoreTableHeader extends LinearLayout {
 				new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 
 						LinearLayout.LayoutParams.WRAP_CONTENT);
 
+		buttonParams.setMargins(0, 0, 0, tableInnerPadding);
 		statusParams.setMargins(formsInnerPadding, 0, formsInnerPadding, 0);
 		titlesParams.setMargins(0, groupsOfElementsPadding, 0, 0);
 
@@ -101,6 +103,14 @@ public class LoadMoreTableHeader extends LinearLayout {
 			statusView.setText(message);
 			statusView.setTextBold(false);
 		}
+	}
+	
+	/**
+	 * Set the message in the table titles
+	 * @param - message to set in the titles
+	 */
+	public void setMessage(final String message){
+		titles.setMessage(message);
 	}
 	
 	/**
