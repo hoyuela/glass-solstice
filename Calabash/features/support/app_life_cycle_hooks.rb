@@ -3,7 +3,7 @@ require 'calabash-android/operations'
 
 Before do |scenario|
 	# Only start a new test server when NO_STOP == 0, otherwise the app does not close
-    if(ENV["NO_STOP"] == 0)
+    if(ENV["NO_STOP"] != 1)
 		start_test_server_in_background
     end
 end
@@ -20,7 +20,7 @@ After do |scenario|
 	end
 	
 	# Only shutdown the test server when NO_STOP == 0
-	if(ENV["NO_STOP"] == 0)
+	if(ENV["NO_STOP"] != 1)
   		shutdown_test_server
   	end
 end

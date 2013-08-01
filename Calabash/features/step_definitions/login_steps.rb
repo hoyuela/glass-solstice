@@ -7,21 +7,36 @@ end
 
 # Logs in to the user with the given environment, type, and username paramaters and verifies the salutation
 # (e.g. I log in as ASYS Card user 6011000017009840)
-Given /^I log in as "([^\"]*)" "([^\"]*)" user "([^\"]*)"$/ do |env, type, username|	
+Given /^I log in as (?:a|an) "([^\"]*)" "([^\"]*)" "([^\"]*)" user$/ do |type, env, cardBank|	
+	macro 'The splash screen is finished'
+
+	performAction('scroll_down')
+
+	if cardBank == 'card'
+		macro %Q[I am on the card tab]
+	elsif cardBank == 'bank'
+		macro  %Q[I am on the bank tab]
+	end
+
+	performAction('scroll_up')
+
 	# Now we set the following instance variables so we can reference the user's information later in any step
 	@userEnv = env
 	@userType = type
-	@userName = username
+	@userCardBank = cardBank
 
-	performAction('enter_text_into_id_field', username, "username_field")
-	performAction('enter_text_into_id_field', CONFIG[@userEnv.to_sym][@userType.to_sym][@userName.to_sym][:password], "password_field")
+	@userName = CONFIG[env.to_sym][cardBank.to_sym][type.to_sym][:username]
+	@password = CONFIG[env.to_sym][cardBank.to_sym][type.to_sym][:password]
+
+	performAction('enter_text_into_id_field', "#{@userName}", "username_field")
+	performAction('enter_text_into_id_field', "#{@password}", "password_field")
 
 	# Press Login then wait for the loading dialog to close so we can check for strong auth
 	performAction('click_on_view_by_id', "login_button")
 	performAction('wait_for_dialog_to_close')
 
 	# Check if strong auth is needed
-	if (query("textView marked:'Enhanced Account Security'")).size > 0 || CONFIG[@userEnv.to_sym][@userType.to_sym][@userName.to_sym][:strongauth] == true
+	if (query("textView marked:'Enhanced Account Security'")).size > 0 || CONFIG[env.to_sym][cardBank.to_sym][type.to_sym][:strongauth] == true
 		macro %Q[I answer the strong auth prompt]
 		performAction('wait_for_dialog_to_close')
 	end
@@ -29,11 +44,6 @@ Given /^I log in as "([^\"]*)" "([^\"]*)" user "([^\"]*)"$/ do |env, type, usern
 	# Check if "What's new screen" is showing, if it is tap the close image button
 	if !(query("imageButton marked:'close'").empty?) 
 		touch("imageButton marked:'close'")
-	end
-
-	# For Card Check if the "What's new" is showing
-	if !(query("button marked:'whats_new_close_button'").empty?) 
-		touch("button marked:'whats_new_close_button'")
 	end
 
 	# Now look for the salutation
@@ -63,7 +73,7 @@ Given /^I answer the strong auth prompt$/ do
 	performAction('wait_for_screen', "EnhancedAccountSecurityActivity", DEFAULT_SERVICE_TIMEOUT)
 
 	# Enter the security answer for the current user
-	performAction('enter_text_into_numbered_field', CONFIG[@userEnv.to_sym][@userType.to_sym][@userName.to_sym][:security_answer], 1)
+	performAction('enter_text_into_numbered_field', CONFIG[@userEnv.to_sym][@userCardBank.to_sym][@userType.to_sym][:security_answer], 1)
 	
 	# Select public device radio
 	performAction('click_on_view_by_id', "account_security_choice_two_radio") # "No. This is a public device."

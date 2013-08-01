@@ -1,79 +1,139 @@
 :asys:
     :bank:
-        :asystest502:
-            :username: "asystest502"
+        :normal_savings:
+            :username: "asystest503"
             :password: "pass123$"
             :security_answer: "test"
-            :name: "Jennifer"
+            :name: "Sateesh"
             :strongauth: true
-        :asystest505:
-            :username: "asystest505"
+        :normal_ira:
+            :username: "asystest510"
             :password: "pass123$"
             :security_answer: "test"
-            :name: "Angela"
+            :name: "Lamar"
             :strongauth: true
-        :asystest507:
-            :username: "asystest507"
-            :password: "pass123$"
-            :security_answer: "test"
-            :name: "Angela"
-            :strongauth: true
-        :asystest508:
+        :normal_checking:
             :username: "asystest508"
             :password: "pass123$"
             :security_answer: "test"
             :name: "Jodi"
             :strongauth: true
-        :asystest520:
-            :username: "asystest520"
-            :password: "pass123$"
-            :security_answer: "test"
-            :name: "Alfreda"
-            :strongauth: true
-    :card:
-        :6011000017009840:
-            :username: "6011000017009840"
-            :password: "solstice123"
-            :security_answer: "test"
-            :name: "Ln457301238"
-            :strongauth: false
-    :sso:
-        :asysssocred3:
-            :username: "asysssocred3"
+        :zero_balance_savings:
+            :username: "TODO"
             :password: "pass123$"
             :security_answer: "test"
             :name: "TODO"
             :strongauth: true
-        :asysssocred4:
+        :zero_balance_ira:
+            :username: "TODO"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+        :zero_balance_checking:
+            :username: "TODO"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+    :card:
+        :cbb:
+            :username: "6011000805765421"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "Ln553890976"
+            :strongauth: false
+        :miles:
+            :username: "uidsm2830"
+            :password: "solstice123"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: true
+        :send_money:
+            :username: "6011000015856580"
+            :password: "solstice123"
+            :security_answer: "test"
+            :name: "Ln374691273"
+            :strongauth: false
+        :extras:
+            :username: "6011000978752131"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "Ln448644812"
+            :strongauth: false
+    :sso:
+        :normal:
             :username: "asysssocred4"
             :password: "pass123$"
             :security_answer: "test"
-            :name: "A"
+            :name: "Ln227052855"
             :strongauth: true
-        :asyssso100:
-            :username: "asyssso100"
+:mst0:
+    :bank:
+        :normal_savings:
+            :username: "mstotrn204"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Edna"
+            :strongauth: true
+        :normal_ira:
+            :username: "mstotrn203"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Melody"
+            :strongauth: true
+        :normal_checking:
+            :username: "mstotrn112"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "Vickie"
+            :strongauth: true
+        :zero_balanace_savings:
+            :username: "TODO"
             :password: "pass123$"
             :security_answer: "test"
             :name: "TODO"
             :strongauth: true
-:msto:
-    :bank:
-        :mstomulti001:
-            :username: "mstomulti001"
+        :zero_balance_ira:
+            :username: "TODO"
             :password: "pass123$"
             :security_answer: "test"
-            :name: "Orin"
+            :name: "TODO"
+            :strongauth: true
+        :zero_balance_checking:
+            :username: "TODO"
+            :password: "pass123$"
+            :security_answer: "test"
+            :name: "TODO"
             :strongauth: true
     :card:
-        :000000830111:
-            :username: "000000830111"
+        :cbb:
+            :username: "000000795017"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "Keh-Cherng"
+            :strongauth: true
+        :miles:
+            :username: "208901214612"
             :password: "ccccc"
             :security_answer: "test"
             :name: "TODO"
             :strongauth: true
+        :send_money:
+            :username: "000017430103"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+        :extras:
+            :username: "000017430103"
+            :password: "ccccc"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
     :sso:
-        :mstonew7:
-            :username: "mstonew7"
+        :normal:
+            :username: "mst0sso105"
             :password: "pass123$"
             :security_answer: "test"
             :name: "TODO"
