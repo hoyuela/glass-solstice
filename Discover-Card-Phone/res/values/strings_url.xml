@@ -1,8 +1,8 @@
 <resources>
 
-    <string name="base_url_dev">https://mst0.mapi.discovercard.com</string>
-    <string name="base_url_dev1">https://mst0.mapi.discovercard.com</string>
-    <string name="url_in_use">https://mst0.mapi.discovercard.com</string>
+    <string name="base_url_dev">https://asys.mapi.discovercard.com</string>
+    <string name="base_url_dev1">https://asys.mapi.discovercard.com</string>
+    <string name="url_in_use">https://asys.mapi.discovercard.com</string>
 
     
     <string name="discover_url">/cardsvcs/acs/</string>
@@ -44,7 +44,15 @@
     <string name="strongAuth_quest_url">strongauth/v1/challenge</string>
     <string name="strongAuth_ans_url">strongauth/v1/authenticate</string>
     
-     <!--  13.4 changes End -->
+     <!-- Card Art -->
+   
+    <string name="card_ldpi_url">android_DiscoverCardArt_43x27/</string>
+    <string name="card_mdpi_url">android_DiscoverCardArt_58x37/</string>
+    <string name="card_hdpi_url">android_DiscoverCardArt_86x55/</string>
+    <string name="card_xhdpi_url">android_DiscoverCardArt_146x93/</string>
+   	<string name="cardart_base_url">/discover/images/account/customerservice/</string>
+   
+   <!--  13.4 changes End -->
     
     
 </resources>

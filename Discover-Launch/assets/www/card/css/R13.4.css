@@ -407,13 +407,6 @@
 	background-image: none !important;
 }
 
-.payments .txtcenteraln  .paymtBtnDisable{
-	border: 0px solid !important;
-	border-radius: 0px !important;
-	background-color: #BDBDBD !important;
-	background-image: none !important;
-}
-
 .payments .ui-btn-inner {
 	padding: 8px 30px !important;
 }
@@ -459,6 +452,18 @@
 	text-shadow: none;
 	display: inline-block;
 	opacity: 1;
+}
+
+.payments .txtcenteraln  .paymtBtnDisable{
+	border: 0px solid !important;
+	border-radius: 0px !important;
+	background-color: #BDBDBD !important;
+	background-image: none !important;
+	
+}
+#paymentStep1-pg .white-form .r3matchbtn div.ui-disabled {
+	background-image:none !important;
+	
 }
 /* buttons styling ends */
 
@@ -633,9 +638,20 @@ line-height: 17px;}*/
 #paymentStep1-pg .ui-content .white-form .detailsList {
 	margin: 0px 0px 8px 0px;
 }
+
+/* 13.3 Global Changes -continue button font size - 30-Jul-2013 - start */
+#paymentStep1-pg #makePaymentOneContinue .ui-btn-text{
+	font-size: 18px !important;
+}
+
+/* 13.3 Global Changes -continue button font size - 30-Jul-2013 - end */
+
 #paymentStep1-pg .white-form .ui-btn-inner .ui-btn-text {
 	font-size: 14px;
 }
+
+
+
 #paymentStep1-pg .ui-content .white-form .wrapperSpan {
 	margin-top: 32px;
 }
@@ -852,9 +868,9 @@ line-height: 17px;}*/
 .payments .emptyText {
 	margin-top: 23px;
 	position: absolute;
-	right: 19px;
+	right: 3px;		/*13.3 global change*/
 	cursor: pointer;
-	display: none;
+	/*display: none;*/		/*issue for 2013-07-26 15.02.46 image*/
 }
 .payments input.textInput, .payments input.numInput {
 	outline: none;
@@ -1137,7 +1153,7 @@ line-height: 17px;}*/
 	float: left;
 }
 #paymentStep1-pg .alertGreyImage {
-//Added for defect 105431
+
 	background: url(../images/alertImgGrey.png) no-repeat top left;
 	background-size: 100%;
 	width: 22px;
@@ -1475,6 +1491,8 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 }
 #paymentStep1-pg .wraper1 .ui-select , #paymentStep1-pg .wraper1 .white-form, #paymentStep1-pg .wraper1 .lateMinPayWarn{margin:0 12px;}
 #paymentStep1-pg .wraper .ui-select , #paymentStep1-pg .wraper .white-form, #paymentStep1-pg .wraper .lateMinPayWarn, #paymentStep1-pg .wraper  .errorText, #paymentStep1-pg .wraper .err2, #paymentStep1-pg .wraper .err1, #paymentStep1-pg .wraper1 .errorText{margin:0 12px;}
+/*13.3 global change 29/07/2013*/
+#paymentStep1-pg #errorDivForMAP1 .errorText{margin-top:12px;}
 #paymentStep1-pg .wraper form .err1 {margin:10px 0;}
 .payments .redHighlight {color:#ed1c24 !important;}
 /*.payments .servererrormsg, .payments .acctnumerrormsg {
@@ -1483,7 +1501,7 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	margin: 10px 0 0 0;
 	color: red;
 }*/
-//#paymentStep1-pg .Othr .ui-radio.ui-disabled .ui-btn-text {color:#000 !important opacity:0 !important}
+#paymentStep1-pg .Othr .ui-radio.ui-disabled .ui-btn-text {color:#000 !important opacity:0 !important}
 
 /***********Cancel Payment, cancel Payment Confirm*****************/
 #cancelPayment-pg .ui-content, #confirmCancelPayment1-pg .ui-content {
@@ -1529,6 +1547,11 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 #paymentStep1-pg .wraper2 #calendar {
     max-width: 100% !important;
 }
+
+.ui-datepicker-multi .ui-datepicker-group {
+	width:100% !important;
+}
+
 .ui-datepicker-multi .ui-datepicker-group table {
     width: 95%;
     margin: 0 auto .4em;
@@ -1566,8 +1589,9 @@ border-radius: 0px !important;
 
 #paymentSaveToPhotos-pg #saveCloseBtn {
 	position: absolute;
-width: 100%;
-bottom: 0px;
+	width: 100%;
+	bottom: 0px;
+	left:0;
 }
 
 
