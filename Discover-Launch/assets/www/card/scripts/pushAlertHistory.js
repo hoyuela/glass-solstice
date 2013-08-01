@@ -131,7 +131,7 @@ try{
            break;
            }
            //13.3 change defect fix 99469
-			var linkVar = '</span></div><div class="ui-block-d" id="no_wrap"><div class="right_arrow deactive_down_arrow"></div><span class="links boldtext" style="width:56%"><a href="#" onclick="dfs.crd.push.alert.pushHistoryMessageRedirect(\'' + pageID + '\',\'' + strDynamicId + '\')">' + viewLinkLabel.toUpperCase() + '</a></span></div></div></li>';
+			var linkVar = '</span></div><div class="ui-block-d" id="no_wrap"><div class="payArr"></div><span class="links boldtext" style="width:56%"><a href="#" onclick="dfs.crd.push.alert.pushHistoryMessageRedirect(\'' + pageID + '\',\'' + strDynamicId + '\')">' + viewLinkLabel.toUpperCase() + '</a></span></div></div></li>';	/*13.3 Global change 29/07/2013*/
            
            var removeRewardsLink = false;
            var isMilOrCBBCard = true;

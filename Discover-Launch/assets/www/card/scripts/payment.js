@@ -637,9 +637,9 @@ function paymentStep1Load()
 					return false;
 				}
 					});
-			$("#calendar").datepicker(
-					{
-						dayNamesMin:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+			$(".mapcalendar#calendar").datepicker(/*13.3 global change 29/07/13 */
+			        {
+					    dayNamesMin:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
 //						hideIfNoPrevNext : true,
 //						showOtherMonths : true,
 						selectOtherMonths : false,
@@ -1243,8 +1243,8 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				}
 				minPayStepOnePayDueDate
 				.text(formatPaymentDueDate_MakePaymentStep1(formatDate));
-				$("#calendar").datepicker( "option", { minDueDate: new Date(dfs.crd.pymt.validDays[0]) } );
-				$("#calendar").datepicker( "option", { dueDate: paymentDueDate } );
+				$(".mapcalendar#calendar").datepicker( "option", { minDueDate: new Date(dfs.crd.pymt.validDays[0]) } );/*13.3 global change 29/07/13 */
+				$(".mapcalendar#calendar").datepicker( "option", { dueDate: paymentDueDate } );/*13.3 global change 29/07/13 */
 			}
 			if (parseFloat(stepOne.lastStatementBalance) > 0
 					&& (parseFloat(stepOne.lastStatementBalance) < parseFloat(stepOne.currentBalance))) {
@@ -1308,7 +1308,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 		if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
 			selectedBankKey=paymentStep1SeletecFields.BANKVAL;			
 		}
-		var calendar = $("#calendar");
+		var calendar = $(".mapcalendar#calendar");/*13.3 global change 29/07/13 */
 		var paymentBankInfo = stepOne.bankInfo;
 		var pendingDataFromEditPage = getDataFromCache("PENDINGPAYSLTDATA");
 		if(dfs.crd.pymt.pendingPaymentEdit && !isEmpty(pendingDataFromEditPage)){
@@ -1424,7 +1424,7 @@ dfs.crd.pymt.bankSelected = function()
 {
 	try {
 		var dateButton = $("#button-selectdate");
-		var calendar = $("#calendar");
+		var calendar = $(".mapcalendar#calendar");/*13.3 global change 29/07/13 */
 		var bankDropDownStepOne = $("#bankDropDownStepOne");
 		var errorPostingDate = $("#errorPostingDate");
 		var commonErrorMap1 = $("#commonErrorInMakePaymentStepOneDiv");
