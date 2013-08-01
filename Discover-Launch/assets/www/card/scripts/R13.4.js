@@ -1,5 +1,11 @@
 /******R13.3 js starts here******/
 $("div[data-role='page']").live("pageshow",function(){
+
+/* fix for white background on focus of input starts (13.3 global changes 29/07/13) */
+	$("input[type='text'],input[type='number'],input[type='tel'],input[type='password']").bind('focus', function() {
+	   $(this).css('-webkit-user-modify', 'read-write-plaintext-only !important');
+	});	
+	/* fix for white background on focus of input ends (13.3 global changes 29/07/13) */
 	/*script for new textbox*/
 	$(".textInput,.numInput").focus(function(){
 		if($(this).attr('id') == 'datepicker-val'){return;}
@@ -130,12 +136,20 @@ try{
 						"src" : "../../images/helpImgCollapsedRouting.png",
 						"height" : "55px"
 				});
+   if(activePage == "manageBankAccUpdateDetails-pg")
+			$("#"+activePage+" #routing").val("");
 	});
 	$("#"+activePage+" #accountNumber").focus(function(){
 		$(".helpImg").find("img").attr({
 						"src" : "../../images/helpImgCollapsedAccount.png",
 						"height" : "55px"
 				});
+		if(activePage == "manageBankAccUpdateDetails-pg")
+			$("#"+activePage+" #accountNumber").val("");
+	});
+$("#"+activePage+" #confirmAccountNumber").focus(function(){
+		if(activePage == "manageBankAccUpdateDetails-pg")
+			$("#"+activePage+" #confirmAccountNumber").val("");
 	});
 	$("#"+activePage+" #routing, #"+activePage+" #accountNumber").blur(function(){
 		$(".helpImg").find("img").attr({
