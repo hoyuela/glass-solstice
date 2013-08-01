@@ -5,7 +5,6 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -48,56 +47,27 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
+		Log.v(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
 	}
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-		//TODO figure out why this isn't working
 		super.onConfigurationChanged(newConfig);
 		Log.v(TAG, "onConfigurationChanged");
-		Bundle state = new Bundle();
-		state.putString(HEADER_TV, headerTV.getText().toString());
-		state.putInt(GUIDLINES_VISIBILTY, passcodeGuidelinesTV.getVisibility());
-		Log.v(TAG, "Saving headerTV: " + headerTV.toString());
-		Log.v(TAG, "Saving guidelines visibility: " + passcodeGuidelinesTV.getVisibility());
-		if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-			Log.d(TAG, "Entering portrait");
-			getActivity().setContentView(R.layout.passcode_base_activity);
-		} else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){ 
-			Log.d(TAG, "Entering landscape");
-			getActivity().setContentView(R.layout.passcode_base_activity);
-		}
-		Log.v(TAG, "Restoring headerTV: " + state.getString(HEADER_TV));
-		Log.v(TAG, "Restoring guidelines visibility: " + state.getInt(GUIDLINES_VISIBILTY));
-		headerTV.setText(state.getString(HEADER_TV));
-		passcodeGuidelinesTV.setVisibility(state.getInt(GUIDLINES_VISIBILTY));
-		passcodeGuidelinesTV.setVisibility(View.INVISIBLE);
-	}
-	
-	private static final String HEADER_TV = "a";
-	private static final String GUIDLINES_VISIBILTY = "b";
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		Log.v(TAG, "onSaveInstanceState");
-		super.onSaveInstanceState(outState);
-		Log.v(TAG, "Saving headerTV: " + headerTV.toString());
-		Log.v(TAG, "Saving guidelines visibility: " + passcodeGuidelinesTV.getVisibility());
-		outState.putString(HEADER_TV, headerTV.toString());
-		outState.putInt(GUIDLINES_VISIBILTY, passcodeGuidelinesTV.getVisibility());
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		Log.v(TAG, "onActivityCreated");
-		super.onActivityCreated(savedInstanceState);
-		if (savedInstanceState != null) {
-			Log.v(TAG, "Restoring headerTV: " + savedInstanceState.getString(HEADER_TV));
-			Log.v(TAG, "Restoring guidelines visibility: " + savedInstanceState.getInt(GUIDLINES_VISIBILTY));
-			headerTV.setText(savedInstanceState.getString(HEADER_TV));
-			passcodeGuidelinesTV.setVisibility(savedInstanceState.getInt(GUIDLINES_VISIBILTY));
-		}
+		
+		int passcodeGuidelinesVisibility = passcodeGuidelinesTV.getVisibility();
+
+		LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View newView = inflater.inflate(R.layout.passcode_base_activity, null);
+		setupUI(newView);
+		setHeaderText(headerResource);
+		passcodeGuidelinesTV.setVisibility(passcodeGuidelinesVisibility);
+
+		ViewGroup rootView = (ViewGroup) getView();
+		rootView.removeAllViews();
+		rootView.addView(newView);
 	}
 	
 	public void onStop() {
@@ -200,6 +170,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	private static String TAG = "PasscodeBaseFragment";
 	protected ImageView validationIV;
 	protected TextView headerTV;
+	protected int headerResource;
 	protected TextView passcodeGuidelinesTV;
 	// device tokens
 	public static final String PREFS_HAS_SEEN_OVERVIEW = "hasUserSeenOverview";
@@ -545,8 +516,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	protected void setHeaderText(int stringId) {
-		headerTV
-				.setText(Html.fromHtml(getResources().getString(stringId)));
+		headerTV.setText(Html.fromHtml(getResources().getString(stringId)));
+		headerResource = stringId;
 	}
 
 	protected void storeFirstName() {

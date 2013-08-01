@@ -315,7 +315,10 @@ dfs.crd.p2p.changeAmountTo2Decimal = function() {
 			amountMsgDOM.html(errorCodeMap["1718"]);
 			amountDOM.focus();
 			//amountDOM.css("border", "2px solid #ff0000");
-			amountDOM.addClass("errormsg");
+            /* 13.3 Global change - 29-Jul-2013 - start */
+			//		amountDOM.addClass("errormsg");
+			amountDOM.parent().addClass("inputOnError");
+			/* 13.3 Global change - 29-Jul-2013 - end */
 			$("#errorTitle").css("display", "block");
 		}
 	} catch (err) {
@@ -538,8 +541,11 @@ dfs.crd.p2p.showSendMoney2Data = function(cacheSendMoneyDetails) {
 			$("#amount").html("$" + (cacheSendMoneyDetails[2]));
 			$("#transaction_Type").html(cacheSendMoneyDetails[3]);
 			$("#confirm_note").html(cacheSendMoneyDetails[4]);
-			if ($("#confirm_note").is(":empty"))
-				$("#note").remove();
+			if ($("#confirm_note").is(":empty")){
+				/*13.3 global change 29/07/2031*/
+				/*$("#note").remove();*/
+				$("#notesLi").remove();
+				}
 			$("#related_content1").html(cacheSendMoneyDetails[5]);
 			$("#bonusType").html(cacheSendMoneyDetails[6]);
 		} else {
@@ -688,7 +694,10 @@ dfs.crd.p2p.validatePhoneNumber = function(phone) {
 			$("#emailorphone_msg").html(errorCodeMap["Invalid_phone"]);
 			$("#emailOrphone").focus();
 			//$("#emailOrphone").css("border", "2px solid #ff0000");
-			$("#emailOrphone").addClass("errormsg");
+			/* 13.3 Global change - 29-Jul-2013 - start */
+//			$("#emailOrphone").addClass("errormsg");
+			$("#emailOrphone").parent().addClass("inputOnError");
+			/* 13.3 Global change - 29-Jul-2013 - end */
 			return false;
 		} else {
 			return true;
@@ -835,7 +844,10 @@ dfs.crd.p2p.highlightAmountField = function() {
 	try {
 		$("#Amount").focus();
 		//$("#Amount").css("border", "2px solid #ff0000");
-		$("#Amount").addClass("errormsg");
+		/* 13.3 Global change - 29-Jul-2013 - start */
+	//		$("#Amount").addClass("errormsg");
+		$("#Amount").parent().addClass("inputOnError");
+		/* 13.3 Global change - 29-Jul-2013 - end */
 		$("#errorTitle").css("display", "block");
 		$("#amount_msg").css("display", "block");
 	} catch (err) {
@@ -908,9 +920,14 @@ dfs.crd.p2p.validateData = function() {
 		/*$("#fullname").css("border", "none");
 		$("#Amount").css("border", "none");
 		$("#emailOrphone").css("border", "none");*/
-		$("#fullname").removeClass("errormsg");
+		/* 13.3 Global change - 29-Jul-2013 - start */
+		/*$("#fullname").removeClass("errormsg");
         $("#Amount").removeClass("errormsg");
-        $("#emailOrphone").removeClass("errormsg");
+        $("#emailOrphone").removeClass("errormsg");*/
+		$("#fullname").parent().removeClass("inputOnError");
+        $("#Amount").parent().removeClass("inputOnError");
+        $("#emailOrphone").parent().removeClass("inputOnError");
+		/* 13.3 Global change - 29-Jul-2013 - end */
 		var name = $("#fullname").val();
 		var valid1 = dfs.crd.p2p.validateRecipientEmailOrPhone();
 		var valid2 = dfs.crd.p2p.validateAmount();
@@ -920,7 +937,10 @@ dfs.crd.p2p.validateData = function() {
 			$("#fullname").focus();
 			$("#errorTitle").css("display", "block");
 			//$("#fullname").css("border", "2px solid #ff0000");
-			$("#fullname").addClass("errormsg");
+			/* 13.3 Global change - 29-Jul-2013 - start */
+			//$("#fullname").addClass("errormsg");			
+			$("#fullname").parent().addClass("inputOnError");
+			/* 13.3 Global change - 29-Jul-2013 - end */
 		}
 		if (valid1 && valid2 && valid3) {
 			dfs.crd.p2p.getSendMoney1Data();
@@ -1983,7 +2003,10 @@ dfs.crd.p2p.focusEmailOrPhoneBlock = function() {
 	try {
 		$("#emailOrphone").focus();
 		//$("#emailOrphone").css("border", "2px solid #ff0000");
-		$("#emailOrphone").addClass("errormsg");
+       /* 13.3 Global change - 29-Jul-2013 - start */
+		//$("#emailOrphone").addClass("errormsg");
+		$("#emailOrphone").parent().addClass("inputOnError");
+		/* 13.3 Global change - 29-Jul-2013 - end */
 	} catch (err) {
 		showSysException(err);
 	}

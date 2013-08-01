@@ -473,8 +473,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			welcomeTV.setVisibility(View.GONE);
 			startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
 			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
-			errorTextView.setText("Invalid Passcode entered. Please try again.");
+			BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
+			welcomeTV.setVisibility(View.GONE);
+			startDefaultErrorFadeOut();
+			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			guiValidationError();
 		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
@@ -498,17 +501,22 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			guiValidationError();
 			if ("401".equals(errorCode)) {
-				//do nothing specific
-				errorTextView.setVisibility(View.VISIBLE);
-				errorTextView.setText("Invalid Passcode entered. Please try again.");
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				welcomeTV.setVisibility(View.GONE);
+				showErrorMessage(errorMessage);
+//				//do nothing specific
+//				errorTextView.setVisibility(View.VISIBLE);
+//				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
+//				errorTextView.setTextColor(getResources().getColor(R.color.black));
+//				welcomeTV.setVisibility(View.GONE);
+//				startDefaultErrorFadeOut();
+//				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			} else if ("4011103".equals(errorCode)) {
 				//show icon
 				showRedExclamation();
-				BankErrorHandler.getInstance().showErrorsOnScreen(this, "To protect your security, you have one attempt remaining.");
+				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				welcomeTV.setVisibility(View.GONE);
+				startDefaultErrorFadeOut();
+				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			} else {
 				clearAllFields();
 				//sgoff0 DEFECT 105439
@@ -819,7 +827,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			setCheckMark(savedInstanceState.getBoolean(SAVE_ID_KEY), true);
 
 			restoreErrorTextView(savedInstanceState);
-			resetInputFieldColors();
+
+			if (!pUtils.isForgotPasscode()) {
+				resetInputFieldColors();
+			}
 
 			restoreToggle = savedInstanceState.getInt(TOGGLE_KEY, NO_TOGGLE_TO_RESTORE);
 		}
@@ -995,6 +1006,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSCODE);
 				// set exclamation
 				showGrayExclamation();
+				
+				//make sure uid and pass fields aren't highlighted red
+				setInputFieldsDrawablesToDefault();
 
 				// Show user id login
 				errorTextView.setTextColor(getResources().getColor(

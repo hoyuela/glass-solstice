@@ -910,7 +910,7 @@ width: 20%;
 text-align:right;
 float: right;
 margin-right: -3px;
-margin-top:3px;
+margin-top:7px;		/*13.3 Global change 29/07/2013*/
 }
 .pn-page #id-main-content .blue_header{
     color:#2673A2;
