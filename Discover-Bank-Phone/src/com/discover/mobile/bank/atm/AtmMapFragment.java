@@ -1290,7 +1290,6 @@ CustomProgressDialog, OnPreProcessListener {
 
 	@Override
 	public boolean onTouch(final View sender, final MotionEvent event) {
-		Log.d("Allie", "EVENT ? " + event.getAction());
 		if (!overlay.isShowing()) {
 			/** Check if User clicked on Terms link in footer */
 			if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
