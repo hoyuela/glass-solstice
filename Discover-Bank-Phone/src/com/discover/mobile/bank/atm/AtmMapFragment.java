@@ -209,6 +209,9 @@ CustomProgressDialog, OnPreProcessListener {
 	 * Holds reference to layout that displays Google Logo and Terms of Use Link
 	 */
 	private RelativeLayout googleTerms;
+	
+	/** true when user is touching the screen. */
+	private boolean isTouching = false;
 
 	/*
 	 * This boolean determines whether the custom map dialog should be shown
@@ -1287,6 +1290,7 @@ CustomProgressDialog, OnPreProcessListener {
 
 	@Override
 	public boolean onTouch(final View sender, final MotionEvent event) {
+		Log.d("Allie", "EVENT ? " + event.getAction());
 		if (!overlay.isShowing()) {
 			/** Check if User clicked on Terms link in footer */
 			if (sender != null && sender == googleTerms && event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -1298,7 +1302,12 @@ CustomProgressDialog, OnPreProcessListener {
 				if (event.getRawX() > locationOfLink) {
 					showTerms();
 				}
-			}	
+			} else if(mapWrapper.getMap() != null) {
+				// Disable camera change listener for markers when touch starts, re-enable when touch ends.
+				//	=> Used to prevent clustering + any other marker events from occurring until action is complete.
+				isTouching = event.getAction() == MotionEvent.ACTION_DOWN;
+				mapWrapper.enableCameraListener(!isTouching);
+			}
 		} else {
 			overlay.dismissCoach();
 		}
@@ -1404,10 +1413,12 @@ CustomProgressDialog, OnPreProcessListener {
 	 *should show the custom "searching for atms..." dialog 
 	 *or the default progress dialog.
 	 */
+	@Override
 	public boolean useCustomDialog(){
 		return showCustomDialog;
 	}
 	
+	@Override
 	public void setShowCustomDialog(boolean show){
 		showCustomDialog = show;
 	}
@@ -1416,6 +1427,7 @@ CustomProgressDialog, OnPreProcessListener {
 	 * This allows for the map to be hidden before the 
 	 * user navigates aways from the atm locator.
 	 */
+	@Override
 	public void preProcess(final Runnable r){
 		//set the global layout listener
 		final ViewTreeObserver vto = getView().getViewTreeObserver();

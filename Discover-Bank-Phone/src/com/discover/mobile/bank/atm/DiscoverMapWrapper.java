@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.atm;
 
@@ -21,6 +21,7 @@ import com.discover.mobile.common.DiscoverActivityManager;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -59,6 +60,8 @@ public class DiscoverMapWrapper {
 	private Clusterkraf clusterkraf;
 	
 	private final int zoomLevel;
+	
+	private OnCameraChangeListener onCameraChangeListener;
 
 	/**
 	 * 
@@ -109,8 +112,7 @@ public class DiscoverMapWrapper {
 	 * @param drawable - drawable to pin on the map
 	 */
 	public void setUsersCurrentLocation(final Location location, final int drawable, final Context context){
-		if(null != map){
-			if(null == location){return;}
+		if(map != null && location != null){
 			this.location = location;
 			if(null != currentMarker){
 				currentMarker.remove();
@@ -185,7 +187,7 @@ public class DiscoverMapWrapper {
 		final WindowManager windowManager = 
 				(WindowManager) DiscoverActivityManager.getActiveActivity().getSystemService(Context.WINDOW_SERVICE);
 		windowManager.getDefaultDisplay().getMetrics(disMetrics);
-		return Math.round(disMetrics.density * 100);
+		return Math.round(disMetrics.density * 30);
 	}
 	/**
 	 * Get the distance of an object from the user
@@ -231,6 +233,18 @@ public class DiscoverMapWrapper {
 	 */
 	public final GoogleMap getMap() {
 		return map;
+	}
+	
+	/** Enables or disables the camera listener on the map. */
+	public final void enableCameraListener(boolean enable) {
+		if (enable) {
+			// Reinstate camera listener
+			map.setOnCameraChangeListener(onCameraChangeListener);
+		} else {
+			// Store and disable the camera listener
+			onCameraChangeListener = clusterkraf.getCameraListener();
+			map.setOnCameraChangeListener(null);
+		}
 	}
 
 	public final float getCurrentMapZoom() {
