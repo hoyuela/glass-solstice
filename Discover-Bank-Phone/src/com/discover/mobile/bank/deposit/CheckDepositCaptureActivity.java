@@ -872,6 +872,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				modal.dismiss();
 			}
 		});
+		modal.hideNeedHelpFooter();
 
 		return modal;
 	}
