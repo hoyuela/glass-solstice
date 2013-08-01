@@ -368,11 +368,11 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		item.getTopLabel().setText(account.nickname);
 		
 		if(account.accountNumber != null){
-			item.getMiddleLabel().setText(
-				 getAccountEndingTextForAccount((account.balance != null) ? 
-				   							     account.accountNumber.ending + " - " + account.balance.formatted :
-				   							     account.accountNumber.ending));
+			item.getMiddleLabel().setText(getAccountEndingTextForAccount(account.accountNumber.ending));
 		}
+		
+		item.getBalanceView().setText((account.balance != null) ? account.balance.formatted : StringUtility.EMPTY);
+		item.getBalanceView().setVisibility((account.balance != null) ? View.VISIBLE : View.GONE);
 		
 		if((account.equals(getOtherSelectedAccount()) && getTotalAccountSize() > 2) ||
 			(account.equals(getOtherSelectedAccount()) && getTotalAccountSize() == 1)) { 

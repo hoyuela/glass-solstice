@@ -39,6 +39,17 @@
             android:singleLine="true"
             android:layout_below="@+id/top_label"
             android:text="@string/edit" />
+        <TextView 
+            android:id="@+id/balance_label"
+            style="@style/field_copy"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_toRightOf="@+id/middle_label"
+            android:layout_below="@+id/top_label"
+            android:layout_alignRight="@+id/divider_line"
+            android:gravity="right"
+            android:text="@string/empty" />
 
         <TextView
             android:id="@+id/bottom_label"

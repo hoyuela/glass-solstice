@@ -37,7 +37,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		if (row == null) {
 			// Inflate default dropdown background
 			final LayoutInflater inflater = context.getLayoutInflater();
-			row = inflater.inflate(R.layout.common_dropdown_item, parent, false);
+			row = inflater.inflate(R.layout.common_balance_dropdown_item, parent, false);
 		}
 
 		final Account item = data.get(position);
@@ -45,6 +45,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 		if (item != null) {
 			final TextView accountName = (TextView) row.findViewById(R.id.common_dropdown_item_title);
 			final TextView accountNumber = (TextView) row.findViewById(R.id.common_dropdown_item_subtitle);
+			final TextView balance = (TextView)row.findViewById(R.id.common_dropdown_balance_label);
 			final String accountNumberPrefix = context.getString(R.string.schedule_pay_spinner_body);
 
 			// Display Account name
@@ -55,9 +56,11 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			// Display Account number
 			if (accountNumber != null && item.accountNumber != null && !item.accountNumber.ending.isEmpty()) {
 				String accountNumberEnding = accountNumberPrefix + StringUtility.SPACE + item.accountNumber.ending; 
-				
-				accountNumber.setText((item.balance != null) ? accountNumberEnding  + " - " + item.balance.formatted : 
-															   accountNumberEnding);
+				accountNumber.setText(accountNumberEnding);
+			}
+			
+			if (balance != null && item.balance != null) {
+				balance.setText(item.balance.formatted);
 			}
 		}
 
