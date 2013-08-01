@@ -16,7 +16,8 @@ import com.discover.mobile.card.R;
  * 
  * @author jthornton
  * 
- * hlin0 May 2013 update - change attributes to protected not final for quickview
+ *         hlin0 May 2013 update - change attributes to protected not final for
+ *         quickview
  * 
  */
 public class SimpleListItem extends RelativeLayout {
@@ -25,10 +26,10 @@ public class SimpleListItem extends RelativeLayout {
     protected TextView label;
 
     public TextView getLabel() {
-		return label;
-	}
+        return label;
+    }
 
-	/** Value to be shown under the label */
+    /** Value to be shown under the label */
     protected TextView value;
 
     /** Action item to be shown if there is any action */
@@ -36,6 +37,8 @@ public class SimpleListItem extends RelativeLayout {
 
     /** Glass bar line shown next to the image line */
     protected ImageView line;
+
+    protected ImageView card_art;
 
     /**
      * Constructor for the class
@@ -75,9 +78,9 @@ public class SimpleListItem extends RelativeLayout {
     public void setLabel(final String label) {
         this.label.setText(label);
     }
-    
+
     public void setLabel(final Spanned label) {
-    	this.label.setText(label);
+        this.label.setText(label);
     }
 
     /**

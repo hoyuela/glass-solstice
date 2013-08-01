@@ -106,6 +106,8 @@
 	<string name="fast_check_last_retrieval_time_in_ms">FastcheckLastRetrievalTimeInMS</string>
 	<string name="fast_check_credit_line_available">Credit Line Available</string>
 	<string name="fast_check_cashback_bonus">&lt;i&gt;Cashback Bonus&lt;/i&gt; Balance</string>
+	<string name="fast_check_cardArt_name">card_art_name</string>
+	<string name="fast_check_cardArt_bitmap">card_art_bitmap</string>
 	
 	 <!-- CARD TYPE FOR TOOL TIP MENU -->
     <string name="card_type_more">More Card </string>
