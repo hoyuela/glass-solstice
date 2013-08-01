@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ZCARD_IMAGE_CBB_000001">native-more-card.png</string>
+    <string name="ZCARD_IMAGE_CBB_000013">native-motiva-card.png</string>
+    <string name="ZCARD_IMAGE_CBB_000015">native-motiva-card.png</string>
+    <string name="ZCARD_IMAGE_MI2_000001">native-miles-card.png</string>
+    <string name="ZCARD_IMAGE_MI2_000003">native-miles-card.png</string>
+    <string name="ZCARD_IMAGE_MI2">native-miles-card.png</string>
+    <string name="ZCARD_IMAGE_MIL">native-miles-card.png</string>
+    <string name="ZCARD_IMAGE_SML">native-SML_Miles.png</string>
+    <string name="ZCARD_IMAGE_NOR_000001">native-corporate-card.png</string>
+    <string name="ZCARD_IMAGE_NOR_000002">native-essential-card.png</string>
+    <string name="ZCARD_IMAGE_SBC">native-default-card.png</string>
+    <string name="ZCARD_IMAGE_CBB_000016">native-it-card.png</string>
+    <string name="CARD_IMAGE">card_img</string>
+
+</resources>

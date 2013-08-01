@@ -237,13 +237,21 @@ function frequentlyAskedQuestions()
 	preventBack = false;
 	//13.3 changes-start
 	populateGlobalCache();
-	if(cardProductGroupCode == "DBC"){
+	if(accountEarnsCBB(incentiveTypeCode)) {
+		navigation('../custormerService/customerServiceFaqs_CBB');
+	} else if(accountEarnsMiles(incentiveTypeCode)){	
+		navigation('../custormerService/customerServiceFaqs_Miles');
+	} else{
+		navigation('../custormerService/customerServiceFaqs_Others');
+	  }
+	  
+	/*if(cardProductGroupCode == "DBC"){
 		navigation('../custormerService/faqDBC');
 	}else if(cardProductGroupCode == "CRP"){
 		navigation('../custormerService/faqCorp');
 	}else{
 		navigation('../custormerService/customerServiceFaqs');
-	}
+	}*/
 	//13.3 changes-end
 }
 

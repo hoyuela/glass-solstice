@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -38,19 +37,37 @@ import com.discover.mobile.card.passcode.event.OnPasscodeSuccessEventListener;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.PasscodeUtils;
 
 public abstract class PasscodeBaseFragment extends BaseFragment implements View.OnKeyListener, OnPasscodeErrorEventListener,
 OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
-
-	private View activityRootView;
-
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
+		Log.v(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.v(TAG, "onConfigurationChanged");
+		
+		int passcodeGuidelinesVisibility = passcodeGuidelinesTV.getVisibility();
+
+		LayoutInflater inflater = (LayoutInflater) getActivity().getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View newView = inflater.inflate(R.layout.passcode_base_activity, null);
+		setupUI(newView);
+		setHeaderText(headerResource);
+		passcodeGuidelinesTV.setVisibility(passcodeGuidelinesVisibility);
+
+		ViewGroup rootView = (ViewGroup) getView();
+		rootView.removeAllViews();
+		rootView.addView(newView);
 	}
 	
 	public void onStop() {
@@ -73,6 +90,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
+		Log.v(TAG, "onCreateView");
 		final View view = inflater.inflate(R.layout.passcode_base_activity,
 				null);
 		setupUI(view);
@@ -80,9 +98,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	private void setupUI(View view){
-
-		activityRootView = view.findViewById(R.id.passcode_root_view);
-		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
 
 		validationIV = ((ImageView) view.findViewById(R.id.validation));
 		validationIV.setVisibility(View.INVISIBLE);
@@ -111,7 +126,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	@Override
 	public int getActionBarTitle() {
-       // return R.string.sub_section_title_passcode;
 	    FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
                 ((CardNavigationRootActivity) getActivity()));
         return barMenuTitleUtil.getActionBarTitle();
@@ -119,7 +133,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	@Override
 	public int getGroupMenuLocation() {
-		//return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
 	    Utils.log(TAG, "inside getGroupMenuLocation ");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
                 ((CardNavigationRootActivity) getActivity()));
@@ -129,7 +142,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	@Override
 	public int getSectionMenuLocation() {
-		//return CardMenuItemLocationIndex.PASSCODE_SECTION;
 	    Utils.log(TAG, "inside getSectionMenuLocation");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
                 ((CardNavigationRootActivity) getActivity()));
@@ -138,7 +150,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	public void printFragmentsInBackStack() {
-
 		final FragmentManager fragManager = getActivity().getSupportFragmentManager();
 		final int fragCount = fragManager.getBackStackEntryCount();
 		if (fragCount > 0) {
@@ -159,6 +170,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	private static String TAG = "PasscodeBaseFragment";
 	protected ImageView validationIV;
 	protected TextView headerTV;
+	protected int headerResource;
 	protected TextView passcodeGuidelinesTV;
 	// device tokens
 	public static final String PREFS_HAS_SEEN_OVERVIEW = "hasUserSeenOverview";
@@ -214,16 +226,14 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		// for hardware keys
 		localTextView.setOnKeyListener(this);
 		localTextView.setOnTouchListener(new PasscodeTouchListner(fieldInt));
-		localTextView.setTransformationMethod(PasswordTransformationMethod
-				.getInstance());
+		localTextView.setTransformationMethod(PasswordTransformationMethod.getInstance());
 		// for software keyboards
 		localTextView.addTextChangedListener(new TextWatcher() {
 			// Logic to mask input and go to next item
 			public void afterTextChanged(Editable paramAnonymousEditable) {
 				Log.v(TAG, "Submit action fired");
 
-				// ensure this field passed validation (i.e. not comma or bad
-				// character)
+				// ensure this field passed validation (i.e. not comma or bad haracter)
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
@@ -296,6 +306,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	protected void showPasscodeGuidelines() {
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_OVERLAY);
 		final Context context = DiscoverActivityManager.getActiveActivity();
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_guidelines_title, 
@@ -308,10 +319,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	
 	public boolean onKey(View paramView, int fieldInt, KeyEvent paramKeyEvent) {
 		if (paramKeyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-//			Log.v(TAG, "Action Down");
 			return false;
-		} else {
-//			Log.v(TAG, "Other action: " + paramKeyEvent.getAction());
 		}
 		// delete key
 		if (fieldInt == KEY_DELETE) {
@@ -436,6 +444,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 
 	private void guiValidationError() {
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_RED_X);
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_red));
 		}
@@ -507,8 +516,8 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	protected void setHeaderText(int stringId) {
-		headerTV
-				.setText(Html.fromHtml(getResources().getString(stringId)));
+		headerTV.setText(Html.fromHtml(getResources().getString(stringId)));
+		headerResource = stringId;
 	}
 
 	protected void storeFirstName() {
@@ -532,23 +541,6 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 			char first = Character.toUpperCase(fname.charAt(0));
 			String retVal = first + fname.substring(1).toLowerCase(Locale.ENGLISH);
 			pUtils.storeFirstName(retVal);
-		}
-	}
-
-	private class ShowHideKeyboardListener implements OnGlobalLayoutListener {
-		@Override
-		public void onGlobalLayout() {
-//			Rect r = new Rect();
-//			activityRootView.getWindowVisibleDisplayFrame(r);
-//
-//			final ViewGroup footer = (ViewGroup)getActivity().findViewById(R.id.footer);
-//			int heightDiff = activityRootView.getRootView().getHeight() - r.height();
-//			if (heightDiff > 100) {
-//				//most likely keyboard is visible
-//				footer.setVisibility(View.GONE);
-//			} else {
-//				footer.setVisibility(View.VISIBLE);
-//			}
 		}
 	}
 }

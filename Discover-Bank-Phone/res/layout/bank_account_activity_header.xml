@@ -19,8 +19,8 @@
         android:orientation="horizontal">
 	     <View
 	      	android:id="@+id/arrow"
-	     	android:layout_width="12dp"
-	     	android:layout_height="12dp"    
+	     	android:layout_width="14dp"
+	     	android:layout_height="14dp"    
 	        android:layout_marginRight="@dimen/between_related_elements_padding"
 	        android:layout_gravity="center_vertical"
 	     	android:background="@drawable/drk_blue_arrow_down" />

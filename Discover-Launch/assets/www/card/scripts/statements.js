@@ -206,7 +206,7 @@ dfs.crd.stmt.search = (function () {
 			if( isEmpty ( dateToSelect ) ) {
 				dateToSelect = new Date();
 			}
-			$("#calendar").datepicker( "setDate" , dateToSelect );
+			$(".searchtranscalendar#calendar").datepicker( "setDate" , dateToSelect );/*13.3 global change 29/07/13 */
 			// Initialize DOM element at this point since we know it will be used later when user closes the Calendar
 			footnotes = $(".footnotes");
 			footnotes.hide();
@@ -236,8 +236,7 @@ dfs.crd.stmt.search = (function () {
 		if( notEmpty(stmtsContent.searchMonths) ){
 			nbrMos = stmtsContent.searchMonths;
 		}
-		
-		$("#calendar").datepicker({
+		$(".searchtranscalendar#calendar").datepicker({/*13.3 global change 29/07/13 */
 			hideIfNoPrevNext : true,
 			showOtherMonths : true,
 			selectOtherMonths : false,

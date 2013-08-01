@@ -34,10 +34,8 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 			final ViewGroup container, final Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_update_step1_header);
-		
 		return view;
 	}
-	
 
 	@Override
 	public void onPasscodeSubmitEvent() {
@@ -60,7 +58,6 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 	public void onPasscodeSuccessEvent() {
 		Log.v(TAG, "Success EVENT");
 		if (isAdded()){
-//			getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.navigation_content, new PasscodeUpdateStep2Fragment()).addToBackStack(PasscodeUpdateStep2Fragment.class.getSimpleName()).commit();
 			makeFragmentVisible(new PasscodeUpdateStep2Fragment(), false);
 		}
 	}
@@ -68,13 +65,11 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 	private final class VerifyPasscodeMatchRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			// TODO Auto-generated method stub
 			passcodeResponse(false);
 		}
 
 		@Override
 		public void onSuccess(Object data) {
-			//TODO make this result accurate from the service call
 			passcodeResponse(true);
 		}
 	};

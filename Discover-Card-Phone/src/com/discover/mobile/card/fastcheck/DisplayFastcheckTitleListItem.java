@@ -1,6 +1,7 @@
 package com.discover.mobile.card.fastcheck;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
@@ -13,38 +14,45 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.account.summary.SimpleListItem;
 
 public class DisplayFastcheckTitleListItem extends SimpleListItem {
-	private Button backButton;
-	private ImageButton refreshButton;
-	
-	public ImageView getRefreshButton() {
-		return refreshButton;
-	}
+    private Button backButton;
+    private ImageButton refreshButton;
 
-	public void setRefreshButton(ImageButton refreshButton) {
-		this.refreshButton = refreshButton;
-	}
+    public ImageView getRefreshButton() {
+        return refreshButton;
+    }
 
-	public Button getBackButton() {
-		return backButton;
-	}
+    public void setRefreshButton(ImageButton refreshButton) {
+        this.refreshButton = refreshButton;
+    }
 
-	public void setBackButton(Button backButton) {
-		this.backButton = backButton;
-	}
+    public Button getBackButton() {
+        return backButton;
+    }
 
-	public DisplayFastcheckTitleListItem(final Context context, final AttributeSet attrs) {
-		super(context, attrs);
-		final RelativeLayout layout = 
-				(RelativeLayout)LayoutInflater.from(context).inflate(R.layout.fastcheck_display_title_list_item, null);
-		
-		backButton = (Button)layout.findViewById(R.id.fastcheck_display_back_button);
-		refreshButton = (ImageButton)layout.findViewById(R.id.refresh_button);	
-		label = (TextView)layout.findViewById(R.id.balance_label);
-		value = (TextView)layout.findViewById(R.id.balance_value);
-		action = (TextView)layout.findViewById(R.id.action_text);
-		line = (ImageView)layout.findViewById(R.id.divider_line);
+    public void setBackButton(Button backButton) {
+        this.backButton = backButton;
+    }
 
-		addView(layout);
-	}
-	
+    public void setCardArtImage(Bitmap bitmap) {
+        card_art.setImageBitmap(bitmap);
+    }
+
+    public DisplayFastcheckTitleListItem(final Context context,
+            final AttributeSet attrs) {
+        super(context, attrs);
+        final RelativeLayout layout = (RelativeLayout) LayoutInflater.from(
+                context).inflate(R.layout.fastcheck_display_title_list_item,
+                null);
+
+        backButton = (Button) layout
+                .findViewById(R.id.fastcheck_display_back_button);
+        refreshButton = (ImageButton) layout.findViewById(R.id.refresh_button);
+        label = (TextView) layout.findViewById(R.id.balance_label);
+        value = (TextView) layout.findViewById(R.id.balance_value);
+        action = (TextView) layout.findViewById(R.id.action_text);
+        line = (ImageView) layout.findViewById(R.id.divider_line);
+        card_art = (ImageView) layout.findViewById(R.id.card_image);
+        addView(layout);
+    }
+
 }

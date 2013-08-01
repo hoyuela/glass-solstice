@@ -629,8 +629,7 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	private void showEmptyListMessage() {
 		if(header != null) {
-			header.setCustomMessage(getEmptyListMessageForEnum(currentListKey));
-			header.showMessage();
+			header.setMessage(getEmptyListMessageForEnum(currentListKey));
 		}
 	}
 

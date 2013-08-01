@@ -172,7 +172,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             @Override
             public void onStrongAuthSkipped(Object data) 
             {
-            	getAcHome();
+            	//getAcHome();
+                getAcHomewithtoggle();
             }
 
             @Override
@@ -343,7 +344,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             	bottom.getButton().setOnClickListener(new OnClickListener(){
             		@Override
             		public void onClick(final View v){
-            			getAcHome();
+            		    getAcHomewithtoggle();
+            			//getAcHome();
             			modal.dismiss();
             		}
             	});

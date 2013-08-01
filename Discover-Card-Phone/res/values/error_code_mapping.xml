@@ -29,20 +29,20 @@
 	<!-- 4032114 & 4032111 - Passcode Disabled but Login attempts remaining -->
     <string name="E_4032114">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
     <string name="E_4032111">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
     <!-- 4032110 - Passcode and ULR Lockout -->
     <string name="E_4032110">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
@@ -60,6 +60,12 @@
     <string name="E_4031401_LOCKOUT">For security purposes, your online account has been locked.Please call Discover Customer Service at 1-888-251-8003 for information about accessing your account online.</string>
     <string name="E_0">We\'re sorry.Some of our web site features are unavailable at this time. We sincerely apologize for this temporary inconvenience and are working to resolve the issue.</string>
     <string name="E_4031102">Due to special conditions related to your account, we could not complete your request. Please contact Customer Service at 1-800-347-2683.</string>
+    <string name="E_4031102_passcode">
+        <![CDATA[
+        Due to special conditions related to your account, Passcode has been disabled.
+        <br/><br/>Please contact Customer Service at 1-800-347-2683 for assistance.
+		]]>
+	</string>
     <string name="E_4031102_SSO_DELINK">Due to special conditions related to your credit card account, we can\'t provide you with access to your account information at this time."&lt;br&#47;&gt;""&lt;br&#47;&gt;To recover your User ID, you will need to re-register for online account access at DiscoverBank.com.</string>
     <string name="E_4031102_SSO_DELINK_BUTTON">true.</string>
     <!-- Defect ID: 95998 -->
@@ -282,6 +288,7 @@
     <string name="E_T_4032114">Passcode Disabled</string>
     <string name="E_T_4032111">Passcode Disabled</string>
     <string name="E_T_4012107">Passcode Disabled</string>
+    <string name="E_T_4031102_passcode">Passcode Disabled</string>
     
     <string name="E_T_503">Oops!</string>
     <string name="E_T_4031110">We\'re Sorry</string>

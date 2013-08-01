@@ -19,10 +19,7 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
-	static final String TRACKING_PAGE_NAME = "PasscodeForgotStep1";
 	private static String TAG = "PasscodeForgotStep1Fragment";
-
-	
 
 	@Override
 	public boolean onKey(View paramView, int keyCode, KeyEvent event) {
