@@ -3,9 +3,13 @@ package com.discover.mobile.bank.statements;
 import java.io.Serializable;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Statement implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Statement implements Serializable, Comparable<Statement> {
 
 	/**
 	 * Auto-generate UID for serialization and deserialization
@@ -23,4 +27,14 @@ public class Statement implements Serializable {
 	
 	@JsonProperty("attachments")
 	public List<StatementAttachments> attachments;
+
+	
+	
+	@Override
+	public int compareTo(Statement another) {
+		DateTime otherDate = new DateTime(another.statementDate);
+		DateTime thisDate = new DateTime(this.statementDate);
+		return thisDate.compareTo(otherDate);
+	}
+
 }
