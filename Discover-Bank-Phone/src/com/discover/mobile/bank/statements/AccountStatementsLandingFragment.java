@@ -44,9 +44,9 @@ public class AccountStatementsLandingFragment extends BaseFragment {
 	private static final String SPINNER_INDEX = "spinner_index";
 	
 	/**Key for retrieveing account name from bundle*/
-	private static final String ACCOUNT_NAME_KEY = "ACCOUNT_NAME";
+	public static final String ACCOUNT_NAME_KEY = "ACCOUNT_NAME";
 	/**key for retrieving accoutn id from bundle*/
-	private static final String ACCOUNT_ID_KEY = "ACCOUNT_ID";
+	public static final String ACCOUNT_ID_KEY = "ACCOUNT_ID";
 	/**static string for the options list*/
 	private static final String PAST_SIX_MONTHS = "Past 6 Months";
 	

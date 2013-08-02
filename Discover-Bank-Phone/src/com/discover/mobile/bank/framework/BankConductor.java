@@ -1981,8 +1981,8 @@ public final class BankConductor  extends Conductor {
 		} else {
 			fragment = new AccountStatementsLandingFragment();
 			Bundle bundle = new Bundle();
-			bundle.putString("ACCOUNT_ID", account.id);
-			bundle.putString("ACCOUNT_NAME", account.getDottedFormattedAccountNumber());
+			bundle.putString(AccountStatementsLandingFragment.ACCOUNT_ID_KEY, account.id);
+			bundle.putString(AccountStatementsLandingFragment.ACCOUNT_NAME_KEY, account.getDottedFormattedAccountNumber());
 			fragment.setArguments(bundle);
 		}
 		((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
