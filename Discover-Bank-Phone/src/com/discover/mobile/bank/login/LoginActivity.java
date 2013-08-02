@@ -555,7 +555,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/** Starts the fade out animation on the error text view after six seconds. */
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
-		startFadeOutAnimationForView(exclamationIV, HALF_SECOND, View.GONE, SIX_SECONDS);
+		
+		if(exclamationIV.getVisibility() == View.VISIBLE) { 
+			startFadeOutAnimationForView(exclamationIV, HALF_SECOND, View.GONE, SIX_SECONDS);
+		}
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
