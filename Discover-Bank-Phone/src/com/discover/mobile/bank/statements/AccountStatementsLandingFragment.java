@@ -24,6 +24,7 @@ import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.primitives.Ints;
 
 import org.joda.time.DateTime;
@@ -33,14 +34,21 @@ import org.joda.time.Period;
  * account.  At current moment, this class is only used to test navigation it
  * does not actually display any statements.
  */
-public class AccountStatementsLandingFragment extends BaseFragment implements OnItemSelectedListener {
+public class AccountStatementsLandingFragment extends BaseFragment {
 
-	/*List of statements to filter and display to user*/
+	/**List of statements to filter and display to user*/
 	private StatementList statements;
-	/*Main content view. List of statements goes in here*/
+	/**Main content view. List of statements goes in here*/
 	private  LinearLayout contentLayout;
-	/*key for bundle to restore the state of the spinner*/
+	/**key for bundle to restore the state of the spinner*/
 	private static final String SPINNER_INDEX = "spinner_index";
+	
+	/**Key for retrieveing account name from bundle*/
+	private static final String ACCOUNT_NAME_KEY = "ACCOUNT_NAME";
+	/**key for retrieving accoutn id from bundle*/
+	private static final String ACCOUNT_ID_KEY = "ACCOUNT_ID";
+	/**static string for the options list*/
+	private static final String PAST_SIX_MONTHS = "Past 6 Months";
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -48,7 +56,7 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 		View view = inflater.inflate(R.layout.bank_statements_landing, null);
 		//display the account name to the user
 		Bundle args = getArguments();
-		String accountTitle = args.getString("ACCOUNT_NAME", "");
+		String accountTitle = args.getString(ACCOUNT_NAME_KEY, StringUtility.EMPTY);
 		TextView titleView = (TextView) view.findViewById(R.id.page_title);
 		titleView.setText(accountTitle);
 		//create the drop down
@@ -59,9 +67,9 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 													);
 		IcsSpinner dropDown = (IcsSpinner) view.findViewById(R.id.date_range_spinner);
 		dropDown.setAdapter(aa);
-		dropDown.setOnItemSelectedListener(this);
+		dropDown.setOnItemSelectedListener(itemSelectedListener);
 		//set the statement list to correct account list
-		String accountId = getArguments().getString("ACCOUNT_ID");
+		String accountId = getArguments().getString(ACCOUNT_ID_KEY);
 		statements = BankUser.instance().getAccountsToStatementsMap().get(accountId);
 		statements.orderStatements();
 		//build the list of statements
@@ -106,12 +114,13 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 		return 2;
 	}
 	
-	/*
+	/**
 	 * Construct the list of options for the drop down
+	 * @return list of values for the ICS spinner
 	 */
 	private ArrayList<String> getSpinnerList() {
 		final ArrayList<String> options = new ArrayList<String>();
-		options.add("Past 6 Months");
+		options.add(PAST_SIX_MONTHS);
 		DateTime date = new DateTime();
 		options.add(String.valueOf(date.getYear()));
 		for(int i = 1; i < 7; i++) {
@@ -120,8 +129,9 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 		return options;
 	}
 	
-	/*
+	/**
 	 * Add the available statements to list ot display to the user
+	 * @param list of statements that will be shown 
 	 */
 	private void buildStatementList(List<Statement> statementList) {
 		contentLayout.removeAllViews();
@@ -138,30 +148,38 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 		
 	}
 
-
-	/*
-	 * event handler for when user selects a date range
+	/**
+	 * anonymous listener to handler the ics spinner events
 	 */
-	@Override
-	public void onItemSelected(IcsAdapterView<?> parent, View view,
-			int position, long id) {
-		if( null == view ) {
-			return;
+	private OnItemSelectedListener itemSelectedListener = new OnItemSelectedListener() {
+
+		@Override
+		public void onItemSelected(IcsAdapterView<?> parent, View view,
+				int position, long id) {
+			if( null == view ) {
+				return;
+			}
+			String item = ((TextView) view).getText().toString();
+			//try to parse the integer value of the year
+			Integer year = Ints.tryParse(item);
+			if (null == year) {
+				//find the past six months
+				showLastSixMonths();
+			} else {
+				//find the statements from that year
+				showStatementFromYear(year);
+			}
 		}
-		String item = ((TextView) view).getText().toString();
-		//try to parse the integer value of the year
-		Integer year = Ints.tryParse(item);
-		if (null == year) {
-			//find the past six months
-			showLastSixMonths();
-		} else {
-			//find the statements from that year
-			showStatementFromYear(year);
+
+		@Override
+		public void onNothingSelected(IcsAdapterView<?> parent) {
+			//intentionally left blank.
 		}
 		
-	}
+	};
+	
 
-	/*
+	/**
 	 * filters the statement list to show only the past six months of statements
 	 * and adds those statements to the list to display to the user
 	 */
@@ -181,9 +199,10 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 		buildStatementList(lastSixList);
 	}
 	
-	/*
+	/**
 	 * filter the list and show the available statements from the 
 	 * supplied
+	 * @param year statements need to be from
 	 */
 	private void showStatementFromYear(final Integer year) {
 		ArrayList<Statement> yearList = new ArrayList<Statement>();
@@ -197,14 +216,6 @@ public class AccountStatementsLandingFragment extends BaseFragment implements On
 			}
 		}
 		buildStatementList(yearList);
-	}
-
-	/*
-	 * this function is not used but part of the 
-	 * OnItemSelectedListener interface
-	 */
-	@Override
-	public void onNothingSelected(IcsAdapterView<?> parent) {		
 	}
 	
 	
