@@ -25,7 +25,7 @@ public class ShowDialogAndSwitchActivityTask extends AsyncTask<Void, Void, Void>
 	
 	@Override
 	protected void onPreExecute() {
-		progress = ProgressDialog.show(context, "Disover", "Loading...", true);
+		progress = ProgressDialog.show(context, "Discover", "Loading...", true);
 	}
 	
 	@Override
