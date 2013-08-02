@@ -501,16 +501,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			guiValidationError();
 			if ("401".equals(errorCode)) {
-				showErrorMessage(errorMessage);
-//				//do nothing specific
-//				errorTextView.setVisibility(View.VISIBLE);
-//				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
-//				errorTextView.setTextColor(getResources().getColor(R.color.black));
-//				welcomeTV.setVisibility(View.GONE);
-//				startDefaultErrorFadeOut();
-//				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
-			} else if ("4011103".equals(errorCode)) {
-				//show icon
+				showErrorMessage(getResources().getString(R.string.passcodeInvalidAttempt));
+			} else if ("4011103".equals(errorCode) ) {
 				showRedExclamation();
 				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
@@ -563,6 +555,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/** Starts the fade out animation on the error text view after six seconds. */
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
+		startFadeOutAnimationForView(exclamationIV, HALF_SECOND, View.GONE, SIX_SECONDS);
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
