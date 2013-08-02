@@ -26,6 +26,9 @@ public class CardArtHelper {
 
     private Context context;
     private final String PNG_EXTN = ".png";
+    private final String UNDER_SOCRE = "_";
+    private final String DEFAULT_CARD_PREFIX = "CARD_IMAGE_";
+
     private CardArtHelperCallback cardArtHelperCallback;
 
     public interface CardArtHelperCallback {
@@ -45,7 +48,7 @@ public class CardArtHelper {
      * @param name
      * @return
      */
-    public String getImageName(String name) {
+    public String getImageName(final String name) {
         int id = context.getResources().getIdentifier(name, "string",
                 context.getPackageName());
         return id == 0 ? getImageName(name.substring(0, name.lastIndexOf("_")))
@@ -61,7 +64,7 @@ public class CardArtHelper {
      * @param incentiveCode
      */
     public void updateCardImage(final String imageName,
-            String incentiveTypeCode, String incentiveCode) {
+            final String incentiveTypeCode, final String incentiveCode) {
 
         if (imageName != null) {
 
@@ -80,8 +83,7 @@ public class CardArtHelper {
 
                 new AsyncTask<Void, Void, Void>() {
                     protected void onPreExecute() {
-                        Utils.isSpinnerAllowed = true;
-                        Utils.showSpinner(context, "Discover", "Loading");
+                        Utils.isSpinnerAllowed = false;
                     }
 
                     @Override
@@ -95,45 +97,35 @@ public class CardArtHelper {
                     }
 
                     protected void onPostExecute(Void result) {
-                        Utils.hideSpinner();
                         cardArtHelperCallback.onSuccess();
                     };
 
                 }.execute();
-            }
-        } else {
-            String card_art_image_name = "CARD_IMAGE_" + incentiveTypeCode
-                    + "_" + incentiveCode;
-            if (!card_art_image_name.equalsIgnoreCase(getImageNamefromCache())) {
-                setDefaultImage(card_art_image_name);
+            } else {
                 cardArtHelperCallback.onSuccess();
             }
+        } else {
+            StringBuffer imageNameBuffer = new StringBuffer();
+            imageNameBuffer.append(DEFAULT_CARD_PREFIX);
+            if (incentiveTypeCode != null && !incentiveTypeCode.isEmpty()) {
+                imageNameBuffer.append(incentiveTypeCode);
+                imageNameBuffer.append(UNDER_SOCRE);
+            }
+            if (incentiveCode != null && !incentiveCode.isEmpty())
+                imageNameBuffer.append(incentiveCode);
+
+            final String card_art_image_name = imageNameBuffer.toString();
+            if (!card_art_image_name.equalsIgnoreCase(getImageNamefromCache())) {
+                setDefaultImage(card_art_image_name);
+            }
+            cardArtHelperCallback.onSuccess();
         }
-
-        //
-
-        /*
-         * final WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, new
-         * CardImage(), "Discover", "Loading...", new CardEventListener() {
-         * 
-         * @Override public void onSuccess(Object data) { CardImage response =
-         * ((CardImage) data); System.err.println("Got Bit Map : " +
-         * response.getBitmap().getHeight() + " width " +
-         * response.getBitmap().getWidth()); // return response.bitmap;
-         * 
-         * }
-         * 
-         * @Override public void OnError(Object data) {
-         * System.err.println("Got Bit Map : ERRROR "); } });
-         * serviceCall.execute(request);
-         */
-
     }
 
     /**
      * Set default image to cache
      */
-    private void setDefaultImage(String card_art_image_name) {
+    private void setDefaultImage(final String card_art_image_name) {
 
         String drawableName = getImageName(card_art_image_name);
         Bitmap card_art_image = BitmapFactory.decodeResource(
@@ -150,8 +142,8 @@ public class CardArtHelper {
      * @param card_art_image_name
      * @param card_art_image
      */
-    public void addImageTocache(String card_art_image_name,
-            Bitmap card_art_image) {
+    public void addImageTocache(final String card_art_image_name,
+            final Bitmap card_art_image) {
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(context);
         cardShareDataStoreObj.addToAppCache(
@@ -197,7 +189,8 @@ public class CardArtHelper {
      * @return
      * @throws IOException
      */
-    private InputStream OpenHttpConnection(String urlString) throws IOException {
+    private InputStream OpenHttpConnection(final String urlString)
+            throws IOException {
         InputStream in = null;
         URL url = new URL(urlString);
 
@@ -254,16 +247,4 @@ public class CardArtHelper {
 
         }
     }
-
-    /*
-     * public class CardImage implements Serializable {
-     * 
-     * private static final long serialVersionUID = -4057824406270975561L;
-     * private Bitmap bitmap;
-     * 
-     * public Bitmap getBitmap() { return bitmap; }
-     * 
-     * public void setBitmap(Bitmap bitmap) { this.bitmap = bitmap; } }
-     */
-
 }
