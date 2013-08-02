@@ -113,6 +113,8 @@ public class FastcheckFragment extends BaseFragment implements
                     @Override
                     public void onSuccess() {
                         populateList();
+                        Utils.isSpinnerAllowed = true;
+                        Utils.hideSpinner();
                     }
                 });
         gestureDetector = new GestureDetector(

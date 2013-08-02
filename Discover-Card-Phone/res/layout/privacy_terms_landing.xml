@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.bank"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true" >
@@ -9,25 +8,46 @@
         android:id="@+id/terms_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/light_gray_bkgrd" >
+        android:background="@color/card_body_color" >
 
         <LinearLayout
-            android:id="@+id/terms_list"
+            android:id="@+id/privacylayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/rounded_table_corners_no_padding"
-            android:orientation="vertical"
-            android:padding="1dp" >
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/line_start"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/card_line_separator" />
+
+            <include
+                android:id="@+id/privacystatementrow"
+                layout="@layout/privacy_terms_option" />
+
+            <View
+                android:id="@+id/general_list_item_separator_line_start"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/card_line_separator" />
+
+            <include
+                android:id="@+id/termsofuserow"
+                layout="@layout/privacy_terms_option" />
+
+            <View
+                android:id="@+id/line_end"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/card_line_separator" />
         </LinearLayout>
 
-         <RelativeLayout
+        <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/content_text_view"
             android:layout_marginTop="@dimen/forms_inner_padding"
             android:gravity="center_horizontal|bottom" >
 
