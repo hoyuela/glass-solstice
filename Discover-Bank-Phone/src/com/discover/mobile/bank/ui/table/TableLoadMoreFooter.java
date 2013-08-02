@@ -74,6 +74,14 @@ public class TableLoadMoreFooter extends RelativeLayout implements OnClickListen
 		/** Right Justify Privacy & Terms */
 		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) privacy.getLayoutParams();
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
+		
+		//if one of the tables (activity / scheduled) is empty, the margins on privacy all get set to 0 so that it centers correctly,
+		//so when we update the view of the footer, we need to check to see if the right margin needs to be reset to its original value.
+		int rightMarginPadding = getResources().getDimensionPixelSize(R.dimen.forms_inner_padding);
+		if(params.rightMargin < rightMarginPadding) {
+			params.setMargins(0, 0, rightMarginPadding, 0);
+		}
+		
 		privacy.setLayoutParams(params);
 	}
 
