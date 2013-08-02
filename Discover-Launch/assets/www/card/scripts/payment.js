@@ -89,7 +89,7 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 			dfs.crd.pymt.globalOpenAmount = payDataObj.openAmount;
 			var defaultValue = "0.00";
 			var daysDelinquentVal=payDataObj.daysDelinquent;
-			
+			inLineError.html("");
 			/*if(payDataObj.isHaMode){
 				$("#paySummary_HAMode_Div").removeClass("hidden");
 				$("#paySummary_HAMode_Div p").html(errorCodeMap["Pay_func_unavail"]);
@@ -173,7 +173,9 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 		showSysException(err);
 	}
 }
-
+$("#paymentStep1-pg").live("pagehide", function() {
+	$("#paymentsSummary_Inline_Error").text("");
+})
 dfs.crd.pymt.populatePaymentSummaryErrorDivs = function(jqXHR){
 	try {
 		hideSpinner();
@@ -567,13 +569,22 @@ function paymentStep1Load()
 			if(isLhnNavigation){
 //				if(fromPageName == "paymentStep2" && dfs.crd.pymt.pendingPaymentEdit){
 					dfs.crd.pymt.pendingPaymentEdit = false;
-
+					putDataToCache("editPaymentFailFlag", false);
+					putDataToCache("editPaymentFailMsg","");
 //				}
 			}else if(dfs.crd.pymt.pendingPaymentEdit && (jQuery.inArray(fromPageName, validPriorPagesforEdit) == -1)){
 				dfs.crd.pymt.pendingPaymentEdit = false;
 			}
-			
-			
+
+			if(getDataFromCache("editPaymentFailFlag")){
+				console.log("FromPAge NAMe is given as ************ "+fromPageName)
+				var validPriorPagesforFailEdit = new Array("paymentStep2","paymentInformation","lateMinPayWarn1","lateMinPayWarnNoMinPay");
+				 if(jQuery.inArray(fromPageName, validPriorPagesforFailEdit) == -1){
+					console.log("******We are here in the ErroCode returned from PaymenrtStep3"+fromPageName) ;
+					putDataToCache("editPaymentFailFlag", false);
+					putDataToCache("editPaymentFailMsg","");
+				 }
+			}
 //			$(".rdoBtn").parents(".radioWrap").removeClass("radioSelected");
 			//Site-catalyst 13.4 Implementation start
 			if(dfs.crd.pymt.pendingPaymentEdit){
@@ -637,9 +648,9 @@ function paymentStep1Load()
 					return false;
 				}
 					});
-			$("#calendar").datepicker(
-					{
-						dayNamesMin:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+			$(".mapcalendar#calendar").datepicker(/*13.3 global change 29/07/13 */
+			        {
+					    dayNamesMin:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
 //						hideIfNoPrevNext : true,
 //						showOtherMonths : true,
 						selectOtherMonths : false,
@@ -704,7 +715,9 @@ function paymentStep1Load()
 						return;
 					} else if (parseFloat(payAmount) < 0.01 || parseFloat(payAmount) > 99999.99) 
 					{	
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1207"]);
 						errorPaymentAmountExceed.css("display","block");
@@ -715,7 +728,9 @@ function paymentStep1Load()
 					}
 					else if (!isEmpty(payAmount) && !dfs.crd.pymt.checkCurrency(payAmount)) 
 					{
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1210"]);
 						errorPaymentAmountExceed.css("display","block");
@@ -1144,7 +1159,12 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 					}
 				}
 			}
-
+			if(getDataFromCache("editPaymentFailFlag")){
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").addClass("alertGreyImage");
+				$("#amounterror").html(getDataFromCache("editPaymentFailMsg"));
+				$("#amounterror").css("display","block");
+			}
 			if(dfs.crd.pymt.globalOpenAmount <0)
 				dfs.crd.pymt.globalOpenAmount = dfs.crd.pymt.globalOpenAmount.substring(1);
 			
@@ -1155,7 +1175,10 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 						cpEvent.preventDefault();
 						navigation("../payments/pendingPayments");
 					}else{
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+                        $("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
+						$("#ha_MakePaymentStepOne_Error").css("display","block");
 						$("#ha_MakePaymentStepOne_Error").html(errorCodeMap["Pay_func_unavail"]);
 						var postingDate = stepOne.bankInfo[0].openDates[0];
 						var currentDate = new Date(postingDate);
@@ -1206,7 +1229,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 			$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
 			
 			if (stepOne.daysDelinquent > 0){
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMAP1.append(errorCodeMap["Days_Delinquent"]);
 			}	
 
@@ -1228,7 +1253,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				var overLimitAmt = [];
 				var errMsg = errorCodeMap["Over_Limit"];
 				overLimitAmt["overLimitAmount"] = stepOne.overLimitAmount;
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMAP1.html("\n" + parseContent(errMsg, overLimitAmt));
 			}
 			if (!isEmpty(paymentDueDate)) {
@@ -1243,8 +1270,8 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				}
 				minPayStepOnePayDueDate
 				.text(formatPaymentDueDate_MakePaymentStep1(formatDate));
-				$("#calendar").datepicker( "option", { minDueDate: new Date(dfs.crd.pymt.validDays[0]) } );
-				$("#calendar").datepicker( "option", { dueDate: paymentDueDate } );
+				$(".mapcalendar#calendar").datepicker( "option", { minDueDate: new Date(dfs.crd.pymt.validDays[0]) } );/*13.3 global change 29/07/13 */
+				$(".mapcalendar#calendar").datepicker( "option", { dueDate: paymentDueDate } );/*13.3 global change 29/07/13 */
 			}
 			if (parseFloat(stepOne.lastStatementBalance) > 0
 					&& (parseFloat(stepOne.lastStatementBalance) < parseFloat(stepOne.currentBalance))) {
@@ -1273,7 +1300,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 					$("#minpaystepone_other").addClass("errormsg");
 				}
 				else {
-					$("#errorDivForMAP1 .alertImage").css("display","block");
+					$("#alertImageSpan").css("display","block");
+					$("#alertImageSpan").removeClass("alertGreyImage");
+					$("#alertImageSpan").addClass("alertImage");
 					commonErrorMAP1.html(dfs.crd.pymt.messageAftrConfrm);
 				}
 			}
@@ -1308,7 +1337,7 @@ dfs.crd.pymt.getBankList = function(stepOne)
 		if(!jQuery.isEmptyObject(paymentStep1SeletecFields)){
 			selectedBankKey=paymentStep1SeletecFields.BANKVAL;			
 		}
-		var calendar = $("#calendar");
+		var calendar = $(".mapcalendar#calendar");/*13.3 global change 29/07/13 */
 		var paymentBankInfo = stepOne.bankInfo;
 		var pendingDataFromEditPage = getDataFromCache("PENDINGPAYSLTDATA");
 		if(dfs.crd.pymt.pendingPaymentEdit && !isEmpty(pendingDataFromEditPage)){
@@ -1424,7 +1453,7 @@ dfs.crd.pymt.bankSelected = function()
 {
 	try {
 		var dateButton = $("#button-selectdate");
-		var calendar = $("#calendar");
+		var calendar = $(".mapcalendar#calendar");/*13.3 global change 29/07/13 */
 		var bankDropDownStepOne = $("#bankDropDownStepOne");
 		var errorPostingDate = $("#errorPostingDate");
 		var commonErrorMap1 = $("#commonErrorInMakePaymentStepOneDiv");
@@ -1437,10 +1466,13 @@ dfs.crd.pymt.bankSelected = function()
 		$(".dd").removeClass("ddHighlightError");
 		$(".arrow").removeClass("ddHighlightErrorArrow");
 		$("#errorbankinfoDiv").html("");
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
+
 		errorPostingDate.text("");
 		$("#datepicker-val").removeClass("redtext");
 		$("#minpaystepone_paymentduedate").removeClass('errormsg');
@@ -1479,7 +1511,9 @@ dfs.crd.pymt.bankSelected = function()
 				}
 				else if (!isEmpty(paymentBankInfo[option.index() - 1].openDates)) {
 					if (paymentBankInfo[option.index() - 1].openDates.length < 1) {
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 						//errorMsgClass.css("display", "block");
 						$("#errorbankinfoDiv").html(errorCodeMap["NoDates_for_Bank"]);
@@ -1506,10 +1540,12 @@ dfs.crd.pymt.bankSelected = function()
 					if(!isEmpty(existDate)) {
 						if (!(jQuery.inArray(existDate, dfs.crd.pymt.validDays) > -1)){
 							var errorMessage = errorCodeMap["BAD_DATE"];
-							$("#errorDivForMAP1 .alertGreyImage").css("display","block");
+							$("#alertImageSpan").css("display","block");
+							$("#alertImageSpan").removeClass("alertImage");
+							$("#alertImageSpan").addClass("alertGreyImage");
 							commonErrorMap1.html(errorMessage);
-							deactiveBtn("makePaymentOneContinue");
-							$("#makePaymentOneContinue").addClass("paymtBtnDisable");
+//							deactiveBtn("makePaymentOneContinue");
+//							$("#makePaymentOneContinue").addClass("paymtBtnDisable");
 							calendar.datepicker( "setDate" , new Date(dfs.crd.pymt.validDays[0]));
 							$("#datepicker-value").val(dfs.crd.pymt.validDays[0]);
 							$("#datepicker-val").val(dfs.crd.pymt.validDays[0]);
@@ -1647,10 +1683,13 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 		$("#radio1Error").text("");
 		$("#errorPaymentAmountExceed").text("");
 		commonErrorMap1.text("");
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			$("#alertImageSpan").css("display","none");
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
 		if (existingDate != "") {
 			if (!(jQuery.inArray(existingDate, dfs.crd.pymt.validDays) > -1)) {
 				$("#button-selectdate").addClass("ui-btn-up-errormsg");
@@ -1687,7 +1726,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			var pctvalue=parseFloat(PCT_OVER * value);
 			
 			if (isEmpty(payAmount)) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1222"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
@@ -1697,9 +1738,11 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				return;
 			}
 			else if (!dfs.crd.pymt.checkCurrency(payAmount)) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				$("#commonErrorInMakePaymentStepOneDiv").html(
-						errorCodeMap["Update_HighLighted"]);
+				errorCodeMap["Update_HighLighted"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
@@ -1708,7 +1751,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			}
 			else if (parseFloat(payAmount) < 0.01
 					|| parseFloat(payAmount) > 99999.99) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1207"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
@@ -1716,10 +1761,11 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
 				return;
-			}
-			else if ((!bankAccInfo.haveSchedulePayments)
+			}else if ((!bankAccInfo.haveSchedulePayments)
 					&& (parseFloat(payAmount) > (PCT_OVER * parseFloat(value)))) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				var errMsg = errorCodeMap["1208"];
 				var curntValue = [];
@@ -1732,7 +1778,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				return;
 			}else if ((dfs.crd.pymt.globalOpenAmount != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(dfs.crd.pymt.globalOpenAmount))) 
 			{
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				var errorMessage = errorCodeMap["1209"];
 				var payDetail = [];
@@ -1758,7 +1806,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			}
 		}
 		else {
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorCodeMap["Select_Bank"]);
 			return;
 		}
@@ -1770,13 +1820,17 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			invalidBank["bankAccount"] = bank;
 			var errorMessage = errorCodeMap["BAD_BANK"];
 			var errorTxt = parseContent(errorMessage, invalidBank);
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorTxt);
 			$("#bankDropDownStepOne").addClass("ui-btn-up-errormsg");
 		}
 		else if (!validDate && (!bankAccInfo.isHaMode)) {
 			var errorMessage = errorCodeMap["BAD_DATE"];
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 			$(".errormsg").css("display", "block");
 			$("#errorPostingDate").text(errorMessage);
@@ -1834,10 +1888,13 @@ dfs.crd.pymt.changeDropDownLabel = function()
 		$("#minpaystepone_other").parent(".wrapperSpan").removeClass('errormsg');
 		$("#commonErrorInMakePaymentStepOneDiv").html("");
 		
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			$("#alertImageSpan").css("display","none");
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
 		var isBankSelected = false;
 		var isDateSelected = false;
 		var radioflag = false;
@@ -2449,15 +2506,13 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 
 			var errorMessage = errorCodeMap["1261"];
 			var payDetails = [];
-			payDetails["changedPostingDate"] = formatPostingDueDate_MakePaymentStep2(postingDate);
+			payDetails["changedPostingDate"] = postingDate;
 			var parseContentText = parseContent(
 					errorMessage, payDetails);
-
-			if (!isEmpty(parseContentText))
-				errorHandler(code, parseContentText,
-				"paymentStep1");
-			else
-				errorHandler(code, "", "paymentStep1");
+			cpEvent.preventDefault();
+			putDataToCache("editPaymentFailFlag", true);
+			putDataToCache("editPaymentFailMsg",parseContentText);
+			navigation("paymentStep1");
 
 			break;
 		case "1257":
@@ -3286,7 +3341,7 @@ dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
                          saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
             $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
             $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
-            $("#savePaymentPhotosPosting_date").text(formatPostingDueDate_MakePaymentStep2(saveTophotosData.paymentDate));
+            $("#savePaymentPhotosPosting_date").text(saveTophotosData.paymentDate);
             $("#savePaymentPhotosAccountEndingNum").text(newBankDetails.accountNumber);
             $("#savePaymentPhotosBankDetail").text(newBankDetails.bankName);
             

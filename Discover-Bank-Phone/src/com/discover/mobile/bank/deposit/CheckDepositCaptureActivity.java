@@ -761,8 +761,14 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		if(smallCaptureSize != null) {
 			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
 		}
-
-		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+		
+		/**
+		 * Checking to see if flash mode auto is supported before setting this parameters. 
+		 * This was needed because check deposit was crashing on the new Nexus 7.
+		 */
+		if (parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)){
+			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+		}
 		camera.setParameters(parameters);
 	}
 
@@ -866,6 +872,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				modal.dismiss();
 			}
 		});
+		modal.hideNeedHelpFooter();
 
 		return modal;
 	}

@@ -1,11 +1,13 @@
 package com.discover.mobile.card.login.register;
 
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,12 +24,14 @@ import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.FacadeFactory;
 
+import com.discover.mobile.card.auth.strong.StrongAuthUtil;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorCallbackListener;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.net.error.CardErrorUtil;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
@@ -39,6 +43,7 @@ import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.facade.CardLoginFacadeImpl;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
@@ -54,7 +59,6 @@ import com.discover.mobile.card.services.auth.registration.RegistrationConfirmat
  */
 public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         implements CardEventListener, OnClickListener {
-
 
     private static final String REFERER = "forgot-uid-pg";
     private static final String MAIN_ERROR_LABEL_TEXT_KEY = "a";
@@ -87,9 +91,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
     private TextView cancelLabel;
     private TextView helpNumber;
     private TextView provideFeedback;
-    //Defect id 95853
-    private TextView privacy_terms ;
-    //Defect id 95853
+    // Defect id 95853
+    private TextView privacy_terms;
+    // Defect id 95853
 
     // INPUT FIELDS
     private UsernameOrAccountNumberEditText cardNumField;
@@ -110,10 +114,10 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
         TrackingHelper.trackPageView(AnalyticsPage.FORGOT_UID);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
-        //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
         privacy_terms.setOnClickListener(this);
-        //Defect id 95853
+        // Defect id 95853
         provideFeedback.setOnClickListener(this);
 
         setOnClickActions();
@@ -305,7 +309,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         // "Loading...", true);
 
         // Lock orientation while request is being processed
-    	//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         // if(Utils.checkNetworkConnection(this))
         {
 
@@ -488,6 +492,12 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
         // Changed for handling SSO USERs
         final CardErrorBean cardErrBean = (CardErrorBean) data;
+        // 13.4 Defect 105407 Fix Start
+        CardShareDataStore cardShareDataStore = CardShareDataStore
+                .getInstance(ForgotUserIdActivity.this);
+        String cache = (String) cardShareDataStore
+                .getValueOfAppCache("WWW-Authenticate");
+        // 13.4 Defect 105407 Fix End
         if (cardErrBean.getIsSSOUser()) {
             cardErrBean.setFooterStatus("101");
             final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -512,7 +522,47 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
                         }
                     });
+            // 13.4 Defect 105407 Fix Start
+        } else if (cardErrBean.getErrorCode().contains(
+                "" + HttpURLConnection.HTTP_UNAUTHORIZED)
+                && cache != null && cache.contains("createuser")) {
 
+            /*
+             * StrongAuthUtil strongAuthUtil = new
+             * StrongAuthUtil(ForgotUserIdActivity.this);
+             * strongAuthUtil.createUser(ForgotUserIdActivity.this);
+             */
+
+            CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                    ForgotUserIdActivity.this);
+            CardErrorUtil forgotcardErrorUtil = new CardErrorUtil(this);
+            CardErrorBean modifiedData = new CardErrorBean(
+                    forgotcardErrorUtil
+                            .getTitleforErrorCode("4031401_NOTENROLLED"),
+                    forgotcardErrorUtil
+                            .getMessageforErrorCode("4031401_NOTENROLLED"),
+                    "4031401_NOTENROLLED", false, "1");
+
+            cardErrorResHandler.handleCardError((CardErrorBean) modifiedData,
+                    new CardErrorCallbackListener() {
+
+                        @Override
+                        public void onButton2Pressed() {
+                            // TODO Auto-generated method stub
+
+                        }
+
+                        @Override
+                        public void onButton1Pressed() {
+                            // Go to Big Browser
+                            Utils.hideSpinner();
+                            Intent browserIntent = new Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT"));
+                            startActivity(browserIntent);
+                        }
+                    });
+            // 13.4 Defect 105407 Fix End
         } else {
 
             final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -533,16 +583,16 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this,
                     REFERER);
-            //Defect id 95853
-        }else if(v.getId() == R.id.privacy_terms)
-        {
-            //Changes for 13.4 start
-//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-          Intent privacyTerms = new Intent(ForgotUserIdActivity.this , PrivacyTermsLanding.class);
-          startActivity(privacyTerms);
-          //Changes for 13.4 end
+            // Defect id 95853
+        } else if (v.getId() == R.id.privacy_terms) {
+            // Changes for 13.4 start
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(ForgotUserIdActivity.this,
+                    PrivacyTermsLanding.class);
+            startActivity(privacyTerms);
+            // Changes for 13.4 end
         }
-        //Defect id 95853
+        // Defect id 95853
     }
 
 }

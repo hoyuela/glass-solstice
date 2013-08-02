@@ -32,12 +32,11 @@
 					</div-->
 					
 					<div class="errorText" id="errorDivForMAP1">
-						<span class="alertImage" style="display:none"></span>
-						<span class="alertGreyImage" style="display:none"></span>
-						<div>
-							<div class="errorText" id="ha_MakePaymentStepOne_Error"></div>
-							<div class="errorText" id="commonErrorInMakePaymentStepOneDiv"></div>
-							<div class="errormsg2" id="amounterror"></div>
+						<span id="alertImageSpan"  style="display:none; float:left; width:25px; height:25px; margin-top:10px"></span>
+						<div style="float:left !important;width:80%;display:inline-block; padding-right:10px">
+							<div class="errorText" id="amounterror" style="display:none"></div>
+							<div class="errorText" id="ha_MakePaymentStepOne_Error" style="display:none"></div>
+							<div class="errorText" id="commonErrorInMakePaymentStepOneDiv" ></div>
 						</div>
 					</div>	
 					
@@ -161,7 +160,7 @@
 				<!-- calender start -->
 				<div class="wraper2" style="display: none">
 					<h3 class="calenderH3">Select Payment Date</h3>
-					<div id="calendar"></div>
+					<div id="calendar" class="mapcalendar"></div>  <!--13.3 global change 29/07/13  -->
 					<div class="txtcenteraln">
 						<a href="#" class="bluelink normaltext boldtext cancelbtnarea"
 							id="calendar-cancel">Cancel</a>

@@ -141,6 +141,10 @@ public class PasscodeUtils {
 	}
 	
 	public String getWelcomeMessage() {
+		String firstName = getFirstName();
+		if (firstName == null || firstName.trim() == ""){
+			return "";
+		}
 		StringBuffer sb = new StringBuffer("Good ");
 		if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12)
 			sb.append("Morning, ").append(getFirstName());
