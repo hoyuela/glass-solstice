@@ -68,7 +68,7 @@ public final class CardErrorResponseHandler {
     	lastAttemptErrors = new ArrayList<Integer>();
     	lastAttemptErrors.add(ULR_LAST_ATTEMPT);
     	lastAttemptErrors.add(ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT);
-    	lastAttemptErrors.add(ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT);
+//    	lastAttemptErrors.add(ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT);
     }
     
     //invalid external status
@@ -160,37 +160,39 @@ public final class CardErrorResponseHandler {
             	pUtils.deletePasscodeToken();
             	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4031102_passcode, R.string.E_4031102_passcode, R.string.close_text);
             	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	showCustomAlert(modalUIDAndPasscodeLockout);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             } else if (lockoutErrors.contains(errorCodeNumber) && passcodeDisabledErrors.contains(errorCode)) {
             	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4032112, R.string.E_4032112, R.string.close_text);
             	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
             	modalUIDAndPasscodeLockout.setGrayButton();
             	modalUIDAndPasscodeLockout.showErrorIcon();
             	showCustomAlert(modalUIDAndPasscodeLockout);
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             } else if (lockoutErrors.contains(errorCodeNumber)) {
             	EnhancedContentModal modalLockout = new EnhancedContentModal(context, R.string.E_T_4031101, R.string.E_4031101, R.string.close_text);
             	modalLockout.hideNeedHelpFooter();
             	modalLockout.setGrayButton();
             	modalLockout.showErrorIcon();
             	showCustomAlert(modalLockout);
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             } else if (errorCodeNumber == PASSCODE_NOT_BOUND) {
             	EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
             	modal.hideNeedHelpFooter();
             	showCustomAlert(modal);
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             } else if (passcodeDisabledErrors.contains(errorCodeNumber)) {
             	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.ok);
             	modalPasscodeDisabled.hideNeedHelpFooter();
-//            	modalPasscodeDisabled.setGrayButton();
             	showCustomAlert(modalPasscodeDisabled);
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             } else if (lastAttemptErrors.contains(errorCodeNumber) || errorCodeNumber == INCORRECT_USERID_PASSWORD) {
             	if(CardLoginFacadeImpl.class.isInstance(errorHandlerUi))
             	{
             		final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
             		Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
+            		//return all last attempt errors as the same
+            		bundle.putString(IntentExtraKey.ERROR_CODE, "" + ULR_LAST_ATTEMPT);
     				loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             	}
             	else
@@ -202,7 +204,9 @@ public final class CardErrorResponseHandler {
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
                 //lets login page know there was an error shown, this info is used to clear out passcode fields 
-            	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
+    			//Commented
+                //13.4 Defect 105407 Fix Start
+            	//FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             }
         }
     }
