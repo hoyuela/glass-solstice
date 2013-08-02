@@ -17,9 +17,9 @@ public final class BankAccountSectionInfo extends GroupComponentInfo {
 	public BankAccountSectionInfo() {
 		super(R.string.section_title_account,
 				new ClickComponentInfo(R.string.sub_section_title_account_summary, openAccountSummary()), 
+				new ClickComponentInfo(R.string.sub_section_title_statement, openViewStatements()),
 				new ClickComponentInfo(R.string.sub_section_title_open_new_account,true, 
-													externalLink(BankUrlManager.getOpenAccountUrl())),
-				new ClickComponentInfo(R.string.sub_section_title_statement, openViewStatements()));
+													externalLink(BankUrlManager.getOpenAccountUrl())));
 	}
 
 	private static OnClickListener externalLink(final String url){

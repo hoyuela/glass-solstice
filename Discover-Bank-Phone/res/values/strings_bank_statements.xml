@@ -5,4 +5,7 @@
     <string name="no_statements_title">No Current Statements Are Available</string>
     <string name="no_statements_body">A current statement may be unavailable for new accounts which 
         have not completed a billing period.</string>
+    <string name="account_landing_note">Notice: Tapping on the month below will allow you to download your
+        statement.</string>
+    <string name="date_range_label">Date Range:</string>
 </resources>

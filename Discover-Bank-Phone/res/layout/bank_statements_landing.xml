@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <TextView 
+            android:id="@+id/page_title"
+            style="@style/page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/forms_inner_padding"
+            android:layout_marginTop="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:text="@string/page_title"
+            />
+        
+        <TextView 
+                android:id="@+id/top_note_text"
+                android:layout_marginBottom="@dimen/groups_of_elements_padding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/account_landing_note"
+                style="@style/field_copy"
+                android:paddingLeft="@dimen/forms_inner_padding"
+                android:paddingRight="@dimen/forms_inner_padding"/>
+        
+        
+        <!-- date range spinner -->
+        <TextView
+            android:id="@+id/date_range_label"
+			android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:paddingRight="@dimen/forms_inner_padding"
+            android:text="@string/date_range_label"
+            android:textColor="@color/title"
+            android:textSize="20sp"
+            ></TextView>
+        
+        <com.actionbarsherlock.internal.widget.IcsSpinner
+            style="@style/common_spinner_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/date_range_spinner"
+            android:layout_marginBottom="@dimen/forms_inner_padding"/>
+            
+        <!-- content view displays list of the available statements -->
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/statement_list"
+            android:orientation="vertical"></LinearLayout>
+    </LinearLayout>
+    
+
+</ScrollView>
