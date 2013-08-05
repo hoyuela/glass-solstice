@@ -3,6 +3,7 @@ package com.discover.mobile.bank.services.transfer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.Activity;
@@ -41,7 +42,7 @@ public class GetTransfersServiceCall extends
 									final AsyncCallback<ListTransferDetail> callback, 
 									final String url) {
 
-		super(context, getGetCallParams(url), ListTransferDetail.class, TransferDetail.class);
+		super(context, getGetCallParams(url.toLowerCase()), ListTransferDetail.class, TransferDetail.class);
 
 		handler = new SimpleReferenceHandler<ListTransferDetail>(callback);
 	}
