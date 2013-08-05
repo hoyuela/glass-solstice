@@ -13,9 +13,8 @@ import android.widget.TextView;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
-import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.transfer.TransferDetail;
+import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.ListItemGenerator;
 import com.discover.mobile.bank.ui.widgets.FooterType;
 import com.discover.mobile.bank.util.FragmentOnBackPressed;
@@ -37,7 +36,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
 
 		getActionButton().setText(R.string.schedule_another_transfer);
-		getActionLink().setText(R.string.view_account_summary);
+		getActionLink().setText(R.string.review_transfers_button_text);
 
 		/**Set footer to show privacy & terms | feedback*/
 		getFooter().setFooterType(FooterType.PRIVACY_TERMS | FooterType.PROVIDE_FEEDBACK);
@@ -71,7 +70,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 
 	@Override
 	protected List<RelativeLayout> getRelativeLayoutListContent() {
-		final ListItemGenerator generator = new ListItemGenerator(this.getActivity());
+		final ListItemGenerator generator = new ListItemGenerator(getActivity());
 		final List<RelativeLayout> list = new ArrayList<RelativeLayout>();
 
 		list.addAll(generator.getTransferConfirmationList(successDetail));
@@ -94,17 +93,11 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	}
 
 	/**
-	 * Navigate the user back to the home page.
+	 * Navigate the user back to the review payments screen
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		/** Check if account date is out dated, if so then download new account data */
-		if (BankUser.instance().isAccountOutDated()) {
-			/** Update Accounts since a transfer has been scheduled */
-			BankServiceCallFactory.createGetCustomerAccountsServerCall().submit();
-		} else {
-			BankConductor.navigateToHomePage(false);
-		}
+		BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
 	}
 
 	/**
