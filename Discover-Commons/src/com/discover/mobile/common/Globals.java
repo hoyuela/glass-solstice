@@ -111,6 +111,7 @@ public final class Globals {
 	private static final String KEY = "Key=";
 	private static final String VALUE = " Value=";
 	private static final String IS_LOGGED_IN = "isLoggedIn=";
+	private static final String DEPOSIT_FIRST_VISIT = "isDepositFirstVisit=";
 
 	//Initialize static members at start-up of application
 	static {
@@ -145,6 +146,11 @@ public final class Globals {
 			// Check if key provided is a user level preference  
 			if ( key.equals(SHOW_LOGIN_MODAL) ) {
 				level |= PreferenceLevel.USER_LEVEL_PREF.getValue();
+			}
+
+			//Check if key provided is a user level preference
+			if( key.equals(DEPOSIT_FIRST_VISIT)){
+				level = PreferenceLevel.USER_LEVEL_PREF.getValue();
 			}
 		} else {
 			if( Log.isLoggable(TAG, Log.ERROR)) {
@@ -622,7 +628,7 @@ public final class Globals {
 	 */
 	public static boolean isFirstLoginForUser(final Context context){
 		final SharedPreferences settings = context.getSharedPreferences(VERSION_FILE_NAME, Context.MODE_PRIVATE);
-		final String loginKey = getFirstLoginKey();
+		final String loginKey = getUserLevelKey(FIRST_LOGIN_KEY);
 		return settings.getBoolean(loginKey, true);	 
 	}
 
@@ -633,18 +639,37 @@ public final class Globals {
 	 */
 	public static void setUserHasLoggedIn(final Context context){
 		final SharedPreferences settings = context.getSharedPreferences(VERSION_FILE_NAME, Context.MODE_PRIVATE);
-		final String loginKey = getFirstLoginKey();
+		final String loginKey = getUserLevelKey(FIRST_LOGIN_KEY);
 		settings.edit().putBoolean(loginKey, false).commit();
 	}
 
 	/**
-	 * Get the user specific key to see if the user has logged in
-	 * @return the key to retrieve if the user has already logged in from the shared preferences.
+	 * Determine if this is the first time the user is viewing the check deposit screen
+	 * @param context - context that will be used to access the preferences
+	 * @return true if this is the first time the user is viewing the check deposit screen
 	 */
-	private static String getFirstLoginKey(){
+	public static boolean isUsersFirstTimeInDepositCapture(final Context context){
+		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		return settings.getBoolean(getUserLevelKey(DEPOSIT_FIRST_VISIT), false);
+	}
+
+	/**
+	 * Update the user preferences so that user will not see the deposit capture tips again.
+	 * @param context - context that will be used to access the preferences
+	 */
+	public static void setUserHasBeenInDepositCapture(final Context context){
+		final SharedPreferences settings = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+		settings.edit().putBoolean(getUserLevelKey(DEPOSIT_FIRST_VISIT), true).commit();
+	}
+
+	/**
+	 * Get the user specific key related to the user level preference key
+	 * @return the key to retrieve the user level preference key
+	 */
+	private static String getUserLevelKey(final String fullKey){
 		String key;
 		try {
-			key = EncryptionUtil.encrypt(FIRST_LOGIN_KEY + StringUtility.PERIOD + getCurrentUser());
+			key = EncryptionUtil.encrypt(fullKey + StringUtility.PERIOD + getCurrentUser());
 		} catch (final Exception e) {
 			key =  StringUtility.EMPTY;
 		}

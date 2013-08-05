@@ -14,12 +14,10 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
-import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.XHttpMethodOverrideValues;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.json.ReceivedUrl;
-import com.discover.mobile.bank.services.payee.GetPayeeServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.fragments.DetailFragment;
@@ -84,18 +82,18 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			if (recievedUrl.method.contains(XHttpMethodOverrideValues.PUT.toString())) {
 				final Button editPaymentButton = (Button)fragmentView.findViewById(R.id.edit_button);
 				editPaymentButton.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
-					public void onClick(View v) {
-						Bundle bundle = getArguments();
+					public void onClick(final View v) {
+						final Bundle bundle = getArguments();
 						bundle.putSerializable(BankExtraKeys.DATA_LIST_ITEM, item.toPaymentDetail());
-						
+
 						BankConductor.navigateToEditPayment(bundle);
 					}
 				});
 				editPaymentButton.setVisibility(View.VISIBLE);
 			}
-			
+
 			items = generator.getScheduledBillPayList(item);
 			showDeleteButonForDetailIfNeeded(item, fragmentView);
 		}
@@ -203,11 +201,11 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 	private void showDeleteTransactionModal(final NavigationRootActivity activity, final ActivityDetail item, 
 			final TransferDeletionType deleteType,
 			final int textBody) {
-		
+
 		/** Decided the title of the modal based on the type of deletion being made */
-		final int title = (deleteType == TransferDeletionType.DELETE_ALL_TRANSFERS) ? 
+		final int title = deleteType == TransferDeletionType.DELETE_ALL_TRANSFERS ? 
 				R.string.bank_delete_transfers_title : R.string.bank_delete_transfer_title;
-		
+
 		// Create a one button modal to notify the user that they are leaving the application
 		final SimpleContentModal modal = new SimpleContentModal(activity, title,
 				textBody,
@@ -332,7 +330,9 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 
 		((TextView)contentTable.findViewById(R.id.amount_cell))
 		.setText(BankStringFormatter.convertCentsToDollars(item.amount.value));
-		((TextView)contentTable.findViewById(R.id.description_cell)).setText(item.description);
+		final TextView description = (TextView)contentTable.findViewById(R.id.description_cell);
+		description.setText(item.description);
+		description.setSingleLine(false);
 		final TextView transactionId = (TextView)contentTable.findViewById(R.id.transaction_id);
 		if(!item.id.equals("0")){
 			transactionId.setText(item.id);

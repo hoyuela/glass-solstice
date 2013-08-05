@@ -213,5 +213,15 @@
             android:paddingRight="30dp"
             android:text="@string/capture" />
     </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/capturetips"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/empty"
+        android:background="@color/bank_overlay_shadow"
+        android:src="@drawable/deposit_check_coachmarks"
+        android:onClick="closeLayout"
+        android:visibility="gone"/>
 
 </RelativeLayout>
