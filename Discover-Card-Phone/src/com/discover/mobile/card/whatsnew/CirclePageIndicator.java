@@ -83,9 +83,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
         mCentered = true;
         mOrientation = defaultOrientation;
         mPaintPageFill.setStyle(Style.FILL);
-        mPaintPageFill.setColor(Color.LTGRAY);
+        mPaintPageFill.setColor(Color.parseColor("#c0c8cc"));
         mPaintStroke.setStyle(Style.STROKE);
-        mPaintStroke.setColor(Color.WHITE);
+        mPaintStroke.setColor(defaultFillColor);
         mPaintStroke.setStrokeWidth(defaultStrokeWidth);
         mPaintFill.setStyle(Style.FILL);
         mPaintFill.setColor(defaultFillColor);

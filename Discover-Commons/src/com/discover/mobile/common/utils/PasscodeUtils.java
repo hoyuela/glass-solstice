@@ -142,7 +142,7 @@ public class PasscodeUtils {
 	
 	public String getWelcomeMessage() {
 		String firstName = getFirstName();
-		if (firstName == null || firstName.trim() == ""){
+		if (firstName == null || firstName.trim().equals("") || firstName.trim().equalsIgnoreCase("null")){
 			return "";
 		}
 		StringBuffer sb = new StringBuffer("Good ");

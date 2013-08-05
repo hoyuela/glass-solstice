@@ -472,6 +472,7 @@
 #paymentStep1-pg .r3matchbtn{
 	margin:20px;
 }
+#paymentStep1-pg .r3matchbtn .ui-btn .ui-btn-inner{padding:8px 10px !important;}     /* 13.3 global changes 01/08/13 (defect 107495) */
 #paymentStep1-pg .bluelink{
 	font-size:20px !important;
 } 
@@ -712,6 +713,8 @@ line-height: 17px;}*/
 #paymentStep1-pg .nobg_2coltbl li .col2 {
 	width: 57%;
 	color: #8a9499;
+	font-weight: bold;          /* 13.3 global changes 01/08/13 (defect 107495) */
+	padding-top: 0px !Important;      /* 13.3 global changes 01/08/13 (defect 107495) */
 }
 #paymentStep1-pg .ddList .detailName {
 	display: block;
@@ -821,14 +824,16 @@ line-height: 17px;}*/
 	display: block;
 	margin-top: 20px;
 }
-#conflictingPaymentError-pg .whitebg-list-view li .smallText {
+/* 13.3 global change 31/07/13 starts  (defect 107319) */
+.payments .whitebg-list-view li .smallText {
 	color: #8a9499;
 	font-size: 12px;
 }
-#conflictingPaymentError-pg .fontStyle, #maxReachedError-pg .fontStyle {
+.payments .fontStyle {
 	color: #293033;
 	font-size: 18px;
 }
+/* 13.3 global change 31/07/13 ends (defect 107319) */
 #maxReachedError-pg .errorText p, #conflictingPaymentError-pg .errorText p {
 	color: #293033;
 	font-size: 17px;
@@ -1456,7 +1461,7 @@ background: radial-gradient(ellipse at center,  rgba(255,102,0,1) 44%,rgba(71,33
 .payments#paymentStep1-pg #calendar .ui-datepicker-multi-2 .ui-datepicker-group {width: 100%;}
 .payments#paymentStep1-pg #calendar>.ui-widget-content{width: 100% !important; padding:0 !important;}
 .payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td{background: #fff;}
-.payments#paymentStep1-pg #calendar .ui-datepicker-calendar{width:auto;}
+.payments#paymentStep1-pg #calendar .ui-datepicker-calendar{width:auto;margin: 0 auto .4em;}/*13.3 global change 1/08/13 */
 .payments#paymentStep1-pg #calendar a{color:#41494e}
 .payments#paymentStep1-pg #calendar table.ui-datepicker-calendar tbody td.ui-datepicker-unselectable.ui-state-disabled  {background: #e8eaec;}
 .payments#paymentStep1-pg #calendar .ui-datepicker-unselectable{color:#879398}
@@ -1489,6 +1494,7 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	border-bottom:1px solid #c4cbcf;
 	padding:0 12px 3px 12px;
 }
+#paymentStep1-pg .r3matchbtn div{display:inline-block;} /* 13.3 global change 31/07/13 (defect 107308) */
 #paymentStep1-pg .wraper1 .ui-select , #paymentStep1-pg .wraper1 .white-form, #paymentStep1-pg .wraper1 .lateMinPayWarn{margin:0 12px;}
 #paymentStep1-pg .wraper .ui-select , #paymentStep1-pg .wraper .white-form, #paymentStep1-pg .wraper .lateMinPayWarn, #paymentStep1-pg .wraper  .errorText, #paymentStep1-pg .wraper .err2, #paymentStep1-pg .wraper .err1, #paymentStep1-pg .wraper1 .errorText{margin:0 12px;}
 /*13.3 global change 29/07/2013*/

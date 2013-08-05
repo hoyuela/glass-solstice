@@ -27,11 +27,12 @@
         android:paddingRight="0dip"
         android:visibility="visible" />
         
+	<!-- 	13.4 Code CleanUp -->
     <ImageView
 	    android:id="@+id/error_img"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:src="@drawable/error_img"
+	    android:src="@drawable/exclamation_gray_img"
 		android:layout_below="@id/divider_line"
 		android:layout_marginTop="20dp"
 		android:paddingRight="12dp"

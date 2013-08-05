@@ -5,11 +5,12 @@
     style="@style/default_list_item"
     android:paddingBottom="@dimen/table_inner_padding">
 
+    <!-- 	13.4 Code CleanUp -->
     <ImageView
 	    android:id="@+id/error_img"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:src="@drawable/error_img"
+	    android:src="@drawable/exclamation_gray_img"
 	    android:contentDescription="@string/fast_check_error_img_desc"/>
     
     <TextView
