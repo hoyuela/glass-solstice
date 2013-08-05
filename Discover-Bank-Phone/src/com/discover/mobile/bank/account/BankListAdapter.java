@@ -80,7 +80,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 				holder.desc = (TextView) view.findViewById(R.id.description);
 				holder.amount = (TextView) view.findViewById(R.id.amount);
 				holder.pos = position;
-				holder.reocurring = (ImageView) view.findViewById(R.id.reocurring);
+				holder.repeating = (ImageView) view.findViewById(R.id.reocurring);
 			}
 			/**Else reuse the old one*/
 		}else{
@@ -142,9 +142,9 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 
 		/**Show the reocurring icon if it needs to be shown*/
 		if(null != detail.frequency && !detail.frequency.equals(ActivityDetail.FREQUENCY_ONE_TIME_TRANSFER)){
-			holder.reocurring.setVisibility(View.VISIBLE);
+			holder.repeating.setVisibility(View.VISIBLE);
 		}else{
-			holder.reocurring.setVisibility(View.GONE);
+			holder.repeating.setVisibility(View.GONE);
 		}
 
 		return view;
@@ -211,6 +211,6 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		private TextView desc;
 		private TextView amount;
 		private int pos;
-		private ImageView reocurring;
+		private ImageView repeating;
 	}
 }
