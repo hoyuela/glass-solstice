@@ -71,17 +71,6 @@
                     android:background="@drawable/quick_view_button"
                     android:text="@string/gotoFastcheckBtnText" />
 
-                <ImageView 
-                    android:id="@+id/error_exclamation"
-                    android:src="@drawable/exclamation_red_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_alignTop="@+id/error_text_view"
-                    android:visibility="gone"
-                    />
-
                 <TextView
                     android:id="@+id/error_text_view"
                     style="@style/error_label"
@@ -89,7 +78,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/discoverLogo"
                     android:layout_marginTop="@dimen/groups_of_elements_padding"
-                    android:layout_toRightOf="@+id/error_exclamation"
                     android:layout_centerInParent="true"
                     android:gravity="center_horizontal"
                     android:paddingRight="@dimen/element_side_padding"
@@ -265,7 +253,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="15dp"
                         android:layout_marginTop="20dp"
                         android:textColor="@color/black"
                         />
@@ -275,6 +262,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/welcome"
+                        android:layout_marginTop="15dp"
                         android:layout_centerHorizontal="true"
                         android:gravity="center" >
 
