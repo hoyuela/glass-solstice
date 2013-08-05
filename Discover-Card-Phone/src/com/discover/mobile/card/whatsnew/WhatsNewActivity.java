@@ -40,7 +40,7 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants {
 
         extras = getIntent().getExtras();
         final CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-        mIndicator.setBackgroundResource(R.drawable.light_gray_bkgrd);
+        mIndicator.setBackgroundResource(R.drawable.card_whatsnew_pegination);
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         final MyPagerAdapter adapter = new MyPagerAdapter(this);
         viewPager.setAdapter(adapter);
@@ -114,9 +114,9 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants {
             // cardType));
             /* 13.4 Defect ID 105326 start */
             views.add(new WhatsNewAvailable(context, PASSCODE_INFO, cardType));
-            views.add(new WhatsNewAvailable(context, MANAGE_BANK_INFO, cardType));
             views.add(new WhatsNewAvailable(context, MANAGE_PAYMENT_INFO,
                     cardType));
+            views.add(new WhatsNewAvailable(context, MANAGE_BANK_INFO, cardType));
             noOfPages = getCount();
         }
 
