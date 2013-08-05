@@ -10,7 +10,6 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -176,6 +174,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private TextView vPasscodeLink3;
 	private boolean isExclamationVisible;
 	private boolean	exclamationColorRed;
+	
 
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
@@ -545,9 +544,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
 		
-		if(exclamationIV.getVisibility() == View.VISIBLE) { 
-			startFadeOutAnimationForView(exclamationIV, HALF_SECOND, View.GONE, SIX_SECONDS);
-		}
+		
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
