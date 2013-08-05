@@ -33,41 +33,40 @@
 
     <!-- Cancelled Layout items -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/cancelled_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line2"
-        android:orientation="horizontal"
         android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
-        android:paddingTop="@dimen/forms_inner_padding"
-        android:weightSum="5" >
+        android:paddingLeft="@dimen/forms_inner_padding">
 
         <RadioButton
             android:id="@+id/cancelled_button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_weight=".65"
-            android:checked="true"
             style="@style/common_radio"
-            android:clickable="false"
-             />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:clickable="false" 
+            android:checked="true"/>
+        
         <TextView
             android:id="@+id/canceled_label"
             style="@style/field_copy_medium"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/cancelled_button"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingTop="@dimen/forms_inner_padding"
             android:gravity="center_vertical"
             android:singleLine="true"
             android:text="@string/transfer_cancelled"
             android:textColor="@color/body_copy" />
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <!-- End of cancelled layout items -->
 
@@ -81,33 +80,31 @@
 
     <!-- Date layout items -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/date_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line3"
-        android:orientation="horizontal"
-        android:paddingLeft="@dimen/forms_inner_padding"
-        android:weightSum="5" >
+        android:paddingLeft="@dimen/forms_inner_padding">
 
         <RadioButton
             android:id="@+id/date_button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_weight=".5"
             style="@style/common_radio"
-            android:clickable="false"
-             />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:clickable="false" />
 
         <LinearLayout
             android:id="@+id/inner_date_layout"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:layout_marginTop="@dimen/between_related_elements_padding"
-            android:layout_weight="4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/date_button"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingTop="@dimen/forms_inner_padding"
             android:gravity="center_vertical"
             android:orientation="vertical" >
 
@@ -132,17 +129,17 @@
                 android:textColor="@color/field_copy" />
         </LinearLayout>
 
-        <ImageView
+		<ImageView
             android:id="@+id/freq_caret"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight=".5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/caret_description"
-            android:layout_gravity="center_vertical"
-            android:paddingRight="@dimen/between_related_elements_padding"
+            android:paddingRight="@dimen/groups_of_elements_padding"
             android:scaleType="center"
             android:src="@drawable/gray_right_arrow" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/date_error_label"
@@ -161,56 +158,56 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/date_error_label"
-        android:layout_marginBottom="@dimen/forms_inner_padding"
         android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
     <!-- Transaction count items -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/transaction_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line4"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding"
-        android:weightSum="5" >
+        android:paddingBottom="@dimen/forms_inner_padding"
+        android:paddingTop="@dimen/forms_inner_padding">
 
         <RadioButton
             android:id="@+id/transactions_button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_weight=".5"
             style="@style/common_radio"
-            android:clickable="false"
-            />
-
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:clickable="false" />
+        
         <TextView
             android:id="@+id/transactions_label"
             style="@style/field_copy_medium"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/transactions_button"
+            android:paddingBottom="@dimen/between_related_elements_padding"
+            android:paddingTop="@dimen/between_related_elements_padding"
             android:gravity="center_vertical"
-            android:layout_weight="2.25"
             android:text="@string/transfer_transactions"
-            android:textColor="@color/field_copy"
-             />
+            android:textColor="@color/field_copy" />
 
         <com.discover.mobile.common.ui.widgets.PositiveIntegerEditText
             android:id="@+id/transaction_amount"
-            android:layout_width="0dp"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/forms_inner_padding"
-            android:layout_weight="2.25"
-            android:gravity="center_vertical"
-            android:imeOptions="actionDone|flagNoExtractUi"
-            android:textCursorDrawable="@null" 
+            android:layout_alignParentRight="true"
             android:clickable="false"
-            android:enabled="false"/>
-    </LinearLayout>
+            android:ems="10"
+            android:enabled="false"
+            android:imeOptions="actionDone|flagNoExtractUi"
+            android:singleLine="true"
+            android:textCursorDrawable="@null" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/transactions_error_label"
@@ -230,66 +227,69 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/transactions_error_label"
-        android:layout_marginBottom="@dimen/forms_inner_padding"
         android:layout_marginLeft="@dimen/orange_button_margin_top"
         android:background="@drawable/table_solid_line" />
 
     <!-- Dollar Amount item -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/dollar_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line5"
-        android:orientation="horizontal"
         android:paddingLeft="@dimen/forms_inner_padding"
-        android:paddingRight="@dimen/forms_inner_padding"
-        android:weightSum="5" >
+        android:paddingRight="@dimen/forms_inner_padding" 
+        android:layout_marginTop="@dimen/between_related_elements_padding">
 
         <RadioButton
             android:id="@+id/dollar_button"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/forms_inner_padding"
-            android:layout_weight="0.5"
             style="@style/common_radio"
-            android:clickable="false"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/forms_inner_padding"
+            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:clickable="false" />
 
         <TextView
             android:id="@+id/dollar_label"
             style="@style/field_copy_medium"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.75"
-            android:singleLine="true"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/dollar_button"
+            android:paddingBottom="@dimen/forms_inner_padding"
+            android:paddingTop="@dimen/forms_inner_padding"
             android:text="@string/transfer_dollar_amount"
             android:textColor="@color/field_copy" />
-
+        
         <TextView
             android:id="@+id/dollar"
             style="@style/field_copy_big"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight=".5"
+            android:layout_alignBottom="@id/amount_edit"
+            android:layout_toLeftOf="@id/amount_edit"
             android:gravity="center_vertical|right"
             android:paddingRight="3dp"
+            android:paddingBottom="@dimen/between_related_elements_padding"
             android:text="@string/bank_dollar_sign"
             android:textColor="@color/field_copy" />
 
         <com.discover.mobile.bank.ui.widgets.AmountValidatedEditField
             android:id="@+id/amount_edit"
             style="@style/pmt_amount_style"
-            android:layout_width="0dp"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.25"
-            android:imeOptions="actionDone|flagNoExtractUi"
+            android:layout_alignParentRight="true"
             android:clickable="false"
+            android:ems="10"
             android:enabled="false"
-            />
-    </LinearLayout>
+            android:imeOptions="actionDone|flagNoExtractUi"
+            android:singleLine="true" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/dollar_error_label"
