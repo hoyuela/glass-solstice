@@ -1392,7 +1392,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 .ui-datepicker select.ui-datepicker-month-year {width: 100%;}
 .ui-datepicker select.ui-datepicker-month, 
 .ui-datepicker select.ui-datepicker-year { width: 49%;}
-.ui-datepicker table {width: 108%; font-size: .9em; /*border-collapse: collapse;*/ margin:0 0 .4em -4%; }
+.ui-datepicker table {/*width: 108%;*/ font-size: .9em; /*border-collapse: collapse; margin:0 0 .4em -4%; */}/*13.3 global change 1/08/13 */
 .ui-datepicker th { padding: .7em .3em; text-align: center; font-weight: bold; border: 0;  }
 .ui-datepicker td { border: 0; padding: 1px; }
 .ui-datepicker td span, .ui-datepicker td a { display: block; padding: .2em; text-align: right; text-decoration: none; }
@@ -1405,7 +1405,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 .ui-datepicker-multi .ui-datepicker-group { float:left; }
 .ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
 .ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
-.ui-datepicker-multi-3 .ui-datepicker-group { width:33.3%; }
+.ui-datepicker-multi-3 .ui-datepicker-group {width:100%;/* width:33.3%;*/ }/*13.3 global change 1/08/13 */
 .ui-datepicker-multi-4 .ui-datepicker-group { width:25%; }
 .ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header { border-left-width:0; }
 .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header { border-left-width:0; }
