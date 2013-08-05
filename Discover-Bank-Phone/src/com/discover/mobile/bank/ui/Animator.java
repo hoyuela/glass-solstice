@@ -2,6 +2,8 @@ package com.discover.mobile.bank.ui;
 
 import android.content.Context;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -94,6 +96,19 @@ public final class Animator {
 		rAnim.setFillAfter(true);
 
 		return rAnim;
+	}
+
+	/**
+	 * Method used to create a fade out animation that can be applied to a view. 
+	 * @param duration - duration that the animation should last
+	 * @return the animation
+	 */
+	public static Animation createFadeOutAnimation(final long duration){
+		final Animation fadeOut = new AlphaAnimation(1, 0);
+		fadeOut.setInterpolator(new AccelerateInterpolator());
+		fadeOut.setDuration(duration);
+
+		return fadeOut;
 	}
 }
 
