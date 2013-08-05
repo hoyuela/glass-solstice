@@ -265,7 +265,7 @@ public class TransferDetail implements Serializable, Cloneable, LoadMoreDetail {
 	public String getDate() {
 		final StringBuilder dateBuilder = new StringBuilder(StringUtility.EMPTY);
 		
-		dateBuilder.append(deliverBy);
+		dateBuilder.append(this.sendDate);
 		
 		return BankStringFormatter.getFormattedDate(dateBuilder.toString());
 	}
