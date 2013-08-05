@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fadingEdge="none"
+    android:overScrollMode="never" >
+
+    <RelativeLayout  android:layout_width="match_parent" android:background="@drawable/light_gray_bkgrd"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/whats_new_relative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/whats_new_image"
+            android:focusable="true"
+            android:focusableInTouchMode="true" >
+
+            <TextView
+                android:id="@+id/whats_new_content_heading"
+                style="@style/title_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="24dp"
+                android:text="Content heading"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/whats_new_content_description_label"
+                style="@style/whatsnew_small_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/whats_new_view_liner"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="16dp"
+                android:text="Content DEscrpitin Label"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/whats_new_label"
+                style="@style/whatsnew_small_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/whats_new_content_description_label"
+                android:paddingBottom="24dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="16dp"
+                android:text="Whats new Label"
+                android:textSize="14sp" />
+
+            <View
+                android:id="@+id/whats_new_view_liner"
+                android:layout_width="fill_parent"
+                android:layout_height="1.0dp"
+                android:layout_below="@+id/whats_new_content_heading"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/line_separator" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/whats_new_image"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" android:layout_alignParentRight="true"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/manage_bank_account"
+            />
+    </RelativeLayout>
+
+</ScrollView>
