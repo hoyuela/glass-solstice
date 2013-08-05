@@ -74,7 +74,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	//TEXT LABELS
 	private TextView frontLabel;
 	private TextView backLabel;
-
+	private TextView captureHelpTextView;
+	
 	//BREADCRUMB CHECKMARKS
 	private ImageView stepOneCheck;
 	private ImageView stepTwoCheck;
@@ -188,6 +189,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			//before they press confirm capture.
 			if(retakeButton.getVisibility() == View.VISIBLE) {
 				retakeClickListener.onClick(null);
+				captureHelpTextView.setVisibility(View.GONE);
 			}else if (!captureButton.isClickable()) {
 				setupButtons();
 			}
@@ -238,6 +240,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		retakeButton = (Button)findViewById(R.id.retake_button);
 
 		helpButton.setClickable(true);
+		captureHelpTextView = (TextView) findViewById(R.id.help_text_wrapper);
 	}
 
 	/**
@@ -640,6 +643,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		closeButton.setVisibility(View.VISIBLE);
+		captureHelpTextView.setVisibility(View.GONE);
 	}
 
 	/**
@@ -675,6 +679,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
+		captureHelpTextView.setVisibility(View.VISIBLE);
 	}
 
 	/** 
