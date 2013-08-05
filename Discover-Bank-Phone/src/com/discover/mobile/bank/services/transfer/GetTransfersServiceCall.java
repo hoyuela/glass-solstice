@@ -41,7 +41,7 @@ public class GetTransfersServiceCall extends
 									final AsyncCallback<ListTransferDetail> callback, 
 									final String url) {
 
-		super(context, getGetCallParams(url), ListTransferDetail.class, TransferDetail.class);
+		super(context, getGetCallParams(url.toLowerCase()), ListTransferDetail.class, TransferDetail.class);
 
 		handler = new SimpleReferenceHandler<ListTransferDetail>(callback);
 	}
