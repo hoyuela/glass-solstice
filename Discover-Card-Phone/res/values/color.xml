@@ -84,10 +84,9 @@
    <color name="line_separator">#DCDCDC</color>
     
    <!-- whats new -->
-	<color name="default_circle_indicator_fill_color">#6E6E6E</color>
+	<color name="default_circle_indicator_fill_color">#8a9499</color>
     <color name="default_circle_indicator_page_color">#00000000</color>
-    <color name="default_circle_indicator_stroke_color">#FFDDDDDD</color>
-    <color name="grey_background_color">#FAF7F8</color>
+    <color name="default_circle_indicator_stroke_color">#00000000</color>
     <color name="bottom_line">#cc5200</color>
     <color name="whatsnew_desc">#3d484d</color>
     
