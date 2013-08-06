@@ -9,7 +9,6 @@ import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.content.Intent;
-import android.telephony.TelephonyManager;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -53,24 +52,24 @@ public class StrongAuthUtil {
         this.context = context;
     }
 
-   /* *//**
-     * This method get deviceId, simId and subscriberId from telephone manager
-     * and return strong Authentication data.
+    /* *//**
+     * This method get deviceId, simId and subscriberId from telephone
+     * manager and return strong Authentication data.
      * 
      * @return StrongAuthBean
      * @throws NoSuchAlgorithmException
-     *//*
-    public StrongAuthBean getStrongAuthData() throws NoSuchAlgorithmException {
-        final TelephonyManager telephonyManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        final StrongAuthBean authBean = new StrongAuthBean();
-        authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
-        authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
-        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
-        return authBean;
-    }*/
-    
-    
+     */
+    /*
+     * public StrongAuthBean getStrongAuthData() throws NoSuchAlgorithmException
+     * { final TelephonyManager telephonyManager = (TelephonyManager) context
+     * .getSystemService(Context.TELEPHONY_SERVICE); final StrongAuthBean
+     * authBean = new StrongAuthBean();
+     * authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
+     * authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
+     * authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
+     * return authBean; }
+     */
+
     /**
      * This method get deviceId, simId and subscriberId from telephone manager
      * and return strong Authentication data.
@@ -79,26 +78,50 @@ public class StrongAuthUtil {
      * @throws NoSuchAlgorithmException
      */
     public StrongAuthBean getStrongAuthData() throws NoSuchAlgorithmException {
-        final TelephonyManager telephonyManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        context.getSystemService(Context.TELEPHONY_SERVICE);
         final StrongAuthBean authBean = new StrongAuthBean();
-    /*    authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
-        authBean.setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
-        authBean.setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));*/
+        /*
+         * authBean.setDeviceId(getSha256Hash(telephonyManager.getDeviceId()));
+         * authBean
+         * .setSimId(getSha256Hash(telephonyManager.getSimSerialNumber()));
+         * authBean
+         * .setSubscriberId(getSha256Hash(telephonyManager.getDeviceId()));
+         */
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(context);
-        Utils.log("StrongAuthBean", "DID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.DID)).toString());
-        Utils.log("StrongAuthBean", "SID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.SID)).toString());
-        Utils.log("StrongAuthBean", "OID"+cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.OID)).toString());
-        authBean.setDeviceId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.DID)).toString()));
-        authBean.setSimId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.SID)).toString()));
-        authBean.setSubscriberId(getSha256Hash(cardShareDataStoreObj.getValueOfAppCache(context.getResources().getString(R.string.OID)).toString()));
-        
-     
+        Utils.log(
+                "StrongAuthBean",
+                "DID"
+                        + cardShareDataStoreObj.getValueOfAppCache(
+                                context.getResources().getString(R.string.DID))
+                                .toString());
+        Utils.log(
+                "StrongAuthBean",
+                "SID"
+                        + cardShareDataStoreObj.getValueOfAppCache(
+                                context.getResources().getString(R.string.SID))
+                                .toString());
+        Utils.log(
+                "StrongAuthBean",
+                "OID"
+                        + cardShareDataStoreObj.getValueOfAppCache(
+                                context.getResources().getString(R.string.OID))
+                                .toString());
+        authBean.setDeviceId(getSha256Hash(cardShareDataStoreObj
+                .getValueOfAppCache(
+                        context.getResources().getString(R.string.DID))
+                .toString()));
+        authBean.setSimId(getSha256Hash(cardShareDataStoreObj
+                .getValueOfAppCache(
+                        context.getResources().getString(R.string.SID))
+                .toString()));
+        authBean.setSubscriberId(getSha256Hash(cardShareDataStoreObj
+                .getValueOfAppCache(
+                        context.getResources().getString(R.string.OID))
+                .toString()));
+
         return authBean;
     }
-
-    
 
     /**
      * This method will get string data and create message digest
@@ -122,41 +145,39 @@ public class StrongAuthUtil {
 
         return convertToHex(postHash);
     }
-    
 
-    /*13.4 Changes Start */
-    public void createUser(final CardErrorHandlerUi errorHandlerUi)
-    {
-         StrongAuthCreateUser authUserHandler = new StrongAuthCreateUser(
-                 context, new CardEventListener() {
+    /* 13.4 Changes Start */
+    public void createUser(final CardErrorHandlerUi errorHandlerUi) {
+        StrongAuthCreateUser authUserHandler = new StrongAuthCreateUser(
+                context, new CardEventListener() {
 
-                     @Override
-                     public void onSuccess(Object data) {
-                         // TODO Auto-generated method stub
-                         StrongAuthCreateUserDetails createUserDetails = (StrongAuthCreateUserDetails) data ;
-                         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                                 .getInstance(context);
-                         final Intent strongAuthEnterInfoActivity = new Intent(context,
-                                 StrongAuthEnterInfoActivity.class);
-                         cardShareDataStoreObj.addToAppCache(
-                                 context.getString(R.string.sa_question_answer_list),
-                                 createUserDetails);
-                         context.startActivity(strongAuthEnterInfoActivity);
-                     }
+                    @Override
+                    public void onSuccess(final Object data) {
+                        // TODO Auto-generated method stub
+                        StrongAuthCreateUserDetails createUserDetails = (StrongAuthCreateUserDetails) data;
+                        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                                .getInstance(context);
+                        final Intent strongAuthEnterInfoActivity = new Intent(
+                                context, StrongAuthEnterInfoActivity.class);
+                        cardShareDataStoreObj.addToAppCache(context
+                                .getString(R.string.sa_question_answer_list),
+                                createUserDetails);
+                        context.startActivity(strongAuthEnterInfoActivity);
+                    }
 
-                     @Override
-                     public void OnError(Object data) {
-                         // TODO Auto-generated method stub
-                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                                 errorHandlerUi);
-                         cardErrorResHandler
-                                 .handleCardError((CardErrorBean) data);
-                     }
-                 });
-         authUserHandler.sendRequest();
+                    @Override
+                    public void OnError(final Object data) {
+                        // TODO Auto-generated method stub
+                        CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                errorHandlerUi);
+                        cardErrorResHandler
+                                .handleCardError((CardErrorBean) data);
+                    }
+                });
+        authUserHandler.sendRequest();
     }
 
-    /*13.4 Changes End */
+    /* 13.4 Changes End */
 
     /**
      * This method convert byte to hex format
@@ -165,7 +186,7 @@ public class StrongAuthUtil {
      * @return String
      */
     private static String convertToHex(final byte[] data) {
-        return String.format("%0" + data.length * 2 + 'x', new BigInteger(1,
+        return String.format("%0" + (data.length * 2) + 'x', new BigInteger(1,
                 data));
     }
 }

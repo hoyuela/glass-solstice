@@ -17,7 +17,7 @@ public class Common {
         // fire KeepSessionAlive if last rest call is 30 seconds ago
         long now = cal1.getTimeInMillis();
 
-        if ((now - lastRestCallTime) / 1000 >= 30) {
+        if (((now - lastRestCallTime) / 1000) >= 30) {
             // Call ResetServerTimeOut
         }
 
