@@ -40,6 +40,12 @@ public class LeavingThisAppModal extends DialogFragment {
 	public LeavingThisAppModal() {
 
 	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NO_FRAME, R.style.AppTheme);
+	}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {                
@@ -61,7 +67,7 @@ public class LeavingThisAppModal extends DialogFragment {
         
     	setClickListener();
         
-    	//set the dialog to have no title bar and match_parent for width and height
+    	//set the dialog to have no title bar and match_parent for width and height   	
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         getDialog().getWindow().setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         
@@ -75,10 +81,10 @@ public class LeavingThisAppModal extends DialogFragment {
     	((Button) view.findViewById(R.id.button)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				dismiss();
 				final Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				DiscoverActivityManager.getActiveActivity().startActivity(i);
+				dismiss();
 			}
 		});
     }
