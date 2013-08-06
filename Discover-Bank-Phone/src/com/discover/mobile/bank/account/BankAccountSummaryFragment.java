@@ -64,7 +64,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements Fragment
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
 			final Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.bank_account_summary_view, null);
-
+		updateGreeting();
 		accountToggleSection = (RelativeLayout) view.findViewById(R.id.account_toggle_layout);
 
 		/**Fetch linear layout that will contain list of account groups*/
@@ -92,7 +92,7 @@ public class BankAccountSummaryFragment extends BaseFragment implements Fragment
 	public void onResume() {
 		super.onResume();
 		getActivity().registerReceiver(timeListener, new IntentFilter(Intent.ACTION_TIME_TICK));
-		updateGreeting();
+		
 
 		//Make sure the bank view is checked because we are in bank
 		toggleView.setAccountType(AccountType.BANK_ACCOUNT);
