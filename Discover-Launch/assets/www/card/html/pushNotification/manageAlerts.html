@@ -445,12 +445,20 @@
 															<p>
 																<span class="boldtext">Miles Reaches Specified Amount</span>
 																<br/>
-																<span class="boldtext">&nbsp;
-																	<input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt" type="tel" placeholder="100.00" data-inline="true" name='mlrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
-																</span>
+                                       <!-- 13.3 global change 06/08/13 (defect 108013) -->                         
+                                                                
+                                                                <span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
+																	<!--R13.3 Global Change-->
+																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="tel" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
+																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                                                </span>
+                                                                
+                                       <!-- 13.3 global change 06/08/13 (defect 108013) -->                         
+                                                                
 															</p>
 														</div>
 													</div>
+                                                    <div class="clearboth"></div>    <!-- 13.3 global change 06/08/13 (defect 108013) -->
 												</li>
 											</div>
 									</ul>
@@ -513,10 +521,14 @@
 							</div>
 							</br>
 							<div id="unregistered-tnclinks">
+                            
+                             <!-- 13.3 global change 06/08/13 (defect 108013) -->                         
 								<p>
-									<span class="mL2">By clicking on the Save button I agree to the Mobile Alerts </span>
-									<a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" >Terms of Use</a>
+									<span class="mL2">By clicking on the Save button I agree to the</span>
+									<a href="#" onclick="s.prop1='PUSH_HANDSET_MANAGE_ALERTS_ACCEPT_TERMS_BTN';dfs.crd.sct.textTermsNConditions();navigation('../pushNotification/manageAlertsTermsAndConditions');" class="bluelink" > Mobile Alerts Terms of Use</a>
 								</p>
+                             <!-- 13.3 global change 06/08/13 (defect 108013) -->                         
+                                
 							</div> 
 						</div>  
                         <!-- body text area end -->
