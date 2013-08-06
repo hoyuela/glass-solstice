@@ -838,7 +838,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * Checking to see if flash mode auto is supported before setting this parameters. 
 		 * This was needed because check deposit was crashing on the new Nexus 7.
 		 */
-		if (parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)){
+		/*
+		 * Add a check to see if supportFlashModes returns null.  
+		 * -Julian
+		 */
+		if ((null != parameters.getSupportedFlashModes()) 
+				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
 			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		}
 		camera.setParameters(parameters);
