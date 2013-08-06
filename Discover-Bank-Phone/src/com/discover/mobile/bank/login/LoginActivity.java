@@ -953,7 +953,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 					FacadeFactory.getCardFacade().navToProvideFeedback(
 							LoginActivity.this);
 				} else {
-					BankConductor.navigateToFeedback(false);
+					BankConductor.navigateToFeedback(false, getString(R.string.bank_login_provide_feedback_url));
 				}
 				//Defect id 97126
 			}
