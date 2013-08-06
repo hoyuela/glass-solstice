@@ -839,8 +839,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * This was needed because check deposit was crashing on the new Nexus 7.
 		 */
 		/*
-		 * Add a check to see if supportFlashModes returns null.  Based on docs this should NEVER
-		 * happen.  Through debugging with galaxy S it was determined that it can in fact return null :(
+		 * Add a check to see if supportFlashModes returns null.  
 		 * -Julian
 		 */
 		if ((null != parameters.getSupportedFlashModes()) 
