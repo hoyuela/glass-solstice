@@ -53,29 +53,19 @@ import com.google.common.base.Strings;
 /**
  * Class Description of EnhancedAccountSecurity
  * 
- * EnhancedAccountSecurity Activity is the Activity that is used to handle
- * Strong Auth actions. It should always be launched through a
- * startActivityForResult(), as it is essentially a modal view and does control
- * any further navigation itself. During the use of the overall application,
- * Strong Auth may be required for a user to complete certain actions. When
- * Strong Auth is required, it will prevent the user from completing their
- * action until the Strong Auth question is answered correctly.
+ * EnhancedAccountSecurity Fragment is the Fragment that is used to handle
+ * Strong Auth actions after logged in. It should always be launched through a
  * 
- * This Activity is passed its question and question ID as extras. So when the
- * activity is launched it will set its question text label to be the question
- * that was passed in the extras. When the question is answered and submitted a
- * POST request is done to send the question response to the server, if the
- * answer was correct then this Activity will finish with RESULT_OK and return
- * control to the calling Activity. If the user cannot answer the question
- * correctly or presses the hardware back button, this Activity will finish with
- * RESULT_CANCELED and return control to the calling activity. The caller will
- * decide how to handle the responses from this Activity.
  * 
- * @author scottseward
+ * extends {@link BaseFragment}
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
  * 
  */
 
-// @ContentView(R.layout.strongauth_page)
 public class EnhancedAccountSecurityFragment extends BaseFragment implements
         EnhanceSecurityConstant, OnClickListener, ErrorHandlerUi {
 
@@ -184,8 +174,8 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     @Override
     public View onCreateView(final LayoutInflater inflater,
             final ViewGroup container, final Bundle savedInstanceState) {
-        CardShareDataStore mCardStoreData = CardShareDataStore.getInstance(this
-                .getActivity().getApplicationContext());
+        CardShareDataStore.getInstance(this.getActivity()
+                .getApplicationContext());
         yes_radiobutton = true;
         mainView = inflater.inflate(R.layout.strongauth_page, null);
         loadAllViews();
@@ -220,14 +210,14 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         authAnsListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 if (authListener != null) {
                     authListener.onStrongAuthSucess(data);
                 }
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 CardErrorBean bean = (CardErrorBean) data;
 
                 /**
@@ -237,7 +227,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                 Log.d("13.4", "error code" + bean.getErrorCode() + " message: "
                         + bean.getErrorMessage());
                 if (!bean.isAppError()
-                        && bean != null
+                        && (bean != null)
                         && bean.getErrorCode()
                                 .contains(
                                         ""
@@ -281,7 +271,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
                     /* 13.4 Defect ID 104309 start */
                 } else if (!bean.isAppError()
-                        && bean != null
+                        && (bean != null)
                         && bean.getErrorCode().contains(
                                 "" + RegistrationErrorCodes.SPACE_ENTERED)) {
 
@@ -386,11 +376,11 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         continueButton.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(final View arg0) {
                 submitSecurityInfo(arg0);
             }
         });
-        if (inputErrorText == null || inputErrorText.equalsIgnoreCase("")) {
+        if ((inputErrorText == null) || inputErrorText.equalsIgnoreCase("")) {
             questionAnswerField.attachErrorLabel(errorMessage);
         }
         privacyTerms = (TextView) mainView.findViewById(R.id.privacy_terms);
@@ -405,7 +395,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.privacy_terms) {
             ((CardMenuInterface) getActivity())
@@ -453,7 +443,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
      * Moved intent logic to onResume instead of onCreate. onNewIntent will
      * update the intent before onResume is called.
      */
-    public void setBundleValues(Bundle savedInstanceState) {
+    public void setBundleValues(final Bundle savedInstanceState) {
         final Bundle extras = savedInstanceState;
         if (extras != null) {
             // Determine if the activity was created from a Card or a Bank
@@ -475,15 +465,16 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                 errorMessage.setText(errmsg);
                 errorMessage.setVisibility(errvisib);
 
-                if (errorMessage.getVisibility() == View.VISIBLE)
+                if (errorMessage.getVisibility() == View.VISIBLE) {
                     questionAnswerField.updateAppearanceForInput();
+                }
 
             }
             answer = extras.getString(ANSWER_TEXT);
 
             yes_radiobutton = extras.getBoolean(YES_RADIOBUTTON_SEL, true);
 
-            if (answer != null && !answer.equals("")) {
+            if ((answer != null) && !answer.equals("")) {
                 questionAnswerField.setText(answer);
             }
             final int subCopyColor = getResources().getColor(R.color.sub_copy);
@@ -520,8 +511,9 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         errorMessage.setText(inputErrorText);
         errorMessage.setVisibility(inputErrorVisibility);
 
-        if (errorMessage.getVisibility() == View.VISIBLE)
+        if (errorMessage.getVisibility() == View.VISIBLE) {
             questionAnswerField.updateAppearanceForInput();
+        }
 
     }
 
@@ -625,10 +617,6 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         return inputFields;
     }
 
-    private void startHomeFragment() {
-        FacadeFactory.getCardFacade().navToHomeFragment(getActivity());
-    }
-
     /**
      * Event handler for text change events on the TextView with id
      * account_security_question_answer_field. If no text is detected then the
@@ -641,7 +629,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
      */
     private void onTextChanged(final CharSequence newText) {
 
-        if (newText != null && newText.length() >= MIN_ANSWER_LENGTH) {
+        if ((newText != null) && (newText.length() >= MIN_ANSWER_LENGTH)) {
             continueButton.setEnabled(true);
         } else {
             continueButton.setEnabled(false);
@@ -668,7 +656,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
      * @param selectedIndex
      * @param answer
      */
-    public void submitAns(int selectedIndex, String answer) {
+    public void submitAns(final int selectedIndex, final String answer) {
         mainScrollView.smoothScrollTo(0, 0);
         errorMessage.setVisibility(View.GONE);
         questionAnswerField.updateAppearanceForInput();
@@ -698,27 +686,12 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
      * 
      * @param Exception
      */
-    private void handleError(Exception e) {
+    private void handleError(final Exception e) {
         e.printStackTrace();
         CardErrorBean cardErrorBean = new CardErrorBean(e.toString(), true);
         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                 (CardErrorHandlerUi) getActivity());
         cardErrorResHandler.handleCardError(cardErrorBean);
-    }
-
-    /**
-     * This method get called on click of menu items on tooltip icon.
-     * 
-     */
-    private void setupClickableHelpItem() {
-        helpInfo = new HelpItemGenerator(R.string.help_all_Info, false, true,
-                getAllFaqListener());
-        helpNum = new HelpItemGenerator(R.string.help_menu_number, true, false,
-                getAllFaqListener());
-        helpFaq = new HelpItemGenerator(R.string.help_all_faq, true, true,
-                getAllFaqListener());
-        help = (HelpWidget) mainView.findViewById(R.id.help);
-        help.showHelpItems(getEnhancedHelpItems());
     }
 
     /**
@@ -755,20 +728,21 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     }
 
     @Override
-    public void showCustomAlert(AlertDialog alert) {
+    public void showCustomAlert(final AlertDialog alert) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void showOneButtonAlert(int title, int content, int buttonText) {
+    public void showOneButtonAlert(final int title, final int content,
+            final int buttonText) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void showDynamicOneButtonAlert(int title, String content,
-            int buttonText) {
+    public void showDynamicOneButtonAlert(final int title,
+            final String content, final int buttonText) {
         // TODO Auto-generated method stub
 
     }
@@ -779,7 +753,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     }
 
     @Override
-    public void setLastError(int errorCode) {
+    public void setLastError(final int errorCode) {
 
     }
 

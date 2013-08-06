@@ -1,9 +1,18 @@
 package com.discover.mobile.card;
 
-import java.util.List;
-
 import com.discover.mobile.card.services.auth.AccountDetails;
 
+/**
+ * The CardSessionContext class provides access to the runtime session context
+ * that the container provides for a AccountDetails bean instance. The card
+ * session context remains associated with the instance for the lifetime of the
+ * login session instance.
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
+ */
 public final class CardSessionContext {
 
     private static CardSessionContext currentSessionDetails;
@@ -12,16 +21,18 @@ public final class CardSessionContext {
 
     private boolean isNotCurrentUserRegisteredForPush = false;
 
-    //13.4 Code Clean Up
-   /* *//** Push prefs retrieved from the server *//*
-    private PushNotificationPrefsDetail prefs;
-
-    *//** List of notifications (used to help with rotation) *//*
-    private List<NotificationDetail> notifications;*/
+    // 13.4 Code Clean Up
+    /* *//** Push prefs retrieved from the server */
+    /*
+     * private PushNotificationPrefsDetail prefs;
+     *//** List of notifications (used to help with rotation) */
+    /*
+     * private List<NotificationDetail> notifications;
+     */
 
     /** Time periods that can be displayed for the recent account activity */
-    	/*  13.4 Code CleanUp*/
-    /*private RecentActivityPeriodsDetail periods;*/
+    /* 13.4 Code CleanUp */
+    /* private RecentActivityPeriodsDetail periods; */
 
     /**
      * Boolean used to determine if the user is registering or changing their
@@ -58,26 +69,21 @@ public final class CardSessionContext {
         this.isNotCurrentUserRegisteredForPush = isNotCurrentUserRegisteredForPush;
     }
 
-    //13.4 Code Clean Up
-/*    public PushNotificationPrefsDetail getPrefs() {
-        return prefs;
-    }
-
-    public void setPrefs(final PushNotificationPrefsDetail prefs) {
-        this.prefs = prefs;
-    }
-
-    public List<NotificationDetail> getNotifications() {
-        return notifications;
-    }
-
-    public void setNotifications(final List<NotificationDetail> notifications) {
-        this.notifications = notifications;
-    }
-
-    public void clearNotifications() {
-        notifications.clear();
-    }*/
+    // 13.4 Code Clean Up
+    /*
+     * public PushNotificationPrefsDetail getPrefs() { return prefs; }
+     * 
+     * public void setPrefs(final PushNotificationPrefsDetail prefs) {
+     * this.prefs = prefs; }
+     * 
+     * public List<NotificationDetail> getNotifications() { return
+     * notifications; }
+     * 
+     * public void setNotifications(final List<NotificationDetail>
+     * notifications) { this.notifications = notifications; }
+     * 
+     * public void clearNotifications() { notifications.clear(); }
+     */
 
     /**
      * Get the time periods that can be displayed for the recent account
@@ -86,10 +92,10 @@ public final class CardSessionContext {
      * @return the time periods that can be displayed for the recent account
      *         activity
      */
-    /*  13.4 Code CleanUp*/
-   /* public RecentActivityPeriodsDetail getPeriods() {
-        return periods;
-    }*/
+    /* 13.4 Code CleanUp */
+    /*
+     * public RecentActivityPeriodsDetail getPeriods() { return periods; }
+     */
 
     /**
      * Set the time periods that can be displayed for the recent account
@@ -99,10 +105,11 @@ public final class CardSessionContext {
      *            - the time periods that can be displayed for the recent
      *            account activity
      */
-    /*  13.4 Code CleanUp*/
-  /*  public void setPeriods(final RecentActivityPeriodsDetail periods) {
-        this.periods = periods;
-    }*/
+    /* 13.4 Code CleanUp */
+    /*
+     * public void setPeriods(final RecentActivityPeriodsDetail periods) {
+     * this.periods = periods; }
+     */
 
     /**
      * @return the forgotCreds
