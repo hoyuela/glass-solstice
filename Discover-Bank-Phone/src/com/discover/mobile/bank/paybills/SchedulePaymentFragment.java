@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -18,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -169,6 +171,14 @@ public class SchedulePaymentFragment extends BaseFragment
 				/** Set Calendar Fragment to null to allow it to be shown again and recreated */
 				calendarFragment = null;
 			}
+		}
+	};
+	
+	//A runnable that sends a click event to an instance of ICSspinner
+	private final Runnable performClickRunnable = new Runnable() {
+		@Override
+		public void run() {
+			paymentAccountSpinner.performClick();
 		}
 	};
 
@@ -699,12 +709,20 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountItem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				memoEdit.clearFocus();
-				amountEdit.clearFocus();
+				InputMethodManager imm = (InputMethodManager) getView().getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+				
+				if(memoEdit.isFocused()) {
+					imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
+					memoEdit.clearFocus();
+				} else if(amountEdit.isFocused()) {
+					//don't need to explicitly hide keyboard; AmountValidatedEditFields listen for focus change and handle
+					//opening/closing the keyboard accordingly
+					amountEdit.clearFocus();
+				}
 
 				paymentAccountError.setVisibility(View.GONE);
 				if(bankUser.getPaymentCapableAccounts().accounts.size() > 1) {
-					paymentAccountSpinner.performClick();
+					new Handler().postDelayed(performClickRunnable, 500);
 				}
 			}
 		});
@@ -729,6 +747,23 @@ public class SchedulePaymentFragment extends BaseFragment
 
 			@Override
 			public void onNothingSelected(final IcsAdapterView<?> parent) {
+			}
+		});
+		
+		paymentAccountSpinner.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent e) {
+				InputMethodManager imm = (InputMethodManager)getView().getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			        
+			    if(memoEdit.isFocused()) {
+			    	imm.hideSoftInputFromWindow(memoEdit.getWindowToken(), 0);
+			        memoEdit.clearFocus();
+			    } else if(amountEdit.isFocused()) {
+			    	//don't need to explicitly hide the keyboard here, because AmountValidatedEditFields automatically listen for focus change
+			        //and open/close the keyboard accordingly
+					amountEdit.clearFocus();
+			    }
+				return false;
 			}
 		});
 
