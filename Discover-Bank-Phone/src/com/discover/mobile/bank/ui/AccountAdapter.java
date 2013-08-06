@@ -61,6 +61,8 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 			
 			if (balance != null && item.balance != null) {
 				balance.setText(item.balance.formatted);
+				final int color = (item.balance.value < 0) ? R.color.error_indicator : R.color.field_copy;
+				balance.setTextColor(context.getResources().getColor(color));
 			}
 		}
 
