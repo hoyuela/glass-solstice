@@ -228,6 +228,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			//Update the settings so that they reflect that the user has been here
 			Globals.setUserHasBeenInDepositCapture(this);
 		}
+		//make sure the close button is visible
+		if(closeButton.getVisibility() == View.INVISIBLE) {
+			closeButton.setVisibility(View.VISIBLE);
+			setupButtons();
+		}
 	}
 
 	/**
