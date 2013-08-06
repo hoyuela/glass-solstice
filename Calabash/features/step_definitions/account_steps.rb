@@ -3,7 +3,7 @@
 # Asserts the presence of the gretting "greeting(based on time of day), [first name]"
 # Uses the default credentials from config.yml
 Given /^I see my salutation$/ do
-	name = CONFIG[@userEnv.to_sym][@userType.to_sym][@userName.to_sym][:name]
+	name = CONFIG[@userEnv.to_sym][@userCardBank.to_sym][@userType.to_sym][:name]
 	
 	greeting = "Hi," + " " + name
 	currentHour = Time.new.hour

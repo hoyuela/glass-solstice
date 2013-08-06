@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
@@ -79,6 +80,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 				holder.desc = (TextView) view.findViewById(R.id.description);
 				holder.amount = (TextView) view.findViewById(R.id.amount);
 				holder.pos = position;
+				holder.repeating = (ImageView) view.findViewById(R.id.reocurring);
 			}
 			/**Else reuse the old one*/
 		}else{
@@ -137,6 +139,14 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 			view.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_white : R.drawable.common_table_list_item_gray);
 
 		}
+
+		/**Show the reocurring icon if it needs to be shown*/
+		if(null != detail.frequency && !detail.frequency.equals(ActivityDetail.FREQUENCY_ONE_TIME_TRANSFER)){
+			holder.repeating.setVisibility(View.VISIBLE);
+		}else{
+			holder.repeating.setVisibility(View.GONE);
+		}
+
 		return view;
 	}
 
@@ -201,5 +211,6 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		private TextView desc;
 		private TextView amount;
 		private int pos;
+		private ImageView repeating;
 	}
 }

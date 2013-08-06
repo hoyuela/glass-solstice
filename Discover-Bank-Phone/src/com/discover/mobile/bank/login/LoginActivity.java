@@ -10,7 +10,6 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +27,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -128,7 +126,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private static final String TOGGLE_KEY = "j";	
 	private static final String IS_USER_ID_LOGIN = "k";
 	private static final String IS_FORGOT_PASSCODE = "l";
-	private static final String ERROR_EXCLAMATION_VISIBILITY= "m";
+	private static final String ERROR_EXCLAMATION_VISIBILE= "m";
 	private static final String ERROR_EXCLAMATION_COLOR_RED = "n";
 
 	/**
@@ -174,8 +172,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private ViewGroup vLoginLinks;
 	private ViewGroup vPasscodeLinks;
 	private TextView vPasscodeLink3;
-	protected ImageView exclamationIV;
+	private boolean isExclamationVisible;
 	private boolean	exclamationColorRed;
+	
 
 	// TEXT LABELS
 	private LinearLayout cardForgotAndPrivacySection;
@@ -355,9 +354,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		passcodeCardPrivacyLink = (TextView) findViewById(R.id.passcode_privacy_and_security_button_card);
 		passcodeUserIDLogin = (TextView) findViewById(R.id.passcode_user_id_login);
 		setupPasscode();
-		
-		exclamationIV = ((ImageView) findViewById(R.id.error_exclamation));
-
 	}
 	
 	
@@ -405,7 +401,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				showLogoutSuccessful();
 				getIntent().putExtra(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, false);
 				passField.getText().clear();
-				clearAllFields();
+				clearPasscodeFields();
 			}
 		}
 	}
@@ -423,7 +419,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				showSessionExpired();
 				getIntent().putExtra(IntentExtraKey.SESSION_EXPIRED, false);
 				passField.getText().clear();
-				clearAllFields();
+				clearPasscodeFields();
 			}
 		}
 	}
@@ -465,18 +461,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Log.v(TAG, "Setting error message.");
 		hideExclamation();
 		if (isPasscodeLogin()) {
-			final long sixSeconds = 6000;
-			errorTextView.invalidate();
-			errorTextView.setText(getString(R.string.passcodeInvalidAttempt));
-			errorTextView.setTextColor(getResources().getColor(R.color.black));
-			errorTextView.setVisibility(View.VISIBLE);
-			welcomeTV.setVisibility(View.GONE);
-			startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
-			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
-			BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
+			getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			welcomeTV.setVisibility(View.GONE);
-			startDefaultErrorFadeOut();
 			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			guiValidationError();
 		}else {
@@ -488,8 +475,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		setCheckMark(false, false);
 	}
 
-	public void showErrorMessage(final String errorCode,
-			final String errorMessage) {
+	public void showErrorMessage(final String errorCode, final String errorMessage) {
 		// Need to show a unique message for invalid login attempt when on
 		// passcode, can't determine from CardErrorResponseHandler
 		Log.v(TAG, "Error Code: " + errorCode);
@@ -501,30 +487,24 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			guiValidationError();
 			if ("401".equals(errorCode)) {
-				showErrorMessage(errorMessage);
-//				//do nothing specific
-//				errorTextView.setVisibility(View.VISIBLE);
-//				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
-//				errorTextView.setTextColor(getResources().getColor(R.color.black));
-//				welcomeTV.setVisibility(View.GONE);
-//				startDefaultErrorFadeOut();
-//				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
-			} else if ("4011103".equals(errorCode)) {
-				//show icon
+				showErrorMessage(getResources().getString(R.string.passcodeInvalidAttempt));
+			} else if ("4011103".equals(errorCode) ) {
 				showRedExclamation();
-				BankErrorHandler.getInstance().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
+				getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
 				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				welcomeTV.setVisibility(View.GONE);
 				startDefaultErrorFadeOut();
 				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			} else {
-				clearAllFields();
+				clearPasscodeFields();
 				//sgoff0 DEFECT 105439
 				errorTextView.setText("");
 				hideExclamation();
 			}
 		} else {
-			showErrorMessage(errorMessage);
+			if (errorMessage != null) {
+				showErrorMessage(errorMessage);
+			}
 		}
 	}
 
@@ -563,6 +543,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/** Starts the fade out animation on the error text view after six seconds. */
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
+		
+		
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
@@ -800,7 +782,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		outState.putInt(TOGGLE_KEY, Globals.getCurrentAccount().ordinal());
 		outState.putBoolean(IS_USER_ID_LOGIN, isUserIDLogin);
 		outState.putBoolean(IS_FORGOT_PASSCODE, pUtils.isForgotPasscode());
-		outState.putInt(ERROR_EXCLAMATION_VISIBILITY, exclamationIV.getVisibility());
+		outState.putBoolean(ERROR_EXCLAMATION_VISIBILE, isExclamationVisible);;
 		outState.putBoolean(ERROR_EXCLAMATION_COLOR_RED, exclamationColorRed);
 
 		super.onSaveInstanceState(outState);
@@ -850,8 +832,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		}
 
-		final boolean showExclamation = savedInstanceState.getInt(ERROR_EXCLAMATION_VISIBILITY) == View.VISIBLE;
-		if (showExclamation) {
+		if (savedInstanceState.getBoolean(ERROR_EXCLAMATION_VISIBILE)) {
 			if (savedInstanceState.getBoolean(ERROR_EXCLAMATION_COLOR_RED)) {
 				showRedExclamation();
 			} else {
@@ -972,7 +953,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 					FacadeFactory.getCardFacade().navToProvideFeedback(
 							LoginActivity.this);
 				} else {
-					BankConductor.navigateToFeedback(false, getString(R.string.bank_login_provide_feedback_url));
+					BankConductor.navigateToFeedback(false);
 				}
 				//Defect id 97126
 			}
@@ -1174,7 +1155,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void runAuthWithUsernameAndPassword(final String username, final String password) {
 		// Prevent data from restoring after a crash.
 		passField.getText().clear();
-		clearAllFields();
+		clearPasscodeFields();
 		if(!saveUserId) {
 			idField.getText().clear();
 		}
@@ -1572,7 +1553,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void clearInputs() {
 		idField.getText().clear();
-		clearAllFields();
+		clearPasscodeFields();
 		passField.getText().clear();
 		idField.clearFocus();
 		passField.clearFocus();
@@ -1795,7 +1776,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Log.v(TAG, "DisplayActiveLoginMode");
 		Log.v(TAG, "isForgot? " + pUtils.isForgotPasscode());
 		if(isPasscodeLogin()) {
-			clearAllFields();
+			clearPasscodeFields();
 			showPasscodeLogin();
 			hideUIDLogin();
 			forceSoftKeyboardShown(0);
@@ -1816,7 +1797,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				clearAllFields();
+				clearPasscodeFields();
 				guiValidationReset();
 			}
 		}, 1500);
@@ -1863,25 +1844,23 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	
 	private void showRedExclamation() {
 		exclamationColorRed = true;
-		exclamationIV.setImageResource(R.drawable.exclamation_red_img);
+		errorTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.exclamation_red_img, 0, 0, 0);
 		showExclamation();
 	}
 	
 	private void showGrayExclamation() {
 		exclamationColorRed = false;
-		exclamationIV.setImageResource(R.drawable.exclamation_gray_img);
+		errorTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.exclamation_gray_img, 0, 0, 0);
 		showExclamation();
 	}
 	
 	private void showExclamation() {
-		exclamationIV.setVisibility(View.VISIBLE);
-		errorTextView.setPadding(0, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
+		isExclamationVisible = true;
 	}
 	
 	private void hideExclamation() {
-		exclamationIV.setVisibility(View.GONE);
-		final int paddingLeft = getResources().getDimensionPixelSize(R.dimen.element_side_padding);
-		errorTextView.setPadding(paddingLeft, errorTextView.getPaddingTop(), errorTextView.getPaddingRight(), errorTextView.getPaddingBottom());
+		isExclamationVisible = false;
+		errorTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 	}
 
 	private void showPasscodeLogin() {
@@ -1929,7 +1908,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		paramTextView.setText("");
 	}
 
-	private void clearAllFields() {
+	public void clearPasscodeFields() {
 		for (final EditText fieldTV : fieldTVs) {
 			clearField(fieldTV);
 		}

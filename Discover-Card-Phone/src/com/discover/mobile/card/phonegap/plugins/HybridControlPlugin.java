@@ -76,7 +76,8 @@ public class HybridControlPlugin extends CordovaPlugin {
     @Override
     public boolean execute(final String action, final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
-
+    			//13.4 Code CleanUp
+/*
         if (action.equals(changeStatusText)) {
             final String newTitle = (String) args.get(0);
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
@@ -92,7 +93,7 @@ public class HybridControlPlugin extends CordovaPlugin {
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
-        } else if (action.equals(showMenu)) {
+        } else */if (action.equals(showMenu)) {
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {

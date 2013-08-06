@@ -15,12 +15,12 @@
 <!-- General FAQ Items -->
 	<string name="is_banking_safe_title">Is the Discover Mobile App as secure as Discover.com?</string>
 	<string name="is_banking_safe_body">
-		<![CDATA[The Discover Mobile App uses the same security standards as <a href="com.discover.mobile://www.discover.com">Discover.com</a>.  We ensure a high security level by never showing your account number, timing out each session after a period of inactivity, and by using your existing User ID and Password, which only you know.]]>
+		<![CDATA[The Discover Mobile App uses the same security standards as Discover.com.  We ensure a high security level by never showing your account number, timing out each session after a period of inactivity, and by using your existing User ID and Password, which only you know.]]>
 	</string>
 	
 	<string name="whats_required_title">What do I need to log in to Discover Mobile?</string>
 	<string name="whats_required_body">
-		<![CDATA[To log in, you can use the same user ID and password that you have set up at <a href="com.discover.mobile://www.discover.com">Discover.com</a>]]>.
+		<![CDATA[To log in, you can use the same user ID and password that you have set up at Discover.com]]>.
 	</string>
 	
 	<string name="whats_options">What are the options to remember my device for the Enhanced Account Security?</string>

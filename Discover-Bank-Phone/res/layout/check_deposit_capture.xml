@@ -165,6 +165,22 @@
             android:background="@drawable/check_deposit_help_button"
             android:contentDescription="@string/empty" />
 
+     
+           <TextView
+               android:id="@+id/help_text_wrapper"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_toRightOf="@+id/help_button"
+               android:layout_marginLeft="@dimen/between_related_elements_padding"
+               android:layout_toLeftOf="@+id/capture_button"
+               android:layout_marginRight="@dimen/between_related_elements_padding"
+               android:layout_centerVertical="true"
+               android:gravity="center"
+               android:text="@string/bank_deposit_help_text"
+               android:textColor="@color/body_copy"
+               />
+               
+      
         <Button
             android:id="@+id/retake_button"
             style="@style/common_call_to_action_gray_theme"
@@ -197,5 +213,15 @@
             android:paddingRight="30dp"
             android:text="@string/capture" />
     </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/capturetips"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:contentDescription="@string/empty"
+        android:background="@color/bank_overlay_shadow"
+        android:src="@drawable/deposit_check_coachmarks"
+        android:onClick="closeLayout"
+        android:visibility="gone"/>
 
 </RelativeLayout>

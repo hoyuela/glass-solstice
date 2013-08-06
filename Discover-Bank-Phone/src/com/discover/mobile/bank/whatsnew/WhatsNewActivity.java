@@ -243,7 +243,8 @@ public class WhatsNewActivity extends FragmentActivity implements ErrorHandlerUi
 	@Override
 	public void onBackPressed() {
 		if(!isTimingOut){
-			BankConductor.navigateToHomePage();
+			ShowDialogAndSwitchActivityTask progress = new ShowDialogAndSwitchActivityTask(this);
+			progress.execute();
 		}
 	}
 

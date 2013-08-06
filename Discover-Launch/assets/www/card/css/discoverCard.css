@@ -596,6 +596,8 @@ background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2
 -moz-box-shadow:none !important;
 box-shadow: none !important;}
 
+#strongAuthFirstQues-pg .wraper .collapsible {display: none;}  /* 13.3 global change 31/07/13 (defect 105467) */
+
 #footnotes a, #footnotes p {
 	text-align: center;
 	display: block;

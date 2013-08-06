@@ -753,7 +753,14 @@ try{
 					//$(".acctnumerrormsg").hide();
 					$("#"+activePage+" #accountNumber").parent(".wrapperSpan").siblings(".errormsg").show();
 					$("#"+activePage+" #accountNumber").parent(".wrapperSpan").css({"border-bottom": "solid 1px #ed1c24","border-left": "solid 1px #ed1c24","border-right": "solid 1px #ed1c24"});
-				isAccNumbrInlineErr = true;
+					/* 13.3 Global changes - 107306 - 1-Aug-2013 - Start  */
+					$("#"+activePage+" #confirmAccountNumber").parent(".wrapperSpan").css({"border-bottom": "solid 1px #ed1c24","border-left": "solid 1px #ed1c24","border-right": "solid 1px #ed1c24"});
+					/* 13.3 Global changes - 107306 - 1-Aug-2013 - end  */	
+					isAccNumbrInlineErr = true;
+					//Start :change for defect 107133//
+                     $("#"+activePage+" #confirmAccountNumber").val("");
+                    //End :change for defect 107133//
+
 			}else {
 					$(".errorText").hide();
 					$("#"+activePage+" #accountNumber").parent(".wrapperSpan").siblings(".errormsg").hide();

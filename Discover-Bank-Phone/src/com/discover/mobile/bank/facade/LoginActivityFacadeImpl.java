@@ -57,14 +57,16 @@ public class LoginActivityFacadeImpl implements LoginActivityFacade {
 			} else if (bundle
 					.containsKey(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE)) {
 				((LoginActivity) currentActivity).showLogoutSuccessful();
-			} else if (bundle.containsKey(IntentExtraKey.ERROR_CODE) && 
-					bundle.containsKey(IntentExtraKey.SHOW_ERROR_MESSAGE)) {
+			} else if (bundle.containsKey(IntentExtraKey.ERROR_CODE)) {
 				((LoginActivity) currentActivity).showErrorMessage(
 						bundle.getString(IntentExtraKey.ERROR_CODE),
 						bundle.getString(IntentExtraKey.SHOW_ERROR_MESSAGE));
 			} else if (bundle.containsKey(IntentExtraKey.SHOW_ERROR_MESSAGE)) {
 				((LoginActivity) currentActivity).showErrorMessage(bundle
 						.getString(IntentExtraKey.SHOW_ERROR_MESSAGE));
+			} else {
+				//clear bad input
+				((LoginActivity) currentActivity).clearPasscodeFields();
 			}
 		}
 		

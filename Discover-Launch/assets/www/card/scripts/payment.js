@@ -89,7 +89,7 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 			dfs.crd.pymt.globalOpenAmount = payDataObj.openAmount;
 			var defaultValue = "0.00";
 			var daysDelinquentVal=payDataObj.daysDelinquent;
-			
+			inLineError.html("");
 			/*if(payDataObj.isHaMode){
 				$("#paySummary_HAMode_Div").removeClass("hidden");
 				$("#paySummary_HAMode_Div p").html(errorCodeMap["Pay_func_unavail"]);
@@ -173,7 +173,9 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 		showSysException(err);
 	}
 }
-
+$("#paymentStep1-pg").live("pagehide", function() {
+	$("#paymentsSummary_Inline_Error").text("");
+})
 dfs.crd.pymt.populatePaymentSummaryErrorDivs = function(jqXHR){
 	try {
 		hideSpinner();
@@ -567,13 +569,22 @@ function paymentStep1Load()
 			if(isLhnNavigation){
 //				if(fromPageName == "paymentStep2" && dfs.crd.pymt.pendingPaymentEdit){
 					dfs.crd.pymt.pendingPaymentEdit = false;
-
+					putDataToCache("editPaymentFailFlag", false);
+					putDataToCache("editPaymentFailMsg","");
 //				}
 			}else if(dfs.crd.pymt.pendingPaymentEdit && (jQuery.inArray(fromPageName, validPriorPagesforEdit) == -1)){
 				dfs.crd.pymt.pendingPaymentEdit = false;
 			}
-			
-			
+
+			if(getDataFromCache("editPaymentFailFlag")){
+				console.log("FromPAge NAMe is given as ************ "+fromPageName)
+				var validPriorPagesforFailEdit = new Array("paymentStep2","paymentInformation","lateMinPayWarn1","lateMinPayWarnNoMinPay");
+				 if(jQuery.inArray(fromPageName, validPriorPagesforFailEdit) == -1){
+					console.log("******We are here in the ErroCode returned from PaymenrtStep3"+fromPageName) ;
+					putDataToCache("editPaymentFailFlag", false);
+					putDataToCache("editPaymentFailMsg","");
+				 }
+			}
 //			$(".rdoBtn").parents(".radioWrap").removeClass("radioSelected");
 			//Site-catalyst 13.4 Implementation start
 			if(dfs.crd.pymt.pendingPaymentEdit){
@@ -640,8 +651,8 @@ function paymentStep1Load()
 			$(".mapcalendar#calendar").datepicker(/*13.3 global change 29/07/13 */
 			        {
 					    dayNamesMin:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
-//						hideIfNoPrevNext : true,
-//						showOtherMonths : true,
+						hideIfNoPrevNext : true,/*13.3 global change 1/08/13 */
+ 						showOtherMonths : true,/*13.3 global change 1/08/13 */
 						selectOtherMonths : false,
 						constrainInput : true,
 						onSelect : function(dateText, inst)
@@ -704,7 +715,9 @@ function paymentStep1Load()
 						return;
 					} else if (parseFloat(payAmount) < 0.01 || parseFloat(payAmount) > 99999.99) 
 					{	
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1207"]);
 						errorPaymentAmountExceed.css("display","block");
@@ -715,7 +728,9 @@ function paymentStep1Load()
 					}
 					else if (!isEmpty(payAmount) && !dfs.crd.pymt.checkCurrency(payAmount)) 
 					{
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1210"]);
 						errorPaymentAmountExceed.css("display","block");
@@ -1084,6 +1099,22 @@ $("#paymentStep1-pg").live("pagebeforeshow", function() {
 				}
 //				);
 			}
+			var PCT_OVER ="1.1";
+			var pendingPaymentGetData = getDataFromCache("PENDINGPAYSLTDATA");
+			var outStandingBalance = "0.00";
+			if(!isEmpty(pendingPaymentGetData)){
+				outStandingBalance = pendingPaymentGetData.outStandingBal;
+			}
+			 if ((outStandingBalance != "0.00") && parseFloat(selectedFieldVal) > (PCT_OVER * parseFloat(outStandingBalance))) 
+				{
+					var errorMessage = errorCodeMap["1209"];
+					var payDetail = [];
+					payDetail["outstandingBalance"] = outStandingBalance;
+					var parseContentText = parseContent(errorMessage, payDetail);
+					$("#errorPaymentAmountExceed").text(
+							parseContent(parseContentText, selectedFieldVal));
+//					$("#minpaystepone_other").addClass('errormsg');
+				} 
 				
 			dfs.crd.pymt.changeDropDownLabel();
 			
@@ -1144,7 +1175,12 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 					}
 				}
 			}
-
+			if(getDataFromCache("editPaymentFailFlag")){
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").addClass("alertGreyImage");
+				$("#amounterror").html(getDataFromCache("editPaymentFailMsg"));
+				$("#amounterror").css("display","block");
+			}
 			if(dfs.crd.pymt.globalOpenAmount <0)
 				dfs.crd.pymt.globalOpenAmount = dfs.crd.pymt.globalOpenAmount.substring(1);
 			
@@ -1155,7 +1191,10 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 						cpEvent.preventDefault();
 						navigation("../payments/pendingPayments");
 					}else{
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+                        $("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
+						$("#ha_MakePaymentStepOne_Error").css("display","block");
 						$("#ha_MakePaymentStepOne_Error").html(errorCodeMap["Pay_func_unavail"]);
 						var postingDate = stepOne.bankInfo[0].openDates[0];
 						var currentDate = new Date(postingDate);
@@ -1206,7 +1245,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 			$('div.dd.ddcommon.borderRadius').parent().find('a.ui-btn').remove();
 			
 			if (stepOne.daysDelinquent > 0){
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMAP1.append(errorCodeMap["Days_Delinquent"]);
 			}	
 
@@ -1228,7 +1269,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				var overLimitAmt = [];
 				var errMsg = errorCodeMap["Over_Limit"];
 				overLimitAmt["overLimitAmount"] = stepOne.overLimitAmount;
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMAP1.html("\n" + parseContent(errMsg, overLimitAmt));
 			}
 			if (!isEmpty(paymentDueDate)) {
@@ -1273,7 +1316,9 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 					$("#minpaystepone_other").addClass("errormsg");
 				}
 				else {
-					$("#errorDivForMAP1 .alertImage").css("display","block");
+					$("#alertImageSpan").css("display","block");
+					$("#alertImageSpan").removeClass("alertGreyImage");
+					$("#alertImageSpan").addClass("alertImage");
 					commonErrorMAP1.html(dfs.crd.pymt.messageAftrConfrm);
 				}
 			}
@@ -1431,16 +1476,24 @@ dfs.crd.pymt.bankSelected = function()
 		var errorMsgClass = $(".errormsg");
 		$("#radio2Error").text("");
 		$("#radio1Error").text("");
-		$("#errorPaymentAmountExceed").text("");
+		if(dfs.crd.pymt.pendingPaymentEdit){
+			if(isEmpty($("#errorPaymentAmountExceed").text()))
+			$("#errorPaymentAmountExceed").text("");
+		}else{
+			$("#errorPaymentAmountExceed").text("");
+		}
 		$("#minpaystepone_other").parent(".wrapperSpan").removeClass('errormsg');
 		commonErrorMap1.html("");
 		$(".dd").removeClass("ddHighlightError");
 		$(".arrow").removeClass("ddHighlightErrorArrow");
 		$("#errorbankinfoDiv").html("");
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
+
 		errorPostingDate.text("");
 		$("#datepicker-val").removeClass("redtext");
 		$("#minpaystepone_paymentduedate").removeClass('errormsg');
@@ -1479,7 +1532,9 @@ dfs.crd.pymt.bankSelected = function()
 				}
 				else if (!isEmpty(paymentBankInfo[option.index() - 1].openDates)) {
 					if (paymentBankInfo[option.index() - 1].openDates.length < 1) {
-						$("#errorDivForMAP1 .alertImage").css("display","block");
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
 						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 						//errorMsgClass.css("display", "block");
 						$("#errorbankinfoDiv").html(errorCodeMap["NoDates_for_Bank"]);
@@ -1506,10 +1561,12 @@ dfs.crd.pymt.bankSelected = function()
 					if(!isEmpty(existDate)) {
 						if (!(jQuery.inArray(existDate, dfs.crd.pymt.validDays) > -1)){
 							var errorMessage = errorCodeMap["BAD_DATE"];
-							$("#errorDivForMAP1 .alertGreyImage").css("display","block");
+							$("#alertImageSpan").css("display","block");
+							$("#alertImageSpan").removeClass("alertImage");
+							$("#alertImageSpan").addClass("alertGreyImage");
 							commonErrorMap1.html(errorMessage);
-							deactiveBtn("makePaymentOneContinue");
-							$("#makePaymentOneContinue").addClass("paymtBtnDisable");
+//							deactiveBtn("makePaymentOneContinue");
+//							$("#makePaymentOneContinue").addClass("paymtBtnDisable");
 							calendar.datepicker( "setDate" , new Date(dfs.crd.pymt.validDays[0]));
 							$("#datepicker-value").val(dfs.crd.pymt.validDays[0]);
 							$("#datepicker-val").val(dfs.crd.pymt.validDays[0]);
@@ -1522,17 +1579,18 @@ dfs.crd.pymt.bankSelected = function()
 
 				}
 				if (!isEmpty(dfs.crd.pymt.validDays)) {
-					calendar.datepicker("option", "minDate",
-							dfs.crd.pymt.validDays[0]);
+				calendar.datepicker("option", "minDate",dfs.crd.pymt.validDays[0]);
 					calendar.datepicker("option","maxDate",dfs.crd.pymt.validDays[dfs.crd.pymt.validDays.length - 1]);
-					var numberOfMonths = new Date(dfs.crd.pymt.validDays[dfs.crd.pymt.validDays.length - 1]).getMonth() - new Date(dfs.crd.pymt.validDays[0]).getMonth();	
+					/*13.3 global change 1/08/13 Start*/
+					var numberOfMonths = monthDiff(new Date(dfs.crd.pymt.validDays[0]), new Date(dfs.crd.pymt.validDays[dfs.crd.pymt.validDays.length - 1]));	
 					console.log("NUMBER OF MONTHS FOR THE USER is :- "+numberOfMonths);
-					if(numberOfMonths <0){
+					/*if(numberOfMonths <0){
 						numberOfMonths = (12+numberOfMonths);
 					}
-					numberOfMonths = numberOfMonths+1;
+					numberOfMonths = numberOfMonths+1;*/
 					console.log("*****NUMBER OF MONTHS FOR THE USER is ****:- "+numberOfMonths);
-					calendar.datepicker( "option", "numberOfMonths", [ numberOfMonths, 1 ] );
+					calendar.datepicker( "option", "numberOfMonths",numberOfMonths);// [ numberOfMonths, 1 ] );
+					/*13.3 global change 1/08/13 End*/
 					if(dfs.crd.pymt.pendingPaymentEdit){
 						var dataForPendingPay = getDataFromCache("PENDINGPAYSLTDATA");
 						if(!isEmpty(dataForPendingPay)){
@@ -1565,6 +1623,14 @@ dfs.crd.pymt.bankSelected = function()
 	}
 }
 
+/*13.3 global change 1/08/13 */
+function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth() + 1;
+    months += d2.getMonth() + 1;
+    return months < 0 ? (months*-1)+1 : months+1;
+}
 dfs.crd.pymt.paymentDateSet = function(paymentDate)
 {
 	try {
@@ -1636,6 +1702,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 		var currValue 			= bankAccInfo.currentBalance;
 		var option = $("#bankDropDownStepOne").find("option:selected")
 		var bank = userBankDetail[option.index() - 1].bankName;
+		if(dfs.crd.pymt.pendingPaymentEdit){
+			bank=isEmpty(userBankDetail[option.index() - 1].nickName)?userBankDetail[option.index() - 1].bankName:userBankDetail[option.index() - 1].nickName;
+		}
 		var maskedAccountNumber = userBankDetail[option.index() - 1].maskedBankAcctNbr;
 		var keyValue = option.val();
 		var existingDate = $("#date-compare").val();
@@ -1645,12 +1714,21 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 		var paymentStep1SeletecFields = {};
 		radio2Error.text("");
 		$("#radio1Error").text("");
-		$("#errorPaymentAmountExceed").text("");
-		commonErrorMap1.text("");
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(dfs.crd.pymt.pendingPaymentEdit){
+			if(isEmpty($("#errorPaymentAmountExceed").text()))
+			$("#errorPaymentAmountExceed").text("");
+		}else{
+			$("#errorPaymentAmountExceed").text("");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
+
+		commonErrorMap1.text("");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			$("#alertImageSpan").css("display","none");
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
+		}
 		if (existingDate != "") {
 			if (!(jQuery.inArray(existingDate, dfs.crd.pymt.validDays) > -1)) {
 				$("#button-selectdate").addClass("ui-btn-up-errormsg");
@@ -1687,7 +1765,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			var pctvalue=parseFloat(PCT_OVER * value);
 			
 			if (isEmpty(payAmount)) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1222"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
@@ -1697,9 +1777,11 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				return;
 			}
 			else if (!dfs.crd.pymt.checkCurrency(payAmount)) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				$("#commonErrorInMakePaymentStepOneDiv").html(
-						errorCodeMap["Update_HighLighted"]);
+				errorCodeMap["Update_HighLighted"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
@@ -1708,7 +1790,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			}
 			else if (parseFloat(payAmount) < 0.01
 					|| parseFloat(payAmount) > 99999.99) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1207"]);
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
@@ -1716,10 +1800,37 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
 				return;
-			}
-			else if ((!bankAccInfo.haveSchedulePayments)
-					&& (parseFloat(payAmount) > (PCT_OVER * parseFloat(value)))) {
-				$("#errorDivForMAP1 .alertImage").css("display","block");
+			}else if(dfs.crd.pymt.pendingPaymentEdit){
+				
+				var pendingPaymentGetData = getDataFromCache("PENDINGPAYSLTDATA");
+				var outStandingBalance = "0.00"
+				if(!isEmpty(pendingPaymentGetData)){
+					outStandingBalance = pendingPaymentGetData.outStandingBal;
+				}
+				 if ((outStandingBalance != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(outStandingBalance))) 
+					{
+						$("#alertImageSpan").css("display","block");
+						$("#alertImageSpan").removeClass("alertGreyImage");
+						$("#alertImageSpan").addClass("alertImage");
+						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
+						var errorMessage = errorCodeMap["1209"];
+						var payDetail = [];
+						payDetail["outstandingBalance"] = outStandingBalance;
+						var parseContentText = parseContent(errorMessage, payDetail);
+						$("#errorPaymentAmountExceed").text(
+								parseContent(parseContentText, curntValue));
+						$("#minpaystepone_other").addClass('errormsg');
+						return;
+					} 
+					else {
+						stepone_value_radio = "$" + payAmount;
+					}
+
+			}else{		 
+				if ((!bankAccInfo.haveSchedulePayments)&& (parseFloat(payAmount) > (PCT_OVER * parseFloat(value)))) {
+				$("#alertImageSpan").css("display","block");
+				$("#alertImageSpan").removeClass("alertGreyImage");
+				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				var errMsg = errorCodeMap["1208"];
 				var curntValue = [];
@@ -1730,23 +1841,27 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
 				
 				return;
-			}else if ((dfs.crd.pymt.globalOpenAmount != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(dfs.crd.pymt.globalOpenAmount))) 
-			{
-				$("#errorDivForMAP1 .alertImage").css("display","block");
-				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
-				var errorMessage = errorCodeMap["1209"];
-				var payDetail = [];
-				payDetail["outstandingBalance"] = dfs.crd.pymt.globalOpenAmount;
-				var parseContentText = parseContent(errorMessage, payDetail);
-				$("#errorPaymentAmountExceed").text(
-						parseContent(parseContentText, curntValue));
-				$("#minpaystepone_other").addClass('errormsg');
-				return;
-			} 
-			else {
-				stepone_value_radio = "$" + payAmount;
+				}else if ((dfs.crd.pymt.globalOpenAmount != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(dfs.crd.pymt.globalOpenAmount))) 
+				{
+					$("#alertImageSpan").css("display","block");
+					$("#alertImageSpan").removeClass("alertGreyImage");
+					$("#alertImageSpan").addClass("alertImage");
+					commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
+					var errorMessage = errorCodeMap["1209"];
+					var payDetail = [];
+					payDetail["outstandingBalance"] = dfs.crd.pymt.globalOpenAmount;
+					var parseContentText = parseContent(errorMessage, payDetail);
+					$("#errorPaymentAmountExceed").text(
+							parseContent(parseContentText, curntValue));
+					$("#minpaystepone_other").addClass('errormsg');
+					return;
+				} 
+				else {
+					stepone_value_radio = "$" + payAmount;
+				}
 			}
 		}
+
 
 		if (option.index() != 0) {
 			if ((userBankDetail[option.index() - 1].hashedBankAcctNbr != ("" || null))) {
@@ -1758,7 +1873,9 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			}
 		}
 		else {
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorCodeMap["Select_Bank"]);
 			return;
 		}
@@ -1770,13 +1887,17 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 			invalidBank["bankAccount"] = bank;
 			var errorMessage = errorCodeMap["BAD_BANK"];
 			var errorTxt = parseContent(errorMessage, invalidBank);
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorTxt);
 			$("#bankDropDownStepOne").addClass("ui-btn-up-errormsg");
 		}
 		else if (!validDate && (!bankAccInfo.isHaMode)) {
 			var errorMessage = errorCodeMap["BAD_DATE"];
-			$("#errorDivForMAP1 .alertImage").css("display","block");
+			$("#alertImageSpan").css("display","block");
+			$("#alertImageSpan").removeClass("alertGreyImage");
+			$("#alertImageSpan").addClass("alertImage");
 			commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 			$(".errormsg").css("display", "block");
 			$("#errorPostingDate").text(errorMessage);
@@ -1830,14 +1951,23 @@ dfs.crd.pymt.changeDropDownLabel = function()
 	try {
 		$("#radio2Error").text("");
 		$("#radio1Error").text("");
-		$("#errorPaymentAmountExceed").text("");
+		if(dfs.crd.pymt.pendingPaymentEdit){
+			if(isEmpty($("#errorPaymentAmountExceed").text()))
+			$("#errorPaymentAmountExceed").text("");
+		}else{
+			$("#errorPaymentAmountExceed").text("");
+		}
+
 		$("#minpaystepone_other").parent(".wrapperSpan").removeClass('errormsg');
 		$("#commonErrorInMakePaymentStepOneDiv").html("");
 		
-		if(isEmpty($("#ha_MakePaymentStepOne_Error").text())){
-			$("#errorDivForMAP1 .alertImage").css("display","none");
+		if(isEmpty($("#ha_MakePaymentStepOne_Error").text()) && isEmpty($("#amounterror").text())){
+			$("#alertImageSpan").css("display","none");
+			if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertGreyImage");
+			else if($("#alertImageSpan").hasClass("alertGreyImage"))
+				$("#alertImageSpan").removeClass("alertImage");
 		}
-		$("#errorDivForMAP1 .alertGreyImage").css("display","none");
 		var isBankSelected = false;
 		var isDateSelected = false;
 		var radioflag = false;
@@ -1933,6 +2063,11 @@ dfs.crd.pymt.getPaymentVerifiacation = function(pageName){
 		var mapStepTwoData 	  = getDataFromCache("MAKEPAYMENTTWO");
 //		console.log("MAKE PAY STEP @ DATA :- "+mapStepTwoData.isHAMode);
 		var HASPAYMENTSURL 	= RESTURL + "pymt/v1/paymentverification?paymentDate=" + mapStepTwoData.PostingDate+"&isHaMode="+mapStepTwoData.isHAMode ;
+		if(dfs.crd.pymt.pendingPaymentEdit){
+			var paymentSelectedData = getDataFromCache("selected_Pending_payments");
+			if(!isEmpty(paymentSelectedData))
+			HASPAYMENTSURL 	= RESTURL + "pymt/v1/paymentverification?paymentDate=" + mapStepTwoData.PostingDate+"&isHaMode="+mapStepTwoData.isHAMode+"&sequenceNumber="+ paymentSelectedData.sequenceNumber ;
+		}
 		var payVerifyJSON = {
 				"serviceURL" : HASPAYMENTSURL,
 				"isASyncServiceCall" :false,
@@ -2448,16 +2583,14 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 			}
 
 			var errorMessage = errorCodeMap["1261"];
-			var payDetails = [];
-			payDetails["changedPostingDate"] = formatPostingDueDate_MakePaymentStep2(postingDate);
+/*			var payDetails = [];
+			payDetails["changedPostingDate"] = postingDate;
 			var parseContentText = parseContent(
-					errorMessage, payDetails);
-
-			if (!isEmpty(parseContentText))
-				errorHandler(code, parseContentText,
-				"paymentStep1");
-			else
-				errorHandler(code, "", "paymentStep1");
+					errorMessage, payDetails);*/
+			cpEvent.preventDefault();
+			putDataToCache("editPaymentFailFlag", true);
+			putDataToCache("editPaymentFailMsg",errorMessage);
+			navigation("paymentStep1");
 
 			break;
 		case "1257":
@@ -2532,8 +2665,10 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 		var shortAccountText = jQuery.trim(stepThree.maskedBankAccountNumber).split('*');
 		shortAccountText = shortAccountText[shortAccountText.length - 1];
 		$("#accountEndingNum").text("Account Ending in "+shortAccountText);
-		
-		$("#payStep3BankDtl").text(newBankDetails.bankName);
+
+		var bankOrNickName = isEmpty(stepThree.nickName)?stepThree.bankName:stepThree.nickName;
+
+		$("#payStep3BankDtl").text(bankOrNickName);
 		$("#paystep3Confirm").text(stepThree.confirmationNumber);
 		if(dfs.crd.pymt.pendingPaymentEdit){
 			$("#makePaymentEditConfirmBtn").show();
@@ -2807,22 +2942,11 @@ dfs.crd.pymt.verifyPendingPayment = function(pendingPaySltdData){
 			if(!pendingPaySltdData.isAutoPayPayment){
 				if(!pendingPaySltdData.isHaMode){
 					if(pendingPaySltdData.paymentMethod == "Online"){
-						if(projectBeyondCard){
-							if(!(getDataFromCache("PENDINGPAYMENTS").isCutoffAvailable)){
-								if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
-									navigation('../payments/paymentsEligible');		
-								}else{
-									navigation('../payments/paymentsNotEligible');
-								}
-							}else{
-								navigation('../payments/paymentsNotEligible');
-							}
-						}else{
-							if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
+						if((pendingPaySltdData.status == "Edit|Cancel" )|| (pendingPaySltdData.status == "Cancel")){
 								navigation('../payments/paymentsEligible');		
-							}else{
-								navigation('../payments/paymentsNotEligible');
-							}
+						}
+						else{
+							navigation('../payments/paymentsNotEligible');
 						}
 					}else{
 						navigation('../payments/paymentsNotEligible');
@@ -2947,11 +3071,11 @@ try{
 					var textNonOnline = "This Payment cannot be edited because it was not scheduled online.";
 					$("#payNonEligibleNonOnlinePay").html(textNonOnline);
 				}
-		if(projectBeyondCard){
+/*		if(projectBeyondCard){
 			$("#payNonEligibleCutOff").html(errorCodeMap["Is_cutoffPB"]);
 		}else{
 			$("#payNonEligibleCutOff").html(errorCodeMap["Is_cutoff"]);
-		}
+		}*/
 
 
 	}else{
@@ -3284,11 +3408,14 @@ dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
      try {
             var newBankDetails = dfs.crd.pymt.truncateBankDetails(
                          saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
+		    var shortAccountText = jQuery.trim(saveTophotosData.maskedBankAccountNumber).split('*');
+            shortAccountText = shortAccountText[shortAccountText.length - 1];
+             var bankOrNickName = isEmpty(saveTophotosData.nickName)?saveTophotosData.bankName:bankOrNickName.nickName;
             $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
             $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
-            $("#savePaymentPhotosPosting_date").text(formatPostingDueDate_MakePaymentStep2(saveTophotosData.paymentDate));
-            $("#savePaymentPhotosAccountEndingNum").text(newBankDetails.accountNumber);
-            $("#savePaymentPhotosBankDetail").text(newBankDetails.bankName);
+            $("#savePaymentPhotosPosting_date").text(saveTophotosData.paymentDate);
+            $("#savePaymentPhotosAccountEndingNum").text(shortAccountText);
+            $("#savePaymentPhotosBankDetail").text(bankOrNickName);
             
      } catch (err) {
             showSysException(err);

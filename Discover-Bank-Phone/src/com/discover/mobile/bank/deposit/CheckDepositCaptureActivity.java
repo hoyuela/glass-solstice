@@ -24,6 +24,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -36,6 +37,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,11 +46,13 @@ import android.widget.TextView;
 import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
-public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
+public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, AnimationListener {
 	private static final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
 
 	public static final int RETAKE_FRONT = 1;
@@ -74,7 +79,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	//TEXT LABELS
 	private TextView frontLabel;
 	private TextView backLabel;
-
+	private TextView captureHelpTextView;
+	
 	//BREADCRUMB CHECKMARKS
 	private ImageView stepOneCheck;
 	private ImageView stepTwoCheck;
@@ -90,6 +96,15 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private Drawable countdownTwo;
 	private Drawable countdownOne;
 
+	//AUTO CAPTURE TIPS
+	private ImageView tips;
+
+	/** Length of time the tips will appear */
+	private final int LIFESPAN = 5000;
+
+	/** Animation Duration */
+	private final int ANIMATIONDURATION = 1000;
+
 	private int count = THREE;
 
 	private boolean cameraConfigured = false;
@@ -104,7 +119,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.check_deposit_capture);
 
 		loadViews();
@@ -121,13 +136,49 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	}
 
 	/**
+	 * Show the capture tips layout
+	 */
+	private void showCaptureTips() {
+		tips.setVisibility(View.VISIBLE);
+
+		//After causing the view to appear count out 5 seconds than disappear.
+		final Handler fadeThread = new Handler();
+		fadeThread.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				if (View.VISIBLE == tips.getVisibility()) {
+					fadeTipsLayout();
+				}	
+			}
+		}, LIFESPAN);
+	}
+
+	/**
+	 * Fade out the tips layout1
+	 */
+	protected void fadeTipsLayout(){
+		final Animation fade = Animator.createFadeOutAnimation(ANIMATIONDURATION);
+		fade.setAnimationListener(CheckDepositCaptureActivity.this);
+		tips.startAnimation(fade);
+	}
+
+	/**
+	 * Hide a view that was clicked on
+	 * @param v - view to hide
+	 */
+	public void closeLayout(final View v){
+		v.setVisibility(View.GONE);
+	}
+
+	/**
 	 * Create the orientation changed listener, this will attempt to force the orientation into landscape mode
 	 * if the orientation of the activity is changed.
 	 * @return the orientation changed listener
 	 */
 	public OrientationEventListener createOrientationListener() {
 		final OrientationEventListener ret = 
-				new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+				new OrientationEventListener(getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
 			@Override
 			public void onOrientationChanged(final int arg0) {
 				final int requestedOrientation = 
@@ -143,7 +194,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		return ret;  
 	}
-	
+
 	/**
 	 * Start the listener for orientation change.
 	 */
@@ -153,7 +204,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		}
 		orientationListener.enable();
 	}
-	
+
 	/**
 	 * Stop the listener for orientation change.
 	 */
@@ -170,6 +221,13 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		isPaused = false;
 		super.onResume();
 		startOrientationListener();
+
+		//Check to see if this is the users first time in the capture activity
+		if(!Globals.isUsersFirstTimeInDepositCapture(this)){
+			showCaptureTips();
+			//Update the settings so that they reflect that the user has been here
+			Globals.setUserHasBeenInDepositCapture(this);
+		}
 	}
 
 	/**
@@ -181,13 +239,14 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		orientationListener.disable();
 
 		isPaused = true;	
-		
+
 		//Check to see if onPause was called because the activity is being finished
 		if( !isFinishing() ) {
 			//Reset the capture image if the user pauses the fragment during countdown or 
 			//before they press confirm capture.
 			if(retakeButton.getVisibility() == View.VISIBLE) {
 				retakeClickListener.onClick(null);
+				captureHelpTextView.setVisibility(View.GONE);
 			}else if (!captureButton.isClickable()) {
 				setupButtons();
 			}
@@ -196,18 +255,18 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		super.onPause();
 	}
 
-	
+
 	/**
 	 * If the async task is not finished when the activity stops, we need to cancel it.
 	 */
 	@Override
 	public void onStop() {
 		super.onStop();
-		
+
 		if(timerTask != null) {
 			timerTask.cancel(true);
 		}
-		
+
 		resetCountdown();
 	}
 
@@ -236,8 +295,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		captureButton = (Button)findViewById(R.id.capture_button);
 		retakeButton = (Button)findViewById(R.id.retake_button);
+		tips = (ImageView) findViewById(R.id.capturetips);
 
 		helpButton.setClickable(true);
+		captureHelpTextView = (TextView) findViewById(R.id.help_text_wrapper);
 	}
 
 	/**
@@ -288,7 +349,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		boolean bothImagesDeleted = true;
 		bothImagesDeleted &= deleteBackImage(context);
 		bothImagesDeleted &= deleteFrontImage(context);
-		
+
 		return bothImagesDeleted;
 	}
 
@@ -314,7 +375,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			public void onClick(final View v) {
 				if(!isStepOneChecked() || !isStepTwoChecked()) {
 					clearImageCacheIfNotRetaking();
-					 setResult(RESULT_CANCELED);    
+					setResult(RESULT_CANCELED);    
 					finish();
 				}
 			}
@@ -334,7 +395,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	private void showModal(final AlertDialog modal) {
 		if(modal != null) {
-			this.showCustomAlert(modal);
+			showCustomAlert(modal);
 		}
 	}
 
@@ -428,7 +489,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			return true;		    
 		}
 	};
-	
+
 	/**
 	 * Starts the process of capturing an image.
 	 */
@@ -438,12 +499,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		startCountdownTimer();
 		recordAnalyticsPictureTaking();
 	}
-	
+
 	/**
 	 * Record the analytics data for this section of the application.
 	 */
 	private void recordAnalyticsPictureTaking() {
-		
+
 		//Track the taking of pictures
 		if(!isStepOneChecked()){
 			BankTrackingHelper.forceTrackPage(R.string.bank_capture_front);
@@ -502,9 +563,14 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	@Override
 	public void onBackPressed() {
-		clearImageCacheIfNotRetaking();
-		super.onBackPressed();
+		if(View.VISIBLE == tips.getVisibility()){
+			fadeTipsLayout();
+		}else{
+			clearImageCacheIfNotRetaking();
+			super.onBackPressed();
+		}
 	}
+
 	/**
 	 * This is the click listener for the retake button. It resets the camera preview and sets up the 
 	 * buttons on the screen to their default state.
@@ -535,7 +601,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void goToNextStep() {
 		if(isStepTwoChecked()){
 			this.setResult(Activity.RESULT_OK);
-			this.finish();
+			finish();
 		}else if(isStepOneChecked()){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
@@ -568,8 +634,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		if(retakeValue == RETAKE_FRONT){
 			stepOneCheck.setVisibility(View.INVISIBLE);
-		}
-		else if(isStepTwoChecked()) {
+		} else if(isStepTwoChecked()) {
 			stepTwoCheck.setVisibility(View.INVISIBLE);
 		} else if(isStepOneChecked()) {
 			stepOneCheck.setVisibility(View.INVISIBLE);
@@ -640,6 +705,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		closeButton.setVisibility(View.VISIBLE);
+		captureHelpTextView.setVisibility(View.GONE);
 	}
 
 	/**
@@ -675,6 +741,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		captureButton.setPressed(false);
 		captureButton.setClickable(true);
 		cameraPreview.setOnClickListener(autoFocusClickListener);
+		captureHelpTextView.setVisibility(View.VISIBLE);
 	}
 
 	/** 
@@ -761,7 +828,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		if(smallCaptureSize != null) {
 			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
 		}
-		
+
 		/**
 		 * Checking to see if flash mode auto is supported before setting this parameters. 
 		 * This was needed because check deposit was crashing on the new Nexus 7.
@@ -790,25 +857,25 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final int piHalf = pi >> 1;
 
 		switch (rotation) {
-			case Surface.ROTATION_0: 
-				degrees = 0; 
-				break;
-			case Surface.ROTATION_90: 
-				degrees = piHalf; 
-				break;
-			case Surface.ROTATION_180: 
-				degrees = pi; 
-				break;
-			case Surface.ROTATION_270: 
-				degrees = twoPi - piHalf; 
-				break;
+		case Surface.ROTATION_0: 
+			degrees = 0; 
+			break;
+		case Surface.ROTATION_90: 
+			degrees = piHalf; 
+			break;
+		case Surface.ROTATION_180: 
+			degrees = pi; 
+			break;
+		case Surface.ROTATION_270: 
+			degrees = twoPi - piHalf; 
+			break;
 		}
 
 		int result;
 
 		if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 			result = (info.orientation + degrees) % twoPi;
-			
+
 			// compensate the mirror
 			result = (twoPi - result) % twoPi;  
 		} else {  
@@ -861,10 +928,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private SimpleContentModal getHelpModal() {
 		final Spanned helpContent = Html.fromHtml(
 				getResources().getString(R.string.bank_deposit_capture_help_content));
-		
+
 		final SimpleContentModal modal = new SimpleContentModal(this, R.string.bank_deposit_capture_help_title,
-																helpContent.toString(), R.string.ok);
-		
+				helpContent.toString(), R.string.ok);
+
 		modal.getButton().setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -872,6 +939,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				modal.dismiss();
 			}
 		});
+		modal.hideNeedHelpFooter();
 
 		return modal;
 	}
@@ -902,7 +970,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		}
 
-		return(result);
+		return result;
 	}
 
 	/**
@@ -1017,6 +1085,21 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				resetCountdown();
 			}
 		}
+	}
+
+	@Override
+	public void onAnimationEnd(final Animation animation) {
+		tips.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void onAnimationRepeat(final Animation animation) {
+		//Intentionally left blank
+	}
+
+	@Override
+	public void onAnimationStart(final Animation animation) {
+		//Intentionally left blank
 	}
 
 }

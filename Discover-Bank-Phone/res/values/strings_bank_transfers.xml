@@ -13,7 +13,7 @@
     <string name="transfer_money_not_eligible_body">Enjoy the ease and convenience of Transferring Money between two accounts.\n\nTo start, simply have a total of two accounts with one internal account.</string>
     <string name="open_an_account">Open an Account</string>
     <string name="frequency_title">Frequency</string>
-    <string name="view_account_summary">View Account Summary</string>
+    <string name="review_transfers_button_text">Review Transfers</string>
     <string name="select_transfer_date">Select a Transfer Date</string>
     
     <string-array name="transfer_frequency_strings">

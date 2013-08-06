@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 
@@ -16,6 +17,8 @@ import com.discover.mobile.bank.R;
  */
 
 public class ReverseViewPagerListItem extends ViewPagerListItem {
+	
+	TextView balanceView;
 	
 	//------------------------------ Constructors ------------------------------
 	public ReverseViewPagerListItem(final Context context) {
@@ -36,10 +39,19 @@ public class ReverseViewPagerListItem extends ViewPagerListItem {
 		this.removeAllViews();
 		this.addView(getInflatedLayout());
 		super.loadViews();
+		balanceView = (TextView)findViewById(R.id.balance_label);
 	}
 	
 	@Override
 	protected RelativeLayout getInflatedLayout() {
 		return (RelativeLayout)LayoutInflater.from(getContext()).inflate(R.layout.reverse_view_pager_list_item, null);
+	}
+	
+	public TextView getBalanceView() {
+		return balanceView;
+	}
+	
+	public void setBalanceView(TextView balanceView) {
+		this.balanceView = balanceView;
 	}
 }
