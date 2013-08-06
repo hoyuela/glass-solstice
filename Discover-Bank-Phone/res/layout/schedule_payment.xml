@@ -39,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/sched_pay_list"
                 android:layout_marginTop="15dp"
+                android:paddingLeft="18dp"
                 android:paddingRight="@dimen/forms_inner_padding"
                 android:text="@string/schedule_pay_duplicate_payment"
                 android:textColor="@color/error_indicator"
