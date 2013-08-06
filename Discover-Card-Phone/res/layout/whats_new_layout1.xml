@@ -23,6 +23,7 @@
             android:layout_below="@+id/whats_new_image"
             android:paddingBottom="16dp"
             android:paddingLeft="24dp"
+            android:textSize="22sp"
             android:paddingRight="24dp"
             android:paddingTop="24dp" />
 

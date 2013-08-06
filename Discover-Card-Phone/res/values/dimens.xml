@@ -61,8 +61,8 @@
      <dimen name="login_bottom_button_height">50dp</dimen>
    	 
 	 <!-- whats new -->
-    <dimen name="default_circle_indicator_radius">9dp</dimen>
-    <dimen name="default_circle_indicator_stroke_width">1dp</dimen>
+    <dimen name="default_circle_indicator_radius">5dp</dimen>
+    <dimen name="default_circle_indicator_stroke_width">0dp</dimen>
     
     <!-- Passcode Dimens -->
     <dimen name="passcode_digit_text">17.0sp</dimen>

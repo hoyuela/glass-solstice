@@ -65,6 +65,10 @@ img.fnone{float:none !important}
 .dd .ddChild li.optgroup .optgroupTitle{padding:0 5px; font-weight:bold; font-style:italic}
 .dd .ddChild li.optgroup ul li{padding:5px 5px 5px 15px}
 .dd .ddChild li.selected{-webkit-box-shadow: inset 0 0 5px 2px #cdd3d6 !important; color:#000 !important; background:#ebeff0 !important;}
-.dd .ddChild li:first-child{
-                display:none !important;
+#paymentStep1-pg .dd .ddChild li:first-child{
+	display:none !important;
 }
+#manageBankAccEnterDetails-pg .dd .ddChild li:first-child{
+	display:none !important;
+}
+

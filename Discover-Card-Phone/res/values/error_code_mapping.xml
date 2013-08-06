@@ -22,7 +22,7 @@
 	</string>
     <string name="E_4032112">
         <![CDATA[
-        We know you’re excited to get into the app, but you’ve tried to log in with the wrong username or password too many times. 
+        You\'ve tried to log in too many times with the incorrect Passcode or information. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
@@ -42,7 +42,7 @@
     <!-- 4032110 - Passcode and ULR Lockout -->
     <string name="E_4032110">
         <![CDATA[
-        You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
+        We know you’re excited to get into the app, but you’ve tried to log in with the wrong information too many times. 
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>

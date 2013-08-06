@@ -14,7 +14,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -57,6 +56,7 @@ import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -502,6 +502,10 @@ CustomProgressDialog, OnPreProcessListener {
 				public void onMapLongClick(final LatLng locationOfLongClick) {
 					//Says the feature was used today
 					AtmTapAndHoldCoachOverlay.setFeatureWasUsed();
+					
+					if(searchBar.hasFocus()) {
+						searchBar.clearSearchFocus();
+					}
 
 					//Creates a new location based on the long pressed location
 					final Location newLocation = new Location(LocationManager.GPS_PROVIDER);
@@ -513,6 +517,14 @@ CustomProgressDialog, OnPreProcessListener {
 					hasLoadedAtms = false;
 					isLoading = false;
 					setUserLocation(newLocation);
+				}
+			});
+			mapWrapper.getMap().setOnMapClickListener(new OnMapClickListener() {
+				@Override
+				public void onMapClick(final LatLng clickLocation) {
+					if(searchBar.hasFocus()) {
+						searchBar.clearSearchFocus();
+					}
 				}
 			});
 		}
@@ -1298,7 +1310,8 @@ CustomProgressDialog, OnPreProcessListener {
 				if (event.getRawX() > locationOfLink) {
 					showTerms();
 				}
-			}	
+			} 
+			
 		} else {
 			overlay.dismissCoach();
 		}
@@ -1404,10 +1417,12 @@ CustomProgressDialog, OnPreProcessListener {
 	 *should show the custom "searching for atms..." dialog 
 	 *or the default progress dialog.
 	 */
+	@Override
 	public boolean useCustomDialog(){
 		return showCustomDialog;
 	}
 	
+	@Override
 	public void setShowCustomDialog(boolean show){
 		showCustomDialog = show;
 	}
@@ -1416,6 +1431,7 @@ CustomProgressDialog, OnPreProcessListener {
 	 * This allows for the map to be hidden before the 
 	 * user navigates aways from the atm locator.
 	 */
+	@Override
 	public void preProcess(final Runnable r){
 		//set the global layout listener
 		final ViewTreeObserver vto = getView().getViewTreeObserver();

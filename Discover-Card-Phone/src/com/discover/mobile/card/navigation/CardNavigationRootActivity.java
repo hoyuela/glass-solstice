@@ -76,6 +76,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
+import com.discover.mobile.common.nav.StatusBarFragment;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -1092,26 +1093,29 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         // View mView = view.findViewById(R.id.cardRootLayout);
         if (null != mView) {
             mView.setDrawingCacheEnabled(true);
-            Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
-            mView.setDrawingCacheEnabled(false);
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40,
-                    bytes);
-            File f = new File(Environment.getExternalStorageDirectory()
-                    + File.separator + "Discover_ScreenShot.jpg");
-            try {
-                f.createNewFile();
-                FileOutputStream fo = new FileOutputStream(f);
-                fo.write(bytes.toByteArray());
-                fo.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } finally {
+            //13.4 Null pointer check on orientation change  
+            if (mView.getDrawingCache() != null) {
+                Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
                 mView.setDrawingCacheEnabled(false);
-                bitmap = null;
-                mView = null;
-                f = null;
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG,
+                        40, bytes);
+                File f = new File(Environment.getExternalStorageDirectory()
+                        + File.separator + "Discover_ScreenShot.jpg");
+                try {
+                    f.createNewFile();
+                    FileOutputStream fo = new FileOutputStream(f);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } finally {
+                    mView.setDrawingCacheEnabled(false);
+                    bitmap = null;
+                    mView = null;
+                    f = null;
+                }
             }
         }
     }

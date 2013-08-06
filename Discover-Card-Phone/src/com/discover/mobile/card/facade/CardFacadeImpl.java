@@ -53,7 +53,6 @@ public class CardFacadeImpl implements CardFacade {
         final Intent newVisibleIntent = new Intent(callingActivity,
                 ForgotCredentialsActivity.class);
         callingActivity.startActivity(newVisibleIntent);
-        callingActivity.finish();
     }
 
     @Override
