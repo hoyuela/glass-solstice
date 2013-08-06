@@ -1,16 +1,23 @@
 package com.discover.mobile.card;
 
+import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.common.AccountCodes;
 import com.google.common.base.Strings;
 
-import com.discover.mobile.common.AccountCodes;
-
-import com.discover.mobile.card.services.auth.AccountDetails;
-
+/**
+ * CommonMethods provides general method like GetCardType,string manipulations
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
+ */
 public final class CommonMethods {
-    
-    /* 13.3  Changes */
+
+    /* 13.3 Changes */
     public static final String INCENTIVE_TYPE_DBC = "SBC";
-    /* 13.3  Changes */    
+
+    /* 13.3 Changes */
 
     /**
      * Determines whether or not the current account's card type is a Miles
@@ -52,15 +59,16 @@ public final class CommonMethods {
     public final static boolean isCashbackCard(
             final AccountDetails accountDetails) {
 
-        /* 13.3  Changes */
+        /* 13.3 Changes */
         if (accountDetails.incentiveTypeCode
-                .equalsIgnoreCase(AccountCodes.INCENTIVE_TYPE_CBB)||accountDetails.incentiveTypeCode
-                .equalsIgnoreCase(INCENTIVE_TYPE_DBC)) {
+                .equalsIgnoreCase(AccountCodes.INCENTIVE_TYPE_CBB)
+                || accountDetails.incentiveTypeCode
+                        .equalsIgnoreCase(INCENTIVE_TYPE_DBC)) {
             return true;
         } else {
             return false;
         }
-        /* 13.3  Changes */
+        /* 13.3 Changes */
     }
 
     /**

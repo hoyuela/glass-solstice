@@ -19,11 +19,13 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
+
+import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
 public class StrongAuthQuestionList extends ListActivity implements
         OnClickListener {
@@ -35,7 +37,7 @@ public class StrongAuthQuestionList extends ListActivity implements
     private Intent strongAuthEnterInfoActivity;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.securityquestionlist);
@@ -51,7 +53,7 @@ public class StrongAuthQuestionList extends ListActivity implements
         handlingClickEvents();
 
         strongAuthEnterInfoActivity = getIntent();
-        int questionGroup = getIntent().getIntExtra("Questiongroup", 1);
+        getIntent().getIntExtra("Questiongroup", 1);
         final List<String> questions = getIntent().getStringArrayListExtra(
                 "Questions");
         final List<String> questionsId = getIntent().getStringArrayListExtra(
@@ -107,9 +109,10 @@ public class StrongAuthQuestionList extends ListActivity implements
             }
         });
 
-        /* 13.4 site cat tagging*/
-    	TrackingHelper.trackPageView(AnalyticsPage.SETUP_ENHANCED_SELECT_QUESTION);
-    	 /* 13.4 site cat tagging*/
+        /* 13.4 site cat tagging */
+        TrackingHelper
+                .trackPageView(AnalyticsPage.SETUP_ENHANCED_SELECT_QUESTION);
+        /* 13.4 site cat tagging */
     }
 
     @Override
@@ -139,7 +142,7 @@ public class StrongAuthQuestionList extends ListActivity implements
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         // TODO Auto-generated method stub
         if (v.getId() == R.id.privacy_terms) {
             // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
@@ -167,15 +170,16 @@ public class StrongAuthQuestionList extends ListActivity implements
             public CheckedTextView securityQuestionRadio;
         }
 
-        public SecurityQuestions1SpinnerAdapter(Context context,
-                List<String> list, List<String> idList) {
+        public SecurityQuestions1SpinnerAdapter(final Context context,
+                final List<String> list, final List<String> idList) {
             super(context, android.R.layout.select_dialog_item, list);
             this.context = context;
             this.idList = idList;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView,
+                final ViewGroup parent) {
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context

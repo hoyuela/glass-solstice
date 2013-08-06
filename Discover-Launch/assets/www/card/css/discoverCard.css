@@ -295,6 +295,15 @@ background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.2
 	margin: 8px 0 0px 0;
 	color: #3d484d;
 }
+/* 13.4 Global changes - 107974 - 5-Aug-2013 - Start */
+#statementLanding .ui-content-internalpages h2 {
+color: #8a9499 !important;
+font-size: 14px;
+font-weight: normal;
+margin-top: 36px;
+}
+/* 13.4 Global changes - 107974 - 5-Aug-2013 - End */
+
 .ui-content-internalpages h3 {
 	font-size: 17px;
 	font-weight: bold;
@@ -1056,6 +1065,8 @@ ul.whitebg-list-view .trans_history .active {
 	float: right;
 	width: 100%;
 }
+/*13.3 global change 06/08/2013 Defect 107789 */
+#paymentSaveToPhotos-pg #savePaymentPhotosAccountEndingNum{float:none;}
 .whitebg-list-view li span.adjheight {
 	height:19px;
 }
@@ -1169,7 +1180,9 @@ width:107%*/
 
 #sendMoney2-pg .whitebg-list-view, #ssendMoney3-pg .whitebg-list-view{border-top:2px solid #d0d0d0;}
 /* Defect_106367_New */
-#pendingPayments-pg .r3matchbtn .ui-btn-text, #ssendMoney3-pg .r3matchbtn .ui-btn-text{margin:0px !important;}
+#pendingPayments-pg .r3matchbtn .ui-btn-text, #ssendMoney3-pg .r3matchbtn .ui-btn-text, 
+#cancelPayment1Error-pg .r3matchbtn .ui-btn-text, /*13.3 global change 5/8/2013 Defect 106538, Defect 107277, Defect 106538,Defect 107389, */
+#confirmCancelPayment-pg .r3matchbtn .ui-btn-text, #paymentStep1-pg .r3matchbtn .ui-btn-text, #pageError-pg .r3matchbtn .ui-btn-text{margin:0px !important;}
 #manageAlerts-pg ul.whitebg-list-view {	
 	border-top:2px solid #c4cbcf;
 	margin: 0 !important;
@@ -3781,11 +3794,17 @@ line-height: 25px;
 .ui-icon-searchfield:after {
 	opacity: 1;
 }
+
+/*Issue Defect_106042_Reopen*/
+/* commented
 #datepicker-val {
-	width: 98px;		/*Issue Defect_106042_Reopen*/
+	width: 98px;	
 	float: left;
 	margin: 5px;
-}/*13.3 global change*/
+}
+13.3 global change*/
+
+
 .datealign {
 	float: right;
 	display: block;
@@ -4543,6 +4562,8 @@ margin: 0px 3px 0px 3px !important;
 #statementCredit1-pg .continueBtn{
 	margin-top: 20px;
 }
+/*13.3 global change 06/08/2013 Defect 105467*/
+#strongAuthFirstQues-pg .wraper h1{display:none;}
 /* 13.3 Global change ends */
 #directDeposit1-pg .ui-content {
 	overflow:visible !important;	/* 13.3 Global change ends */

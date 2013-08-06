@@ -78,7 +78,7 @@ public final class InputValidator {
     public static boolean validateCardAccountNumber(
             final String cardAccountNumber) {
         return cardAccountNumber.startsWith(CARD_NUMBER_PREFIX)
-                && cardAccountNumber.length() == CARD_NUMBER_LENGTH_OK
+                && (cardAccountNumber.length() == CARD_NUMBER_LENGTH_OK)
                 && !cardAccountNumber.contains(" ");
     }
 
@@ -98,7 +98,7 @@ public final class InputValidator {
         boolean hasNumber = false;
 
         // Check length of input.
-        if (inputSequence.length() >= 8 && inputSequence.length() <= 32) {
+        if ((inputSequence.length() >= 8) && (inputSequence.length() <= 32)) {
             hasGoodLength = true;
         }
 
@@ -132,8 +132,8 @@ public final class InputValidator {
      */
     public static boolean validateUserId(final String uid) {
         boolean isUserIdValid = false;
-        if (!uid.equals("Credit Card User ID") && uid.length() >= 6
-                && uid.length() <= 16 && !uid.contains(" ")
+        if (!uid.equals("Credit Card User ID") && (uid.length() >= 6)
+                && (uid.length() <= 16) && !uid.contains(" ")
                 && !uid.contains("`") && !uid.contains("'")
                 && !uid.contains("\"") && !uid.contains("\\")
                 && !uid.startsWith("6011")) {
@@ -144,7 +144,7 @@ public final class InputValidator {
 
         return isUserIdValid;
     }
-    
+
     /* 13.4 Changes Start */
     public static boolean validateAnswerField(final String answer) {
         Boolean specialCharacterEntered = false;
@@ -160,6 +160,7 @@ public final class InputValidator {
 
         return specialCharacterEntered;
     }
+
     /* 13.4 Changes End */
 
     /**
@@ -215,7 +216,7 @@ public final class InputValidator {
      */
     public static boolean valueBoundedBy(final int value, final int min,
             final int max) {
-        if (value >= min && value <= max) {
+        if ((value >= min) && (value <= max)) {
             return true;
         } else {
             return false;
