@@ -171,6 +171,11 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		isPaused = false;
 		super.onResume();
 		startOrientationListener();
+		//make sure the close button is visible
+		if(closeButton.getVisibility() == View.INVISIBLE) {
+			closeButton.setVisibility(View.VISIBLE);
+		    setupButtons();
+		}
 	}
 
 	/**
