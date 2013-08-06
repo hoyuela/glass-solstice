@@ -22,19 +22,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.common.CardEventListener;
-import com.discover.mobile.card.common.net.error.CardErrorBean;
-import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
-import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
-import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
-import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
-import com.discover.mobile.card.common.utils.Utils;
-import com.discover.mobile.card.error.CardErrHandler;
-import com.discover.mobile.card.error.CardErrorHandler;
-import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
-import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
-import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
+import com.google.common.base.Strings;
+
 import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
@@ -43,8 +32,23 @@ import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
 import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
+
+import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.net.error.CardErrorBean;
+import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
+import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
+import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
+import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
+import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.card.error.CardErrorHandler;
+import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
+import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.google.common.base.Strings;
 
 /**
  * Class Description of EnhancedAccountSecurity
