@@ -372,6 +372,10 @@ public class BankTransferSelectAccount extends BaseFragment implements FragmentO
 		}
 		
 		item.getBalanceView().setText((account.balance != null) ? account.balance.formatted : StringUtility.EMPTY);
+		
+		final int color = (null != account.balance && account.balance.value < 0) ? R.color.error_indicator : R.color.field_copy;
+		item.getBalanceView().setTextColor(getResources().getColor(color));
+		
 		item.getBalanceView().setVisibility((account.balance != null) ? View.VISIBLE : View.GONE);
 		
 		if((account.equals(getOtherSelectedAccount()) && getTotalAccountSize() > 2) ||
