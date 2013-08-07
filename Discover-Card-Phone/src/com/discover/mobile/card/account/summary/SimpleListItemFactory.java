@@ -59,7 +59,7 @@ public final class SimpleListItemFactory {
         item.hideAction();
         return item;
     }
-    
+
     public static SimpleListItem createItem(final Context context,
             final Spanned label, final String value) {
         final SimpleListItem item = new SimpleListItem(context, null);

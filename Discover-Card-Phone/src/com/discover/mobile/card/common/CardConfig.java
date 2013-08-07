@@ -8,8 +8,9 @@ public class CardConfig {
     }
 
     public static CardConfig getCardConfig() {
-        if (null == config)
+        if (null == config) {
             config = new CardConfig();
+        }
         return config;
     }
 

@@ -490,12 +490,20 @@ width: 100%;}
 	margin-top: 20px;
 	padding-left: 5px
 }
-
+/*Defect_New_108258_5th Aug 6-8-2013* start */
+#overlay_wraper .overlay-header .hdr-text {
+	padding-left: 30px;
+}
+#overlay_wraper .overlay-content {
+	padding: 10px 20px;
+}
+/*Defect_New_108258_5th Aug 6-8-2013* end */
 .overlay-header .hdr-text span {
 font-size: 24px;        /*13.3 global change*/
 font-weight: normal;
 /*text-align: center;*/  /*13.3 global change*/
 margin-top: 73px;
+color: #fa6904; 		/*Defect_New_108258_5th Aug 6-8-2013*/
 }
 .edo-page .overlay-content .innerText {
                 /*margin-bottom: 17% !important;*/
@@ -555,7 +563,7 @@ padding-top:14px;
 	width:50% !important;
 	padding:0;
 }
-#edoLandingPage-pg .hstrybtn {/*13.3 global change*/
+#edoLandingPage-pg .wraper .navtabs .hstrybtn {/*Defect_New_108260_5th Aug 6-8-2013*/ /*13.3 global change*/
 	width:46% !important;
 }
 
@@ -568,7 +576,7 @@ padding-top:14px;
 #closebutn .ui-btn-inner, #edoHistory-pg #overlay_wraper .ui-btn-inner {padding:12px 0px !important;}
 #closebutn .ui-btn-inner .ui-btn-text{font-size:16px !important;}
 #strongAuthFirstQues-pg .white-form .separator{border-bottom:1px solid #b9bcbd; margin:0px -5px; }
-#edoLandingPage-pg .overlay-content{padding-bottom:130px !important;}
+#edoLandingPage-pg .overlay-content{padding-bottom:15px !important;}		/*Defect_New_108258_5th Aug 6-8-2013*/
 
 #edoLandingPage-pg .r3matchbtn .ui-btn-text, #edoHistory-pg .r3matchbtn .ui-btn-text{margin:0px !important;} 
 #edoLandingPage-pg #closebtn_landing, #edoHistory-pg #closebtn{padding:0 !important;}
@@ -798,8 +806,8 @@ background:none;font-size:14px;color:#50555a}
 
 .edo-page .navBtns { /*margin-top:20px; */
 width:90px;
-/*float: right;*/		/*13.3 global change*/
-margin-top:5px;
+float: right;		/*Defect_New_108260_5th Aug 6-8-2013*//*13.3 global change*/
+/*margin-top:5px;*/
 }
 
 .edo-page .navBtns .ui-block-a {

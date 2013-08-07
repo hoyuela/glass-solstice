@@ -1815,8 +1815,23 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 						var errorMessage = errorCodeMap["1209"];
 						var payDetail = [];
-						payDetail["outstandingBalance"] = outStandingBalance;
-						var parseContentText = parseContent(errorMessage, payDetail);
+						var pendingPaymentsList = getDataFromCache("PENDINGPAYMENTS");
+						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.pendingPayments.length == 1)){
+							var errorMessage = errorCodeMap["1208"];
+							payDetail["currentBalance"] = value;
+							parseContentText = parseContent(errorMessage, payDetail);
+						}else{
+							payDetail["outstandingBalance"] = outStandingBalance;
+							var parseContentText = parseContent(errorMessage, payDetail);
+						}
+						
+
+						
+						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.length == 1)){
+							var errorMessage = errorCodeMap["1208"];
+							payDetail["currentBalance"] = value;
+							parseContentText = parseContent(errorMessage, payDetail);
+						}
 						$("#errorPaymentAmountExceed").text(
 								parseContent(parseContentText, curntValue));
 						$("#minpaystepone_other").addClass('errormsg');
@@ -2687,20 +2702,32 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 /** ******************* truncate functions ******************* */
 dfs.crd.pymt.truncateAccountNumber = function(title)
 {
+   try {
 	var shortText = jQuery.trim(title).substring(dfs.crd.pymt.count(title), 20);
 	return shortText;
+	}catch (err) {
+	showSysException(err);
+	}
 }
 
 dfs.crd.pymt.truncateBankName = function(title)
 {
-	var shortText = jQuery.trim(title).substring(0, 20) + "...";
+   try {
+   var shortText = jQuery.trim(title).substring(0, 20) + "...";
 	return shortText;
+	}catch (err) {
+		showSysException(err);
+	}
 }
-
 dfs.crd.pymt.count = function(title)
 {
+   try{
+
 	var shortText = jQuery.trim(title).split('*').length - 1;
 	return shortText;
+}catch (err) {
+	showSysException(err);
+}
 }
 
 function cancelPaymentLoad(){
@@ -3013,8 +3040,8 @@ try{
 }
 
 function paymentsEligibleLoad(){
+    try{
 	var pendingPaymentDetailData=getDataFromCache("selected_Pending_payments");
-
 	var validPriorPagesOfpaymentsEligible = new Array("pendingPayments","cancelPayment1Error","cancelPayment1","paymentStep1");
 	if ((jQuery.inArray(fromPageName, validPriorPagesOfpaymentsEligible) > -1)) {
 		if(!isEmpty(pendingPaymentDetailData)){
@@ -3022,16 +3049,22 @@ function paymentsEligibleLoad(){
 		}
 	}else{
 		cpEvent.preventDefault();
-		history.back();				
-	}
-	
+		history.back();	
+}
+	}catch (err) {
+		showSysException(err);
+	}	
 }
 
 function paymentsNotEligibleLoad(){
-var pendingPaymentDetailData=getDataFromCache("selected_Pending_payments");
+     try{
+       var pendingPaymentDetailData=getDataFromCache("selected_Pending_payments");
 	if(!isEmpty(pendingPaymentDetailData)){
 		dfs.crd.pymt.populatePendingDetailPageDivs(pendingPaymentDetailData,false);
-	}
+    }
+	}catch (err) {
+		showSysException(err);
+	}	
 }
 
 
@@ -3424,7 +3457,7 @@ dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
 
 
 
-function ClickPaymentPhoto()
+dfs.crd.pymt.ClickPaymentPhoto= function()
 {
      try {
      Screenshot.prototype.takeScreenshot(function success() {}, null);

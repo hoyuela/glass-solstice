@@ -76,7 +76,6 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.nav.StatusBarFragment;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;

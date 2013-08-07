@@ -14,6 +14,7 @@ import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.login.register.EnterNewPasswordActivity;
 import com.discover.mobile.card.login.register.ForgotOrRegisterFinalStep;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.whatsnew.WhatsNewActivity;
 
 /**
  * This class will hold page timeout related logic and will also be shared by
@@ -144,6 +145,9 @@ public final class PageTimeOutUtil {
         else if(mContext instanceof StrongAuthEnterInfoActivity)
         {
             ((StrongAuthEnterInfoActivity) mContext).idealTimeoutLogout();
+        }else if(mContext instanceof WhatsNewActivity){
+            ((WhatsNewActivity) mContext).idealTimeoutLogout();
         }
+        /*13.4 changes End*/
     }
 }
