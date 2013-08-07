@@ -70,7 +70,7 @@ public class AtmSearchEditText extends AutoCompleteTextView {
 		setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, locationImage, null);
 		//set the array adapter on the text view
 		AutoCompleteAdapter adapter = new AutoCompleteAdapter(DiscoverActivityManager.getActiveActivity(),
-															android.R.layout.simple_list_item_1);
+															R.layout.bank_atm_prediction);
 		setAdapter(adapter);
 														
 				
