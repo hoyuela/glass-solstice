@@ -1,28 +1,35 @@
 package com.discover.mobile.bank.atm;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
- * Simple extension of an edit text.  This notifies the search bar
+ * Simple extension of an AutoComplete text view.  This notifies the search bar
  * that the back button was pressed to dismiss the keyboard.
  * 
  * @author jthornton
  *
  */
-public class AtmSearchEditText extends EditText {
+public class AtmSearchEditText extends AutoCompleteTextView {
 
 	/**Search bar holding the edit text*/
 	private AtmLocatorMapSearchBar bar;
 
 	/**Image shown in the left drawable location*/
 	private Drawable locationImage;
+	
+	
 
 	/**
 	 * Constructor for the class
@@ -61,6 +68,12 @@ public class AtmSearchEditText extends EditText {
 		locationImage = getResources().getDrawable(R.drawable.atm_current_location_button);
 		final Drawable magnifyingImage = getResources().getDrawable(R.drawable.magnifying_glass);
 		setCompoundDrawablesWithIntrinsicBounds(magnifyingImage, null, locationImage, null);
+		//set the array adapter on the text view
+		AutoCompleteAdapter adapter = new AutoCompleteAdapter(DiscoverActivityManager.getActiveActivity(),
+															android.R.layout.simple_list_item_1);
+		setAdapter(adapter);
+														
+				
 	}
 
 	/**
@@ -92,4 +105,5 @@ public class AtmSearchEditText extends EditText {
 		return event.getX() > 
 		getWidth() - getPaddingRight() - locationImage.getIntrinsicWidth();
 	}
+	
 }
