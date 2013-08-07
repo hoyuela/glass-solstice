@@ -692,14 +692,16 @@ line-height: 17px;}*/
 #paymentStep1-pg .ui-content .datealign .detailsList {
 	margin: 0px 0px 13px 0px;
 }
+
 #paymentStep1-pg .dateList {
-	width: 76%;
+                width: 80%; /* 106042 5-08-13 */
 }
+
 #paymentStep1-pg #datepicker-val {
 	width: 98%;/*Defect: 106042*/
 	float: left;
 	margin: 0 0 0 5px;
-	font-size: 17px !important;
+	font-size: 16px !important;
 	height:18px !important;
 }
 #paymentStep1-pg .minDueLbl {
@@ -711,7 +713,7 @@ line-height: 17px;}*/
 	text-align: left;
 }
 #paymentStep1-pg .nobg_2coltbl li .col2 {
-	width: 57%;
+    width: 60%; /* 106042 5-08-13 */
 	color: #8a9499;
 	font-weight: bold;          /* 13.3 global changes 01/08/13 (defect 107495) */
 	padding-top: 0px !Important;      /* 13.3 global changes 01/08/13 (defect 107495) */
@@ -1494,7 +1496,8 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	border-bottom:1px solid #c4cbcf;
 	padding:0 12px 3px 12px;
 }
-#paymentStep1-pg .r3matchbtn div{display:inline-block;} /* 13.3 global change 31/07/13 (defect 107308) */
+/*#paymentStep1-pg .r3matchbtn div{display:inline-block;} /* 13.3 global change 31/07/13 (defect 107308) */
+#paymentStep1-pg .r3matchbtn a{display:inline-block;}/* 13.3 global change 08/06/2013 (defect 108238) */
 #paymentStep1-pg .wraper1 .ui-select , #paymentStep1-pg .wraper1 .white-form, #paymentStep1-pg .wraper1 .lateMinPayWarn{margin:0 12px;}
 #paymentStep1-pg .wraper .ui-select , #paymentStep1-pg .wraper .white-form, #paymentStep1-pg .wraper .lateMinPayWarn, #paymentStep1-pg .wraper  .errorText, #paymentStep1-pg .wraper .err2, #paymentStep1-pg .wraper .err1, #paymentStep1-pg .wraper1 .errorText{margin:0 12px;}
 /*13.3 global change 29/07/2013*/
@@ -1521,7 +1524,14 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	font-size: 14px;
 	line-height: 16px;
 	margin-bottom: 20px;
+	color: #293033;		/*Defect_107985_New 06/08/2013*/
 }
+/*Defect_107985_New 06/08/2013 start*/
+#cancelPayment-pg .wraper .cancelTransText {
+	margin-bottom:0;
+	font-weight:bold;
+}
+/*Defect_107985_New 06/08/2013 end*/
 #cancelPayment-pg .wraper p.cancelQuest1 {
 	margin-bottom:0;
 }
@@ -1533,7 +1543,7 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	
 }
 #cancelPayment-pg .wraper .noBtn {
-	width: 170px;
+	width: 211px;	/*Defect_107985_New*/
 }
 /* 13.3 Global Change - 26-Jul-2013 - Start */
 /*

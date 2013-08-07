@@ -3,11 +3,20 @@ package com.discover.mobile.card.account;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.nav.section.ClickComponentInfo;
 import com.discover.mobile.common.nav.section.GroupComponentInfo;
 
-import com.discover.mobile.card.R;
-
+/**
+ * AccountSectionInfo adds Section & sub section of "Accounts" LHS Menu
+ * 
+ * extends {@link GroupComponentInfo}
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
+ */
 public final class AccountSectionInfo extends GroupComponentInfo {
 
     public AccountSectionInfo() {
@@ -42,10 +51,10 @@ public final class AccountSectionInfo extends GroupComponentInfo {
                     }
                 }));
     }
-    
+
     /* 13.3 Changes start */
-    //Change Left Nav in case of Corporate card
-    public AccountSectionInfo(Boolean corporateCard) {
+    // Change Left Nav in case of Corporate card
+    public AccountSectionInfo(final Boolean corporateCard) {
         super(R.string.section_title_account,
 
         new ClickComponentInfo(R.string.sub_section_title_account_summary,
@@ -70,6 +79,7 @@ public final class AccountSectionInfo extends GroupComponentInfo {
                     }
                 }));
     }
+
     /* 13.3 Changes end */
 
     class AccountComponentInfo extends ClickComponentInfo {

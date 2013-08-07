@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +16,7 @@ import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,7 +24,10 @@ import android.widget.TextView;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.PrivacyTermsType;
+import com.discover.mobile.bank.ui.modals.LeavingThisAppModal;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.utils.StringUtility;
 import com.discover.mobile.common.utils.WebUtility;
 
@@ -69,6 +74,9 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 
 	/**The web view that displays the content for the terms of service to the user */
 	private WebView termsWebView;
+	
+	/**This FrameLayout is a simple container that will hold the termsWebView*/
+	private FrameLayout webContainer;
 
 	/**TextView that displays the title of the page within the fragment*/
 	private TextView pageTitle;
@@ -79,12 +87,17 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 	/**Divider between the content and the footer*/
 	private View divider;
 	
+	/**indicates whether we need to re-setup the webview when resuming the fragment*/
+	private boolean setupNeeded;
+	
 	/**
 	 * Get all of the interface elements that we need to access.
 	 * @param mainView
 	 */
 	private void loadResources(final View mainView) {
-		termsWebView = (WebView)mainView.findViewById(R.id.agreement_web_view);
+		webContainer = (FrameLayout)mainView.findViewById(R.id.agreement_web_view);
+		termsWebView = new WebView(mainView.getContext().getApplicationContext());
+		webContainer.addView(termsWebView);
 		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
 		pageTitle = (TextView)mainView.findViewById(R.id.select_payee_title);
@@ -120,13 +133,14 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
 			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 		}
+		setSetupNeeded(false);
 	}
 
 	/**
 	 * Display the content of the web view.
 	 */
 	private void showTerms() {
-		termsWebView.setVisibility(View.VISIBLE);
+		webContainer.setVisibility(View.VISIBLE);
 		termsWebView.requestFocus(View.FOCUS_DOWN);
 		loadingSpinner.clearAnimation();
 		if(pageLoadSuccess){
@@ -150,6 +164,28 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			// Since we are retaining instance, no need to store in the bundle.
 			scroll = WebUtility.calculateProgression(termsWebView);
 		}
+		webContainer.removeAllViews();
+		termsWebView.destroy();
+		setSetupNeeded(true);
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		webContainer.removeAllViews();
+		termsWebView.destroy();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(setupNeeded)
+		{
+			termsWebView = new WebView(getView().getContext().getApplicationContext());
+			webContainer.addView(termsWebView);
+			setupWebView(true);
+		}
 	}
 
 	/**
@@ -165,6 +201,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 		this.setRetainInstance(true);
 		
 		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
+		
 		loadResources(mainView);
 		
 		if (savedInstanceState != null) {
@@ -210,6 +247,10 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 				divider.setVisibility(View.GONE);
 			}
 		}
+	}
+	
+	public void setSetupNeeded(boolean setupNeeded){
+		this.setupNeeded = setupNeeded;
 	}
 
 	/**
@@ -267,7 +308,7 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			boolean handledLink = false;
 			
 			if(looksLikeWebPage(url)) {
-				handledLink = startIntentFor(Intent.ACTION_VIEW, getDiscoverUrl(url));
+				handledLink = showLeavingThisAppModal(url);
 			}else if (looksLikePhoneNumber(url)) {
 				handledLink = startIntentFor(Intent.ACTION_DIAL, url);
 			}else if(looksLikeEmail(url)) {
@@ -277,6 +318,24 @@ public abstract class TermsConditionsFragment extends BaseFragment implements On
 			}
 			
 			return handledLink;
+		}
+		
+		/**
+		 * Shows a DialogFragment that prompts a user to confirm that they want to navigate out of the app
+		 * @param url - the url that they will be navigating to
+		 * @return - true to let the WebViewClient know that this link click has been handled
+		 */
+		public boolean showLeavingThisAppModal(final String url) 
+		{
+			FragmentManager fm = ((NavigationRootActivity)DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager();
+			LeavingThisAppModal modal = new LeavingThisAppModal();
+			Bundle bundle = new Bundle();
+			bundle.putString("URL", url);
+			modal.setArguments(bundle);
+			
+			modal.show(fm, "leavingAppModal");
+			
+			return true;
 		}
 		
 		/**

@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.discover.mobile.common.IntentExtraKey;
+
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
+
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity;
 import com.discover.mobile.card.login.register.ForgotPasswordAccountInformationActivity;
@@ -25,7 +28,6 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCheck;
 import com.discover.mobile.card.services.auth.strong.StrongAuthDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthQuestion;
-import com.discover.mobile.common.IntentExtraKey;
 
 /**
  * 
@@ -122,10 +124,10 @@ public class StrongAuthHandler {
                     Utils.hideSpinner();
                     //
                     Log.i(TAG, "In Strong auth " + context.getClass());
-                    if (context instanceof ForgotPasswordAccountInformationActivity
-                            || context instanceof ForgotBothAccountInformationActivity
-                            || context instanceof RegistrationAccountInformationActivity) // DEFECT
-                                                                                          // 96355
+                    if ((context instanceof ForgotPasswordAccountInformationActivity)
+                            || (context instanceof ForgotBothAccountInformationActivity)
+                            || (context instanceof RegistrationAccountInformationActivity)) // DEFECT
+                                                                                            // 96355
                     {
                         Log.i(TAG, "Finish him");
                         Activity activity = (Activity) context;
@@ -167,7 +169,7 @@ public class StrongAuthHandler {
                         .getValueOfAppCache("WWW-Authenticate");
                 if (bean.getErrorCode().contains(
                         "" + HttpURLConnection.HTTP_FORBIDDEN)
-                        && cache != null && cache.contains("skipped")) {
+                        && (cache != null) && cache.contains("skipped")) {
                     if (authListener != null) {
                         authListener.onStrongAuthSkipped(data);
                     }
@@ -222,7 +224,7 @@ public class StrongAuthHandler {
                             // then show strong auth question
                             if (bean.getErrorCode().contains(
                                     "" + HttpURLConnection.HTTP_UNAUTHORIZED)
-                                    && cache != null
+                                    && (cache != null)
                                     && cache.contains("challenge")) {
                                 cardShareDataStore
                                         .deleteCacheObject("WWW-Authenticate");
@@ -231,7 +233,7 @@ public class StrongAuthHandler {
                                 authQuestion.sendRequest();
                             } else if (bean.getErrorCode().contains(
                                     "" + HttpURLConnection.HTTP_UNAUTHORIZED)
-                                    && cache != null
+                                    && (cache != null)
                                     && cache.contains("skipped")) {
                                 Log.i(TAG, "yoyoooooo");
                                 cardShareDataStore

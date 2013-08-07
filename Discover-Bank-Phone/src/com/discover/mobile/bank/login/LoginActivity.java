@@ -1233,9 +1233,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		 */
 		final AccountType lastLoginAcct = Globals.getCurrentAccount();
 		if (AccountType.BANK_ACCOUNT == lastLoginAcct) {
-			setLoginTypeToBank();
+			setLoginTypeToBank(false);
 		} else {
-			setLoginTypeToCard();
+			setLoginTypeToCard(false);
 		}
 	}
 
@@ -1274,12 +1274,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 
 			if(v.equals(goToCardButton)){
-				setLoginTypeToCard();
+				setLoginTypeToCard(true);
 				animateCardSetup();
 			}
 			//Setup Bank Login.
 			else {
-				setLoginTypeToBank();
+				setLoginTypeToBank(true);
 				animateBankSetup();
 				//Track that the bank toggle was selected
 				BankTrackingHelper.trackPage(LoginActivity.class.getSimpleName());
@@ -1376,7 +1376,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/**
 	 * Sets the login screen to display the proper UI elements for a Card login.
 	 */
-	private void setLoginTypeToCard() {
+	private void setLoginTypeToCard(final boolean wasToggling) {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.black));
 		goToCardButton
 		.setBackgroundResource(R.drawable.card_login_background_on);
@@ -1398,7 +1398,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad),
 				(int) getResources().getDimension(R.dimen.top_pad));
 
-		registerOrAtmButton.setText(getResources().getString(R.string.register_now));
+		if(wasToggling) {
+			registerOrAtmButton.setText(getResources().getString(R.string.register_now));
+		} else {
+			registerOrAtmButton.setCurrentText(getResources().getString(R.string.register_now));
+		}
 
 		CommonUtils.setViewInvisible(privacySecOrTermButtonBank);
 		CommonUtils.setViewVisible(cardForgotAndPrivacySection);
@@ -1470,7 +1474,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/**
 	 * Sets the login screen to display the proper UI elements for a Bank login.
 	 */
-	private void setLoginTypeToBank() {
+	private void setLoginTypeToBank(final boolean wasToggling) {
 		goToCardLabel.setTextColor(getResources().getColor(R.color.blue_link));
 		goToCardButton
 		.setBackgroundResource(R.drawable.card_login_background_off);
@@ -1491,7 +1495,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad),
 				(int) getResources().getDimension(R.dimen.top_pad));
 
-		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+		if(wasToggling) {
+			registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+		} else {
+			registerOrAtmButton.setCurrentText(getResources().getString(R.string.atm_locator));
+		}
 
 		displayActiveLoginMode();
 		CommonUtils.setViewVisible(privacySecOrTermButtonBank);

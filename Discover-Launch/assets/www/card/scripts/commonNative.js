@@ -238,7 +238,10 @@ function frequentlyAskedQuestions()
 	//13.3 changes-start
 	populateGlobalCache();
 	if(accountEarnsCBB(incentiveTypeCode)) {
-		navigation('../custormerService/customerServiceFaqs_CBB');
+     if(cardProductGroupCode == "DIT")
+			navigation('../custormerService/customerServiceFaqs_ITCard');
+		else
+	        navigation('../custormerService/customerServiceFaqs_CBB');
 	} else if(accountEarnsMiles(incentiveTypeCode)){	
 		navigation('../custormerService/customerServiceFaqs_Miles');
 	} else{
@@ -279,7 +282,9 @@ function redeemMiles()
 function privacyTerms()
 {
 	preventBack = false;
-	navigation('../common/moreLandingRevised');
+	//navigation('../common/moreLandingRevised');
+	//Changed to solve defect from 13.4
+	navigation('../common/moreLanding');
 }
 
 function noTitle(){

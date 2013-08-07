@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Discover - Payments Step-III</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">      
+</head>
+<body>
+	<!--page start  -->
+	<!-- 13.3 global change 06/08/2013 Defect 107789 -->
+	<div data-role="page" id="paymentSaveToPhotos-pg" class="rd-page payments contentSetting">
+		<!--header start  -->
+		<div data-role="header" id="pg-header" data-id="myHeaderDiscover" data-position="fixed">
+		<header id="header" class="cmn_header">
+        
+			</header>
+		</div>
+		<!-- header end -->
+		<!-- content start -->
+		<!--<div id="pgPadding"></div>-->
+        <!--<div class="progress-indicator">
+            <ul>
+                <li><a href="#" class="visited">Review/Edit</a></li>
+                <li><a href="#" class="visited">Verify</a></li>
+                <li><a href="#" class="active">Confirmation</a></li>
+            </ul>
+            <div class="clearboth"></div>
+        </div>-->
+        <div class="discoverLogo"></div>
+		<div data-role="content" class="ui-content-internalpages">
+			<div class="wraper">
+            	
+				<!-- h2>Step 3 of 3</h2 -->
+				<!--<div class="errormsg2" id="commonErrorInMakePayment3Div"></div>-->
+<!--				<div id="confirmSuccessPay3">
+					<p>Your Payment in the amount of <span id="stepthree_amount"></span> has been scheduled to
+						post on <span id="stepthree_date"></span> from <span id="stepthree_bankname_type"></span>
+						<span id="stepthree_maskedbank_accountnumber"></span>.</p>
+					<h4 class="margintop10px">Confirmation #: <span id="stepthree_confirmation_number"></span></h4>
+					<p style="margin: 0;">Your Discover Card Account will be
+						credited for the payment amount shown above, pending final
+						approval from your bank. You will receive an e-mail confirming
+						that your payment was submitted if we have your e-mail address on
+						file.</p>
+				</div>
+-->
+				<ul class="whitebg-list-view">
+					<li><span>Confirmation Number</span><br/><span class="amt_bold" id="savePaymentPhotosConfirmationNumber"></span></li>
+					<li><span>Amount</span><br/><span class="amt_bold"id="savePaymentPhotosAmount"></span></li>
+					<li><span>Payment Date</span><br/><span class="amt_bold" id="savePaymentPhotosPosting_date"></span></li>
+                    <li><span>Account Ending in<span id="savePaymentPhotosAccountEndingNum"></span><br/><span class="amt_bold" id="savePaymentPhotosBankDetail"></span></li>
+				</ul>
+
+				
+				<!--<div class="txtcenteraln margintop10px">-->
+		    <!-- Change 13.4 Button text to be changed   Start -->
+                    <!-- <a class="small-btn" href="paymentsSummary.html" onclick="navigation('paymentsSummary');" data-role="button">Payment Summary</a><br/>  -->
+		    <!--<a class="small-btn" href="paymentsSummary.html" onclick="navigation('paymentsSummary');" data-role="button">Save to Photos</a><br/>-->
+                    <!-- Change 13.4 Button text to be changed   End -->
+				<!--</div>-->
+                 <div class="ui-grid-a" id="saveCloseBtn">
+                        
+                    <a href="#" class="ui-block-a" id="closeBtn" data-role="button" onclick="navigation('paymentStep3');">Cancel</a>
+                     <a href="#" class="ui-block-b r3matchbtn" id="saveBtn" data-role="button" onclick="dfs.crd.pymt.ClickPaymentPhoto();">Save</a>
+              
+                    </div>
+			</div>
+           
+			
+		</div>
+
+		<!--<div class="dropDownLayer"></div>-->
+		<!-- content end -->
+
+		<!--<div id="footnotes" class="footnotes"></div>-->
+	<!--<div data-role="footer" data-position="fixed" id="pg-footer" data-id="myfooter">
+            <footer id="footer" class="mnu_footer">
+			</footer>
+				</div>-->
+	</div>
+	<!--page end -->
+</body>
+</html>

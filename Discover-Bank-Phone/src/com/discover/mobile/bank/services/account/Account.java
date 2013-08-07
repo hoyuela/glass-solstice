@@ -350,7 +350,12 @@ public class Account implements Serializable {
 	 *  the account number.
 	 */
 	public String getDottedFormattedAccountNumber() {
-		return nickname +" (..." +accountNumber.ending +")";
+		StringBuilder builder = new StringBuilder();
+		builder.append(nickname);
+		if ((null != accountNumber) && (null != accountNumber.ending)){
+			builder.append(" (..."+accountNumber.ending+")");
+		}
+		return builder.toString();
 	}
 	
 	

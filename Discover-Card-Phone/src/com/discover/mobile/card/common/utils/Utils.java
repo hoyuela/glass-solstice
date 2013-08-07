@@ -708,7 +708,7 @@ public class Utils {
                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
                         cur_Activity, bundle);
                 Utils.hideSpinner();
-                // cur_Activity.finish();
+                cur_Activity.finish();
             }
 
             @Override
@@ -727,7 +727,7 @@ public class Utils {
                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
                         cur_Activity, bundle);
                 Utils.hideSpinner();
-                // cur_Activity.finish();
+                cur_Activity.finish();
             }
         };
         final WSRequest request = new WSRequest();
