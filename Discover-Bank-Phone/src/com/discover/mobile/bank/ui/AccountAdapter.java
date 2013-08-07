@@ -1,5 +1,6 @@
 package com.discover.mobile.bank.ui;
 
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
@@ -17,6 +18,7 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 
 	private final Activity context;
 	private List<Account> data = null;
+	private int selectedListPosition;
 
 	public AccountAdapter(final Activity context, final int textViewResourceId,
 			final List<Account> accounts) {
@@ -28,6 +30,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 	@Override
 	public View getView(final int position, final View convertView, final ViewGroup parent) {
 		return super.getView(position, convertView, parent);
+	}
+	
+	public void setSelectedListPosition(final int position) {
+		this.selectedListPosition = position;
 	}
 
 	@Override
@@ -63,6 +69,10 @@ public class AccountAdapter extends ArrayAdapter<Account> {
 				balance.setText(item.balance.formatted);
 				final int color = (item.balance.value < 0) ? R.color.error_indicator : R.color.field_copy;
 				balance.setTextColor(context.getResources().getColor(color));
+			}
+			
+			if (position == this.selectedListPosition) {
+				row.findViewById(R.id.common_dropdown_selected_item_image_view).setVisibility(View.VISIBLE);
 			}
 		}
 
