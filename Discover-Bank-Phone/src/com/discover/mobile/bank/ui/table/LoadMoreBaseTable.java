@@ -178,8 +178,13 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 				args.putSerializable(SELECTED_BUTTON_KEY, header.getSelectedButtonIndex());
 			}
 
-			args.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
-			args.putSerializable(CACHED_MAP, tableListsCache);
+			if(null != currentListKey) {
+				args.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
+			}
+			if(null != tableListsCache) {
+				args.putSerializable(CACHED_MAP, tableListsCache);
+			}
+			
 			args.putBoolean(BankExtraKeys.IS_LOADING_MORE, getIsLoadingMore());
 			args.putBoolean(VIEW_HAS_LOADED, true);
 			saveTableScrollPositionToBundle(args);
@@ -490,6 +495,10 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		if(bundleMap != null && bundleMap.size() > 0) {
 			tableListsCache.putAll(bundleMap);
 			args.putSerializable(CACHED_MAP, null);
+		}
+		
+		if((null == tableListsCache || tableListsCache.size() < 1) && null != currentListKey) {
+			tableListsCache.put(currentListKey, BankUser.instance().getCachedListForKey(currentListKey));
 		}
 	}
 
