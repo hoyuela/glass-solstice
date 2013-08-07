@@ -2,7 +2,6 @@ package com.discover.mobile.bank.account;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -172,15 +171,6 @@ public class AccountActivityHeader extends RelativeLayout{
 		labels.getLayoutParams().height = 0;
 		labels.setVisibility(View.GONE);
 		
-		//Because we are restricting the title to be 1 line but allow for 30 characters in all screen sizes we
-		//dynamically change the font size based on the android version in use.  We use the assumption that if you are
-		//using Honeycomb or less your phone will probably be smaller than if you are using Ice Cream Sandwhich or Jellybean.
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB) {
-			title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-		} else {
-			title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-		}
-		
 		addView(view);
 	}
 
@@ -284,7 +274,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	private boolean showPercentage(final TextView textLabel, final TextView textValue, final Percentage value) {
 		boolean shown = false;
 
-		if (value != null && !Strings.isNullOrEmpty(value.formatted)) {
+		if ((value != null) && !Strings.isNullOrEmpty(value.formatted)) {
 			textValue.setText(value.formatted);
 			textLabel.setVisibility(View.VISIBLE);
 			textValue.setVisibility(View.VISIBLE);
@@ -315,7 +305,7 @@ public class AccountActivityHeader extends RelativeLayout{
 	private boolean showMoney(final TextView textLabel, final TextView textValue, final Money value) {
 		boolean shown = false;
 
-		if (value != null && !Strings.isNullOrEmpty(value.formatted)) {
+		if ((value != null) && !Strings.isNullOrEmpty(value.formatted)) {
 			textValue.setText(value.formatted);
 			textLabel.setVisibility(View.VISIBLE);
 			textValue.setVisibility(View.VISIBLE);
@@ -432,7 +422,7 @@ public class AccountActivityHeader extends RelativeLayout{
 			}
 		}
 
-		this.isHeaderExpanded = true;
+		isHeaderExpanded = true;
 	}
 
 	/**
@@ -452,7 +442,7 @@ public class AccountActivityHeader extends RelativeLayout{
 			}
 		}
 
-		this.isHeaderExpanded = false;
+		isHeaderExpanded = false;
 	}
 
 
