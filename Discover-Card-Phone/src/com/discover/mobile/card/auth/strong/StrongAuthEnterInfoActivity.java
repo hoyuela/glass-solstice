@@ -1,6 +1,7 @@
 package com.discover.mobile.card.auth.strong;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -24,6 +25,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
@@ -49,6 +51,17 @@ import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUserDetails
 import com.discover.mobile.card.services.auth.strong.StrongAuthReviewQueAnsDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthUpdateUser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+
+/***
+ * Strong Auth Enrollment. On Login if user has not done strong auth enrollment 
+ * .User will be navigated to this activity for enrollment
+ * 
+ * 
+ * @author 228218
+ * 
+ */
 public class StrongAuthEnterInfoActivity extends Activity implements
         OnClickListener, CardErrorHandlerUi {
 
@@ -375,130 +388,43 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         sQListfirstId = new ArrayList<String>();
         sQListSecondId = new ArrayList<String>();
         sQListThirdID = new ArrayList<String>();
-
-        if (strongAuthCreateUserDetails.saQuestion1.Q11 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q11);
-            sQListfirstId.add("Q1.1");
+        
+        //13.4 Code CleanUp Changes start
+        Iterator<String> listFirstFieldNames = strongAuthCreateUserDetails.saQuestion1
+                .fieldNames();
+        while (listFirstFieldNames.hasNext()) {
+            String fieldName = listFirstFieldNames.next();
+            JsonNode listFirstFieldValue = strongAuthCreateUserDetails.saQuestion1
+                    .get(fieldName);
+            String value = listFirstFieldValue.asText();
+            sQListfirst.add(value);
+            sQListfirstId.add(fieldName);
         }
-        if (strongAuthCreateUserDetails.saQuestion1.Q12 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q12);
-            sQListfirstId.add("Q1.2");
+        
+        
+        Iterator<String> listSecondFieldNames = strongAuthCreateUserDetails.saQuestion2
+                .fieldNames();
+        while (listSecondFieldNames.hasNext()) {
+            String fieldName = listSecondFieldNames.next();
+            JsonNode listSecondFieldValue = strongAuthCreateUserDetails.saQuestion2
+                    .get(fieldName);
+            String value = listSecondFieldValue.asText();
+            sQListSecond.add(value);
+            sQListSecondId.add(fieldName);
         }
-        if (strongAuthCreateUserDetails.saQuestion1.Q13 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q13);
-            sQListfirstId.add("Q1.3");
+        
+        Iterator<String> listThirdFieldNames = strongAuthCreateUserDetails.saQuestion3
+                .fieldNames();
+        while (listThirdFieldNames.hasNext()) {
+            String fieldName = listThirdFieldNames.next();
+            JsonNode listThirdFieldValue = strongAuthCreateUserDetails.saQuestion3
+                    .get(fieldName);
+            String value = listThirdFieldValue.asText();
+            sQListThird.add(value);
+            sQListThirdID.add(fieldName);
         }
-        if (strongAuthCreateUserDetails.saQuestion1.Q14 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q14);
-            sQListfirstId.add("Q1.4");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q15 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q15);
-            sQListfirstId.add("Q1.5");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q16 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q16);
-            sQListfirstId.add("Q1.6");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q17 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q17);
-            sQListfirstId.add("Q1.7");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q18 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q18);
-            sQListfirstId.add("Q1.8");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q19 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q19);
-            sQListfirstId.add("Q1.9");
-        }
-        if (strongAuthCreateUserDetails.saQuestion1.Q110 != null) {
-            sQListfirst.add(strongAuthCreateUserDetails.saQuestion1.Q110);
-            sQListfirstId.add("Q1.10");
-        }
-
-        if (strongAuthCreateUserDetails.saQuestion2.Q21 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q21);
-            sQListSecondId.add("Q2.1");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q22 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q22);
-            sQListSecondId.add("Q2.2");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q23 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q23);
-            sQListSecondId.add("Q2.3");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q24 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q24);
-            sQListSecondId.add("Q2.4");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q25 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q25);
-            sQListSecondId.add("Q2.5");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q26 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q26);
-            sQListSecondId.add("Q2.6");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q27 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q27);
-            sQListSecondId.add("Q2.7");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q28 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q28);
-            sQListSecondId.add("Q2.8");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q29 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q29);
-            sQListSecondId.add("Q2.9");
-        }
-        if (strongAuthCreateUserDetails.saQuestion2.Q210 != null) {
-            sQListSecond.add(strongAuthCreateUserDetails.saQuestion2.Q210);
-            sQListSecondId.add("Q2.10");
-        }
-
-        if (strongAuthCreateUserDetails.saQuestion3.Q31 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q31);
-            sQListThirdID.add("Q3.1");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q32 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q32);
-            sQListThirdID.add("Q3.2");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q33 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q33);
-            sQListThirdID.add("Q3.3");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q34 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q34);
-            sQListThirdID.add("Q3.4");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q35 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q35);
-            sQListThirdID.add("Q3.5");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q36 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q36);
-            sQListThirdID.add("Q3.6");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q37 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q37);
-            sQListThirdID.add("Q3.7");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q38 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q38);
-            sQListThirdID.add("Q3.8");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q39 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q39);
-            sQListThirdID.add("Q3.9");
-        }
-        if (strongAuthCreateUserDetails.saQuestion3.Q310 != null) {
-            sQListThird.add(strongAuthCreateUserDetails.saQuestion3.Q310);
-            sQListThirdID.add("Q3.10");
-        }
-
+        
+        //13.4 Code CleanUp Changes end
     }
 
     /** Added for spinner */
