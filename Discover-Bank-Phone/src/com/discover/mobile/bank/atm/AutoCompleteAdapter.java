@@ -2,17 +2,25 @@ package com.discover.mobile.bank.atm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.apache.cordova.api.LOG;
+
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.atm.autocomplete.Prediction;
 import com.discover.mobile.bank.services.atm.autocomplete.PredictionsList;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.net.json.JacksonObjectMapperHolder;
 
+
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -26,22 +34,22 @@ public class AutoCompleteAdapter extends ArrayAdapter<Prediction> implements Fil
 
 	/**results from google places query*/
 	private ArrayList<Prediction> resultList;
-	/**Static string the holds the url and parameters to the places api web service
-	 * end of the string is intentionally left blank so that input text
-	 * can easily be appended to the end.
-	 */
-	private static final String PLACE_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?"
-			+"key=AIzaSyB3APDriNXk_x-KHyphlUHOu7XykHNhYGQ"
-			+"&types=geocode"
-			+"&language=en"
-			+"&sensor=true"
-			+"&components=country:us"
-			+"&input=";
-	
+	/**base url for the places api*/
+	private static String base_url;
+	/**contains parameter key for partial text*/
+	private static String url_end;
+	/**places api key - FYI need browser key not android key*/
+	private static String api_key;
+	/**tag used to debug errors that could be produced during http connection*/
+	private static final String TAG = "AutoCompleteAdapter";
 	
 	public AutoCompleteAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
 		resultList = new ArrayList<Prediction>();
+		Resources res = DiscoverActivityManager.getActiveActivity().getResources();
+		base_url = res.getString(R.string.autocomplete_base_url);
+		url_end = res.getString(R.string.autocomplete_url_ending);
+		api_key = res.getString(R.string.places_api_key);
 	}
 
 	/**
@@ -76,7 +84,7 @@ public class AutoCompleteAdapter extends ArrayAdapter<Prediction> implements Fil
             	FilterResults filterResults = new FilterResults();
                 if (constraint != null) {
                     // Retrieve the autocomplete results.
-                    PredictionsList completeList = MakeAutoCompleteServiceCall(constraint.toString());
+                    PredictionsList completeList = makeAutoCompleteServiceCall(constraint.toString());
                     //if list is not null, then set the result list to new data
                     if(null != completeList) {
                     	resultList = (ArrayList<Prediction>) completeList.predicationList;
@@ -106,16 +114,31 @@ public class AutoCompleteAdapter extends ArrayAdapter<Prediction> implements Fil
     }
 	 
 	 /**
+	  * This function generates the url pointed at the places api
+	  *  and returns it for the url connection.
+	  * @param input - the partial string for auto complete preditions
+	  * @return url for place autocomplete query
+	  * @throws UnsupportedEncodingException
+	  */
+	 private String buildUrl(final String input) throws UnsupportedEncodingException {
+		 StringBuilder sb = new StringBuilder(base_url);
+		 sb.append(api_key);
+		 sb.append(url_end);
+		 sb.append(URLEncoder.encode(input, "UTF-8"));
+		 return sb.toString();
+	 }
+	 
+	 /**
 	  * Function that makes the HTTP connection to places api and returns a list of predictions
 	  * in the event of an error, the function will return null in the case of an error with HTTP request
 	  * @param input - partial location user has typed in for auto complete
 	  * @return list of predictions 
 	  */
-	 private PredictionsList MakeAutoCompleteServiceCall(final String input) {
+	 private PredictionsList makeAutoCompleteServiceCall(final String input) {
 		 
 		 try {
 			 //create url string
-			String urlString = PLACE_URL+URLEncoder.encode(input, "UTF-8");
+			String urlString = buildUrl(input);
 			URL url = new URL(urlString);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			InputStream body = connection.getInputStream();
@@ -123,8 +146,14 @@ public class AutoCompleteAdapter extends ArrayAdapter<Prediction> implements Fil
 			PredictionsList list = JacksonObjectMapperHolder.getMapper().readValue(body, PredictionsList.class);
 			return list;
 		} catch (MalformedURLException e) {
+			if (Log.isLoggable(TAG, Log.DEBUG)) {
+				Log.d(TAG, e.getMessage());
+			}
 			return null;
 		} catch (IOException e) {
+			if (Log.isLoggable(TAG, Log.DEBUG)) {
+				Log.d(TAG, e.getMessage());
+			}
 			return null;
 		}
 
