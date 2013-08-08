@@ -115,6 +115,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	public abstract int getButtonResourceArray();
 
+	
+	
 	//-------------------------------------------------- Public Methods --------------------------------------------------
 	/**
 	 * Create the view
@@ -137,8 +139,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		super.onResume();
 
 		setupFooter();
-
-		createAndAddHeader();
+		if (table.getRefreshableView().getHeaderViewsCount() <= 1) {
+			createAndAddHeader();
+		}
 
 		final Bundle args = getArguments();
 		if(args != null) {
@@ -204,7 +207,6 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		super.onPause();
 
 		saveStateToArgBundle(null);
-		table.getRefreshableView().removeHeaderView(header);
 
 		//Clear the observer to free up memory
 		header.clearObserver();
