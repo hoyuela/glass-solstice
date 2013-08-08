@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.discover.mobile.bank.BankExtraKeys;
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.navigation.BankNavigationRootActivity;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
@@ -19,6 +20,7 @@ import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.bank.ui.table.LoadMoreList;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -32,6 +34,10 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
  */
 public class GetTransfersServiceCall extends 
 									BankUnamedListJsonResponseMappingNetworkServiceCall<ListTransferDetail, TransferDetail>{
+	
+	// Resource containing a custom timeout value.
+	private static final int READ_TIMEOUT_RES = R.string.timeout_connect_default;
+	
 	/**Reference handler for returning to the UI*/
 	private final TypedReferenceHandler<ListTransferDetail> handler;
 	
@@ -41,16 +47,16 @@ public class GetTransfersServiceCall extends
 									final AsyncCallback<ListTransferDetail> callback, 
 									final String url) {
 
-		super(context, getGetCallParams(url.toLowerCase()), ListTransferDetail.class, TransferDetail.class);
+		super(context, getGetCallParams(context, url.toLowerCase()), ListTransferDetail.class, TransferDetail.class);
 
 		handler = new SimpleReferenceHandler<ListTransferDetail>(callback);
 	}
 	
-	private static GetCallParams getGetCallParams(final String url) {
+	private static GetCallParams getGetCallParams(final Context context, final String url) {
 		return new GetCallParams(url) {{
 			//FIXME When service is known to respond in a reasonable amount of time.
-			//some queries are taking 120+ seconds to complete. iOS is using the same timeout value.
-				final int timeout = 180;
+			//some queries are taking 120+ seconds to complete. iOS is using the same timeout value (180).
+				final int timeout = ServiceCallParams.parseTimeout(context, READ_TIMEOUT_RES);
 				//Sets the service call to be cancellable
 				this.setCancellable(true);
 				this.readTimeoutSeconds = timeout;

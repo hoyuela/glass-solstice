@@ -182,10 +182,12 @@ public abstract class NetworkServiceCall<R> {
 	 * @param params
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
 
+		loadDefaultTimeouts(); // Loads the default timeout values if needed.
+		validateConstructorArgs(context, params);
+		
 		baseURL = getBaseUrl();
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
 																com.discover.mobile.common.R.string.xApplicationVersion);
@@ -201,10 +203,12 @@ public abstract class NetworkServiceCall<R> {
 	 * @param url
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params, final String url) {
-		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
 
+		loadDefaultTimeouts(); // Loads the default timeout values if needed.
+		validateConstructorArgs(context, params);
+		
 		baseURL = url;
 		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
 																com.discover.mobile.common.R.string.xApplicationVersion);
@@ -588,6 +592,22 @@ public abstract class NetworkServiceCall<R> {
 	private void setupTimeouts() {
 		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
 		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+	}
+	
+	/** Loads the default timeout values if needed. */
+	private void loadDefaultTimeouts() {
+		if (context == null || params == null) {
+			return;
+		}
+		// Determine if we need to load the default values
+		if (params.connectTimeoutSeconds < 0) {
+			params.connectTimeoutSeconds = ServiceCallParams.parseTimeout(context,
+					com.discover.mobile.common.R.string.timeout_connect_default);
+		}
+		if (params.readTimeoutSeconds < 0) {
+			params.readTimeoutSeconds = ServiceCallParams.parseTimeout(context,
+					com.discover.mobile.common.R.string.timeout_read_default);
+		}
 	}
 
 	private void sendRequestBody() throws IOException {
