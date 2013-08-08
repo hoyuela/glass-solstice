@@ -50,6 +50,7 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
+import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
@@ -76,7 +77,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
+
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.slidingmenu.lib.SlidingMenu;
@@ -779,7 +780,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         }
 
         // 13.3 QuickView Change Start
-        if (nativeList.containsKey(fragment.getClass().getSimpleName()) && !fragment.getClass().getSimpleName().equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName())) {
+        if (nativeList.containsKey(fragment.getClass().getSimpleName())
+                && !fragment
+                        .getClass()
+                        .getSimpleName()
+                        .equalsIgnoreCase(
+                                HomeSummaryFragment.class.getSimpleName())) {
             sendNavigationTextToPhoneGapInterface("javascript:quickView()");
             mCardStoreData.addToAppCache("currentPageTitle",
                     nativeList.get(fragment.getClass().getSimpleName()));
@@ -812,7 +818,12 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         }
 
         // 13.3 QuickView Change Start
-        if (nativeList.containsKey(fragment.getClass().getSimpleName()) && !fragment.getClass().getSimpleName().equalsIgnoreCase(HomeSummaryFragment.class.getSimpleName())) {
+        if (nativeList.containsKey(fragment.getClass().getSimpleName())
+                && !fragment
+                        .getClass()
+                        .getSimpleName()
+                        .equalsIgnoreCase(
+                                HomeSummaryFragment.class.getSimpleName())) {
             sendNavigationTextToPhoneGapInterface("javascript:quickView()");
             mCardStoreData.addToAppCache("currentPageTitle",
                     nativeList.get(fragment.getClass().getSimpleName()));
@@ -882,13 +893,14 @@ public class CardNavigationRootActivity extends NavigationRootActivity
 
             } else {
                 Log.v(TAG, "Native List DOES NOT Contain Frag: " + fragTag);
-                /*if (fragTag
-                        .equalsIgnoreCase(getString(R.string.enhanced_account_security_title))
-                        || fragTag.equalsIgnoreCase("No Title")) {
-                    Utils.log("CardNavigationRootActivity",
-                            "inside onBackPressed()##############");
-                    onBackPressed();
-                } else */{
+                /*
+                 * if (fragTag .equalsIgnoreCase(getString(R.string.
+                 * enhanced_account_security_title)) ||
+                 * fragTag.equalsIgnoreCase("No Title")) {
+                 * Utils.log("CardNavigationRootActivity",
+                 * "inside onBackPressed()##############"); onBackPressed(); }
+                 * else
+                 */{
                     sendNavigationTextToPhoneGapInterface(fragTag);
                     super.onBackPressed();
                 }
@@ -1092,7 +1104,7 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         // View mView = view.findViewById(R.id.cardRootLayout);
         if (null != mView) {
             mView.setDrawingCacheEnabled(true);
-            //13.4 Null pointer check on orientation change  
+            // 13.4 Null pointer check on orientation change
             if (mView.getDrawingCache() != null) {
                 Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
                 mView.setDrawingCacheEnabled(false);

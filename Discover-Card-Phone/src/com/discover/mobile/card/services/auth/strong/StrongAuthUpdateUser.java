@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
@@ -13,15 +14,19 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-
-import com.discover.mobile.card.R;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+/**
+ * StrongAuthUpdateUser Updates information to web server via web service call
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class StrongAuthUpdateUser {
     private Context context;
-    private final String TAG = StrongAuthCreateUser.class.getSimpleName();
+
     private CardEventListener listener;
 
     /**
@@ -31,7 +36,8 @@ public class StrongAuthUpdateUser {
      * @param listener
      *            CardEventListener
      */
-    public StrongAuthUpdateUser(Context context, CardEventListener listener) {
+    public StrongAuthUpdateUser(final Context context,
+            final CardEventListener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -40,7 +46,8 @@ public class StrongAuthUpdateUser {
      * Check with server if Strong Authentication is required.
      * 
      */
-    public void sendRequest(StrongAuthReviewQueAnsDetails strongAuthReviewQueAnsDetails ) {
+    public void sendRequest(
+            final StrongAuthReviewQueAnsDetails strongAuthReviewQueAnsDetails) {
         WSRequest request = new WSRequest();
         HashMap<String, String> headers = request.getHeaderValues();
         CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -59,16 +66,11 @@ public class StrongAuthUpdateUser {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         try {
-            JacksonObjectMapperHolder.getMapper().writeValue(baos, strongAuthReviewQueAnsDetails);
+            JacksonObjectMapperHolder.getMapper().writeValue(baos,
+                    strongAuthReviewQueAnsDetails);
         } catch (JsonGenerationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
 
         request.setInput(baos.toByteArray());

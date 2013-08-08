@@ -14,7 +14,6 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 
-
 /**
  * 
  * ©2013 Discover Bank
@@ -27,45 +26,44 @@ import com.discover.mobile.card.common.sharedata.CardShareDataStore;
  */
 public class StrongAuthQuestion {
 
-	private Context context;	
-	private CardEventListener listener;
+    private Context context;
+    private CardEventListener listener;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param context
-	 * @param listener
-	 *            CardEventListener
-	 */
-	public StrongAuthQuestion(Context context, CardEventListener listener) {
-		this.context = context;
-		this.listener = listener;
-	}
+    /**
+     * Constructor
+     * 
+     * @param context
+     * @param listener
+     *            CardEventListener
+     */
+    public StrongAuthQuestion(Context context, CardEventListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
 
-	/**
-	 * This method makes a server call to fetch question
-	 * 
-	 */
-	public void sendRequest() {
+    /**
+     * This method makes a server call to fetch question
+     * 
+     */
+    public void sendRequest() {
 
-		WSRequest request = new WSRequest();
-		HashMap<String, String> headers = request.getHeaderValues();
+        WSRequest request = new WSRequest();
+        HashMap<String, String> headers = request.getHeaderValues();
 
-		CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-				.getInstance(context);
-		SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-				.getCookieManagerInstance();
-		sessionCookieManagerObj.setCookieValues();
+        CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+        SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+                .getCookieManagerInstance();
+        sessionCookieManagerObj.setCookieValues();
 
-		headers.put("X-SEC-Token", sessionCookieManagerObj.getSecToken());
-		String url = NetworkUtility.getWebServiceUrl(context,
-				R.string.strongAuth_quest_url);
+        headers.put("X-SEC-Token", sessionCookieManagerObj.getSecToken());
+        String url = NetworkUtility.getWebServiceUrl(context,
+                R.string.strongAuth_quest_url);
 
-		request.setUrl(url);
-		request.setHeaderValues(headers);
-		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-				new StrongAuthDetails(), "Discover", null,
-				listener);
-		serviceCall.execute(request);
-	}
+        request.setUrl(url);
+        request.setHeaderValues(headers);
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
+                new StrongAuthDetails(), "Discover", null, listener);
+        serviceCall.execute(request);
+    }
 }

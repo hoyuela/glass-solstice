@@ -12,11 +12,13 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 
 /**
- * @author 328073
- *
+ * GetPushCount provides new notification counts from server
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
  */
-public class GetPushCount
-{
+public class GetPushCount {
 
     private final Context context;
     private final CardEventListener listener;
@@ -25,9 +27,9 @@ public class GetPushCount
      * Constructor
      * 
      */
-    public GetPushCount(Context context, CardEventListener listner) {
+    public GetPushCount(final Context context, final CardEventListener listner) {
         this.context = context;
-        this.listener = listner;
+        listener = listner;
     }
 
     /**
@@ -41,7 +43,7 @@ public class GetPushCount
         WSRequest request = new WSRequest();
         String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.get_push_count);
-        
+
         request.setUrl(url);
         request.setFrequentCaller(true);
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,

@@ -3,8 +3,6 @@
  */
 package com.discover.mobile.card.services.push;
 
-
-
 import android.content.Context;
 
 import com.discover.mobile.card.R;
@@ -13,14 +11,14 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 
-
-
 /**
- * @author 328073
- *
+ * GetPushRegistration performs call to web server Push Registration web service
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
  */
-public class GetPushRegistration
-{
+public class GetPushRegistration {
     private final Context context;
     private final CardEventListener listener;
 
@@ -28,13 +26,14 @@ public class GetPushRegistration
      * Constructor
      * 
      */
-    public GetPushRegistration(Context context, CardEventListener listner) {
+    public GetPushRegistration(final Context context,
+            final CardEventListener listner) {
         this.context = context;
-        this.listener = listner;
+        listener = listner;
     }
 
     /**
-     * This method prepairs header/request and send data to server
+     * This method prepares header/request and send data to server
      * 
      * @param tokenValue
      * @param hashedTokenValue
@@ -43,11 +42,12 @@ public class GetPushRegistration
 
         WSRequest request = new WSRequest();
         String url = NetworkUtility.getWebServiceUrl(context,
-                R.string.get_push_registration)+"?vid="+vendroId;
-        
+                R.string.get_push_registration) + "?vid=" + vendroId;
+
         request.setUrl(url);
-        /*  String input = "vid="+vendroId;
-        request.setInput(input.getBytes());*/
+        /*
+         * String input = "vid="+vendroId; request.setInput(input.getBytes());
+         */
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new GetPushData(), "Discover", null, listener);
         serviceCall.execute(request);

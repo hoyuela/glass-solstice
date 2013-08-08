@@ -7,21 +7,20 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author 328073
- *
+ * POGO Class for PushMessageRead web service
+ * 
  */
-public class PushMessageReadBean implements Serializable
-{
+public class PushMessageReadBean implements Serializable {
 
-	/**Unique identifier*/
-	private static final long serialVersionUID = 8183770766319973175L;
+    /** Unique identifier */
+    private static final long serialVersionUID = 8183770766319973175L;
 
-	/**Static string for marking an item read*/
-	public static final String MARK_READ = "markRead";
-	
-	/**Action attribute for the JSon obect*/
-	public String action;
-	
-	/**Ids to mark read*/
-	public List<String> reqId;
+    /** Static string for marking an item read */
+    public final String MARK_READ = "markRead";
+
+    /** Action attribute for the JSon obect */
+    public String action;
+
+    /** Ids to mark read */
+    public List<String> reqId;
 }
