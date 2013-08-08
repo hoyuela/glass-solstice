@@ -708,7 +708,7 @@ line-height: 17px;}*/
 	width: 138px !important;
 }
 #paymentStep1-pg .nobg_2coltbl li .minDueDate {
-	width: 83px !important;
+	width: 100px !important;		/*Defect_107495_Reopen_8-05 08/07/2013*/
 	float: left;
 	text-align: left;
 }
@@ -1496,8 +1496,10 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 	border-bottom:1px solid #c4cbcf;
 	padding:0 12px 3px 12px;
 }
-/*#paymentStep1-pg .r3matchbtn div{display:inline-block;} /* 13.3 global change 31/07/13 (defect 107308) */
-#paymentStep1-pg .r3matchbtn a{display:inline-block;}/* 13.3 global change 08/06/2013 (defect 108238) */
+/* 13.3 global change 08/06/2013 (defect 108238) */
+#paymentStep1-pg .r3matchbtn span{display:block;}
+#paymentStep1-pg .r3matchbtn span a{display:inline-block;}
+
 #paymentStep1-pg .wraper1 .ui-select , #paymentStep1-pg .wraper1 .white-form, #paymentStep1-pg .wraper1 .lateMinPayWarn{margin:0 12px;}
 #paymentStep1-pg .wraper .ui-select , #paymentStep1-pg .wraper .white-form, #paymentStep1-pg .wraper .lateMinPayWarn, #paymentStep1-pg .wraper  .errorText, #paymentStep1-pg .wraper .err2, #paymentStep1-pg .wraper .err1, #paymentStep1-pg .wraper1 .errorText{margin:0 12px;}
 /*13.3 global change 29/07/2013*/
