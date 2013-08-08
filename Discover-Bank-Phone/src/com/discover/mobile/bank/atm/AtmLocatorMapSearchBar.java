@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.services.atm.autocomplete.Prediction;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.bank.ui.ExpandCollapseAnimation;
 import com.discover.mobile.common.ui.toggle.DiscoverToggleSwitch;
@@ -171,6 +174,18 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 					return true;
 				}
 				return false;
+			}
+		});
+		
+		//listener for when user selects an item from the auto complete listener
+		searchBox.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int position,
+					long id) {
+				clearSearchFocus();
+				//get the auto-completed string
+				String str = ((Prediction)adapterView.getItemAtPosition(position)).toString();
+				fragment.performSearch(str);
 			}
 		});
 	}
