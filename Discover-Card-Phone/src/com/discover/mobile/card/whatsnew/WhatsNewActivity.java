@@ -18,15 +18,21 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.discover.mobile.card.R;
-
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.services.auth.AccountDetails;
 
+/***
+ * WhatsNewActivity show whats new screen on first time login. Newly added
+ * features are shown in sliding view
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
+ */
 public class WhatsNewActivity extends Activity implements WhatsNewConstants {
     /** Called when the activity is first created. */
     LinearLayout layout;
@@ -53,10 +59,9 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants {
         if (noOfPages > 1) {
             mIndicator.setViewPager(viewPager);
         }
-    /*    13.4 Defect Fix Start*/
-        PageTimeOutUtil.getInstance(WhatsNewActivity.this)
-        .startPageTimer();
-        /*    13.4 Defect Fix End*/
+        /* 13.4 Defect Fix Start */
+        PageTimeOutUtil.getInstance(WhatsNewActivity.this).startPageTimer();
+        /* 13.4 Defect Fix End */
         final Button closeButton = (Button) findViewById(R.id.whats_new_close_button);
         closeButton.setOnClickListener(new OnClickListener() {
 
@@ -171,14 +176,14 @@ public class WhatsNewActivity extends Activity implements WhatsNewConstants {
 
         }
     }
-    
-    /*    13.4 Defect Fix Start*/
+
+    /* 13.4 Defect Fix Start */
     public void idealTimeoutLogout() {
         Utils.log("CardNavigationRootActivity", "inside logout...");
         // super.logout();
         isTimeout = true;
         Utils.logoutUser(WhatsNewActivity.this, isTimeout);
     }
-    /*    13.4 Defect Fix End*/
-    
+    /* 13.4 Defect Fix End */
+
 }

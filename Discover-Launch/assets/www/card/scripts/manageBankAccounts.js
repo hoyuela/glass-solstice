@@ -772,6 +772,9 @@ try{
 			flag = false;
 			$(".dd").addClass("ddHighlightError");
 			$(".arrow").addClass("ddHighlightErrorArrow");
+            /* 13.3 Global changes - 107306 - 6-Aug-2013 - Start  */
+			$("#"+activePage+" #acctTypeErr.errormsg").show();
+			/* 13.3 Global changes - 107306 - 6-Aug-2013 - end  */
 		}else {
 			$(".errorText").hide();
 			}

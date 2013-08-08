@@ -9,26 +9,28 @@ import java.util.HashMap;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
- * @author 228218
- *
+ * ForgotBoth class web service for forgot modules
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
  */
 public class ForgotBoth {
-    private Context context;    
+    private Context context;
     private CardEventListener listener;
     private AccountInformationDetails accountInformationDetails;
+
     /**
      * Constructor
      * 
@@ -38,14 +40,14 @@ public class ForgotBoth {
      * @param accountInformationDetails
      *            AccountInformationDetails
      */
-    public ForgotBoth(Context context, CardEventListener listener,
-            AccountInformationDetails accountInformationDetails) {
+    public ForgotBoth(final Context context, final CardEventListener listener,
+            final AccountInformationDetails accountInformationDetails) {
         super();
         this.context = context;
         this.listener = listener;
         this.accountInformationDetails = accountInformationDetails;
     }
-    
+
     /**
      * This method make a service call for sending account details to server.
      * 

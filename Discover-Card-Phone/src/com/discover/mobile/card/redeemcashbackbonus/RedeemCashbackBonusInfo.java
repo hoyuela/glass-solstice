@@ -29,42 +29,42 @@ public class RedeemCashbackBonusInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_partner_gift_cards,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }), new ClickComponentInfo(
                 R.string.sub_section_title_discover_gift_cards, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }), new ClickComponentInfo(
                 R.string.sub_section_title_statement_credit, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }), new ClickComponentInfo(
                 R.string.sub_section_title_direct_deposit, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }), new ClickComponentInfo(
                 R.string.sub_section_title_pay_with_cashback_bonus, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }), new ClickComponentInfo(
                 R.string.sub_section_title_redemption_history, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }));
@@ -72,8 +72,8 @@ public class RedeemCashbackBonusInfo extends GroupComponentInfo {
 
     class RedeemCashbackBonusComponentInfo extends ClickComponentInfo {
 
-        public RedeemCashbackBonusComponentInfo(int titleResource,
-                OnClickListener listener) {
+        public RedeemCashbackBonusComponentInfo(final int titleResource,
+                final OnClickListener listener) {
             super(titleResource, false, listener);
         }
     }
