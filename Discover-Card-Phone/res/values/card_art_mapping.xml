@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="CARD_IMAGE_CBB_000001">card_more</string>
+    <string name="CARD_IMAGE_CBB_000001">card_more</string>
+    <string name="CARD_IMAGE_CBB_000002">card_more</string>
+    <string name="CARD_IMAGE_CBB_000003">card_more</string>
+    <string name="CARD_IMAGE_CBB_000004">card_more</string>
+    <string name="CARD_IMAGE_CBB_000005">card_more</string>
+    <string name="CARD_IMAGE_CBB_000006">card_more</string>
+    <string name="CARD_IMAGE_CBB_000007">card_more</string>
+    <string name="CARD_IMAGE_CBB_000007">card_more</string>
+    <string name="CARD_IMAGE_CBB_000007">card_more</string>
     <string name="CARD_IMAGE_CBB_000013">card_motiva</string>
     <string name="CARD_IMAGE_CBB_000015">card_motiva</string>
     <string name="CARD_IMAGE_MI2_000001">card_miles</string>

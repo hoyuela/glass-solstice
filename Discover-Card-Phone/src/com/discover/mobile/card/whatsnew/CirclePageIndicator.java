@@ -23,9 +23,13 @@ import android.view.ViewConfiguration;
 
 import com.discover.mobile.card.R;
 
-/**
+/***
  * Draws circles (one for each view). The current view position is filled and
  * others are only stroked.
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
  */
 public class CirclePageIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
@@ -63,7 +67,6 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (isInEditMode()) {
             return;
         }
-
         // Load defaults from resources
         final Resources res = getResources();
 

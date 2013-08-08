@@ -34,79 +34,80 @@ import com.fasterxml.jackson.core.JsonGenerationException;
  */
 public class StrongAuthAns {
 
-	private Context context;
-	private CardEventListener listener;
+    private Context context;
+    private CardEventListener listener;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param context
-	 * @param listener
-	 *            CardEventListener
-	 */
-	public StrongAuthAns(Context context, CardEventListener listener) {
-		this.context = context;
-		this.listener = listener;
-	}
+    /**
+     * Constructor
+     * 
+     * @param context
+     * @param listener
+     *            CardEventListener
+     */
+    public StrongAuthAns(final Context context, final CardEventListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
 
-	/**
-	 * TODO: Method description
-	 * 
-	 * @param answer
-	 * @param strongAuthQuestionId
-	 * @param selectedIndex
-	 * @throws NoSuchAlgorithmException
-	 * @throws JsonGenerationException
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	public void sendRequest(String answer, String strongAuthQuestionId,
-			int selectedIndex) throws NoSuchAlgorithmException,
-			JsonGenerationException, IOException, Exception {
-		final StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
-		answerDetails.questionAnswer = answer;
-		answerDetails.questionId = strongAuthQuestionId;
+    /**
+     * Calls Strong Auth Webservice
+     * 
+     * @param answer
+     * @param strongAuthQuestionId
+     * @param selectedIndex
+     * @throws NoSuchAlgorithmException
+     * @throws JsonGenerationException
+     * @throws IOException
+     * @throws Exception
+     */
+    public void sendRequest(final String answer,
+            final String strongAuthQuestionId, final int selectedIndex)
+            throws NoSuchAlgorithmException, JsonGenerationException,
+            IOException, Exception {
+        final StrongAuthAnswerDetails answerDetails = new StrongAuthAnswerDetails();
+        answerDetails.questionAnswer = answer;
+        answerDetails.questionId = strongAuthQuestionId;
 
-		if (selectedIndex == 0) {
-			answerDetails.bindDevice = "true";
-		} else {
-			answerDetails.bindDevice = "false";
-		}
+        if (selectedIndex == 0) {
+            answerDetails.bindDevice = "true";
+        } else {
+            answerDetails.bindDevice = "false";
+        }
 
-		StrongAuthUtil authUtil = new StrongAuthUtil(context);
-		StrongAuthBean authBean = null;
-		authBean = authUtil.getStrongAuthData();
-		answerDetails.did = authBean.getDeviceId();
-		answerDetails.sid = authBean.getSimId();
-		answerDetails.oid = authBean.getSubscriberId();
+        StrongAuthUtil authUtil = new StrongAuthUtil(context);
+        StrongAuthBean authBean = null;
+        authBean = authUtil.getStrongAuthData();
+        answerDetails.did = authBean.getDeviceId();
+        answerDetails.sid = authBean.getSimId();
+        answerDetails.oid = authBean.getSubscriberId();
 
-		WSRequest request = new WSRequest();
-		HashMap<String, String> headers = request.getHeaderValues();
-		
-		CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-				.getInstance(context);
-		SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-				.getCookieManagerInstance();
-		sessionCookieManagerObj.setCookieValues();
+        WSRequest request = new WSRequest();
+        HashMap<String, String> headers = request.getHeaderValues();
 
-		headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
-		
-		String url = NetworkUtility.getWebServiceUrl(context,
-				R.string.strongAuth_ans_url);
+        CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+        SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+                .getCookieManagerInstance();
+        sessionCookieManagerObj.setCookieValues();
 
-		request.setUrl(url);
-		request.setHeaderValues(headers);
+        headers.put("X-Sec-Token", sessionCookieManagerObj.getSecToken());
 
-		request.setMethodtype("POST");
+        String url = NetworkUtility.getWebServiceUrl(context,
+                R.string.strongAuth_ans_url);
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        request.setUrl(url);
+        request.setHeaderValues(headers);
 
-		JacksonObjectMapperHolder.getMapper().writeValue(baos, answerDetails);
+        request.setMethodtype("POST");
 
-		request.setInput(baos.toByteArray());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
-				"Discover", "Loading...", listener);
-		serviceCall.execute(request);
-	}
+        JacksonObjectMapperHolder.getMapper().writeValue(baos, answerDetails);
+
+        request.setInput(baos.toByteArray());
+
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
+                "Discover", "Loading...", listener);
+        serviceCall.execute(request);
+    }
 }
