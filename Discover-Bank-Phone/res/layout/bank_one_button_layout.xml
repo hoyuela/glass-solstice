@@ -47,6 +47,7 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_alignParentTop="true"
 	            android:layout_marginBottom="@dimen/forms_inner_padding"
+	            android:layout_marginTop="@dimen/forms_inner_padding"
 	            android:paddingRight="@dimen/forms_inner_padding"
 	            android:paddingLeft="@dimen/forms_inner_padding"
 	            android:text="@string/page_title" />

@@ -94,6 +94,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	/** Fragment used to select a payment date*/
 	private CalendarFragment calendarFragment;
 	
+	/**There is a short delay between when showCalendar() is called and when the calendar actually appears on screen. This boolean is used to ensure
+	 * that the user does not inadvertently open multiple calendars by tapping on "Date" multiple times during this delay.*/
+	private boolean calendarIsOpening = false;
 
 	/**
 	 * Constructor for the view
@@ -269,8 +272,9 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				disableTransaction();
 				disableAmount();
 				hideKeyboard();
-				if(shouldCreateNewCalendar(bundle)) {
+				if(shouldCreateNewCalendar(bundle) && !calendarIsOpening) {
 					showCalendar();
+					calendarIsOpening = true;
 				}
 				break;
 			case TRANSACTION:
@@ -470,6 +474,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), res
 				.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
 				.getHolidays(), createCalendarListener());
+		
 	}
 
 	/**
@@ -490,12 +495,14 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				
 				//Delay closing of calendar to be able to see the selection change
 				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
+				calendarIsOpening = false;
 			}
 
 			@Override
 			public void onCancel() {
 				/** Clear reference to calendar fragment so that it can be recreated and shown again */
 				calendarFragment = null;
+				calendarIsOpening = false;
 			}
 		};
 		return calendarListener;
