@@ -15,6 +15,7 @@ import com.discover.mobile.bank.services.BankHolidays;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.PreferredAccounts;
 import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.services.payee.ListPayeeDetail;
 import com.discover.mobile.bank.services.payment.ListPaymentDetail;
@@ -48,6 +49,17 @@ public final class BankUser extends CacheManager implements Serializable {
 	 * GetCustomerAccountServerCall on a successful download of accounts.
 	 */
 	private AccountList accountList;
+	
+	/**
+	 * Holds a reference to the list of PreferredAccounts pulled down during the "PreferredAccounts" service call which is
+	 * chained with the GetPayeesServiceCall in the pay bills workflow.
+	 */
+	private PreferredAccounts preferredAccounts;
+	
+	/**
+	 * Holds a reference to whether the preferred accounts call has occured;
+	 */
+	private boolean hasPreferredAccounts = false;
 	
 	/**
 	 * Holds a reference to an Account list set from the GetExternalTransferAccountsCall
@@ -502,5 +514,33 @@ public final class BankUser extends CacheManager implements Serializable {
 	 */
 	public HashMap<String, StatementList> getAccountsToStatementsMap() {
 		return this.accountsToStatementsMap;
+	}
+
+	
+	public PreferredAccounts getPreferredAccounts() {
+		return preferredAccounts;
+	}
+
+	
+	public void setPreferredAccounts(final PreferredAccounts preferredAccounts) {
+		if (preferredAccounts != null) {
+			this.preferredAccounts = preferredAccounts;
+			this.hasPreferredAccounts = true;
+		}
+	}
+	
+	public void clearPreferredAccounts() {
+		this.preferredAccounts = null;
+		this.hasPreferredAccounts = false;
+	}
+
+	
+	public boolean hasPreferredAccounts() {
+		return hasPreferredAccounts;
+	}
+
+	
+	public void setHasPreferredAccounts(boolean hasPreferredAccounts) {
+		this.hasPreferredAccounts = hasPreferredAccounts;
 	}
 }

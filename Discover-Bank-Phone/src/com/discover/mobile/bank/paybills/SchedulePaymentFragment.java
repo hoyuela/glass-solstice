@@ -440,6 +440,16 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountSpinner.setAdapter(accountAdapter);
 	}
 	
+	private void setSpinnerSelectedAccountByAccountId(final String accountId) {
+		// Parse all items in the Adapter and determine if one matches the requested Account.
+		for (int x=0; x<paymentAccountSpinner.getAdapter().getCount(); ++x) {
+			if (((Account)paymentAccountSpinner.getItemAtPosition(x)).id.equals(accountId)) {
+				paymentAccountSpinner.setSelection(x);
+				return;
+			}
+		}
+	}
+	
 	/**
 	 * Selects a specific Account from the IcsSpinner if found.
 	 * Otherwise, does not alter the current selection.
@@ -466,8 +476,13 @@ public class SchedulePaymentFragment extends BaseFragment
 		if (payee != null) {
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
-
-			setSpinnerSelectedAccount(getDefaultAccount());
+			
+			if (BankUser.instance().hasPreferredAccounts()) {
+				setSpinnerSelectedAccountByAccountId(getDefaultAccount().id);
+			} else {
+				setSpinnerSelectedAccount(getDefaultAccount());
+			}
+			
 			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 		}
 		/**Check if page is displayed to edit a payment*/
@@ -509,19 +524,27 @@ public class SchedulePaymentFragment extends BaseFragment
 	 * @return Name of default account
 	 */
 	private Account getDefaultAccount() {
-		for (final Account a : bankUser.getAccounts().accounts) {
-			if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
-				accountId = a.id;
-				return a;
+		Account account = null;
+		
+		if (BankUser.instance().hasPreferredAccounts()) {
+			account = BankUser.instance().getPreferredAccounts().payments;
+			accountId = account.id;
+		} else {
+			for (final Account a : bankUser.getAccounts().accounts) {
+				if (a.type.equalsIgnoreCase(Account.ACCOUNT_CHECKING)) {
+					accountId = a.id;
+					account = a;
+				}
+			}
+			for (final Account a : bankUser.getAccounts().accounts) {
+				if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
+					accountId = a.id;
+					account = a;
+				}
 			}
 		}
-		for (final Account a : bankUser.getAccounts().accounts) {
-			if (a.type.equalsIgnoreCase(Account.ACCOUNT_MMA)) {
-				accountId = a.id;
-				return a;
-			}
-		}
-		return null;
+		
+		return account;
 	}
 
 	/**

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
@@ -21,6 +22,7 @@ import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.customer.Eligibility;
 import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * The terms and conditions page for Pay Bills or Mange Payees.
@@ -50,6 +52,9 @@ public class BankPayTerms extends BaseFragment{
 
 	/**The web view that displays the content for the terms of service to the user */
 	private WebView termsWebView;
+	
+	/**The container that holds the WebView*/
+	private FrameLayout webContainer;
 
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
@@ -76,7 +81,9 @@ public class BankPayTerms extends BaseFragment{
 	 * @param mainView
 	 */
 	private void loadResources(final View mainView) {
-		termsWebView = (WebView)mainView.findViewById(R.id.agreement_web_view);
+		webContainer = (FrameLayout)mainView.findViewById(R.id.agreement_web_view);
+		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
+		webContainer.addView(termsWebView);
 		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
 		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
 	}
@@ -143,7 +150,30 @@ public class BankPayTerms extends BaseFragment{
 
 		return mainView;
 	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		webContainer.removeAllViews();
+		termsWebView.destroy();
+	};
 
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		webContainer.removeAllViews();
+		termsWebView.destroy();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
+		webContainer.addView(termsWebView);
+	}
+	
 	/**
 	 * Set the title in the action bar.
 	 */

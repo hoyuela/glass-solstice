@@ -3,6 +3,7 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 
 import android.app.Activity;
+import android.os.Bundle;
 
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.account.TransferDeletionType;
@@ -18,6 +19,8 @@ import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.GetPreferredAccountsServerCall;
+import com.discover.mobile.bank.services.account.PreferredAccounts;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -763,5 +766,15 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		}
 
 		return serviceCall;
+	}
+	
+	public static GetPreferredAccountsServerCall createGetPreferredAccounts() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		final AsyncCallback<PreferredAccounts>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PreferredAccounts.class,
+						activity, (ErrorHandlerUi) activity).build();
+		
+		return new GetPreferredAccountsServerCall(activity, callback);
 	}
 }
