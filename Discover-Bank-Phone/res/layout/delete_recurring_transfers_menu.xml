@@ -5,18 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:clickable="true"
-    android:paddingTop="@dimen/modal_top_padding" >
+    android:clickable="true" >
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#E2E6E7"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="20dp"
+        android:background="#ebeff2"
         android:orientation="vertical" >
+        
+        <TextView
+            style="@style/title_unbold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/forms_inner_padding"
+            android:paddingLeft="@dimen/forms_inner_padding"
+            android:text="@string/transfer_options_dialog_title" />
 
-        <LinearLayout
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/gray_line" />
+        
+		<LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -30,7 +44,7 @@
                 android:layout_gravity="left"
                 android:layout_marginRight="@dimen/forms_inner_padding"
                 android:layout_weight="1"
-                android:background="@drawable/white_button"
+                android:background="@null"
                 android:contentDescription="@string/delete_next_transfer_in_series_content_description"
                 android:paddingBottom="23dp"
                 android:paddingTop="23dp"
@@ -42,28 +56,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
-                android:background="@drawable/white_button"
+                android:background="@null"
                 android:contentDescription="@string/delete_entire_transfer_series_content_description"
                 android:paddingBottom="20.5dp"
                 android:paddingTop="20.5dp"
                 android:src="@drawable/actionsheet_delete_series_icon" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="12dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp" >
-
-            <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/actionsheet_cancel"
-                android:text="@string/cancel_text" />
         </LinearLayout>
     </LinearLayout>
 
