@@ -1,14 +1,11 @@
 package com.discover.mobile.bank.atm;
 
-import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.discover.mobile.bank.R;
@@ -72,8 +69,7 @@ public class AtmSearchEditText extends AutoCompleteTextView {
 		AutoCompleteAdapter adapter = new AutoCompleteAdapter(DiscoverActivityManager.getActiveActivity(),
 															R.layout.bank_atm_prediction);
 		setAdapter(adapter);
-														
-				
+		
 	}
 
 	/**
