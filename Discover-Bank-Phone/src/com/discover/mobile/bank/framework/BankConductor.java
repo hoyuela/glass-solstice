@@ -1512,7 +1512,9 @@ public final class BankConductor  extends Conductor {
 	public static void navigateBackFromTransferWidget(final Bundle bundle) {
 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		activity.onBackPressed();
-		((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenFrequency(bundle);
+		if (activity.getCurrentContentFragment() instanceof BankTransferStepOneFragment) {
+			((BankTransferStepOneFragment) activity.getCurrentContentFragment()).handleChosenFrequency(bundle);
+		}
 	}
 
 	public static void navigateBackFromTransferSelectAccount(final Bundle bundle) {
