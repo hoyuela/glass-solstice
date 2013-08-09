@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 		frontImage: "/9j/4AAQSkZJRgABAgAAAQA...",
 		backImage: "/9j/4AAQSkZJRgABAgAAAQAB..."
 	}
-	
+
  * 	A successful response will be in the following form with a 201 Created http response. 
 	{
 	    "account": 2,
@@ -28,13 +28,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 	    "creationDate": "2013-03-21T16:23:56.541+0000",
 	    "confirmation": "2e90edd00dc"
 	}
-	
+
  * @author scottseward
  *
  */
 public class DepositDetail implements Serializable {
 	private static final long serialVersionUID = 4608587442886244788L;
-	
+
 	/**
 	 * Holds the name of the amount field in a JSON request.
 	 */
@@ -43,23 +43,26 @@ public class DepositDetail implements Serializable {
 	 * Holds the name of the account field in a JSON request.
 	 */
 	public static final String ACCOUNT_FIELD = "account";
-	
+
+	/**Response code for the service call*/
+	public int responseCode;
+
 	@JsonProperty("amount")
 	public Money amount;
-	
+
 	@JsonProperty("account")
 	public int account;
-	
+
 	@JsonProperty("confirmation")
 	public String confirmation;
-	
+
 	@JsonProperty("scheduledDate")
 	public Date scheduledDate;
-	
+
 	/** A Base64 encoded image*/
 	@JsonProperty("frontImage")
 	public String frontImage;
-	
+
 	/** A Base64 encoded image*/
 	@JsonProperty("backImage")
 	public String backImage;	
