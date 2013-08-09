@@ -68,5 +68,7 @@
     <!-- Leaving Application Modal Text  -->
     <string name="atm_browser_title">You\'re Leaving This Application</string>
     <string name="atm_browser_body">Tap Continue to view this page in your mobile browser.</string>
-  
+  	<string name="autocomplete_base_url">https://maps.googleapis.com/maps/api/place/autocomplete/json?types=geocode&#38;language=en&#38;sensor=false&#38;components=country:us</string>
+  	<string name="autocomplete_url_ending">&#38;input=</string>
+    
 </resources>

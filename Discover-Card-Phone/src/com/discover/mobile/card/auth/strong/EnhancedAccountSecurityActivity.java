@@ -223,9 +223,10 @@ public class EnhancedAccountSecurityActivity extends
             public void onSuccess(Object data) {
                 // Strong Authentication successed, get back to last activity
                 if (authListener != null) {
+                    Utils.isSpinnerAllowed=false;
                     authListener.onStrongAuthSucess(data);
                 }
-                finish();
+               // finish();
                 // activityResult = RESULT_OK;
                 // finish();
             }

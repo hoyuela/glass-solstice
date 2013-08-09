@@ -27,6 +27,10 @@ import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
+/**
+ * @author 228218
+ *
+ */
 public class StrongAuthQuestionList extends ListActivity implements
         OnClickListener {
 
