@@ -3,6 +3,7 @@ package com.discover.mobile.bank.deposit;
 import java.io.File;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -78,6 +79,7 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 	 * @param imageViewResource the ImageView resource id in the layout file.
 	 * @param filename the file name of the image to load.
 	 */
+	@SuppressWarnings("deprecation")
 	private void loadImageToView(final int imageViewResource, final String filename) {
 		if(imageViewResource != 0 && !Strings.isNullOrEmpty(filename)) {
 			Bitmap decodedImage = null;
@@ -85,18 +87,50 @@ public class ReviewCheckDepositTableCell extends RelativeLayout {
 			final File savedImage = getContext().getFileStreamPath(filename);
 			
 			final BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 2;
+			options.inSampleSize = getOptimalSampleSizeForDevice();
+			
 			if(savedImage != null) {
 				decodedImage = BitmapFactory.decodeFile(savedImage.getAbsolutePath(), options);
 			}
 			
 			if(decodedImage != null && checkImageView != null){
 				final Drawable image = new BitmapDrawable(getResources(), decodedImage);
-				checkImageView.setBackgroundDrawable(image);
+				
+				final boolean isJellyBeanOrHigher = 
+						android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN;
+
+				if(isJellyBeanOrHigher){
+					checkImageView.setBackground(image);
+				}else{
+					//Deprecated method is used for devices before API 16.
+					checkImageView.setBackgroundDrawable(image);
+				}
 			}
 		}
 	}
 	
+	/**
+	 * 
+	 * @return an integer sample size that is used when loading a saved image to the image we show on screen for the
+	 * submission review. This sample size is the amount the original image that is saved to the device will be
+	 * sub sampled and therefore how much less memory it will use. A sample size of 4 means that the original image will be
+	 * reduced (in the preview) to 1/4 of its original size in pixels.
+	 * We assume that the capture size was 1600x1200 pixels.
+	 */
+	private int getOptimalSampleSizeForDevice() {
+		int sampleSize = 0;
+		final ActivityManager activityManager = (ActivityManager) getContext().getSystemService(Activity.ACTIVITY_SERVICE);
+		final boolean hasLargeHeap = activityManager.getMemoryClass() > 16;
+		
+		//If we have more than 16 MB of heap space available for the app, we want to use a higher quality preview image
+		if(hasLargeHeap) {
+			sampleSize = 4; 
+		}else {
+			sampleSize = 8; 
+		}
+		
+		return sampleSize;
+	}
 	/**
 	 * Restarts the check deposit capture activity with a specified retake value.
 	 * @param type
