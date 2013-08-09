@@ -1,13 +1,16 @@
 package com.discover.mobile.bank.transfer;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.ListActivityDetail;
@@ -15,6 +18,7 @@ import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.bank.ui.table.LoadMoreBaseTable;
 import com.discover.mobile.bank.ui.table.LoadMoreTableHeader;
 import com.discover.mobile.bank.ui.table.TableTitles;
+import com.discover.mobile.bank.ui.widgets.StatusMessageView;
 import com.discover.mobile.common.ui.table.TableHeaderButton;
 import com.discover.mobile.common.utils.StringUtility;
 /**
@@ -26,6 +30,7 @@ import com.discover.mobile.common.utils.StringUtility;
  */
 public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 	private static final long serialVersionUID = 5179969192763576736L;
+	private final int DELETE_ANIMATION_DURATION = 5000;
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater, 
@@ -35,6 +40,18 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 
 		return mainView;
 	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		Bundle bundle = getArguments();
+		
+		if (bundle.getBoolean(BankExtraKeys.CONFIRM_DELETE)) {
+			this.showDeletedTransfersMessage();
+			bundle.remove(BankExtraKeys.CONFIRM_DELETE);
+		}
+	};
 	
 	/**
 	 * Add buttons to the header of the table so a user can navigate between possible transfer
@@ -73,7 +90,7 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 		bundle.putInt(BankExtraKeys.SECTION_MENU_OVERRIDE, getSectionMenuLocation());
 		bundle.putInt(BankExtraKeys.TITLE_TEXT, R.string.funds_transfer_details);
 
-		BankConductor.navigateToActivityDetailScreen(bundle);
+		BankConductor.navigateToActivityDetailScreen(bundle, false);
 	}
 
 	@Override
@@ -161,7 +178,7 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 
 	protected void navigate(final TransferType type){
 		if(type != null) {
-			BankConductor.navigateToReviewTransfers(type);
+			BankConductor.navigateToReviewTransfers(type, false);
 		}
 	}
 
@@ -174,4 +191,9 @@ public class BankReviewTransfersFragment extends LoadMoreBaseTable {
 		return R.array.bank_review_transfers_buttons;
 	}
 
+	public void showDeletedTransfersMessage() {
+		final StatusMessageView status = getHeader().getStatusView();
+		status.setText(getString(R.string.scheduled_transfer_deleted));
+		status.showAndHide(DELETE_ANIMATION_DURATION);
+	}
 }
