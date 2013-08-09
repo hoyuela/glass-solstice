@@ -110,6 +110,7 @@ public class ListActivityDetail implements Serializable{
 				final TransferDetail detailItem = transferList.get(i);
 				final ActivityDetail activityItem = new ActivityDetail();
 				
+				activityItem.id = detailItem.id;
 				activityItem.fromAccount = detailItem.fromAccount;
 				activityItem.toAccount = detailItem.toAccount;
 				activityItem.amount = detailItem.amount;

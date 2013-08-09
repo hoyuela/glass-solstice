@@ -170,6 +170,9 @@ public class AccountActivityViewPager extends DetailViewPager implements Fragmen
 			 * be covered in a later iteration. It should only be allowed from the activity page.
 			 */
 			bundle.putBoolean(BankExtraKeys.DELETE_ALLOWED, !isTransferAReviewTransfer());
+			bundle.putBoolean(BankExtraKeys.FROM_ACCOUNT_ACTIVITY, 
+							  getArguments().getBoolean(BankExtraKeys.FROM_ACCOUNT_ACTIVITY, true));
+			
 			pageFragment = new ActivityDetailFragment();
 			pageFragment.setArguments(bundle);
 		}else {

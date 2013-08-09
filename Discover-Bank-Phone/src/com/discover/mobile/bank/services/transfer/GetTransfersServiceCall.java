@@ -43,13 +43,18 @@ public class GetTransfersServiceCall extends
 	
 	private TransferType transferType = null;
 	
+	private final boolean transferWasDeleted;
+	
 	public GetTransfersServiceCall(final Context context,
 									final AsyncCallback<ListTransferDetail> callback, 
-									final String url) {
+									final String url, 
+									final boolean transferWasDeleted) {
 
 		super(context, getGetCallParams(context, url.toLowerCase()), ListTransferDetail.class, TransferDetail.class);
 
 		handler = new SimpleReferenceHandler<ListTransferDetail>(callback);
+		
+		this.transferWasDeleted = transferWasDeleted;
 	}
 	
 	private static GetCallParams getGetCallParams(final Context context, final String url) {
@@ -179,5 +184,9 @@ public class GetTransfersServiceCall extends
 	@Override
 	protected TypedReferenceHandler<ListTransferDetail> getHandler() {
 		return handler;
+	}
+	
+	public boolean getTransferWasDeleted() {
+		return this.transferWasDeleted;
 	}
 }

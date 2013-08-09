@@ -49,7 +49,7 @@ public final class BankTransferMoneySectionInfo extends GroupComponentInfo {
 				if(isAlreadyViewingReviewTransfers()) {
 					BankNavigationHelper.hideSlidingMenu();
 				} else {
-					BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+					BankConductor.navigateToReviewTransfers(TransferType.Scheduled, false);
 				}
 			}
 		};

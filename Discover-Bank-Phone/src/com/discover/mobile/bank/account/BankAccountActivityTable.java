@@ -238,7 +238,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 
 		// Prevent user from accessing account loan detail
 		if (!header.getAccount().type.equalsIgnoreCase(Account.ACCOUNT_LOAN)) {
-			BankConductor.navigateToActivityDetailScreen(bundle);
+			BankConductor.navigateToActivityDetailScreen(bundle, true);
 		}
 	}
 

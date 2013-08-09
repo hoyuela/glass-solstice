@@ -6,6 +6,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -76,7 +77,6 @@ import com.discover.mobile.bank.services.transfer.GetTransfersServiceCall;
 import com.discover.mobile.bank.services.transfer.ListTransferDetail;
 import com.discover.mobile.bank.services.transfer.ScheduleTransferCall;
 import com.discover.mobile.bank.services.transfer.TransferType;
-import com.discover.mobile.bank.statements.StatementList;
 import com.discover.mobile.bank.transfer.BankReviewTransfersFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -100,15 +100,15 @@ import com.google.common.base.Strings;
 
 /**
  * Class is used to maintain state of NetworkServiceCall<> requests and responses in a single area in the application. This
- * class follows a singleton design pattern and its single instance is added as a listener to each GenericAsyncCallback<> 
- * built and associated with a NetworkServiceCall<> via the AsynCallbackBuilderLibrary. In addition, 
+ * class follows a singleton design pattern and its single instance is added as a listener to each GenericAsyncCallback<>
+ * built and associated with a NetworkServiceCall<> via the AsynCallbackBuilderLibrary. In addition,
  * this class manages Strong Authentication
  * challenges when received as a resposne to a NetworkServiceCall<>.
  *
  * @author henryoyuela
  *
  */
-public final class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener, 
+public final class BankNetworkServiceCallManager extends NetworkServiceCallManager implements StartListener,
 SuccessListener<Serializable>,
 ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	/**
@@ -320,8 +320,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
 		if( isGuiReady() ) {
 			//Check if the screen displaying is a table
-			if(activeActivity instanceof BankNavigationRootActivity && 
-					((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable){
+			if((activeActivity instanceof BankNavigationRootActivity) &&
+					(((BankNavigationRootActivity)activeActivity).getCurrentContentFragment() instanceof BaseTable)){
 				final Fragment fragment = ((BankNavigationRootActivity)activeActivity).getCurrentContentFragment();
 				((BaseTable) fragment).refreshListener();
 			}
@@ -344,8 +344,8 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * FIXME: This will need to be implemented properly
 	 * @return
 	 */
-	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender, 
-			final Serializable result, 
+	protected boolean customHandleSuccessResult(final NetworkServiceCall<?> sender,
+			final Serializable result,
 			final Bundle bundle){
 		success(sender,result);
 		return true;
@@ -389,7 +389,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if( !(sender instanceof CreateStrongAuthRequestCall) && //Shouldn't close strong auth page on a strong auth success
 				!(sender instanceof CustomerServiceCall) &&				//Customer Service call is only made when logging in
 				!(sender instanceof GetCustomerAccountsServerCall) &&       //Account Download is only made when logging in
-				DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity) {
+				(DiscoverActivityManager.getActiveActivity() instanceof EnhancedAccountSecurityActivity)) {
 			//Bring Navigation Root Activity to the foreground, to allow to switch fragments on it
 			BankConductor.navigateToHomePage();
 
@@ -403,7 +403,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			handleGetEnrollmentServiceCall((GetEnrolledStatusServiceCall) sender);
 		}
 		//Download Customer Information if a Login call is successful
-		else if( sender instanceof CreateBankLoginCall || sender instanceof CreateBankSSOLoginCall) {
+		else if( (sender instanceof CreateBankLoginCall) || (sender instanceof CreateBankSSOLoginCall)) {
 			final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 			KeepAlive.setBankAuthenticated(true);
@@ -454,9 +454,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankConductor.navigateToHomePage();
 			}
 		}
-		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a 
+		//Display StrongAuth Page if it is a response to a StrongAuth GET request with a
 		//question or retansmit previous NetworkServiceCall<>
-		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isGetCall()) {
+		else if( (sender instanceof CreateStrongAuthRequestCall) && (prevCall != null) && sender.isGetCall()) {
 			final BankStrongAuthDetails value = (BankStrongAuthDetails)result;
 			if( !BankStrongAuthDetails.ALLOW_STATUS.equals(value.status ) ) {
 				//Track that a strong auth was triggered
@@ -467,7 +467,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				prevCall.retransmit(activeActivity);
 			}
 			// Navigate to Payment Confirmation upon a successful payment.
-		} else if( sender instanceof CreatePaymentCall || sender instanceof UpdatePaymentCall) {
+		} else if( (sender instanceof CreatePaymentCall) || (sender instanceof UpdatePaymentCall)) {
 			final PaymentDetail value = (PaymentDetail)result;
 			if(sender instanceof UpdatePaymentCall){
 				BankConductor.navigateToPayConfirmFragment(value, true);
@@ -484,7 +484,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankUser.instance().setScheduled(null);
 		}
 		//Retransmit previous NetworkServiceCall<> if it is a successful response to a StrongAuth POST
-		else if( sender instanceof CreateStrongAuthRequestCall && prevCall != null && sender.isPostCall() ) {
+		else if( (sender instanceof CreateStrongAuthRequestCall) && (prevCall != null) && sender.isPostCall() ) {
 			//Retransmit the previous call that triggered the Strong Auth call
 			prevCall.retransmit(activeActivity);
 		}
@@ -497,7 +497,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.PAYEES_LIST, result);
 
 			/**Check to see if the payees were downloaded because of a delete payee call*/
-			if( prevCall instanceof DeletePayeeServiceCall &&
+			if( (prevCall instanceof DeletePayeeServiceCall) &&
 					!((DeletePayeeServiceCall)prevCall).isHandled()) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((DeletePayeeServiceCall)prevCall).markHandled();
@@ -513,12 +513,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				BankUser.instance().setCancelled(null);
 			}
 			/**Check to see if the payees were downloaded because of an added payee call*/
-			else if( prevCall instanceof AddPayeeServiceCall &&
+			else if( (prevCall instanceof AddPayeeServiceCall) &&
 					!((AddPayeeServiceCall)prevCall).isHandled() ) {
 				/**Mark the Service as being handled to avoid this block of code being called again on the next update*/
 				((AddPayeeServiceCall)prevCall).markHandled();
 
-				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class, 
+				BankConductor.navigateToAddPayee(BankAddPayeeConfirmFragment.class,
 						((AddPayeeServiceCall)prevCall).getResponse());
 			}
 			/**Catch-all means it was just a payee download*/
@@ -530,10 +530,10 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			final TransferType type = ((GetTransfersServiceCall) sender).getTransferType();
 			final ListTransferDetail transferResults = (ListTransferDetail) result;
 
-			if(type != null && !((GetTransfersServiceCall) sender).isLoadingMore()) {
+			if((type != null) && !((GetTransfersServiceCall) sender).isLoadingMore()) {
 				//Cache the result and ask the BankConductor to navigate
 				BankUser.instance().setCachedListWithKey(type, transferResults);
-				BankConductor.navigateToReviewTransfers(type);
+				BankConductor.navigateToReviewTransfers(type, ((GetTransfersServiceCall)sender).getTransferWasDeleted());
 			}
 
 		}
@@ -568,7 +568,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			Bundle bundle = ((GetPayeeServiceCall) sender).getExtras();
 
 			/** Check if the payees was downloaded to edit a payment */
-			if (bundle != null && bundle.containsKey(BankExtraKeys.EDIT_MODE)) {
+			if ((bundle != null) && bundle.containsKey(BankExtraKeys.EDIT_MODE)) {
 				/** close the progress dialog currently being displayed */
 				((AlertDialogParent) DiscoverActivityManager.getActiveActivity()).closeDialog();
 
@@ -587,7 +587,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			bundle.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
 			bundle.putBoolean(BankExtraKeys.CONFIRM_DELETE, ((GetActivityServerCall)sender).getDidDeleteActivity());
 			bundle.putBoolean(BankExtraKeys.DID_DELETE_PAYMENT, ((GetActivityServerCall)sender).getDidDeletePayment());
-			bundle.putSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE, 
+			bundle.putSerializable(BankExtraKeys.DELETED_TRANSACTION_TYPE,
 					((GetActivityServerCall) sender).getDeletionType());
 			bundle.putAll(((GetActivityServerCall) sender).getExtras());
 			BankConductor.navigateToAccountActivityPage(bundle);
@@ -606,23 +606,34 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			final ActivityDetail detail = ((DeleteTransferServiceCall)sender).getActivityDetail();
 
 			//Marks the internal transfer accounts as dirty.  External accounts will have an account type of null
-			Account account = 
-					BankUser.instance().getAccount(null != detail.fromAccount.type ? detail.fromAccount.id : null);
+			Account account =
+					BankUser.instance().getAccount(detail.fromAccount.id);
 			if (account != null) {
 				account.scheduled = null;
 			}
 
-			account = BankUser.instance().getAccount(null != detail.toAccount.type ? detail.toAccount.id : null);
+			account = BankUser.instance().getAccount(detail.toAccount.id);
 			if (account != null) {
 				account.scheduled = null;
 			}
-			BankUser.instance().getCurrentAccount().scheduled = null;
+
+			if (BankUser.instance().getCurrentAccount() != null) {
+				BankUser.instance().getCurrentAccount().scheduled = null;
+			}
+
 			BankUser.instance().setScheduled(null);
 
 			final TransferDeletionType deletionType = ((DeleteTransferServiceCall) sender).getDeletionType();
 			//Calls to re-get the activity data because it has been modified.
-			final String link = BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY);
-			BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled, deletionType).submit();
+
+			if (((DeleteTransferServiceCall)sender).isFromAccountActivity()) {
+				final String link = BankUser.instance().getCurrentAccount().getLink(Account.LINKS_SCHEDULED_ACTIVITY);
+				BankServiceCallFactory.createGetActivityServerCall(link, ActivityDetailType.Scheduled,
+						deletionType).submit();
+			} else {
+				BankUser.instance().clearReviewTransfersCache();
+				BankConductor.navigateToReviewTransfers(TransferType.Scheduled, true);
+			}
 		}
 		//Payee Search Success, navigate to Add Payee Workflow Step 4
 		else if( sender instanceof SearchPayeeServiceCall ) {
@@ -722,7 +733,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 		if (currentTitle.equals(makeTransfer)) {
 			BankConductor.navigateToTransferMoney();
 		} else if (currentTitle.equals(reviewTransfer)) {
-			BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+			BankConductor.navigateToReviewTransfers(TransferType.Scheduled, false);
 		}
 	}
 
@@ -747,7 +758,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 		} else if (sender instanceof GetTransferEnrollStatus) {
 			if (((GetTransferEnrollStatus) sender).getExtras().containsKey(BankReviewTransfersFragment.class.toString())) {
-				BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+				BankConductor.navigateToReviewTransfers(TransferType.Scheduled, false);
 			} else if (((GetTransferEnrollStatus) sender).getExtras().containsKey(BankTransferStepOneFragment.class.toString())) {
 				BankConductor.navigateToTransferMoney();
 			}
@@ -778,13 +789,13 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * Method to handle a successful Accept Payments Terms and Conditions
 	 */
 	public void handleAcceptPaymentTerms() {
- 		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
- 		final String currentTitle = activity.getActionBarTitle();
+		final BankNavigationRootActivity activity = (BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+		final String currentTitle = activity.getActionBarTitle();
 		final String payBills = activity.getString(R.string.section_title_pay_bills);
 		final String managePayees = activity.getString(R.string.sub_section_title_manage_payees);
 		final String makeTransfer = activity.getString(R.string.section_title_pay_bills);
 		final String reviewTransfer = activity.getString(R.string.review_transfers_title);
- 
+
 		if(currentTitle.equals(payBills)) {
 			BankServiceCallFactory.createGetPayeeServiceRequest().submit();
 		} else if(currentTitle.equals(managePayees)) {
@@ -821,7 +832,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			 * Update prevCall only if it is a different service request from current call
 			 * or if current call is null
 			 */
-			if( curCall == null || curCall.getClass() != sender.getClass() ) {
+			if( (curCall == null) || (curCall.getClass() != sender.getClass()) ) {
 				prevCall = curCall;
 			} else {
 				if( Log.isLoggable(TAG, Log.WARN)) {
@@ -840,9 +851,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	 * 
 	 * @return if the current activity is a detail fragment for posted/scheduled activity.
 	 */
-	private boolean isCurrentFragmentActivityDetail() {		
+	private boolean isCurrentFragmentActivityDetail() {
 		boolean isActivityDetail = false;
-		final BankNavigationRootActivity navActivity = 
+		final BankNavigationRootActivity navActivity =
 				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 		Fragment currentFragment = null;
 
@@ -950,11 +961,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public static boolean isNetworkConnected() {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
-		final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
+		final ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 		boolean connected = false;
 
 		// test for connection
-		if ( cm.getActiveNetworkInfo() != null
+		if ( (cm.getActiveNetworkInfo() != null)
 				&& cm.getActiveNetworkInfo().isAvailable()
 				&& cm.getActiveNetworkInfo().isConnected()) {
 			connected = true;
@@ -1021,15 +1032,15 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			@Override
 			protected void onPostExecute(final Void arg) {
 				switch( args.result) {
-				case Exception:
-					handleFailure(args.sender, args.exception);
-					break;
-				case Failure:
-					handleFailure(args.sender, args.error);
-					break;
-				case Success:
-					handleSuccessSync(args.sender, args.arguments);
-					break;
+					case Exception:
+						handleFailure(args.sender, args.exception);
+						break;
+					case Failure:
+						handleFailure(args.sender, args.error);
+						break;
+					case Success:
+						handleSuccessSync(args.sender, args.arguments);
+						break;
 				}
 			}
 		};
@@ -1053,9 +1064,9 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 				ret = ((BackgroundServiceCall)sender).isBackgroundCall();
 			}
 
-			ret |=  sender instanceof RefreshBankSessionCall ||
-					sender instanceof BankApiServiceCall ||
-					sender instanceof BankHolidayServiceCall;
+			ret |=  (sender instanceof RefreshBankSessionCall) ||
+					(sender instanceof BankApiServiceCall) ||
+					(sender instanceof BankHolidayServiceCall);
 		}
 
 		return ret;
@@ -1064,7 +1075,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 	public void cancelServiceCall() {
 		if(curCall.isCancellable()) {
 			curCall.cancel();
-		} 
+		}
 	}
 
 	/**

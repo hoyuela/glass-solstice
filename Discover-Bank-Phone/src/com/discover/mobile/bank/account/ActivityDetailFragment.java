@@ -39,6 +39,7 @@ import com.discover.mobile.common.ui.widgets.CustomOptionsMenu;
 public class ActivityDetailFragment extends DetailFragment implements FragmentOnBackPressed{
 	private static final String SELF = "self";
 	private CustomOptionsMenu customOptionsMenu;
+	public boolean isFromAccountActivity = true;
 
 	@Override
 	protected int getFragmentLayout() {
@@ -101,13 +102,10 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			items = generator.getScheduledDepositList(item);
 		}
 		else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(item.type)) {
-			/** Verify if delete is allowed, currently this flag is used to disable/enable delete option */
-			final boolean isDeleteAllowed = getArguments().getBoolean(BankExtraKeys.DELETE_ALLOWED);
 			final TransferType type = (TransferType)getArguments().getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
 			items = generator.getTransferDetailList(item, type);
 
-
-			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString()) && isDeleteAllowed) {
+			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString())) {
 
 				//If the Activity is of frequency One Time we want to use the "link" button type whereas if it a 
 				//recurring transfer we want to allow the user
@@ -210,6 +208,8 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		final SimpleContentModal modal = new SimpleContentModal(activity, title,
 				textBody,
 				R.string.bank_yes_delete);
+		
+		final boolean isFromAccountActivity = getArguments().getBoolean(BankExtraKeys.FROM_ACCOUNT_ACTIVITY, true);
 
 		/**
 		 * Hide the need help footer for the delete modal.
@@ -226,7 +226,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 					customOptionsMenu.dismiss();
 				}
 
-				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType);
+				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType, isFromAccountActivity);
 			}
 		});
 

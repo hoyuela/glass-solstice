@@ -424,7 +424,7 @@ public final class BankConductor  extends Conductor {
 	 * @param transferType a enumerated type that represents a type of transfer
 	 * that can be reviewed. 
 	 */
-	public static void navigateToReviewTransfers(final TransferType transferType) {
+	public static void navigateToReviewTransfers(final TransferType transferType, final boolean transferWasDeleted) {
 		final Customer customer = BankUser.instance().getCustomerInfo();
 
 		/** Verify the eligibility status for transfers has been synchronized with value in server */
@@ -438,22 +438,26 @@ public final class BankConductor  extends Conductor {
 					if (isEnrolled) {
 						// Tell current review transfers fragment to change to the new selection.
 						if (BankUser.instance().isCacheEmptyFor(transferType)) {
-							BankServiceCallFactory.createBankGetTransfersCall(transferType).submit();
+							BankServiceCallFactory.createBankGetTransfersCall(transferType, transferWasDeleted).submit();
 						} else if (!isCurrentFragmentReviewTransfers()) {
-							final ListTransferDetail defaultList = (ListTransferDetail) BankUser.instance().getCachedListForKey(transferType);
+							final ListTransferDetail defaultList = (ListTransferDetail) 
+																	BankUser.instance().getCachedListForKey(transferType);
 
 							final Bundle args = new Bundle();
 							args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
 							args.putSerializable(BankExtraKeys.PRIMARY_LIST, defaultList);
 							// Navigate to a new review transfers fragemnt on top of the stack.
-							final BaseFragmentActivity navActivity = (BaseFragmentActivity) DiscoverActivityManager.getActiveActivity();
+							final BaseFragmentActivity navActivity = (BaseFragmentActivity) 
+																	  DiscoverActivityManager.getActiveActivity();
 							final BankReviewTransfersFragment nextVisibleFragment = new BankReviewTransfersFragment();
+							args.putBoolean(BankExtraKeys.CONFIRM_DELETE, transferWasDeleted);
 							nextVisibleFragment.setArguments(args);
 
 							navActivity.makeFragmentVisibleNoAnimationWithManualNav(nextVisibleFragment);
 						} else {
 							final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
-							final BankReviewTransfersFragment currentFragment = (BankReviewTransfersFragment) navActivity.getCurrentContentFragment();
+							final BankReviewTransfersFragment currentFragment = (BankReviewTransfersFragment) 
+																				 navActivity.getCurrentContentFragment();
 							currentFragment.refreshTableAdapterForType(transferType);
 							DiscoverModalManager.clearActiveModal();
 						}
@@ -605,8 +609,9 @@ public final class BankConductor  extends Conductor {
 	 * Navigate to the activity detail view pager screen
 	 * @param bundle - bundle to pass into the screen
 	 */
-	public static void navigateToActivityDetailScreen(final Bundle bundle){
+	public static void navigateToActivityDetailScreen(final Bundle bundle, final boolean isFromAccountActivity){
 		final AccountActivityViewPager fragment =  new AccountActivityViewPager();
+		bundle.putBoolean(BankExtraKeys.FROM_ACCOUNT_ACTIVITY, isFromAccountActivity);
 		fragment.setArguments(bundle);
 		((BaseFragmentActivity)DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
 	}
@@ -913,8 +918,8 @@ public final class BankConductor  extends Conductor {
 	 * @param transferDetails	- Object containing the transfer to be deleted.
 	 * @param deletionType		- Type of deletion to perform (e.g. One Time, Next in Series or Entire Series)
 	 */
-	public static void navigateToDeleteTransferConfirmation(final ActivityDetail transferDetails, final TransferDeletionType deletionType) {
-		BankServiceCallFactory.createDeleteTransferServiceCall(transferDetails, deletionType).submit();
+	public static void navigateToDeleteTransferConfirmation(final ActivityDetail transferDetails, final TransferDeletionType deletionType, final boolean isFromAccountActivity) {
+		BankServiceCallFactory.createDeleteTransferServiceCall(transferDetails, deletionType, isFromAccountActivity).submit();
 	}
 
 	/**
