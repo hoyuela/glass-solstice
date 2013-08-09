@@ -254,6 +254,7 @@ public final class BankTrackingHelper {
 				extras.get(TRACKING_SUBMIT_TIME));
 
 		TrackingHelper.trackBankPage(DiscoverActivityManager.getString(R.string.bank_capture_send_result), map);
+
 	}
 
 }
