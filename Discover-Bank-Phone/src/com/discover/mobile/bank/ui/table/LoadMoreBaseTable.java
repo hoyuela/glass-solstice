@@ -955,6 +955,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			if(isViewingCompletedTransfers && isExternalToInternalTransfer) {
 				holder.amount.setTextColor(getResources().getColor(R.color.green));
 			}
+			else {
+				holder.amount.setTextColor(getResources().getColor(R.color.black));
+			}
 		}
 
 		/**
