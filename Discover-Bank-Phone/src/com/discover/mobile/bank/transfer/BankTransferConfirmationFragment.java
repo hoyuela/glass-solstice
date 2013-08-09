@@ -97,7 +97,7 @@ public class BankTransferConfirmationFragment extends BankTransferBaseFragment i
 	 */
 	@Override
 	protected void onActionLinkClick() {
-		BankConductor.navigateToReviewTransfers(TransferType.Scheduled);
+		BankConductor.navigateToReviewTransfers(TransferType.Scheduled, false);
 	}
 
 	/**
