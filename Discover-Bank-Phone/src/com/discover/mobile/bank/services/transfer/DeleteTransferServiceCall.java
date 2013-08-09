@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankNetworkServiceCall;
@@ -16,6 +17,7 @@ import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.HttpHeaders;
+import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -24,9 +26,12 @@ import com.google.common.collect.ImmutableMap;
 
 public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDetail>{
 
+	// Resources containing custom timeout values.
+	private static final int CONNECT_TIMEOUT_RES = R.string.timeout_connect_transfers_delete;
+	private static final int READ_TIMEOUT_RES = R.string.timeout_read_transfers_delete;
+	
 	private final ActivityDetail activityDetail;
 	private final TypedReferenceHandler<ActivityDetail> handler;
-	private static final int TWO_MINUTES_SECONDS = 120;
 	private final TransferDeletionType deletionType;
 
 	/**
@@ -56,8 +61,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 				// Specify what error parser to use when receiving an error response is received
 				errorResponseParser = BankErrorResponseParser.instance();
 				
-				this.connectTimeoutSeconds = TWO_MINUTES_SECONDS;
-				this.readTimeoutSeconds = TWO_MINUTES_SECONDS;
+				this.connectTimeoutSeconds = ServiceCallParams.parseTimeout(context, CONNECT_TIMEOUT_RES);
+				this.readTimeoutSeconds = ServiceCallParams.parseTimeout(context, READ_TIMEOUT_RES);
 
 				//Custom headers for delete
 				headers = ImmutableMap.<String,String>builder()

@@ -7,11 +7,13 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.services.BankHttpHeaders;
 import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
 import com.discover.mobile.common.net.ContextNetworkUtility;
+import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.PostCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -27,6 +29,9 @@ import com.google.common.collect.ImmutableMap;
  */
 public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServiceCall<DepositDetail> {
 
+	// Resource containing a custom timeout value.
+	private static final int READ_TIMEOUT_RES = R.string.timeout_read_check_deposit;
+	
 		/**Reference handler to allow the call to be back on the UI*/
 		private final SimpleReferenceHandler<DepositDetail> handler;
 		/**Holds the result from the response from the server*/
@@ -43,8 +48,7 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 				body = modelClass;
 				
 				/**Wait for response to request for two minutes maximum*/
-				this.readTimeoutSeconds = 120;
-				
+				this.readTimeoutSeconds = ServiceCallParams.parseTimeout(context, READ_TIMEOUT_RES);
 				
 				
 				//Custom headers for Deposit Check

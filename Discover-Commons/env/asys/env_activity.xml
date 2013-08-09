@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="disable_screenshots">false</string>
+    
+    <!-- 
+    NOTE the following timeouts are in SECONDS. 
+    Values are converted to milliseconds programatically.
+    
+    Used to set variables in class com.discover.mobile.common.net.ServiceCallParams
+    -->
+    <string name="timeout_connect_default">30</string>
+    <string name="timeout_read_default">30</string>
+    
 </resources>
