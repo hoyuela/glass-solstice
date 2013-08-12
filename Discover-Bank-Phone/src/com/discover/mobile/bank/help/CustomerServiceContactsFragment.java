@@ -7,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.widgets.BankLayoutFooter;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.utils.CommonUtils;
 
 public class CustomerServiceContactsFragment extends BaseFragment {
@@ -41,15 +39,7 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 		if(card){
 			((BankLayoutFooter)mainView.findViewById(R.id.bank_footer)).setCardMode(card);
 		}
-		Bundle args = getArguments();
-		if (args.containsKey(BankInfoNavigationActivity.GO_BACK_TO_LOGIN)) {
-			final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
-			help.setVisibility(View.VISIBLE);
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
-			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)help.getLayoutParams();
-			params.height = (int) this.getResources().getDimension(R.dimen.help_bar_height_three_items);
-			help.setLayoutParams(params);
-		}
+
 		return mainView;
 	}
 
@@ -111,32 +101,32 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 	 * @param elementList a list of view elements that can be inserted into a linear layout.
 	 */
 	public static void loadListElementsToLayoutFromList(final LinearLayout layout, 
-														final List<TwoElementListItem> elementList) {
+			final List<TwoElementListItem> elementList) {
 		if(layout == null) {
 			return;
 		}
-		
+
 		for (int i=0; i<elementList.size(); ++i) {
 			if (i == 0) {
 				elementList.get(i).setDividerLineVisibility(false);
 			}
-			
+
 			layout.addView(elementList.get(i));
 		}
 	}
 
 	private void showCardElements(final View mainView) {
 		loadListElementsToLayoutFromList(cardPhoneNumberList, 
-								CustomerServiceContactLists.getCardPhoneNumberListElements(this.getActivity()));
+				CustomerServiceContactLists.getCardPhoneNumberListElements(getActivity()));
 		loadListElementsToLayoutFromList(cardMailingAddressList, 
-								CustomerServiceContactLists.getCardMailingAddressListElements(this.getActivity()));
+				CustomerServiceContactLists.getCardMailingAddressListElements(getActivity()));
 	}
 
 	private void showBankElements(final View mainView) {
 		loadListElementsToLayoutFromList(bankPhoneNumberList, 
-								CustomerServiceContactLists.getBankPhoneNumberListElements(this.getActivity()));
+				CustomerServiceContactLists.getBankPhoneNumberListElements(getActivity()));
 		loadListElementsToLayoutFromList(bankMailingAddressList, 
-								CustomerServiceContactLists.getBankMailingAddressListElements(this.getActivity()));
+				CustomerServiceContactLists.getBankMailingAddressListElements(getActivity()));
 	}
 
 	/**
