@@ -37,6 +37,8 @@ import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.GetPreferredAccountsServerCall;
+import com.discover.mobile.bank.services.account.PreferredAccounts;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -417,6 +419,7 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			}
 
 			BankServiceCallFactory.createCustomerDownloadCall().submit();
+			BankServiceCallFactory.createGetPreferredAccounts().submit();
 		}
 		//Download Account Summary Information if a Customer Download is successful
 		else if( sender instanceof CustomerServiceCall ) {
@@ -571,7 +574,6 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			if ((bundle != null) && bundle.containsKey(BankExtraKeys.EDIT_MODE)) {
 				/** close the progress dialog currently being displayed */
 				((AlertDialogParent) DiscoverActivityManager.getActiveActivity()).closeDialog();
-
 				BankConductor.navigateToPayBillStepTwo(bundle);
 			}
 			/** Download Payee to schedule a payment */
@@ -712,9 +714,11 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			Account account = ((GetAccountStatementsServerCall) sender).getAccount();
 			//successfully cached the response.  call navigateToAccountStatements to display correct landing
 			BankConductor.navigateToAccountStatements(account);
-		}
+		} else if (sender instanceof GetPreferredAccountsServerCall) {
+			BankUser.instance().setPreferredAccounts((PreferredAccounts)result);
+			
 		// Ignore success
-		else {
+		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
 				Log.w(TAG, "NetworkServiceCallManager ignored success of a NetworkServiceCall!");
 			}
