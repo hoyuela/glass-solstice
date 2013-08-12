@@ -58,9 +58,9 @@ public class DiscoverMapWrapper {
 
 	/**Clustering library reference**/
 	private Clusterkraf clusterkraf;
-	
+
 	private final int zoomLevel;
-	
+
 	private OnCameraChangeListener onCameraChangeListener;
 
 	/**
@@ -75,7 +75,7 @@ public class DiscoverMapWrapper {
 			map.setInfoWindowAdapter(adapter);
 			map.setOnInfoWindowClickListener(adapter.getInfoWindowClickListener());
 		}
-		this.zoomLevel = DiscoverActivityManager.getActiveActivity().getResources().getDimensionPixelSize(R.dimen.atm_padding_from_edge_map);
+		zoomLevel = DiscoverActivityManager.getActiveActivity().getResources().getDimensionPixelSize(R.dimen.atm_padding_from_edge_map);
 		setupMap();
 	}
 
@@ -234,13 +234,13 @@ public class DiscoverMapWrapper {
 	public final GoogleMap getMap() {
 		return map;
 	}
-	
+
 	/** Enables or disables the camera listener on the map. */
-	public final void enableCameraListener(boolean enable) {
+	public final void enableCameraListener(final boolean enable) {
 		if (enable) {
 			// Reinstate camera listener
 			map.setOnCameraChangeListener(onCameraChangeListener);
-		} else {
+		} else if(!enable && null != clusterkraf){
 			// Store and disable the camera listener
 			onCameraChangeListener = clusterkraf.getCameraListener();
 			map.setOnCameraChangeListener(null);
