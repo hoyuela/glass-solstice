@@ -29,7 +29,7 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_make_a_payment,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
@@ -37,33 +37,34 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_manage_payments,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
-         
-  /* 13.4 Changes start */        
-	    new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
-	            false, new View.OnClickListener() {
-	                @Override
-	                public void onClick(View v) {
-	
-	                }
-	            }),
 
-        /*new ClickComponentInfo(
-                R.string.sub_section_title_manage_bank_information, true,
-                new View.OnClickListener() {
+        /* 13.4 Changes start */
+        new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
+                false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
-                }),*/
- /* 13.4 Changes end */
+                }),
+
+        /*
+         * new ClickComponentInfo(
+         * R.string.sub_section_title_manage_bank_information, true, new
+         * View.OnClickListener() {
+         * 
+         * @Override public void onClick(View v) {
+         * 
+         * } }),
+         */
+        /* 13.4 Changes end */
         new ClickComponentInfo(R.string.sub_section_title_send_money, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
@@ -71,24 +72,24 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_send_money_history,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }));
     }
-    
+
     /* 13.3 Changes start */
     /**
      * Constructor
      * 
      */
-    public PaymentsSectionInfo(Boolean cardTypeDBC) {
+    public PaymentsSectionInfo(final Boolean cardTypeDBC) {
         super(R.string.section_title_payments,
 
         new ClickComponentInfo(R.string.sub_section_title_make_a_payment,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
@@ -96,34 +97,36 @@ public class PaymentsSectionInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_manage_payments,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
-/* 13.4 Changes start */   
-        /*new ClickComponentInfo(
-                R.string.sub_section_title_manage_bank_information, true,
-                new View.OnClickListener() {
+        /* 13.4 Changes start */
+        /*
+         * new ClickComponentInfo(
+         * R.string.sub_section_title_manage_bank_information, true, new
+         * View.OnClickListener() {
+         * 
+         * @Override public void onClick(View v) {
+         * 
+         * } })
+         */
+
+        new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
+                false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
-                })*/
-        
-        new ClickComponentInfo(R.string.sub_section_title_manage_bank_accounts,
-	            false, new View.OnClickListener() {
-	                @Override
-	                public void onClick(View v) {
-	
-	                }
-	            }));
-/* 13.4 Changes end */   
+                }));
+        /* 13.4 Changes end */
     }
 
     /* 13.3 Changes end */
     class PaymentsComponentInfo extends ClickComponentInfo {
 
-        public PaymentsComponentInfo(int titleResource, OnClickListener listener) {
+        public PaymentsComponentInfo(final int titleResource,
+                final OnClickListener listener) {
             super(titleResource, false, listener);
         }
 

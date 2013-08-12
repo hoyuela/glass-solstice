@@ -7,31 +7,40 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.phonegap.plugins.JQMResourceMapper;
 import com.discover.mobile.common.BaseFragment;
 
-public class RedeemMilesFragment extends BaseFragment{
+/**
+ * A Fragment created for Redeem Miles functionality
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
+public class RedeemMilesFragment extends BaseFragment {
 
-	private JQMResourceMapper jqmResourceMapper;
-	protected static final String TAG = "RedeemMilesFragment";
-	 
-	@Override
-	public int getActionBarTitle() {
-		String m_title = ((CardNavigationRootActivity)getActivity()).getActionBarTitle();
-		Log.v(TAG, "getActionBarTitle n title is " + m_title);
+    private JQMResourceMapper jqmResourceMapper;
+    protected static final String TAG = "RedeemMilesFragment";
+
+    @Override
+    public int getActionBarTitle() {
+        String m_title = ((CardNavigationRootActivity) getActivity())
+                .getActionBarTitle();
+        Log.v(TAG, "getActionBarTitle n title is " + m_title);
         if (null != m_title) {
             jqmResourceMapper = JQMResourceMapper.getInstance();
 
             return jqmResourceMapper.getTitleStringId(m_title);
-        } else
+        } else {
             return -1;
-	}
+        }
+    }
 
-	@Override
-	public int getGroupMenuLocation() {
-		return CardMenuItemLocationIndex.REDEEM_MILES_GROUP;
-	}
+    @Override
+    public int getGroupMenuLocation() {
+        return CardMenuItemLocationIndex.REDEEM_MILES_GROUP;
+    }
 
-	@Override
-	public int getSectionMenuLocation() {
-		return CardMenuItemLocationIndex.REDEEM_MILES_SECTION;
-	}
+    @Override
+    public int getSectionMenuLocation() {
+        return CardMenuItemLocationIndex.REDEEM_MILES_SECTION;
+    }
 
 }

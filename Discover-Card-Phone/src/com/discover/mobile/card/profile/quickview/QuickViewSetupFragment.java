@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
@@ -81,9 +80,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         toggleImage = (DiscoverToggleSwitch) mainView
                 .findViewById(R.id.quick_toggle);
 
-        // Change CBB/MILES Texts
-        final ImageView faqImage = (ImageView) mainView
-                .findViewById(R.id.faqimage);
+        mainView.findViewById(R.id.faqimage);
         qvinfoTextView = (TextView) mainView.findViewById(R.id.quick_view_info);
         qvfaqTextView = (TextView) mainView.findViewById(R.id.quick_view_faq);
         // 13.4 No images from UI Team hence use single image
@@ -100,7 +97,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         toggleImage.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 toggleImage.toggle();
                 try {
                     updateQuickViewStatus();
@@ -111,7 +108,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                             true);
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             (CardErrorHandlerUi) getActivity());
-                    cardErrorResHandler.handleCardError((CardErrorBean) bean,
+                    cardErrorResHandler.handleCardError(bean,
                             new CardErrorCallbackListener() {
 
                                 @Override
@@ -132,7 +129,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         qvfaqTextView.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 ((CardMenuInterface) getActivity())
                         .sendNavigationTextToPhoneGapInterface("Qv Faq");
             }
@@ -158,7 +155,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                         .readFastcheckToken(getActivity());
 
                 String decryptedToken = null;
-                if (save_token != null)
+                if (save_token != null) {
                     try {
                         decryptedToken = FastcheckUtil.decrypt(save_token);
                     } catch (Exception e) {
@@ -171,8 +168,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                                 true);
                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                 (CardErrorHandlerUi) getActivity());
-                        cardErrorResHandler.handleCardError(
-                                (CardErrorBean) bean,
+                        cardErrorResHandler.handleCardError(bean,
                                 new CardErrorCallbackListener() {
                                     @Override
                                     public void onButton2Pressed() {
@@ -185,6 +181,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                                     }
                                 });
                     }
+                }
 
                 if (null != decryptedToken) {
                     checkBindingStatus(decryptedToken);
@@ -201,7 +198,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                         true);
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         (CardErrorHandlerUi) getActivity());
-                cardErrorResHandler.handleCardError((CardErrorBean) bean,
+                cardErrorResHandler.handleCardError(bean,
                         new CardErrorCallbackListener() {
 
                             @Override
@@ -215,14 +212,15 @@ public class QuickViewSetupFragment extends BaseFragment {
                             }
                         });
             }
-        } else
+        } else {
             return null;
+        }
 
         final Button yesButton = (Button) mainView.findViewById(R.id.yes);
         yesButton.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(final View arg0) {
                 try {
                     showQVwithOnState();
                 } catch (Exception e) {
@@ -232,7 +230,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                             true);
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             (CardErrorHandlerUi) getActivity());
-                    cardErrorResHandler.handleCardError((CardErrorBean) bean,
+                    cardErrorResHandler.handleCardError(bean,
                             new CardErrorCallbackListener() {
 
                                 @Override
@@ -254,7 +252,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         nothanks.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(final View arg0) {
                 removeQVFragment();
             }
         });
@@ -328,7 +326,7 @@ public class QuickViewSetupFragment extends BaseFragment {
      * @param save_token
      * @throws Exception
      */
-    private void checkBindingStatus(String save_token) throws Exception {
+    private void checkBindingStatus(final String save_token) throws Exception {
         WSRequest request = new WSRequest();
         String URL = NetworkUtility.getWebServiceUrl(getActivity(),
                 R.string.get_quick_view_status);
@@ -355,21 +353,23 @@ public class QuickViewSetupFragment extends BaseFragment {
                 new StatusResponse(), "Discover", "Loading...",
                 new CardEventListener() {
                     @Override
-                    public void onSuccess(Object data) {
-                        StatusResponse response = ((StatusResponse) data);
+                    public void onSuccess(final Object data) {
+                        StatusResponse response = (StatusResponse) data;
                         if (response.deviceBound.equalsIgnoreCase("true")) {
-                            if ((mainView.findViewById(
+                            if (mainView.findViewById(
                                     R.id.qvalready_main_relative_view)
-                                    .getVisibility() == View.VISIBLE))
+                                    .getVisibility() == View.VISIBLE) {
                                 mainView.findViewById(
                                         R.id.qvalready_main_relative_view)
                                         .setVisibility(View.GONE);
-                            if ((mainView.findViewById(
+                            }
+                            if (mainView.findViewById(
                                     R.id.qvsetup_main_relative_view)
-                                    .getVisibility() == View.GONE))
+                                    .getVisibility() == View.GONE) {
                                 mainView.findViewById(
                                         R.id.qvsetup_main_relative_view)
                                         .setVisibility(View.VISIBLE);
+                            }
                             quickviewOn = true;
                             if (!toggleImage.isChecked()) {
                                 toggleImage.toggle();
@@ -379,23 +379,25 @@ public class QuickViewSetupFragment extends BaseFragment {
                             TrackingHelper
                                     .trackPageView(AnalyticsPage.QUICKVIEW_SETUP_ON);
                         } else {
-                            if ((mainView.findViewById(
+                            if (mainView.findViewById(
                                     R.id.qvsetup_main_relative_view)
-                                    .getVisibility() == View.VISIBLE))
+                                    .getVisibility() == View.VISIBLE) {
                                 mainView.findViewById(
                                         R.id.qvsetup_main_relative_view)
                                         .setVisibility(View.GONE);
-                            if ((mainView.findViewById(
+                            }
+                            if (mainView.findViewById(
                                     R.id.qvalready_main_relative_view)
-                                    .getVisibility() == View.GONE))
+                                    .getVisibility() == View.GONE) {
                                 mainView.findViewById(
                                         R.id.qvalready_main_relative_view)
                                         .setVisibility(View.VISIBLE);
+                            }
                         }
                     }
 
                     @Override
-                    public void OnError(Object data) {
+                    public void OnError(final Object data) {
                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                 (CardErrorHandlerUi) getActivity());
                         cardErrorResHandler.handleCardError(
@@ -423,7 +425,7 @@ public class QuickViewSetupFragment extends BaseFragment {
      * 
      * @param mainView
      */
-    private void setFooter(View mainView) {
+    private void setFooter(final View mainView) {
         final TextView provideFeedback = (TextView) mainView
                 .findViewById(R.id.provide_feedback_button);
         provideFeedback.setTextColor(getActivity().getResources().getColor(
@@ -431,7 +433,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         provideFeedback.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 Utils.createProvideFeedbackDialog(getActivity(), REFERER);
 
             }
@@ -443,7 +445,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         termsOfUse.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onClick(final View arg0) {
 
                 ((CardMenuInterface) getActivity())
                         .sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
@@ -492,7 +494,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                         true);
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         (CardErrorHandlerUi) getActivity());
-                cardErrorResHandler.handleCardError((CardErrorBean) bean,
+                cardErrorResHandler.handleCardError(bean,
                         new CardErrorCallbackListener() {
                             @Override
                             public void onButton2Pressed() {
@@ -517,7 +519,7 @@ public class QuickViewSetupFragment extends BaseFragment {
         final WSAsyncCallTask serviceCall = new WSAsyncCallTask(getActivity(),
                 null, "Discover", "Loading...", new CardEventListener() {
                     @Override
-                    public void onSuccess(Object data) {
+                    public void onSuccess(final Object data) {
                         Utils.log(LOG_TAG, "On Sucess()");
                         if (quickviewOn) {
                             if (toggleImage.isChecked()) {
@@ -539,8 +541,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                                         .getMessage(), true);
                                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                         (CardErrorHandlerUi) getActivity());
-                                cardErrorResHandler
-                                        .handleCardError((CardErrorBean) bean);
+                                cardErrorResHandler.handleCardError(bean);
                             }
                             if (!toggleImage.isChecked()) {
                                 toggleImage.toggle();
@@ -551,7 +552,7 @@ public class QuickViewSetupFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void OnError(Object data) {
+                    public void OnError(final Object data) {
                         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                 (CardErrorHandlerUi) getActivity());
                         cardErrorResHandler.handleCardError(
@@ -582,7 +583,7 @@ public class QuickViewSetupFragment extends BaseFragment {
     @Override
     public int getActionBarTitle() {
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil.getActionBarTitle();
     }
 
@@ -593,7 +594,7 @@ public class QuickViewSetupFragment extends BaseFragment {
     public int getGroupMenuLocation() {
         Utils.log(TAG, "inside getGroupMenuLocation ");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil
                 .getGroupMenuLocation(R.string.sub_section_title_fast_view);
     }
@@ -605,7 +606,7 @@ public class QuickViewSetupFragment extends BaseFragment {
     public int getSectionMenuLocation() {
         Utils.log(TAG, "inside getSectionMenuLocation");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil
                 .getSectionMenuLocation(R.string.sub_section_title_fast_view);
     }

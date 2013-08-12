@@ -1,10 +1,7 @@
 package com.discover.mobile.card.miles;
 
-
-
 import com.discover.mobile.card.R;
 import com.discover.mobile.common.nav.section.FragmentComponentInfo;
-
 
 /**
  * ©2013 Discover Bank
@@ -23,10 +20,10 @@ public class RedeemMilesInfo extends FragmentComponentInfo {
      */
 
     public RedeemMilesInfo() {
-       // super(R.string.section_title_redeem_miles, HomeSummaryFragment.class);
-         super(R.string.section_title_redeem_miles, true,
-         RedeemMilesFragment.class);
+        // super(R.string.section_title_redeem_miles,
+        // HomeSummaryFragment.class);
+        super(R.string.section_title_redeem_miles, true,
+                RedeemMilesFragment.class);
     }
 
 }
-
