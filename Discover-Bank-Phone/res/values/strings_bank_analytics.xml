@@ -17,4 +17,5 @@
     <string name="bank_capture_confirm">confirm_authorize-pg</string>
     <string name="bank_capture_sending">transmitting_animation-pg</string>
     <string name="bank_capture_acknowledge">acknowledgement-pg</string>
+    <string name="bank_capture_send_result">MCDCheckDeposit.pg</string>
 </resources>
