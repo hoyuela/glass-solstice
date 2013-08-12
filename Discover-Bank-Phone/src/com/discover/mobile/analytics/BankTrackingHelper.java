@@ -253,7 +253,7 @@ public final class BankTrackingHelper {
 		map.put(DiscoverActivityManager.getString(R.string.context_request_timestamp_prop), 
 				extras.get(TRACKING_SUBMIT_TIME));
 
-		TrackingHelper.trackBankPage(DiscoverActivityManager.getString(R.string.bank_capture_sending), map);
+		TrackingHelper.trackBankPage(DiscoverActivityManager.getString(R.string.bank_capture_send_result), map);
 	}
 
 }
