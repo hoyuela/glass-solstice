@@ -31,6 +31,14 @@ import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.navigation.CordovaWebFrag;
 import com.discover.mobile.common.Globals;
 
+/**
+ * HybridControlPlugin serves as Interface bridge between JQM Pages & Native
+ * Code
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class HybridControlPlugin extends CordovaPlugin {
 
     public static final String showMenu = "showMenu";
@@ -64,7 +72,6 @@ public class HybridControlPlugin extends CordovaPlugin {
     public static final String getVOne = "getVOne";
     public static final String disableMenuButton = "disableMenuButton";
     public static final String takeScreenShot = "takeScreenShot";
-    
 
     private static final String TAG = "HybridControlPlugin";
     public static Fragment frag123 = null;
@@ -76,30 +83,13 @@ public class HybridControlPlugin extends CordovaPlugin {
     @Override
     public boolean execute(final String action, final JSONArray args,
             final CallbackContext callbackContext) throws JSONException {
-    			//13.4 Code CleanUp
-/*
-        if (action.equals(changeStatusText)) {
-            final String newTitle = (String) args.get(0);
+        if (action.equals(showMenu)) {
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    cnrAct.statusBarFragment.setStatusBarText(newTitle);
-                }
-            });
-            final PluginResult pluginResult = new PluginResult(
-                    PluginResult.Status.OK);
-            pluginResult.setKeepCallback(true);
-            callbackContext.sendPluginResult(pluginResult);
-            return true;
-        } else */if (action.equals(showMenu)) {
-            final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
-                    .getActivity();
-            cnrAct.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                	//hlin0 20130531 integrate with new sliding menu
+                    // hlin0 20130531 integrate with new sliding menu
                     cnrAct.showMenu();
                 }
             });
@@ -114,7 +104,7 @@ public class HybridControlPlugin extends CordovaPlugin {
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                	//hlin0 20130531 integrate with new sliding menu
+                    // hlin0 20130531 integrate with new sliding menu
                     cnrAct.showContent();
                 }
             });
@@ -259,8 +249,6 @@ public class HybridControlPlugin extends CordovaPlugin {
 
                 frag123 = cordovaFrag;
 
-                
-                
                 cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -298,10 +286,12 @@ public class HybridControlPlugin extends CordovaPlugin {
                                             .getCordovaWebviewInstance()
                                             .invalidate();
                                     strLastTitleDisplayed = title;
-                                } else
+                                } else {
                                     strLastTitleDisplayed = title;
-                            } else
+                                }
+                            } else {
                                 strLastTitleDisplayed = title;
+                            }
                         }
                         /********** Hemang **********/
                         Utils.hideSpinner();
@@ -309,71 +299,65 @@ public class HybridControlPlugin extends CordovaPlugin {
                     }
                 });
             } else {
-				// 13.4 SIT defect fixed 105428
-            	 Fragment fragmentByTag = fragmentManager
-                         .findFragmentByTag("CordovaWebFrag");
-                 if (fragmentByTag == null) {
-                     fragmentByTag = new CordovaWebFrag();
-                 }
-                 final Fragment cordovaFrag = fragmentByTag;
+                // 13.4 SIT defect fixed 105428
+                Fragment fragmentByTag = fragmentManager
+                        .findFragmentByTag("CordovaWebFrag");
+                if (fragmentByTag == null) {
+                    fragmentByTag = new CordovaWebFrag();
+                }
+                final Fragment cordovaFrag = fragmentByTag;
 
-                 frag123 = cordovaFrag;
+                frag123 = cordovaFrag;
 
-                 
-                 
-                 cnrAct.runOnUiThread(new Runnable() {
-                     @Override
-                     public void run() {
-
-                         fragmentManager
-                                 .beginTransaction()
-                                 /* .hide(statusBarFragment) */
-                                 .remove(cordovaFrag)
-                                 .add(R.id.navigation_content, cordovaFrag,
-                                         "CordovaWebFrag").commit();
-                         fragmentManager.executePendingTransactions();
-
-                         String topfragName = fragmentManager
-                                 .getBackStackEntryAt(
-                                         fragmentManager
-                                                 .getBackStackEntryCount() - 1)
-                                 .getName();
-                         Fragment topFragment = fragmentManager
-                                 .findFragmentByTag(topfragName);
-                         /********** Hemang **********/
-                         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                             if (null != topFragment) {
-                                 String topFragmentTag = topFragment.getTag();
-                                 if (!topFragmentTag
-                                         .equalsIgnoreCase("CordovaWebFrag")
-                                         && null != strLastTitleDisplayed
-                                         && !strLastTitleDisplayed
-                                                 .equalsIgnoreCase(title)) {
-                                     ((CordovaWebFrag) cordovaFrag)
-                                             .getCordovaWebviewInstance()
-                                             .clearView();
-
-                                     ((CordovaWebFrag) cordovaFrag)
-                                             .getCordovaWebviewInstance()
-                                             .invalidate();
-                                     strLastTitleDisplayed = title;
-                                 } else
-                                     strLastTitleDisplayed = title;
-                             } else
-                                 strLastTitleDisplayed = title;
-                         }
-                         /********** Hemang **********/
-                         Utils.hideSpinner();
-
-                     }
-                 });
-            	
-                /*cnrAct.runOnUiThread(new Runnable() {
+                cnrAct.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        fragmentManager
+                                .beginTransaction()
+                                /* .hide(statusBarFragment) */
+                                .remove(cordovaFrag)
+                                .add(R.id.navigation_content, cordovaFrag,
+                                        "CordovaWebFrag").commit();
+                        fragmentManager.executePendingTransactions();
+
+                        String topfragName = fragmentManager
+                                .getBackStackEntryAt(
+                                        fragmentManager
+                                                .getBackStackEntryCount() - 1)
+                                .getName();
+                        Fragment topFragment = fragmentManager
+                                .findFragmentByTag(topfragName);
+                        /********** Hemang **********/
+                        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+                            if (null != topFragment) {
+                                String topFragmentTag = topFragment.getTag();
+                                if (!topFragmentTag
+                                        .equalsIgnoreCase("CordovaWebFrag")
+                                        && null != strLastTitleDisplayed
+                                        && !strLastTitleDisplayed
+                                                .equalsIgnoreCase(title)) {
+                                    ((CordovaWebFrag) cordovaFrag)
+                                            .getCordovaWebviewInstance()
+                                            .clearView();
+
+                                    ((CordovaWebFrag) cordovaFrag)
+                                            .getCordovaWebviewInstance()
+                                            .invalidate();
+                                    strLastTitleDisplayed = title;
+                                } else {
+                                    strLastTitleDisplayed = title;
+                                }
+                            } else {
+                                strLastTitleDisplayed = title;
+                            }
+                        }
+                        /********** Hemang **********/
                         Utils.hideSpinner();
+
                     }
-                });*/ // 13.4 SIT defect fixed 105428
+                });
+
             }
 
             PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
@@ -507,7 +491,6 @@ public class HybridControlPlugin extends CordovaPlugin {
 
                 @Override
                 public void onSuccess(final Object data) {
-                    // TODO Auto-generated method stub
                     CardShareDataStore.getInstance(cnrAct).addToAppCache(
                             accountDetails, data);
 
@@ -522,7 +505,6 @@ public class HybridControlPlugin extends CordovaPlugin {
 
                 @Override
                 public void OnError(final Object data) {
-                    // TODO Auto-generated method stub
                     Utils.log(TAG,
                             "inside updatedAccountDetails Error in account service call");
 
@@ -646,13 +628,6 @@ public class HybridControlPlugin extends CordovaPlugin {
             return true;
         } else if (action.equals(getSID)) {
             Utils.log(TAG, "inside SID ");
-            /*
-             * final TelephonyManager telephonyManager = (TelephonyManager)
-             * cordova.getContext()
-             * .getSystemService(Context.TELEPHONY_SERVICE); String sid =
-             * telephonyManager.getSimSerialNumber(); if (null == sid) sid =
-             * telephonyManager.getDeviceId();
-             */
             final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                     .getInstance(cordova.getActivity());
             String sid = (String) cardShareDataStoreObj.getReadOnlyAppCache()
@@ -665,12 +640,6 @@ public class HybridControlPlugin extends CordovaPlugin {
             return true;
         } else if (action.equals(getOID)) {
             Utils.log(TAG, "inside OID ");
-            /*
-             * final TelephonyManager telephonyManager = (TelephonyManager)
-             * cordova.getContext()
-             * .getSystemService(Context.TELEPHONY_SERVICE); String oid =
-             * telephonyManager.getDeviceId();
-             */
             final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                     .getInstance(cordova.getActivity());
             String oid = (String) cardShareDataStoreObj.getReadOnlyAppCache()
@@ -700,6 +669,7 @@ public class HybridControlPlugin extends CordovaPlugin {
         } else if (action.equals(getVID)) {
             Utils.log(TAG, "inside getVID ");
 
+            @SuppressWarnings("deprecation")
             SharedPreferences pushSharedPrefs = cordova.getContext()
                     .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
                                                                          // Push
@@ -715,6 +685,7 @@ public class HybridControlPlugin extends CordovaPlugin {
             Utils.log(TAG, "inside setOtherUserFlag ");
             boolean otherUserFlag = (Boolean) args.get(0);
             Utils.log(TAG, "SetoTHERuSER: " + otherUserFlag);
+            @SuppressWarnings("deprecation")
             SharedPreferences pushSharedPrefs = cordova.getContext()
                     .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
                                                                          // Push
@@ -733,6 +704,7 @@ public class HybridControlPlugin extends CordovaPlugin {
             Utils.log(TAG, "inside setOtherUserFlag ");
             // need to get otherUserFlag from native...
 
+            @SuppressWarnings("deprecation")
             SharedPreferences pushSharedPrefs = cordova.getContext()
                     .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
                                                                          // Push
@@ -839,7 +811,8 @@ public class HybridControlPlugin extends CordovaPlugin {
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(
-                                                DialogInterface dialog, int id) {
+                                                final DialogInterface dialog,
+                                                final int id) {
                                             dialog.dismiss();
                                             startUrlInChrome(strURLtoOpen);
                                             showInBrowser = true;
@@ -849,7 +822,8 @@ public class HybridControlPlugin extends CordovaPlugin {
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(
-                                                DialogInterface dialog, int id) {
+                                                final DialogInterface dialog,
+                                                final int id) {
                                             dialog.cancel();
                                             showInBrowser = false;
                                         }
@@ -880,23 +854,21 @@ public class HybridControlPlugin extends CordovaPlugin {
             pluginResult.setKeepCallback(true);
             callbackContext.sendPluginResult(pluginResult);
             return true;
-        }
-        else if (action.equals(takeScreenShot)) {
+        } else if (action.equals(takeScreenShot)) {
             Utils.log(TAG, "inside gotoAchome ");
             final CardNavigationRootActivity cnrAct = (CardNavigationRootActivity) cordova
                     .getActivity();
-            final FragmentManager fragManager = cnrAct
-                    .getSupportFragmentManager();
+            cnrAct.getSupportFragmentManager();
             cnrAct.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     // Added changes to clear page cache when return back to
                     // achome.
-                	cnrAct.takeScreenShot();
-                	/*
-                    CordovaWebFrag cwf = cnrAct.getCordovaWebFragInstance();
-                    cwf.takeScreenShot();
-                    */
+                    cnrAct.takeScreenShot();
+                    /*
+                     * CordovaWebFrag cwf = cnrAct.getCordovaWebFragInstance();
+                     * cwf.takeScreenShot();
+                     */
                 }
             });
         }

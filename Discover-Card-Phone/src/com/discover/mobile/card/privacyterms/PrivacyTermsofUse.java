@@ -1,29 +1,33 @@
 package com.discover.mobile.card.privacyterms;
 
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 
+/***
+ * PrivacyTermsofUse shows Terms Of Use Activity
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class PrivacyTermsofUse extends CardNotLoggedInCommonActivity implements
         OnClickListener {
 
     private final String referer = "privacyPolicy-pg";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_terms_statement);
 
@@ -43,20 +47,17 @@ public class PrivacyTermsofUse extends CardNotLoggedInCommonActivity implements
     }
 
     @Override
-    public void onSuccess(Object data) {
-        // TODO Auto-generated method stub
+    public void onSuccess(final Object data) {
 
     }
 
     @Override
-    public void OnError(Object data) {
-        // TODO Auto-generated method stub
+    public void OnError(final Object data) {
 
     }
 
     @Override
     public CardErrHandler getCardErrorHandler() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -74,8 +75,7 @@ public class PrivacyTermsofUse extends CardNotLoggedInCommonActivity implements
     }
 
     @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
+    public void onClick(final View v) {
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(this, referer);
         }
@@ -83,9 +83,9 @@ public class PrivacyTermsofUse extends CardNotLoggedInCommonActivity implements
 
     @Override
     public void onBackPressed() {
-        // TODO Auto-generated method stub
         super.onBackPressed();
-        Intent privacyHome  =  new Intent(PrivacyTermsofUse.this, PrivacyTermsLanding.class);
+        Intent privacyHome = new Intent(PrivacyTermsofUse.this,
+                PrivacyTermsLanding.class);
         startActivity(privacyHome);
         finish();
     }
