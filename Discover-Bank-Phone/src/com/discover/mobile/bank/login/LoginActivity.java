@@ -1851,6 +1851,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void showGrayExclamation() {
 		exclamationColorRed = false;
 		errorTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.exclamation_gray_img, 0, 0, 0);
+		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+		errorTextView.setCompoundDrawablePadding(px);
+		errorTextView.setGravity(Gravity.LEFT);
 		showExclamation();
 	}
 	
@@ -1861,6 +1864,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void hideExclamation() {
 		isExclamationVisible = false;
 		errorTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+		errorTextView.setGravity(Gravity.CENTER_HORIZONTAL);
 	}
 
 	private void showPasscodeLogin() {
