@@ -86,6 +86,8 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
+		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
+
 		submit();
 	}
 
