@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -25,8 +24,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -50,7 +47,6 @@ import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, AnimationListener {
 	private static final String TAG = CheckDepositCaptureActivity.class.getSimpleName();
@@ -80,7 +76,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private TextView frontLabel;
 	private TextView backLabel;
 	private TextView captureHelpTextView;
-	
+
 	//BREADCRUMB CHECKMARKS
 	private ImageView stepOneCheck;
 	private ImageView stepTwoCheck;
@@ -392,16 +388,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			@Override
 			public void onClick(final View v) {
 				if(timerTask == null || !(AsyncTask.Status.RUNNING == timerTask.getStatus())){
-					showModal(getHelpModal());
+					showCaptureTips();
 				}
 			}
 		});
-	}
-
-	private void showModal(final AlertDialog modal) {
-		if(modal != null) {
-			showCustomAlert(modal);
-		}
 	}
 
 	/**
@@ -842,7 +832,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * Add a check to see if supportFlashModes returns null.  
 		 * -Julian
 		 */
-		if ((null != parameters.getSupportedFlashModes()) 
+		if (null != parameters.getSupportedFlashModes() 
 				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
 			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		}
@@ -928,30 +918,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				}
 			}
 		}
-	}
-
-	/**
-	 * Returns a constructed modal dialog that provides instructions on how to use the
-	 * check capture feature.
-	 * @return a modal dialog with check capture help content.
-	 */
-	private SimpleContentModal getHelpModal() {
-		final Spanned helpContent = Html.fromHtml(
-				getResources().getString(R.string.bank_deposit_capture_help_content));
-
-		final SimpleContentModal modal = new SimpleContentModal(this, R.string.bank_deposit_capture_help_title,
-				helpContent.toString(), R.string.ok);
-
-		modal.getButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				modal.dismiss();
-			}
-		});
-		modal.hideNeedHelpFooter();
-
-		return modal;
 	}
 
 	/**
