@@ -153,6 +153,8 @@ public class AtmLocatorMapSearchBar extends RelativeLayout{
 			public void onFocusChange(final View v, final boolean hasFocus) {
 				if(hasFocus){
 					filterLayout.startAnimation(new ExpandCollapseAnimation(filterLayout, true, DURATION));
+				} else {
+					searchBox.setSelection(0);
 				}
 				if(searchBox.getText().toString().isEmpty() && !hasFocus){
 					searchBox.setHint(R.string.atm_location_search_help);

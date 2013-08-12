@@ -33,6 +33,7 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	private final ActivityDetail activityDetail;
 	private final TypedReferenceHandler<ActivityDetail> handler;
 	private final TransferDeletionType deletionType;
+	private final boolean isFromAccountActivity;
 
 	/**
 	 * Performs a deletion call to the server in order to delete a given scheduled transfer.  The service
@@ -45,7 +46,8 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 	 * @param deletionType		- Type of deletion (e.g. One Time, Next Transfer or Entire Series)
 	 */
 	public DeleteTransferServiceCall(final Context context, final AsyncCallback<ActivityDetail> callback, 
-									final ActivityDetail activityDetail, final TransferDeletionType deletionType) {
+									final ActivityDetail activityDetail, final TransferDeletionType deletionType, 
+									final boolean isFromAccountActivity) {
 		super(context, new PostCallParams(generateUrl(activityDetail, getDeleteType(deletionType))) {
 			{
 				//This service call is made after authenticating and receiving a token,
@@ -72,6 +74,7 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 			}
 		});
 		this.deletionType = deletionType;
+		this.isFromAccountActivity = isFromAccountActivity;
 
 		//Hold a reference to payment details for providing context to call backs
 		this.activityDetail = activityDetail;
@@ -135,5 +138,10 @@ public class DeleteTransferServiceCall extends BankNetworkServiceCall<ActivityDe
 		}
 
 		return deleteType;
+	}
+
+	
+	public boolean isFromAccountActivity() {
+		return isFromAccountActivity;
 	}
 }

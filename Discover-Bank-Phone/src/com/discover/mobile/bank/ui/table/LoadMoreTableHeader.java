@@ -202,4 +202,8 @@ public class LoadMoreTableHeader extends LinearLayout {
 	public TableTitles getTableTitles(){
 		return titles;
 	}
+	
+	public StatusMessageView getStatusView() {
+		return statusView;
+	}
 }

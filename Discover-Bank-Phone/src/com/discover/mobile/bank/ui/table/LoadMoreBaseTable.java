@@ -285,6 +285,12 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 			if(null != header){
 				header.setSelectedButton(tableDataCategory);
 			}
+			
+			//if the list does not allow for loading more, 
+			//make sure it is disabled by default
+			if (!cachedList.canLoadMore()) {
+				table.setMode(Mode.DISABLED);
+			}
 		}
 	}
 
@@ -954,6 +960,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 
 			if(isViewingCompletedTransfers && isExternalToInternalTransfer) {
 				holder.amount.setTextColor(getResources().getColor(R.color.green));
+			}
+			else {
+				holder.amount.setTextColor(getResources().getColor(R.color.black));
 			}
 		}
 

@@ -4,6 +4,9 @@
     android:layout_height="wrap_content"
     android:paddingBottom="@dimen/forms_inner_padding" >
 
+    <!-- NOTE FOR RADIO BUTTONS:
+    Using half the margin of standard inner form (usually 12dp) to prevent text overlap on small phones -->
+    
     <View
         android:id="@+id/divider_line"
         android:layout_width="fill_parent"
@@ -38,8 +41,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line2"
-        android:paddingBottom="@dimen/forms_inner_padding"
-        android:paddingLeft="@dimen/forms_inner_padding">
+        android:paddingBottom="@dimen/forms_inner_padding" >
 
         <RadioButton
             android:id="@+id/cancelled_button"
@@ -48,9 +50,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:clickable="false" 
-            android:checked="true"/>
+            android:checked="true"/> 
         
         <TextView
             android:id="@+id/canceled_label"
@@ -84,8 +87,7 @@
         android:id="@+id/date_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider_line3"
-        android:paddingLeft="@dimen/forms_inner_padding">
+        android:layout_below="@+id/divider_line3">
 
         <RadioButton
             android:id="@+id/date_button"
@@ -94,7 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+			android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:clickable="false" />
 
         <LinearLayout
@@ -168,7 +171,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line4"
-        android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding"
         android:paddingBottom="@dimen/forms_inner_padding"
         android:paddingTop="@dimen/forms_inner_padding">
@@ -180,7 +182,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+			android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:clickable="false" />
         
         <TextView
@@ -237,7 +240,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/divider_line5"
-        android:paddingLeft="@dimen/forms_inner_padding"
         android:paddingRight="@dimen/forms_inner_padding" 
         android:layout_marginTop="@dimen/between_related_elements_padding">
 
@@ -250,7 +252,8 @@
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
             android:paddingTop="@dimen/forms_inner_padding"
-            android:layout_marginRight="@dimen/forms_inner_padding"
+            android:layout_marginRight="6dp"
+            android:layout_marginLeft="6dp"
             android:clickable="false" />
 
         <TextView

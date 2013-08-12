@@ -39,6 +39,7 @@ import com.discover.mobile.common.ui.widgets.CustomOptionsMenu;
 public class ActivityDetailFragment extends DetailFragment implements FragmentOnBackPressed{
 	private static final String SELF = "self";
 	private CustomOptionsMenu customOptionsMenu;
+	public boolean isFromAccountActivity = true;
 
 	@Override
 	protected int getFragmentLayout() {
@@ -101,13 +102,10 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 			items = generator.getScheduledDepositList(item);
 		}
 		else if(ActivityDetail.TYPE_TRANSFER.equalsIgnoreCase(item.type)) {
-			/** Verify if delete is allowed, currently this flag is used to disable/enable delete option */
-			final boolean isDeleteAllowed = getArguments().getBoolean(BankExtraKeys.DELETE_ALLOWED);
 			final TransferType type = (TransferType)getArguments().getSerializable(BankExtraKeys.REVIEW_TRANSFERS_TYPE);
 			items = generator.getTransferDetailList(item, type);
 
-
-			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString()) && isDeleteAllowed) {
+			if (recievedUrl.method.contains(XHttpMethodOverrideValues.DELETE.toString())) {
 
 				//If the Activity is of frequency One Time we want to use the "link" button type whereas if it a 
 				//recurring transfer we want to allow the user
@@ -130,53 +128,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 							//a menu allowing the user to decide if the
 							//deletion is specific just to the next transfer in the series 
 							//or the entire series needs to be removed.
-							customOptionsMenu = new CustomOptionsMenu(activity, R.layout.delete_recurring_transfers_menu);
-
-							customOptionsMenu.addOnClickListener(R.id.delete_next_transfer_in_series_button, 
-									new OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_NEXT_TRANSFER,
-											R.string.bank_delete_transfer_text);
-								}
-
-							});
-
-							customOptionsMenu.addOnClickListener(R.id.delete_entire_transfer_series_button, 
-									new OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ALL_TRANSFERS,
-											R.string.bank_delete_transfer_series_text);
-								}
-
-							});
-
-							customOptionsMenu.addOnClickListener(R.id.cancel_button, new OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									customOptionsMenu.dismiss();
-								}
-
-							});
-
-
-							customOptionsMenu.addOnClickListener(R.id.delete_recurring_transfers_relative_layout, 
-									new OnClickListener() {
-
-								@Override
-								public void onClick(final View v) {
-									customOptionsMenu.dismiss();
-								}
-
-							});
-
-							customOptionsMenu.addAnimation(R.style.delete_recurring_animation);
-
-							activity.showCustomAlert(customOptionsMenu);
+							activity.showCustomAlert(getDeleteTransfersModal(activity, item));
 						}
 					}
 				});
@@ -190,6 +142,47 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 				contentTable.addView(row);
 			}
 		}
+	}
+	
+	/** Creates the modal to display when a user selects "More Options" on a recurring transfer.
+	 * 	Allows the user to delete a singular transfer or an the entire series. */
+	private CustomOptionsMenu getDeleteTransfersModal(final NavigationRootActivity activity, final ActivityDetail item) {
+		customOptionsMenu = new CustomOptionsMenu(activity, R.layout.delete_recurring_transfers_menu);
+
+		customOptionsMenu.addOnClickListener(R.id.delete_next_transfer_in_series_button, 
+				new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_NEXT_TRANSFER,
+						R.string.bank_delete_transfer_text);
+			}
+
+		});
+
+		customOptionsMenu.addOnClickListener(R.id.delete_entire_transfer_series_button, 
+				new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				showDeleteTransactionModal(activity, item, TransferDeletionType.DELETE_ALL_TRANSFERS,
+						R.string.bank_delete_transfer_series_text);
+			}
+
+		});
+
+
+		customOptionsMenu.addOnClickListener(R.id.delete_recurring_transfers_relative_layout, 
+				new OnClickListener() {
+
+			@Override
+			public void onClick(final View v) {
+				customOptionsMenu.dismiss();
+			}
+
+		});
+		
+		return customOptionsMenu;
 	}
 
 	/**
@@ -210,6 +203,8 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 		final SimpleContentModal modal = new SimpleContentModal(activity, title,
 				textBody,
 				R.string.bank_yes_delete);
+		
+		final boolean isFromAccountActivity = getArguments().getBoolean(BankExtraKeys.FROM_ACCOUNT_ACTIVITY, true);
 
 		/**
 		 * Hide the need help footer for the delete modal.
@@ -226,7 +221,7 @@ public class ActivityDetailFragment extends DetailFragment implements FragmentOn
 					customOptionsMenu.dismiss();
 				}
 
-				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType);
+				BankConductor.navigateToDeleteTransferConfirmation(item, deleteType, isFromAccountActivity);
 			}
 		});
 

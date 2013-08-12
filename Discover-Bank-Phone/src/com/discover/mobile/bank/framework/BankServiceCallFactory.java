@@ -3,7 +3,7 @@ package com.discover.mobile.bank.framework;
 import java.io.Serializable;
 
 import android.app.Activity;
-import android.util.Log;
+import android.os.Bundle;
 
 import com.discover.mobile.bank.BankPhoneAsyncCallbackBuilder;
 import com.discover.mobile.bank.account.TransferDeletionType;
@@ -19,6 +19,8 @@ import com.discover.mobile.bank.services.GetEnrolledStatusServiceCall;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
 import com.discover.mobile.bank.services.account.GetCustomerAccountsServerCall;
+import com.discover.mobile.bank.services.account.GetPreferredAccountsServerCall;
+import com.discover.mobile.bank.services.account.PreferredAccounts;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
 import com.discover.mobile.bank.services.account.activity.ActivityDetailType;
 import com.discover.mobile.bank.services.account.activity.GetActivityServerCall;
@@ -110,10 +112,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		 * Create an AsyncCallback using the default builder created for Bank related web-service HTTP requests
 		 */
 		final AsyncCallback<Customer> callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Customer.class, 
-																			activity, 
-																			(ErrorHandlerUi) activity)
-																			.build();
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Customer.class,
+						activity,
+						(ErrorHandlerUi) activity)
+						.build();
 
 		return  new CustomerServiceCall(activity, callback);
 	}
@@ -123,14 +125,14 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 */
 	public static GetAccountStatementsServerCall createGetAccountStatementsCall(final Account account) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		final AsyncCallback<StatementList> callback = 
-					BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(StatementList.class,
-													activity,
-													(ErrorHandlerUi) activity)
-													.build();
+		final AsyncCallback<StatementList> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(StatementList.class,
+						activity,
+						(ErrorHandlerUi) activity)
+						.build();
 		return new GetAccountStatementsServerCall(activity, callback, account);
 	}
-	
+
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
@@ -145,7 +147,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	}
 
 
-	
+
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the
@@ -170,7 +172,7 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return loginCall;
 	}
 
-	
+
 	/**
 	 * Constructs a CreateSSOLoginCall for authenticating an SSO user against Bank.
 	 * @param credentials
@@ -180,10 +182,10 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<BankLoginData> callback =
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class, 
-																			activity, 
-																			(ErrorHandlerUi)activity)
-																			.build();
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(BankLoginData.class,
+						activity,
+						(ErrorHandlerUi)activity)
+						.build();
 
 		final CreateBankSSOLoginCall loginCall =  new CreateBankSSOLoginCall(activity, callback, credentials);
 
@@ -236,8 +238,8 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * Used to create a service call to submit a check deposit.
 	 *
 	 */
-	public static SubmitCheckDepositCall createSubmitCheckDepositCall(final DepositDetail checkDetails, 
-																		final CompletionListener completionListener) {
+	public static SubmitCheckDepositCall createSubmitCheckDepositCall(final DepositDetail checkDetails,
+			final CompletionListener completionListener) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<DepositDetail> callback =
@@ -296,16 +298,17 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		return new GetPayeeServiceCall(activity, callback);
 	}
-	
+
 	/**
 	 * 
 	 * @param transferType
 	 * @return a new GetTransfers Service call that will retrieve a kind of transfer when run.
 	 */
-	public static GetTransfersServiceCall createBankGetTransfersCall (final TransferType transferType) {
-		return getTransfersCall(transferType, null);
+	public static GetTransfersServiceCall createBankGetTransfersCall (final TransferType transferType, 
+																	  final boolean transferWasDeleted) {
+		return getTransfersCall(transferType, null, transferWasDeleted);
 	}
-	
+
 	/**
 	 * Performs a getTransfers call on a specific URL, used for the load more feature.
 	 * 
@@ -313,9 +316,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @return a GetTransfersServiceCall that will load the specified url.
 	 */
 	public static GetTransfersServiceCall createBankGetTransfersCall(final String url) {
-		return getTransfersCall(null, url);
+		return getTransfersCall(null, url, false);
 	}
-	
+
 	/**
 	 * Creates a GetTransfersServiceCall for either a transfer type or a specific URL for an action
 	 * such as load more.
@@ -324,28 +327,28 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * The transfer type will override the URL if both are provided.
 	 * @return a GetTransfersServiceCall object that is ready to be submitted.
 	 */
-	private static GetTransfersServiceCall getTransfersCall(final TransferType transferType, 
-															final String loadMoreUrl) {
+	private static GetTransfersServiceCall getTransfersCall(final TransferType transferType, final String loadMoreUrl,
+															final boolean transferWasDeleted) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListTransferDetail>  callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ListTransferDetail.class,
 						activity, (ErrorHandlerUi) activity)
 						.build();
-		
+
 		String callUrl = loadMoreUrl;
 		if(transferType != null) {
 			callUrl = BankUrlManager.generateGetTransfersUrl(transferType);
 		}
-		
-		final GetTransfersServiceCall call = new GetTransfersServiceCall(activity, callback, callUrl);
-		
+
+		final GetTransfersServiceCall call = new GetTransfersServiceCall(activity, callback, callUrl, transferWasDeleted);
+
 		call.setTransferType(transferType);
 		return call;
 	}
 
 	/**
-	 * Create a GetExternalTransfersAccountsCall that will retrieve a user's external 
+	 * Create a GetExternalTransfersAccountsCall that will retrieve a user's external
 	 * accounts for use in transfer money.
 	 * @return a GetExternalTransferAccountsCall object that will download a user's external account info.
 	 */
@@ -405,14 +408,14 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 						.build();
 		return new GetPayBillsTermsAndConditionsCall(activity, callback);
 	}
-	
+
 	/**
 	 * Create the service call to get the account activity.
 	 * @param url - URL to be used to get the activity
 	 * @param type - specfies what type of activity will be downloaded
 	 * @return the service call to get the account activity
 	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url, 
+	public static GetActivityServerCall createGetActivityServerCall(final String url,
 			final ActivityDetailType type){
 		return createGetActivityServerCall(url, type, null);
 	}
@@ -424,9 +427,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param deletionType - the kind of delete that is taking place
 	 * @return the service call to get the account activity
 	 */
-	public static GetActivityServerCall createGetActivityServerCall(final String url, 
-																	final ActivityDetailType type, 
-																	final TransferDeletionType deletionType){
+	public static GetActivityServerCall createGetActivityServerCall(final String url,
+			final ActivityDetailType type,
+			final TransferDeletionType deletionType){
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
 
 		final AsyncCallback<ListActivityDetail>  callback =
@@ -499,16 +502,17 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 	 * @param deletionType		- Type of deletion to perform (e.g. One Time, Next in Series, Entire Series)
 	 * @return 					- Returns the newly created Service Call Object
 	 */
-	public static DeleteTransferServiceCall createDeleteTransferServiceCall(final ActivityDetail activityDetail, 
-																			final TransferDeletionType deletionType) {
+	public static DeleteTransferServiceCall createDeleteTransferServiceCall(final ActivityDetail activityDetail,
+			final TransferDeletionType deletionType,
+			final boolean isFromAccountActivity) {
 		final Activity activity = DiscoverActivityManager.getActiveActivity();
-		final AsyncCallback<ActivityDetail> callback = 
-				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ActivityDetail.class, 
-																			activity, 
-																			(ErrorHandlerUi)activity)
-																			.build();
+		final AsyncCallback<ActivityDetail> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(ActivityDetail.class,
+						activity,
+						(ErrorHandlerUi)activity)
+						.build();
 
-		return new DeleteTransferServiceCall(activity, callback, activityDetail, deletionType);
+		return new DeleteTransferServiceCall(activity, callback, activityDetail, deletionType, isFromAccountActivity);
 	}
 
 	/**
@@ -525,9 +529,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		final AsyncCallback<SearchPayeeResultList>  callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(SearchPayeeResultList.class,
-																			activity, 
-																			(ErrorHandlerUi) activity)
-																			.build();
+						activity,
+						(ErrorHandlerUi) activity)
+						.build();
 
 		return new SearchPayeeServiceCall(activity, callback, name);
 	}
@@ -644,9 +648,9 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 
 		final AsyncCallback<Object>  callback =
 				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(Object.class,
-																			activity, 
-																			null)
-																			.build();
+						activity,
+						null)
+						.build();
 
 		return new RefreshBankSessionCall(activity, callback);
 	}
@@ -762,5 +766,15 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		}
 
 		return serviceCall;
+	}
+	
+	public static GetPreferredAccountsServerCall createGetPreferredAccounts() {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		
+		final AsyncCallback<PreferredAccounts>  callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(PreferredAccounts.class,
+						activity, (ErrorHandlerUi) activity).build();
+		
+		return new GetPreferredAccountsServerCall(activity, callback);
 	}
 }
