@@ -218,11 +218,17 @@
         android:id="@+id/capturetips"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:contentDescription="@string/empty"
+        android:layout_alignParentBottom="true"
         android:background="@color/bank_overlay_shadow"
-        android:src="@drawable/deposit_check_coachmarks"
+        android:contentDescription="@string/empty"
         android:onClick="closeLayout"
+        android:paddingLeft="@dimen/groups_of_elements_padding"
+        android:paddingRight="@dimen/between_related_elements_padding"
+        android:paddingTop="@dimen/between_related_elements_padding"
+        android:paddingBottom="@dimen/bank_deposit_capture_tips_bottom_image_padding"
         android:scaleType="fitXY"
-        android:visibility="gone"/>
+        android:layout_above="@+id/button_bar"
+        android:src="@drawable/deposit_check_coachmarks"
+        android:visibility="gone" />
 
 </RelativeLayout>
