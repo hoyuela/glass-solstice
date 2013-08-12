@@ -50,15 +50,6 @@ public class CustomerServiceContactsFragment extends BaseFragment {
 															   getString(R.string.bank_contact_us_logged_in_feedback_url) : 
 															   getString(R.string.bank_contact_us_logged_out_feedback_url));
 		}
-		Bundle args = getArguments();
-		if (args.containsKey(BankInfoNavigationActivity.GO_BACK_TO_LOGIN)) {
-			final HelpWidget help = (HelpWidget) mainView.findViewById(R.id.help);
-			help.setVisibility(View.VISIBLE);
-			help.showHelpItems(HelpMenuListFactory.instance().getLoggedOutHelpItems());
-			final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)help.getLayoutParams();
-			params.height = (int) this.getResources().getDimension(R.dimen.help_bar_height_three_items);
-			help.setLayoutParams(params);
-		}
 		
 		return mainView;
 	}
