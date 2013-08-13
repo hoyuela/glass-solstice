@@ -30,7 +30,7 @@ public class CardMenuManager {
      * Constructor
      * 
      */
-    public CardMenuManager(Context context) {
+    public CardMenuManager(final Context context) {
         mContext = context;
         cardMenuTypes = new HashMap<String, CardMenu>();
 
@@ -43,8 +43,8 @@ public class CardMenuManager {
         Utils.log("CardMenu", "list size is" + cardMenuTypes.size());
     }
 
-    public ArrayList<String> getValidMenuItems(String incentiveTypeCode,
-            String incentiveCode, String optionCode) {
+    public ArrayList<String> getValidMenuItems(final String incentiveTypeCode,
+            final String incentiveCode, final String optionCode) {
 
         Set<String> cards = cardMenuTypes.keySet();
         supportedMenus = new ArrayList<String>();
@@ -61,8 +61,9 @@ public class CardMenuManager {
                             && cardMenuTypes.get(card).docs.indexOf(optionCode) == -1) {
                         supportedMenus.add(card);
                         Utils.log("CardMenu", "adding menu " + card);
-                    } else
+                    } else {
                         Utils.log("CardMenu", "list is empty");
+                    }
                 }
             }
         }

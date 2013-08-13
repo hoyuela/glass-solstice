@@ -17,7 +17,7 @@ public class CardNavigationBroadcastReceiver extends BroadcastReceiver {
             .getSimpleName();
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, final Intent intent) {
 
         if (intent.getAction().equals(
                 context.getString(R.string.logout_broadcast_action))) {

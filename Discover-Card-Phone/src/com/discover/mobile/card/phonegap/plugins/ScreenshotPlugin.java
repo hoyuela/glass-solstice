@@ -13,6 +13,14 @@ import android.widget.Toast;
 
 import com.discover.mobile.card.common.utils.Utils;
 
+/**
+ * ScreenshotPlugin serves as Interface bridge for Screen shot related operation
+ * between Cordova & Native
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class ScreenshotPlugin extends CordovaPlugin {
 
     static final String TAG = "ScreenshotPlugin";
@@ -20,8 +28,8 @@ public class ScreenshotPlugin extends CordovaPlugin {
     static final String takeScreenshot = "takeScreenshot";
 
     @Override
-    public boolean execute(String action, String rawArgs,
-            CallbackContext callbackContext) throws JSONException {
+    public boolean execute(final String action, final String rawArgs,
+            final CallbackContext callbackContext) throws JSONException {
         PluginResult result = new PluginResult(Status.OK);
         if (action.equals(takeScreenshot)) {
             Utils.log(TAG, "inside getSecToken ");
@@ -50,14 +58,14 @@ public class ScreenshotPlugin extends CordovaPlugin {
             }
 
             // Take the screenshot off the webView, store inside bitmap
-            this.webView.setDrawingCacheEnabled(true);
-            Bitmap bm = Bitmap.createBitmap(this.webView.getDrawingCache());
-            this.webView.setDrawingCacheEnabled(false);
+            webView.setDrawingCacheEnabled(true);
+            Bitmap bm = Bitmap.createBitmap(webView.getDrawingCache());
+            webView.setDrawingCacheEnabled(false);
 
-            MediaStore.Images.Media.insertImage(this.cordova.getActivity()
+            MediaStore.Images.Media.insertImage(cordova.getActivity()
                     .getContentResolver(), bm, "coupon.png", "description");
 
-            Toast.makeText(this.cordova.getActivity().getApplicationContext(),
+            Toast.makeText(cordova.getActivity().getApplicationContext(),
                     "Saved to photos", Toast.LENGTH_LONG).show();
             return true;
         } else {

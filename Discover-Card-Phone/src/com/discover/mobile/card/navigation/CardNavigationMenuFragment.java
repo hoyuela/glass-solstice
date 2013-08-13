@@ -3,6 +3,7 @@ package com.discover.mobile.card.navigation;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -37,8 +38,6 @@ import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.card.services.push.GetPushCount;
 import com.discover.mobile.card.services.push.GetPushCountBean;
 import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.BaseFragmentActivity;
-import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
 import com.discover.mobile.common.nav.section.ComponentInfo;
@@ -46,6 +45,14 @@ import com.discover.mobile.common.utils.PasscodeUtils;
 import com.google.common.collect.ImmutableList;
 import com.xtify.sdk.api.XtifySDK;
 
+/***
+ * CardNavigationMenuFragment do Population of menu items also handles Clicks
+ * and related events
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class CardNavigationMenuFragment extends NavigationMenuFragment {
     static final String TAG = "CardNavigationMenuFragment";
 
@@ -53,8 +60,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     public static ImmutableList<ComponentInfo> CARD_SECTION_LIST = null;
     public static final String DEEPLINK = "deeplink";
     public static final String DEEPLINK_PASSCODE = "passcode";
-    
-    
+
     private CardShareDataStore mCardStoreData;
 
     // Added For Push notification
@@ -62,7 +68,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     private long currentTimeStamp;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(final Activity activity) {
         super.onAttach(activity);
         Log.v(TAG, "onAttach");
         // This makes sure that the container activity has implemented
@@ -108,7 +114,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         activity.setMenu(this);
 
         BaseFragment landingFragment = getDeeplinkPage();
-        
+
         NavigationItem.initializeAdapterWithSections(navigationItemAdapter,
                 CARD_SECTION_LIST, landingFragment);
         mCardStoreData = CardShareDataStore.getInstance(getActivity());
@@ -119,8 +125,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         privacy.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
+            public void onClick(final View v) {
                 cardMenuInterface
                         .sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
             }
@@ -131,20 +136,8 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     public void onListItemClick(final ListView listView,
             final View clickedView, final int position, final long id) {
         TextView textView = (TextView) clickedView.findViewById(R.id.title);
-        final String text =  textView.getText().toString();
+        final String text = textView.getText().toString();
         super.onListItemClick(listView, clickedView, position, id);
-        //commented code for 13.4 SIT defect fixed 105428
-    	/*if (text.equals(mCardStoreData.getValueOfAppCache("currentPageTitle")))
-    	{
-    		BaseFragmentActivity baseFragmentActivity = (BaseFragmentActivity) DiscoverActivityManager
-                    .getActiveActivity();
-            
-            // hlin0 20130530 integrate with new sliding menu
-            baseFragmentActivity.showContent();
-   			return;
-    	}*/
-
-    	//super.onListItemClick(listView, clickedView, position, id);
 
         try {
 
@@ -153,26 +146,14 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-     }
+    }
 
-    /**
-     * Immutable list showing all the top level sections that are displayed in
-     * the sliding nav menu
-     */
-    /*
-     * public static final ImmutableList<ComponentInfo> CARD_SECTION_LIST =
-     * ImmutableList .<ComponentInfo> builder() // Add Sections below .add(new
-     * HomeSectionInfo()).add(new AccountSectionInfo()) .add(new
-     * PaymentsSectionInfo()).add(new EarnCashbackBonusInfo()) .add(new
-     * RedeemCashbackBonusInfo()) .add(new ProfileAndSettingsSectionInfo())
-     * .add(new CustomerServiceContactInfo()).build();
-     */
-
+    @SuppressLint("DefaultLocale")
     private void populateLeftNavigationMenu() {
 
         Context context = this.getActivity().getApplicationContext();
 
-        //ArrayList<ComponentInfo> tempList = new ArrayList<ComponentInfo>();
+        // ArrayList<ComponentInfo> tempList = new ArrayList<ComponentInfo>();
 
         CardShareDataStore dataStore = CardShareDataStore.getInstance(context);
 
@@ -236,7 +217,6 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                 }
 
             }
-        
 
             /* 13.3 Changes start */
             if (null == CARD_SECTION_LIST) {
@@ -256,16 +236,14 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                                 .equals(context
                                         .getString(R.string.card_product_group_code_essential_without_fee))) {
                     // Change Left Nav in case of Corporate card
-                    
-                        CARD_SECTION_LIST = ImmutableList
-                                .<ComponentInfo> builder()
-                                .add(new HomeSectionInfo(true,
-                                        countClickListenre))
-                                .add(new AccountSectionInfo())
-                                .add(new PaymentsSectionInfo(true))
-                                .add(new ProfileAndSettingsSectionInfo())
-                                .add(new CustomerServiceContactInfo()).build();
-                    
+
+                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
+                            .add(new HomeSectionInfo(true, countClickListenre))
+                            .add(new AccountSectionInfo())
+                            .add(new PaymentsSectionInfo(true))
+                            .add(new ProfileAndSettingsSectionInfo())
+                            .add(new CustomerServiceContactInfo()).build();
+
                 } else {
                     CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
                             .add(new HomeSectionInfo(true, countClickListenre))
@@ -279,8 +257,8 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
         /* 13.3 Changes end */
 
     }
-        // onPushCountUpdate(pushUnReadCount);
-    
+
+    // onPushCountUpdate(pushUnReadCount);
 
     /*
      * (non-Javadoc)
@@ -289,7 +267,6 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
      */
     @Override
     public void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         CARD_SECTION_LIST = null;
     }
@@ -301,7 +278,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
     OnClickListener countClickListenre = new OnClickListener() {
 
         @Override
-        public void onClick(View v) {
+        public void onClick(final View v) {
             SharedPreferences pushSharedPrefs = getActivity()
                     .getSharedPreferences(PushConstant.pref.PUSH_SHARED, // TODO:
                                                                          // Push
@@ -340,7 +317,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                     new CardEventListener() {
 
                         @Override
-                        public void onSuccess(Object data) {
+                        public void onSuccess(final Object data) {
                             GetPushCountBean countBean = (GetPushCountBean) data;
                             Utils.log(TAG, "---countBean.newMsgCount--"
                                     + countBean.newMsgCount);
@@ -355,7 +332,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                         }
 
                         @Override
-                        public void OnError(Object data) {
+                        public void OnError(final Object data) {
                             Utils.log(TAG,
                                     "--Error while getting push count data-- ");
                         }
@@ -367,19 +344,20 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                     PushConstant.pref.PUSH_COUNT, 0);
         }
     }
-    
+
     /**
-     * sgoff0
-     * Dynamic deeplinking. 
+     * sgoff0 Dynamic deeplinking.
+     * 
      * @return Fragment to navigate directly to upon login
      */
     private BaseFragment getDeeplinkPage() {
-    	BaseFragment baseFrag = new HomeSummaryFragment();
-        PasscodeUtils pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
+        BaseFragment baseFrag = new HomeSummaryFragment();
+        PasscodeUtils pUtils = new PasscodeUtils(this.getActivity()
+                .getApplicationContext());
         if (pUtils.isForgotPasscode()) {
-        	Bundle bundle = new Bundle();
-        	bundle.putString(DEEPLINK, DEEPLINK_PASSCODE);
-        	baseFrag.setArguments(bundle);
+            Bundle bundle = new Bundle();
+            bundle.putString(DEEPLINK, DEEPLINK_PASSCODE);
+            baseFrag.setArguments(bundle);
         }
         return baseFrag;
     }

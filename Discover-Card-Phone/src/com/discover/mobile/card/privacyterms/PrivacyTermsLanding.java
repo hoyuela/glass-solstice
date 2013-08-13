@@ -1,29 +1,29 @@
 package com.discover.mobile.card.privacyterms;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.os.Bundle;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.view.LayoutInflater;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.RelativeLayout.LayoutParams;
-
-import com.discover.mobile.common.IntentExtraKey;
-
-import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
-import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.error.CardErrHandler;
+import com.discover.mobile.common.IntentExtraKey;
 
+/**
+ * PrivacyTermsLanding Privacy Term Landing Activity shows link to
+ * {@link PrivacyTermsofUse} and {@link PrivacyTermsStatement}
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity
         implements OnClickListener {
 
@@ -34,7 +34,7 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity
     private RelativeLayout privacyStatementRow, termsOfUseRow;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.privacy_terms_landing);
         intialize();
@@ -77,12 +77,12 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity
     }
 
     @Override
-    public void onSuccess(Object data) {
+    public void onSuccess(final Object data) {
 
     }
 
     @Override
-    public void OnError(Object data) {
+    public void OnError(final Object data) {
 
     }
 
@@ -105,7 +105,7 @@ public class PrivacyTermsLanding extends CardNotLoggedInCommonActivity
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(this, referer);
         } else if (v.getId() == R.id.privacystatementrow) {
