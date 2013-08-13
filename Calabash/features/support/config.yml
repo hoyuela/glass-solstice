@@ -48,7 +48,7 @@
             :password: "solstice123"
             :security_answer: "test"
             :name: "TODO"
-            :strongauth: true
+            :strongauth: false
         :send_money:
             :username: "6011000015856580"
             :password: "solstice123"
@@ -61,13 +61,51 @@
             :security_answer: "test"
             :name: "Ln448644812"
             :strongauth: false
+        :essential:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+        :dbc:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+        :no_statements:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+
     :sso:
-        :normal:
+        :bank_account:
             :username: "asysssocred4"
             :password: "pass123$"
             :security_answer: "test"
             :name: "Ln227052855"
             :strongauth: true
+        :ssn_mismatch:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
+        :zb:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
+        :alu:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
+
 :mst0:
     :bank:
         :normal_savings:
@@ -131,14 +169,49 @@
             :security_answer: "test"
             :name: "TODO"
             :strongauth: false
+        :essential:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+        :dbc:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
+        :no_statements:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: "TODO"
+            :strongauth: false
     :sso:
-        :normal:
+        :bank_account:
             :username: "mst0sso105"
             :password: "pass123$"
             :security_answer: "test"
             :name: "TODO"
             :strongauth: true
-
+        :ssn_mismatch:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
+        :zb:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
+        :alu:
+            :username: "TODO"
+            :password: "TODO"
+            :security_answer: "test"
+            :name: TODO
+            :strongauth: true
 :loading_label: "In progress"
 :afternoon_hour: 12
 :evening_hour: 18

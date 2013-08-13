@@ -20,7 +20,10 @@ Given /^I verify transactions$/ do
 
 	# Test swipe
 	performAction('wait', 2)
-  	performAction('swipe', 'right')
+
+  	# Swipe does not work well when running remotely through jenkins so we're just tapping the next button
+  	#performAction('swipe', 'right')
+	performAction('click_on_view_by_id',"next_button")
   	performAction('wait', 4)
 
   	# Now compare the balances from the two transactions
@@ -50,8 +53,7 @@ Given /^I verify external browser modals$/ do
 
 	performAction('click_on_text', "Profile")
   	performAction('go_back')
-
-	macro 'I press the menu button'
+  	performAction('go_back')
 end
 
 # Verify payee swipping in manage payees
@@ -71,9 +73,13 @@ Given /^I verify managing payees$/ do
 	firstPayeeName = labelQuery[payeeIndex]
 
 	# Test swipe
-  	performAction('swipe', 'right')
+  	#performAction('swipe', 'right')
+  	performAction('click_on_view_by_id',"next_button")
   	performAction('wait', 3)
-  	performAction('swipe', 'right')
+
+  	#performAction('swipe', 'right')
+
+  	performAction('click_on_view_by_id',"next_button")
   	performAction('wait', 3)
 
 	# Now compare the two payee names
@@ -132,7 +138,7 @@ Given /^I verify adding a payee$/ do
   	performAction('scroll_down')
 
 	touch("button marked:'Cancel'")
-	# macro %Q[I rotate device right]
+	performAction('wait',2)
 	touch("button marked:'Cancel This Action'")
 end
 
@@ -216,7 +222,7 @@ Given /^I make a payment$/ do
 	performAction('wait_for_view_by_id', "carrot")
 	touch("imageView marked:'carrot'")[0]
 	
-	@amount = "3"
+	@amount = "9"
 	performAction('enter_text_into_id_field', "#{@amount}", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
 	performAction('enter_text_into_id_field', "0", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
 	performAction('enter_text_into_id_field', "0", query("com.discover.mobile.bank.ui.widgets.AmountValidatedEditField","id")[0])
@@ -255,7 +261,6 @@ Given /^I make a payment$/ do
 end
 
 # Delete the payment we just made by looking up the amount
-# NOTE this will work better when we use a calabash specific user
 Given /^I verify I can delete a payment$/ do
 	macro %Q[I navigate to "Review Payments" under "Pay Bills"]
 
@@ -277,10 +282,11 @@ Given /^I verify I can delete a payment$/ do
 	performAction("scroll_down")
 	performAction('wait',2)
 	performAction("scroll_down")
-	performAction('wait',2)
+	performAction('wait',3)
 
 	if element_exists("button marked:'delete_payment_button'")
-		performAction('click_on_view_by_id',"delete_payment_button")
+		touch("button marked:'delete_payment_button'")
+		performAction('wait',4)
 		touch("button marked:'Yes, Delete'")
 		performAction('wait_for_dialog_to_close')
   		
@@ -311,7 +317,9 @@ Given /^I verify the calendar in transfer money$/ do
 	performAction('wait',1)
 
 	touch("button marked:'Cancel'")
+	performAction('wait',2)
 	touch("button marked:'Cancel This Action'")
+	performAction('wait',1)
 end
 
 Given /^I verify the bank FAQ$/ do
