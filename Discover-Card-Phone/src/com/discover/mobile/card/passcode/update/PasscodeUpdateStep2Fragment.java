@@ -12,7 +12,6 @@ import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 import com.discover.mobile.card.passcode.request.GetSyntaxValidityRequest;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 	private static String TAG = "PasscodeUpdateStep2Fragment";
@@ -23,9 +22,13 @@ public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_update_step2_header);
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_UPDATE_STEP2);
 		return view;
 	}
+	
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_UPDATE_STEP2;
+	};
 
 	@Override
 	public void onPasscodeErrorEvent() {

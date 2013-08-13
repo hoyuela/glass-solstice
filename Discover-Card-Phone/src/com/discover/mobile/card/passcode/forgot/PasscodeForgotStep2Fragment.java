@@ -32,9 +32,13 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 			final ViewGroup container, final Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_forgot_step2_header);
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_FORGOT_STEP2);
 		return view;
 	}
+
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_FORGOT_STEP2;
+	};
 
 	@Override
 	public void onPasscodeErrorEvent() {
@@ -57,6 +61,7 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onPasscodeSuccessEvent() {
 		final Context context = DiscoverActivityManager.getActiveActivity();
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_FORGOT_OVERLAY);
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_forgot_title, 
 				R.string.passcode_dialog_forgot_content, 

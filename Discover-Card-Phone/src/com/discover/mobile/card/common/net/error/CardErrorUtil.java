@@ -201,13 +201,22 @@ final public class CardErrorUtil {
                 }
 
             } catch (final JsonParseException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+                //cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final JsonMappingException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+                //cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final IOException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+               // cardErrBean = new CardErrorBean(e.toString(), true);
 
             }
 

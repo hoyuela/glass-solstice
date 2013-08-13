@@ -29,8 +29,12 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 		super.onCreate(paramBundle);
 		mStep1Answer = getArguments().getString("passcode");
 		Log.v(TAG, "Step 1 answer: " + mStep1Answer);
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_SETUP_STEP1);
 	}
+
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_SETUP_STEP2;
+	};
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -42,6 +46,7 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 
 	protected void showPasscodeCreatedModal() {
 		final Context context = DiscoverActivityManager.getActiveActivity();
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_SETUP_OVERLAY);
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_created_title, 
 				R.string.passcode_dialog_created_content, 

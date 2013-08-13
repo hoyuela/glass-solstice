@@ -11,7 +11,6 @@ import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.request.GetMatchRequest;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 /**
  * Step 1 of the update passcode flow.
@@ -26,8 +25,12 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_UPDATE_STEP1);
 	}
+
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_UPDATE_STEP1;
+	};
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
