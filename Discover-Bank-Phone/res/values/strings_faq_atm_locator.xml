@@ -5,9 +5,6 @@
         <item>@string/how_to_find_atm_title</item>
         <item>@string/how_to_find_atm_body</item>
         
-        <item>@string/where_can_you_use_title</item>
-        <item>@string/where_can_you_use_body</item>
-
         <item>@string/lost_or_stolen_title</item>
         <item>@string/lost_or_stolen_body</item>
                 
@@ -40,8 +37,7 @@
     <!-- ATM Locator FAQ Strings -->
     <string name="how_to_find_atm_title">How do I find an ATM near me?</string>
 	<string name="how_to_find_atm_body">
-	    To find an ATM near you, click the “Search” icon at the top of the ATM Locator 
-	    screen and type in the address, zip code or landmark where you wish to find an ATM. 
+	    Use our ATM Locator to find a nearby ATM, including free Allpoint&#174; and  MoneyPass&#174; ATMs.
 	</string>
 	
 	<string name="surcharge_free_title">
@@ -52,18 +48,11 @@
 	    Surcharge-free ATMs are represented by orange icons in map and list view.
 	</string>
 	
-	<string name="where_can_you_use_title">
-	    At which ATMs can I use my Discover debit card?
-	</string>
-	<string name="where_can_you_use_body">
-		You can use your Discover debit card at ATMs displaying the Discover, PULSE® or MoneyPass® logos.	
-	</string>
-	
 	<string name="lost_or_stolen_title">
-	    How do I report a lost or stolen debit card?
+	    What happens if my debit card is lost or stolen?
 	</string>
 	<string name="lost_or_stolen_body">
-		To report lost or stolen debit cards, please call 1-800-347-7000 immediately.	
+		If your debit card is lost or stolen, call us at 1-800-347-7000 and a Banking Specialist will help you cancel your old card and order a new card. 
 	</string>
 	
 	<string name="how_change_pin_title">
@@ -78,38 +67,35 @@
 		Is there a daily ATM withdrawal limit?
 	</string>
 	<string name="daily_withdrawal_limit_body">
-	    Yes. The maximum amount you can withdraw from ATMs is $510.00 per day. 
+	    Yes. The maximum amount you can withdraw from ATMs is $510.00 per day.
 	    The Discover ATM withdrawal limit is $510 per day. 
-	    Some ATMs may have lower withdrawal limits but you complete multiple transactions until 
-	    you meet the Discover withdrawal limit of $510 per day.
+	    Some ATMs may have lower withdrawal limits but you can complete multiple transactions 
+	    until you meet the Discover withdrawal limit of $510 per day.
 	</string>
 	
 	<string name="atm_withdrawal_fees_title">
-		Are there any fees for withdrawing money from an ATM?
+		Is there a fee for using my debit card at an ATM?
 	</string>
 	<string name="atm_withdrawal_fees_body">
-	    There are no fees for withdrawing money from 23,000 
-	    surcharge-free MoneyPass ATMs nationwide. However, 
-	    you may be subject to a fee from the ATM owner/financial institution if 
-	    you do not use a surcharge-free ATM. Discover will never charge you a fee to use an ATM. 
-	    You can use our ATM Locator to find surcharge-free MoneyPass ATMs nearby.
+	    60,000 Allpoint&#174; and MoneyPass&#174; ATMs are completely free of charge. 
+	    However, owners of a non- MoneyPass/Allpoint ATM may charge a fee.
+	    
+	    Discover will not charge you a fee for using your debit card at any ATM.
 	</string>
 	
 	<string name="surcharge_free_title">
 	    How do I find a surcharge-free ATM?
 	</string>
 	<string name="surcharge_free_body">
-	    To display only surcharge-free ATMs on your search, enable the “Display only Surcharge-Free ATMs” button. 
-	    Surcharge-free ATMs are represented by orange icons in map and list view. 
+	    To display only surcharge-free ATMs on your search, enable the "Display only Surcharge-Free ATMs" toggle. Surcharge-free ATMs are represented by orange icons in map and list view.
 	</string>
 	
 	<string name="outside_us_use_title">
 	    Can I use my debit card outside of the United States? 
 	</string>
 	<string name="outside_us_use_body">
-	    You can use your Discover debit card to withdraw cash at ATMs 
-	    and make purchases at participating merchants in the United States, 
-	    Canada, Mexico and the Caribbean wherever you see the PULSE®, Discover or MoneyPass® symbols.
+	    Your Discover debit card is accepted at participating merchants in the United States, 
+	    Canada, Mexico and the Caribbean wherever you see a Discover, PULSE&#174; or Diners Club International&#174; logo.
 	</string>
 	
 	<string name="deposit_to_atm_title">
@@ -119,25 +105,26 @@
 		Currently, Discover Bank does not accept deposits at ATM locations (other than at its branch in Greenwood, DE).
 		 If you need to deposit a check, please use the mobile check deposit 
 		 feature on Discover’s mobile app or mail it to us at:
-		\n\nDiscover Bank
-		\nP.O. Box 30417
-		\nSalt Lake City, UT 84130
+		 &lt;br&gt;&lt;br&gt;Discover Bank
+		 &lt;br&gt;P.O. Box 30417
+		 &lt;br&gt;Salt Lake City, UT 84130
 	</string>
 	
 	<string name="wrongfully_charged_title">
-	    I was charged a fee for using my debit card at an ATM that I believed to be a surcharge-free ATM. 
-	    What can I do? 
+	    What happens if I am charged an ATM fee at an Allpoint&#174; MoneyPass location?
 	</string>
 	<string name="wrongfully_charged_body">
-	    If you are at a MoneyPass ATM and it indicates you are being charged a fee, 
-	    accept the fee and proceed with your transaction. Then notify Discover Bank by sending a message 
-	    through our Secure Message Center or calling us at 1-800-347-7000 and we will credit your account 
-	    for the fee if you provide the following information: 
-		\n\n•	Date and time of the transaction
-		\n•	ATM location
-		\n•	Last four digits of your debit card
-		\n•	Amount of the fee you were charged
-	</string>
+	    If you are at an Allpoint® or MoneyPass® ATM and it indicates you are being charged a fee, 
+	    accept the fee and proceed with your transactions. Then notify Discover Bank by sending a message 
+	    through our Secure Message Center or by calling us at 1-800-347-7000.  
+	   	&lt;br&gt;&lt;br&gt;
+	    Please provide the following information and we will credit your account for a fee:
+		&lt;br&gt;&lt;br&gt;
+		&#160;&#160;&#160;&#160;&#160;•&#160; Date and time of the transaction&lt;br&gt;
+		&#160;&#160;&#160;&#160;&#160;•&#160; ATM location&lt;br&gt;
+		&#160;&#160;&#160;&#160;&#160;•&#160; Last four digits of your debit card&lt;br&gt;
+		&#160;&#160;&#160;&#160;&#160;•&#160; Amount of the fee you were charged
+	</string><!-- Using &#160; to enforce indent as text is read-in as HTML (\t will not work) -->
 	
 	<string name="surcharge_free_fees_title">
 		Are there any fees associated with the use of a surcharge-free ATM?
