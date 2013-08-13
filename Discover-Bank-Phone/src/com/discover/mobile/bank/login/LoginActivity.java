@@ -451,7 +451,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		}
 	}
-
+	
 	/**
 	 * Display the error message provided in the argument list in red text.
 	 *
@@ -461,7 +461,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Log.v(TAG, "Setting error message.");
 		hideExclamation();
 		if (isPasscodeLogin()) {
-			getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
+			getErrorHandler().showErrorsOnScreen(this, errorMessage);
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			welcomeTV.setVisibility(View.GONE);
 			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
@@ -487,14 +487,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			guiValidationError();
 			if ("401".equals(errorCode)) {
-				showErrorMessage(getResources().getString(R.string.passcodeInvalidAttempt));
+				showErrorMessage(errorMessage);
 			} else if ("4011103".equals(errorCode) ) {
+				showErrorMessage(errorMessage);
 				showRedExclamation();
-				getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				welcomeTV.setVisibility(View.GONE);
-				startDefaultErrorFadeOut();
-				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			} else {
 				clearPasscodeFields();
 				//sgoff0 DEFECT 105439
@@ -1399,7 +1395,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-			registerOrAtmButton.setText(getResources().getString(R.string.register_now));
+		registerOrAtmButton.setText(getResources().getString(R.string.register_now));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.register_now));
 		}
@@ -1496,7 +1492,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-			registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.atm_locator));
 		}

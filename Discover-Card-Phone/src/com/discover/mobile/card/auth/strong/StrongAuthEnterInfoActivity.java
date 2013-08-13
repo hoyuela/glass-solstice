@@ -637,6 +637,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         privacyTerms = (TextView) findViewById(R.id.privacy_terms);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         logout = (Button) findViewById(R.id.logout_button);
+        
+        logout.setVisibility(View.INVISIBLE);
 
     }
 

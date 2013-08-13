@@ -11,7 +11,6 @@ import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.request.GetSyntaxValidityRequest;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 	private static String TAG = "PasscodeSetupStep1Fragment";
@@ -19,9 +18,14 @@ public class PasscodeSetupStep1Fragment extends PasscodeBaseFragment {
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
 		Log.v(TAG, "onCreate");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_SETUP_STEP1);
+		
 	}
-	
+
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_SETUP_STEP1;
+	};
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {

@@ -178,7 +178,7 @@ public final class CardErrorResponseHandler {
             final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
             if (INVALID_EXTERNAL_STATUS == errorCodeNumber && pUtils.isPasscodeToken()) {
             	pUtils.deletePasscodeToken();
-            	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4031102_passcode, R.string.E_4031102_passcode, R.string.close_text);
+            	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4031102_passcode, R.string.E_4031102_passcode, R.string.ok);
             	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
             	showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
@@ -200,11 +200,17 @@ public final class CardErrorResponseHandler {
             } else if (errorCodeNumber == INCORRECT_USERID_PASSWORD || errorCodeNumber == ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT) {
             	//treat as invalid user attempt
             	bundle.putString(IntentExtraKey.ERROR_CODE, "" + INCORRECT_USERID_PASSWORD);
+            	if (isPasscodeLogin) {
+            		bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, context.getResources().getString(R.string.passcodeInvalidAttempt));
+            	}
             	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lastAttemptErrors.contains(errorCodeNumber)) {
             	Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
             	//return all last attempt errors as the same
             	bundle.putString(IntentExtraKey.ERROR_CODE, "" + ULR_LAST_ATTEMPT);
+            	if (isPasscodeLogin) {
+            		bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, context.getResources().getString(R.string.passcodeOneAttempt));
+            	}
             	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
             } else {
             	handleGenericError(cardErrorHold.getErrorTitle(),
