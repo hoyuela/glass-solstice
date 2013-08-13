@@ -1,10 +1,11 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.atm;
 
 import android.content.Context;
 import android.location.LocationManager;
+import android.os.Handler;
 
 import com.discover.mobile.common.BaseFragment;
 
@@ -14,6 +15,9 @@ import com.discover.mobile.common.BaseFragment;
  *
  */
 public class DiscoverLocationMangerWrapper {
+	
+	/** Time in milliseconds in which the location search should be considered timed-out. */
+	private static final long TIMEOUT = 120000L;
 
 	/**GPS status listener to attach to the location manager when trying to the users current location*/
 	private final DiscoverGpsStatusListener gpsStatusListener;
@@ -23,16 +27,21 @@ public class DiscoverLocationMangerWrapper {
 
 	/** Location manager of the application*/
 	private final LocationManager manager;
-
+	
+	private final Runnable onTimeOut;
+	
+	private final Handler timeOutHandler = new Handler();
+	
 	/**
-	 * 
-	 * @param fragment - fragment that needs the users locaiton
+	 * @param fragment - fragment that needs the users location
+	 * @param onTimeOut - Runnable that will always run once the timeout time is reached.
 	 */
-	public DiscoverLocationMangerWrapper(final LocationFragment fragment){
+	public DiscoverLocationMangerWrapper(final LocationFragment fragment, final Runnable onTimeOut){
 		manager = (LocationManager) ((BaseFragment)fragment).getActivity().getSystemService(Context.LOCATION_SERVICE);
 		gpsStatusListener = new DiscoverGpsStatusListener(fragment);
 		gpsListener = new DiscoverLocationListener(fragment);
 		networkListener = new DiscoverLocationListener(fragment);
+		this.onTimeOut = onTimeOut;
 	}
 
 	/**
@@ -51,6 +60,8 @@ public class DiscoverLocationMangerWrapper {
 		manager.removeGpsStatusListener(gpsStatusListener);
 		manager.removeUpdates(gpsListener);
 		manager.removeUpdates(networkListener);
+		// Ensure any previous posts of the timeout Runnable are removed
+		timeOutHandler.removeCallbacks(onTimeOut);
 	}
 
 	/**
@@ -60,5 +71,14 @@ public class DiscoverLocationMangerWrapper {
 		manager.addGpsStatusListener(gpsStatusListener);
 		manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, gpsListener);
 		manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, networkListener);
+		startTimeOutRunnable();
+	}
+	
+	/** Starts the runnable that will be called once the timeout time has been reached.
+	 *  The Runnable will be run regardless of whether or not a location is found. */
+	private void startTimeOutRunnable() {
+		// Calls provided Runnable after time out has been reached.
+		timeOutHandler.removeCallbacks(onTimeOut); // Ensure any previous posts of the Runnable are removed
+		timeOutHandler.postDelayed(onTimeOut, TIMEOUT);
 	}
 }
