@@ -1,59 +1,54 @@
 package com.discover.mobile.bank.ui.widgets;
 
-import java.util.List;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.discover.mobile.bank.R;
-import com.discover.mobile.bank.login.LoginActivity;
 
 public class BankUrlChangerWidget extends AppWidgetProvider{
 
 
 	final String CHANGE_URL_INTENT = "com.discover.mobile.CHANGE_URL_BROADCAST_INTENT";
-	private List<BankUrlSite> sites;
 
 	@Override
 	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
-		final int N = appWidgetIds.length;
+		final int n = appWidgetIds.length;
 		// Perform this loop procedure for each App Widget that belongs to this provider
-		for (int i=0; i<N; i++) {
-			final int appWidgetId = appWidgetIds[i];
+		for (int i=0; i<n; i++) {
 
-			// Create an Intent to launch ExampleActivity
-			final Intent intent = new Intent(context, LoginActivity.class);
+			final Intent intent = new Intent(context, BankUrlChangerService.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
+			intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
-
-			// Get the layout for the App Widget and attach an on-click listener
-			// to the button
 			final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bank_url_changer_widget_layout);
+			views.setRemoteAdapter(R.id.url_list, intent);
 
-			sites = BankUrlChangerPreferences.getSites();
-			sites.toString();
-			//
-			//			for(int url = 0; url < sites.size()-1; url++){
-			//				final Intent temp = new Intent(CHANGE_URL_INTENT);
-			//				temp.putExtra(NEW_BASE_URL, sites.get(url).link);
-			//				views.setTextViewText(ids[url], sites.get(url).title);
-			//				views.setOnClickFillInIntent(ids[url], temp);
-			//			}
-			//
-			//			final Intent clickIntent = new Intent(CHANGE_URL_INTENT);
-			//			clickIntent.putExtra(NEW_BASE_URL, "dsafsdf");
-			//			views.setTextViewText(ids[sites.size()-1], sites.get(sites.size()-1).title);
-			//			views.setOnClickFillInIntent(ids[sites.size()-1], clickIntent);
+			final Intent clickIntent = new Intent(CHANGE_URL_INTENT);
 
-			//views.setOnClickPendingIntent(R.id.button, pendingIntent);
-			views.setOnClickPendingIntent(R.id.manage_urls, PendingIntent.getActivity(context, 0, intent, 0));
-			// Tell the AppWidgetManager to perform an update on the current app widget
-			appWidgetManager.updateAppWidget(appWidgetId, views);
+			views.setPendingIntentTemplate(R.id.url_list, 
+					PendingIntent.getBroadcast(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+
+			appWidgetManager.updateAppWidget(appWidgetIds[i], views);
 		}
 
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
+	}
+
+	@Override
+	public void onReceive(final Context context, final Intent intent) {
+		final String NEW_BASE_URL = "NEW_BASE_URL";
+
+		/**Read new base url from bundle*/
+		final String newUrl = intent.getStringExtra(NEW_BASE_URL);
+
+		Toast.makeText(context, newUrl, Toast.LENGTH_SHORT).show();
+		super.onReceive(context, intent);
 	}
 }
