@@ -174,10 +174,13 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        goBack();
-    }
+// DEFECT 106929 - overriding back button to nav to login doesn't respect passcode vs UID login,
+// let this be handled by a normal back flow.
+//    @Override
+//    public void onBackPressed() {
+//    	super.onBackPressed();
+//        goBack();
+//    }
 
     @Override
     public void goBack() {

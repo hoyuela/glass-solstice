@@ -93,6 +93,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
     private final String NOT_ENROLLED_MSG = "NOTENROLLED";
     private final String SA_LOCKED_MSG = "LOCKOUT";
     private String vendorId;
+    private boolean isPasscodeLogin;
 
     private WSRequest request;
 
@@ -110,6 +111,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
     @Override
     public void loginWithPasscode(LoginActivityInterface callingActivity, String deviceToken,
 			String passcode){
+    	isPasscodeLogin = true;
         String authString = NetworkUtility.getPasscodeAuthorizationString(deviceToken, passcode);
         loginHelper(callingActivity, authString, deviceToken, passcode);
     }
@@ -549,8 +551,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         boolean ssoUser = false;
         boolean delinkable = false;
         final boolean isSSNMatched = bean.getIsSSNMatched();
-        final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                (CardErrorHandlerUi) this);
+        final CardErrorResponseHandler cardErrorResHandler;
+        cardErrorResHandler = new CardErrorResponseHandler((CardErrorHandlerUi) this, isPasscodeLogin);
         String statusCode = bean.getErrorCode();
         Utils.log("status code", "statusCode---" + statusCode);
         delinkable = bean.getIsSSODelinkable();

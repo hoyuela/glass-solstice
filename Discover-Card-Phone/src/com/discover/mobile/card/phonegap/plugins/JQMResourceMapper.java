@@ -10,7 +10,7 @@ import com.discover.mobile.card.common.utils.Utils;
 /**
  * ©2013 Discover Bank
  * 
- * TODO: This class will map all the Strings received from JQM to native string
+ * This class will map all the Strings received from JQM to native string
  * resource ids.
  * 
  * @author CTS
@@ -57,11 +57,13 @@ public class JQMResourceMapper {
         temp.put("Make a Payment", R.string.sub_section_title_make_a_payment);
         temp.put("Manage Payments", R.string.sub_section_title_manage_payments);
         /* 13.4 change start */
-        /*temp.put("Manage Bank Information",
-                R.string.sub_section_title_manage_bank_information);*/
-		temp.put("Manage Bank Accounts",
+        /*
+         * temp.put("Manage Bank Information",
+         * R.string.sub_section_title_manage_bank_information);
+         */
+        temp.put("Manage Bank Accounts",
                 R.string.sub_section_title_manage_bank_accounts);
-		/* 13.4 change end */
+        /* 13.4 change end */
         temp.put("Send Money", R.string.sub_section_title_send_money);
         temp.put("Send Money History",
                 R.string.sub_section_title_send_money_history);
@@ -73,7 +75,7 @@ public class JQMResourceMapper {
 
         temp.put("Partner Gift Cards & eCerts",
                 R.string.sub_section_title_partner_gift_cards);
-        //Change title for defect #96089
+        // Change title for defect #96089
         temp.put("Discover Gift Card",
                 R.string.sub_section_title_discover_gift_cards);
         temp.put("Statement Credit",

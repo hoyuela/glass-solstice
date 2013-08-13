@@ -77,656 +77,674 @@ import com.discover.mobile.common.BaseFragment;
  * 
  */
 public class CordovaWebFrag extends BaseFragment implements PhoneGapInterface,
-		CordovaInterface {
-	static final String TAG = "CordovaWebFrag";
+        CordovaInterface {
+    static final String TAG = "CordovaWebFrag";
 
-	/**
-	 * Cordova Webview
-	 */
-	private CordovaWebView cwv;
-	/**
-	 * View
-	 */
-	private View mView;
+    /**
+     * Cordova Webview
+     */
+    private CordovaWebView cwv;
+    /**
+     * View
+     */
+    private View mView;
 
-	private String m_title = null;
+    private String m_title = null;
 
-	private JQMResourceMapper jqmResourceMapper	 = JQMResourceMapper.getInstance();
+    private JQMResourceMapper jqmResourceMapper = JQMResourceMapper
+            .getInstance();
 
-	private Context mContext;
+    private Context mContext;
 
-	private CardMenuItemLocationIndex mCardMenuLocation;
+    private CardMenuItemLocationIndex mCardMenuLocation;
 
-	private String m_currentLoadedJavascript = null;
+    private String m_currentLoadedJavascript = null;
 
-	private int m_currentTitleId = -1;
+    private int m_currentTitleId = -1;
 
-	/**
-	 * Called when fragment gets attached to activity
-	 */
-	@Override
-	public void onAttach(final Activity activity) {
-		super.onAttach(activity);
-		Log.v(TAG, "onAttach");
-	}
+    /**
+     * Called when fragment gets attached to activity
+     */
+    @Override
+    public void onAttach(final Activity activity) {
+        super.onAttach(activity);
+        Log.v(TAG, "onAttach");
+    }
 
-	/**
-	 * called when View is to created,inflation of fragment layout happens here
-	 */
-	@Override
-	public View onCreateView(final LayoutInflater inflater,
-			final ViewGroup container, final Bundle savedInstanceState) {
+    /**
+     * called when View is to created,inflation of fragment layout happens here
+     */
+    @Override
+    public View onCreateView(final LayoutInflater inflater,
+            final ViewGroup container, final Bundle savedInstanceState) {
 
-		Log.v(TAG, "inside onCreateView....");
+        Log.v(TAG, "inside onCreateView....");
 
-		if (mView != null) {
-			final ViewParent oldParent = mView.getParent();
-			if (oldParent != container) {
-				((ViewGroup) oldParent).removeView(mView);
-			}
-			return mView;
-		} else {
-			mView = inflater.inflate(R.layout.cordova_web_frag, null, false);
-			
-			cwv = (CordovaWebView) mView
-					.findViewById(R.id.cordova_web_frag_cordova_webview);
-			cwv.clearCache(true);
-			cwv.clearHistory();
+        if (mView != null) {
+            final ViewParent oldParent = mView.getParent();
+            if (oldParent != container) {
+                ((ViewGroup) oldParent).removeView(mView);
+            }
+            return mView;
+        } else {
+            mView = inflater.inflate(R.layout.cordova_web_frag, null, false);
 
-			cwv.loadUrl("file:///android_asset/www/index.html");
+            cwv = (CordovaWebView) mView
+                    .findViewById(R.id.cordova_web_frag_cordova_webview);
+            cwv.clearCache(true);
+            cwv.clearHistory();
 
-			MyWebviewClient myWebViewClient = new MyWebviewClient(this, mContext);
-			myWebViewClient.setWebView(cwv);
-			cwv.setWebViewClient(myWebViewClient);
+            cwv.loadUrl("file:///android_asset/www/index.html");
 
-			this.cwv.setWebChromeClient(new org.apache.cordova.CordovaChromeClient(
-					CordovaWebFrag.this) {
+            MyWebviewClient myWebViewClient = new MyWebviewClient(this,
+                    mContext);
+            myWebViewClient.setWebView(cwv);
+            cwv.setWebViewClient(myWebViewClient);
 
-				@Override
-				public void onGeolocationPermissionsShowPrompt(
-						final String origin,
-						final GeolocationPermissions.Callback callback) {
+            cwv.setWebChromeClient(new org.apache.cordova.CordovaChromeClient(
+                    CordovaWebFrag.this) {
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(
-							mContext);
+                @Override
+                public void onGeolocationPermissionsShowPrompt(
+                        final String origin,
+                        final GeolocationPermissions.Callback callback) {
 
-					builder.setMessage(
-							"Discover Would Like to Use Your Current Location")
+                    AlertDialog.Builder builder = new AlertDialog.Builder(
+                            mContext);
 
-							.setPositiveButton("Accept",
-									new DialogInterface.OnClickListener() {
+                    builder.setMessage(
+                            "Discover Would Like to Use Your Current Location")
 
-										@Override
-										public void onClick(
-												DialogInterface dialog, int id) {
+                            .setPositiveButton("Accept",
+                                    new DialogInterface.OnClickListener() {
 
-											callback.invoke(origin, true, false);
+                                        @Override
+                                        public void onClick(
+                                                final DialogInterface dialog,
+                                                final int id) {
 
-										}
+                                            callback.invoke(origin, true, false);
 
-									})
+                                        }
 
-							.setNegativeButton("Decline",
-									new DialogInterface.OnClickListener() {
+                                    })
 
-										@Override
-										public void onClick(
-												DialogInterface dialog, int id) {
+                            .setNegativeButton("Decline",
+                                    new DialogInterface.OnClickListener() {
 
-											// User cancelled the dialog
+                                        @Override
+                                        public void onClick(
+                                                final DialogInterface dialog,
+                                                final int id) {
 
-											callback.invoke(origin, false,
-													false);
+                                            // User cancelled the dialog
 
-											// Toast.makeText(DiscoverMobileActivity.this,
-											// "Cannot determine current location",
-											// Toast.LENGTH_LONG).show();
+                                            callback.invoke(origin, false,
+                                                    false);
 
-										}
+                                            // Toast.makeText(DiscoverMobileActivity.this,
+                                            // "Cannot determine current location",
+                                            // Toast.LENGTH_LONG).show();
 
-									});
+                                        }
 
-					AlertDialog dialog = builder.create();
+                                    });
 
-					dialog.show();
+                    AlertDialog dialog = builder.create();
 
-				}
+                    dialog.show();
 
-			});
-			/********** Hemang **********/
-			if (cwv != null) {
-				WebSettings webSettings = cwv.getSettings();
-				webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-			}
-			/********** Hemang **********/
-			return mView;
-		}
-	}
+                }
 
-	public String getM_currentLoadedJavascript() {
-		return m_currentLoadedJavascript;
-	}
+            });
+            /********** Hemang **********/
+            if (cwv != null) {
+                WebSettings webSettings = cwv.getSettings();
+                webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+            }
+            /********** Hemang **********/
+            return mView;
+        }
+    }
 
-	public void setM_currentLoadedJavascript(String m_currentLoadedJavascript) {
-		this.m_currentLoadedJavascript = m_currentLoadedJavascript;
-	}
+    public String getM_currentLoadedJavascript() {
+        return m_currentLoadedJavascript;
+    }
 
-	/**
-	 * Create the fragment
-	 */
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		Log.v(TAG, "onCreate");
-		super.onCreate(savedInstanceState);
+    public void setM_currentLoadedJavascript(
+            final String m_currentLoadedJavascript) {
+        this.m_currentLoadedJavascript = m_currentLoadedJavascript;
+    }
 
-		/* 13.3  Changes */
+    /**
+     * Create the fragment
+     */
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        Log.v(TAG, "onCreate");
+        super.onCreate(savedInstanceState);
+
+        /* 13.3 Changes */
         mCardMenuLocation = CardMenuItemLocationIndex.getInstance(mContext);
-        /* 13.3  Changes */
+        /* 13.3 Changes */
 
-		passCookieToWebview();
-	}
+        passCookieToWebview();
+    }
 
-	/**
-	 * When the app resumes, make sure the fragment shows the same
-	 */
-	@Override
-	public void onResume() {
-		super.onResume();
+    /**
+     * When the app resumes, make sure the fragment shows the same
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
 
-		Log.v(TAG, "onResume");
-		if (null != cwv)
-			cwv.handleResume(true, false);
-	}
+        Log.v(TAG, "onResume");
+        if (null != cwv) {
+            cwv.handleResume(true, false);
+        }
+    }
 
-	@Override
-	public void onPause() {
-		super.onPause();
+    @Override
+    public void onPause() {
+        super.onPause();
 
-		Log.v(TAG, "onPause");
-		if (null != cwv)
-			cwv.handlePause(true);
-	}
+        Log.v(TAG, "onPause");
+        if (null != cwv) {
+            cwv.handlePause(true);
+        }
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		Log.v(TAG, "onDestroy");
-		if (null != cwv){
-			cwv.stopLoading();
-			cwv.handleDestroy();
-		}
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "onDestroy");
+        if (null != cwv) {
+            cwv.stopLoading();
+            cwv.handleDestroy();
+        }
+    }
 
-	/**
-	 * get the action bar title
-	 */
-	@Override
-	public int getActionBarTitle() {
-    	m_currentTitleId = -1;
+    /**
+     * get the action bar title
+     */
+    @Override
+    public int getActionBarTitle() {
+        m_currentTitleId = -1;
         Log.v(TAG, "getActionBarTitle n title is " + m_title);
         if (null != m_title) {
             jqmResourceMapper = JQMResourceMapper.getInstance();
-            
+
             m_currentTitleId = jqmResourceMapper.getTitleStringId(m_title);
-        } 
-         return m_currentTitleId;
-    }
-
-	// PhoneGap Interface
-	@Override
-	public void javascriptCall(String javascript) {
-		Log.v(TAG, "javascript: " + javascript);
-		m_currentLoadedJavascript = javascript;
-		String firstLetter = javascript.substring(0, 1);
-		firstLetter = firstLetter.toLowerCase(Locale.ENGLISH);
-		String rest = javascript.substring(1);
-		rest = rest.replaceAll(" ", "");
-		String restWithoutSpecialChar = firstLetter + rest;
-		javascript = restWithoutSpecialChar.replaceAll("[^a-zA-Z]+", "") + "()";
-		// javascript = firstLetter + rest + "();";
-		Log.v(TAG, "javascript to send: " + javascript);
-		if (null != cwv) {
-			cwv.requestFocus(View.FOCUS_DOWN);
-			cwv.setOnTouchListener(new View.OnTouchListener() {
-
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN:
-					case MotionEvent.ACTION_UP:
-						if (!v.hasFocus()) {
-							v.requestFocus();
-						}
-						break;
-					}
-					return false;
-				}
-			});
-
-			cwv.sendJavascript(javascript);
-		}
-
-	}
-
-	private void passCookieToWebview() {
-		final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
-				.createInstance(getActivity());
-		final android.webkit.CookieManager webCookieManager = CookieManager
-				.getInstance();
-		webCookieManager.setAcceptCookie(true);
-		final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-				.getInstance(getActivity());
-		final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-				.getCookieManagerInstance();
-		final List<HttpCookie> cookies = sessionCookieManagerObj
-				.getHttpCookie();
-		final String url = sessionCookieManagerObj.getBaseUri().toString();
-		for (final HttpCookie cookie : cookies) {
-			final String setCookie = new StringBuilder(cookie.toString())
-					.append("; domain=").append(cookie.getDomain())
-					.append("; path=").append(cookie.getPath()).toString();
-			webCookieManager.setCookie(url, setCookie);
-			webCookieSync.sync();
-
-			Utils.log("passCookieToWebview", "setCookie11111" + setCookie);
-
-		}
-	}
-
-	/**
-	 * It returns the instance of CordovaWebView of this Fragment.
-	 * CordovaWebView
-	 */
-	public CordovaWebView getCordovaWebviewInstance() {
-		return cwv;
-	}
-
-	/**
-	 * Receives the title to be set to actionbar.
-	 * 
-	 * @param title
-	 *            to set.
-	 */
-	public void setTitle(final String title) {
-		Utils.log(TAG, "inside setTitle n title is " + title);
-		m_title = title;
-	}
-
-	public void setContext(Context context) {
-		mContext = context;
-	}
-
-	@Override
-	public int getGroupMenuLocation() {
-        Utils.log(TAG, "inside getGroupMenuLocation ");
-        int tempId = getActionBarTitle();
-        if(tempId == -1)
-        {
-        	if(null != m_currentLoadedJavascript){
-        		
-        	Utils.log(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
-        	jqmResourceMapper = JQMResourceMapper.getInstance();
-              
-             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
-             return mCardMenuLocation.getMenuGroupLocation(tempId);
-        	}else
-        		return mCardMenuLocation.getMenuGroupLocation(tempId);
         }
-        else
-        	return mCardMenuLocation.getMenuGroupLocation(tempId);
+        return m_currentTitleId;
     }
 
-	@Override
-	public int getSectionMenuLocation() {
-        Utils.log(TAG, "inside getSectionMenuLocation");
-        int tempId = getActionBarTitle();
-        if(tempId == -1)
-        {
-        	if(null != m_currentLoadedJavascript){
-        	Utils.log(TAG,"m_currentLoadedJavascript is "+m_currentLoadedJavascript);
-        	jqmResourceMapper = JQMResourceMapper.getInstance();
-              
-             tempId = jqmResourceMapper.getTitleStringId(m_currentLoadedJavascript);
-             return mCardMenuLocation.getMenuSectionLocation(tempId);
-        	}else
-        		return mCardMenuLocation.getMenuSectionLocation(tempId);
-        }
-        else
-        	return mCardMenuLocation.getMenuSectionLocation(tempId);
-    }
+    // PhoneGap Interface
+    @Override
+    public void javascriptCall(String javascript) {
+        Log.v(TAG, "javascript: " + javascript);
+        m_currentLoadedJavascript = javascript;
+        String firstLetter = javascript.substring(0, 1);
+        firstLetter = firstLetter.toLowerCase(Locale.ENGLISH);
+        String rest = javascript.substring(1);
+        rest = rest.replaceAll(" ", "");
+        String restWithoutSpecialChar = firstLetter + rest;
+        javascript = restWithoutSpecialChar.replaceAll("[^a-zA-Z]+", "") + "()";
+        // javascript = firstLetter + rest + "();";
+        Log.v(TAG, "javascript to send: " + javascript);
+        if (null != cwv) {
+            cwv.requestFocus(View.FOCUS_DOWN);
+            cwv.setOnTouchListener(new View.OnTouchListener() {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.cordova.api.CordovaInterface#cancelLoadUrl()
-	 */
-	@Override
-	public void cancelLoadUrl() {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.cordova.api.CordovaInterface#getContext()
-	 */
-	@Override
-	public Context getContext() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.cordova.api.CordovaInterface#getThreadPool()
-	 */
-	@Override
-	public ExecutorService getThreadPool() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.apache.cordova.api.CordovaInterface#onMessage(java.lang.String,
-	 * java.lang.Object)
-	 */
-	@Override
-	public Object onMessage(String arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.cordova.api.CordovaInterface#setActivityResultCallback(org
-	 * .apache.cordova.api.CordovaPlugin)
-	 */
-	@Override
-	public void setActivityResultCallback(CordovaPlugin arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.apache.cordova.api.CordovaInterface#startActivityForResult(org.apache
-	 * .cordova.api.CordovaPlugin, android.content.Intent, int)
-	 */
-	@Override
-	public void startActivityForResult(CordovaPlugin arg0, Intent arg1, int arg2) {
-		// TODO Auto-generated method stub
-
-	}
-	
-	public void takeScreenShot()
-	{
-		mView.setDrawingCacheEnabled(true);
-		Bitmap bitmap = Bitmap.createBitmap(mView.getDrawingCache());
-		mView.setDrawingCacheEnabled(false);
-		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		boolean compress = bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-		File f = new File(Environment.getExternalStorageDirectory() + File.separator + "test.jpg");
-		try {
-			f.createNewFile();
-			FileOutputStream fo = new FileOutputStream(f);
-			fo.write(bytes.toByteArray()); 
-			fo.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	class MyWebviewClient extends CordovaWebViewClient {
-	    Context context;
-		/**
-		 * Constructor
-		 * 
-		 * @param cordova
-		 */
-		public MyWebviewClient(CordovaInterface cordova, Context context) {
-			super(cordova);
-			this.context = context;
-			// TODO Auto-generated constructor stub
-		}
-		
-		private void showDialogForExternalLink(final String strURL)
-		{
-    		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            
-            builder.setMessage("Do you want to open this link in an extenal web browser? ")
-            .setCancelable(true)
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                    startUrlInChrome(strURL);
-                }
-            })
-            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
+                @Override
+                public boolean onTouch(final View v, final MotionEvent event) {
+                    switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_UP:
+                        if (!v.hasFocus()) {
+                            v.requestFocus();
+                        }
+                        break;
+                    }
+                    return false;
                 }
             });
+
+            cwv.sendJavascript(javascript);
+        }
+
+    }
+
+    private void passCookieToWebview() {
+        final android.webkit.CookieSyncManager webCookieSync = CookieSyncManager
+                .createInstance(getActivity());
+        final android.webkit.CookieManager webCookieManager = CookieManager
+                .getInstance();
+        webCookieManager.setAcceptCookie(true);
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(getActivity());
+        final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+                .getCookieManagerInstance();
+        final List<HttpCookie> cookies = sessionCookieManagerObj
+                .getHttpCookie();
+        final String url = sessionCookieManagerObj.getBaseUri().toString();
+        for (final HttpCookie cookie : cookies) {
+            final String setCookie = new StringBuilder(cookie.toString())
+                    .append("; domain=").append(cookie.getDomain())
+                    .append("; path=").append(cookie.getPath()).toString();
+            webCookieManager.setCookie(url, setCookie);
+            webCookieSync.sync();
+
+            Utils.log("passCookieToWebview", "setCookie11111" + setCookie);
+
+        }
+    }
+
+    /**
+     * It returns the instance of CordovaWebView of this Fragment.
+     * CordovaWebView
+     */
+    public CordovaWebView getCordovaWebviewInstance() {
+        return cwv;
+    }
+
+    /**
+     * Receives the title to be set to actionbar.
+     * 
+     * @param title
+     *            to set.
+     */
+    public void setTitle(final String title) {
+        Utils.log(TAG, "inside setTitle n title is " + title);
+        m_title = title;
+    }
+
+    public void setContext(final Context context) {
+        mContext = context;
+    }
+
+    @Override
+    public int getGroupMenuLocation() {
+        Utils.log(TAG, "inside getGroupMenuLocation ");
+        int tempId = getActionBarTitle();
+        if (tempId == -1) {
+            if (null != m_currentLoadedJavascript) {
+
+                Utils.log(TAG, "m_currentLoadedJavascript is "
+                        + m_currentLoadedJavascript);
+                jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                tempId = jqmResourceMapper
+                        .getTitleStringId(m_currentLoadedJavascript);
+                return mCardMenuLocation.getMenuGroupLocation(tempId);
+            } else {
+                return mCardMenuLocation.getMenuGroupLocation(tempId);
+            }
+        } else {
+            return mCardMenuLocation.getMenuGroupLocation(tempId);
+        }
+    }
+
+    @Override
+    public int getSectionMenuLocation() {
+        Utils.log(TAG, "inside getSectionMenuLocation");
+        int tempId = getActionBarTitle();
+        if (tempId == -1) {
+            if (null != m_currentLoadedJavascript) {
+                Utils.log(TAG, "m_currentLoadedJavascript is "
+                        + m_currentLoadedJavascript);
+                jqmResourceMapper = JQMResourceMapper.getInstance();
+
+                tempId = jqmResourceMapper
+                        .getTitleStringId(m_currentLoadedJavascript);
+                return mCardMenuLocation.getMenuSectionLocation(tempId);
+            } else {
+                return mCardMenuLocation.getMenuSectionLocation(tempId);
+            }
+        } else {
+            return mCardMenuLocation.getMenuSectionLocation(tempId);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.api.CordovaInterface#cancelLoadUrl()
+     */
+    @Override
+    public void cancelLoadUrl() {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.api.CordovaInterface#getContext()
+     */
+    @Override
+    public Context getContext() {
+
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.api.CordovaInterface#getThreadPool()
+     */
+    @Override
+    public ExecutorService getThreadPool() {
+
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.apache.cordova.api.CordovaInterface#onMessage(java.lang.String,
+     * java.lang.Object)
+     */
+    @Override
+    public Object onMessage(final String arg0, final Object arg1) {
+
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.cordova.api.CordovaInterface#setActivityResultCallback(org
+     * .apache.cordova.api.CordovaPlugin)
+     */
+    @Override
+    public void setActivityResultCallback(final CordovaPlugin arg0) {
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.apache.cordova.api.CordovaInterface#startActivityForResult(org.apache
+     * .cordova.api.CordovaPlugin, android.content.Intent, int)
+     */
+    @Override
+    public void startActivityForResult(final CordovaPlugin arg0,
+            final Intent arg1, final int arg2) {
+
+    }
+
+    public void takeScreenShot() {
+        mView.setDrawingCacheEnabled(true);
+        mView.setDrawingCacheEnabled(false);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
+        File f = new File(Environment.getExternalStorageDirectory()
+                + File.separator + "test.jpg");
+        try {
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    class MyWebviewClient extends CordovaWebViewClient {
+        Context context;
+
+        /**
+         * Constructor
+         * 
+         * @param cordova
+         */
+        public MyWebviewClient(final CordovaInterface cordova,
+                final Context context) {
+            super(cordova);
+            this.context = context;
+
+        }
+
+        private void showDialogForExternalLink(final String strURL) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+            builder.setMessage(
+                    "Do you want to open this link in an extenal web browser? ")
+                    .setCancelable(true)
+                    .setPositiveButton("Yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        final DialogInterface dialog,
+                                        final int id) {
+                                    dialog.dismiss();
+                                    startUrlInChrome(strURL);
+                                }
+                            })
+                    .setNegativeButton("No",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(
+                                        final DialogInterface dialog,
+                                        final int id) {
+                                    dialog.cancel();
+                                }
+                            });
             AlertDialog alert = builder.create();
             alert.show();
-		}
-		protected void startUrlInChrome(final String urlStr) {
-	        Uri uri = Uri.parse(urlStr);
-	        try {
-	            Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
-	            context.startActivity(launchBrowser);
-	        } catch (ActivityNotFoundException e) {
-	            e.printStackTrace();
-	        }
-	    }
-		
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#onPageStarted(android.webkit
-		 * .WebView, java.lang.String, android.graphics.Bitmap)
-		 */
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			// TODO Auto-generated method stub
-			super.onPageStarted(view, url, favicon);
-			/* Defect 95810 and 96379*/
-			if (url.indexOf("http://www.google.com/intl")>-1 &&
-			    url.indexOf("help/terms_maps.html")>-1
-			   )
-			{
-			    //cancelLoadUrl();
-			    //cwv.goBack();
-			    view.stopLoading();
-			    showDialogForExternalLink(url);
-			}
-			else if (url.indexOf("http://maps.google.com/maps?")>-1 ||
-			        url.indexOf("facebook.com")>-1 || 
-                    url.indexOf("linkedin.com")>-1 || 
-			        url.indexOf("twitter.com")>-1 || 
-                    (url.indexOf("www.discover.com/credit-cards")>-1 && url.indexOf("privacy-policies")>-1)
-			        )
-            {
-			    view.stopLoading();
+        }
+
+        protected void startUrlInChrome(final String urlStr) {
+            Uri uri = Uri.parse(urlStr);
+            try {
+                Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(launchBrowser);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#onPageStarted(android.webkit
+         * .WebView, java.lang.String, android.graphics.Bitmap)
+         */
+        @Override
+        public void onPageStarted(final WebView view, final String url,
+                final Bitmap favicon) {
+
+            super.onPageStarted(view, url, favicon);
+            /* Defect 95810 and 96379 */
+            if (url.indexOf("http://www.google.com/intl") > -1
+                    && url.indexOf("help/terms_maps.html") > -1) {
+                // cancelLoadUrl();
+                // cwv.goBack();
+                view.stopLoading();
+                showDialogForExternalLink(url);
+            } else if (url.indexOf("http://maps.google.com/maps?") > -1
+                    || url.indexOf("facebook.com") > -1
+                    || url.indexOf("linkedin.com") > -1
+                    || url.indexOf("twitter.com") > -1
+                    || url.indexOf("www.discover.com/credit-cards") > -1
+                    && url.indexOf("privacy-policies") > -1) {
+                view.stopLoading();
                 showDialogForExternalLink(url);
             }
 
-			/* Defect 95810 and 96379*/
-			Utils.log(TAG, "MyWebviewClient on pageStarted.... " + url);
-		}
-		
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#onPageFinished(android.webkit
-		 * .WebView, java.lang.String)
-		 */
-		@Override
-		public void onPageFinished(WebView arg0, String arg1) {
-			// TODO Auto-generated method stub
-			super.onPageFinished(arg0, arg1);
-			Utils.log(TAG, "MyWebviewClient on pagefinished.... " + arg1);
+            /* Defect 95810 and 96379 */
+            Utils.log(TAG, "MyWebviewClient on pageStarted.... " + url);
+        }
 
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#onPageFinished(android.webkit
+         * .WebView, java.lang.String)
+         */
+        @Override
+        public void onPageFinished(final WebView arg0, final String arg1) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#doUpdateVisitedHistory(android
-		 * .webkit.WebView, java.lang.String, boolean)
-		 */
-		@Override
-		public void doUpdateVisitedHistory(WebView view, String url,
-				boolean isReload) {
-			// TODO Auto-generated method stub
-			super.doUpdateVisitedHistory(view, url, isReload);
-		}
+            super.onPageFinished(arg0, arg1);
+            Utils.log(TAG, "MyWebviewClient on pagefinished.... " + arg1);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#onReceivedError(android.webkit
-		 * .WebView, int, java.lang.String, java.lang.String)
-		 */
-		@Override
-		public void onReceivedError(WebView arg0, int arg1, String arg2,
-				String arg3) {
-			// TODO Auto-generated method stub
-			super.onReceivedError(arg0, arg1, arg2, arg3);
-			
-			Utils.log(TAG, "on onReceivedError.... " + arg2 + ":" + arg1 + ":" + arg3 );
-			Utils.isSpinnerAllowed = true;
-			Utils.hideSpinner();
-			
-			if(getActivity() instanceof CardNavigationRootActivity)
-			{
-				CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
-				activity.onErrorOfCordovaLoading();
-			}
-		}
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onFormResubmission(android.webkit.WebView
-		 * , android.os.Message, android.os.Message)
-		 */
-		@Override
-		public void onFormResubmission(WebView view, Message dontResend,
-				Message resend) {
-			// TODO Auto-generated method stub
-			super.onFormResubmission(view, dontResend, resend);
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#doUpdateVisitedHistory(android
+         * .webkit.WebView, java.lang.String, boolean)
+         */
+        @Override
+        public void doUpdateVisitedHistory(final WebView view,
+                final String url, final boolean isReload) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#onReceivedHttpAuthRequest
-		 * (android.webkit.WebView, android.webkit.HttpAuthHandler,
-		 * java.lang.String, java.lang.String)
-		 */
-		@Override
-		public void onReceivedHttpAuthRequest(WebView view,
-				HttpAuthHandler handler, String host, String realm) {
-			// TODO Auto-generated method stub
-			super.onReceivedHttpAuthRequest(view, handler, host, realm);
-		}
+            super.doUpdateVisitedHistory(view, url, isReload);
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onLoadResource(android.webkit.WebView,
-		 * java.lang.String)
-		 */
-		@Override
-		public void onLoadResource(WebView view, String url) {
-			// TODO Auto-generated method stub
-			super.onLoadResource(view, url);
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#onReceivedError(android.webkit
+         * .WebView, int, java.lang.String, java.lang.String)
+         */
+        @Override
+        public void onReceivedError(final WebView arg0, final int arg1,
+                final String arg2, final String arg3) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onReceivedLoginRequest(android.webkit
-		 * .WebView, java.lang.String, java.lang.String, java.lang.String)
-		 */
-		@Override
-		public void onReceivedLoginRequest(WebView view, String realm,
-				String account, String args) {
-			// TODO Auto-generated method stub
-			super.onReceivedLoginRequest(view, realm, account, args);
-		}
+            super.onReceivedError(arg0, arg1, arg2, arg3);
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.apache.cordova.CordovaWebViewClient#onReceivedSslError(android
-		 * .webkit.WebView, android.webkit.SslErrorHandler,
-		 * android.net.http.SslError)
-		 */
-		@Override
-		public void onReceivedSslError(WebView arg0, SslErrorHandler arg1,
-				SslError arg2) {
-			// TODO Auto-generated method stub
-			super.onReceivedSslError(arg0, arg1, arg2);
-		}
+            Utils.log(TAG, "on onReceivedError.... " + arg2 + ":" + arg1 + ":"
+                    + arg3);
+            Utils.isSpinnerAllowed = true;
+            Utils.hideSpinner();
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onScaleChanged(android.webkit.WebView,
-		 * float, float)
-		 */
-		@Override
-		public void onScaleChanged(WebView view, float oldScale, float newScale) {
-			// TODO Auto-generated method stub
-			super.onScaleChanged(view, oldScale, newScale);
-		}
+            if (getActivity() instanceof CardNavigationRootActivity) {
+                CardNavigationRootActivity activity = (CardNavigationRootActivity) getActivity();
+                activity.onErrorOfCordovaLoading();
+            }
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onTooManyRedirects(android.webkit.WebView
-		 * , android.os.Message, android.os.Message)
-		 */
-		@Override
-		public void onTooManyRedirects(WebView view, Message cancelMsg,
-				Message continueMsg) {
-			// TODO Auto-generated method stub
-			super.onTooManyRedirects(view, cancelMsg, continueMsg);
-		}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onFormResubmission(android.webkit.WebView
+         * , android.os.Message, android.os.Message)
+         */
+        @Override
+        public void onFormResubmission(final WebView view,
+                final Message dontResend, final Message resend) {
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.webkit.WebViewClient#onUnhandledKeyEvent(android.webkit.WebView
-		 * , android.view.KeyEvent)
-		 */
-		@Override
-		public void onUnhandledKeyEvent(WebView view, KeyEvent event) {
-			// TODO Auto-generated method stub
-			super.onUnhandledKeyEvent(view, event);
-		}
+            super.onFormResubmission(view, dontResend, resend);
+        }
 
-	}
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#onReceivedHttpAuthRequest
+         * (android.webkit.WebView, android.webkit.HttpAuthHandler,
+         * java.lang.String, java.lang.String)
+         */
+        @Override
+        public void onReceivedHttpAuthRequest(final WebView view,
+                final HttpAuthHandler handler, final String host,
+                final String realm) {
+
+            super.onReceivedHttpAuthRequest(view, handler, host, realm);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onLoadResource(android.webkit.WebView,
+         * java.lang.String)
+         */
+        @Override
+        public void onLoadResource(final WebView view, final String url) {
+
+            super.onLoadResource(view, url);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onReceivedLoginRequest(android.webkit
+         * .WebView, java.lang.String, java.lang.String, java.lang.String)
+         */
+        @Override
+        public void onReceivedLoginRequest(final WebView view,
+                final String realm, final String account, final String args) {
+
+            super.onReceivedLoginRequest(view, realm, account, args);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * org.apache.cordova.CordovaWebViewClient#onReceivedSslError(android
+         * .webkit.WebView, android.webkit.SslErrorHandler,
+         * android.net.http.SslError)
+         */
+        @Override
+        public void onReceivedSslError(final WebView arg0,
+                final SslErrorHandler arg1, final SslError arg2) {
+
+            super.onReceivedSslError(arg0, arg1, arg2);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onScaleChanged(android.webkit.WebView,
+         * float, float)
+         */
+        @Override
+        public void onScaleChanged(final WebView view, final float oldScale,
+                final float newScale) {
+
+            super.onScaleChanged(view, oldScale, newScale);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onTooManyRedirects(android.webkit.WebView
+         * , android.os.Message, android.os.Message)
+         */
+        @SuppressWarnings("deprecation")
+        @Override
+        public void onTooManyRedirects(final WebView view,
+                final Message cancelMsg, final Message continueMsg) {
+
+            super.onTooManyRedirects(view, cancelMsg, continueMsg);
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * android.webkit.WebViewClient#onUnhandledKeyEvent(android.webkit.WebView
+         * , android.view.KeyEvent)
+         */
+        @Override
+        public void onUnhandledKeyEvent(final WebView view, final KeyEvent event) {
+
+            super.onUnhandledKeyEvent(view, event);
+        }
+
+    }
 }
