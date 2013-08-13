@@ -28,7 +28,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_sign_up_for_miles,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
@@ -36,7 +36,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_miles_extras, false,
                 new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }),
@@ -44,7 +44,7 @@ public class MilesInfo extends GroupComponentInfo {
         new ClickComponentInfo(R.string.sub_section_title_miles_refer_a_friend,
                 false, new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(final View v) {
 
                     }
                 }));
@@ -52,7 +52,8 @@ public class MilesInfo extends GroupComponentInfo {
 
     class MilesComponentInfo extends ClickComponentInfo {
 
-        public MilesComponentInfo(int titleResource, OnClickListener listener) {
+        public MilesComponentInfo(final int titleResource,
+                final OnClickListener listener) {
             super(titleResource, false, listener);
         }
 

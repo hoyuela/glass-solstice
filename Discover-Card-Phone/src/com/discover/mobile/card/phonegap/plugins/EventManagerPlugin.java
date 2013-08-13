@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.BaseColumns;
 import android.provider.CalendarContract.Events;
 import android.text.format.Time;
 import android.util.Log;
@@ -37,8 +38,8 @@ public class EventManagerPlugin extends CordovaPlugin {
     JSONArray jsonArray;
 
     @Override
-    public boolean execute(String action, String rawArgs,
-            CallbackContext callbackContext) throws JSONException {
+    public boolean execute(final String action, final String rawArgs,
+            final CallbackContext callbackContext) throws JSONException {
         jsonArray = new JSONArray(rawArgs);
         callbackContext1 = callbackContext;
         PluginResult result = new PluginResult(PluginResult.Status.OK);
@@ -51,14 +52,16 @@ public class EventManagerPlugin extends CordovaPlugin {
             build.setPositiveButton("Create Event",
                     new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(final DialogInterface dialog,
+                                final int which) {
                             EventManagerPlugin.this.interfacedCreationOfEvent();
                         }
                     });
             build.setNegativeButton("Cancel",
                     new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onClick(final DialogInterface dialog,
+                                final int which) {
                             // do nothing, need this for ui error
                         }
                     });
@@ -79,17 +82,16 @@ public class EventManagerPlugin extends CordovaPlugin {
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
             calendarIntent.setClassName("com.android.calendar",
                     "com.android.calendar.AgendaActivity");
-            this.cordova.getActivity().startActivity(calendarIntent);
+            cordova.getActivity().startActivity(calendarIntent);
             return true;
         } else if (action.equals(retrieveEvents)) {
             // Run query
             if (Build.VERSION.SDK_INT >= 14) {
                 Cursor cur = null;
-                ContentResolver cr = this.cordova.getActivity()
-                        .getContentResolver();
+                ContentResolver cr = cordova.getActivity().getContentResolver();
                 Uri.Builder builder = Events.CONTENT_URI.buildUpon();
                 cur = cr.query(builder.build(), // uri
-                        new String[] { Events._ID, Events.TITLE,
+                        new String[] { BaseColumns._ID, Events.TITLE,
                                 Events.DTSTART, Events.DTEND, Events.ALL_DAY,
                                 Events.DESCRIPTION }, // projection
                         "description = ?", // selection
@@ -210,7 +212,7 @@ public class EventManagerPlugin extends CordovaPlugin {
                 intent.putExtra(Events.EVENT_LOCATION, location);
             }
 
-            this.cordova.getActivity().startActivity(intent);
+            cordova.getActivity().startActivity(intent);
 
         } catch (Exception e) {
             Log.v(TAG, "e: " + e);
@@ -219,7 +221,7 @@ public class EventManagerPlugin extends CordovaPlugin {
 
     // api level 14
     PluginResult programaticCreationOfEvent(PluginResult result,
-            JSONArray data, String callbackID) {
+            final JSONArray data, final String callbackID) {
         JSONArray startDateComponents = null;
         JSONArray endDateComponents = null;
         String title = null;
@@ -263,7 +265,7 @@ public class EventManagerPlugin extends CordovaPlugin {
         startMillis = beginTime.getTimeInMillis();
         endMillis = endTime.getTimeInMillis();
 
-        ContentResolver cr = this.cordova.getActivity().getContentResolver();
+        ContentResolver cr = cordova.getActivity().getContentResolver();
         ContentValues values = new ContentValues();
         values.put(Events.DTSTART, startMillis); // start
         values.put(Events.DTEND, endMillis); // end
@@ -300,8 +302,8 @@ public class EventManagerPlugin extends CordovaPlugin {
         Uri calendars = Uri.parse("content://calendar/calendars");
         Cursor managedCursor = null;
         try {
-            CursorLoader cursorLoader = new CursorLoader(this.cordova
-                    .getActivity().getApplicationContext());
+            CursorLoader cursorLoader = new CursorLoader(cordova.getActivity()
+                    .getApplicationContext());
             cursorLoader.setUri(calendars);
             managedCursor = cursorLoader.loadInBackground();
         } catch (Exception e) {
@@ -313,7 +315,7 @@ public class EventManagerPlugin extends CordovaPlugin {
         } else {
             calendars = Uri.parse("content://com.android.calendar/calendars");
             try {
-                CursorLoader cursorLoader = new CursorLoader(this.cordova
+                CursorLoader cursorLoader = new CursorLoader(cordova
                         .getActivity().getApplicationContext());
                 cursorLoader.setUri(calendars);
                 managedCursor = cursorLoader.loadInBackground();

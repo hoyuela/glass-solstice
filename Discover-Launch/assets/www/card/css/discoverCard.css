@@ -4225,7 +4225,7 @@ color: #293033 !important;
 	padding: 0px !important;
 }
 
-#cashbackSignup1-pg .ui-content{padding:0px !important; display:inline-block;} 
+#cashbackSignup1-pg .ui-content{padding:0px !important; }   /* 13.3 global change 07/08/13 (defect 107988) */
 #accountLanding-pg .wraper h1 {
 	padding: 5px 0 0 10px;
 }
@@ -4717,5 +4717,13 @@ div[data-role="content"] {
 div[data-role="page"] {
 	overflow-x: hidden !important;
 }
+* 13.3 Global change Defect-106647 08-08-13 starts */
+#pageError-pg .contentNopadd { 
+	padding:7px 0px 0px 0px !important;
+}  
+#pageError-pg .contentNopadd .errormsg2 {
+	padding:0px !important;
+}
+/* 13.3 Global change Defect-106647 08-08-13 ends */
 
 /* 13.3 global changes ends here*/

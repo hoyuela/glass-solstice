@@ -669,7 +669,8 @@ function paymentStep1Load()
 				$("#radio-choice-3").attr("checked","checked");
 				$("#radio-choice-3").change();
 				$("input[type='radio']").checkboxradio("refresh"); 
-				minPayStepOne.parent(".wrapperSpan").removeClass("errormsg");
+				minPayStepOne.parent(".wrapperSpan").removeClass("inputOnError");
+//				minPayStepOne.parent(".wrapperSpan").removeClass("errormsg");
 				dfs.crd.pymt.changeDropDownLabel();									
 			});
 			
@@ -721,7 +722,8 @@ function paymentStep1Load()
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1207"]);
 						errorPaymentAmountExceed.css("display","block");
-						minPayStepOne.parent(".wrapperSpan").addClass('errormsg');
+						minPayStepOne.parent(".wrapperSpan").addClass("inputOnError");
+//						minPayStepOne.parent(".wrapperSpan").addClass('errormsg');
 						$("#minpaystepone_other").val('');
 						$('#minpaystepone_other').attr("placeholder", '0.00');
 						return;
@@ -734,7 +736,7 @@ function paymentStep1Load()
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1210"]);
 						errorPaymentAmountExceed.css("display","block");
-						minPayStepOne.addClass("errormsg");
+						$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 						$("#minpaystepone_other").val('');
 						$('#minpaystepone_other').attr("placeholder", '0.00');
 						return;
@@ -1313,7 +1315,7 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				if (dfs.crd.pymt.outstandingbalance) {
 					$("#errorPaymentAmountExceed").text(
 							dfs.crd.pymt.messageAftrConfrm);
-					$("#minpaystepone_other").addClass("errormsg");
+					$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				}
 				else {
 					$("#alertImageSpan").css("display","block");
@@ -1482,7 +1484,7 @@ dfs.crd.pymt.bankSelected = function()
 		}else{
 			$("#errorPaymentAmountExceed").text("");
 		}
-		$("#minpaystepone_other").parent(".wrapperSpan").removeClass('errormsg');
+		$("#minpaystepone_other").parent(".wrapperSpan").removeClass("inputOnError");
 		commonErrorMap1.html("");
 		$(".dd").removeClass("ddHighlightError");
 		$(".arrow").removeClass("ddHighlightErrorArrow");
@@ -1770,7 +1772,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1222"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1782,7 +1784,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				$("#commonErrorInMakePaymentStepOneDiv").html(
 				errorCodeMap["Update_HighLighted"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1795,7 +1797,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1207"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1834,7 +1836,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 						}
 						$("#errorPaymentAmountExceed").text(
 								parseContent(parseContentText, curntValue));
-						$("#minpaystepone_other").addClass('errormsg');
+						$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 						return;
 					} 
 					else {
@@ -1853,7 +1855,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 
 				$("#errorPaymentAmountExceed").text(
 						parseContent(errMsg, curntValue));
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				
 				return;
 				}else if ((dfs.crd.pymt.globalOpenAmount != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(dfs.crd.pymt.globalOpenAmount))) 
@@ -1868,7 +1870,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 					var parseContentText = parseContent(errorMessage, payDetail);
 					$("#errorPaymentAmountExceed").text(
 							parseContent(parseContentText, curntValue));
-					$("#minpaystepone_other").addClass('errormsg');
+					$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 					return;
 				} 
 				else {
@@ -2682,7 +2684,6 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 		$("#accountEndingNum").text("Account Ending in "+shortAccountText);
 
 		var bankOrNickName = isEmpty(stepThree.nickName)?stepThree.bankName:stepThree.nickName;
-
 		$("#payStep3BankDtl").text(bankOrNickName);
 		$("#paystep3Confirm").text(stepThree.confirmationNumber);
 		if(dfs.crd.pymt.pendingPaymentEdit){
@@ -3443,7 +3444,7 @@ dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
                          saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
 		    var shortAccountText = jQuery.trim(saveTophotosData.maskedBankAccountNumber).split('*');
             shortAccountText = shortAccountText[shortAccountText.length - 1];
-             var bankOrNickName = isEmpty(saveTophotosData.nickName)?saveTophotosData.bankName:bankOrNickName.nickName;
+             var bankOrNickName = isEmpty(saveTophotosData.nickName)?saveTophotosData.bankName:saveTophotosData.nickName;
             $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
             $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
             $("#savePaymentPhotosPosting_date").text(saveTophotosData.paymentDate);

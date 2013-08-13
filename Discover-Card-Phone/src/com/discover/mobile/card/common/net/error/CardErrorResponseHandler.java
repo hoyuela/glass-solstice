@@ -47,6 +47,7 @@ public final class CardErrorResponseHandler {
 
 //    public static final int LOCKOUT = 4011103;
 
+    private boolean isPasscodeLogin;
     
     private ArrayList<Integer> lockoutErrors;
     private ArrayList<Integer> passcodeDisabledErrors;
@@ -114,6 +115,12 @@ public final class CardErrorResponseHandler {
     public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi) {
         this.errorHandlerUi = errorHandlerUi;
 
+    }
+
+    public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi,
+    		boolean isPasscodeLogin) {
+        this.errorHandlerUi = errorHandlerUi;
+        this.isPasscodeLogin = isPasscodeLogin;
     }
 
     public CardErrorResponseHandler() {
@@ -203,7 +210,9 @@ public final class CardErrorResponseHandler {
             	handleGenericError(cardErrorHold.getErrorTitle(),
             			cardErrorHold.getErrorMessage(),
             			cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
+            	if (isPasscodeLogin) {
+            		loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
+            	}
             }
         }
     }
@@ -211,7 +220,9 @@ public final class CardErrorResponseHandler {
     private void showAlertNavToLogin(EnhancedContentModal modal, Bundle bundle){
     	bundle.remove(IntentExtraKey.SHOW_ERROR_MESSAGE);
     	showCustomAlert(modal);
-    	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+    	if (isPasscodeLogin) {
+    		FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+    	}
     }
 
     private void handleInlineError(String errorMessage) {
