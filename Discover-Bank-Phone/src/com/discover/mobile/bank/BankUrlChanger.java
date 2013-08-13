@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
@@ -29,6 +30,8 @@ public final class BankUrlChanger extends BroadcastReceiver {
 
 			/**Read new base url from bundle*/
 			final String newUrl = arg1.getStringExtra(NEW_BASE_URL);
+
+			Toast.makeText(arg0, newUrl, Toast.LENGTH_SHORT).show();
 
 			if( !Strings.isNullOrEmpty(newUrl) ) {
 				// Create an Intent to launch ExampleActivity

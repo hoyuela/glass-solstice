@@ -3,55 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="9">
+    android:weightSum="10">
     
-    <TextView 
-        android:id="@+id/url0"
-        android:layout_width="fill_parent"
+    <ListView 
+        android:id="@+id/url_list"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url1"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url2"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url3"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url4"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url5"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url6"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    
-    <TextView 
-        android:id="@+id/url7"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="9"/>
     
     <Button 
         android:id="@+id/manage_urls"

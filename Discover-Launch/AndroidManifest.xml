@@ -269,6 +269,10 @@
     		<meta-data android:name="android.appwidget.provider"
                	android:resource="@xml/bank_url_changer_widget" />
 		</receiver>
+		<service android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerService"
+        	android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        
+        <activity android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerActivity"  android:theme="@style/AppTheme.NoTitleBar" />
         <activity android:name="com.discover.mobile.bank.whatsnew.WhatsNewActivity"  android:theme="@style/AppTheme.NoTitleBar" />
     </application>
 
