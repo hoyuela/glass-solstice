@@ -533,7 +533,8 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 /*R13.3 global Change start*/
 #redeem-dtlview .stepperContainer p.counter {
 	height:35px;
-	-webkit-box-shadow: 1px 1px rgba(0,0,0,0.5);  
+	-webkit-box-shadow: 1px 1px rgba(0,0,0,0.5);
+	padding-right:1px;   /* 13.3 Global change 08/08/2013 */  
 }
 
 #redeem-dtlview .dec.ui-corner-left,#redeem-dtlview .dec.ui-corner-right {

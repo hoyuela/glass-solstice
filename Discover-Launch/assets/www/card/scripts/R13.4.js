@@ -198,4 +198,12 @@ function validateNumber(inputVal){
 	return (regEx.test(inputVal)) ? true : false;
 }
 
+/*R13.3 global change 08/08/2013 starts*/
+/*Tapping issue of Manage Payment Module fixed*/
+$("ul.paymentsMenu li").live("click", function(){
+	$("ul.paymentsMenu li").removeClass("curnt");
+	$(this).addClass("curnt");
+});
+/*R13.3 global change 08/08/2013 ends*/
+
 /******R13.3 js ends here******/
