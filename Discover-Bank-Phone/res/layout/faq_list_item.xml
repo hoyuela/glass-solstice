@@ -52,9 +52,11 @@
             android:layout_alignLeft="@+id/faq_section_title"
             android:layout_below="@+id/faq_section_title"
             android:layout_marginTop="@dimen/between_related_elements_padding"
+            android:autoLink="phone"
             android:clickable="false"
             android:text="@string/edit"
             android:visibility="gone" />
+
     </RelativeLayout>
 
 </RelativeLayout>
