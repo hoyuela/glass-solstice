@@ -758,7 +758,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
-		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));;
+		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 
 		Size smallCaptureSize = null;
