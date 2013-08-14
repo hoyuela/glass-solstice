@@ -44,6 +44,7 @@ import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.ModalDefaultOneButtonBottomView;
 import com.discover.mobile.common.ui.modals.ModalDefaultTopView;
@@ -748,13 +749,13 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	private void setupCameraParameters() {
 		final Camera.Parameters parameters = camera.getParameters();
-		final int maxImageWidth = 1600;
+		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));;
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 
 		Size smallCaptureSize = null;
 
 		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
+			if(size.width < maxImageWidth && smallCaptureSize == null) {
 				smallCaptureSize = size;
 			}
 		}
