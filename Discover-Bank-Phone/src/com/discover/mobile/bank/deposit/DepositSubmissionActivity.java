@@ -137,7 +137,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	private void setImageParams() {
 		final Camera camera = Camera.open();
 		final Camera.Parameters parameters = camera.getParameters();
-		final int maxImageWidth = 1600;
+		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 
 		Size smallCaptureSize = null;
