@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -246,6 +248,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_LOGIN);
 		}
+		
+		//detect keyboard and hide footer when visible
+		activityRootView = findViewById(R.id.login_start_layout);
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
 	 }
 	
 	private void setupPasswordField() {
@@ -2335,5 +2341,21 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		return super.onKeyDown(keyCode, event);
 	}
 
+	private class ShowHideKeyboardListener implements OnGlobalLayoutListener {
+		@Override
+		public void onGlobalLayout() {
+			Rect r = new Rect();
+			activityRootView.getWindowVisibleDisplayFrame(r);
+
+			final ViewGroup toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
+			int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+			if (heightDiff > 100) {
+				//most likely keyboard is visible
+				toolbar.setVisibility(View.GONE);
+			} else {
+				toolbar.setVisibility(View.VISIBLE);
+			}
+		}
+	}
 }	
 	
