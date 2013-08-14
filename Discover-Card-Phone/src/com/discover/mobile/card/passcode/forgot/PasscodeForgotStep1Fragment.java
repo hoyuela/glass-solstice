@@ -16,7 +16,6 @@ import com.discover.mobile.card.passcode.PasscodeLandingFragment;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 import com.discover.mobile.card.passcode.request.GetSyntaxValidityRequest;
 import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 
 public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 	private static String TAG = "PasscodeForgotStep1Fragment";
@@ -40,9 +39,14 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_forgot_step1_header);
 		passcodeGuidelinesTV.setVisibility(View.VISIBLE);
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_FORGOT_STEP1);
 		return view;
 	}
+	
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_FORGOT_STEP1;
+	};
+	
 
 	@Override
 	public void onPasscodeErrorEvent() {

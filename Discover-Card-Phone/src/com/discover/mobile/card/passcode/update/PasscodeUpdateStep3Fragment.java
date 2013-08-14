@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,33 +22,15 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	
 	private static String TAG = "PasscodeUpdateStep3Fragment";
 	private static String mStep2Answer;
-	 
-	public boolean onKey(View paramView, int paramInt, KeyEvent paramKeyEvent) {
-		Log.v(TAG, "Calling onKey from step 3(" + paramView + ", " + paramInt + ")");
-		Log.v(TAG, "Before back");
-		printFragmentsInBackStack();
-		
-		if (paramInt == KeyEvent.KEYCODE_BACK)
-	    {
-			Log.v(TAG, "REMOVING BACK STACK of FRAGS");
-			//TODO make it so update step 1 is shown
-//			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep2Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-			//TODO sgoff0 handle step 3 back button
-//			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//			http://stackoverflow.com/questions/5802141/is-this-the-right-way-to-clean-up-fragment-back-stack-when-leaving-a-deeply-nest
-//			getActivity().getSupportFragmentManager().popBackStack("pus1", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-//			removeCurrentFragment();
-//			return false;
-	    }
-		Log.v(TAG, "After back");
-		printFragmentsInBackStack();
-		return super.onKey(paramView, paramInt, paramKeyEvent);
-	}
+
+	@Override
+	public String getPageName() {
+		return AnalyticsPage.PASSCODE_UPDATE_STEP3;
+	};
 
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
 		mStep2Answer = getArguments().getString("passcode");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_UPDATE_STEP3);
 	}
 	
 	@Override
@@ -83,6 +64,7 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	public void onPasscodeSuccessEvent() {
 //		dialogHelper(MODAL_PASSCODE_UPDATED, "Home", true, new NavigateACHomeAction(), new NavigatePasscodeLandingAction());
 		final Context context = DiscoverActivityManager.getActiveActivity();
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_UPDATE_OVERLAY);
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_updated_title, 
 				R.string.passcode_dialog_updated_content, 

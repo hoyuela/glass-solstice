@@ -49,7 +49,9 @@ public class PasscodeRemoveFragment extends BaseFragment {
 				makeFragmentVisible(new HomeSummaryFragment());
 			}
 		});
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_REMOVE);
+		if (!this.isStopping) {
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_REMOVE);
+		}
 		Utils.setFooter(view, getActivity());
 		return view;
 	}
@@ -67,5 +69,19 @@ public class PasscodeRemoveFragment extends BaseFragment {
 	@Override
 	public int getSectionMenuLocation() {
 		return CardMenuItemLocationIndex.PASSCODE_SECTION;
+	}
+	
+	private boolean isStopping = false;
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		this.isStopping = true;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.isStopping = false;
 	}
 }
