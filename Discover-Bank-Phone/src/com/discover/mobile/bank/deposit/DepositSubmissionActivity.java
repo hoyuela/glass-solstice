@@ -120,9 +120,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_WIDTH, frontImageWidth);
 
 		bundle.putString(BankTrackingHelper.TRACKING_IMAGE_SIZE, 
-				String.valueOf(frontImageCompressedSize/KB_CONVERSION));
+				String.valueOf((float)frontImageCompressedSize/KB_CONVERSION));
 		bundle.putString(BankTrackingHelper.TRACKING_IMAGE_COMPRESSION, 
-				String.valueOf(compression/PERCENTAGE_CONVERSION));
+				String.valueOf((float)compression/PERCENTAGE_CONVERSION));
 
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_AMOUNT, data.amount.value);
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_ACCOUNT, data.account);
