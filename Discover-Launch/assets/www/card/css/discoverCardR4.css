@@ -1210,8 +1210,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 
  #search #r4-wrap .searchresultsresponse{width: 350px; margin: 0 0 6px 0;}
  #search #r4-wrap #search-sortContainer{margin: 8px 0 0 0;}
- #search #r4-wrap #sortByLabel{font-weight:bold;}
-
+ #search #r4-wrap #sortByLabel{/*font-weight:bold;*/color: #8A9499;}/*R13.3 global change 12/08/2013*/
  #search #r4-wrap .invalid{
     border:1px solid red !important;
 	display:block !important;

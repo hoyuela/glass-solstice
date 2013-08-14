@@ -26,11 +26,11 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 	static final String TRACKING_PAGE_NAME = "PasscodeEnableStep2";
 	private static String TAG = "PasscodeEnableStep2Fragment";
 	
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_ENABLE_STEP1);
 	}
 
 	@Override
@@ -57,6 +57,7 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onPasscodeSuccessEvent() {
 		final Context context = DiscoverActivityManager.getActiveActivity();
+		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_ENABLE_OVERLAY);
 		final EnhancedContentModal modal = new EnhancedContentModal(context, 
 				R.string.passcode_dialog_enabled_title, 
 				R.string.passcode_dialog_enabled_content, 
@@ -138,6 +139,12 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 			//FROM https://groups.google.com/forum/?fromgroups#!topic/android-developers/0qXCA9rW7EI
 			//Even with POP_BACK_STACK_INCLUSIVE onResume of popped Fragment is called. You need to add alternative method that will allow remove element from back stack without resuming it.
 		}
+	}
+
+	@Override
+	public String getPageName() {
+		// TODO Auto-generated method stub
+		return AnalyticsPage.PASSCODE_ENABLE_STEP2;
 	};
 	
 }

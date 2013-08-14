@@ -50,7 +50,13 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		Log.v(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
+		if (!this.isStopping()) {
+			Log.v(TAG, "Not stopping activity, fire tag for: " + getPageName());
+			TrackingHelper.trackPageView(getPageName());
+		}
 	}
+	
+	public abstract String getPageName();
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
@@ -178,7 +184,10 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	public static final int KEY_DELETE = 67;
 
 	protected PasscodeUtils pUtils;
-	protected boolean isStopping = false;
+	private boolean isStopping = false;
+	protected boolean isStopping() {
+		return isStopping;
+	}
 
 	static {
 		fieldIds = new int[4];
@@ -194,7 +203,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		setupPasscodeField(2);
 		setupSubmit();
 	}
-	
+
 	protected void passcodeResponse(boolean isSuccess) {
 		Log.v(TAG, "PasscodeResponse");
 		if (isSuccess) {
@@ -439,12 +448,13 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_green));
 		}
+		TrackingHelper.trackPageView(getPageName() + ":" + AnalyticsPage.PASSCODE_GREEN_CHECK);
 		validationIV.setImageResource(R.drawable.tick_green);
 		validationIV.setVisibility(View.VISIBLE);
 	}
 
 	private void guiValidationError() {
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_RED_X);
+		TrackingHelper.trackPageView(getPageName() + ":" + AnalyticsPage.PASSCODE_RED_X);
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundDrawable(getResources().getDrawable(R.drawable.rectangle_red));
 		}

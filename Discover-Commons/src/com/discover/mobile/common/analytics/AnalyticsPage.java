@@ -78,19 +78,29 @@ public interface AnalyticsPage {
 	static final String PASSCODE_MENU = "passcode-menu-pg";
 	static final String PASSCODE_SETUP_STEP1 = "passcode-setup-step1-pg";
 	static final String PASSCODE_SETUP_STEP2 = "passcode-setup-step2-pg";
+	static final String PASSCODE_SETUP_OVERLAY = "PasscodeSetupOverlay";
+
 	static final String PASSCODE_UPDATE_STEP1 = "passcode-update-step1-pg";
 	static final String PASSCODE_UPDATE_STEP2 = "passcode-update-step2-pg";
 	static final String PASSCODE_UPDATE_STEP3 = "passcode-update-step3-pg";
+	static final String PASSCODE_UPDATE_OVERLAY = "PasscodeUpdatedOverlay";
+	
 	static final String PASSCODE_REMOVE = "passcode-remove-pg";
 	static final String PASSCODE_DISABLE = "passcode-disable-pg";
+	static final String PASSCODE_DISABLE_OVERLAY = "PasscodeDisabledOverlay";
+	
 	static final String PASSCODE_ENABLE_STEP1 = "passcode-enable-step1-pg";
 	static final String PASSCODE_ENABLE_STEP2 = "passcode-enable-step2-pg";
+	static final String PASSCODE_ENABLE_OVERLAY = "PasscodeEnabledOverlay";
+	
 	static final String PASSCODE_FORGOT_STEP1 = "passcode-forgot-step1-pg";
 	static final String PASSCODE_FORGOT_STEP2 = "passcode-forgot-step2-pg";
+	static final String PASSCODE_FORGOT_OVERLAY = "PasscodeForgotOverlay";
+	
 	static final String PASSCODE_RED_X = "passcode-red-x";
+	static final String PASSCODE_GREEN_CHECK = "passcode-green-check";
 	static final String PASSCODE_OVERLAY = "passcode-overlay";
 
-	
 	//Strong Auth Enroll pages
 	
 	static final String SETUP_ENHANCED_AUTH = "SetUp_enhanced_auth-Populated-pg";

@@ -3,6 +3,10 @@ package com.discover.mobile.card.passcode.model.json;
 import java.io.Serializable;
 
 public class VerifySyntax implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8867630135579798587L;
 	public boolean isValid;
 
 	public boolean isValid() {
