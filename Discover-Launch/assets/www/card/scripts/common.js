@@ -722,6 +722,10 @@ function errorHandler(errorCode,customErrorMessage,menuHglt){
 
 		$('#pageError-pg').live('pagebeforeshow',function(){
 			$("#pageError_errorMessage").html(errorMsg);
+           /* 13.3 Global change Defect-106647 12/08/13 starts */
+            $("#pageError_errorMessage").parents('.ui-content-internalpages').removeClass("contentNopadd");
+            $("#pageError_errorMessage").find(".chkPadding").parents('.ui-content-internalpages').addClass('contentNopadd');
+            /* 13.3 Global change Defect-106647 12/08/13 ends */
 		});	
 		
 		var errorPageTitleHtml=$('#pageError-pg #pageError_errorMessage').html();

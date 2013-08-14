@@ -680,6 +680,8 @@ function paymentStep1Load()
 					{
 				if($(this).attr("id")=="radio-choice-3")
 				{
+				$("#minpaystepone_other").focus();
+                $("#minpaystepone_other").setSelectionRange(0, 0);
 					/* $("#minpaystepone_other").removeClass("optional");
 					$("#minpaystepone_other").focus();
 					$('#minpaystepone_other').attr("placeholder", '');
