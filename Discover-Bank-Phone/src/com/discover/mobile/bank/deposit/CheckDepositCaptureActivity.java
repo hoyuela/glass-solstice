@@ -816,7 +816,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		Size smallCaptureSize = null;
 
 		for(final Size size : sizes) {
-			if(size.width < maxImageWidth && smallCaptureSize == null) {
+			if(size.width <= maxImageWidth && smallCaptureSize == null) {
 				smallCaptureSize = size;
 			}
 		}
