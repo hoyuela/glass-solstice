@@ -10,6 +10,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -246,6 +248,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_LOGIN);
 		}
+		
+		//detect keyboard and hide footer when visible
+		activityRootView = findViewById(R.id.login_start_layout);
+		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
 	 }
 	
 	private void setupPasswordField() {
@@ -451,7 +457,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		}
 	}
-
+	
 	/**
 	 * Display the error message provided in the argument list in red text.
 	 *
@@ -461,7 +467,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		Log.v(TAG, "Setting error message.");
 		hideExclamation();
 		if (isPasscodeLogin()) {
-			getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeInvalidAttempt));
+			getErrorHandler().showErrorsOnScreen(this, errorMessage);
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			welcomeTV.setVisibility(View.GONE);
 			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
@@ -487,14 +493,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		if (isPasscodeLogin()) {
 			guiValidationError();
 			if ("401".equals(errorCode)) {
-				showErrorMessage(getResources().getString(R.string.passcodeInvalidAttempt));
+				showErrorMessage(errorMessage);
 			} else if ("4011103".equals(errorCode) ) {
+				showErrorMessage(errorMessage);
 				showRedExclamation();
-				getErrorHandler().showErrorsOnScreen(this, getResources().getString(R.string.passcodeOneAttempt));
-				errorTextView.setTextColor(getResources().getColor(R.color.black));
-				welcomeTV.setVisibility(View.GONE);
-				startDefaultErrorFadeOut();
-				startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
 			} else {
 				clearPasscodeFields();
 				//sgoff0 DEFECT 105439
@@ -1399,7 +1401,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-			registerOrAtmButton.setText(getResources().getString(R.string.register_now));
+		registerOrAtmButton.setText(getResources().getString(R.string.register_now));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.register_now));
 		}
@@ -1496,7 +1498,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-			registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.atm_locator));
 		}
@@ -2339,5 +2341,21 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		return super.onKeyDown(keyCode, event);
 	}
 
+	private class ShowHideKeyboardListener implements OnGlobalLayoutListener {
+		@Override
+		public void onGlobalLayout() {
+			Rect r = new Rect();
+			activityRootView.getWindowVisibleDisplayFrame(r);
+
+			final ViewGroup toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
+			int heightDiff = activityRootView.getRootView().getHeight() - r.height();
+			if (heightDiff > 100) {
+				//most likely keyboard is visible
+				toolbar.setVisibility(View.GONE);
+			} else {
+				toolbar.setVisibility(View.VISIBLE);
+			}
+		}
+	}
 }	
 	
