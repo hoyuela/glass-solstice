@@ -6,7 +6,6 @@ import android.util.Log;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
-import com.discover.mobile.card.passcode.model.json.Status;
 
 /**
  * 
@@ -34,7 +33,7 @@ public class GetHealthCheck {
         WSRequest request = new WSRequest();
         request.setUrl(url);
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(activity,
-                new Status(), null, null, cel);
+                null, null, null, cel);
         serviceCall.execute(request);
     }
 
