@@ -87,7 +87,6 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
 		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
-
 		submit();
 	}
 
@@ -120,9 +119,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_WIDTH, frontImageWidth);
 
 		bundle.putString(BankTrackingHelper.TRACKING_IMAGE_SIZE, 
-				String.valueOf(frontImageCompressedSize/KB_CONVERSION));
+				String.valueOf((float)frontImageCompressedSize/KB_CONVERSION));
 		bundle.putString(BankTrackingHelper.TRACKING_IMAGE_COMPRESSION, 
-				String.valueOf(compression/PERCENTAGE_CONVERSION));
+				String.valueOf((float)compression/PERCENTAGE_CONVERSION));
 
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_AMOUNT, data.amount.value);
 		bundle.putString(BankTrackingHelper.TRACKING_IMAGE_ACCOUNT, data.account);
@@ -138,7 +137,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	private void setImageParams() {
 		final Camera camera = Camera.open();
 		final Camera.Parameters parameters = camera.getParameters();
-		final int maxImageWidth = 1600;
+		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 
 		Size smallCaptureSize = null;
