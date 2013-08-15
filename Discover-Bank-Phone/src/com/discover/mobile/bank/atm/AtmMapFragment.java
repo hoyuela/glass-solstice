@@ -277,7 +277,7 @@ CustomProgressDialog, OnPreProcessListener {
 		});
 		navigationPanel = (LinearLayout) view.findViewById(R.id.map_navigation_panel);
 		streetView.hide();
-		locationManagerWrapper = new DiscoverLocationMangerWrapper(this);
+		locationManagerWrapper = new DiscoverLocationMangerWrapper(this, getTimeOutRunnable());
 		searchBar = (AtmLocatorMapSearchBar) view.findViewById(R.id.full_search_bar);
 		searchBar.setFragment(this);
 		googleTerms = (RelativeLayout) view.findViewById(R.id.terms_layout);
@@ -294,6 +294,19 @@ CustomProgressDialog, OnPreProcessListener {
 		
 		
 		return view;
+	}
+	
+	/** @return Runnable to run once timeout has been reached while searching for location. */
+	private Runnable getTimeOutRunnable() {
+		return new Runnable() {
+			@Override
+			public void run() {
+				if (getLocationStatus() != LocationFragment.LOCKED_ON) {
+					// We did not find a location in the allotted time
+					handleTimeOut();
+				}
+			}
+		};
 	}
 
 	/**

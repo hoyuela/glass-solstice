@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class Status implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5480925678986541831L;
 	private boolean accountHasPasscode;
 	private boolean deviceBoundToThisAccount;
 	private int deviceCount;

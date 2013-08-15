@@ -52,16 +52,17 @@ $('#browse-landing, #redemption-landing, #redeem-gift-card, #gift-card-verify, #
 $(document).bind("pageinit", function(){	
 	/*redeem-best-value script*/
 	$("#amnt20").addClass("tabs-click");
-	$("#amnt20 p").addClass("navtab-pcolor");
-	$(".navtabs .bv-tabs").click(function(){
+	/*$("#amnt20 p").addClass("navtab-pcolor");*/ /*13.3 global change 08/08/2013 starts */
+	$(".bv-tabs").live("tap",function(){
 		var a = $(this).attr("id");
-		$(this).addClass("tabs-click").siblings().removeClass("tabs-click");
-		$(this).addClass("tabs-click").find("p").addClass("navtab-pcolor");
-		$(this).siblings().find("p").removeClass("navtab-pcolor");
+		$(this).siblings().removeClass("tabs-click");
+		$(this).addClass("tabs-click");
+/*$(this).addClass("tabs-click").siblings().removeClass("tabs-click");*/ 
+/*	$(this).addClass("tabs-click").find("p").addClass("navtab-pcolor");
+		/*$(this).siblings().find("p").removeClass("navtab-pcolor");*/ 
 		$('.partner-list').css('display','none');
 		$("#partner-"+a).css('display','block');
-		
-	});
+});/*13.3 global change 08/08/2013  ends*/
                  
                  //Click Highlight
                  $(".access_btn").click(function(){
@@ -825,8 +826,12 @@ $(document).bind("pageshow", function(event,ui){
 $('#cardHome-pg .cardhome_ul a').bind('click',function(){
                                                        $(this).addClass('ui-btn-down-d');
                                                        });
-                 
-                 
+													   
+				/* 13.3 global change 08/08/13 starts */									   
+                  $('#browse-all-partners .partners li,#browse-all-giftcards .partners li,#browse-all-ecertificates .partners li,#best-value .suggestions li').bind('tap',function(event){
+                                                       $(this).addClass('ui-btn-down-d');
+                                                       });
+                 /* 13.3 global change 08/08/13 ends */
                  
                  $("#login-submit,.common-btn,#bankAccountForDirectDeposit_pg a[data-role='button'],#customerServiceUpdateAccount-pg #continueButton,#accSumm_makePayBtn,#cashbackSignup1-pg a[data-role='button'],#cashbackSignup2-pg a[data-role='button']").click(function(){
                                                                                                                                                                                                                                                                      

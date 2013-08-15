@@ -6,7 +6,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
-import com.discover.mobile.card.common.net.utility.NetworkUtility;
 
 public class UpdatePasscodeRequest implements PasscodeRequest {
 

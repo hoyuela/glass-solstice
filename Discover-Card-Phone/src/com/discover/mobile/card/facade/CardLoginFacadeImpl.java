@@ -553,6 +553,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         final boolean isSSNMatched = bean.getIsSSNMatched();
         final CardErrorResponseHandler cardErrorResHandler;
         cardErrorResHandler = new CardErrorResponseHandler((CardErrorHandlerUi) this, isPasscodeLogin);
+        //reset passcode login back to false
+        isPasscodeLogin = false;
+
         String statusCode = bean.getErrorCode();
         Utils.log("status code", "statusCode---" + statusCode);
         delinkable = bean.getIsSSODelinkable();

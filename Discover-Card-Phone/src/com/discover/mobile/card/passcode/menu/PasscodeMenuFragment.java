@@ -73,7 +73,9 @@ public class PasscodeMenuFragment extends BaseFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_MENU);
+		if (!this.isStopping) {
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_MENU);
+		}
 	}
 
 	@Override
@@ -166,6 +168,7 @@ public class PasscodeMenuFragment extends BaseFragment {
 			PasscodeUtils pUtils = new PasscodeUtils(getActivity().getApplicationContext());
 			pUtils.deletePasscodeToken();
 			final Activity activeActivity = DiscoverActivityManager.getActiveActivity();
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_DISABLE_OVERLAY);
 			final EnhancedContentModal modal = new EnhancedContentModal(activeActivity, 
 					R.string.passcode_dialog_disabled_title, 
 					R.string.passcode_dialog_disabled_content, 
@@ -176,4 +179,15 @@ public class PasscodeMenuFragment extends BaseFragment {
 			((NavigationRootActivity)activeActivity).showCustomAlert(modal);
 		}
 	};
+	
+	private boolean isStopping = false;
+	public void onStop() {
+		super.onStop();
+		this.isStopping = true;
+	}
+	
+	public void onResume() {
+		super.onResume();
+		this.isStopping = false;
+	}
 }
