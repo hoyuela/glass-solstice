@@ -79,7 +79,7 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 	protected DepositDetail parseSuccessResponse(final int status, final Map<String,List<String>> headers, final InputStream body)
 			throws IOException {
 		result = super.parseSuccessResponse(status, headers, body);	
-
+		result.responseCode = status;
 		return result;
 	}
 
@@ -121,3 +121,4 @@ public class SubmitCheckDepositCall extends BankJsonResponseMappingNetworkServic
 	}
 
 }
+
