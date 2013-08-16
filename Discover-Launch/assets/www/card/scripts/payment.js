@@ -622,6 +622,15 @@ function paymentStep1Load()
 				});
 				
 				$(".wraper2").show(); 
+				/*defect#105911 13.3 global change 14/8/2013- starts here*/
+				$("table.ui-datepicker-calendar").each(function(){
+					$(this).find("tr:last-child td").each(function(index){
+						if(index == 0 && $(this).hasClass("ui-datepicker-other-month")){
+							$(this).parent("tr").css("display","none");
+						}
+					});
+				});
+				/*defect#105911 13.3 global change 14/8/2013- ends here*/
 				var currentpageback=$.mobile.activePage.find("#back-btn a");
 				currentpageback.removeAttr("data-rel");
 

@@ -3930,16 +3930,19 @@ float: right;
 	text-transform: uppercase;
 }
 .latePayWarnTbl li.col1 {
-	float: left;
-	width: 29%;
+    float: left;
+    width: 27%;/*Defect:104712*/
+    padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col2 {
 	float: left;
-	width: 27%;
+	width: 27%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col3 {
 	float: left;
-	width: 33%;/*Defect:104712*/
+	width: 42%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.row {
 	border-bottom: 1px solid #dce1e4
