@@ -1,5 +1,6 @@
 package com.discover.mobile.common.utils;
 
+import java.lang.ref.WeakReference;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,13 +9,17 @@ import java.util.Locale;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * A common place to put utilities that can and will be used across the app on both phone and tablet
@@ -22,26 +27,29 @@ import android.widget.TextView;
  *
  */
 public final class CommonUtils {
-	
+
+	/**Tag for logging in the common utils*/
+	private static final String TAG = CommonUtils.class.getSimpleName();
+
 	/**Static int for the minimum length of a phone number*/
 	private static final int PHONE_NUMBER_MIN = 10;
 	/** Index of the first dash "-" in a phone number. */
 	private static final int PHONE_DASH_FIRST = 3;
 	/** Index of the second dash "-" in a phone number. */
 	private static final int PHONE_DASH_SECOND = 6;
-	
+
 	/** Number of characters between spaces in an account number */
 	private static final int ACCOUNT_BLOCK_LENGTH = 4;
-	
+
 	/** Number of cents in a dollar */
 	private static final int CENTS_IN_DOLLAR = 100;
-	
+
 	private static final boolean isGingerbread = android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB;
 
 	private CommonUtils() {
 		throw new AssertionError();
 	}
-	
+
 	/**
 	 * Convert the simple number into a phone number string
 	 * 
@@ -56,7 +64,7 @@ public final class CommonUtils {
 				number.substring(PHONE_DASH_FIRST, PHONE_DASH_SECOND), 
 				number.substring(PHONE_DASH_SECOND, PHONE_NUMBER_MIN));
 	}
-	
+
 	/**
 	 * Return a formatted date for given month day and year integer values. The formatted date is in the form
 	 * mm/dd/yy
@@ -93,10 +101,10 @@ public final class CommonUtils {
 		final StringBuilder sb = new StringBuilder();
 		sb.append(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendarValue.getTime()));
 		sb.append("T00:00:00Z");
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Return a formatted date for given month and year integer values. The formatted date is in the form
 	 * mm/yy
@@ -113,7 +121,7 @@ public final class CommonUtils {
 		//Defect id 97729
 		return new SimpleDateFormat("MM/yy", Locale.getDefault()).format(calendarValue.getTime());
 	}
-	
+
 	/**
 	 * Sets a given EditText's input to all lowercase characters. Useful when
 	 * restricting the input of a field.
@@ -132,7 +140,7 @@ public final class CommonUtils {
 			field.setSelection(lowerCaseInput.length());
 		}
 	}
-	
+
 	/**
 	 * Insert a space after every 4 characters in a String. Warning!
 	 * Recursion!!! This method takes the first four characters of some string,
@@ -150,7 +158,7 @@ public final class CommonUtils {
 
 		return stringWithoutSpaces;
 	}
-	
+
 
 	/**
 	 * Search through a String and remove any spaces
@@ -164,7 +172,7 @@ public final class CommonUtils {
 
 		return stringWithNoSpaces;
 	}
-	
+
 	/**
 	 * Launches the android native phone dialer with a given telephone number,
 	 * and awaits user's action to initiate the call.
@@ -218,7 +226,7 @@ public final class CommonUtils {
 		label.setText(text);
 		setViewVisible(label);
 	}
-	
+
 	/**
 	 * Set a text label visible and assign its text value to the given string
 	 * resource.
@@ -245,20 +253,20 @@ public final class CommonUtils {
 	 * @return Integer representation of a currency amount
 	 */
 	public final static int formatCurrencyStringAsBankInt(final String amount) {
-		
+
 		String newAmount = formatCurrencyAsStringWithoutSign(amount);
 		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");
-		
+
 		double d;
 		try {
 			d = Double.parseDouble(newAmount);
 		} catch (final Exception e) {
 			d = 0.0f;
 		}
-		
+
 		return (int)(d * CENTS_IN_DOLLAR);
 	}
-	
+
 	/**
 	 * This takes a String that is formatted as a form of currency (e.g.
 	 * 1244.500, $1244.50, $1,244.5) and returns a String formatted without '$' (e.g. 1,244.50).
@@ -271,32 +279,52 @@ public final class CommonUtils {
 		// Remove special characters before parsing
 		String newAmount = amount.replaceAll("\\$", "");
 		newAmount = newAmount.replaceAll(StringUtility.COMMA, "");
-		
+
 		double d;
 		try {
 			d = Double.parseDouble(newAmount);
 		} catch (final Exception e) {
 			d = 0.0f;
 		}
-		
+
 		String outAmount = NumberFormat.getCurrencyInstance(Locale.US).format(d);
 		outAmount = outAmount.replaceAll("\\$", "");
-		
+
 		return outAmount;
 	}
-	
+
 	/**
 	 * This method can be used to reset the tiling of a background image if it is not getting tiled correctly.
 	 * @param view a view which contains a tiled background image.
 	 */
 	public final static void fixBackgroundRepeat(final View view) {
 		if( isGingerbread && view != null ) {
-		    final Drawable bg = view.getBackground();
+			final Drawable bg = view.getBackground();
 			if (bg instanceof BitmapDrawable) {
 				final BitmapDrawable bmp = (BitmapDrawable) bg;
 				bmp.mutate(); // make sure that we aren't sharing state anymore
 				bmp.setTileModeXY(TileMode.REPEAT, TileMode.REPEAT);
 			}
 		}
+	}
+
+	/**
+	 * Method used to get the application version number for the application.  
+	 * This method will gather the version name from the manifest.
+	 * 
+	 * @return the version number from the manifest, empty string if it cannot be found
+	 */
+	public final static String getApplicationVersionNumber(){
+		String versionName = "";
+		try {
+			final WeakReference<Activity> activity = new WeakReference<Activity>(DiscoverActivityManager.getActiveActivity());
+			versionName = activity.get().getPackageManager().getPackageInfo(activity.get().getPackageName(), 0 ).versionName;
+		} catch (final NameNotFoundException e) {
+			if (Log.isLoggable(TAG, Log.ERROR)){
+				Log.e(TAG, "No Version available.");
+			}
+
+		}
+		return versionName;
 	}
 }
