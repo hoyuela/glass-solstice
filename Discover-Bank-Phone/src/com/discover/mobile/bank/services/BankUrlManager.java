@@ -11,6 +11,7 @@ import com.discover.mobile.bank.services.transfer.OrderBy;
 import com.discover.mobile.bank.services.transfer.SortDirection;
 import com.discover.mobile.bank.services.transfer.TransferType;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
@@ -295,7 +296,7 @@ public final class BankUrlManager  {
 	 * @return Returns the URL for providing feedback
 	 */
 	public static String getProvideFeedbackUrl() {
-		return DiscoverActivityManager.getString(R.string.feedback_url);
+		return DiscoverActivityManager.getString(R.string.feedback_url) + CommonUtils.getApplicationVersionNumber();
 	}
 
 	/**
@@ -304,14 +305,14 @@ public final class BankUrlManager  {
 	public static String getCardProvideFeedbackUrl() {
 		return DiscoverActivityManager.getString(R.string.card_provide_feedback_url);
 	}
-	
+
 	/**
 	 * @return Returns the URL for more FAQs
 	 */
 	public static String getCardMoreFAQsUrl() {
 		return DiscoverActivityManager.getString(R.string.card_more_faq_url);
 	}
-	
+
 	/**
 	 * 
 	 * @return Returns the URL for going to account statements
@@ -385,8 +386,8 @@ public final class BankUrlManager  {
 	public static String generateGetPaymentsUrl(final PaymentQueryType query) {
 		return BankUrlManager.getUrl(BankUrlManager.PAYMENTS_URL_KEY) +"?status=" +query;
 	}
-	
-	
+
+
 	/**
 	 * Gets the scheduled, descending, date sorted transfers.
 	 * 
@@ -395,7 +396,7 @@ public final class BankUrlManager  {
 	public static String generateGetTransfersUrl() {
 		return generateGetTransfersUrl(TransferType.Scheduled, OrderBy.Date, SortDirection.Descending);
 	}
-	
+
 	/**
 	 * 
 	 * @param type
@@ -410,7 +411,7 @@ public final class BankUrlManager  {
 		}
 		return getTransfersUrl;
 	}
-	
+
 	/**
 	 * 
 	 * @param type
@@ -419,11 +420,11 @@ public final class BankUrlManager  {
 	 * @return a query url
 	 */
 	public static String generateGetTransfersUrl(final TransferType type, 
-													final OrderBy order, 
-													final SortDirection direction) {
-		
+			final OrderBy order, 
+			final SortDirection direction) {
+
 		final StringBuilder urlBuilder = new StringBuilder();
-		
+
 		urlBuilder.append(BankUrlManager.getUrl(BankUrlManager.TRANSFER_URL_KEY));
 		urlBuilder.append("?view=");
 		urlBuilder.append(type.getFormattedQueryParam());
@@ -468,27 +469,27 @@ public final class BankUrlManager  {
 	public static String getCardGoogleTermsUrl() {
 		return DiscoverActivityManager.getString(R.string.card_google_terms_url);
 	}
-	
+
 	/**
 	 * @return the bankGoogleTermsUrl
 	 */
 	public static String getBankGoogleTermsUrl() {
 		return DiscoverActivityManager.getString(R.string.bank_google_terms_url);
 	}
-	
+
 	/**
 	 * @return the bankGoogleReportUrl
 	 */
 	public static String getBankGoogleReportUrl() {
 		return DiscoverActivityManager.getString(R.string.bank_google_report_url);
 	}
-	
+
 	public static String getBankGoogleMapUrl() {
 		return DiscoverActivityManager.getString(R.string.bank_google_map_url);
 	}
-	
+
 	public static String getBankAtmReportUrl() {
-		return DiscoverActivityManager.getString(R.string.atm_report_url);
+		return DiscoverActivityManager.getString(R.string.atm_report_url) + CommonUtils.getApplicationVersionNumber();
 	}
 
 	/**

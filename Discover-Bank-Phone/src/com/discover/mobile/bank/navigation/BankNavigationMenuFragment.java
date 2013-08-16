@@ -3,11 +3,9 @@ package com.discover.mobile.bank.navigation;
 
 import java.util.Calendar;
 
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
@@ -29,11 +27,10 @@ import com.discover.mobile.common.nav.NavigationItem;
 import com.discover.mobile.common.nav.NavigationMenuFragment;
 import com.discover.mobile.common.nav.NavigationRootActivity;
 import com.discover.mobile.common.nav.section.ComponentInfo;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.collect.ImmutableList;
 
 public class BankNavigationMenuFragment extends NavigationMenuFragment {
-
-	private static final String TAG = "BankMenuFragment";
 
 	@Override
 	public void onActivityCreated(final Bundle savedInstanceState) {
@@ -45,32 +42,24 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		final View footerView = getActivity().getLayoutInflater().inflate(R.layout.list_view_footer, null);
 
 		final String year = String.valueOf(cal.get(Calendar.YEAR));
-		String versionName = null;
-		try {
-			versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0 ).versionName;
-		} catch (final NameNotFoundException e) {
-			if (Log.isLoggable(TAG, Log.ERROR)){
-				Log.e(TAG, "No Version available.");
-			}
 
-		}
-		version.setText("Version " + versionName);
+		version.setText("Version " + CommonUtils.getApplicationVersionNumber());
 		copy.setText("\u00a9" + year + " Discover Bank, Member FDIC");
 		final ListView lv = getListView();
 		lv.setDivider(null);
 		lv.setDividerHeight(0);
 		lv.addFooterView(footerView, null, false);
-		
+
 		privacy.setOnClickListener( new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
 			}
 		});
-		
+
 		/**Underline text for Privacy & Terms*/
 		privacy.setPaintFlags(privacy.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-		
+
 		/**
 		 * Initializes the navigation menu
 		 */		
@@ -81,7 +70,7 @@ public class BankNavigationMenuFragment extends NavigationMenuFragment {
 		/**Check if there are no fragments already loaded and this is the first time the app is launched **/
 		if( homeFragment == null ) {		
 			/**Show BankAccountSummaryFragment if user has any accounts otherwise show BankOpenAccountFragment()*/
-			homeFragment = ( BankUser.instance().hasAccounts() ) ? new BankAccountSummaryFragment() : new BankOpenAccountFragment();
+			homeFragment = BankUser.instance().hasAccounts() ? new BankAccountSummaryFragment() : new BankOpenAccountFragment();
 			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, homeFragment);
 		} else {
 			NavigationItem.initializeAdapterWithSections(navigationItemAdapter, BANK_SECTION_LIST, null);
