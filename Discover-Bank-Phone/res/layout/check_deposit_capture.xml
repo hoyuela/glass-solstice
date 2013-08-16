@@ -165,22 +165,32 @@
             android:background="@drawable/check_deposit_help_button"
             android:contentDescription="@string/empty" />
 
-     
+     	<RelativeLayout
+     	    android:layout_centerInParent="true"
+     	    android:layout_toRightOf="@+id/help_button"
+     	    android:layout_marginLeft="@dimen/between_related_elements_padding"
+     	    android:layout_toLeftOf="@+id/capture_button"
+     	    android:layout_height="wrap_content"
+     	    android:layout_width="wrap_content"
+     	    android:orientation="vertical"
+     	    >
            <TextView
                android:id="@+id/help_text_wrapper"
-               android:layout_width="fill_parent"
+               android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_toRightOf="@+id/help_button"
-               android:layout_marginLeft="@dimen/between_related_elements_padding"
-               android:layout_toLeftOf="@+id/capture_button"
-               android:layout_marginRight="@dimen/between_related_elements_padding"
-               android:layout_centerVertical="true"
-               android:gravity="center"
+               android:layout_centerHorizontal="true"
                android:text="@string/bank_deposit_help_text"
                android:textColor="@color/body_copy"
                />
-               
-      
+      	  <TextView
+            android:id="@+id/help_text_wrapper2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bank_deposit_help_text2"
+            android:textColor="@color/body_copy"
+            android:layout_below="@+id/help_text_wrapper" 
+            android:layout_alignLeft="@+id/help_text_wrapper"/>
+      	  </RelativeLayout>
         <Button
             android:id="@+id/retake_button"
             style="@style/common_call_to_action_gray_theme"
@@ -212,6 +222,9 @@
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
             android:text="@string/capture" />
+
+      
+
     </RelativeLayout>
     
     <ImageView
