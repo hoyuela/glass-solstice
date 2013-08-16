@@ -203,6 +203,10 @@ public final class BankTrackingHelper {
 	public static void trackDepositSubmission(final Bundle extras) {
 		final Map<String, Object> map = new HashMap<String, Object>();
 
+		//Customer
+		map.put(TrackingHelper.CONTEXT_EDS_PROP, BankUser.instance().getCustomerInfo().id);
+		map.put(TrackingHelper.CONTEXT_EDS_VAR, BankUser.instance().getCustomerInfo().id);
+
 		//Account
 		map.put(DiscoverActivityManager.getString(R.string.context_account_var), extras.get(TRACKING_IMAGE_ACCOUNT));
 		map.put(DiscoverActivityManager.getString(R.string.context_account_prop), extras.get(TRACKING_IMAGE_ACCOUNT));
