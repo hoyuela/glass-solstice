@@ -74,7 +74,7 @@ Feature: Android Bank Smoke Test
 	Scenario: SSO		
 		Given The splash screen is finished
 
-		Then I log in as a "normal" "asys" "sso" user
+		Then I log in as a "bank_account" "asys" "sso" user
 		
 		Then I switch to card
 		And I wait to see "card_icon"
