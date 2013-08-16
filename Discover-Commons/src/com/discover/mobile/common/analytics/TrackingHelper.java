@@ -56,8 +56,8 @@ public final class TrackingHelper {
 		measurement.stopActivity();
 	}
 
-	private static final String CONTEXT_EDS_PROP = DiscoverActivityManager.getString(R.string.context_eds_prop);
-	private static final String CONTEXT_EDS_VAR = DiscoverActivityManager.getString(R.string.context_eds_var);
+	public static final String CONTEXT_EDS_PROP = DiscoverActivityManager.getString(R.string.context_eds_prop);
+	public static final String CONTEXT_EDS_VAR = DiscoverActivityManager.getString(R.string.context_eds_var);
 	private static final String CONTEXT_USER_PROP = DiscoverActivityManager.getString(R.string.context_user_prop);
 	private static final String CONTEXT_USER_VAR = DiscoverActivityManager.getString(R.string.context_user_var);
 	private static final String CONTEXT_VSTR_ID_PROP = DiscoverActivityManager.getString(R.string.context_vstr_id_prop); 
