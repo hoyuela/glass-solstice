@@ -91,7 +91,6 @@ try{
 		if(code == "1219"){
 			cpEvent.preventDefault();
 			navigation('../payments/manageBankAccHaMode');
-			featuresUnavailableSCVariables();
 		}else{
 			errorHandler(code,'','paymentsHistory');
 		}
@@ -182,7 +181,6 @@ try {
 		if(code == "1219"){
 			cpEvent.preventDefault();
 			navigation('../payments/manageBankAccHaMode');
-			featuresUnavailableSCVariables();
 		}else{
 			errorHandler(code,'','');
 		}
@@ -389,9 +387,11 @@ try {
 			navigation('../payments/manageBankAccounts');
 		}
 		fromConfirmationPage = false;
-		var accountsList = getDataFromCache("MANAGE_BANK_ACCOUNT_LIST");
-		if(!jQuery.isEmptyObject(accountsList)){
-			dfs.crd.sct.addBankAccount(accountsList.badAccountsAlert);
+		if(fromPageName == "manageBankAccounts"){
+			var accountsList = getDataFromCache("MANAGE_BANK_ACCOUNT_LIST");
+				if(!isEmpty(accountsList.banks)){
+					dfs.crd.sct.addBankAccount(accountsList.badAccountsAlert);
+			}
 		}
 	}catch (err) {
 		showSysException(err);
@@ -510,11 +510,9 @@ try {
 			if(code == "1219"){
 				cpEvent.preventDefault();
 				navigation('../payments/manageBankAccHaMode');
-				featuresUnavailableSCVariables();
 			}else if(code == "1255"){
 				cpEvent.preventDefault();
 				navigation('../payments/manageBankAccMaxAcctLimitMode');
-				maximumBanksReachedSCVariables();
 			}else{
 				errorHandler(code, "", "paymentsHistory");
 			}
@@ -673,7 +671,6 @@ try {
 		if(code == "1219"){
 			cpEvent.preventDefault();
 			navigation('../payments/manageBankAccHaMode');
-			featuresUnavailableSCVariables();
 		}else{			
 			errorHandler(code,'','');
 		}

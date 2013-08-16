@@ -988,7 +988,7 @@ try{
 }
 
 //"Features Unavailable" page
-function featuresUnavailableSCVariables(){
+function manageBankAccHaModePostSC(){
 try{
 	s.pageName="/ManageBankAccount/FeaturesUnavailable";
 	}catch(err){
@@ -1027,7 +1027,7 @@ try{
 }
 
 //We're sorry" page when maximum number of banks have been added
-function maximumBanksReachedSCVariables(){
+function manageBankAccMaxAcctLimitModePostSC(){
 try{
 	s.pageName="/ManageBankAccount/Accounts/Sorry";
 	}catch(err){
