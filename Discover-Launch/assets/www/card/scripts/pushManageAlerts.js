@@ -1827,7 +1827,7 @@ $("#manageAlerts-pg").live("pageshow",function(event){
 		$(".hidden-element").hide();
 		$(".pn-plus").css("background-position","top left");
 	$(".hideLiMain").toggle(function(){
-		$(this).children(".pn-plus").css("background-position","0px -24px");
+		$(this).children(".pn-plus").css("background-position","0px -30px");
 		$(this).parents().children(".hidden-element").show();
 	
 	},function(){

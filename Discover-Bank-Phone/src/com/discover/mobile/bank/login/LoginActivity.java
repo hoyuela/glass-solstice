@@ -545,8 +545,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	/** Starts the fade out animation on the error text view after six seconds. */
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
-		
-		
 	}
 	
 	private void startFadeOutAnimationForView(final View viewToFade,
@@ -1026,7 +1024,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+			    //16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+				 FacadeFactory.getCardFacade().navToPrivacyTerms(
+	                        LoginActivity.this);
 			}
 		});
 
@@ -1034,7 +1035,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+			    //16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+			    FacadeFactory.getCardFacade().navToPrivacyTerms(
+                        LoginActivity.this);
 			}
 		});
 		gotoFastcheckButton.setOnClickListener(new View.OnClickListener() {
@@ -1047,7 +1051,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		fcPrivacyTermButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+			    //16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+			    FacadeFactory.getCardFacade().navToPrivacyTerms(
+                        LoginActivity.this);
 			}
 		});
 		
