@@ -144,7 +144,7 @@ dfs.crd.rwds.populateCBBLandingPromitionsList = function(cashbackbonusSignupDeta
 							signupStatusText="<span class='signin orangetxt'>You&#39;re Signed Up!</span>";
 							
 							}else if(promotionInfo.promoCode =="COMINGSOON"){
-								signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
+								signupStatusText="<a href='#' data-role='button' class='ui-block-b ui-btn-up-c txtcenteraln r3matchbtn' onclick='dfs.crd.rwds.showCBBDetailsForPromocode("+promotionInfoString+");'><span class='ui-btn-inner ui-btn-corner-all' aria-hidden='true'><span class='ui-btn-text'>Learn&nbsp;More</span></span></a>";
 							}
 							else{
 								/*13.3 global changes for button*/
