@@ -75,6 +75,30 @@ public class BankPayTerms extends BaseFragment{
 			titleText = titleStringResource;
 		}
 	}
+	
+	/**
+	 * Inflates the view and loads needed resources from the layout.
+	 * Also sets up the web view and starts loading the content.
+	 * @param inflater - inflater to inflate the layout
+	 * @param container - container holding the group
+	 * @param savedInstanceState - state of the fragment
+	 */
+	@Override
+	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+			final Bundle savedInstanceState) {
+
+		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
+		loadResources(mainView);
+		
+		// Create the Web View
+		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
+		webContainer.addView(termsWebView);
+		
+		setupWebView(); // Handle URL loading tasks
+		setupAcceptButton();
+
+		return mainView;
+	}
 
 	/**
 	 * Get all of the interface elements that we need to access.
@@ -97,19 +121,20 @@ public class BankPayTerms extends BaseFragment{
 	 */
 	@SuppressLint("NewApi")
 	private void setupWebView() {
-		termsWebView.loadUrl(BankUrlManager.getPayBillsTermsUrl());
 		termsWebView.setBackgroundColor(Color.TRANSPARENT);
 		termsWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public void onPageFinished(final WebView view, final String url) {
 				super.onPageFinished(view, url);
 				loadingSpinner.setVisibility(View.GONE);
-				termsWebView.setVisibility(View.VISIBLE);
+				webContainer.setVisibility(View.VISIBLE);
 				loadingSpinner.clearAnimation();
 				acceptButton.setEnabled(true);
 			}
 		});
 
+		termsWebView.loadUrl(BankUrlManager.getPayBillsTermsUrl());
+		
 		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
 		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
 		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
@@ -131,25 +156,6 @@ public class BankPayTerms extends BaseFragment{
 			}
 		});
 	}
-
-	/**
-	 * Inflates the view and loads needed resources from the layout.
-	 * Also sets up the web view and starts loading the content.
-	 * @param inflater - inflater to inflate the layout
-	 * @param container - container holding the group
-	 * @param savedInstanceState - state of the fragment
-	 */
-	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
-
-		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
-		loadResources(mainView);
-		setupWebView();
-		setupAcceptButton();
-
-		return mainView;
-	}
 	
 	@Override
 	public void onPause() {
@@ -169,9 +175,6 @@ public class BankPayTerms extends BaseFragment{
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
-		webContainer.addView(termsWebView);
 	}
 	
 	/**
