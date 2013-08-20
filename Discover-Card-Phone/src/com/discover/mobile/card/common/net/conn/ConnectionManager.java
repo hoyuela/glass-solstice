@@ -1,12 +1,5 @@
 package com.discover.mobile.card.common.net.conn;
 
-/**
- * This class will establishes the connection and returns the response as inputStream object.
- * Also handles network availability and other exceptions which may occur during the network call.
- * 
- * @author Hemang Kakadia
- * 
- */
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,6 +12,14 @@ import android.content.Context;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.utils.Utils;
 
+/**
+ * This class will establishes the connection and returns the response as
+ * inputStream object. Also handles network availability and other exceptions
+ * which may occur during the network call.
+ * 
+ * @author Hemang Kakadia
+ * 
+ */
 public final class ConnectionManager {
 
     /**
@@ -69,7 +70,10 @@ public final class ConnectionManager {
         } catch (final IOException e) {
             in = httpConn.getErrorStream();
             Utils.log(context.getClass().getName(), e.getMessage(), e);
-            if (e.getMessage().indexOf("Received authentication challenge is null") >=0 ) throw e;
+            if (e.getMessage().indexOf(
+                    "Received authentication challenge is null") >= 0) {
+                throw e;
+            }
         } catch (final Exception e) {
             in = httpConn.getErrorStream();
             Utils.log(context.getClass().getName(), e.getMessage(), e);

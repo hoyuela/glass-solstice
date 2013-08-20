@@ -1,5 +1,15 @@
 package com.discover.mobile.card.common.net.error;
 
+/**
+ * 
+ * ©2013 Discover Bank
+ * 
+ * Class for Defining constants for Registration webservice call
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class RegistrationErrorCodes {
 
     public static final int NOT_PRIMARY_CARDHOLDER = 4001914;
