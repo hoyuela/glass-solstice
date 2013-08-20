@@ -29,6 +29,7 @@ import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
@@ -231,9 +232,9 @@ public final class BankTrackingHelper {
 
 		//Build Id
 		map.put(DiscoverActivityManager.getString(R.string.context_build_version_var), 
-				DiscoverActivityManager.getString(R.string.xApplicationVersion));
+				CommonUtils.getApplicationVersionNumber());
 		map.put(DiscoverActivityManager.getString(R.string.context_build_version_prop), 
-				DiscoverActivityManager.getString(R.string.xApplicationVersion));
+				CommonUtils.getApplicationVersionNumber());
 
 		//Image size
 		map.put(DiscoverActivityManager.getString(R.string.context_image_size_var), extras.get(TRACKING_IMAGE_SIZE));
