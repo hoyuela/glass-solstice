@@ -7,12 +7,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.CardInfoForToggle;
-
-import com.discover.mobile.card.R;
 
 /**
  * Widget that allows the user to toggle between accounts.

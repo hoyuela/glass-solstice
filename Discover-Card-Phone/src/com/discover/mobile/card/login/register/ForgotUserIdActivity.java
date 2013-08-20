@@ -16,15 +16,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.facade.FacadeFactory;
-
-import com.discover.mobile.card.auth.strong.StrongAuthUtil;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -40,13 +32,15 @@ import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
-import com.discover.mobile.card.facade.CardLoginFacadeImpl;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.google.common.base.Strings;
 
 /**
  * This class handles the forgot user ID flow. If a user successfully completes
@@ -385,7 +379,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
             @Override
             public void onSuccess(final Object data) {
-                // TODO Auto-generated method stub
+
                 Globals.setLoggedIn(true);
                 final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                         .getInstance(ForgotUserIdActivity.this);
@@ -400,7 +394,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
             @Override
             public void OnError(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotUserIdActivity.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -464,7 +458,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
 
@@ -507,7 +501,6 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
                         @Override
                         public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
 
                         }
 
@@ -543,12 +536,11 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
                             .getMessageforErrorCode("4031401_NOTENROLLED"),
                     "4031401_NOTENROLLED", false, "1");
 
-            cardErrorResHandler.handleCardError((CardErrorBean) modifiedData,
+            cardErrorResHandler.handleCardError(modifiedData,
                     new CardErrorCallbackListener() {
 
                         @Override
                         public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
 
                         }
 
@@ -579,7 +571,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this,
                     REFERER);

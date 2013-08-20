@@ -3,9 +3,8 @@ package com.discover.mobile.card.common.uiwidget;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.discover.mobile.common.utils.CommonUtils;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * The card expiration date picker. This is a stylized edit text field. It is

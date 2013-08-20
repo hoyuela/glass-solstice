@@ -22,7 +22,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
@@ -45,7 +44,6 @@ import com.discover.mobile.common.auth.EnhanceSecurityConstant;
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.help.HelpItemGenerator;
-import com.discover.mobile.common.help.HelpWidget;
 import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.google.common.base.Strings;
@@ -139,13 +137,8 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
     // Tool tip Menu
     private HelpItemGenerator helpNum, helpInfo, helpFaq;
-    private HelpWidget help;
     private StrongAuthListener authListener;
 
-    // Defect id 95164
-    // Back handling
-    private boolean forgotBoth = false;
-    private boolean forgotPassword = false;
     // Defect id 95164
     private View mainView;
 
@@ -227,7 +220,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                 Log.d("13.4", "error code" + bean.getErrorCode() + " message: "
                         + bean.getErrorMessage());
                 if (!bean.isAppError()
-                        && (bean != null)
+                        && bean != null
                         && bean.getErrorCode()
                                 .contains(
                                         ""
@@ -271,7 +264,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
                     /* 13.4 Defect ID 104309 start */
                 } else if (!bean.isAppError()
-                        && (bean != null)
+                        && bean != null
                         && bean.getErrorCode().contains(
                                 "" + RegistrationErrorCodes.SPACE_ENTERED)) {
 
@@ -380,7 +373,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                 submitSecurityInfo(arg0);
             }
         });
-        if ((inputErrorText == null) || inputErrorText.equalsIgnoreCase("")) {
+        if (inputErrorText == null || inputErrorText.equalsIgnoreCase("")) {
             questionAnswerField.attachErrorLabel(errorMessage);
         }
         privacyTerms = (TextView) mainView.findViewById(R.id.privacy_terms);
@@ -396,7 +389,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.privacy_terms) {
             ((CardMenuInterface) getActivity())
                     .sendNavigationTextToPhoneGapInterface(getString(R.string.privacy_terms_title));
@@ -455,9 +448,8 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
                     .getString(IntentExtraKey.STRONG_AUTH_QUESTION);
             strongAuthQuestionId = extras
                     .getString(IntentExtraKey.STRONG_AUTH_QUESTION_ID);
-            // Defect id 95164
-            forgotBoth = extras.getBoolean(FORGOT_BOTH_FLOW);
-            forgotPassword = extras.getBoolean(FORGOT_PASSWORD_FLOW);
+            extras.getBoolean(FORGOT_BOTH_FLOW);
+            extras.getBoolean(FORGOT_PASSWORD_FLOW);
 
             if (extras.getBoolean("is_enhance")) {
                 String errmsg = extras.getString(ANSWER_ERROR_TEXT);
@@ -474,7 +466,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
             yes_radiobutton = extras.getBoolean(YES_RADIOBUTTON_SEL, true);
 
-            if ((answer != null) && !answer.equals("")) {
+            if (answer != null && !answer.equals("")) {
                 questionAnswerField.setText(answer);
             }
             final int subCopyColor = getResources().getColor(R.color.sub_copy);
@@ -629,7 +621,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
      */
     private void onTextChanged(final CharSequence newText) {
 
-        if ((newText != null) && (newText.length() >= MIN_ANSWER_LENGTH)) {
+        if (newText != null && newText.length() >= MIN_ANSWER_LENGTH) {
             continueButton.setEnabled(true);
         } else {
             continueButton.setEnabled(false);
@@ -707,21 +699,6 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
         return items;
     }
 
-    /**
-     * It's click listener for Help menu
-     * 
-     * @return
-     */
-    private OnClickListener getAllFaqListener() {
-        return new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Toast.makeText(getActivity(), "comming soon ",
-                        Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
-
     @Override
     public int getEnhanceSecurityRequestCodeForAccountLock() {
         return STRONG_AUTH_LOCKED;
@@ -729,21 +706,18 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
     @Override
     public void showCustomAlert(final AlertDialog alert) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showOneButtonAlert(final int title, final int content,
             final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showDynamicOneButtonAlert(final int title,
             final String content, final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -759,7 +733,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
 
     @Override
     public int getLastError() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -767,7 +741,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     public int getActionBarTitle() {
         // return R.string.account_security_text;
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil.getActionBarTitle();
     }
 
@@ -778,7 +752,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     public int getGroupMenuLocation() {
         Utils.log(TAG, "inside getGroupMenuLocation ");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil
                 .getGroupMenuLocation(R.string.section_title_home);
     }
@@ -790,7 +764,7 @@ public class EnhancedAccountSecurityFragment extends BaseFragment implements
     public int getSectionMenuLocation() {
         Utils.log(TAG, "inside getSectionMenuLocation");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
+                (CardNavigationRootActivity) getActivity());
         return barMenuTitleUtil
                 .getSectionMenuLocation(R.string.section_title_home);
     }

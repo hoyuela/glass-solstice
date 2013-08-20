@@ -2,13 +2,12 @@ package com.discover.mobile.card.common.sessiontimer;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 
 /*
  * This class will reset the server timer.
@@ -45,13 +44,12 @@ public final class ResetServerTimeOutUtil implements CardEventListener {
 
     @Override
     public void OnError(final Object data) {
-        // TODO Auto-generated method stub
+
         Utils.log(TAG, "Error occured while async update service call");
     }
 
     @Override
     public void onSuccess(final Object data) {
-        // TODO Auto-generated method stub
         Utils.log(TAG, "successfully occured async update service call");
     }
 

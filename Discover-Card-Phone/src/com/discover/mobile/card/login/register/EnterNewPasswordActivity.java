@@ -17,13 +17,7 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
-import com.discover.mobile.common.utils.CommonUtils;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -33,16 +27,18 @@ import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.uiwidget.ConfirmationEditText;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.forgot.ForgotPasswordTwoDetails;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
-
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -54,9 +50,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * 
  */
 public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
-        implements CardErrorHandlerUi, OnClickListener,CardEventListener { //DEFECT 96936
-
-    
+        implements CardErrorHandlerUi, OnClickListener, CardEventListener { // DEFECT
+                                                                            // 96936
 
     private ForgotPasswordTwoDetails passTwoDetails;
 
@@ -65,9 +60,9 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
     private TextView errorLabelOne;
     private TextView errorLabelTwo;
     private TextView provideFeedback;
-    //Defect id 95853
-    private TextView privacy_terms ;
-    //Defect id 95853
+    // Defect id 95853
+    private TextView privacy_terms;
+    // Defect id 95853
     private ImageView errorIcon;
 
     // INPUT FIELDS
@@ -98,13 +93,13 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
         setupHelpNumber();
         Utils.hideSpinner();
         provideFeedback.setOnClickListener(this);
-        //Defect id 95853
+        // Defect id 95853
         privacy_terms.setOnClickListener(this);
-        //Defect id 95853
+        // Defect id 95853
         restoreState(savedInstanceState);
-        
-       // Utils.log("PageTimeOutUtil.getInstance","in side EnterNewPasswordActivity");
-       // PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
+
+        // Utils.log("PageTimeOutUtil.getInstance","in side EnterNewPasswordActivity");
+        // PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
     }
 
     /**
@@ -173,18 +168,18 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
         mainScrollView = (ScrollView) findViewById(R.id.main_scroll_view);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
-        //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
-        //Defect id 95853
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
+        // Defect id 95853
 
     }
 
-    
     @Override
     public TextView getErrorLabel() {
-        // TODO Auto-generated method stub
+
         return errorMessageLabel;
     }
+
     /**
      * Setup input fields, attach error labels and set the type of input that
      * the fields will receive.
@@ -229,7 +224,6 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
             @Override
             public void onSuccess(final Object data) {
-                // TODO Auto-generated method stub
 
                 final RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
                 retrieveAccountDetailsFromServer(registrationConfirmationDetails);
@@ -237,7 +231,7 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
 
             @Override
             public void OnError(final Object data) {
-                // TODO Auto-generated method stub
+
                 final String errorCode = ((CardErrorBean) data).getErrorCode();
                 final String[] errorMsgSplit = errorCode.split("_");
                 final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
@@ -282,13 +276,13 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             JacksonObjectMapperHolder.getMapper().writeValue(baos,
                     passTwoDetails);
         } catch (final JsonGenerationException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         } catch (final JsonMappingException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         } catch (final IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
 
@@ -325,75 +319,63 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
             if (!passOneField.isValid()) {
                 passOneField.setStrengthMeterInvalid();
             }
-            /*13.4 Defect id 95859*/
-            if(!(passOneField.isNull()&& passTwoField.isNull())){
-            	   CommonUtils.showLabelWithStringResource(errorMessageLabel,
-                           R.string.account_info_bad_input_error_text, this);
-                   CommonUtils.setViewVisible(errorIcon);
+            /* 13.4 Defect id 95859 */
+            if (!(passOneField.isNull() && passTwoField.isNull())) {
+                CommonUtils.showLabelWithStringResource(errorMessageLabel,
+                        R.string.account_info_bad_input_error_text, this);
+                CommonUtils.setViewVisible(errorIcon);
             }
-         
+
         }
 
     }
 
-   /* //DEFECT 96936
-    public void idealTimeoutLogout() {
-        Utils.log("CardNavigationRootActivity", "inside logout...");
-        // super.logout();
-        
-         Utils.isSpinnerAllowed = true;
-        final WSRequest request = new WSRequest();
-        final String url = NetworkUtility.getWebServiceUrl(this,
-                R.string.logOut_url);
-        request.setUrl(url);
-        request.setMethodtype("POST");
-        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
-                "Discover", "Signing Out...", this);
-        serviceCall.execute(request);
+    /*
+     * //DEFECT 96936 public void idealTimeoutLogout() {
+     * Utils.log("CardNavigationRootActivity", "inside logout..."); //
+     * super.logout();
+     * 
+     * Utils.isSpinnerAllowed = true; final WSRequest request = new WSRequest();
+     * final String url = NetworkUtility.getWebServiceUrl(this,
+     * R.string.logOut_url); request.setUrl(url); request.setMethodtype("POST");
+     * final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this, null,
+     * "Discover", "Signing Out...", this); serviceCall.execute(request);
+     * 
+     * }
+     * 
+     * 
+     * @Override public void OnError(final Object data) { //
+     * CardErrorResponseHandler cardErrorResHandler = new //
+     * CardErrorResponseHandler( // this); //
+     * cardErrorResHandler.handleCardError((CardErrorBean) data); finish();
+     * final Bundle bundle = new Bundle();
+     * bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+     * bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
+     * FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+     * //clearNativeCache(); //clearJQMCache(); // Call this method to clear JQM
+     * cache.
+     * 
+     * 
+     * PageTimeOutUtil.getInstance(this.getContext()).destroyTimer(); }
+     * 
+     * @Override public void onSuccess(final Object data) { final Bundle bundle
+     * = new Bundle();
+     * bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+     * bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true); finish();
+     * FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
+     * //clearNativeCache(); //clearJQMCache(); // Call this method to clear JQM
+     * cache.
+     * 
+     * PageTimeOutUtil.getInstance(this.getContext()).destroyTimer(); }
+     */
 
-    }
-
-
-    @Override
-    public void OnError(final Object data) {
-        // CardErrorResponseHandler cardErrorResHandler = new
-        // CardErrorResponseHandler(
-        // this);
-        // cardErrorResHandler.handleCardError((CardErrorBean) data);
-        finish();
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        //clearNativeCache();
-        //clearJQMCache(); // Call this method to clear JQM cache.
-
-       
-        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
-    }
-
-    @Override
-    public void onSuccess(final Object data) {
-        final Bundle bundle = new Bundle();
-        bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
-        bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
-        finish();
-        FacadeFactory.getLoginFacade().navToLoginWithMessage(this, bundle);
-        //clearNativeCache();
-        //clearJQMCache(); // Call this method to clear JQM cache.
-       
-        PageTimeOutUtil.getInstance(this.getContext()).destroyTimer();
-    }*/
-    
-    
-    
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
-    
-  //DEFECT 96936
+
+    // DEFECT 96936
     /*
      * (non-Javadoc)
      * 
@@ -402,25 +384,25 @@ public class EnterNewPasswordActivity extends ForgotOrRegisterFinalStep
      */
     @Override
     public CardErrHandler getCardErrorHandler() {
-        // TODO Auto-generated method stub
+
         return CardErrorUIWrapper.getInstance();
     }
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(EnterNewPasswordActivity.this,
                     REFERER);
-            //Defect id 95853
-        }else if(v.getId() == R.id.privacy_terms)
-        {
-          //Changes for 13.4 start
-//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(EnterNewPasswordActivity.this , PrivacyTermsLanding.class);
+            // Defect id 95853
+        } else if (v.getId() == R.id.privacy_terms) {
+            // Changes for 13.4 start
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(EnterNewPasswordActivity.this,
+                    PrivacyTermsLanding.class);
             startActivity(privacyTerms);
-            //Changes for 13.4 end
+            // Changes for 13.4 end
         }
-        //Defect id 95853
+        // Defect id 95853
     }
 }

@@ -26,7 +26,6 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.auth.strong.StrongAuthUtil;
-
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -58,8 +57,6 @@ import com.discover.mobile.common.BaseActivity;
 import com.discover.mobile.common.BaseFragmentActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.CardLoginFacade;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityInterface;
@@ -99,44 +96,47 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
     @Override
     public void login(final LoginActivityInterface callingActivity,
-            final String username, final String password)
-    {
-        String authString = NetworkUtility.getAuthorizationString(username, password);
+            final String username, final String password) {
+        String authString = NetworkUtility.getAuthorizationString(username,
+                password);
         loginHelper(callingActivity, authString, username, password);
     }
-    
+
     /**
-     * Authenticates the user using the passcode based authorization scheme and credentials.
+     * Authenticates the user using the passcode based authorization scheme and
+     * credentials.
      */
     @Override
-    public void loginWithPasscode(LoginActivityInterface callingActivity, String deviceToken,
-			String passcode){
-    	isPasscodeLogin = true;
-        String authString = NetworkUtility.getPasscodeAuthorizationString(deviceToken, passcode);
+    public void loginWithPasscode(final LoginActivityInterface callingActivity,
+            final String deviceToken, final String passcode) {
+        isPasscodeLogin = true;
+        String authString = NetworkUtility.getPasscodeAuthorizationString(
+                deviceToken, passcode);
         loginHelper(callingActivity, authString, deviceToken, passcode);
     }
-    
-    
+
     /**
      * Authenticates using the given authString.
+     * 
      * @param callingActivity
      * @param authString
      */
     private void loginHelper(final LoginActivityInterface callingActivity,
-            final String authString, String username, String password) {
+            final String authString, final String username,
+            final String password) {
         request = new WSRequest();
         context = callingActivity.getContext();
 
         // Setting the headers available for the service
         final HashMap<String, String> headers = request.getHeaderValues();
         headers.put("Authorization", authString);
-        showToggleFlag = false;//DEFECT 97099
+        showToggleFlag = false;// DEFECT 97099
 
         final String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.login_url);
         request.setUrl(url);
         request.setHeaderValues(headers);
-        //TODO sgoff0 - why is this needed?
+        // TODO sgoff0 - why is this needed?
         request.setUsername(username);
         request.setPassword(password);
 
@@ -149,13 +149,13 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         listener = new StrongAuthListener() {
 
             @Override
-            public void onStrongAuthSucess(Object data) {
+            public void onStrongAuthSucess(final Object data) {
                 doCardNormalFlow();
             }
 
             @Override
-            public void onStrongAuthError(Object data) {
-                // TODO Auto-generated method stub
+            public void onStrongAuthError(final Object data) {
+
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -163,30 +163,28 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             }
 
             @Override
-            public void onStrongAuthCardLock(Object data) {
-                // TODO Auto-generated method stub
+            public void onStrongAuthCardLock(final Object data) {
+
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
-            	
+
             }
 
             @Override
-            public void onStrongAuthSkipped(Object data) 
-            {
-            	//getAcHome();
+            public void onStrongAuthSkipped(final Object data) {
+                // getAcHome();
                 getAcHomewithtoggle();
             }
 
             @Override
-            public void onStrongAuthNotEnrolled(Object data) {
+            public void onStrongAuthNotEnrolled(final Object data) {
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
         };
     }
-    
 
     @Override
     public void loginWithPayload(final LoginActivityInterface callingActivity,
@@ -198,7 +196,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         // Listen SSO service call
         SSOCardEventListener = new CardEventListener() {
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 // Get the bankpayload and return to bank via facade
                 BankPayload bankPayload = (BankPayload) data;
                 Utils.log(LOG_TAG, "---payload-- " + bankPayload.payload);
@@ -207,7 +205,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 CardErrorBean cardErrorBean = (CardErrorBean) data;
                 CardShareDataStore cardShareDataStore = CardShareDataStore
                         .getInstance(context);
@@ -275,29 +273,27 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                     // Get error model based on error flags
                     getErrorMatchModelForPayload(isSSOUser, isSSNMatch,
                             isSSODLinkable, cardErrorBean);
-                }
-                else if (cardErrorBean.getErrorCode().contains(
+                } else if (cardErrorBean.getErrorCode().contains(
                         "" + HttpURLConnection.HTTP_FORBIDDEN)
-                        && (cardErrorBean.getErrorCode().contains(
-                                "" + BANK_SSN_NOT_MATCHED))) 
-                {
+                        && cardErrorBean.getErrorCode().contains(
+                                "" + BANK_SSN_NOT_MATCHED)) {
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             CardLoginFacadeImpl.this);
-                    cardErrorResHandler.handleCardError((CardErrorBean) data,new CardErrorCallbackListener() {
-                        
-                        @Override
-                        public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
-                            
-                        }
-                        
-                        @Override
-                        public void onButton1Pressed() {
-                            // TODO Auto-generated method stub
-                            getAcHomewithtoggle();
-                        }
-                    });
-                    
+                    cardErrorResHandler.handleCardError((CardErrorBean) data,
+                            new CardErrorCallbackListener() {
+
+                                @Override
+                                public void onButton2Pressed() {
+
+                                }
+
+                                @Override
+                                public void onButton1Pressed() {
+
+                                    getAcHomewithtoggle();
+                                }
+                            });
+
                 }
 
                 else {
@@ -311,55 +307,59 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         authListener = new StrongAuthListener() {
 
             @Override
-            public void onStrongAuthSucess(Object data) {
+            public void onStrongAuthSucess(final Object data) {
                 // Calling service for SSO authentication
                 getSSOAuthenticationWithoutToken();
             }
 
             @Override
-            public void onStrongAuthError(Object data) {
-                // TODO Auto-generated method stub
+            public void onStrongAuthError(final Object data) {
+
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
 
             @Override
-            public void onStrongAuthCardLock(Object data) {
-                // TODO Auto-generated method stub
+            public void onStrongAuthCardLock(final Object data) {
+
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
             }
 
             @Override
-            public void onStrongAuthSkipped(Object data) {
-            	final Activity activity = DiscoverActivityManager.getActiveActivity();
-            	final ModalDefaultTopView top = new ModalDefaultTopView(activity, null);
-            	final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(activity, null);
-            	final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(activity, top, bottom);
-            	top.setTitle(R.string.E_SA_SKIPPED_TITLE);
-            	top.setContent(R.string.E_SA_SKIPPED_CONTENT);
-            	top.showErrorIcon(true);
-            	top.hideFeedbackView();
-            	bottom.setButtonText(R.string.ok);
-            	bottom.getButton().setOnClickListener(new OnClickListener(){
-            		@Override
-            		public void onClick(final View v){
-            		    getAcHomewithtoggle();
-            			//getAcHome();
-            			modal.dismiss();
-            		}
-            	});
-               if(activity instanceof BaseFragmentActivity){
-            	   ((BaseFragmentActivity) activity).showCustomAlert(modal);
-               }else if(activity instanceof BaseActivity){
-            	   ((BaseActivity) activity).showCustomAlert(modal);
-               }
+            public void onStrongAuthSkipped(final Object data) {
+                final Activity activity = DiscoverActivityManager
+                        .getActiveActivity();
+                final ModalDefaultTopView top = new ModalDefaultTopView(
+                        activity, null);
+                final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(
+                        activity, null);
+                final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(
+                        activity, top, bottom);
+                top.setTitle(R.string.E_SA_SKIPPED_TITLE);
+                top.setContent(R.string.E_SA_SKIPPED_CONTENT);
+                top.showErrorIcon(true);
+                top.hideFeedbackView();
+                bottom.setButtonText(R.string.ok);
+                bottom.getButton().setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        getAcHomewithtoggle();
+                        // getAcHome();
+                        modal.dismiss();
+                    }
+                });
+                if (activity instanceof BaseFragmentActivity) {
+                    ((BaseFragmentActivity) activity).showCustomAlert(modal);
+                } else if (activity instanceof BaseActivity) {
+                    ((BaseActivity) activity).showCustomAlert(modal);
+                }
             }
 
             @Override
-            public void onStrongAuthNotEnrolled(Object data) {
+            public void onStrongAuthNotEnrolled(final Object data) {
 
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
@@ -368,7 +368,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
                             @Override
                             public void onButton2Pressed() {
-                                // TODO Auto-generated method stub
 
                             }
 
@@ -378,7 +377,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                                 Utils.hideSpinner();
                                 Intent browserIntent = new Intent(
                                         Intent.ACTION_VIEW,
-                                        //Uri.parse("https://www.discover.com"));
+                                        // Uri.parse("https://www.discover.com"));
                                         Uri.parse("https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT"));
                                 context.startActivity(browserIntent);
                             }
@@ -398,7 +397,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         CardEventListener cardEventListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 // Set Payload data
                 // Get the bankpayload and return to bank via facade
 
@@ -442,7 +441,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 // SSN NOT MATCH HANDLED
                 Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
@@ -479,7 +478,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
      * 
      * @param listener
      */
-    public void getBankPayloadFromServer(CardEventListener listener) {
+    public void getBankPayloadFromServer(final CardEventListener listener) {
 
         WSRequest request = new WSRequest();
         HashMap<String, String> headers = request.getHeaderValues();
@@ -501,8 +500,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         Utils.updateAccountDetails(context, new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
-                // TODO Auto-generated method stub
+            public void onSuccess(final Object data) {
+
                 Globals.setLoggedIn(true);
                 final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                         .getInstance(context);
@@ -516,11 +515,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                         .setAccountDetails((AccountDetails) data);
 
                 cardShareDataStoreObj.addToAppCache(
-                        context.getString(R.string.account_details),
-                        (AccountDetails) data);
+                        context.getString(R.string.account_details), data);
                 final Intent confirmationScreen = new Intent(context,
                         CardNavigationRootActivity.class);
-                TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+                // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
 
                 Globals.setCurrentAccount(AccountType.CARD_ACCOUNT);
 
@@ -529,14 +527,15 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 context.startActivity(confirmationScreen);
 
                 // Close current activity
-                if (context instanceof Activity)
+                if (context instanceof Activity) {
                     ((Activity) context).finish();
+                }
 
             }
 
             @Override
-            public void OnError(Object data) {
-                // TODO Auto-generated method stub
+            public void OnError(final Object data) {
+
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -552,8 +551,9 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         boolean delinkable = false;
         final boolean isSSNMatched = bean.getIsSSNMatched();
         final CardErrorResponseHandler cardErrorResHandler;
-        cardErrorResHandler = new CardErrorResponseHandler((CardErrorHandlerUi) this, isPasscodeLogin);
-        //reset passcode login back to false
+        cardErrorResHandler = new CardErrorResponseHandler(this,
+                isPasscodeLogin);
+        // reset passcode login back to false
         isPasscodeLogin = false;
 
         String statusCode = bean.getErrorCode();
@@ -570,9 +570,10 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             if (ssoUser && !delinkable) // A/L/U status
             {
                 if (isSSNMatched) { // Bank call for Auth
-                    if (null != request)
+                    if (null != request) {
                         FacadeFactory.getBankLoginFacade().authDueToALUStatus(
                                 request.getUsername(), request.getPassword());
+                    }
                 } else {
                     // Show SSN not matched modal
 
@@ -591,30 +592,30 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener() {
                     @Override
                     public void onButton1Pressed() {
-                    	Utils.hideSpinner();
+                        Utils.hideSpinner();
                         // Register Button click flow - Big browser link
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                //Uri.parse("https://www.discover.com"));
+                                // Uri.parse("https://www.discover.com"));
                                 Uri.parse("https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT"));
                         context.startActivity(browserIntent);
                     }
 
                     @Override
                     public void onButton2Pressed() {
-                        // TODO Cancel Button click flow
+
                     }
                 };
-                //DEFECT
+                // DEFECT
                 CardErrorUtil cardErrorUtil = new CardErrorUtil(context);
-				CardErrorBean beanError = new CardErrorBean(
-						cardErrorUtil
-								.getTitleforErrorCode("4031102_SSO_DELINK"),
-						cardErrorUtil
-								.getMessageforErrorCode("4031102_SSO_DELINK"),
-						"4031102", false, "101");
-				cardErrorResHandler.handleCardError(beanError,
-						errorClickCallback);
-				//DEFECT
+                CardErrorBean beanError = new CardErrorBean(
+                        cardErrorUtil
+                                .getTitleforErrorCode("4031102_SSO_DELINK"),
+                        cardErrorUtil
+                                .getMessageforErrorCode("4031102_SSO_DELINK"),
+                        "4031102", false, "101");
+                cardErrorResHandler.handleCardError(beanError,
+                        errorClickCallback);
+                // DEFECT
 
             } else {
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -636,14 +637,14 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                 "" + HttpURLConnection.HTTP_UNAUTHORIZED)
                 && cache != null && cache.contains("skipped")) {
             listener.onStrongAuthSkipped(bean);
-            /*       13.4 Changes Start*/
-        }else if (bean.getErrorCode().contains(
+            /* 13.4 Changes Start */
+        } else if (bean.getErrorCode().contains(
                 "" + HttpURLConnection.HTTP_UNAUTHORIZED)
                 && cache != null && cache.contains("createuser")) {
 
             StrongAuthUtil strongAuthUtil = new StrongAuthUtil(context);
             strongAuthUtil.createUser(CardLoginFacadeImpl.this);
-            /*       13.4 Changes End*/
+            /* 13.4 Changes End */
         } else if (bean.getErrorCode().contains(
                 "" + HttpURLConnection.HTTP_FORBIDDEN)
                 && bean.getErrorCode().contains("" + SA_LOCKED)
@@ -660,7 +661,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
     }
 
     @Override
-    public void onSuccess(Object data) {
+    public void onSuccess(final Object data) {
         Globals.setLoggedIn(true);
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(context);
@@ -683,7 +684,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
                                                  // modal
 
             final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                    (CardErrorHandlerUi) this);
+                    this);
             CardErrorCallbackListener errorClickCallback = new CardErrorCallbackListener() {
                 @Override
                 public void onButton1Pressed() {
@@ -714,8 +715,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             CardSessionContext.getCurrentSessionDetails().setAccountDetails(
                     (AccountDetails) data);
             cardShareDataStoreObj.addToAppCache(
-                    context.getString(R.string.account_details),
-                    (AccountDetails) data);
+                    context.getString(R.string.account_details), data);
             if (shouldShowSSOToggle(data)) {
                 showToggleFlag = true;
 
@@ -756,18 +756,19 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
      * @param acHome
      * @return
      */
-    public boolean shouldShowSSOToggle(Object acHome) {
+    public boolean shouldShowSSOToggle(final Object acHome) {
         boolean isSSOUserVar = ((AccountDetails) acHome).isSSOUser;
         String payLoadSSOTextVar = ((AccountDetails) acHome).payLoadSSOText;
-        if (isSSOUserVar && payLoadSSOTextVar != null)
+        if (isSSOUserVar && payLoadSSOTextVar != null) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     @Override
     public TextView getErrorLabel() {
-        // TODO Auto-generated method stub
+
         return ((com.discover.mobile.common.error.ErrorHandlerUi) context)
                 .getErrorLabel();
 
@@ -775,52 +776,49 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
     @Override
     public List<EditText> getInputFields() {
-        // TODO Auto-generated method stub
+
         return ((com.discover.mobile.common.error.ErrorHandlerUi) context)
                 .getInputFields();
 
     }
 
     @Override
-    public void showCustomAlert(AlertDialog alert) {
-        // TODO Auto-generated method stub
+    public void showCustomAlert(final AlertDialog alert) {
 
     }
 
     @Override
-    public void showOneButtonAlert(int title, int content, int buttonText) {
-        // TODO Auto-generated method stub
+    public void showOneButtonAlert(final int title, final int content,
+            final int buttonText) {
 
     }
 
     @Override
-    public void showDynamicOneButtonAlert(int title, String content,
-            int buttonText) {
-        // TODO Auto-generated method stub
+    public void showDynamicOneButtonAlert(final int title,
+            final String content, final int buttonText) {
 
     }
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return context;
     }
 
     @Override
-    public void setLastError(int errorCode) {
-        // TODO Auto-generated method stub
+    public void setLastError(final int errorCode) {
 
     }
 
     @Override
     public int getLastError() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public CardErrHandler getCardErrorHandler() {
-        // TODO Auto-generated method stub
+
         return CardErrorUIWrapper.getInstance();
 
     }
@@ -833,8 +831,8 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
      * @param isSSODLinkable
      * @param cardErrBean
      */
-    public void getErrorMatchModelForPayload(boolean isSSOUser,
-            final boolean isSSNMatch, boolean isSSODLinkable,
+    public void getErrorMatchModelForPayload(final boolean isSSOUser,
+            final boolean isSSNMatch, final boolean isSSODLinkable,
             final CardErrorBean cardErrBean) {
         // ALU status
         if (isSSOUser && !isSSODLinkable) {
@@ -872,20 +870,18 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
                         @Override
                         public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
 
                         }
 
                         @Override
                         public void onButton1Pressed() {
                             // Big Broweser
-                        	Utils.hideSpinner();
+                            Utils.hideSpinner();
                             Intent browserIntent = new Intent(
-                                    Intent.ACTION_VIEW, 
-                                   // Uri.parse("https://www.discover.com"));
+                                    Intent.ACTION_VIEW,
+                                    // Uri.parse("https://www.discover.com"));
                                     Uri.parse("https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT"));
-                            
-                            
+
                             context.startActivity(browserIntent);
                         }
                     });
@@ -908,7 +904,6 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
 
                         @Override
                         public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
 
                         }
 
@@ -930,7 +925,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         CardEventListener cardEventListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
 
                 // Get the bankpayload and return to bank via facade
                 BankPayload bankPayload = (BankPayload) data;
@@ -940,7 +935,7 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         CardLoginFacadeImpl.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -952,160 +947,155 @@ public class CardLoginFacadeImpl implements CardLoginFacade, CardEventListener,
         authenticate.sendRequest(null, null);
     }
 
-private int convertStringToInt(String str) {
-		return Integer.parseInt(str.replace(".", ""));
-	}
+    private int convertStringToInt(final String str) {
+        return Integer.parseInt(str.replace(".", ""));
+    }
+
     /**
      * Get account information from server and go to AC Home
      */
     public void getAcHomewithtoggle() {
         // Go to AC Home
-    	  final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                  .getInstance(context);
-          final AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
-                  .getValueOfAppCache(context
-                          .getString(R.string.account_details));
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+        final AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
+                .getValueOfAppCache(context.getString(R.string.account_details));
 
-         if (cardHomedata != null) 
-         {
-        	  final Intent confirmationScreen = new Intent(context,
-                      CardNavigationRootActivity.class);
-              TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-              showToggleFlag = true;
-              confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
+        if (cardHomedata != null) {
+            final Intent confirmationScreen = new Intent(context,
+                    CardNavigationRootActivity.class);
+            // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+            showToggleFlag = true;
+            confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
 
-              context.startActivity(confirmationScreen);
+            context.startActivity(confirmationScreen);
 
-              // Close current activity
-              if (context instanceof Activity)
-                  ((Activity) context).finish();
-         } 
-         else 
-         {
-        	  
-	        Utils.updateAccountDetails(context, new CardEventListener() {
-	
-	            @Override
-	            public void onSuccess(Object data) {
-	                // TODO Auto-generated method stub
-	                Globals.setLoggedIn(true);
-	                final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-	                        .getInstance(context);
-	                final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
-	                        .getCookieManagerInstance();
-	                sessionCookieManagerObj.setCookieValues();
-	
-	                final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
-	
-	                callingActivity
-	                        .updateAccountInformation(AccountType.CARD_ACCOUNT);
-	
-	                CardSessionContext.getCurrentSessionDetails()
-	                        .setNotCurrentUserRegisteredForPush(false);
-	                CardSessionContext.getCurrentSessionDetails()
-	                        .setAccountDetails((AccountDetails) data);
-	
-	                cardShareDataStoreObj.addToAppCache(
-	                        context.getString(R.string.account_details),
-	                        (AccountDetails) data);
-	                final Intent confirmationScreen = new Intent(context,
-	                        CardNavigationRootActivity.class);
-	                TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-	                showToggleFlag = true;
-	                confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-	                context.startActivity(confirmationScreen);
-	
-	                // Close current activity
-	                if (context instanceof Activity)
-	                    ((Activity) context).finish();
-	
-	            }
-	
-	            @Override
-	            public void OnError(Object data) {
-	                // TODO Auto-generated method stub
-	                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-	                        CardLoginFacadeImpl.this);
-	                cardErrorResHandler.handleCardError((CardErrorBean) data);
-	
-	            }
-	        }, "Discover", "Loading......");
-         }
-    }
-    
-    
-    /**
-     * Get account information from server and go to AC Home
-     */
-    public void getAcHome() {
-        // Go to AC Home
-          final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
-                  .getInstance(context);
-          final AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
-                  .getValueOfAppCache(context
-                          .getString(R.string.account_details));
+            // Close current activity
+            if (context instanceof Activity) {
+                ((Activity) context).finish();
+            }
+        } else {
 
-         if (cardHomedata != null) 
-         {
-              final Intent confirmationScreen = new Intent(context,
-                      CardNavigationRootActivity.class);
-              TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-
-              context.startActivity(confirmationScreen);
-
-              // Close current activity
-              if (context instanceof Activity)
-                  ((Activity) context).finish();
-         } 
-         else 
-         {
-              
             Utils.updateAccountDetails(context, new CardEventListener() {
-    
+
                 @Override
-                public void onSuccess(Object data) {
-                    // TODO Auto-generated method stub
+                public void onSuccess(final Object data) {
+
                     Globals.setLoggedIn(true);
                     final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                             .getInstance(context);
                     final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
                             .getCookieManagerInstance();
                     sessionCookieManagerObj.setCookieValues();
-    
+
                     final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
-    
+
                     callingActivity
                             .updateAccountInformation(AccountType.CARD_ACCOUNT);
-    
+
                     CardSessionContext.getCurrentSessionDetails()
                             .setNotCurrentUserRegisteredForPush(false);
                     CardSessionContext.getCurrentSessionDetails()
                             .setAccountDetails((AccountDetails) data);
-    
+
                     cardShareDataStoreObj.addToAppCache(
-                            context.getString(R.string.account_details),
-                            (AccountDetails) data);
+                            context.getString(R.string.account_details), data);
                     final Intent confirmationScreen = new Intent(context,
                             CardNavigationRootActivity.class);
-                    TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+                    // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+                    showToggleFlag = true;
+                    confirmationScreen.putExtra("showToggleFlag",
+                            showToggleFlag);
                     context.startActivity(confirmationScreen);
-    
+
                     // Close current activity
-                    if (context instanceof Activity)
+                    if (context instanceof Activity) {
                         ((Activity) context).finish();
-    
+                    }
+
                 }
-    
+
                 @Override
-                public void OnError(Object data) {
-                    // TODO Auto-generated method stub
+                public void OnError(final Object data) {
+
                     CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                             CardLoginFacadeImpl.this);
                     cardErrorResHandler.handleCardError((CardErrorBean) data);
-    
+
                 }
             }, "Discover", "Loading......");
-         }
+        }
+    }
+
+    /**
+     * Get account information from server and go to AC Home
+     */
+    public void getAcHome() {
+        // Go to AC Home
+        final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                .getInstance(context);
+        final AccountDetails cardHomedata = (AccountDetails) cardShareDataStoreObj
+                .getValueOfAppCache(context.getString(R.string.account_details));
+
+        if (cardHomedata != null) {
+            final Intent confirmationScreen = new Intent(context,
+                    CardNavigationRootActivity.class);
+            // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+
+            context.startActivity(confirmationScreen);
+
+            // Close current activity
+            if (context instanceof Activity) {
+                ((Activity) context).finish();
+            }
+        } else {
+
+            Utils.updateAccountDetails(context, new CardEventListener() {
+
+                @Override
+                public void onSuccess(final Object data) {
+
+                    Globals.setLoggedIn(true);
+                    final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
+                            .getInstance(context);
+                    final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
+                            .getCookieManagerInstance();
+                    sessionCookieManagerObj.setCookieValues();
+
+                    final LoginActivityInterface callingActivity = (LoginActivityInterface) context;
+
+                    callingActivity
+                            .updateAccountInformation(AccountType.CARD_ACCOUNT);
+
+                    CardSessionContext.getCurrentSessionDetails()
+                            .setNotCurrentUserRegisteredForPush(false);
+                    CardSessionContext.getCurrentSessionDetails()
+                            .setAccountDetails((AccountDetails) data);
+
+                    cardShareDataStoreObj.addToAppCache(
+                            context.getString(R.string.account_details), data);
+                    final Intent confirmationScreen = new Intent(context,
+                            CardNavigationRootActivity.class);
+                    // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+                    context.startActivity(confirmationScreen);
+
+                    // Close current activity
+                    if (context instanceof Activity) {
+                        ((Activity) context).finish();
+                    }
+
+                }
+
+                @Override
+                public void OnError(final Object data) {
+
+                    CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                            CardLoginFacadeImpl.this);
+                    cardErrorResHandler.handleCardError((CardErrorBean) data);
+
+                }
+            }, "Discover", "Loading......");
+        }
     }
 
     /**
@@ -1114,161 +1104,178 @@ private int convertStringToInt(String str) {
      */
     public void doCardNormalFlow() {
         // Card normal flow
-/* 13.3 Changes */
-		SharedPreferences pushSharedPrefs = context.getSharedPreferences(
-				PushConstant.pref.PUSH_SHARED, // TODO: Push
-				Context.MODE_PRIVATE);
-		final Editor editor = pushSharedPrefs.edit();
-		SharedPreferences whatsNewSharedPrefs = context.getSharedPreferences(
-				context.getString(R.string.whats_new_sharedpref), // TODO: Push
-				Context.MODE_PRIVATE);
-		final Editor whatsNewEditor = whatsNewSharedPrefs.edit();
-		String appVersion = whatsNewSharedPrefs.getString(
-				context.getString(R.string.appVer), null);
+        /* 13.3 Changes */
+        SharedPreferences pushSharedPrefs = context.getSharedPreferences(
+                PushConstant.pref.PUSH_SHARED, // TODO: Push
+                Context.MODE_PRIVATE);
+        final Editor editor = pushSharedPrefs.edit();
+        SharedPreferences whatsNewSharedPrefs = context.getSharedPreferences(
+                context.getString(R.string.whats_new_sharedpref), // TODO: Push
+                Context.MODE_PRIVATE);
+        final Editor whatsNewEditor = whatsNewSharedPrefs.edit();
+        String appVersion = whatsNewSharedPrefs.getString(
+                context.getString(R.string.appVer), null);
 
-		vendorId = getVID();
+        vendorId = getVID();
 
-		int currentAppVersion = convertStringToInt(context
-				.getString(R.string.xApplicationVersion));
-		Utils.log("APPVERSION CURRENT", "VERSION---" + currentAppVersion);
-		Intent intent;
-		if (null == appVersion
-				|| (null != appVersion && convertStringToInt(appVersion) < currentAppVersion)) {
-			whatsNewEditor.putString(context.getString(R.string.appVer),
-					context.getString(R.string.xApplicationVersion));
-			whatsNewEditor.commit();
-			intent = new Intent(context, WhatsNewActivity.class);
-		} else {
-			intent = new Intent(context, CardNavigationRootActivity.class);
+        int currentAppVersion = convertStringToInt(context
+                .getString(R.string.xApplicationVersion));
+        Utils.log("APPVERSION CURRENT", "VERSION---" + currentAppVersion);
+        Intent intent;
+        if (null == appVersion || null != appVersion
+                && convertStringToInt(appVersion) < currentAppVersion) {
+            whatsNewEditor.putString(context.getString(R.string.appVer),
+                    context.getString(R.string.xApplicationVersion));
+            whatsNewEditor.commit();
+            intent = new Intent(context, WhatsNewActivity.class);
+        } else {
+            intent = new Intent(context, CardNavigationRootActivity.class);
 
-		}
-		/* 13.3 Changes */
-		final Intent confirmationScreen = intent;
-        if (vendorId != null && !vendorId.equalsIgnoreCase(""))
-        {
+        }
+        /* 13.3 Changes */
+        final Intent confirmationScreen = intent;
+        if (vendorId != null && !vendorId.equalsIgnoreCase("")) {
             // Registration
-            GetPushRegistration pushRegistration = new GetPushRegistration(context, new CardEventListener() 
-            {
-	            @Override
-	            public void onSuccess(Object data) 
-	            {
-	                // TODO Auto-generated method stub
-	                GetPushData getPushData = (GetPushData) data;
-	                Utils.log(LOG_TAG, "---Push status -- "+ getPushData.resultCode);                            
-	                if (getPushData.resultCode.equalsIgnoreCase("F")) 
-	                {
-	                	//Register user with server for push notification
-						//If this fails, we dont need to show error.
-						try
-						{
-							registerPush();
-						} 
-						catch (JsonGenerationException e) 
-						{
-							e.printStackTrace();
-						}
-						catch (JsonMappingException e) 
-						{
-							e.printStackTrace();
-						}
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
-						catch (Exception e) 
-						{
-							e.printStackTrace();
-						}
-						
-	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,true);
-	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,false);
-	                } 
-	                else if (getPushData.resultCode.equalsIgnoreCase("o")) 
-	                {
-	                    // Setting other user flag to true so that JQM
-	                    // can have this flag.
-	                    String errorMsgForPush = context.getString(R.string.E_Push_Other_Account);
-	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_ERROR_AC_HOME,errorMsgForPush);
-	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,false);
-	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,true);
-	                } 
-	                else
-	                {
-	                    confirmationScreen.putExtra(PushConstant.extras.PUSH_GET_CALL_STATUS,false);
-	                    editor.putBoolean(PushConstant.pref.PUSH_OTHER_USER_STATUS,false);
-	                }
-	                editor.commit();
-	                confirmationScreen.putExtra("showToggleFlag",showToggleFlag);
-	                TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
-	                context.startActivity(confirmationScreen);
-	                if (context instanceof Activity)
-	                    ((Activity) context).finish();
-	            }
-	
-	            @Override
-	            public void OnError(Object data) {
-	                CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(CardLoginFacadeImpl.this);
-	                cardErrorResHandler.handleCardError((CardErrorBean) data);
-	            }
-	        });
+            GetPushRegistration pushRegistration = new GetPushRegistration(
+                    context, new CardEventListener() {
+                        @Override
+                        public void onSuccess(final Object data) {
+
+                            GetPushData getPushData = (GetPushData) data;
+                            Utils.log(LOG_TAG, "---Push status -- "
+                                    + getPushData.resultCode);
+                            if (getPushData.resultCode.equalsIgnoreCase("F")) {
+                                // Register user with server for push
+                                // notification
+                                // If this fails, we dont need to show error.
+                                try {
+                                    registerPush();
+                                } catch (JsonGenerationException e) {
+                                    e.printStackTrace();
+                                } catch (JsonMappingException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                confirmationScreen
+                                        .putExtra(
+                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
+                                                true);
+                                editor.putBoolean(
+                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
+                                        false);
+                            } else if (getPushData.resultCode
+                                    .equalsIgnoreCase("o")) {
+                                // Setting other user flag to true so that JQM
+                                // can have this flag.
+                                String errorMsgForPush = context
+                                        .getString(R.string.E_Push_Other_Account);
+                                confirmationScreen.putExtra(
+                                        PushConstant.extras.PUSH_ERROR_AC_HOME,
+                                        errorMsgForPush);
+                                confirmationScreen
+                                        .putExtra(
+                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
+                                                false);
+                                editor.putBoolean(
+                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
+                                        true);
+                            } else {
+                                confirmationScreen
+                                        .putExtra(
+                                                PushConstant.extras.PUSH_GET_CALL_STATUS,
+                                                false);
+                                editor.putBoolean(
+                                        PushConstant.pref.PUSH_OTHER_USER_STATUS,
+                                        false);
+                            }
+                            editor.commit();
+                            confirmationScreen.putExtra("showToggleFlag",
+                                    showToggleFlag);
+                            //
+                            context.startActivity(confirmationScreen);
+                            if (context instanceof Activity) {
+                                ((Activity) context).finish();
+                            }
+                        }
+
+                        @Override
+                        public void OnError(final Object data) {
+                            CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                    CardLoginFacadeImpl.this);
+                            cardErrorResHandler
+                                    .handleCardError((CardErrorBean) data);
+                        }
+                    });
 
             editor.putString(PushConstant.pref.PUSH_XID,
                     XtifySDK.getXidKey(context.getApplicationContext()));
             Utils.log(LOG_TAG, "--1--" + vendorId);
-            Utils.log(LOG_TAG,"--2--"+ XtifySDK.getXidKey(context.getApplicationContext()));
-            pushRegistration.sendRequest(XtifySDK.getXidKey(context.getApplicationContext()));
+            Utils.log(
+                    LOG_TAG,
+                    "--2--"
+                            + XtifySDK.getXidKey(context
+                                    .getApplicationContext()));
+            pushRegistration.sendRequest(XtifySDK.getXidKey(context
+                    .getApplicationContext()));
         } else if (vendorId == null || vendorId.equalsIgnoreCase("")) {
-			/* 13.3 Changes */
-			// final Intent confirmationScreen = new Intent(context,
-			// CardNavigationRootActivity.class);
-			/* 13.3 Changes */
+            /* 13.3 Changes */
+            // final Intent confirmationScreen = new Intent(context,
+            // CardNavigationRootActivity.class);
+            /* 13.3 Changes */
             confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-            TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+            // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
             context.startActivity(confirmationScreen);
-            if (context instanceof Activity)
+            if (context instanceof Activity) {
                 ((Activity) context).finish();
+            }
         } else {
-			/* 13.3 Changes */
-			// final Intent confirmationScreen = new Intent(context,
-			// CardNavigationRootActivity.class);
-			/* 13.3 Changes */
+            /* 13.3 Changes */
+            // final Intent confirmationScreen = new Intent(context,
+            // CardNavigationRootActivity.class);
+            /* 13.3 Changes */
             confirmationScreen.putExtra("showToggleFlag", showToggleFlag);
-            TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
+            // TrackingHelper.trackPageView(AnalyticsPage.CARD_LOGIN);
             context.startActivity(confirmationScreen);
-            if (context instanceof Activity)
+            if (context instanceof Activity) {
                 ((Activity) context).finish();
+            }
         }
 
     }
-    
+
     /**
-	 * This method will send sever XID with acceptance status so register user 
-	 * with server 
-	 * @throws JsonGenerationException
-	 * @throws JsonMappingException
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	public void registerPush() throws JsonGenerationException, JsonMappingException, IOException, Exception
-	{
-		PostPushRegistration postPushRegistration = new PostPushRegistration(context, new CardEventListener()
-		{
-			
-			@Override
-			public void onSuccess(Object data)
-			{
-				GetPushData data2 = (GetPushData) data;
-				Utils.log(LOG_TAG, "--Response Data -- "+data2.resultCode);
-			}
-			
-			@Override
-			public void OnError(Object data)
-			{
-				//Do nothing
-			}
-		});
-		
-		//Sending server to acceptance status with the XID
-		postPushRegistration.sendRequest(XtifySDK.getXidKey(context.getApplicationContext()), "Y");
-	}
+     * This method will send sever XID with acceptance status so register user
+     * with server
+     * 
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     * @throws Exception
+     */
+    public void registerPush() throws JsonGenerationException,
+            JsonMappingException, IOException, Exception {
+        PostPushRegistration postPushRegistration = new PostPushRegistration(
+                context, new CardEventListener() {
+
+                    @Override
+                    public void onSuccess(final Object data) {
+                        GetPushData data2 = (GetPushData) data;
+                        Utils.log(LOG_TAG, "--Response Data -- "
+                                + data2.resultCode);
+                    }
+
+                    @Override
+                    public void OnError(final Object data) {
+                        // Do nothing
+                    }
+                });
+
+        // Sending server to acceptance status with the XID
+        postPushRegistration.sendRequest(
+                XtifySDK.getXidKey(context.getApplicationContext()), "Y");
+    }
 }
