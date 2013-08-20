@@ -8,9 +8,8 @@ import java.util.Map;
 
 import android.content.Context;
 
-import com.discover.mobile.common.DiscoverApplication;
-
 import com.discover.mobile.card.common.SessionCookieManager;
+import com.discover.mobile.common.DiscoverApplication;
 
 /**
  * This is wrapper class which will facilitate to access App cache

@@ -9,19 +9,11 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 
-import com.discover.mobile.common.DiscoverActivityManager;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
-import com.discover.mobile.common.facade.FacadeFactory;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.ui.modals.ModalAlertWithOneButton;
 import com.discover.mobile.card.common.ui.modals.ModalAlertWithTwoButtons;
 import com.discover.mobile.card.common.ui.modals.ModalDefaultTopView;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.login.register.ForgotBothAccountInformationActivity;
@@ -30,6 +22,12 @@ import com.discover.mobile.card.login.register.ForgotPasswordAccountInformationA
 import com.discover.mobile.card.login.register.ForgotUserIdActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 /**
  * 
@@ -151,19 +149,20 @@ public class CardErrorUIWrapper implements CardErrHandler {
                         bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
                         FacadeFactory.getLoginFacade().navToLoginWithMessage(
                                 activeActivity, bundle);
-                    }
-                    else if (activeActivity instanceof ForgotUserIdActivity || activeActivity instanceof ForgotPasswordAccountInformationActivity || activeActivity instanceof ForgotBothAccountInformationActivity ) {
+                    } else if (activeActivity instanceof ForgotUserIdActivity
+                            || activeActivity instanceof ForgotPasswordAccountInformationActivity
+                            || activeActivity instanceof ForgotBothAccountInformationActivity) {
                         Utils.log("ondismiss dialog", "call logout activity");
-                       
-                        Intent intent = new Intent(activeActivity,ForgotCredentialsActivity.class);
-                        activeActivity.startActivity(intent);        
+
+                        Intent intent = new Intent(activeActivity,
+                                ForgotCredentialsActivity.class);
+                        activeActivity.startActivity(intent);
                         modal.dismiss();
                         activeActivity.finish();
-                        
-                    }
-                    else if (activeActivity instanceof RegistrationAccountInformationActivity) {
+
+                    } else if (activeActivity instanceof RegistrationAccountInformationActivity) {
                         Utils.log("ondismiss dialog", "call logout activity");
-                       
+
                         final Bundle bundle = new Bundle();
                         bundle.putBoolean(
                                 IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE,
@@ -173,8 +172,7 @@ public class CardErrorUIWrapper implements CardErrHandler {
                                 activeActivity, bundle);
                         modal.dismiss();
                         activeActivity.finish();
-                    }
-                    else {
+                    } else {
                         Utils.log("ondismiss dialog", "modal dismiss");
                         modal.dismiss();
                     }
@@ -221,9 +219,8 @@ public class CardErrorUIWrapper implements CardErrHandler {
             footerValue = Integer.parseInt(footerStatus);
         }
 
-        
         view.hideFeedbackView();
-        
+
         switch (footerValue) {
         case 101:
 
@@ -310,7 +307,6 @@ public class CardErrorUIWrapper implements CardErrHandler {
     @Override
     public void showErrorsOnScreen(final CardErrorHandlerUi errorHandlerUi,
             final String errorText) {
-        // TODO Auto-generated method stub
         if (errorHandlerUi != null) {
             errorHandlerUi.getErrorLabel().setText(errorText);
             errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
@@ -359,66 +355,57 @@ public class CardErrorUIWrapper implements CardErrHandler {
 
     @Override
     public void handleHttpForbiddenError() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void handleHttpUnauthorizedError() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void handleSessionExpired() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void handleGenericError(final int httpErrorCode) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void handleLoginAuthFailure(final CardErrorHandlerUi errorHandlerUi,
             final String errorMessage) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public ModalAlertWithOneButton handleLockedOut(
             final CardErrorHandlerUi errorHandlerUi, final String errorText) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public ModalAlertWithOneButton handleHttpInternalServerErrorModal() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public ModalAlertWithOneButton handleHttpFraudNotFoundUserErrorModal(
             final CardErrorHandlerUi mErrorHandlerUi, final String message) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public ModalAlertWithOneButton createErrorModal(final int errorCode,
             final int titleText, final int errorText) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public ModalAlertWithOneButton handleHttpServiceUnavailableModal(
             final String errorText) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -440,7 +427,6 @@ public class CardErrorUIWrapper implements CardErrHandler {
     @Override
     public ModalAlertWithOneButton createErrorModal(final String titleText,
             final String errorText) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

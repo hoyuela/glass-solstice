@@ -26,13 +26,10 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.utils.CommonUtils;
-
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
+import com.discover.mobile.card.auth.strong.StrongAuthHandler;
+import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -41,18 +38,16 @@ import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText;
 import com.discover.mobile.card.common.uiwidget.CustomDatePickerDialog;
 import com.discover.mobile.card.common.uiwidget.DatePickerEditText;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.card.common.uiwidget.SsnEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
-
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.EnhancedAccountSecurityActivity;
-import com.discover.mobile.card.auth.strong.StrongAuthHandler;
-import com.discover.mobile.card.auth.strong.StrongAuthListener;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.services.auth.forgot.ForgotBoth;
 import com.discover.mobile.card.services.auth.forgot.ForgotPassword;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
-
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -124,9 +119,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected TextView helpNumber;
     protected TextView provideFeedback;
     protected TextView welcomeHeading;
-  //Defect id 95853
-    protected TextView privacy_terms ;
-  //Defect id 95853
+    // Defect id 95853
+    protected TextView privacy_terms;
+    // Defect id 95853
     protected TextView cancel;
 
     // INPUT FIELDS
@@ -164,10 +159,12 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             AccountInformationDetails details, String value);
 
     protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-    
-    /*  13.4 Code CleanUp*/
-/*    protected abstract NetworkServiceCall<?> createServiceCall(
-            AsyncCallback<Object> callback, AccountInformationDetails details);*/
+
+    /* 13.4 Code CleanUp */
+    /*
+     * protected abstract NetworkServiceCall<?> createServiceCall(
+     * AsyncCallback<Object> callback, AccountInformationDetails details);
+     */
 
     protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
         ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
@@ -192,9 +189,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         progress.initChangePasswordHeader(0);
 
         loadAllViews();
-  /*      13.4 chnages start*/
+        /* 13.4 chnages start */
         setSpinnerStyle();
-        /*      13.4 chnages End*/
+        /* 13.4 chnages End */
         setupFieldsAndLabels();
         setupCustomTextChangedListeners();
         provideFeedback.setOnClickListener(this);
@@ -210,19 +207,19 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthSucess(final Object data) {
-                // TODO Auto-generated method stub
+
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthSkipped(final Object data) {
-                // TODO Auto-generated method stub
+
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthNotEnrolled(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -230,7 +227,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthError(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -238,7 +235,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthCardLock(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -246,21 +243,23 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         };
     }
 
-    /*      13.4 chnages start*/
+    /* 13.4 chnages start */
     private void setSpinnerStyle() {
-		// TODO Auto-generated method stub
-    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo , R.drawable.card_spinner_invalid_holo_light);
-    	birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo, R.drawable.card_spinner_invalid_holo_light);
-    	cardExpDatePicker.setupDefaultAppearance();
-    	birthDatePicker.setupDefaultAppearance();
-	}
 
-    /*      13.4 chnages End*/
-	/**
+        cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
+                R.drawable.card_spinner_invalid_holo_light);
+        birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
+                R.drawable.card_spinner_invalid_holo_light);
+        cardExpDatePicker.setupDefaultAppearance();
+        birthDatePicker.setupDefaultAppearance();
+    }
+
+    /* 13.4 chnages End */
+    /**
      * Initialize the member variables that will reference UI elements.
      */
     public void loadAllViews() {
-        welcomeHeading = (TextView)findViewById(R.id.forgot_password);
+        welcomeHeading = (TextView) findViewById(R.id.forgot_password);
         accountIdentifierFieldLabel = (TextView) findViewById(R.id.account_info_label_one_label);
         accountIdentifierFieldRestrictionsLabel = (TextView) findViewById(R.id.account_information_input_info_label);
         accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);
@@ -278,9 +277,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         continueButton = (Button) findViewById(R.id.account_info_continue_button);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         cancel = (TextView) findViewById(R.id.account_info_cancel_label);
-      //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
-      //Defect id 95853
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
+        // Defect id 95853
     }
 
     /**
@@ -504,11 +503,12 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             // submitFormInfo();
             submit();
         } else {
-        	/*Defect id 95859*/
-        	if(!(accountIdentifierField.isNull()&& ssnField.isNull() && birthDatePicker.isNull() && cardExpDatePicker.isNull())){
-        		showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-        	}
-            
+            /* Defect id 95859 */
+            if (!(accountIdentifierField.isNull() && ssnField.isNull()
+                    && birthDatePicker.isNull() && cardExpDatePicker.isNull())) {
+                showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+            }
+
             resetScrollPosition();
         }
 
@@ -573,7 +573,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * @param v
      *            the calling View
      */
-    public void goBack(@SuppressWarnings("unused") final View v) {
+    public void goBack(final View v) {
         goBack();
     }
 
@@ -796,13 +796,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public void onSuccess(final Object data) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void OnError(final Object data) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -813,7 +811,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
 

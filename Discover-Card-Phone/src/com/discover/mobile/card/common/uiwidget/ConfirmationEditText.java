@@ -9,10 +9,19 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.utils.CommonUtils;
 
-import com.discover.mobile.card.R;
-
+/**
+ * 
+ * ©2013 Discover Bank
+ * 
+ * Widget for confirmation edit text
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class ConfirmationEditText extends ValidatedInputField {
     private boolean isUserId = false;
     private EditText editTextToMatch;

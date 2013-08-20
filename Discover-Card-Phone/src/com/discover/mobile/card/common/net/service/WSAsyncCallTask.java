@@ -17,16 +17,14 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.view.Surface;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorUtil;
 import com.discover.mobile.card.common.net.json.JacksonObjectMapperHolder;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.services.auth.AccountDetails;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
