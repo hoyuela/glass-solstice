@@ -3,6 +3,8 @@ package com.discover.mobile.bank.deposit;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -12,6 +14,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -45,8 +48,8 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.common.BaseActivity;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, AnimationListener {
@@ -103,6 +106,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private final int ANIMATIONDURATION = 1000;
 
 	private int count = THREE;
+
+	private boolean shouldResizeImage = false;
+	private Size bestCameraSize;
 
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
@@ -676,7 +682,15 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			if(lastPicture != null) {
 				final int fullQuality = 100;
 				final FileOutputStream fos = getFileOutputStream();
-				lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				if(shouldResizeImage){
+					final int maxImageWidth = 
+							Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+					final int newHeight = bestCameraSize.height*maxImageWidth/bestCameraSize.width;
+					Bitmap.createScaledBitmap(lastPicture, maxImageWidth, newHeight, true)
+					.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}else{
+					lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}
 				fos.close();
 			}
 		} catch (final FileNotFoundException e) {
@@ -809,20 +823,23 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup the parameters for the camera that might be useful.
 	 */
 	private void setupCameraParameters() {
-		final Camera.Parameters parameters = camera.getParameters();
 		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+		final int maxJpegQuality = 100;
+		final Camera.Parameters parameters = camera.getParameters();
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		//Set the best image size
+		bestCameraSize = getBestImageSize(sizes, maxImageWidth);
 
-		Size smallCaptureSize = null;
-
-		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
-				smallCaptureSize = size;
-			}
+		//If the image is larger than 1600 set the boolean shouldResize to true
+		if(bestCameraSize.width > maxImageWidth){
+			shouldResizeImage = true;
+		}else{
+			shouldResizeImage = false;
 		}
 
-		if(smallCaptureSize != null) {
-			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
+		//Set the camera parameters
+		if(bestCameraSize != null) {
+			parameters.setPictureSize(bestCameraSize.width, bestCameraSize.height);
 		}
 
 		/**
@@ -833,11 +850,66 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * Add a check to see if supportFlashModes returns null.  
 		 * -Julian
 		 */
-		if (null != parameters.getSupportedFlashModes() 
-				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+		if (null != parameters.getSupportedFlashModes()
+				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)){
 			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		}
+
+		//Setup the picture quality
+		parameters.setPictureFormat(ImageFormat.JPEG);
+		parameters.setJpegQuality(maxJpegQuality);
+
 		camera.setParameters(parameters);
+	}
+
+	/**
+	 * Get the best image size that should be taken.  This method may return null if the bestSize is not set.
+	 * If designed width is larger than 1600, the application will set the shouldResizeImage to true.
+	 * Note this method will sort the items.
+	 * @param sizes - list of possible sizes
+	 * @param maxImageWidth - int representing the maximum width that the image can be
+	 * @return the best size
+	 */
+	private Size getBestImageSize(final List<Size> sizes, final int maxImageWidth){
+		Size bestSize = null;
+
+		//Sort the list in order from highest width to lowest
+		Collections.sort(sizes, new Comparator<Size>(){
+
+			@Override
+			public int compare(final Size lhs, final Size rhs) {
+				if (lhs.width == rhs.width) {
+					return 0;
+				} else if (lhs.width > rhs.width) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+
+		});
+
+		final int arrayLength = sizes.size();
+		for(int i = 0; i < arrayLength; i++){
+			final Size size = sizes.get(i);
+
+			//If there is only one item in the array use that item
+			if(arrayLength == 1){
+				bestSize = size;
+				//If the length is equal to max length (1600) set the image size
+			}else if(size.width == maxImageWidth){
+				bestSize = sizes.get(i);
+				break;
+				//If the length dipped below the max length (1600) take the next size up
+			}else if(size.width < maxImageWidth && i > 0){
+				bestSize = sizes.get(i-1);
+				break;
+			}else{
+				bestSize = size;
+			}
+		}
+
+		return bestSize;
 	}
 
 	/**

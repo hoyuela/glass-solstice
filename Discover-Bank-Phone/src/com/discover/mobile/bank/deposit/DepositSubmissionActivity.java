@@ -3,6 +3,8 @@ package com.discover.mobile.bank.deposit;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +37,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.CompletionLis
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 
@@ -66,10 +69,6 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	/**Conversion to decimal for the compression*/
 	private static final long PERCENTAGE_CONVERSION = 100;
 
-	/**Thresh hold value that the check needs to be for compression*/
-	private static final int HEIGHT_THRESH = 1600;
-	private static final int WIDTH_THRESH = 1200;
-
 	/**Analytics values*/
 	private int frontImageHeight = 0;
 	private int frontImageWidth = 0;
@@ -84,10 +83,20 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deposit_submission);
 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
+
+		/**
+		 * Get the data for the service call.  
+		 * 
+		 * **NOTE: 	This must be done before setting the calling activity.
+		 * 			If it is set after, the baseline devices will have memory issues
+		 * 			trying to load the images and compress them.
+		 * 
+		 */
+		final DepositDetail data = getDepositDetails();
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
 		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
-		submit();
+		submit(data);
 	}
 
 	/**
@@ -109,10 +118,10 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 	/**
 	 * Submit the check images and the information about the checks and what account to deposit to.
+	 * @param data - deposit data to submit
 	 */
-	private void submit() {
+	private void submit( final DepositDetail data) {
 		setImageParams();
-		final DepositDetail data = getDepositDetails();
 		final SubmitCheckDepositCall call = BankServiceCallFactory.createSubmitCheckDepositCall(data, this);
 		final Bundle bundle = new Bundle();
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_HEIGHT, frontImageHeight);
@@ -139,25 +148,69 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		final Camera.Parameters parameters = camera.getParameters();
 		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		final Size smallCaptureSize = getBestImageSize(sizes, maxImageWidth);
 
-		Size smallCaptureSize = null;
-
-		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
-				smallCaptureSize = size;
-			}
-		}
-
-		frontImageHeight = smallCaptureSize.height;
-		frontImageWidth = smallCaptureSize.width;
-
-		if(frontImageHeight < HEIGHT_THRESH && frontImageWidth < WIDTH_THRESH){
-			isEqualOrAboveThresh = false;
-		}else{
+		if(frontImageWidth >= maxImageWidth){ 
+			frontImageHeight = smallCaptureSize.height*maxImageWidth/smallCaptureSize.width;
+			frontImageWidth = maxImageWidth; 
 			isEqualOrAboveThresh = true;
+		}else{
+			frontImageHeight = smallCaptureSize.height;
+			frontImageWidth = smallCaptureSize.width;
+			isEqualOrAboveThresh = false;
 		}
 
 		camera.release();
+	}
+
+	/**
+	 * Get the best image size that should be taken.  This method may return null if the bestSize is not set.
+	 * If designed width is larger than 1600, the application will set the shouldResizeImage to true.
+	 * Note this method will sort the items.
+	 * @param sizes - list of possible sizes
+	 * @param maxImageWidth - int representing the maximum width that the image can be
+	 * @return the best size
+	 */
+	private Size getBestImageSize(final List<Size> sizes, final int maxImageWidth){
+		Size bestSize = null;
+
+		//Sort the list in order from highest width to lowest
+		Collections.sort(sizes, new Comparator<Size>(){
+
+			@Override
+			public int compare(final Size lhs, final Size rhs) {
+				if (lhs.width == rhs.width) {
+					return 0;
+				} else if (lhs.width > rhs.width) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+
+		});
+
+		final int arrayLength = sizes.size();
+		for(int i = 0; i < arrayLength; i++){
+			final Size size = sizes.get(i);
+
+			//If there is only one item in the array use that item
+			if(arrayLength == 1){
+				bestSize = size;
+				//If the length is equal to max length (1600) set the image size
+			}else if(size.width == maxImageWidth){
+				bestSize = sizes.get(i);
+				break;
+				//If the length dipped below the max length (1600) take the next size up
+			}else if(size.width < maxImageWidth){
+				bestSize = sizes.get(i-1);
+				break;
+			}else{
+				bestSize = size;
+			}
+		}
+
+		return bestSize;
 	}
 
 	/**
@@ -195,7 +248,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	 * @return a base64 encoded image that has been JPEG encoded and compressed.
 	 */
 	private String getCompressedImageFromPath(final String path) {
-		final StringBuilder base64Image = new StringBuilder();
+		String base64Image = StringUtility.EMPTY;
 
 		if(!Strings.isNullOrEmpty(path)) {
 			final ByteArrayOutputStream imageBitStream = new ByteArrayOutputStream();
@@ -211,24 +264,25 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 			if(decodedImage != null) {
 				compression = isEqualOrAboveThresh ? COMPRESSION : MAX_COMPRESSION;
-				decodedImage.compress(Bitmap.CompressFormat.JPEG, compression, imageBitStream);
+				decodedImage.compress(Bitmap.CompressFormat.JPEG, compression, imageBitStream);				
+				//Set the decoded image to null since its already in the bit stream.
+				//This helps save memory on lower end devices.
+				decodedImage.recycle();
+
 			} else{
 				Log.e(TAG, "Error : Could not compress decoded image!");
 			}
 
+			base64Image = Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP);
+
 			//If this was the front check get the size of the image
 			if(path.equals(CheckDepositCaptureActivity.FRONT_PICTURE)){
-				frontImageCompressedSize = imageBitStream.toByteArray().length;
+				frontImageCompressedSize = base64Image.length();
 			}
 
-			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
-
-			if(Strings.isNullOrEmpty(base64Image.toString())) {
-				Log.e(TAG, "Error : Compressed Image is Empty!");
-			}
 		}
 
-		return base64Image.toString();
+		return base64Image;
 	}
 
 	//Start the animator task.
