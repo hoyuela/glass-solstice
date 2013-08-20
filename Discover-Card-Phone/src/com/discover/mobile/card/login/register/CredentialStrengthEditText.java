@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.InputFilter;
@@ -16,13 +15,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.InputValidator;
 import com.discover.mobile.card.common.uiwidget.ValidatedInputField;
-
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 
 /**
  * Editable View which validates the text entered with a password or user id
@@ -149,38 +146,37 @@ public class CredentialStrengthEditText extends ValidatedInputField {
                 if (!hasFocus && !isValid()) {
                     loadResources();
                     mStrengthMeter = mInvalidImage;
-                	/*13.4 Global UI*/
-                }else
-                {
-                	setRightDrawableGrayX();
+                    /* 13.4 Global UI */
+                } else {
+                    setRightDrawableGrayX();
                 }
-            	/*13.4 Global UI*/
+                /* 13.4 Global UI */
             }
         });
     }
-    
-	/*13.4 Global UI*/
+
+    /* 13.4 Global UI */
     @Override
     protected int getRightDrawablePadding() {
-		final int paddingInDp = 90;
-		final float padding = 0.5f;
-		final float scale = getResources().getDisplayMetrics().density;
-		final int paddingInPx = (int) (paddingInDp * scale + padding);
-		return paddingInPx;
-	}
+        final int paddingInDp = 90;
+        final float padding = 0.5f;
+        final float scale = getResources().getDisplayMetrics().density;
+        final int paddingInPx = (int) (paddingInDp * scale + padding);
+        return paddingInPx;
+    }
 
-    
     @Override
     /** Sets the right drawable to the gray X image */
-	protected void setRightDrawableGrayX() {
+    protected void setRightDrawableGrayX() {
 
-		this.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.card_blank_drawable,
-				0);
-		this.setCompoundDrawablePadding(getRightDrawablePadding());
+        this.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                R.drawable.card_blank_drawable, 0);
+        this.setCompoundDrawablePadding(getRightDrawablePadding());
 
-	}
-	/*13.4 Global UI*/
-    
+    }
+
+    /* 13.4 Global UI */
+
     /** Inherited method from ValidatedInputField, overridden to disable */
     @Override
     protected void setupTextChangedListener() {
@@ -365,8 +361,8 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         super.setupDefaultAppearance();
         loadResources();
 
-        //scaleAllImages(this.getHeight(), this.getWidth());
-      
+        // scaleAllImages(this.getHeight(), this.getWidth());
+
         this.setmStrengthMeter(mNoTextImage);
     }
 
@@ -528,25 +524,25 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         canvas.getClipBounds(mRect);
         if (mStrengthMeter != null) {
             // Calculate Position of Strength Meter
-            final float yoffset = 1;
             final float xoffset = 1;
-            
+
             final float x = this.getWidth() - mStrengthMeter.getWidth()
                     + mRect.left + xoffset;
-            //final float y = this.getScrollY() - yoffset;
+            // final float y = this.getScrollY() - yoffset;
             final float y = this.getHeight() - mStrengthMeter.getHeight();
 
             // Draw Strength meter in the tail of the EditText
             canvas.drawBitmap(mStrengthMeter, x, y, mPaint);
-            if(mTouchRegion==null){
-            mTouchRegion = new Rect();
+            if (mTouchRegion == null) {
+                mTouchRegion = new Rect();
 
-            mTouchRegion.left = getWidth() - mStrengthMeter.getWidth();
-            mTouchRegion.top = 0;
-            mTouchRegion.right = mTouchRegion.left + mStrengthMeter.getWidth();
-            mTouchRegion.bottom = this.getHeight();
+                mTouchRegion.left = getWidth() - mStrengthMeter.getWidth();
+                mTouchRegion.top = 0;
+                mTouchRegion.right = mTouchRegion.left
+                        + mStrengthMeter.getWidth();
+                mTouchRegion.bottom = this.getHeight();
             }
-            
+
         }
         this.invalidate();
     }
@@ -568,7 +564,7 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         final Bitmap oldNoTextImage = mNoTextImage;
 
         // Scale Strength meter Images to fit within the EditText
-       // scaleAllImages(h, w);
+        // scaleAllImages(h, w);
 
         // Set current strength meter image in its scaled version
         if (oldStrongImage.equals(mStrengthMeter)) {
@@ -618,45 +614,12 @@ public class CredentialStrengthEditText extends ValidatedInputField {
         }
         if (mWeakImage == null) {
             mWeakImage = BitmapFactory.decodeResource(this.getResources(),
-                    R.drawable.card_strengthmeter_red);//strength_meter_red
+                    R.drawable.card_strengthmeter_red);// strength_meter_red
         }
         if (mNoTextImage == null) {
             mNoTextImage = BitmapFactory.decodeResource(this.getResources(),
                     R.drawable.card_strengthmeter_grey);
         }
-    }
-
-    /**
-     * Scale Strength Meter images to fit within the textfield
-     * 
-     * @param height
-     *            The height to use for scaling the images
-     * @param width
-     *            The width to use for scaling the images
-     */
-    private void scaleAllImages(int height, int width) {
-        // Compensate for the size of the stroke around the field.
-
-        height += 5;
-        width += 1;
-
-        loadResources();
-
-        // Scale Images
-        mNoTextImage = scaleImage(mNoTextImage, height, width);
-        mStrongImage = scaleImage(mStrongImage, height, width);
-        mModerateImage = scaleImage(mModerateImage, height, width);
-        mWeakImage = scaleImage(mWeakImage, height, width);
-        mInvalidImage = scaleImage(mInvalidImage, height, width);
-
-        // Define touch region based on current control size
-        mTouchRegion = new Rect();
-
-        mTouchRegion.left = getRight() - 60;
-        mTouchRegion.top = 0;
-        mTouchRegion.right = mTouchRegion.left + 60;
-        mTouchRegion.bottom = this.getHeight();
-
     }
 
     /**

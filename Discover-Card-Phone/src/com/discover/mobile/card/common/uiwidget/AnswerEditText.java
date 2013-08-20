@@ -1,20 +1,11 @@
 package com.discover.mobile.card.common.uiwidget;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.utils.CommonUtils;
-
-import com.discover.mobile.card.common.InputValidator;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.InputValidator;
 
 /**
  * This class is an edit text which will function as Answer field.
@@ -43,53 +34,56 @@ public class AnswerEditText extends ValidatedInputField {
         super(context, attrs, defStyle);
     }
 
-    
-    public void setErrorLabelText(String text )
-    
+    public void setErrorLabelText(final String text)
+
     {
-        if(errorLabel!=null)
-        errorLabel.setText(text);
+        if (errorLabel != null) {
+            errorLabel.setText(text);
+        }
     }
-    
-    
-    public String getErrorLabelText()
-    {
+
+    public String getErrorLabelText() {
         String errorText = "";
-        if(errorLabel!=null)
-        errorText = errorLabel.getText().toString();
+        if (errorLabel != null) {
+            errorText = errorLabel.getText().toString();
+        }
         return errorText;
-        
+
     }
-    
+
     @Override
     public boolean isValid() {
-        
-        boolean valid =  true ;
-        if(isNull()){
-            setErrorLabelText(this.getResources().getString(R.string.answer_not_entered)); 
-            valid = false ;
-        }else if(isSpaceEntered()){
-            setErrorLabelText(this.getResources().getString(R.string.space_entered));
-            valid = false ;
-        }else if(isSpecialCharacterEntered()){
-            setErrorLabelText(this.getResources().getString(R.string.special_characters_entered));
-            valid = false ;
-        }else
-        {
-            valid = true ;
+
+        boolean valid = true;
+        if (isNull()) {
+            setErrorLabelText(this.getResources().getString(
+                    R.string.answer_not_entered));
+            valid = false;
+        } else if (isSpaceEntered()) {
+            setErrorLabelText(this.getResources().getString(
+                    R.string.space_entered));
+            valid = false;
+        } else if (isSpecialCharacterEntered()) {
+            setErrorLabelText(this.getResources().getString(
+                    R.string.special_characters_entered));
+            valid = false;
+        } else {
+            valid = true;
         }
-        
-        return valid ;
+
+        return valid;
     }
+
     /**
      * This method validates the current input for the letters and numeric value
      */
-   
-   /* public boolean isNull(){
-        
-        return Strings.isNullOrEmpty(this.getText().toString());
-    }*/
-    
+
+    /*
+     * public boolean isNull(){
+     * 
+     * return Strings.isNullOrEmpty(this.getText().toString()); }
+     */
+
     public boolean isSpecialCharacterEntered() {
         final String currentInput = this.getText().toString();
         boolean isValid = false;
@@ -105,31 +99,27 @@ public class AnswerEditText extends ValidatedInputField {
         boolean isSpaceEntered = false;
 
         /* 13.4 Defect ID 105360 start */
-       /* if (currentInput.contains(" ")) {
+        /*
+         * if (currentInput.contains(" ")) { isSpaceEntered = true; } else {
+         * isSpaceEntered = false; }
+         */
+        if (currentInput.startsWith(" ") || currentInput.endsWith(" ")) {
             isSpaceEntered = true;
         } else {
             isSpaceEntered = false;
-        }*/
-        if(currentInput.startsWith(" ")||currentInput.endsWith(" ")){
-        	isSpaceEntered = true;
-        }else
-        {
-        	isSpaceEntered = false;
         }
-        /* 13.4 Defect ID 105360 End */	
-        	
-        return isSpaceEntered ;
+        /* 13.4 Defect ID 105360 End */
+
+        return isSpaceEntered;
     }
 
     @Override
     protected void showErrorLabel() {
-        // TODO Auto-generated method stub
         if (errorLabel != null) {
-            if(!isNull())
-            errorLabel.setVisibility(View.VISIBLE);
+            if (!isNull()) {
+                errorLabel.setVisibility(View.VISIBLE);
+            }
         }
     }
-   
 
-    
 }

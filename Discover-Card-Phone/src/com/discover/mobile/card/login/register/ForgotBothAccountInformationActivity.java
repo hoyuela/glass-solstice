@@ -5,18 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.callback.AsyncCallback;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
-import com.discover.mobile.common.net.NetworkServiceCall;
-import com.discover.mobile.common.utils.CommonUtils;
-
-import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.utils.CommonUtils;
 
 /**
  * ForgotBothAccountInformationActivity - provides layout customization to the
@@ -40,7 +35,7 @@ public class ForgotBothAccountInformationActivity extends
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         accountIdentifierField.setFieldAccountNumber();
-        /*13.4 Changes Start */
+        /* 13.4 Changes Start */
         welcomeHeading.setText(R.string.forgot_both_title);
     }
 
@@ -57,15 +52,14 @@ public class ForgotBothAccountInformationActivity extends
         details.acctNbr = CommonUtils.getSpacelessString(value);
     }
 
-    /*  13.4 Code CleanUp*/
-  /*  @Override
-    protected NetworkServiceCall<?> createServiceCall(
-            final AsyncCallback<Object> callback,
-            final AccountInformationDetails details) {
-
-        return new AccountInformationCall(this, callback, details);
-    }
-*/
+    /* 13.4 Code CleanUp */
+    /*
+     * @Override protected NetworkServiceCall<?> createServiceCall( final
+     * AsyncCallback<Object> callback, final AccountInformationDetails details)
+     * {
+     * 
+     * return new AccountInformationCall(this, callback, details); }
+     */
     /**
      * The Activity that will appear after a successful Strong Auth challenge.
      */
@@ -89,37 +83,34 @@ public class ForgotBothAccountInformationActivity extends
     @Override
     public void goBack() {
 
-        //Defect id 97237
+        // Defect id 97237
         final Intent forgotCredentials = new Intent(this,
                 ForgotCredentialsActivity.class);
         startActivity(forgotCredentials);
-      //Defect id 97237
+        // Defect id 97237
         finish();
     }
 
     @Override
     public void showCustomAlert(final AlertDialog alert) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showOneButtonAlert(final int title, final int content,
             final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showDynamicOneButtonAlert(final int title,
             final String content, final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.provide_feedback_button) {
             if (!accountIdentifierField.isUsernameField()) {
                 Utils.createProvideFeedbackDialog(
@@ -133,16 +124,17 @@ public class ForgotBothAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
-            //Defect id 95853
-        }else if(v.getId() == R.id.privacy_terms)
-        {
-            //Changes for 13.4 start
-//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(ForgotBothAccountInformationActivity.this , PrivacyTermsLanding.class);
+            // Defect id 95853
+        } else if (v.getId() == R.id.privacy_terms) {
+            // Changes for 13.4 start
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(
+                    ForgotBothAccountInformationActivity.this,
+                    PrivacyTermsLanding.class);
             startActivity(privacyTerms);
-            //Changes for 13.4 end
+            // Changes for 13.4 end
         }
-        //Defect id 95853
+        // Defect id 95853
     }
 
 }
