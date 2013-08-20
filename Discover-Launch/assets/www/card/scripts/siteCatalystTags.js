@@ -1284,4 +1284,23 @@ dfs.crd.sct.onClickEligibleForEditVerifyPage = function(amountSelected) {
 	     //showSysException(err);
 	 }
 }
+
+dfs.crd.sct.pageErrorTrackingSiteCat = function(errMessage) {
+	 try{
+		 s.prop10=errMessage;
+		s.tl(this,'o','Inline Errors');
+		s.manageVars("clearVars"); 
+		 
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
+
+dfs.crd.sct.bankAccountDeletedModal = function(errMessage) {
+	 try{
+		 s.pageName="/ManagePayments/AccountDeleted";
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
 /************************Tagging Spec - 13.4  - End**************************/
