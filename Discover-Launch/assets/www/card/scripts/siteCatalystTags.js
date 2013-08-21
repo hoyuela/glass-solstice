@@ -1279,7 +1279,7 @@ dfs.crd.sct.onClickEligibleForEditReviewEditPage = function(selectedPayMode) {
 
 dfs.crd.sct.onClickEligibleForEditVerifyPage = function(amountSelected) {
 	 try{
-		 s.eVar59=amountSelected;
+		 s.eVar60=amountSelected;
 	 }catch(err){
 	     //showSysException(err);
 	 }
