@@ -12,6 +12,13 @@ import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 
+/**
+ * WhatsNewAvailable is linear layout. which dynamically create feature view
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class WhatsNewAvailable extends LinearLayout implements
         WhatsNewConstants {
 

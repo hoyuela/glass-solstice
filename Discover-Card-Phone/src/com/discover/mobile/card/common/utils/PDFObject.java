@@ -2,10 +2,20 @@ package com.discover.mobile.card.common.utils;
 
 import java.io.File;
 
+/**
+ * 
+ * ©2013 Discover Bank
+ * 
+ * POGO Class for PDF Object
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class PDFObject {
 
-    private  File file;
-    private  boolean success;
+    private File file;
+    private boolean success;
     private String title;
     private String message;
 

@@ -1210,8 +1210,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 
  #search #r4-wrap .searchresultsresponse{width: 350px; margin: 0 0 6px 0;}
  #search #r4-wrap #search-sortContainer{margin: 8px 0 0 0;}
- #search #r4-wrap #sortByLabel{font-weight:bold;}
-
+ #search #r4-wrap #sortByLabel{/*font-weight:bold;*/color: #8A9499;}/*R13.3 global change 12/08/2013*/
  #search #r4-wrap .invalid{
     border:1px solid red !important;
 	display:block !important;
@@ -1402,7 +1401,7 @@ only screen and (min-device-pixel-ratio: 1.5)
 
 /* with multiple calendars */
 .ui-datepicker.ui-datepicker-multi { width:auto; }
-.ui-datepicker-multi .ui-datepicker-group { float:left; }
+/*.ui-datepicker-multi .ui-datepicker-group { float:left; }*//*defect#105911 13.3 global change 14/8/2013- starts here*/
 .ui-datepicker-multi .ui-datepicker-group table { width:95%; margin:0 auto .4em; }
 .ui-datepicker-multi-2 .ui-datepicker-group { width:50%; }
 .ui-datepicker-multi-3 .ui-datepicker-group {width:100%;/* width:33.3%;*/ }/*13.3 global change 1/08/13 */

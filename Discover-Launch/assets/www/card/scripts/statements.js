@@ -181,6 +181,11 @@ dfs.crd.stmt.search = (function () {
 			calHideWrap.hide();
 		});
 
+/*13.3 global change starts 12/08/13*/
+		$("#specificDate,#fromDate,#toDate").click(function(){
+			$(this).parent().parent().siblings('.js-date-picker-input').trigger("click");
+		});
+/*13.3 global change ends 12/08/13*/
 		// Create Dynamic bindinds for the Calendar Date Picker UI
 		$(".js-date-picker-input").click(function() {
 			//set the current instance of the input field to be filled out by the date picker

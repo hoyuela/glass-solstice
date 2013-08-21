@@ -13,7 +13,6 @@ public class PasscodeUtils {
 
 	private static final String TAG = "PasscodeUtils";
     private static final String APP_SHARED_PREFS = PasscodeUtils.class.getSimpleName(); //  Name of the file -.xml
-	public static final String PREFS_HAS_SEEN_OVERVIEW = "hasUserSeenOverview";
     private SharedPreferences _sharedPrefs;
     private Editor _prefsEditor;
     
@@ -26,18 +25,6 @@ public class PasscodeUtils {
         this._sharedPrefs = context.getSharedPreferences(APP_SHARED_PREFS, Activity.MODE_PRIVATE);
         this._prefsEditor = _sharedPrefs.edit();
     }
-
-	/*
-	 * Has user seen the passcode overview modal? Happens once per device.
-	 */
-	public boolean hasSeenOverview() {
-		return _sharedPrefs.getBoolean(PREFS_HAS_SEEN_OVERVIEW, false);
-	}
-
-	public void setOverviewSeen() {
-		_prefsEditor.putBoolean(PREFS_HAS_SEEN_OVERVIEW, true);
-		_prefsEditor.commit();
-	}
 
 	public String getFirstName() {
 		return _sharedPrefs.getString(PREFS_USERS_FIRST_NAME, null);

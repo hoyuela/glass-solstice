@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -508,6 +509,7 @@ public class BankTransferStepOneFragment extends BankTransferBaseFragment implem
 			amountField.enableBankAmountTextWatcher(false);
 			amountField.setText(bundle.getString(BankExtraKeys.AMOUNT));
 			amountField.enableBankAmountTextWatcher(true);
+			amountField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 			
 			if (bundle.getBoolean(DISPLAY_SENDON_CALENDAR, false)) {
 				resetCalendarEventListener();

@@ -115,6 +115,8 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 	 */
 	public abstract int getButtonResourceArray();
 
+	
+	
 	//-------------------------------------------------- Public Methods --------------------------------------------------
 	/**
 	 * Create the view
@@ -137,8 +139,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		super.onResume();
 
 		setupFooter();
-
-		createAndAddHeader();
+		if (table.getRefreshableView().getHeaderViewsCount() <= 1) {
+			createAndAddHeader();
+		}
 
 		final Bundle args = getArguments();
 		if(args != null) {
@@ -178,8 +181,13 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 				args.putSerializable(SELECTED_BUTTON_KEY, header.getSelectedButtonIndex());
 			}
 
-			args.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
-			args.putSerializable(CACHED_MAP, tableListsCache);
+			if(null != currentListKey) {
+				args.putSerializable(BankExtraKeys.CACHE_KEY, currentListKey);
+			}
+			if(null != tableListsCache) {
+				args.putSerializable(CACHED_MAP, tableListsCache);
+			}
+			
 			args.putBoolean(BankExtraKeys.IS_LOADING_MORE, getIsLoadingMore());
 			args.putBoolean(VIEW_HAS_LOADED, true);
 			saveTableScrollPositionToBundle(args);
@@ -204,7 +212,6 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		super.onPause();
 
 		saveStateToArgBundle(null);
-		table.getRefreshableView().removeHeaderView(header);
 
 		//Clear the observer to free up memory
 		header.clearObserver();
@@ -277,6 +284,12 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 
 			if(null != header){
 				header.setSelectedButton(tableDataCategory);
+			}
+			
+			//if the list does not allow for loading more, 
+			//make sure it is disabled by default
+			if (!cachedList.canLoadMore()) {
+				table.setMode(Mode.DISABLED);
 			}
 		}
 	}
@@ -490,6 +503,10 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 		if(bundleMap != null && bundleMap.size() > 0) {
 			tableListsCache.putAll(bundleMap);
 			args.putSerializable(CACHED_MAP, null);
+		}
+		
+		if((null == tableListsCache || tableListsCache.size() < 1) && null != currentListKey) {
+			tableListsCache.put(currentListKey, BankUser.instance().getCachedListForKey(currentListKey));
 		}
 	}
 
@@ -943,6 +960,9 @@ public abstract class LoadMoreBaseTable extends BaseFragment  implements Dynamic
 
 			if(isViewingCompletedTransfers && isExternalToInternalTransfer) {
 				holder.amount.setTextColor(getResources().getColor(R.color.green));
+			}
+			else {
+				holder.amount.setTextColor(getResources().getColor(R.color.black));
 			}
 		}
 

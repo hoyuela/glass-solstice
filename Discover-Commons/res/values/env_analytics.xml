@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="https://schemas.android.com/tools" tools:ignore="TypographyDashes">
      <string name="card_tracking_rsid">discovercardmobiledev</string>
-     <string name="bank_tracking_rsid">discoverbankmobiledev</string>
+     <string name="bank_tracking_rsid">discoverbankmobilenativedev</string>
      <string name="tracking_server">smetrics.discover.com</string>
      <string name="context_eds_prop">my.prop15</string>
      <string name="context_eds_var">my.eVar15</string>
@@ -19,4 +19,25 @@
      <string name="sso_tag">s.eVar43</string>
      <string name="account_tag">s.eVar41</string>
      <string name="single_sign_on_value"><![CDATA[<Single Sign On>]]></string>
+      
+     <string name="context_account_var">my.eVar44</string>
+     <string name="context_account_prop">my.prop44</string>
+     <string name="context_amount_var">my.eVar45</string>
+     <string name="context_amount_prop">my.prop45</string>
+     <string name="context_capture_front_flash_prop">my.prop43</string>
+     <string name="context_http_response_prop">my.prop46</string>
+     <string name="context_json_response_prop">my.prop47</string>
+     <string name="context_compression_ration_prop">my.prop53</string>
+     <string name="context_build_version_var">my.eVar48</string>
+     <string name="context_build_version_prop">my.prop48</string>
+     <string name="context_image_size_var">my.eVar49</string>
+     <string name="context_image_size_prop">my.prop49</string>
+     <string name="context_image_pixel_width_var">my.eVar51</string>  
+     <string name="context_image_pixel_width_prop">my.prop51</string>   
+     <string name="context_image_pixel_height_var">my.eVar52</string>   
+     <string name="context_image_pixel_height_prop">my.prop52</string>
+     <string name="context_request_timestamp_var">my.eVar54</string>
+     <string name="context_request_timestamp_prop">my.prop54</string>
+     <string name="context_mobile_app_version_var">my.eVar42</string>
+     
 </resources>

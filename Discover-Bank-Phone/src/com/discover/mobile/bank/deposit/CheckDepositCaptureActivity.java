@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -44,6 +45,7 @@ import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.common.BaseActivity;
+import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 
@@ -75,7 +77,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private TextView frontLabel;
 	private TextView backLabel;
 	private TextView captureHelpTextView;
-	
+
 	//BREADCRUMB CHECKMARKS
 	private ImageView stepOneCheck;
 	private ImageView stepTwoCheck;
@@ -93,6 +95,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	private int count = THREE;
 
+	private boolean shouldResizeImage = false;
+	private Size bestCameraSize;
+
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
 	private OrientationEventListener orientationListener = null;
@@ -105,7 +110,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.check_deposit_capture);
 
 		loadViews();
@@ -128,7 +133,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 */
 	public OrientationEventListener createOrientationListener() {
 		final OrientationEventListener ret = 
-				new OrientationEventListener(this.getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
+				new OrientationEventListener(getContext(), SensorManager.SENSOR_DELAY_NORMAL) {
 			@Override
 			public void onOrientationChanged(final int arg0) {
 				final int requestedOrientation = 
@@ -144,7 +149,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 		return ret;  
 	}
-	
+
 	/**
 	 * Start the listener for orientation change.
 	 */
@@ -154,7 +159,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		}
 		orientationListener.enable();
 	}
-	
+
 	/**
 	 * Stop the listener for orientation change.
 	 */
@@ -174,7 +179,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		//make sure the close button is visible
 		if(closeButton.getVisibility() == View.INVISIBLE) {
 			closeButton.setVisibility(View.VISIBLE);
-		    setupButtons();
+			setupButtons();
 		}
 	}
 
@@ -187,7 +192,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		orientationListener.disable();
 
 		isPaused = true;	
-		
+
 		//Check to see if onPause was called because the activity is being finished
 		if( !isFinishing() ) {
 			//Reset the capture image if the user pauses the fragment during countdown or 
@@ -203,18 +208,18 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		super.onPause();
 	}
 
-	
+
 	/**
 	 * If the async task is not finished when the activity stops, we need to cancel it.
 	 */
 	@Override
 	public void onStop() {
 		super.onStop();
-		
+
 		if(timerTask != null) {
 			timerTask.cancel(true);
 		}
-		
+
 		resetCountdown();
 	}
 
@@ -296,7 +301,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		boolean bothImagesDeleted = true;
 		bothImagesDeleted &= deleteBackImage(context);
 		bothImagesDeleted &= deleteFrontImage(context);
-		
+
 		return bothImagesDeleted;
 	}
 
@@ -322,7 +327,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			public void onClick(final View v) {
 				if(!isStepOneChecked() || !isStepTwoChecked()) {
 					clearImageCacheIfNotRetaking();
-					 setResult(RESULT_CANCELED);    
+					setResult(RESULT_CANCELED);    
 					finish();
 				}
 			}
@@ -342,7 +347,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 
 	private void showModal(final AlertDialog modal) {
 		if(modal != null) {
-			this.showCustomAlert(modal);
+			showCustomAlert(modal);
 		}
 	}
 
@@ -436,7 +441,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			return true;		    
 		}
 	};
-	
+
 	/**
 	 * Starts the process of capturing an image.
 	 */
@@ -446,12 +451,12 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		startCountdownTimer();
 		recordAnalyticsPictureTaking();
 	}
-	
+
 	/**
 	 * Record the analytics data for this section of the application.
 	 */
 	private void recordAnalyticsPictureTaking() {
-		
+
 		//Track the taking of pictures
 		if(!isStepOneChecked()){
 			BankTrackingHelper.forceTrackPage(R.string.bank_capture_front);
@@ -543,7 +548,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private void goToNextStep() {
 		if(isStepTwoChecked()){
 			this.setResult(Activity.RESULT_OK);
-			this.finish();
+			finish();
 		}else if(isStepOneChecked()){
 			frontLabel.setTextColor(getResources().getColor(R.color.field_copy));
 			backLabel.setTextColor(getResources().getColor(R.color.sub_copy));
@@ -623,7 +628,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			if(lastPicture != null) {
 				final int fullQuality = 100;
 				final FileOutputStream fos = getFileOutputStream();
-				lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				if(shouldResizeImage){
+					final int maxImageWidth = 
+							Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+					final int newHeight = 
+							MCDUtils.getAdjustedImageHeight(bestCameraSize.height, bestCameraSize.width, maxImageWidth);
+					Bitmap.createScaledBitmap(lastPicture, maxImageWidth, newHeight, true)
+					.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}else{
+					lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}
 				fos.close();
 			}
 		} catch (final FileNotFoundException e) {
@@ -756,22 +770,25 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup the parameters for the camera that might be useful.
 	 */
 	private void setupCameraParameters() {
+		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+		final int maxJpegQuality = 100;
 		final Camera.Parameters parameters = camera.getParameters();
-		final int maxImageWidth = 1600;
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		//Set the best image size
+		bestCameraSize = MCDUtils.getBestImageSize(sizes, maxImageWidth);
 
-		Size smallCaptureSize = null;
-
-		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
-				smallCaptureSize = size;
-			}
+		//If the image is larger than 1600 set the boolean shouldResize to true
+		if(bestCameraSize.width > maxImageWidth){
+			shouldResizeImage = true;
+		}else{
+			shouldResizeImage = false;
 		}
 
-		if(smallCaptureSize != null) {
-			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
+		//Set the camera parameters
+		if(bestCameraSize != null) {
+			parameters.setPictureSize(bestCameraSize.width, bestCameraSize.height);
 		}
-		
+
 		/**
 		 * Checking to see if flash mode auto is supported before setting this parameters. 
 		 * This was needed because check deposit was crashing on the new Nexus 7.
@@ -780,10 +797,15 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * Added check to see if getSupportFlashMode() return null
 		 * -Julian
 		 */
-		if ((null != parameters.getSupportedFlashModes())
+		if (null != parameters.getSupportedFlashModes()
 				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)){
 			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		}
+
+		//Setup the picture quality
+		parameters.setPictureFormat(ImageFormat.JPEG);
+		parameters.setJpegQuality(maxJpegQuality);
+
 		camera.setParameters(parameters);
 	}
 
@@ -805,25 +827,25 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final int piHalf = pi >> 1;
 
 		switch (rotation) {
-			case Surface.ROTATION_0: 
-				degrees = 0; 
-				break;
-			case Surface.ROTATION_90: 
-				degrees = piHalf; 
-				break;
-			case Surface.ROTATION_180: 
-				degrees = pi; 
-				break;
-			case Surface.ROTATION_270: 
-				degrees = twoPi - piHalf; 
-				break;
+		case Surface.ROTATION_0: 
+			degrees = 0; 
+			break;
+		case Surface.ROTATION_90: 
+			degrees = piHalf; 
+			break;
+		case Surface.ROTATION_180: 
+			degrees = pi; 
+			break;
+		case Surface.ROTATION_270: 
+			degrees = twoPi - piHalf; 
+			break;
 		}
 
 		int result;
 
 		if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 			result = (info.orientation + degrees) % twoPi;
-			
+
 			// compensate the mirror
 			result = (twoPi - result) % twoPi;  
 		} else {  
@@ -876,10 +898,10 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private SimpleContentModal getHelpModal() {
 		final Spanned helpContent = Html.fromHtml(
 				getResources().getString(R.string.bank_deposit_capture_help_content));
-		
+
 		final SimpleContentModal modal = new SimpleContentModal(this, R.string.bank_deposit_capture_help_title,
-																helpContent.toString(), R.string.ok);
-		
+				helpContent.toString(), R.string.ok);
+
 		modal.getButton().setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -918,7 +940,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			}
 		}
 
-		return(result);
+		return result;
 	}
 
 	/**

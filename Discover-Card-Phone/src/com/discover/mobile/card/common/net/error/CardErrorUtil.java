@@ -63,17 +63,23 @@ final public class CardErrorUtil {
                 "RespCode:" + response.getResponseCode());
         switch (response.getResponseCode()) {
         case 409:
-        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid user id  password
+        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid
+                                                                 // user id
+                                                                 // password
         case CardErrorResponseHandler.INVALID_INPUT: // 500 http status code
         case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
-            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
+            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(
+                    response, false);
             if (null == cardErrBean1.getErrorCode()) {
                 cardErrBean1.setErrorCode("" + response.getResponseCode());
             }
             return cardErrBean1;
-        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503: maintenance error
-            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(response, true);
+        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503:
+                                                                 // maintenance
+                                                                 // error
+            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(
+                    response, true);
             if (null == cardErrBean2.getErrorCode()) {
                 cardErrBean2.setErrorCode("" + response.getResponseCode());
             }
@@ -201,13 +207,22 @@ final public class CardErrorUtil {
                 }
 
             } catch (final JsonParseException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+                e.printStackTrace();
+                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
+                        getMessageforErrorCode("0"), "0", false, "1");
+                // cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final JsonMappingException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+                e.printStackTrace();
+                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
+                        getMessageforErrorCode("0"), "0", false, "1");
+                // cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final IOException e) {
-                cardErrBean = new CardErrorBean(e.toString(), true);
+                e.printStackTrace();
+                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
+                        getMessageforErrorCode("0"), "0", false, "1");
+                // cardErrBean = new CardErrorBean(e.toString(), true);
 
             }
 

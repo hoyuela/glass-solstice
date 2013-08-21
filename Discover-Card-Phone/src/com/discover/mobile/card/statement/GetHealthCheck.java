@@ -6,27 +6,35 @@ import android.util.Log;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
-import com.discover.mobile.card.passcode.model.json.Status;
 
+/**
+ * 
+ * GetHealthCheck calls health check URL from statement activity's Image load
+ * error condition
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class GetHealthCheck {
 
-	private static String TAG = "GetHealthCheck";
+    private static String TAG = "GetHealthCheck";
 
-	private String url;
-	private Activity activity;
+    private String url;
+    private Activity activity;
 
-	public GetHealthCheck(Activity activity, String baseUrl) {
-		this.activity = activity;
-		this.url = baseUrl + "/healthCheck";
-	}
+    public GetHealthCheck(final Activity activity, final String baseUrl) {
+        this.activity = activity;
+        url = baseUrl + "/healthCheck";
+    }
 
-	public void loadDataFromNetwork(CardEventListener cel) {
-		Log.v(TAG, "Performing health check");
-		WSRequest request = new WSRequest();
-		request.setUrl(this.url);
-		WSAsyncCallTask serviceCall = new WSAsyncCallTask(this.activity,
-				new Status(), null, null, cel);
-		serviceCall.execute(request);
-	}
+    public void loadDataFromNetwork(final CardEventListener cel) {
+        Log.v(TAG, "Performing health check");
+        WSRequest request = new WSRequest();
+        request.setUrl(url);
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(activity,
+                null, null, null, cel);
+        serviceCall.execute(request);
+    }
 
 }

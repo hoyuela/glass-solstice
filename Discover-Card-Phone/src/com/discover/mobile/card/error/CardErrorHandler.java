@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.EditText;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.IntentExtraKey;
@@ -23,8 +24,6 @@ import com.discover.mobile.common.error.NavigateToLoginOnDismiss;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.ui.modals.ModalAlertWithOneButton;
 
-import com.discover.mobile.card.R;
-
 /**
  * Used to handle error responses to a NetworkServiceCall<>.
  * 
@@ -32,6 +31,7 @@ import com.discover.mobile.card.R;
  * 
  */
 
+@SuppressWarnings("deprecation")
 public class CardErrorHandler extends BaseErrorHandler {
 
     static final String TAG = CardErrorHandler.class.getSimpleName();
@@ -293,8 +293,7 @@ public class CardErrorHandler extends BaseErrorHandler {
 
     @Override
     public void handleHttpForbiddenError() {
-        // TODO: Will complete this in the Handle Technical Difficulties User
-        // Story
+
     }
 
     /*

@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,9 +23,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -34,9 +35,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.facade.FacadeFactory;
-
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
@@ -45,11 +43,11 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sessiontimer.PageTimeOutUtil;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
-
-import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.navigation.CardMenuInterface;
 import com.discover.mobile.card.phonegap.plugins.ResourceDownloader;
 import com.discover.mobile.card.services.auth.AccountDetails;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 /**
  * This class is Util class and will contain Utility functions
@@ -57,11 +55,12 @@ import com.discover.mobile.card.services.auth.AccountDetails;
  * @author cts
  * 
  */
+@SuppressLint("SetJavaScriptEnabled")
 public class Utils {
 
     static ProgressDialog progressBar;
 
-    public static boolean enableLogging = false;
+    public static boolean enableLogging = true;
 
     private final static int CARD_NUMBER_LENGTH_OK = 16;
     private final static String CARD_NUMBER_PREFIX = "6011";
@@ -162,7 +161,7 @@ public class Utils {
                 + toHash;
 
         final MessageDigest digester = MessageDigest.getInstance("SHA-256");
-        final byte[] preHash = safeToHash.getBytes(); // TODO consider
+        final byte[] preHash = safeToHash.getBytes();
         // specifying charset
 
         // Reset happens automatically after digester.digest() but we don't know
@@ -262,8 +261,9 @@ public class Utils {
             try {
                 if (progressBar != null && !progressBar.isShowing()) {
                     progressBar.show();
-                } else if (null != strMessage && strMessage != "")
+                } else if (null != strMessage && strMessage != "") {
                     progressBar.setMessage(strMessage);
+                }
             } catch (final Exception e) {
                 e.printStackTrace();
             }
@@ -278,7 +278,7 @@ public class Utils {
     public static void updateAccountDetails(final Context context,
             final CardEventListener cardEventListener, final String strTitle,
             final String strMessage) {
-        // TODO Auto-generated method stub
+
         final WSRequest request = new WSRequest();
 
         // Setting the headers available for the service
@@ -316,7 +316,6 @@ public class Utils {
      */
     public static void createProvideFeedbackDialog(final Context context,
             final String referer) {
-        // TODO Auto-generated method stub
 
         final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(context);
@@ -444,7 +443,6 @@ public class Utils {
             public void onReceivedError(final WebView view,
                     final int errorCode, final String description,
                     final String failingUrl) {
-                // TODO Auto-generated method stub
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 Utils.hideSpinner();
             }
@@ -459,7 +457,6 @@ public class Utils {
             @Override
             public void onPageStarted(final WebView view, final String url,
                     final Bitmap favicon) {
-                // TODO Auto-generated method stub
                 super.onPageStarted(view, url, favicon);
                 Utils.isSpinnerAllowed = true;
                 Utils.showSpinner(context, null, null);
@@ -474,7 +471,6 @@ public class Utils {
              */
             @Override
             public void onPageFinished(final WebView view, final String url) {
-                // TODO Auto-generated method stub
                 super.onPageFinished(view, url);
                 Utils.hideSpinner();
             }
@@ -636,6 +632,7 @@ public class Utils {
      * @param title
      * @param message
      */
+    @SuppressWarnings("deprecation")
     public static void showOkAlert(final Context context, final String title,
             final String message) {
         // We can't download the file anywhere.
@@ -694,7 +691,7 @@ public class Utils {
         CardEventListener logoutCardEventListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 final Bundle bundle = new Bundle();
                 PageTimeOutUtil.getInstance(cur_Activity).destroyTimer();
                 if (isTimeOut) {
@@ -703,7 +700,8 @@ public class Utils {
                     bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
                 } else {
                     bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-                    bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                    bundle.putBoolean(
+                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
                 }
                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
                         cur_Activity, bundle);
@@ -712,7 +710,7 @@ public class Utils {
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 final Bundle bundle = new Bundle();
                 PageTimeOutUtil.getInstance(cur_Activity).destroyTimer();
                 if (isTimeOut) {
@@ -721,7 +719,8 @@ public class Utils {
                     bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, true);
                 } else {
                     bundle.putBoolean(IntentExtraKey.SESSION_EXPIRED, false);
-                    bundle.putBoolean(IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
+                    bundle.putBoolean(
+                            IntentExtraKey.SHOW_SUCESSFUL_LOGOUT_MESSAGE, true);
                 }
 
                 FacadeFactory.getLoginFacade().navToLoginWithMessage(
@@ -740,37 +739,39 @@ public class Utils {
                 null, "Discover", null, logoutCardEventListener);
         serviceCall.execute(request);
     }
-    
-    private static final String REFERER = "cardHome-pg";	
-	/***
-	 * Initialize and set action to Footer Items privacy menu & Term condition
-	 * 
-	 * @param mainView
-	 */
-	public static void setFooter(View mainView, final Activity activity) {
-		final TextView provideFeedback = (TextView) mainView
-				.findViewById(R.id.provide_feedback_button);
-		provideFeedback.setTextColor(activity.getResources().getColor(
-				R.color.footer_link));
-		provideFeedback.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Utils.createProvideFeedbackDialog(activity, REFERER);
-			}
-		});
-		final TextView termsOfUse = (TextView) mainView
-				.findViewById(R.id.privacy_terms);
-		termsOfUse.setTextColor(activity.getResources().getColor(
-				R.color.footer_link));
-		termsOfUse.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View arg0) {
-				((CardMenuInterface) activity)
-				.sendNavigationTextToPhoneGapInterface(activity.getString(R.string.privacy_terms_title));
-			}
-		});
-	}
+    private static final String REFERER = "cardHome-pg";
+
+    /***
+     * Initialize and set action to Footer Items privacy menu & Term condition
+     * 
+     * @param mainView
+     */
+    public static void setFooter(final View mainView, final Activity activity) {
+        final TextView provideFeedback = (TextView) mainView
+                .findViewById(R.id.provide_feedback_button);
+        provideFeedback.setTextColor(activity.getResources().getColor(
+                R.color.footer_link));
+        provideFeedback.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                Utils.createProvideFeedbackDialog(activity, REFERER);
+            }
+        });
+        final TextView termsOfUse = (TextView) mainView
+                .findViewById(R.id.privacy_terms);
+        termsOfUse.setTextColor(activity.getResources().getColor(
+                R.color.footer_link));
+        termsOfUse.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(final View arg0) {
+                ((CardMenuInterface) activity)
+                        .sendNavigationTextToPhoneGapInterface(activity
+                                .getString(R.string.privacy_terms_title));
+            }
+        });
+    }
     /*
      * Changes for 13.4 end
      */

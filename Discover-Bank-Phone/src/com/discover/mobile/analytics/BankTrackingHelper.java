@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.os.Bundle;
+
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.BankAccountSummaryFragment;
 import com.discover.mobile.bank.atm.SearchByLocationFragment;
@@ -28,6 +30,7 @@ import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.utils.StringUtility;
+import com.google.common.base.Strings;
 
 /**
  * Class used to wrap the tracking helper to track the users as they move through out the application.
@@ -57,6 +60,19 @@ public final class BankTrackingHelper {
 	private static final String ACCOUNT_TAG_START = "DiscoverMobile";
 
 	/**
+	 * Special keys for the check deposit analytics
+	 */
+	public static final String TRACKING_IMAGE_HEIGHT = "height";
+	public static final String TRACKING_IMAGE_WIDTH = "width";
+	public static final String TRACKING_IMAGE_SIZE = "size";
+	public static final String TRACKING_IMAGE_COMPRESSION = "compression";
+	public static final String TRACKING_IMAGE_AMOUNT = "amount";
+	public static final String TRACKING_IMAGE_ACCOUNT = "account";
+	public static final String TRACKING_SUBMIT_TIME = "timestamp";
+	public static final String TRACKING_IMAGE_RESPONSE_CODE = "responseCode";
+	public static final String TRACKING_IMAGE_RESPONSE_JSON = "responseJson";
+
+	/**
 	 * Track the page in the application.  This method will determine if the page needs to 
 	 * be tracked.
 	 * 
@@ -73,7 +89,7 @@ public final class BankTrackingHelper {
 		}
 		previousTrackedPage = className;
 	}
-	
+
 	/**
 	 * Clear the previously tracked page so that the next page that is navigated to will get tracked.
 	 */
@@ -131,7 +147,7 @@ public final class BankTrackingHelper {
 				count++;
 			}
 
-			for(int i = 0; (count < MAX_ACCOUNT_NUMBER) && (i < types.size()); i++){
+			for(int i = 0; count < MAX_ACCOUNT_NUMBER && i < types.size(); i++){
 				final String type = types.get(i);
 				if(!string.toString().contains(type)){
 					string.append(COLON);
@@ -178,6 +194,71 @@ public final class BankTrackingHelper {
 	 */
 	private BankTrackingHelper() {
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Track specific details about the check deposit submission
+	 * @param extras - bundle of extras 
+	 */
+	public static void trackDepositSubmission(final Bundle extras) {
+		final Map<String, Object> map = new HashMap<String, Object>();
+
+		//Customer
+		map.put(TrackingHelper.CONTEXT_EDS_PROP, BankUser.instance().getCustomerInfo().id);
+		map.put(TrackingHelper.CONTEXT_EDS_VAR, BankUser.instance().getCustomerInfo().id);
+
+		//Account
+		map.put(DiscoverActivityManager.getString(R.string.context_account_var), extras.get(TRACKING_IMAGE_ACCOUNT));
+		map.put(DiscoverActivityManager.getString(R.string.context_account_prop), extras.get(TRACKING_IMAGE_ACCOUNT));
+
+		//Amount
+		map.put(DiscoverActivityManager.getString(R.string.context_amount_var), extras.get(TRACKING_IMAGE_AMOUNT));
+		map.put(DiscoverActivityManager.getString(R.string.context_amount_var), extras.get(TRACKING_IMAGE_AMOUNT));
+
+		//Response Code
+		map.put(DiscoverActivityManager.getString(R.string.context_http_response_prop), 
+				extras.get(TRACKING_IMAGE_RESPONSE_CODE));
+
+		//Error JSON
+		final String errorMessage = extras.getString(TRACKING_IMAGE_RESPONSE_JSON);
+		if(!Strings.isNullOrEmpty(errorMessage)){
+			map.put(DiscoverActivityManager.getString(R.string.context_json_response_prop), errorMessage);
+		}
+
+		//Compression
+		map.put(DiscoverActivityManager.getString(R.string.context_compression_ration_prop), 
+				extras.get(TRACKING_IMAGE_COMPRESSION));
+
+		//Build Id
+		map.put(DiscoverActivityManager.getString(R.string.context_build_version_var), 
+				DiscoverActivityManager.getString(R.string.xApplicationVersion));
+		map.put(DiscoverActivityManager.getString(R.string.context_build_version_prop), 
+				DiscoverActivityManager.getString(R.string.xApplicationVersion));
+
+		//Image size
+		map.put(DiscoverActivityManager.getString(R.string.context_image_size_var), extras.get(TRACKING_IMAGE_SIZE));
+		map.put(DiscoverActivityManager.getString(R.string.context_image_size_prop), extras.get(TRACKING_IMAGE_SIZE));
+
+		//Pixels long
+		map.put(DiscoverActivityManager.getString(R.string.context_image_pixel_width_var), 
+				extras.get(TRACKING_IMAGE_HEIGHT));
+		map.put(DiscoverActivityManager.getString(R.string.context_image_pixel_width_prop), 
+				extras.get(TRACKING_IMAGE_HEIGHT));
+
+		//Pixels wide
+		map.put(DiscoverActivityManager.getString(R.string.context_image_pixel_height_var), 
+				extras.get(TRACKING_IMAGE_WIDTH));
+		map.put(DiscoverActivityManager.getString(R.string.context_image_pixel_height_prop), 
+				extras.get(TRACKING_IMAGE_WIDTH));
+
+		//Request Timestamp
+		map.put(DiscoverActivityManager.getString(R.string.context_request_timestamp_var), 
+				extras.get(TRACKING_SUBMIT_TIME));
+		map.put(DiscoverActivityManager.getString(R.string.context_request_timestamp_prop), 
+				extras.get(TRACKING_SUBMIT_TIME));
+
+		TrackingHelper.trackBankPage(DiscoverActivityManager.getString(R.string.bank_capture_send_result), map);
+
 	}
 
 }

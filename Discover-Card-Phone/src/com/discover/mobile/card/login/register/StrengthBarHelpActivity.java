@@ -12,16 +12,13 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.common.NotLoggedInRoboActivity;
 import com.discover.mobile.common.ScreenType;
 import com.discover.mobile.common.error.ErrorHandler;
-import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.utils.CommonUtils;
-
-import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 
 /**
  * Activity definition used to display a help guide for either User ID or
@@ -40,9 +37,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             .getSimpleName();
     private static final String REFERER = "forgot-password-step2-pg";
     protected TextView provideFeedback;
-    //Defect id 95853
-    private TextView privacy_terms ;
-    //Defect id 95853
+    // Defect id 95853
+    private TextView privacy_terms;
+    // Defect id 95853
     protected TextView helpNumber;
 
     @Override
@@ -51,15 +48,15 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
         setContentView(R.layout.register_help_strength);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
-        //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
-        //Defect id 95853
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
+        // Defect id 95853
         helpNumber = (TextView) findViewById(R.id.help_number_label);
         provideFeedback.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(final View v) {
-                // TODO Auto-generated method stub
+
                 Utils.createProvideFeedbackDialog(StrengthBarHelpActivity.this,
                         REFERER);
             }
@@ -73,19 +70,20 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
                         StrengthBarHelpActivity.this);
             }
         });
-        //Defect id 95853
+        // Defect id 95853
         privacy_terms.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(final View v) {
-                //Changes for 13.4 start
-//              FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-                Intent privacyTerms = new Intent(StrengthBarHelpActivity.this , PrivacyTermsLanding.class);
+                // Changes for 13.4 start
+                // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+                Intent privacyTerms = new Intent(StrengthBarHelpActivity.this,
+                        PrivacyTermsLanding.class);
                 startActivity(privacyTerms);
-                //Changes for 13.4 end
+                // Changes for 13.4 end
             }
         });
-        //Defect id 95853
+        // Defect id 95853
         // Determine what help guide to configure the screen for based on extra
         // in INTENT
         final Bundle extras = getIntent().getExtras();
@@ -109,10 +107,10 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
      */
     private void setHelpIdStrengthViewAttr() {
         // Set Weak View Attributes
-    	/*13.4 Changes start*/
-    	TextView title =(TextView)findViewById(R.id.strengthtype);
-    	title.setText(R.string.user_id_strength);
-    	/*13.4 Changes end*/
+        /* 13.4 Changes start */
+        TextView title = (TextView) findViewById(R.id.strengthtype);
+        title.setText(R.string.user_id_strength);
+        /* 13.4 Changes end */
         View view = this.findViewById(R.id.reg_help_weak_pswd);
         if (null != view) {
             setViewItemAttr(view, R.string.account_info_help_level1,
@@ -138,7 +136,8 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level3,
                     R.string.account_info_help_action3,
                     R.string.account_info_help_msg3,
-                    R.drawable.card_strenghtbar_green_img, R.drawable.card_tick_green);
+                    R.drawable.card_strenghtbar_green_img,
+                    R.drawable.card_tick_green);
         }
     }
 
@@ -148,9 +147,9 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
      */
     private void setHelpPswdStrengthViewAttr() {
         // Set Weak View Attributes
-    	TextView title =(TextView)findViewById(R.id.strengthtype);
-    	title.setText(R.string.password_strength);
-    	
+        TextView title = (TextView) findViewById(R.id.strengthtype);
+        title.setText(R.string.password_strength);
+
         View view = this.findViewById(R.id.reg_help_weak_pswd);
         if (null != view) {
             setViewItemAttr(view, R.string.account_info_help_level1,
@@ -176,7 +175,8 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
             setViewItemAttr(view, R.string.account_info_help_level3,
                     R.string.account_info_help_action3,
                     R.string.account_info_help_msg3,
-                    R.drawable.card_strenghtbar_green_img, R.drawable.card_tick_green);
+                    R.drawable.card_strenghtbar_green_img,
+                    R.drawable.card_tick_green);
         }
     }
 
@@ -266,57 +266,53 @@ public class StrengthBarHelpActivity extends NotLoggedInRoboActivity {
 
     @Override
     public TextView getErrorLabel() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public List<EditText> getInputFields() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public void showCustomAlert(final AlertDialog alert) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showOneButtonAlert(final int title, final int content,
             final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showDynamicOneButtonAlert(final int title,
             final String content, final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public void setLastError(final int errorCode) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public int getLastError() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
     @Override
     public ErrorHandler getErrorHandler() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

@@ -25,7 +25,9 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.v(TAG, "onCreate");
-		TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_ENABLE_STEP1);
+		if (!this.isStopping) {
+			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_ENABLE_STEP1);
+		}
 	}
 	
 	@Override
@@ -83,4 +85,17 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 		}
 	}
 
+	private boolean isStopping = false;
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		this.isStopping = true;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.isStopping = false;
+	}
 }

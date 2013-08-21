@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -60,6 +61,7 @@ import com.discover.mobile.common.analytics.TrackingHelper;
  * 
  * @author sgoff0
  */
+@SuppressLint("SetJavaScriptEnabled")
 public class StatementActivity extends DroidGap {
 
     private static final String LOG_TAG = "StatementActivity";
@@ -84,12 +86,11 @@ public class StatementActivity extends DroidGap {
     private CountDownTimer mCountDownTimer;
 
     // page elements
-    private TextView mTextCycleDate;     
+    private TextView mTextCycleDate;
     private WebView mWebView;
     private ImageButton mBtnPrev;
     private ImageButton mBtnNext;
     private Button mBtnDownloadPDF;
-    
 
     private CharSequence mErrorMessage;
 
@@ -105,7 +106,7 @@ public class StatementActivity extends DroidGap {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statement);
         TrackingHelper.trackPageView(AnalyticsPage.STATEMENT_IMAGES);
@@ -114,7 +115,7 @@ public class StatementActivity extends DroidGap {
             processBundle();
         } catch (JSONException e) {
             Utils.log(LOG_TAG, "Error reading input");
-            // TODO show error that input couldn't be read properly
+
             finish();
         }
 
@@ -122,7 +123,7 @@ public class StatementActivity extends DroidGap {
         mWebView = (WebView) findViewById(R.id.statement_webView);
         mBtnDownloadPDF = (Button) findViewById(R.id.statement_btn_downloadPDF);
         mBtnPrev = (ImageButton) findViewById(R.id.statement_btn_prev);
-        mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);        
+        mBtnNext = (ImageButton) findViewById(R.id.statement_btn_next);
         mFadeInAnimation = AnimationUtils.loadAnimation(StatementActivity.this,
                 R.anim.fadein);
 
@@ -139,7 +140,7 @@ public class StatementActivity extends DroidGap {
             }
 
             @Override
-            public void onTick(long arg0) {
+            public void onTick(final long arg0) {
                 // Do nothing on tick, we only care when it expires
             }
         }.start();
@@ -151,35 +152,36 @@ public class StatementActivity extends DroidGap {
     }
 
     private final class HealthCheckListener implements CardEventListener {
-    	private String TAG = "HealthCheckListener";
-    	
-		@Override
-		public void OnError(Object data) {
-			Log.v(TAG, "Error: ");
-			CardErrorBean cardErrorBean = (CardErrorBean) data;
-			Log.v(TAG, "CardErrorBean: " + cardErrorBean.toString());
-			Log.v(TAG, "CardErrorBean Error code: " + cardErrorBean.getErrorCode());
-			//TODO get status code out of data
-			if (cardErrorBean.getErrorCode() == null) {
-				// cannot connect to URL, probably no internet
-				alertCloseActivity(getText(R.string.common_noInternetConnection_message));
-			} else if (cardErrorBean.getErrorCode().startsWith("401")) {
-				alertCloseActivity(getText(R.string.common_sessionExpired_message));
-			} else if (cardErrorBean.getErrorCode().startsWith("503")) {
-				setResult(MAINT_EXPIRE_SESSION);
-				finish();
-			} else {
-				// another error
-				finish();
-			}
-		}
+        private String TAG = "HealthCheckListener";
 
-		@Override
-		public void onSuccess(Object data) {
-			//do nothing
-			Log.v(TAG, "Success");
-		}
-	};
+        @Override
+        public void OnError(final Object data) {
+            Log.v(TAG, "Error: ");
+            CardErrorBean cardErrorBean = (CardErrorBean) data;
+            Log.v(TAG, "CardErrorBean: " + cardErrorBean.toString());
+            Log.v(TAG,
+                    "CardErrorBean Error code: " + cardErrorBean.getErrorCode());
+
+            if (cardErrorBean.getErrorCode() == null) {
+                // cannot connect to URL, probably no internet
+                alertCloseActivity(getText(R.string.common_noInternetConnection_message));
+            } else if (cardErrorBean.getErrorCode().startsWith("401")) {
+                alertCloseActivity(getText(R.string.common_sessionExpired_message));
+            } else if (cardErrorBean.getErrorCode().startsWith("503")) {
+                setResult(MAINT_EXPIRE_SESSION);
+                finish();
+            } else {
+                // another error
+                finish();
+            }
+        }
+
+        @Override
+        public void onSuccess(final Object data) {
+            // do nothing
+            Log.v(TAG, "Success");
+        }
+    };
 
     /**
      * Configures settings for specified webview
@@ -206,10 +208,9 @@ public class StatementActivity extends DroidGap {
 
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
-            public boolean onConsoleMessage(ConsoleMessage cm) {
-                Utils.log("StatementsWebView",
-                        cm.message() + " -- From line " + cm.lineNumber()
-                                + " of " + cm.sourceId());
+            public boolean onConsoleMessage(final ConsoleMessage cm) {
+                Utils.log("StatementsWebView", cm.message() + " -- From line "
+                        + cm.lineNumber() + " of " + cm.sourceId());
                 return true;
             }
         });
@@ -218,7 +219,8 @@ public class StatementActivity extends DroidGap {
             private CountDownTimer loadingTimer;
 
             @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            public void onPageStarted(final WebView view, final String url,
+                    final Bitmap favicon) {
                 isPageLoading = true;
                 Utils.log(LOG_TAG, "onPageStarted: " + url);
                 mWebView.setVisibility(View.INVISIBLE);
@@ -237,23 +239,24 @@ public class StatementActivity extends DroidGap {
                     }
 
                     @Override
-                    public void onTick(long arg0) {
+                    public void onTick(final long arg0) {
                         // Do nothing on tick, we only care when it expires
                     }
                 }.start();
             }
 
             @Override
-            public void onLoadResource(WebView view, String url) {
+            public void onLoadResource(final WebView view, final String url) {
                 Utils.log(LOG_TAG, "onLoadResource: " + url);
             }
 
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(final WebView view, final String url) {
                 super.onPageFinished(mWebView, url);
                 Utils.log(LOG_TAG, "onPageFinished: " + url);
-                if (null != loadingTimer)
+                if (null != loadingTimer) {
                     loadingTimer.cancel();
+                }
                 showUI();
                 mWebView.loadUrl("javascript:asyncEagerImageFetch()");
                 isPageLoading = false;
@@ -280,8 +283,9 @@ public class StatementActivity extends DroidGap {
 
         mWebView.startAnimation(mFadeInAnimation);
         mBtnDownloadPDF.startAnimation(mFadeInAnimation);
-        if (mProgressDialog != null)
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
+        }
     }
 
     private void hideUI() {
@@ -298,7 +302,6 @@ public class StatementActivity extends DroidGap {
         String statements = b.getString("statements");
         sJsonArray = new JSONArray(statements);
         if (sJsonArray.length() == 0) {
-            // TODO no content, define proper error
             alertCloseActivity(getText(R.string.statement_invalidData_message));
         }
         sBaseUrl = b.getString("baseUrl");
@@ -306,6 +309,7 @@ public class StatementActivity extends DroidGap {
         mStatementInfo.setIndex(b.getInt("index"));
     }
 
+    @SuppressWarnings("deprecation")
     private StatementInfo getStatementDataAtIndex(int index) {
         if (!isValidIndex(index)) {
             Utils.log(LOG_TAG, "Invalid index: " + index);
@@ -370,19 +374,20 @@ public class StatementActivity extends DroidGap {
             }
         } catch (JSONException e) {
             Utils.log("JSON Exception", e.getMessage());
-            // TODO handle error
+
         } catch (NumberFormatException nfe) {
             Utils.log("NumberFormatException", nfe.getMessage());
-            // TODO handle error
+
         }
 
         return statementInfo;
     }
 
-    private void loadWebView(StatementInfo statementInfo) {
+    @SuppressWarnings("deprecation")
+    private void loadWebView(final StatementInfo statementInfo) {
         // performServiceHealthCheck();
         if (statementInfo == null) {
-            // TODO handle error
+
             return;
         }
 
@@ -442,7 +447,7 @@ public class StatementActivity extends DroidGap {
         mWebView.loadData(html.toString(), "text/html", null);
     }
 
-    private String prefetchImageHtml(String date, int pageCount) {
+    private String prefetchImageHtml(final String date, final int pageCount) {
         StringBuilder html = new StringBuilder();
         for (int i = 1; i <= pageCount; i++) {
             html.append("new Image().src='" + sBaseUrl + "/" + date + "/" + i
@@ -453,19 +458,21 @@ public class StatementActivity extends DroidGap {
 
     private void performServiceHealthCheck() {
         long currentTime = new Date().getTime();
-        if (currentTime - sLastHealthCheck > (sHealthCheckThreshold)) {
+        if (currentTime - sLastHealthCheck > sHealthCheckThreshold) {
             Utils.log(LOG_TAG, "Performing healthcheck");
-//            new StatementHealthCheck().execute();
+            // new StatementHealthCheck().execute();
             Log.v(TAG, "About to call healthCheck");
-            new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
+            new GetHealthCheck(getActivity(), sBaseUrl)
+                    .loadDataFromNetwork(new HealthCheckListener());
             sLastHealthCheck = currentTime;
         }
     }
 
     /** Called when the user clicks the previous button */
-    public void navigatePrevious(View view) {
-        if (isPageLoading)
+    public void navigatePrevious(final View view) {
+        if (isPageLoading) {
             return;
+        }
 
         if (mStatementInfo == null) {
             mStatementInfo = new StatementInfo();
@@ -476,9 +483,10 @@ public class StatementActivity extends DroidGap {
     }
 
     /** Called when the user clicks the next button */
-    public void navigateNext(View view) {
-        if (isPageLoading)
+    public void navigateNext(final View view) {
+        if (isPageLoading) {
             return;
+        }
 
         if (mStatementInfo == null) {
             mStatementInfo = new StatementInfo();
@@ -489,15 +497,15 @@ public class StatementActivity extends DroidGap {
     }
 
     /** Called when the user clicks the download pdf button */
-    public void downloadPdf(View view) {
+    public void downloadPdf(final View view) {
         // performServiceHealthCheck();
         String url = sBaseUrl + "/" + mStatementInfo.getThisMonth().getDate()
                 + ".pdf";
         Utils.log(LOG_TAG, "Download pdf from: " + url);
 
         Utils.log(LOG_TAG, "Testing network connection");
-        if (!(Utils
-                .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)))) {
+        if (!Utils
+                .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
             Utils.log(LOG_TAG, "No network connection");
 
             alertCloseActivity(getText(R.string.common_noInternetConnection_message));
@@ -508,22 +516,23 @@ public class StatementActivity extends DroidGap {
     }
 
     /** Called when the user clicks the Logout button */
-    public void statementLogout(View view) {
+    public void statementLogout(final View view) {
 
         Utils.log(LOG_TAG, "Logout From Statement is called");
         setResult(STATEMENT_LOGOUT);
         finish();
     }
 
-    private boolean isValidIndex(int index) {
-        return (index >= 0 && index < sJsonArray.length());
+    private boolean isValidIndex(final int index) {
+        return index >= 0 && index < sJsonArray.length();
     }
 
     private static String[] month = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
     // formats date for header
-    private static String getDateString(String startDate, String endDate) {
+    private static String getDateString(final String startDate,
+            final String endDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.US);
         try {
             Date dStart = formatter.parse(startDate);
@@ -539,7 +548,7 @@ public class StatementActivity extends DroidGap {
                 // set text size smaller so all text can fit
                 dStartString = month[cStart.get(Calendar.MONTH)] + " "
                         + cStart.get(Calendar.DATE) + ", "
-                        + (cStart.get(Calendar.YEAR));
+                        + cStart.get(Calendar.YEAR);
             } else {
                 // set text size to default size
                 dStartString = month[cStart.get(Calendar.MONTH)] + " "
@@ -547,8 +556,7 @@ public class StatementActivity extends DroidGap {
             }
 
             return dStartString + " - " + month[cEnd.get(Calendar.MONTH)] + " "
-                    + cEnd.get(Calendar.DATE) + ", "
-                    + (cEnd.get(Calendar.YEAR));
+                    + cEnd.get(Calendar.DATE) + ", " + cEnd.get(Calendar.YEAR);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -566,98 +574,36 @@ public class StatementActivity extends DroidGap {
     public class JavaScriptInterface {
         Context mContext;
 
-        JavaScriptInterface(Context c) {
+        JavaScriptInterface(final Context c) {
             mContext = c;
         }
 
         public void imageLoadError() {
-            if (mStatementInfo.isError())
+            if (mStatementInfo.isError()) {
                 return;
+            }
             mStatementInfo.setError(true);
             // image failed to load, determine whether to check into why this
             // happened
 
-            if (!(Utils
-                    .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)))) {
+            if (!Utils
+                    .isNetworkConnection((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE))) {
                 alertCloseActivity(getText(R.string.common_noInternetConnection_message));
             } else {
-//                new StatementHealthCheck().execute();
-            	Log.v(TAG, "About to call healthCheck");
-                new GetHealthCheck(getActivity(), sBaseUrl).loadDataFromNetwork(new HealthCheckListener());
+                // new StatementHealthCheck().execute();
+                Log.v(TAG, "About to call healthCheck");
+                new GetHealthCheck(getActivity(), sBaseUrl)
+                        .loadDataFromNetwork(new HealthCheckListener());
             }
         }
     }
-
-
-	
-
-    /**
-     * Checks health of user's session. On no internet connection or non 200
-     * http status from service returns a session expired message
-     * 
-     * @author sgoff0
-     * 
-     */
-//    private class StatementHealthCheck extends AsyncTask<Void, Void, Integer> {
-//        @Override
-//        protected Integer doInBackground(Void... arg0) {
-//            final HttpClient client = new DefaultHttpClient();
-//            final HttpGet getRequest = new HttpGet(sBaseUrl + "/healthCheck");
-//            CookieSyncManager.getInstance().sync();
-//            String domain = sBaseUrl.substring(0, sBaseUrl.indexOf(".com") + 4);
-//            String cookies = CookieManager.getInstance().getCookie(domain);
-//            getRequest.setHeader("Cookie", cookies);
-//            Integer status = -1;
-//            try {
-//                HttpResponse response = client.execute(getRequest);
-//                final int statusCode = response.getStatusLine().getStatusCode();
-//                status = statusCode;
-//            } catch (IllegalStateException e) {
-//                Utils.log(LOG_TAG, "ISE: " + e.getMessage(), e);
-//                getRequest.abort();
-//                mStatementInfo.setError(true);
-//            } catch (Exception e) {
-//                Utils.log(LOG_TAG, "E: " + e.getMessage(), e);
-//                getRequest.abort();
-//                mStatementInfo.setError(true);
-//            } finally {
-//                if ((client instanceof AndroidHttpClient)) {
-//                    ((AndroidHttpClient) client).close();
-//                }
-//            }
-//
-//            return status;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Integer statusCode) {
-//            if (statusCode != HttpStatus.SC_OK) {
-//                Utils.log("StatementHealthCheck", "Error " + statusCode
-//                        + " while calling healthcheck " + sBaseUrl
-//                        + "/healthCheck");
-//                if (statusCode == -1) {
-//                    // cannot connect to URL, probably no internet
-//                    alertCloseActivity(getText(R.string.common_noInternetConnection_message));
-//                } else if (statusCode == 401) {
-//                    // session expired
-//                    alertCloseActivity(getText(R.string.common_sessionExpired_message));
-//                } else if (statusCode == 503) {
-//                    setResult(MAINT_EXPIRE_SESSION);
-//                    finish();
-//                } else {
-//                    // another error
-//                    finish();
-//                }
-//            }
-//        }
-//    }
 
     /**
      * Displays alert and closes activity
      * 
      * @param message
      */
-    private void alertCloseActivity(CharSequence message) {
+    private void alertCloseActivity(final CharSequence message) {
         mErrorMessage = message;
 
         mHandler.post(new Runnable() {
@@ -672,11 +618,11 @@ public class StatementActivity extends DroidGap {
                 AlertDialog alertDialog = new AlertDialog.Builder(
                         StatementActivity.this).create();
                 alertDialog.setMessage(mErrorMessage);
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
                         new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
+                            public void onClick(final DialogInterface dialog,
+                                    final int which) {
                                 Utils.log(LOG_TAG, "onClick: " + which);
                                 if (mWebView != null) {
                                     mWebView.destroy();
@@ -710,7 +656,7 @@ public class StatementActivity extends DroidGap {
         private static final String MSG_NO_PDF = "A PDF Viewer was not found to view the file.";
 
         @Override
-        protected PDFObject doInBackground(String... sUrl) {
+        protected PDFObject doInBackground(final String... sUrl) {
             try {
                 String url = sUrl[0];
                 return Utils.downloadPDF(url);
@@ -728,8 +674,9 @@ public class StatementActivity extends DroidGap {
             startToast.show();
         }
 
+        @SuppressWarnings("deprecation")
         @Override
-        protected void onPostExecute(PDFObject result) {
+        protected void onPostExecute(final PDFObject result) {
             super.onPostExecute(result);
             if (result.isSuccess()) {
                 File file = result.getFile();
@@ -753,7 +700,8 @@ public class StatementActivity extends DroidGap {
                     notification.flags |= Notification.FLAG_AUTO_CANCEL;
                     mNotificationManager.notify(1, notification);
                 } catch (Exception e) {
-                    Utils.log(LOG_TAG,
+                    Utils.log(
+                            LOG_TAG,
                             "onPageStarted() Problem with launching PDF Viewer.",
                             e);
                     Utils.showOkAlert(mContext, TITLE_NO_PDF, MSG_NO_PDF);
@@ -788,11 +736,11 @@ public class StatementActivity extends DroidGap {
             return cycleDateText;
         }
 
-        public void setCycleDateText(String cycleDateText) {
+        public void setCycleDateText(final String cycleDateText) {
             this.cycleDateText = cycleDateText;
         }
 
-        public void setIndex(int index) {
+        public void setIndex(final int index) {
             this.index = index;
         }
 
@@ -800,7 +748,7 @@ public class StatementActivity extends DroidGap {
             return error;
         }
 
-        public void setError(boolean error) {
+        public void setError(final boolean error) {
             this.error = error;
         }
 
@@ -808,7 +756,7 @@ public class StatementActivity extends DroidGap {
             return nextMonth;
         }
 
-        public void setNextMonth(StatementDate nextMonth) {
+        public void setNextMonth(final StatementDate nextMonth) {
             this.nextMonth = nextMonth;
         }
 
@@ -816,7 +764,7 @@ public class StatementActivity extends DroidGap {
             return previousMonth;
         }
 
-        public void setPreviousMonth(StatementDate previousMonth) {
+        public void setPreviousMonth(final StatementDate previousMonth) {
             this.previousMonth = previousMonth;
         }
 
@@ -824,7 +772,7 @@ public class StatementActivity extends DroidGap {
             return thisMonth;
         }
 
-        public void setThisMonth(StatementDate thisMonth) {
+        public void setThisMonth(final StatementDate thisMonth) {
             this.thisMonth = thisMonth;
         }
 
@@ -832,7 +780,7 @@ public class StatementActivity extends DroidGap {
             return fontSize;
         }
 
-        public void setFontSize(int fontSize) {
+        public void setFontSize(final int fontSize) {
             this.fontSize = fontSize;
         }
 
@@ -852,7 +800,7 @@ public class StatementActivity extends DroidGap {
             return date;
         }
 
-        public void setDate(String date) {
+        public void setDate(final String date) {
             this.date = date;
         }
 
@@ -860,7 +808,7 @@ public class StatementActivity extends DroidGap {
             return pageCount;
         }
 
-        public void setPageCount(int pageCount) {
+        public void setPageCount(final int pageCount) {
             this.pageCount = pageCount;
         }
     }
@@ -871,7 +819,7 @@ public class StatementActivity extends DroidGap {
      * @see org.apache.cordova.DroidGap#onKeyUp(int, android.view.KeyEvent)
      */
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
         Utils.log("Stmt", "inside onkeyup of stmt....");
         return true;
     }
@@ -882,7 +830,7 @@ public class StatementActivity extends DroidGap {
      * @see org.apache.cordova.DroidGap#onKeyDown(int, android.view.KeyEvent)
      */
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
         Utils.log("Stmt", "inside onkeydown of stmt....");
 
         if (mWebView == null) {

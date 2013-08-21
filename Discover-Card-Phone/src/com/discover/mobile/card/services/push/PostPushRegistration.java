@@ -19,11 +19,13 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
- * @author 328073
- *
+ * PostPushRegistration performs Push registration with server
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
  */
-public class PostPushRegistration
-{
+public class PostPushRegistration {
 
     private final Context context;
     private final CardEventListener listener;
@@ -32,47 +34,49 @@ public class PostPushRegistration
      * Constructor
      * 
      */
-    public PostPushRegistration(Context context, CardEventListener listner) {
+    public PostPushRegistration(final Context context,
+            final CardEventListener listner) {
         this.context = context;
-        this.listener = listner;
+        listener = listner;
     }
 
     /**
-     * This method prepairs header/request and send data to server
+     * This method prepares header/request and send data to server
      * 
      * @param tokenValue
      * @param hashedTokenValue
-     * @throws IOException 
-     * @throws JsonMappingException 
-     * @throws JsonGenerationException 
-     * @throws Exception 
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonGenerationException
+     * @throws Exception
      */
-    public void sendRequest(final String venderId, String regStatus) throws JsonGenerationException, JsonMappingException, IOException, Exception {
+    public void sendRequest(final String venderId, final String regStatus)
+            throws JsonGenerationException, JsonMappingException, IOException,
+            Exception {
 
-    	
         WSRequest request = new WSRequest();
         String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.get_push_registration);
-        
+
         request.setUrl(url);
         PostPushRegistrationBean postPushRegistrationBean = new PostPushRegistrationBean();
-        postPushRegistrationBean.deviceOS = "Android_"+context.getString(R.string.xApplicationVersion);
-        
-        postPushRegistrationBean.osVersion = (android.os.Build.VERSION.RELEASE);
-        TelephonyManager manager = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
+        postPushRegistrationBean.deviceOS = "Android_"
+                + context.getString(R.string.xApplicationVersion);
+
+        postPushRegistrationBean.osVersion = android.os.Build.VERSION.RELEASE;
+        TelephonyManager manager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
         postPushRegistrationBean.deviceID = manager.getDeviceId();
         postPushRegistrationBean.vid = venderId;
         postPushRegistrationBean.regStatus = regStatus;
-        
-        ByteArrayOutputStream  byteArrayOutputStream = new ByteArrayOutputStream();
-        JacksonObjectMapperHolder.getMapper().writeValue(byteArrayOutputStream, postPushRegistrationBean);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JacksonObjectMapperHolder.getMapper().writeValue(byteArrayOutputStream,
+                postPushRegistrationBean);
         request.setInput(byteArrayOutputStream.toByteArray());
         request.setMethodtype("POST");
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
                 new GetPushData(), "Discover", null, listener);
-//        Utils.isSpinnerShow = true;
-//        Utils.isSpinnerAllowed=true;
-//        Utils.showSpinner(context, "Discover", "Loading...");
         serviceCall.execute(request);
     }
 

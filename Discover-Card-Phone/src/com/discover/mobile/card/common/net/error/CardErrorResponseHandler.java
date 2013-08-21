@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
@@ -45,52 +43,67 @@ public final class CardErrorResponseHandler {
      */
     public static final int INCORRECT_USERID_PASSWORD = 401;
 
-//    public static final int LOCKOUT = 4011103;
+    // public static final int LOCKOUT = 4011103;
 
-    
+    private boolean isPasscodeLogin;
+
     private ArrayList<Integer> lockoutErrors;
     private ArrayList<Integer> passcodeDisabledErrors;
     private ArrayList<Integer> lastAttemptErrors;
-    
-    private void setErrorList(){
-    	Log.v("CardErrorResponseHandler", "Setting error list");
-    	lockoutErrors = new ArrayList<Integer>();
-    	lockoutErrors.add(ULR_LOCK);
-    	lockoutErrors.add(ULR_LOCK_PASSCODE_LAST_ATTEMPT);
-    	lockoutErrors.add(ULR_LOCKED_PASSCODE_DELTED);
-    	
-    	passcodeDisabledErrors = new ArrayList<Integer>();
-    	passcodeDisabledErrors.add(ULR_ATTEMPTS_PASSCODE_DELTED);
-    	passcodeDisabledErrors.add(ULR_LAST_ATTEMPT_PASSCODE_DELTED);
-    	passcodeDisabledErrors.add(ULR_LOCKED_PASSCODE_DELTED);
-    	passcodeDisabledErrors.add(PASSCODE_NOT_BOUND);
-    	
-    	lastAttemptErrors = new ArrayList<Integer>();
-    	lastAttemptErrors.add(ULR_LAST_ATTEMPT);
-    	lastAttemptErrors.add(ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT);
-//    	lastAttemptErrors.add(ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT); //no error message defined for this state
+
+    private void setErrorList() {
+        Log.v("CardErrorResponseHandler", "Setting error list");
+        lockoutErrors = new ArrayList<Integer>();
+        lockoutErrors.add(ULR_LOCK);
+        lockoutErrors.add(ULR_LOCK_PASSCODE_LAST_ATTEMPT);
+        lockoutErrors.add(ULR_LOCKED_PASSCODE_DELTED);
+
+        passcodeDisabledErrors = new ArrayList<Integer>();
+        passcodeDisabledErrors.add(ULR_ATTEMPTS_PASSCODE_DELTED);
+        passcodeDisabledErrors.add(ULR_LAST_ATTEMPT_PASSCODE_DELTED);
+        passcodeDisabledErrors.add(ULR_LOCKED_PASSCODE_DELTED);
+        passcodeDisabledErrors.add(PASSCODE_NOT_BOUND);
+
+        lastAttemptErrors = new ArrayList<Integer>();
+        lastAttemptErrors.add(ULR_LAST_ATTEMPT);
+        lastAttemptErrors.add(ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT);
+        // lastAttemptErrors.add(ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT); //no error
+        // message defined for this state
     }
-    
-    //invalid external status
+
+    // invalid external status
     public static final int INVALID_EXTERNAL_STATUS = 4031102;
-    
-    //show 1 more attempt
+
+    // show 1 more attempt
     public static final int ULR_LAST_ATTEMPT = 4011103;
     public static final int ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT = 4012109;
-    public static final int ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT = 4012113; //should I show no message?
-    
-    // BAU lockout (user has 3 failed login attempt has is locked out from the app - regardless of whether those attempts were with passcode or uid/pwd)
+    public static final int ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT = 4012113; // should
+                                                                          // I
+                                                                          // show
+                                                                          // no
+                                                                          // message?
+
+    // BAU lockout (user has 3 failed login attempt has is locked out from the
+    // app - regardless of whether those attempts were with passcode or uid/pwd)
     public static final int ULR_LOCK = 4031101;
     public static final int ULR_LOCK_PASSCODE_LAST_ATTEMPT = 4032110;
-    
-    //User has 5 failed attempts with passcode in a row and their passcode is now disabled. However, they still have attempts remaining with their uid/pwd so they're not locked out from the app. The title of this modal in the comps is confusing.
-    public static final int ULR_ATTEMPTS_PASSCODE_DELTED = 4032114; //delete passcode
-    public static final int ULR_LAST_ATTEMPT_PASSCODE_DELTED = 4032111; //delete passcode
-    
-    //The user has 5 failed attempts with passcode in a row so their passcode is disabled AND they do not have any more login attempts remaining so they are locked out from the app. 
-    public static final int ULR_LOCKED_PASSCODE_DELTED = 4032112; // delete passcode
 
-    //show passcode not bound message
+    // User has 5 failed attempts with passcode in a row and their passcode is
+    // now disabled. However, they still have attempts remaining with their
+    // uid/pwd so they're not locked out from the app. The title of this modal
+    // in the comps is confusing.
+    public static final int ULR_ATTEMPTS_PASSCODE_DELTED = 4032114; // delete
+                                                                    // passcode
+    public static final int ULR_LAST_ATTEMPT_PASSCODE_DELTED = 4032111; // delete
+                                                                        // passcode
+
+    // The user has 5 failed attempts with passcode in a row so their passcode
+    // is disabled AND they do not have any more login attempts remaining so
+    // they are locked out from the app.
+    public static final int ULR_LOCKED_PASSCODE_DELTED = 4032112; // delete
+                                                                  // passcode
+
+    // show passcode not bound message
     public static final int PASSCODE_NOT_BOUND = 4012107;
 
     public static final int USER_ACCOUNT_LOCKED = 403;
@@ -116,8 +129,14 @@ public final class CardErrorResponseHandler {
 
     }
 
+    public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi,
+            final boolean isPasscodeLogin) {
+        this.errorHandlerUi = errorHandlerUi;
+        this.isPasscodeLogin = isPasscodeLogin;
+    }
+
     public CardErrorResponseHandler() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**
@@ -130,8 +149,9 @@ public final class CardErrorResponseHandler {
     }
 
     private boolean isCardLoginError() {
-    	return CardLoginFacadeImpl.class.isInstance(errorHandlerUi);
+        return CardLoginFacadeImpl.class.isInstance(errorHandlerUi);
     }
+
     /**
      * Handle Card error
      * 
@@ -149,81 +169,123 @@ public final class CardErrorResponseHandler {
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
             final Context context = DiscoverActivityManager.getActiveActivity();
 
-            ///non-card login related
+            // /non-card login related
             if (!isCardLoginError()) {
-            	handleGenericError(cardErrorHold.getErrorTitle(),
+                handleGenericError(cardErrorHold.getErrorTitle(),
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	return;
-            } 
+                return;
+            }
 
-            //anything below is card login specific
-            
+            // anything below is card login specific
+
             final Bundle bundle = new Bundle();
-            bundle.putString(IntentExtraKey.ERROR_CODE, cardErrorHold.getErrorCode());
-            bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, cardErrorHold.getErrorMessage());
+            bundle.putString(IntentExtraKey.ERROR_CODE,
+                    cardErrorHold.getErrorCode());
+            bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE,
+                    cardErrorHold.getErrorMessage());
 
             PasscodeUtils pUtils = new PasscodeUtils(context);
             if (passcodeDisabledErrors.contains(errorCodeNumber)) {
-            	pUtils.deletePasscodeToken();
+                pUtils.deletePasscodeToken();
             }
-            
-            final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
-            if (INVALID_EXTERNAL_STATUS == errorCodeNumber && pUtils.isPasscodeToken()) {
-            	pUtils.deletePasscodeToken();
-            	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4031102_passcode, R.string.E_4031102_passcode, R.string.close_text);
-            	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
-            	showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
+
+            final LoginActivityFacade loginFacade = FacadeFactory
+                    .getLoginFacade();
+            if (INVALID_EXTERNAL_STATUS == errorCodeNumber
+                    && pUtils.isPasscodeToken()) {
+            	//DEFECT 109169 - if I remove token and show message user is no longer PC enabled.  If they rotate device a non-PC message will redraw.  Moving removal logic to dismissal of modal.
+            	bundle.remove(IntentExtraKey.SHOW_ERROR_MESSAGE);
+            	Runnable buttonAction = new Runnable() {
+							@Override
+							public void run() {
+								new PasscodeUtils(context).deletePasscodeToken();
+								FacadeFactory.getLoginFacade().navToLoginWithMessage(
+										DiscoverActivityManager.getActiveActivity(), bundle);
+							}};
+                EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(
+                        context, R.string.E_T_4031102_passcode,
+                        R.string.E_4031102_passcode, R.string.ok, 
+                        buttonAction, buttonAction);
+                modalUIDAndPasscodeLockout.hideNeedHelpFooter();
+                showCustomAlert(modalUIDAndPasscodeLockout);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
-            	int errorTitle = context.getResources().getIdentifier("E_T_" + errorCodeNumber, "string", context.getPackageName());
-            	int errorMessage = context.getResources().getIdentifier("E_" + errorCodeNumber, "string", context.getPackageName());
-            	EnhancedContentModal modalLockout = new EnhancedContentModal(context, errorTitle, errorMessage, R.string.close_text);
-            	modalLockout.hideNeedHelpFooter();
-            	modalLockout.setGrayButton();
-            	modalLockout.showErrorIcon();
-            	showAlertNavToLogin(modalLockout, bundle);
+                int errorTitle = context.getResources().getIdentifier(
+                        "E_T_" + errorCodeNumber, "string",
+                        context.getPackageName());
+                int errorMessage = context.getResources().getIdentifier(
+                        "E_" + errorCodeNumber, "string",
+                        context.getPackageName());
+                EnhancedContentModal modalLockout = new EnhancedContentModal(
+                        context, errorTitle, errorMessage, R.string.close_text);
+                modalLockout.hideNeedHelpFooter();
+                modalLockout.setGrayButton();
+                modalLockout.showErrorIcon();
+                showAlertNavToLogin(modalLockout, bundle);
             } else if (errorCodeNumber == PASSCODE_NOT_BOUND) {
-            	EnhancedContentModal modal = new EnhancedContentModal(context, R.string.passcode_dialog_disabled_title, R.string.passcode_dialog_disabled_not_bound_message, R.string.ok);
-            	modal.hideNeedHelpFooter();
-            	showAlertNavToLogin(modal, bundle);
+                EnhancedContentModal modal = new EnhancedContentModal(context,
+                        R.string.passcode_dialog_disabled_title,
+                        R.string.passcode_dialog_disabled_not_bound_message,
+                        R.string.ok);
+                modal.hideNeedHelpFooter();
+                showAlertNavToLogin(modal, bundle);
             } else if (passcodeDisabledErrors.contains(errorCodeNumber)) {
-            	EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(context, R.string.E_T_4032111, R.string.E_4032111, R.string.ok);
-            	modalPasscodeDisabled.hideNeedHelpFooter();
-            	showAlertNavToLogin(modalPasscodeDisabled, bundle);
-            } else if (errorCodeNumber == INCORRECT_USERID_PASSWORD || errorCodeNumber == ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT) {
-            	//treat as invalid user attempt
-            	bundle.putString(IntentExtraKey.ERROR_CODE, "" + INCORRECT_USERID_PASSWORD);
-            	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+                EnhancedContentModal modalPasscodeDisabled = new EnhancedContentModal(
+                        context, R.string.E_T_4032111, R.string.E_4032111,
+                        R.string.ok);
+                modalPasscodeDisabled.hideNeedHelpFooter();
+                showAlertNavToLogin(modalPasscodeDisabled, bundle);
+            } else if (errorCodeNumber == INCORRECT_USERID_PASSWORD
+                    || errorCodeNumber == ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT) {
+                // treat as invalid user attempt
+                bundle.putString(IntentExtraKey.ERROR_CODE, ""
+                        + INCORRECT_USERID_PASSWORD);
+                if (isPasscodeLogin) {
+                    bundle.putString(
+                            IntentExtraKey.SHOW_ERROR_MESSAGE,
+                            context.getResources().getString(
+                                    R.string.passcodeInvalidAttempt));
+                }
+                loginFacade.navToLoginWithMessage(
+                        DiscoverActivityManager.getActiveActivity(), bundle);
             } else if (lastAttemptErrors.contains(errorCodeNumber)) {
-            	Log.v("handleCardError", "Error: " + cardErrorHold.getErrorMessage());
-            	//return all last attempt errors as the same
-            	bundle.putString(IntentExtraKey.ERROR_CODE, "" + ULR_LAST_ATTEMPT);
-            	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+                Log.v("handleCardError",
+                        "Error: " + cardErrorHold.getErrorMessage());
+                // return all last attempt errors as the same
+                bundle.putString(IntentExtraKey.ERROR_CODE, ""
+                        + ULR_LAST_ATTEMPT);
+                if (isPasscodeLogin) {
+                    bundle.putString(
+                            IntentExtraKey.SHOW_ERROR_MESSAGE,
+                            context.getResources().getString(
+                                    R.string.passcodeOneAttempt));
+                }
+                loginFacade.navToLoginWithMessage(
+                        DiscoverActivityManager.getActiveActivity(), bundle);
             } else {
-            	handleGenericError(cardErrorHold.getErrorTitle(),
-            			cardErrorHold.getErrorMessage(),
-            			cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
+                handleGenericError(cardErrorHold.getErrorTitle(),
+                        cardErrorHold.getErrorMessage(),
+                        cardErrorHold.getNeedHelpFooter(), errorClickCallback);
+                if (isPasscodeLogin) {
+                    loginFacade.navToLoginWithMessage(
+                            DiscoverActivityManager.getActiveActivity(),
+                            new Bundle());
+                }
             }
         }
     }
-    
-    private void showAlertNavToLogin(EnhancedContentModal modal, Bundle bundle){
-    	bundle.remove(IntentExtraKey.SHOW_ERROR_MESSAGE);
-    	showCustomAlert(modal);
-    	FacadeFactory.getLoginFacade().navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), bundle);
+
+    private void showAlertNavToLogin(final EnhancedContentModal modal,
+            final Bundle bundle) {
+        bundle.remove(IntentExtraKey.SHOW_ERROR_MESSAGE);
+        showCustomAlert(modal);
+        if (isPasscodeLogin) {
+            FacadeFactory.getLoginFacade().navToLoginWithMessage(
+                    DiscoverActivityManager.getActiveActivity(), bundle);
+        }
     }
 
-    private void handleInlineError(String errorMessage) {
-    	setErrorText(errorMessage);
-        // setInputFieldsDrawableToRed();
-        getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(
-                getErrorFieldUi(), errorMessage);
-        clearInputs();
-		
-	}
-
-	/**
+    /**
      * Handle generic error
      * 
      * @param errorTitle
@@ -267,38 +329,6 @@ public final class CardErrorResponseHandler {
      */
     public void handleAppError(final String errorTitle, final String errorText) {
         showNativeAlert(errorTitle, errorText);
-    }
-
-    /**
-     * Clears the activity edit texts in the getFieldsToClearAfterError()
-     * interface method
-     */
-    private void clearInputs() {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-            for (final EditText text : errorHandlerUi.getInputFields()) {
-                text.setText("");
-            }
-        }
-    }
-
-    /**
-     * A common method to display an error message on the error field and make
-     * the error label visible.
-     * 
-     * The activity needs to implement ErrorFieldActivity for this functionality
-     * to work.
-     * 
-     * @param text
-     * @param errorText
-     */
-    private void setErrorText(final String errorText) {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null) {
-            errorHandlerUi.getErrorLabel().setText(errorText);
-            errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
-            
-        }
     }
 
     /**

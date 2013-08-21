@@ -27,26 +27,18 @@
 		    The next time you enter the app you\'ll be asked to log in with your User ID and Password.
 		]]>
 	</string>
-    <string name="passcode_dialog_disabled_locked_content">
-        <![CDATA[
-		    You\'ve tried to log in too many times with the incorrect Passcode. To protect your account security, we\'ve disabled Passcode login for your account. The next time you are able to successfully log into the app, you can create a new Passcode.
-		    <br/><br/>
-		    Please contact Customer Service at 1-877-742-7822 for assistance.
-		]]>
-	</string>
     <string name="passcode_dialog_enabled_title">Passcode Enabled</string>
     <string name="passcode_dialog_enabled_content"><![CDATA[<b>Your Passcode has been enabled on this device</b>. The next time you enter the app you\'ll be asked to log in with this Passcode.]]></string>
     <string name="passcode_dialog_guidelines_title">Passcode Guidelines</string>
     <string name="passcode_dialog_guidelines_content">
         <![CDATA[When creating your 4-digit Passcode please keep in mind these guidelines. Your Passcode cannot be any of the following:
-        <br/>
-		    <br/>•Your date of birth (MMDD or MMYY, i.e. 0116 or 0186)
-		    <br/>•The last 4 digits of your Social Security Number
-		    <br/>•4 consecutive numbers (i.e. 1,2,3,4 or 4,3,2,1)
-		    <br/>•The same number (i.e. 2,2,2,2)
-		    <br/>•The last 4 digits of your account number
-		    <br/>•The street number on the account
-		    <br/>•The first 4 digits of your credit card number (6011)
+            <br/><br/>• Your date of birth (MMDD or MMYY, i.e. 0116 or 0186)
+		    <br/><br/>• The last 4 digits of your Social Security Number
+		    <br/><br/>• 4 consecutive numbers (i.e. 1,2,3,4 or 4,3,2,1)
+		    <br/><br/>• The same number (i.e. 2,2,2,2)
+		    <br/><br/>• The last 4 digits of your account number
+		    <br/><br/>• The street number on the account
+		    <br/><br/>• The first 4 digits of your credit card number (6011)
 		]]>
 	</string>
     <string name="passcode_guidelines_link">What are my Passcode Guidelines?</string>
@@ -55,7 +47,6 @@
     <string name="passcode_update_step1_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode. ]]></Data></string>
     <string name="passcode_update_step2_header"><Data><![CDATA[ Please create your <b>new</b> Passcode. ]]></Data></string>
     <string name="passcode_update_step3_header"><Data><![CDATA[ Please verify your <b>new</b> Passcode. ]]></Data></string>
-    <string name="passcode_disable_step1_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode to disable it. ]]></Data></string>
     <string name="passcode_enable_step1_paragraph_1">Our records show that you have an existing Passcode enabled on other devices.  In order to enable Passcode login on this device you must enter that same Passcode on this device.</string>
     <string name="passcode_enable_step1_paragraph_2">Would you like to enable Passcode Login for this device?</string>
     <string name="passcode_enable_step1_button_yes">Yes</string>
@@ -64,9 +55,6 @@
     <string name="passcode_remove_paragraph_2">Do you want to remove Passcode from this device and proceed to create your own?</string>
     <string name="passcode_remove_button">Remove Passcode</string>
     <string name="passcode_remove_link_no_thanks">No, thanks</string>
-    <string name="passcode_menu_header">Your Passcode is currently enabled on this device.</string>
-    <string name="passcode_menu_change_passcode">Change Passcode</string>
-    <string name="passcode_menu_disable_passcode">Disable Passcode</string>
     <string name="passcode_enable_step2_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode to enable it. ]]></Data></string>
     <string name="passcode_disable_step1_header"><Data><![CDATA[ Please enter your <b>current</b> Passcode to disable it. ]]></Data></string>
     <string name="passcode_dialog_disabled_not_bound_message">You recently requested to disable Passcode login. Please log in with your User ID and Password.  You can set up a new Passcode after logging in.</string>

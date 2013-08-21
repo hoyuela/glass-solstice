@@ -166,6 +166,7 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 			if(dfs.crd.pymt.afterMakePayFlag){
 				inLineError.css("display", "block");
 				inLineError.html(dfs.crd.pymt.messageAftrmakePay);
+				dfs.crd.pymt.afterMakePayFlag = false;
 			}
 		}
 
@@ -591,11 +592,11 @@ function paymentStep1Load()
 				var pendignPaymentEditData = getDataFromCache("pendingPageDetailData");
 				if(!isEmpty(pendignPaymentEditData)){
 					if(pendignPaymentEditData.SELECTEDINDEX == "choice-1"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("MinimumDue");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Minimum Due");
 					}else if(pendignPaymentEditData.SELECTEDINDEX == "choice-2"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("LastStatement");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Last Statement Balance");
 					}else{
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("OtherBalance");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Other Amount");
 					}
 				}
 			}
@@ -622,6 +623,15 @@ function paymentStep1Load()
 				});
 				
 				$(".wraper2").show(); 
+				/*defect#105911 13.3 global change 14/8/2013- starts here*/
+				$("table.ui-datepicker-calendar").each(function(){
+					$(this).find("tr:last-child td").each(function(index){
+						if(index == 0 && $(this).hasClass("ui-datepicker-other-month")){
+							$(this).parent("tr").css("display","none");
+						}
+					});
+				});
+				/*defect#105911 13.3 global change 14/8/2013- ends here*/
 				var currentpageback=$.mobile.activePage.find("#back-btn a");
 				currentpageback.removeAttr("data-rel");
 
@@ -669,7 +679,8 @@ function paymentStep1Load()
 				$("#radio-choice-3").attr("checked","checked");
 				$("#radio-choice-3").change();
 				$("input[type='radio']").checkboxradio("refresh"); 
-				minPayStepOne.parent(".wrapperSpan").removeClass("errormsg");
+				minPayStepOne.parent(".wrapperSpan").removeClass("inputOnError");
+//				minPayStepOne.parent(".wrapperSpan").removeClass("errormsg");
 				dfs.crd.pymt.changeDropDownLabel();									
 			});
 			
@@ -679,6 +690,8 @@ function paymentStep1Load()
 					{
 				if($(this).attr("id")=="radio-choice-3")
 				{
+				$("#minpaystepone_other").focus();
+                $("#minpaystepone_other").setSelectionRange(0, 0);
 					/* $("#minpaystepone_other").removeClass("optional");
 					$("#minpaystepone_other").focus();
 					$('#minpaystepone_other').attr("placeholder", '');
@@ -721,9 +734,11 @@ function paymentStep1Load()
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1207"]);
 						errorPaymentAmountExceed.css("display","block");
-						minPayStepOne.parent(".wrapperSpan").addClass('errormsg');
+						minPayStepOne.parent(".wrapperSpan").addClass("inputOnError");
+//						minPayStepOne.parent(".wrapperSpan").addClass('errormsg');
 						$("#minpaystepone_other").val('');
 						$('#minpaystepone_other').attr("placeholder", '0.00');
+						dfs.crd.sct.pageErrorTrackingSiteCat(errorCodeMap["1207"]);
 						return;
 					}
 					else if (!isEmpty(payAmount) && !dfs.crd.pymt.checkCurrency(payAmount)) 
@@ -734,7 +749,7 @@ function paymentStep1Load()
 						$("#commonErrorInMakePaymentStepOneDiv").html(errorCodeMap["Update_HighLighted"]);
 						errorPaymentAmountExceed.text(errorCodeMap["1210"]);
 						errorPaymentAmountExceed.css("display","block");
-						minPayStepOne.addClass("errormsg");
+						$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 						$("#minpaystepone_other").val('');
 						$('#minpaystepone_other').attr("placeholder", '0.00');
 						return;
@@ -1313,7 +1328,7 @@ dfs.crd.pymt.populateMakePaymentPageDivs = function(stepOne, pageId)
 				if (dfs.crd.pymt.outstandingbalance) {
 					$("#errorPaymentAmountExceed").text(
 							dfs.crd.pymt.messageAftrConfrm);
-					$("#minpaystepone_other").addClass("errormsg");
+					$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				}
 				else {
 					$("#alertImageSpan").css("display","block");
@@ -1482,7 +1497,7 @@ dfs.crd.pymt.bankSelected = function()
 		}else{
 			$("#errorPaymentAmountExceed").text("");
 		}
-		$("#minpaystepone_other").parent(".wrapperSpan").removeClass('errormsg');
+		$("#minpaystepone_other").parent(".wrapperSpan").removeClass("inputOnError");
 		commonErrorMap1.html("");
 		$(".dd").removeClass("ddHighlightError");
 		$(".arrow").removeClass("ddHighlightErrorArrow");
@@ -1549,6 +1564,7 @@ dfs.crd.pymt.bankSelected = function()
 						$.mobile.activePage.find("#makePaymentOneContinue")
 						.attr("disabled", "true").parent().addClass(
 						"ui-disabled");
+						dfs.crd.sct.pageErrorTrackingSiteCat(errorCodeMap["NoDates_for_Bank"]);
 						return false;
 						// otherwise enable button & remove error
 					}else {          
@@ -1770,7 +1786,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1222"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1782,7 +1798,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				$("#commonErrorInMakePaymentStepOneDiv").html(
 				errorCodeMap["Update_HighLighted"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1795,7 +1811,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 				$("#alertImageSpan").addClass("alertImage");
 				commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 				$("#errorPaymentAmountExceed").text(errorCodeMap["1207"]);
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				$("#minpaystepone_other").val('');
 				$('#minpaystepone_other').attr("placeholder", '0.00');
 
@@ -1815,26 +1831,29 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 						var errorMessage = errorCodeMap["1209"];
 						var payDetail = [];
+						var parseContentText = "";
 						var pendingPaymentsList = getDataFromCache("PENDINGPAYMENTS");
 						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.pendingPayments.length == 1)){
 							var errorMessage = errorCodeMap["1208"];
 							payDetail["currentBalance"] = value;
 							parseContentText = parseContent(errorMessage, payDetail);
+							dfs.crd.sct.pageErrorTrackingSiteCat(parseContentText);
 						}else{
 							payDetail["outstandingBalance"] = outStandingBalance;
-							var parseContentText = parseContent(errorMessage, payDetail);
+							parseContentText = parseContent(errorMessage, payDetail);
+							dfs.crd.sct.pageErrorTrackingSiteCat(parseContentText);
 						}
 						
 
 						
-						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.length == 1)){
+				/*		if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.length == 1)){
 							var errorMessage = errorCodeMap["1208"];
 							payDetail["currentBalance"] = value;
 							parseContentText = parseContent(errorMessage, payDetail);
-						}
+						}*/
 						$("#errorPaymentAmountExceed").text(
 								parseContent(parseContentText, curntValue));
-						$("#minpaystepone_other").addClass('errormsg');
+						$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 						return;
 					} 
 					else {
@@ -1853,7 +1872,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 
 				$("#errorPaymentAmountExceed").text(
 						parseContent(errMsg, curntValue));
-				$("#minpaystepone_other").parent(".wrapperSpan").addClass('errormsg');
+				$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 				
 				return;
 				}else if ((dfs.crd.pymt.globalOpenAmount != "0.00") && parseFloat(payAmount) > (PCT_OVER * parseFloat(dfs.crd.pymt.globalOpenAmount))) 
@@ -1868,7 +1887,7 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 					var parseContentText = parseContent(errorMessage, payDetail);
 					$("#errorPaymentAmountExceed").text(
 							parseContent(parseContentText, curntValue));
-					$("#minpaystepone_other").addClass('errormsg');
+					$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
 					return;
 				} 
 				else {
@@ -2115,6 +2134,9 @@ dfs.crd.pymt.getPaymentVerifErrorHandler = function(jqXHR){
 		hideSpinner();
 		cpEvent.preventDefault();
 		var code = getResponseStatusCode(jqXHR);
+		if(code == "1203"){
+			dfs.crd.sct.bankAccountDeletedModal();
+		}
 		errorHandler(code, "", "paymentStep2");
 	}catch (err) {
 		showSysException(err);
@@ -2613,6 +2635,18 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 			var errorMessage = errorCodeMap["1257"];
 			if(projectBeyondCard)
 				errorMessage = errorCodeMap["1257_PB"];
+			dfs.crd.sct.pageErrorTrackingSiteCat(errorMessage);
+			if (!isEmpty(errorMessage))
+				errorHandler(code, errorMessage,
+				"paymentStep1");
+			else
+				errorHandler(code, "", "paymentStep1");
+
+			break;
+		case "1203":
+			var errorMsgData = getResponsErrorData(jqXHR);
+			var errorMessage = errorCodeMap["1203"];
+			dfs.crd.sct.bankAccountDeletedModal();
 			if (!isEmpty(errorMessage))
 				errorHandler(code, errorMessage,
 				"paymentStep1");
@@ -2682,7 +2716,6 @@ dfs.crd.pymt.populateConfirmthreeActivity = function(stepThree, pageName)
 		$("#accountEndingNum").text("Account Ending in "+shortAccountText);
 
 		var bankOrNickName = isEmpty(stepThree.nickName)?stepThree.bankName:stepThree.nickName;
-
 		$("#payStep3BankDtl").text(bankOrNickName);
 		$("#paystep3Confirm").text(stepThree.confirmationNumber);
 		if(dfs.crd.pymt.pendingPaymentEdit){
@@ -3033,6 +3066,9 @@ try{
 		hideSpinner();
 		cpEvent.preventDefault();
 		var code = getResponseStatusCode(jqXHR);
+		if(code == "1203"){
+			dfs.crd.sct.bankAccountDeletedModal();
+		}
 		errorHandler(code, "", "pendingPayment");
 	} catch (err) {
 		showSysException(err);
@@ -3280,6 +3316,9 @@ dfs.crd.pymt.populateCancelPayment1ErrorDivs = function(jqXHR){
 			cpEvent.preventDefault();
 			navigation("../payments/pendingPayments");
 		}else{
+			if(code == "1203"){
+				dfs.crd.sct.bankAccountDeletedModal();
+			}
 			cpEvent.preventDefault();
 			errorHandler(code, "", "cancelPayment1");
 		}
@@ -3369,11 +3408,15 @@ dfs.crd.pymt.populatePostConfirmCancelErrorDivs = function(jqXHR){
 				navigation("../payments/pendingPayments");
 		}else if(code == "1256"){
 			var errorMessage = errorCodeMap["1256"];
-			if(projectBeyondCard){
+						if(projectBeyondCard){
 				errorMessage = errorCodeMap["1256_PB"];
 			}
+			dfs.crd.sct.pageErrorTrackingSiteCat(errorMessage);
 			errorHandler(code,errorMessage, "confirmCancelPayment");
 		}else{
+			if(code == "1203"){
+				dfs.crd.sct.bankAccountDeletedModal();
+			}
 			errorHandler(code, "", "confirmCancelPayment");
 		} 
 	}catch (err) {
@@ -3443,7 +3486,7 @@ dfs.crd.pymt.populateConfirmSaveToPhotos = function(saveTophotosData, pageName)
                          saveTophotosData.maskedBankAccountNumber, saveTophotosData.bankName);
 		    var shortAccountText = jQuery.trim(saveTophotosData.maskedBankAccountNumber).split('*');
             shortAccountText = shortAccountText[shortAccountText.length - 1];
-             var bankOrNickName = isEmpty(saveTophotosData.nickName)?saveTophotosData.bankName:bankOrNickName.nickName;
+             var bankOrNickName = isEmpty(saveTophotosData.nickName)?saveTophotosData.bankName:saveTophotosData.nickName;
             $("#savePaymentPhotosConfirmationNumber").text(saveTophotosData.confirmationNumber);
             $("#savePaymentPhotosAmount").text("$" + saveTophotosData.paymentAmount);
             $("#savePaymentPhotosPosting_date").text(saveTophotosData.paymentDate);

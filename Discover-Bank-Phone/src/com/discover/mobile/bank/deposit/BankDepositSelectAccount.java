@@ -44,12 +44,12 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	 * so that the how it works modal can be shown.
 	 */
 	private boolean acceptedTerms = false;
-	
+
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container, 
 			final Bundle savedInstanceState) {
 		final View view = super.onCreateView(inflater, container, savedInstanceState);
-		
+
 		/**Hide controls that are not needed*/
 		getActionButton().setVisibility(View.GONE);
 		getActionLink().setVisibility(View.GONE);
@@ -57,18 +57,18 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 
 		//Load the terms boolean from the arguments bundle, then clear it
 		clearTermsBoolean(loadTermsBoolean(getArguments()));
-		
+
 		if(acceptedTerms){
 			showHowItWorksModal();
 		}
-		
+
 		/**Hide top note as it is not needed for this view**/
 		final TextView topNote = (TextView)view.findViewById(R.id.top_note_text);
 		topNote.setVisibility(View.GONE);
 
 		return view;
 	}
-	
+
 	@Override
 	protected List<ViewPagerListItem> getViewPagerListContent() {
 		//Return null so the base class knows to use getRelativeLayoutListContent instead.
@@ -86,31 +86,31 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		/**Get list of accounts downloaded at login*/
 		final List<Account> accounts = BankUser.instance().getAccounts().accounts;
 		final List<RelativeLayout> items = new ArrayList<RelativeLayout>();
-				
+
 		final Context context = getActivity();
 		BankSelectAccountItem item = null;
-		
+
 		Collections.sort(accounts, new BankSelectAccountComparable());
 		for( int i = 0; i < accounts.size(); i++) {
 			final Account account = accounts.get(i);
-			
+
 			if( account.isDepositEligible() ) {		
 				item = new BankSelectAccountItem(context, account, this);	
-				
+
 				if (items.isEmpty()) {
 					item.drawTopStroke(context);
 				} 
-				
+
 				items.add(item);
 			}
 		}
-		
+
 		if (items.size() == 1) {
 			item.drawAllStrokes(context);
 		} else if (items.size() >= 2){
 			item.drawBottomStroke(context);
 		}
-		
+
 		return items;							
 	}
 
@@ -121,7 +121,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	protected String getPageTitle() {
 		return getActivity().getResources().getString( R.string.bank_deposit_select_account );
 	}
-	
+
 	@Override
 	protected void onActionButtonClick() {
 		//Nothing to do here	
@@ -131,7 +131,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	protected void onActionLinkClick() {
 		//Nothing to do here		
 	}
-	
+
 	/**
 	 * Click handler for when an item in the list displayed is selected by the user.
 	 */
@@ -142,10 +142,15 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		if( sender instanceof BankSelectAccountItem) {
 			/**Fetch reference to account object associated with the BankSelectAccountItem that generated the click event*/
 			final Account account = ((BankSelectAccountItem)sender).getAccount();
-			
+
 			/**Verify account reference is not null*/
 			if( null != account ) {
-				getAccountLimitsAndNavigate(account, getArguments());
+				/**
+				 * Get the account that is cached in the bank user to make sure we are getting the 
+				 * most up to date limits.  This makes sure that if the user has deposited a check already
+				 * to make sure the the limits we grab are up to date.
+				 */
+				getAccountLimitsAndNavigate(BankUser.instance().getAccount(account.id), getArguments());
 			} else {
 				if( Log.isLoggable(TAG, Log.ERROR)) {
 					Log.e(TAG, "Unable to retreive account limits");
@@ -153,7 +158,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Downloads account limits or, if cached, checks the current limits of the account. Then either navigates or 
@@ -167,7 +172,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			depositAmount = args.getInt(BankExtraKeys.AMOUNT);
 			reviewDepositOnFinish = args.getBoolean(BankExtraKeys.RESELECT_ACCOUNT);
 		}
-		
+
 		if(reviewDepositOnFinish && account.limits != null){
 			//Reset the review deposit bundle boolean to prevent odd navigation issues later.
 			args.putBoolean(BankExtraKeys.RESELECT_ACCOUNT, false);
@@ -183,7 +188,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		} else {
 			if(reviewDepositOnFinish){
 				final BankNavigationRootActivity current = 
-								(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
+						(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 				Bundle bundle = current.getIntent().getExtras();
 				if(bundle == null){
 					bundle = new Bundle();
@@ -201,7 +206,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 			BankServiceCallFactory.createGetAccountLimits(account, false).submit();
 		}
 	}
-		
+
 	@Override
 	protected int getProgressIndicatorStep() {
 		return 0;
@@ -216,32 +221,32 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 	public void onBackPressed() {
 		//Nothing To Do Here
 	}
-	
+
 	/**
 	 * Show the how it works modal if the acceptedTerms boolean is true. It will be true if the have just accepted 
 	 * the terms and have not closed the modal before.
 	 */
 	public static void showHowItWorksModal() {
-			final BankNavigationRootActivity currentActivity = 
-					(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
-			
-			final HowItWorksModalTop top = new HowItWorksModalTop(currentActivity, null);
-			final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
-			final HowItWorksModal modal = new HowItWorksModal(currentActivity, top, bottom);
+		final BankNavigationRootActivity currentActivity = 
+				(BankNavigationRootActivity)DiscoverActivityManager.getActiveActivity();
 
-			
-			bottom.setButtonText(R.string.ok);
-			bottom.getButton().setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(final View v) {
-					modal.dismiss();
-				}
-			});
+		final HowItWorksModalTop top = new HowItWorksModalTop(currentActivity, null);
+		final ModalDefaultOneButtonBottomView bottom = new ModalDefaultOneButtonBottomView(currentActivity, null);
+		final HowItWorksModal modal = new HowItWorksModal(currentActivity, top, bottom);
 
-			currentActivity.showCustomAlert(modal);
+
+		bottom.setButtonText(R.string.ok);
+		bottom.getButton().setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				modal.dismiss();
+			}
+		});
+
+		currentActivity.showCustomAlert(modal);
 
 	}
-	
+
 	/**
 	 * Loads the terms boolean value from a Bundle.
 	 * @param arguments a Bundle that was supplied from this fragment.
@@ -252,7 +257,7 @@ public class BankDepositSelectAccount extends BankDepositBaseFragment {
 		}
 		return bundle;
 	}
-	
+
 	/**
 	 * Clears the boolean flag that is used to show the modal dialog on create if the user has just accepted the terms.
 	 * This is used so that on rotation change, when onCreate is called again, that the modal does not get shonw again.

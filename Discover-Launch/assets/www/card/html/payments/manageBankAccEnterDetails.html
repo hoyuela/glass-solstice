@@ -60,11 +60,15 @@
                     </li>
                      <li>
                     	<span class="detailName">Account Type</span>
-                        <select name="selectAccType" data-native-menu="false" data-theme="d" style="margin-top:10px;">
+                         <!-- 13.3 global changes - 107306 - 06-Aug-2013 - added id  -->
+                        <select name="selectAccType" data-native-menu="false" data-theme="d" id="selectAccType" style="margin-top:10px;">
 						    <option data-description=""></option>
                         	<option value="Checking">Checking Account</option>
                             <option value="Savings">Savings Account</option>
                         </select>
+                        <!-- 13.3 global changes - 107306 - 06-Aug-2013 - start  -->
+                        <p class="errormsg" id="acctTypeErr">You must choose Checking or Savings.</p>
+                        <!-- 13.3 global changes - 107306 - 06-Aug-2013 - end  -->
 						<div class="clearboth"></div>
                     </li>
                      <li>

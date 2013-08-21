@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
@@ -11,12 +12,16 @@ import com.discover.mobile.card.common.net.service.WSRequest;
 import com.discover.mobile.card.common.net.utility.NetworkUtility;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 
-import com.discover.mobile.card.R;
-
+/**
+ * Class call strong authentication create user web service
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ */
 public class StrongAuthCreateUser {
 
     private Context context;
-    private final String TAG = StrongAuthCreateUser.class.getSimpleName();
     private CardEventListener listener;
 
     /**
@@ -26,7 +31,8 @@ public class StrongAuthCreateUser {
      * @param listener
      *            CardEventListener
      */
-    public StrongAuthCreateUser(Context context, CardEventListener listener) {
+    public StrongAuthCreateUser(final Context context,
+            final CardEventListener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -50,8 +56,9 @@ public class StrongAuthCreateUser {
 
         request.setUrl(url);
         request.setHeaderValues(headers);
-        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, new StrongAuthCreateUserDetails(),
-                "Discover", "Loading...", listener);
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
+                new StrongAuthCreateUserDetails(), "Discover", "Loading...",
+                listener);
         serviceCall.execute(request);
     }
 }

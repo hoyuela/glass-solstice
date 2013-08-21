@@ -13,9 +13,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.discover.mobile.common.ui.help.NeedHelpFooter;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.common.ui.help.NeedHelpFooter;
 
 /**
  * Default top view to be displayed in the alert modal. This contains a title as
@@ -54,7 +53,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView {
     public ModalDefaultTopView(final Context context, final AttributeSet attrs) {
         super(context, attrs);
 
-        final View mainView = (View) LayoutInflater.from(context).inflate(
+        final View mainView = LayoutInflater.from(context).inflate(
                 R.layout.modal_default_top_view, null);
 
         res = context.getResources();
@@ -106,6 +105,7 @@ public class ModalDefaultTopView extends ScrollView implements ModalTopView {
      * @param content
      *            - String with text to be displayed as the message
      */
+    @Override
     public void setContent(final String content) {
         text.setText(Html.fromHtml(content));
         Linkify.addLinks(text, Linkify.PHONE_NUMBERS);

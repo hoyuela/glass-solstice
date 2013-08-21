@@ -3930,16 +3930,19 @@ float: right;
 	text-transform: uppercase;
 }
 .latePayWarnTbl li.col1 {
-	float: left;
-	width: 29%;
+    float: left;
+    width: 27%;/*Defect:104712*/
+    padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col2 {
 	float: left;
-	width: 27%;
+	width: 27%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col3 {
 	float: left;
-	width: 33%;/*Defect:104712*/
+	width: 42%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.row {
 	border-bottom: 1px solid #dce1e4
@@ -4225,7 +4228,7 @@ color: #293033 !important;
 	padding: 0px !important;
 }
 
-#cashbackSignup1-pg .ui-content{padding:0px !important; display:inline-block;} 
+#cashbackSignup1-pg .ui-content{padding:0px !important; }   /* 13.3 global change 07/08/13 (defect 107988) */
 #accountLanding-pg .wraper h1 {
 	padding: 5px 0 0 10px;
 }
@@ -4285,7 +4288,9 @@ border-bottom: none !important;
 .innerWrapper {
 	margin: 7px 10px 0px 10px !important;
 }
-
+#pendingPayments-pg .innerWrapper {		/*Pending payments error padding issue*/
+	display:inline-block;
+}
 #cbb-page .innerWrapper {
 	margin: 7px 10px 0px 18px !important;
 } 
@@ -4402,7 +4407,7 @@ font-weight: normal;
 	border-right-width: 0px !important;
 	border-left-width: 0px !important;
 	border-top-width: 0px;
-	padding-bottom: 20px !important;
+	/*padding-bottom: 20px !important;*//*R13.3 global change 08/08/2013*/
 	border-radius: 0px !important;
 }
 .commonList ul li:first-child {
@@ -4717,5 +4722,14 @@ div[data-role="content"] {
 div[data-role="page"] {
 	overflow-x: hidden !important;
 }
+
+/* 13.3 Global change Defect-106647 08-08-13 starts */
+#pageError-pg .contentNopadd { 
+	padding:7px 0px 0px 0px !important;
+}  
+#pageError-pg .contentNopadd .errormsg2 {
+	padding:0px !important;
+}
+/* 13.3 Global change Defect-106647 08-08-13 ends */
 
 /* 13.3 global changes ends here*/

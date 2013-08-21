@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 import android.content.Context;
 
 import com.discover.mobile.card.R;
@@ -20,12 +19,14 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
- * @author 328073
- *
+ * PushReadMessage calls Web service for reading newly push messages
+ * 
+ * @author CTS
+ * 
+ * @version 1.0
+ * 
  */
-public class PushReadMessage
-{
-
+public class PushReadMessage {
 
     private final Context context;
     private final CardEventListener listener;
@@ -34,42 +35,44 @@ public class PushReadMessage
      * Constructor
      * 
      */
-    public PushReadMessage(Context context, CardEventListener listner) {
+    public PushReadMessage(final Context context,
+            final CardEventListener listner) {
         this.context = context;
-        this.listener = listner;
+        listener = listner;
     }
 
     /**
-     * This method prepairs header/request and send data to server
+     * This method prepares header/request and send data to server
      * 
      * @param tokenValue
      * @param hashedTokenValue
-     * @throws IOException 
-     * @throws JsonMappingException 
-     * @throws JsonGenerationException 
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonGenerationException
      */
-    public void sendRequest(final String requestId) throws JsonGenerationException, JsonMappingException, IOException {
+    public void sendRequest(final String requestId)
+            throws JsonGenerationException, JsonMappingException, IOException {
 
         WSRequest request = new WSRequest();
         String url = NetworkUtility.getWebServiceUrl(context,
                 R.string.push_read_msg);
-        
+
         request.setUrl(url);
-        
+
         PushMessageReadBean messageReadBean = new PushMessageReadBean();
-        messageReadBean.action =  messageReadBean.MARK_READ;
+        messageReadBean.action = messageReadBean.MARK_READ;
         messageReadBean.reqId = new ArrayList<String>();
         messageReadBean.reqId.add(requestId);
-        
-        ByteArrayOutputStream  byteArrayOutputStream = new ByteArrayOutputStream();
-        JacksonObjectMapperHolder.getMapper().writeValue(byteArrayOutputStream, messageReadBean);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        JacksonObjectMapperHolder.getMapper().writeValue(byteArrayOutputStream,
+                messageReadBean);
         request.setInput(byteArrayOutputStream.toByteArray());
         request.setMethodtype("POST");
-        
-        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context,
-                null, "Discover", "Loading...", listener);
+
+        WSAsyncCallTask serviceCall = new WSAsyncCallTask(context, null,
+                "Discover", "Loading...", listener);
         serviceCall.execute(request);
     }
-
 
 }

@@ -20,19 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.auth.EnhanceSecurityConstant;
-import com.discover.mobile.common.facade.FacadeFactory;
-import com.discover.mobile.common.help.HelpItemGenerator;
-import com.discover.mobile.common.help.HelpWidget;
-import com.discover.mobile.common.net.error.RegistrationErrorCodes;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
@@ -40,15 +29,20 @@ import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.strong.StrongAuthAns;
-
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.discover.mobile.common.auth.EnhanceSecurityConstant;
+import com.discover.mobile.common.facade.FacadeFactory;
+import com.discover.mobile.common.help.HelpItemGenerator;
+import com.discover.mobile.common.net.error.RegistrationErrorCodes;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.google.common.base.Strings;
 
 /**
  * Class Description of EnhancedAccountSecurity
@@ -152,7 +146,6 @@ public class EnhancedAccountSecurityActivity extends
 
     // Tool tip Menu
     private HelpItemGenerator helpNum, helpInfo, helpFaq;
-    private HelpWidget help;
     private StrongAuthListener authListener;
 
     // Defect id 95164
@@ -220,18 +213,19 @@ public class EnhancedAccountSecurityActivity extends
         authAnsListener = new CardEventListener() {
 
             @Override
-            public void onSuccess(Object data) {
+            public void onSuccess(final Object data) {
                 // Strong Authentication successed, get back to last activity
                 if (authListener != null) {
+                    Utils.isSpinnerAllowed = false;
                     authListener.onStrongAuthSucess(data);
                 }
-                finish();
+                // finish();
                 // activityResult = RESULT_OK;
                 // finish();
             }
 
             @Override
-            public void OnError(Object data) {
+            public void OnError(final Object data) {
                 CardErrorBean bean = (CardErrorBean) data;
 
                 /**
@@ -387,7 +381,7 @@ public class EnhancedAccountSecurityActivity extends
         continueButton = (Button) findViewById(R.id.account_security_continue_button);
         continueButton.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick(View arg0) {
+            public void onClick(final View arg0) {
                 submitSecurityInfo(arg0);
             }
         });
@@ -405,16 +399,13 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
+    public void onClick(final View v) {
+
         if (v.getId() == R.id.privacy_terms) {
             // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
             Intent privacyTerms = new Intent(
                     EnhancedAccountSecurityActivity.this,
                     PrivacyTermsLanding.class);
-
-            int errvis = errorMessage.getVisibility();
-            String errmsg = errorMessage.getText().toString();
 
             privacyTerms.putExtra("is_enhance", true);
             privacyTerms.putExtra(IntentExtraKey.STRONG_AUTH_QUESTION,
@@ -502,8 +493,9 @@ public class EnhancedAccountSecurityActivity extends
                 errorMessage.setText(errmsg);
                 errorMessage.setVisibility(errvisib);
 
-                if (errorMessage.getVisibility() == View.VISIBLE)
+                if (errorMessage.getVisibility() == View.VISIBLE) {
                     questionAnswerField.updateAppearanceForInput();
+                }
 
             }
             answer = extras.getString(ANSWER_TEXT);
@@ -557,8 +549,9 @@ public class EnhancedAccountSecurityActivity extends
         errorMessage.setText(inputErrorText);
         errorMessage.setVisibility(inputErrorVisibility);
 
-        if (errorMessage.getVisibility() == View.VISIBLE)
+        if (errorMessage.getVisibility() == View.VISIBLE) {
             questionAnswerField.updateAppearanceForInput();
+        }
 
     }
 
@@ -687,10 +680,6 @@ public class EnhancedAccountSecurityActivity extends
         return inputFields;
     }
 
-    private void startHomeFragment() {
-        FacadeFactory.getCardFacade().navToHomeFragment(this);
-    }
-
     /**
      * If the back button is pressed then cancel the strong auth activity and
      * notify the calling activity that this activity was canceled.
@@ -708,15 +697,6 @@ public class EnhancedAccountSecurityActivity extends
         }
         finish();
         // Defect id 95164
-    }
-
-    /**
-     * If Strong Auth finishes with success, notify the calling activity of this
-     * and close.
-     */
-    private void finishWithResultOK() {
-        activityResult = RESULT_OK;
-        finish();
     }
 
     /**
@@ -757,20 +737,18 @@ public class EnhancedAccountSecurityActivity extends
     }
 
     @Override
-    public void onSuccess(Object data) {
-        // TODO Auto-generated method stub
+    public void onSuccess(final Object data) {
 
     }
 
     @Override
-    public void OnError(Object data) {
-        // TODO Auto-generated method stub
+    public void OnError(final Object data) {
 
     }
 
     @Override
     public CardErrHandler getCardErrorHandler() {
-        // TODO Auto-generated method stub
+
         return CardErrorUIWrapper.getInstance();
     }
 
@@ -784,7 +762,7 @@ public class EnhancedAccountSecurityActivity extends
      * @param selectedIndex
      * @param answer
      */
-    public void submitAns(int selectedIndex, String answer) {
+    public void submitAns(final int selectedIndex, final String answer) {
         mainScrollView.smoothScrollTo(0, 0);
         errorMessage.setVisibility(View.GONE);
         questionAnswerField.updateAppearanceForInput();
@@ -814,27 +792,12 @@ public class EnhancedAccountSecurityActivity extends
      * 
      * @param Exception
      */
-    private void handleError(Exception e) {
+    private void handleError(final Exception e) {
         e.printStackTrace();
         CardErrorBean cardErrorBean = new CardErrorBean(e.toString(), true);
         CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                 EnhancedAccountSecurityActivity.this);
         cardErrorResHandler.handleCardError(cardErrorBean);
-    }
-
-    /**
-     * This method get called on click of menu items on tooltip icon.
-     * 
-     */
-    private void setupClickableHelpItem() {
-        helpInfo = new HelpItemGenerator(R.string.help_all_Info, false, true,
-                getAllFaqListener());
-        helpNum = new HelpItemGenerator(R.string.help_menu_number, true, false,
-                getAllFaqListener());
-        helpFaq = new HelpItemGenerator(R.string.help_all_faq, true, true,
-                getAllFaqListener());
-        help = (HelpWidget) findViewById(R.id.help);
-        help.showHelpItems(getEnhancedHelpItems());
     }
 
     /**
@@ -850,30 +813,15 @@ public class EnhancedAccountSecurityActivity extends
         return items;
     }
 
-    /**
-     * It's click listener for Help menu
-     * 
-     * @return
-     */
-    private OnClickListener getAllFaqListener() {
-        return new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Toast.makeText(EnhancedAccountSecurityActivity.this,
-                        "comming soon ", Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
-
     @Override
     public int getEnhanceSecurityRequestCodeForAccountLock() {
-        // TODO Auto-generated method stub
+
         return STRONG_AUTH_LOCKED;
     }
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
 }
