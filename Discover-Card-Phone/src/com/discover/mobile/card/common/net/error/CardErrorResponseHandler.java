@@ -194,12 +194,21 @@ public final class CardErrorResponseHandler {
                     .getLoginFacade();
             if (INVALID_EXTERNAL_STATUS == errorCodeNumber
                     && pUtils.isPasscodeToken()) {
-                pUtils.deletePasscodeToken();
+            	//DEFECT 109169 - if I remove token and show message user is no longer PC enabled.  If they rotate device a non-PC message will redraw.  Moving removal logic to dismissal of modal.
+            	bundle.remove(IntentExtraKey.SHOW_ERROR_MESSAGE);
+            	Runnable buttonAction = new Runnable() {
+							@Override
+							public void run() {
+								new PasscodeUtils(context).deletePasscodeToken();
+								FacadeFactory.getLoginFacade().navToLoginWithMessage(
+										DiscoverActivityManager.getActiveActivity(), bundle);
+							}};
                 EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(
                         context, R.string.E_T_4031102_passcode,
-                        R.string.E_4031102_passcode, R.string.ok);
+                        R.string.E_4031102_passcode, R.string.ok, 
+                        buttonAction, buttonAction);
                 modalUIDAndPasscodeLockout.hideNeedHelpFooter();
-                showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
+                showCustomAlert(modalUIDAndPasscodeLockout);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
                 int errorTitle = context.getResources().getIdentifier(
                         "E_T_" + errorCodeNumber, "string",
