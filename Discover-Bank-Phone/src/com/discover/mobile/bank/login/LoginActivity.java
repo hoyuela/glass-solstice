@@ -538,7 +538,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * Display succesful logout message at top of the screen
 	 */
 	public void showLogoutSuccessful() {
-		errorTextView.invalidate();
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		errorTextView.setVisibility(View.VISIBLE);
@@ -555,6 +554,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 	private void startFadeOutAnimationForView(final View viewToFade,
 			final long duration) {
+		viewToFade.invalidate(); // Ensure View has been drawn to the state needed prior to Animation (needed for Samsung devices)
 		startFadeOutAimationForView(viewToFade, duration, viewToFade.getVisibility());
 	}
 
