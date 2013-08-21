@@ -683,7 +683,8 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 				if(shouldResizeImage){
 					final int maxImageWidth = 
 							Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
-					final int newHeight = bestCameraSize.height*maxImageWidth/bestCameraSize.width;
+					final int newHeight = 
+							MCDUtils.getAdjustedImageHeight(bestCameraSize.height, bestCameraSize.width, maxImageWidth);
 					Bitmap.createScaledBitmap(lastPicture, maxImageWidth, newHeight, true)
 					.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
 				}else{
