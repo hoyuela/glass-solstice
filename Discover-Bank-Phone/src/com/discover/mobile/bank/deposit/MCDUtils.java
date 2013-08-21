@@ -57,7 +57,15 @@ public final class MCDUtils {
 				break;
 				//If the length dipped below the max length (1600) take the next size up
 			}else if(size.width < maxImageWidth){
-				bestSize = sizes.get(i-1);
+				//If all the lengths are below the max value and 
+				//its the first in the list take that item.
+				if(i == 0){
+					bestSize = size;
+					//If all the lengths are below the max value and 
+					//its the first in the list take that item.
+				}else{
+					bestSize = sizes.get(i-1);
+				}
 				break;
 			}else{
 				bestSize = size;
