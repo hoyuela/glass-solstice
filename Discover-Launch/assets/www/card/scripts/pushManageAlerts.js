@@ -170,7 +170,7 @@ dfs.crd.push.manage.CachePageData = function()
         for (var i=0;i<checkedElements.length;i++)
         {
             var alertType = $(checkedElements[i]).attr('id');
-            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().attr('id');
+            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().parent().attr('id');
             if (alertType == "SMRM")
             {
                 dfs.crd.push.manage.smsCheckedCached.push(alertName);               
@@ -1320,7 +1320,7 @@ dfs.crd.push.manage.postPushPreferenceData = function()
             var alertType = $(checkedElements[i]).attr('id');
             // get the alert Name Statement(STMT) etc from the ID of Li containing the above check box 
             //var alertName = $(checkedElements[i]).parent().parent().parent().parent().attr('id');
-            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().attr('id');
+            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().parent().attr('id');
             // get the value (if exists) of the above check box 
             // save the current preference for SMS and Push 
             if (alertType == "SMRM")

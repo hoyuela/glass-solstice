@@ -592,11 +592,11 @@ function paymentStep1Load()
 				var pendignPaymentEditData = getDataFromCache("pendingPageDetailData");
 				if(!isEmpty(pendignPaymentEditData)){
 					if(pendignPaymentEditData.SELECTEDINDEX == "choice-1"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("MinimumDue");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Minimum Due");
 					}else if(pendignPaymentEditData.SELECTEDINDEX == "choice-2"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("LastStatement");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Last Statement Balance");
 					}else{
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("OtherBalance");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Other Amount");
 					}
 				}
 			}
