@@ -3,8 +3,6 @@ package com.discover.mobile.bank.deposit;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -776,7 +774,7 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		final Camera.Parameters parameters = camera.getParameters();
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 		//Set the best image size
-		bestCameraSize = getBestImageSize(sizes, maxImageWidth);
+		bestCameraSize = MCDUtils.getBestImageSize(sizes, maxImageWidth);
 
 		//If the image is larger than 1600 set the boolean shouldResize to true
 		if(bestCameraSize.width > maxImageWidth){
@@ -808,56 +806,6 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		parameters.setJpegQuality(maxJpegQuality);
 
 		camera.setParameters(parameters);
-	}
-
-	/**
-	 * Get the best image size that should be taken.  This method may return null if the bestSize is not set.
-	 * If designed width is larger than 1600, the application will set the shouldResizeImage to true.
-	 * Note this method will sort the items.
-	 * @param sizes - list of possible sizes
-	 * @param maxImageWidth - int representing the maximum width that the image can be
-	 * @return the best size
-	 */
-	private Size getBestImageSize(final List<Size> sizes, final int maxImageWidth){
-		Size bestSize = null;
-
-		//Sort the list in order from highest width to lowest
-		Collections.sort(sizes, new Comparator<Size>(){
-
-			@Override
-			public int compare(final Size lhs, final Size rhs) {
-				if (lhs.width == rhs.width) {
-					return 0;
-				} else if (lhs.width > rhs.width) {
-					return -1;
-				} else {
-					return 1;
-				}
-			}
-
-		});
-
-		final int arrayLength = sizes.size();
-		for(int i = 0; i < arrayLength; i++){
-			final Size size = sizes.get(i);
-
-			//If there is only one item in the array use that item
-			if(arrayLength == 1){
-				bestSize = size;
-				//If the length is equal to max length (1600) set the image size
-			}else if(size.width == maxImageWidth){
-				bestSize = sizes.get(i);
-				break;
-				//If the length dipped below the max length (1600) take the next size up
-			}else if(size.width < maxImageWidth && i > 0){
-				bestSize = sizes.get(i-1);
-				break;
-			}else{
-				bestSize = size;
-			}
-		}
-
-		return bestSize;
 	}
 
 	/**
