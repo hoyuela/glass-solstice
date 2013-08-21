@@ -1049,8 +1049,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		});
 		gotoFastcheckButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(final View v) {
+			public void onClick(final View v) {				
 				getSlidingMenu().toggle();
+
+				//DEFECT 109862 - passcode salutation doesn't update
+				if (isPasscodeLogin()) {
+					welcomeTV.setText(pUtils.getWelcomeMessage());
+				}
 			}
 		});
 
