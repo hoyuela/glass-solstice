@@ -81,6 +81,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deposit_submission);
 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
+		setImageParams();
 
 		/**
 		 * Get the data for the service call.  
@@ -119,7 +120,6 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	 * @param data - deposit data to submit
 	 */
 	private void submit( final DepositDetail data) {
-		setImageParams();
 		final SubmitCheckDepositCall call = BankServiceCallFactory.createSubmitCheckDepositCall(data, this);
 		final Bundle bundle = new Bundle();
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_HEIGHT, frontImageHeight);
@@ -148,8 +148,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
 		final Size smallCaptureSize = MCDUtils.getBestImageSize(sizes, maxImageWidth);
 
-		if(frontImageWidth >= maxImageWidth){ 
-			frontImageHeight = smallCaptureSize.height*maxImageWidth/smallCaptureSize.width;
+		if(smallCaptureSize.width >= maxImageWidth){ 
+			frontImageHeight = 
+					MCDUtils.getAdjustedImageHeight(smallCaptureSize.height, smallCaptureSize.width, maxImageWidth);
 			frontImageWidth = maxImageWidth; 
 			isEqualOrAboveThresh = true;
 		}else{

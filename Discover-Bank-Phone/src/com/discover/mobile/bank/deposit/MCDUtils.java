@@ -75,4 +75,15 @@ public final class MCDUtils {
 		return bestSize;
 	}
 
+	/**
+	 * Get the adjusted height of an image
+	 * @param origHeight - original height of the image
+	 * @param origWidth - original width of the image
+	 * @param newWidth - the new width of the image
+	 * @return the adjusted height
+	 */
+	public static int getAdjustedImageHeight(final int origHeight, final int origWidth, final int newWidth){
+		return origHeight*newWidth/origWidth;
+	}
+
 }
