@@ -96,8 +96,8 @@ public interface AnalyticsPage {
 	static final String PASSCODE_FORGOT_STEP2 = "passcode_forgot_step2-pg";
 	static final String PASSCODE_FORGOT_OVERLAY = "Passcode_Forgot_Confirmation-pg-Overlay";
 	
-	static final String PASSCODE_RED_X = "passcode-red-x";
-	static final String PASSCODE_GREEN_CHECK = "passcode-green-check";
+	static final String PASSCODE_RED_X = "passcode_RedCheck-pg";
+	static final String PASSCODE_GREEN_CHECK = "passcode_GreenCheck-pg";
 	static final String PASSCODE_OVERLAY = "passcode_guidelines-pg-overlay";
 
 	//Strong Auth Enroll pages
