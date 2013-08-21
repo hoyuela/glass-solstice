@@ -1018,6 +1018,7 @@ line-height: 17px;}*/
 .payments .wraper .accountList li {
 	padding: 15px;
 	border-bottom: 1px solid #cfd1d0;
+	word-wrap: break-word;   /* Added as a part of 13.3 global change 16-Aug-2013  */
 }
 .payments .wraper .accountList li .ui-block-a {
 	width: 80%;
@@ -1059,7 +1060,10 @@ line-height: 17px;}*/
 }
 
 #manageBankAccDetails-pg .wraper .pendingPaymentMsg {		/* Defect_104897_New starts */
-	padding: 13px 0px 0 15px;
+	/*13.3 Global Changes - 16-Aug-2013  start  */
+	/*padding: 13px 0px 0 15px;*/ 
+	padding: 13px 13px 0 5px;   
+	/*13.3 Global Changes - 16-Aug-2013 end  */
 	float:left;
 }
 #manageBankAccDetails-pg div[data-role="content"] {
@@ -1578,9 +1582,14 @@ font-size: 18px;font-weight:normal;padding:15px 0px 12px 0px;border-bottom: 1px 
 #pendingPayments-pg .wraper .txtcenteraln {
 	margin-top:20px;
 }
+
+/* 13.3 Global changes 16-Aug-2013 
 .payments .wraper .accountList li span.accName#editAccNickname {
-height: 22px;
+height: 22px;  
+
 }
+*/
+
 /******************Save To Photos Page***********************/
 #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-a, #paymentSaveToPhotos-pg #saveCloseBtn .ui-block-b {
 	margin:0px;

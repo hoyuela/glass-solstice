@@ -264,7 +264,10 @@ box-shadow: 1px 1px 0px rgba(164, 168, 170, 0.8)!important;
 #login-pg .ui-btn-inner .ui-btn-text { font-size:12px; margin:0 !important; }
 .ui-btn-inner .ui-btn-text{font-size:15px;   }
 
-.r3matchbtn .ui-btn-text{margin:0px 20px 0px 20px;}
+.r3matchbtn .ui-btn-text{
+/*  13.3 Global Changes - 16-Aug-2013   
+	margin:0px 20px 0px 20px;} */
+	margin:0px;}
 /*logo*/
 #logo {
 	display: block;

@@ -483,6 +483,14 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	display: inline-block;
 }
 .rd-page .disabled-btn{ background:url(../images/disabled-bg.png) no-repeat; -webkit-background-size:127px 34px; /*width:80px; height:24px;*/ display:inline-block;}
+
+/* 13.3 Change 16-08-13 to fix button alignment */
+.rd-page section .disabled-btn {
+	width: 132px;
+	height: 36px;
+}
+/* 13.3 Change 16-08-13 */
+
 .rd-page .yellow-bg span, .rd-page .disabled-btn span{ /*padding:0px 8px 5px 0px;*/ float:left; font-weight:normal; text-shadow:none;}
 
 /*R13.3 Global Change start*/
@@ -888,7 +896,10 @@ line-height: 17px;
 	font-weight:normal !important;
 	text-align: left !important;
 }
-#best-value .partner-list .giftName{ margin-left: 20%; padding-top:0px; color:#3d484d;}
+/*13.3 Global Changes - 16-Aug-2013 - Start */
+/*#best-value .partner-list .giftName{ margin-left: 20%; padding-top:0px; color:#3d484d;}*/
+#best-value .partner-list .giftName{ margin-left: 15%; padding-top:0px; color:#3d484d;}
+/*13.3 Global Changes - 16-Aug-2013 - End */
 /*13.3 global change*/
 /*#best-value .rd-page .partner-list{margin:20px 0px 0px 10px !important;}*/
 .rd-page .giftName-subttl{font-weight:normal; font-size:12px; color:#838383; display:block; /*padding:0 10px;*/ text-align: left !important; float: none;}
@@ -1554,6 +1565,12 @@ line-height: 20px;
 .disabledTxt{
 	float:left; padding:8px 0 0 0;color:#b2b2b2 !important;font-size:10px !important; font-weight:bold !important;line-height:12px; display:inline-block; width:100%; white-space:normal;word-wrap:break-word;
 }
+/* 13.3 global changes - 16-Aug-2013 - Start */
+#best-value .disabledTxt{
+	margin-left:15% !important;
+}
+/* 13.3 global changes - 16-Aug-2013 - End */
+
 #purchase-agreement-list{ padding:0;}
 #purchase-agreement-list li{ list-style:none; padding:10px 0 0 0; margin:0;}
 .lnk-make-black{
