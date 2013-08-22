@@ -37,7 +37,7 @@
 	margin-top:5px;
 	}
 /*13.3 Global Change:Starts*/#edoLandingPage-pg .navtabs {
-	margin-left:10px; /*defect: 108260*/
+	margin-left:17px;
 }/*13.3 Global Change:Ends*/
 .edo-page .dtl-view-wrap {
 	min-height: 400px;
@@ -863,7 +863,7 @@ float: right;		/*Defect_New_108260_5th Aug 6-8-2013*//*13.3 global change*/
 	
 .edo-page .showListview .items .offersInfo {		/*R13.3 Global Change*/
 	float: left;
-	width: 70%;/*defect: 108260*/
+	width: 67%;
 	margin-top: 17px;
 	margin-left: 5%;
 	font-size: 17px;
@@ -882,7 +882,7 @@ float: right;		/*Defect_New_108260_5th Aug 6-8-2013*//*13.3 global change*/
 	height: 13px;*/
 	padding-top: 2px;
 	padding-left: 2px;
-	margin-right: 4px; /* defect: 108260*/
+	margin-right: 3%;
 	margin-top: 10px;
 }
 
