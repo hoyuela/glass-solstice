@@ -11,13 +11,11 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.common.facade.FacadeFactory;
-
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankConductor;
 import com.discover.mobile.bank.help.PrivacyTermsType;
-import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.util.BankNeedHelpFooter;
+import com.discover.mobile.common.facade.FacadeFactory;
 
 public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 	private TextView divider;
@@ -71,7 +69,7 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 			switch (attr) {
 			case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_footerType:
 				final int footerType = a.getInt(attr,FooterType.PRIVACY_TERMS);
-				this.setFooterType(footerType);
+				setFooterType(footerType);
 				break;
 			case R.styleable.com_discover_mobile_bank_ui_widgets_BankLayoutFooter_helpNumber:
 				final String helpNumber = a.getString(attr);
@@ -97,10 +95,10 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 		//16/Aug/2013---Observation Fixed
 		this.context = context ;
 		/** Load UI Widgets */
-		divider = (TextView) this.findViewById(R.id.divider);
-		provideFeedback = (Button) this.findViewById(R.id.provide_feedback_button);
-		privacyTerms = (Button) this.findViewById(R.id.privacy_terms);
-		copyRight = (TextView)this.findViewById(R.id.discover_copyright);
+		divider = (TextView) findViewById(R.id.divider);
+		provideFeedback = (Button) findViewById(R.id.provide_feedback_button);
+		privacyTerms = (Button) findViewById(R.id.privacy_terms);
+		copyRight = (TextView)findViewById(R.id.discover_copyright);
 
 		/**
 		 * Create footer that will listen when user taps on Need Help Number to
@@ -168,9 +166,9 @@ public class BankLayoutFooter extends LinearLayout implements OnClickListener {
 			if(!cardMode){
 				BankConductor.navigateToPrivacyTerms(PrivacyTermsType.LandingPage);
 			}else{
-			    //16/Aug/2013---Observation Fixed
+				//16/Aug/2013---Observation Fixed
 				//BankConductor.navigateToCardPrivacyAndTermsLanding();
-			    FacadeFactory.getCardFacade().navToPrivacyTerms(context);
+				FacadeFactory.getCardFacade().navToPrivacyTerms(context);
 			}
 		}
 	}

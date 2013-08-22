@@ -1,5 +1,5 @@
 /*
- * © Copyright Solstice Mobile 2013
+ * ï¿½ Copyright Solstice Mobile 2013
  */
 package com.discover.mobile.bank.services.atm;
 
@@ -20,6 +20,7 @@ import com.discover.mobile.bank.services.BankJsonResponseMappingNetworkServiceCa
 import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -33,8 +34,8 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 
 	private final TypedReferenceHandler<AtmResults> handler;
 
-	/**Custom timeout*/
-	private static int timeout = 60;
+	/** Resource ID containing the custom timeout value. */
+	private static final int CONNECT_TIMEOUT_RES = R.string.timeout_connect_atm_details;
 
 	/**
 	 * 
@@ -57,7 +58,7 @@ public class GetAtmDetailsCall extends BankJsonResponseMappingNetworkServiceCall
 				// Makes the service call cancellable
 				setCancellable(true);
 				//specifiy custom timeout
-				connectTimeoutSeconds = timeout;
+				connectTimeoutSeconds = ServiceCallParams.parseTimeout(context, CONNECT_TIMEOUT_RES);
 			}
 		}, AtmResults.class, BankUrlManager.getAtmLocatorUrl());
 

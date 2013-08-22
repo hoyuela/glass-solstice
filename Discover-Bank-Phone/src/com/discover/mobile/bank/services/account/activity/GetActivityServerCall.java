@@ -7,11 +7,13 @@ import java.util.Map;
 
 import android.content.Context;
 
+import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.account.TransferDeletionType;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.BankUnamedListJsonResponseMappingNetworkServiceCall;
 import com.discover.mobile.bank.services.error.BankErrorResponseParser;
 import com.discover.mobile.common.callback.AsyncCallback;
+import com.discover.mobile.common.net.ServiceCallParams;
 import com.discover.mobile.common.net.ServiceCallParams.GetCallParams;
 import com.discover.mobile.common.net.SimpleReferenceHandler;
 import com.discover.mobile.common.net.TypedReferenceHandler;
@@ -58,11 +60,13 @@ import com.discover.mobile.common.net.TypedReferenceHandler;
 public class GetActivityServerCall 
 					extends BankUnamedListJsonResponseMappingNetworkServiceCall<ListActivityDetail, ActivityDetail> {
 
+	// Resource containing custom read timeout value.
+	private static final int READ_TIMEOUT_RES = R.string.timeout_read_account_activity;
+	
 	/**Reference handler to return the data to the UI*/
 	private final TypedReferenceHandler<ListActivityDetail> handler;
 
 	private final ActivityDetailType type;
-	private static final int TWO_MINUTES = 120;
 	/**Retains a reference to whether we deleted an activity before calling this service*/
 	private final TransferDeletionType deletionType;
 	private boolean didDeleteTransfer;
@@ -83,7 +87,7 @@ public class GetActivityServerCall
 		super(context, new GetCallParams(url) {
 			{
 				/**Set timeout to receive response to two minutes*/
-				this.readTimeoutSeconds = TWO_MINUTES;
+				this.readTimeoutSeconds = ServiceCallParams.parseTimeout(context, READ_TIMEOUT_RES);
 				
 				//This ensures the token is added to the HTTP Authorization Header of the HTTP request
 				requiresSessionForRequest = true;

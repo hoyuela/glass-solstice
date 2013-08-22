@@ -39,6 +39,7 @@ import com.discover.mobile.common.net.error.DelegatingErrorResponseParser;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.net.error.ErrorResponseParser;
 import com.discover.mobile.common.net.json.JsonMappingRequestBodySerializer;
+import com.discover.mobile.common.utils.CommonUtils;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 
@@ -182,15 +183,16 @@ public abstract class NetworkServiceCall<R> {
 	 * @param params
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params) {
-		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
 
+		loadDefaultTimeouts(); // Loads the default timeout values if needed.
+		validateConstructorArgs(context, params);
+
 		baseURL = getBaseUrl();
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
-																com.discover.mobile.common.R.string.xApplicationVersion);
+		X_APP_VERSION = CommonUtils.getApplicationVersionNumber();
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, 
-																	com.discover.mobile.common.R.string.xClientPlatform);
+				com.discover.mobile.common.R.string.xClientPlatform);
 	}
 
 	/**
@@ -201,15 +203,16 @@ public abstract class NetworkServiceCall<R> {
 	 * @param url
 	 */
 	protected NetworkServiceCall(final Context context, final ServiceCallParams params, final String url) {
-		validateConstructorArgs(context, params);
 		this.context = context;
 		this.params = params;
 
+		loadDefaultTimeouts(); // Loads the default timeout values if needed.
+		validateConstructorArgs(context, params);
+
 		baseURL = url;
-		X_APP_VERSION = ContextNetworkUtility.getStringResource(context, 
-																com.discover.mobile.common.R.string.xApplicationVersion);
+		X_APP_VERSION = CommonUtils.getApplicationVersionNumber();
 		X_CLIENT_PLATFORM = ContextNetworkUtility.getStringResource(context, 
-																	com.discover.mobile.common.R.string.xClientPlatform);
+				com.discover.mobile.common.R.string.xClientPlatform);
 
 	}
 
@@ -221,7 +224,7 @@ public abstract class NetworkServiceCall<R> {
 		checkArgument(!Strings.isNullOrEmpty(params.path), "params.path should never be empty");
 
 		checkArgument(params.connectTimeoutSeconds > 0, "invalid params.connectTimeoutSeconds: " + 
-														params.connectTimeoutSeconds);
+				params.connectTimeoutSeconds);
 		checkArgument(params.readTimeoutSeconds > 0, "invalid params.readTimeoutSeconds: " + params.readTimeoutSeconds);
 
 		checkArgument(!(params.clearsSessionBeforeRequest && params.requiresSessionForRequest),
@@ -253,13 +256,13 @@ public abstract class NetworkServiceCall<R> {
 	public void cancel() {
 		if (params.isCancellable()) {
 			this.wasCancelled = true;
-			
+
 			if(conn != null) {
 				conn.disconnect();	
 			}
 		}
 	}
-	
+
 	/**
 	 * Resends the same request using the same information provided during
 	 * instantiation. It will not allow to retransmit if there is a transmission
@@ -294,7 +297,7 @@ public abstract class NetworkServiceCall<R> {
 	 * @throws IOException
 	 */
 	protected abstract R parseSuccessResponse(int status, Map<String, List<String>> headers, InputStream body) 
-			 	throws IOException;
+			throws IOException;
 
 	/**
 	 * Submit the service call for asynchronous execution and call the callback
@@ -343,7 +346,7 @@ public abstract class NetworkServiceCall<R> {
 			assertMainThreadExecution(e);
 
 			sendResultToHandler(e, RESULT_EXCEPTION);	
-				
+
 			return false;
 		} finally {
 			context = null; // allow context garbage collection no matter what
@@ -377,7 +380,7 @@ public abstract class NetworkServiceCall<R> {
 		deviceIdentifiers = new DeviceIdentifiers() {
 			{
 				final TelephonyManager telephonyManager = (TelephonyManager) 
-														   context.getSystemService(Context.TELEPHONY_SERVICE);
+						context.getSystemService(Context.TELEPHONY_SERVICE);
 
 				did = telephonyManager.getDeviceId();
 				sid = telephonyManager.getSimSerialNumber();
@@ -431,7 +434,7 @@ public abstract class NetworkServiceCall<R> {
 
 	private HttpURLConnection createConnection() throws IOException {
 		final URL fullUrl = getFullUrl();
-		
+
 		conn = (HttpURLConnection) fullUrl.openConnection();
 
 		return conn;
@@ -459,12 +462,12 @@ public abstract class NetworkServiceCall<R> {
 
 			@Override
 			public void checkClientTrusted(final X509Certificate[] chain, final String authType) 
-				 throws CertificateException {
+					throws CertificateException {
 			}
 
 			@Override
 			public void checkServerTrusted(final X509Certificate[] chain, final String authType) 
-				 throws CertificateException {
+					throws CertificateException {
 			}
 		} };
 
@@ -531,7 +534,7 @@ public abstract class NetworkServiceCall<R> {
 		conn.setRequestProperty("X-Client-Platform", X_CLIENT_PLATFORM);
 		conn.setRequestProperty("X-Application-Version", X_APP_VERSION);
 	}
-	
+
 	public Map<String, String> getHeaders() {
 		return params.headers;
 	}
@@ -541,7 +544,7 @@ public abstract class NetworkServiceCall<R> {
 
 		if (!foundToken && params.requiresSessionForRequest) {
 			throw new IOException("No session available when one was required for NetworkServiceCall to url: " + 
-								  conn.getURL());
+					conn.getURL());
 		}
 	}
 
@@ -588,6 +591,22 @@ public abstract class NetworkServiceCall<R> {
 	private void setupTimeouts() {
 		conn.setConnectTimeout(params.connectTimeoutSeconds * 1000);
 		conn.setReadTimeout(params.readTimeoutSeconds * 1000);
+	}
+
+	/** Loads the default timeout values if needed. */
+	private void loadDefaultTimeouts() {
+		if (context == null || params == null) {
+			return;
+		}
+		// Determine if we need to load the default values
+		if (params.connectTimeoutSeconds < 0) {
+			params.connectTimeoutSeconds = ServiceCallParams.parseTimeout(context,
+					com.discover.mobile.common.R.string.timeout_connect_default);
+		}
+		if (params.readTimeoutSeconds < 0) {
+			params.readTimeoutSeconds = ServiceCallParams.parseTimeout(context,
+					com.discover.mobile.common.R.string.timeout_read_default);
+		}
 	}
 
 	private void sendRequestBody() throws IOException {
@@ -720,7 +739,7 @@ public abstract class NetworkServiceCall<R> {
 	public boolean cacheResults(){
 		return cacheResult;
 	}
-	
+
 	public boolean isCancellable() {
 		return this.params.isCancellable();
 	}
