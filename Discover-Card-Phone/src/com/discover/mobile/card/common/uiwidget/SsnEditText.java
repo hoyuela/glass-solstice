@@ -1,5 +1,7 @@
 package com.discover.mobile.card.common.uiwidget;
 
+import com.google.common.base.Strings;
+
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -78,21 +80,22 @@ public class SsnEditText extends ValidatedInputField {
     public void setSsn(final int ssn) {
         this.ssn = ssn;
     }
+    
+    /* 13.4 Baclklog items start*/
+    
+	@Override
+	protected void showErrorLabel() {
+		// TODO Auto-generated method stub
+		if (errorLabel != null) {
+			if (isNull()) {
+				errorLabel.setVisibility(View.GONE);
+			} else
+			{
+				errorLabel.setVisibility(View.VISIBLE);
+			}
+		}
 
-    /* 13.4 Baclklog items start */
-
-    @Override
-    protected void showErrorLabel() {
-        // TODO Auto-generated method stub
-        if (errorLabel != null) {
-            if (isNull()) {
-                errorLabel.setVisibility(View.GONE);
-            } else {
-                errorLabel.setVisibility(View.VISIBLE);
-            }
-        }
-
-    }
-    /* 13.4 Baclklog items end */
+	}
+	  /*    13.4 Baclklog items end*/
 
 }

@@ -133,9 +133,8 @@ public final class WSProxy {
         } catch (final IOException e) {
             e.printStackTrace();
             if (e.getMessage().indexOf(
-                    "Received authentication challenge is null") >= 0) {
+                    "Received authentication challenge is null") >= 0)
                 throw e;
-            }
         }
 
         return response;
@@ -252,9 +251,7 @@ public final class WSProxy {
         trustEveryone();
 
         // Getting the proxy information from the device
-        @SuppressWarnings("deprecation")
         final String proxyHost = android.net.Proxy.getDefaultHost();
-        @SuppressWarnings("deprecation")
         final int proxyPort = android.net.Proxy.getDefaultPort();
         if (proxyHost != null) { // With Proxy
             final Proxy proxy = new Proxy(Proxy.Type.HTTP,
@@ -282,9 +279,7 @@ public final class WSProxy {
         final URL url = new URL(requestDetail.getUrl());
 
         // Getting the proxy information from the device
-        @SuppressWarnings("deprecation")
         final String proxyHost = android.net.Proxy.getDefaultHost();
-        @SuppressWarnings("deprecation")
         final int proxyPort = android.net.Proxy.getDefaultPort();
         if (proxyHost != null) { // With Proxy
             final Proxy proxy = new Proxy(Proxy.Type.HTTP,
@@ -309,12 +304,10 @@ public final class WSProxy {
                         .getSystemService(Context.TELEPHONY_SERVICE);
                 did = telephonyManager.getDeviceId();
                 sid = telephonyManager.getSimSerialNumber();
-                if (null == sid) {
+                if (null == sid)
                     sid = "null";
-                }
-                if (null == did) {
+                if (null == did)
                     did = "null";
-                }
 
                 oid = Secure.getString(context.getContentResolver(),
                         Secure.ANDROID_ID); // Will be same as phonegap
@@ -375,8 +368,7 @@ public final class WSProxy {
         connection.setRequestProperty("Content-Type", X_CONTENT_TYPE);
     }
 
-    private void setCookies(final HttpURLConnection connection,
-            final Context context) {
+    private void setCookies(final HttpURLConnection connection, Context context) {
         final CardShareDataStore cardShareDataStore = CardShareDataStore
                 .getInstance(context);
         final SessionCookieManager sessionCookieManager = cardShareDataStore
@@ -385,9 +377,10 @@ public final class WSProxy {
         StringBuffer cookieStringBuffer = new StringBuffer();
         for (HttpCookie cookie : cookies) {
 
-            if (null != cookie && null != cookie.getName()
-                    && !"null".equals(cookie.getValue())
-                    && null != cookie.getValue()) {
+            if (null != cookie
+                    && null != cookie.getName()
+                    && (!("null".equals(cookie.getValue())) && null != cookie
+                            .getValue())) {
                 cookieStringBuffer.append(cookie.getName());
                 cookieStringBuffer.append("=");
                 cookieStringBuffer.append(cookie.getValue());
@@ -414,7 +407,7 @@ public final class WSProxy {
     }
 
     /**
-     * This method sets the device identifiers parameters in UrlCOnnection
+     * This method sets the device itendifiers parameters in UrlCOnnection
      * object
      * 
      * @param connection
@@ -426,6 +419,8 @@ public final class WSProxy {
         if (deviceIdentifiers == null) {
             return;
         }
+
+        // TODO consider not setting headers if did/oid/sid is null/empty
         connection.setRequestProperty("X-DID",
                 Utils.getSha256Hash(deviceIdentifiers.did));
         connection.setRequestProperty("X-SID",

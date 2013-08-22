@@ -27,7 +27,7 @@ public class CardErrorResponse implements Serializable {
     public List<Data> data;
 
     @Struct
-    public static class Data implements Serializable {
+    public static class Data implements Serializable{
 
         /**
          * 
@@ -41,6 +41,7 @@ public class CardErrorResponse implements Serializable {
         public boolean isSSOUidDLinkable;
         public boolean isSSOUser;
         public boolean isSSNMatched;
+        public boolean isTempLocked;
     }
 
 }

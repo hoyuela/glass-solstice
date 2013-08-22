@@ -2,19 +2,11 @@ package com.discover.mobile.card.fastcheck;
 
 import java.io.Serializable;
 
-/**
- * ©2013 Discover Bank
- * 
- * FastcheckDetail POJO Class for saving web service response
- * 
- * @author CTS
- * 
- * @version 1.0
- * 
- * 
- */
 public class FastcheckDetail implements Serializable {
 
+    /**
+	 * 
+	 */
     private static final long serialVersionUID = 171317039250648494L;
 
     public String cardmemberFirstName;
@@ -32,10 +24,10 @@ public class FastcheckDetail implements Serializable {
         super();
     }
 
-    public FastcheckDetail(final String aName, final String anAvailableCredit,
-            final String aCurrentBalance, final String anEarnRewardAmount,
-            final String anIncentiveTypeCode, final String aCardImage,
-            final String anIncentiveCode) {
+    public FastcheckDetail(String aName, String anAvailableCredit,
+            String aCurrentBalance, String anEarnRewardAmount,
+            String anIncentiveTypeCode, String aCardImage,
+            String anIncentiveCode) {
         super();
         cardmemberFirstName = aName;
         availableCredit = anAvailableCredit;
@@ -50,7 +42,7 @@ public class FastcheckDetail implements Serializable {
         return cardImage;
     }
 
-    public void setCardImage(final String cardImage) {
+    public void setCardImage(String cardImage) {
         this.cardImage = cardImage;
     }
 
@@ -58,7 +50,7 @@ public class FastcheckDetail implements Serializable {
         return incentiveCode;
     }
 
-    public void setIncentiveCode(final String incentiveCode) {
+    public void setIncentiveCode(String incentiveCode) {
         this.incentiveCode = incentiveCode;
     }
 
@@ -66,7 +58,7 @@ public class FastcheckDetail implements Serializable {
         return cardmemberFirstName;
     }
 
-    public void setCardmemberFirstName(final String cardmemberFirstName) {
+    public void setCardmemberFirstName(String cardmemberFirstName) {
         this.cardmemberFirstName = cardmemberFirstName;
     }
 
@@ -74,7 +66,7 @@ public class FastcheckDetail implements Serializable {
         return rewardsOutage;
     }
 
-    public void setRewardsOutage(final boolean rewardsOutage) {
+    public void setRewardsOutage(boolean rewardsOutage) {
         this.rewardsOutage = rewardsOutage;
     }
 
@@ -82,7 +74,7 @@ public class FastcheckDetail implements Serializable {
         return acLiteOutageMode;
     }
 
-    public void setAcLiteOutageMode(final boolean acLiteOutageMode) {
+    public void setAcLiteOutageMode(boolean acLiteOutageMode) {
         this.acLiteOutageMode = acLiteOutageMode;
     }
 
@@ -90,7 +82,7 @@ public class FastcheckDetail implements Serializable {
         return availableCredit;
     }
 
-    public void setAvailableCredit(final String availableCredit) {
+    public void setAvailableCredit(String availableCredit) {
         this.availableCredit = availableCredit;
     }
 
@@ -98,7 +90,7 @@ public class FastcheckDetail implements Serializable {
         return currentBalance;
     }
 
-    public void setCurrentBalance(final String currentBalance) {
+    public void setCurrentBalance(String currentBalance) {
         this.currentBalance = currentBalance;
     }
 
@@ -106,7 +98,7 @@ public class FastcheckDetail implements Serializable {
         return earnRewardAmount;
     }
 
-    public void setEarnRewardAmount(final String earnRewardAmount) {
+    public void setEarnRewardAmount(String earnRewardAmount) {
         this.earnRewardAmount = earnRewardAmount;
     }
 
@@ -114,7 +106,7 @@ public class FastcheckDetail implements Serializable {
         return outageModeVal;
     }
 
-    public void setOutageModeVal(final String outageModeVal) {
+    public void setOutageModeVal(String outageModeVal) {
         this.outageModeVal = outageModeVal;
     }
 
@@ -122,7 +114,7 @@ public class FastcheckDetail implements Serializable {
         return incentiveTypeCode;
     }
 
-    public void setIncentiveTypeCode(final String incentiveTypeCode) {
+    public void setIncentiveTypeCode(String incentiveTypeCode) {
         this.incentiveTypeCode = incentiveTypeCode;
     }
 

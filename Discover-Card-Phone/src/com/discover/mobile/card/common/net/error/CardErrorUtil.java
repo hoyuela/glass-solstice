@@ -63,23 +63,17 @@ final public class CardErrorUtil {
                 "RespCode:" + response.getResponseCode());
         switch (response.getResponseCode()) {
         case 409:
-        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid
-                                                                 // user id
-                                                                 // password
+        case CardErrorResponseHandler.INCORRECT_USERID_PASSWORD: // 401:Invalid user id  password
         case CardErrorResponseHandler.INVALID_INPUT: // 500 http status code
         case CardErrorResponseHandler.INLINE_ERROR: // 400: a/c locked
         case CardErrorResponseHandler.USER_ACCOUNT_LOCKED: // 403: a/c locked
-            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(
-                    response, false);
+            final CardErrorBean cardErrBean1 = getCardErrorBeanwithResponseStatus(response, false);
             if (null == cardErrBean1.getErrorCode()) {
                 cardErrBean1.setErrorCode("" + response.getResponseCode());
             }
             return cardErrBean1;
-        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503:
-                                                                 // maintenance
-                                                                 // error
-            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(
-                    response, true);
+        case CardErrorResponseHandler.SERVICE_UNDER_MAINTENANCE: // 503: maintenance error
+            final CardErrorBean cardErrBean2 = getCardErrorBeanwithResponseStatus(response, true);
             if (null == cardErrBean2.getErrorCode()) {
                 cardErrBean2.setErrorCode("" + response.getResponseCode());
             }
@@ -139,26 +133,30 @@ final public class CardErrorUtil {
                     // Checking if response contains QID and Question Text for
                     // Strong Authentication
                     String questionId = null;
-                    if (null != responseBean.data) {
-                        for (int index = 0; index < responseBean.data.size(); index++) {
-                            if (responseBean.data.get(index).questionId != null) {
-                                questionId = responseBean.data.get(index).questionId;
-                                break;
-                            }
-                        }
-                    }
-
+                    boolean isTempLocked = false;
                     // Check if response contains SSO user info
                     boolean isSSOUser = false;
-
                     if (null != responseBean.data) {
                         for (int index = 0; index < responseBean.data.size(); index++) {
-                            if (responseBean.data.get(index).isSSOUser) {
+                            if (responseBean.data.get(index).isTempLocked != false) {
+                            	isTempLocked = responseBean.data.get(index).isTempLocked;
+                            } else if (responseBean.data.get(index).questionId != null) {
+                                questionId = responseBean.data.get(index).questionId;
+                            } else if (responseBean.data.get(index).isSSOUser) {
                                 isSSOUser = true;
-                                break;
                             }
                         }
                     }
+
+//
+//                    if (null != responseBean.data) {
+//                        for (int index = 0; index < responseBean.data.size(); index++) {
+//                            if (responseBean.data.get(index).isSSOUser) {
+//                                isSSOUser = true;
+//                                break;
+//                            }
+//                        }
+//                    }
 
                     // If QID and Question text is available retrieve the same
                     if (null != responseBean.data && null != questionId) {
@@ -184,17 +182,17 @@ final public class CardErrorUtil {
 
                         if (null != headerMsg) {
                             cardErrBean = new CardErrorBean(errorTitle,
-                                    headerMsg, errorCode, false, footerStatus);
+                                    headerMsg, errorCode, false, footerStatus, isTempLocked);
                         } else {
                             errorMessage = getMessageforErrorCode(errorCode);
                             cardErrBean = new CardErrorBean(errorTitle,
-                                    errorMessage, errorCode, false,
-                                    footerStatus);
+                            		errorMessage, errorCode, false,
+                            		footerStatus, isTempLocked);
                         }
                     } else {
                         errorMessage = getMessageforErrorCode(errorCode);
                         cardErrBean = new CardErrorBean(errorTitle,
-                                errorMessage, errorCode, false, footerStatus);
+                        		errorMessage, errorCode, false, footerStatus, isTempLocked);
                     }
 
                 } else {
@@ -207,22 +205,22 @@ final public class CardErrorUtil {
                 }
 
             } catch (final JsonParseException e) {
-                e.printStackTrace();
-                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
-                        getMessageforErrorCode("0"), "0", false, "1");
-                // cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+                //cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final JsonMappingException e) {
-                e.printStackTrace();
-                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
-                        getMessageforErrorCode("0"), "0", false, "1");
-                // cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+                //cardErrBean = new CardErrorBean(e.toString(), true);
 
             } catch (final IOException e) {
-                e.printStackTrace();
-                cardErrBean = new CardErrorBean(getTitleforErrorCode("0"),
-                        getMessageforErrorCode("0"), "0", false, "1");
-                // cardErrBean = new CardErrorBean(e.toString(), true);
+            	e.printStackTrace();
+            	 cardErrBean = new CardErrorBean(getTitleforErrorCode("0"), getMessageforErrorCode("0"),
+                         "0", false, "1");
+               // cardErrBean = new CardErrorBean(e.toString(), true);
 
             }
 
