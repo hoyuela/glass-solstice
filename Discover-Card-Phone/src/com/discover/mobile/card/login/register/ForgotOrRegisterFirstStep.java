@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -119,9 +120,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected TextView helpNumber;
     protected TextView provideFeedback;
     protected TextView welcomeHeading;
-    // Defect id 95853
-    protected TextView privacy_terms;
-    // Defect id 95853
+  //Defect id 95853
+    protected TextView privacy_terms ;
+  //Defect id 95853
     protected TextView cancel;
 
     // INPUT FIELDS
@@ -159,12 +160,10 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             AccountInformationDetails details, String value);
 
     protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-
-    /* 13.4 Code CleanUp */
-    /*
-     * protected abstract NetworkServiceCall<?> createServiceCall(
-     * AsyncCallback<Object> callback, AccountInformationDetails details);
-     */
+    
+    /*  13.4 Code CleanUp*/
+/*    protected abstract NetworkServiceCall<?> createServiceCall(
+            AsyncCallback<Object> callback, AccountInformationDetails details);*/
 
     protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
         ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
@@ -175,23 +174,44 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected void setupCustomTextChangedListeners() {
     }
 
-    protected abstract boolean isForgotFlow();
+    protected abstract String getScreenType(); 
 
     private StrongAuthListener strongAuthCheckListener;
     private final int REQUEST_CODE = 0x01;
+    
+    private boolean isAccountUnlock() {
+    	return IntentExtraKey.SCREEN_ACCOUNT_UNLOCK.equals(getScreenType());
+    }
+    
+    private boolean isForgotBoth() {
+    	return IntentExtraKey.SCREEN_FORGOT_BOTH.equals(getScreenType());
+    }
+
+    private boolean isRegistration() {
+    	return IntentExtraKey.SCREEN_REGISTRATION.equals(getScreenType());
+    }
+
+    private boolean isForgotPassword() {
+    	return IntentExtraKey.SCREEN_FORGOT_PASS.equals(getScreenType());
+    }
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_enter_account_info);
+        if (isAccountUnlock()) {
+        	setContentView(R.layout.account_unlock_enter_account_info);
+        } else {
+        	setContentView(R.layout.register_enter_account_info);
+        }
 
         final HeaderProgressIndicator progress = (HeaderProgressIndicator) findViewById(R.id.header);
         progress.initChangePasswordHeader(0);
 
         loadAllViews();
-        /* 13.4 chnages start */
+  /*      13.4 chnages start*/
         setSpinnerStyle();
-        /* 13.4 chnages End */
+        /*      13.4 chnages End*/
         setupFieldsAndLabels();
         setupCustomTextChangedListeners();
         provideFeedback.setOnClickListener(this);
@@ -207,19 +227,19 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthSucess(final Object data) {
-
+                // TODO Auto-generated method stub
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthSkipped(final Object data) {
-
+                // TODO Auto-generated method stub
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthNotEnrolled(final Object data) {
-
+                // TODO Auto-generated method stub
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -227,7 +247,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthError(final Object data) {
-
+                // TODO Auto-generated method stub
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -235,7 +255,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthCardLock(final Object data) {
-
+                // TODO Auto-generated method stub
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -243,23 +263,21 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         };
     }
 
-    /* 13.4 chnages start */
+    /*      13.4 chnages start*/
     private void setSpinnerStyle() {
+		// TODO Auto-generated method stub
+    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo , R.drawable.card_spinner_invalid_holo_light);
+    	birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo, R.drawable.card_spinner_invalid_holo_light);
+    	cardExpDatePicker.setupDefaultAppearance();
+    	birthDatePicker.setupDefaultAppearance();
+	}
 
-        cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
-                R.drawable.card_spinner_invalid_holo_light);
-        birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
-                R.drawable.card_spinner_invalid_holo_light);
-        cardExpDatePicker.setupDefaultAppearance();
-        birthDatePicker.setupDefaultAppearance();
-    }
-
-    /* 13.4 chnages End */
-    /**
+    /*      13.4 chnages End*/
+	/**
      * Initialize the member variables that will reference UI elements.
      */
     public void loadAllViews() {
-        welcomeHeading = (TextView) findViewById(R.id.forgot_password);
+        welcomeHeading = (TextView)findViewById(R.id.forgot_password);
         accountIdentifierFieldLabel = (TextView) findViewById(R.id.account_info_label_one_label);
         accountIdentifierFieldRestrictionsLabel = (TextView) findViewById(R.id.account_information_input_info_label);
         accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);
@@ -277,9 +295,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         continueButton = (Button) findViewById(R.id.account_info_continue_button);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         cancel = (TextView) findViewById(R.id.account_info_cancel_label);
-        // Defect id 95853
-        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
-        // Defect id 95853
+      //Defect id 95853
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+      //Defect id 95853
     }
 
     /**
@@ -328,6 +346,12 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * Make the help number clickable and dialable.
      */
     protected void setupClickablePhoneNumbers() {
+
+    	if (isAccountUnlock()) {
+    		//Account unlock doens't have phone numbers
+    		return;
+    	}
+
         final Context currentContext = this;
         helpNumber.setOnClickListener(new OnClickListener() {
 
@@ -498,17 +522,16 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      */
     public void validateInfoAndSubmitOnSuccess(final View v) {
         updateAllErrorStates();
-
+        
         if (isFormCompleteAndValid()) {
             // submitFormInfo();
             submit();
         } else {
-            /* Defect id 95859 */
-            if (!(accountIdentifierField.isNull() && ssnField.isNull()
-                    && birthDatePicker.isNull() && cardExpDatePicker.isNull())) {
-                showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-            }
-
+        	/*Defect id 95859*/
+        	if(!(accountIdentifierField.isNull()&& ssnField.isNull() && birthDatePicker.isNull() && cardExpDatePicker.isNull())){
+        		showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+        	}
+            
             resetScrollPosition();
         }
 
@@ -573,7 +596,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * @param v
      *            the calling View
      */
-    public void goBack(final View v) {
+    public void goBack(@SuppressWarnings("unused") final View v) {
         goBack();
     }
 
@@ -627,12 +650,8 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             final AccountInformationDetails details) {
         final Intent createLoginActivity = new Intent(this,
                 getSuccessfulStrongAuthIntentClass());
-        createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS,
-                details);
-        createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_BOTH,
-                isForgotFlow());
-        createLoginActivity.putExtra(IntentExtraKey.SCREEN_FORGOT_PASS,
-                accountIdentifierField.isUsernameField());
+        createLoginActivity.putExtra(IntentExtraKey.SCREEN_TYPE, getScreenType());
+        createLoginActivity.putExtra(IntentExtraKey.REGISTRATION1_DETAILS, details);
 
         startActivity(createLoginActivity);
         finish();
@@ -796,11 +815,13 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public void onSuccess(final Object data) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void OnError(final Object data) {
+        // TODO Auto-generated method stub
 
     }
 
@@ -811,7 +832,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public Context getContext() {
-
+        // TODO Auto-generated method stub
         return this;
     }
 

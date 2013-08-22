@@ -1,5 +1,7 @@
 package com.discover.mobile.card.common.uiwidget;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,19 +9,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
 
-import com.discover.mobile.card.R;
+import com.google.common.base.Strings;
+
+import com.discover.mobile.common.utils.CommonUtils;
+
 import com.discover.mobile.card.common.InputValidator;
 
-/**
- * 
- * ©2013 Discover Bank
- * 
- * Widget for confirmation edit text
- * 
- * @author CTS
- * 
- * @version 1.0
- */
+import com.discover.mobile.card.R;
+
 public class ConfirmationAnswerEditText extends ValidatedInputField {
     private EditText editTextToMatch;
 
@@ -37,19 +34,17 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         super(context, attrs, defStyle);
     }
 
-    public void setErrorLabelText(final String text)
+    public void setErrorLabelText(String text)
 
     {
-        if (errorLabel != null) {
+        if (errorLabel != null)
             errorLabel.setText(text);
-        }
     }
 
     public String getErrorLabelText() {
         String errorText = "";
-        if (errorLabel != null) {
+        if (errorLabel != null)
             errorText = errorLabel.getText().toString();
-        }
         return errorText;
 
     }
@@ -185,6 +180,8 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
      */
     @Override
     protected void setupTextChangedListener() {
+        final ConfirmationAnswerEditText self = this;
+
         this.addTextChangedListener(new TextWatcher() {
             String beforeText;
             String afterText;
@@ -252,11 +249,10 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         return valueMatched;
     }
 
-    /*
-     * public boolean isNull() {
-     * 
-     * return Strings.isNullOrEmpty(this.getText().toString()); }
-     */
+   /* public boolean isNull() {
+
+        return Strings.isNullOrEmpty(this.getText().toString());
+    }*/
 
     /**
      * Update the error state of the field. If the input field is valid - hide
@@ -282,28 +278,30 @@ public class ConfirmationAnswerEditText extends ValidatedInputField {
         boolean isSpaceEntered = false;
 
         /* 13.4 Defect ID 105360 start */
-        /*
-         * if (currentInput.contains(" ")) { isSpaceEntered = true; } else {
-         * isSpaceEntered = false; }
-         */
-        if (currentInput.startsWith(" ") || currentInput.endsWith(" ")) {
-            isSpaceEntered = true;
-        } else {
-            isSpaceEntered = false;
-        }
-        /* 13.4 Defect ID 105360 End */
-
+        /* if (currentInput.contains(" ")) {
+             isSpaceEntered = true;
+         } else {
+             isSpaceEntered = false;
+         }*/
+         if(currentInput.startsWith(" ")||currentInput.endsWith(" ")){
+         	isSpaceEntered = true;
+         }else
+         {
+         	isSpaceEntered = false;
+         }
+         /* 13.4 Defect ID 105360 End */	
+         
         return isSpaceEntered;
     }
 
     @Override
     protected void showErrorLabel() {
+        // TODO Auto-generated method stub
         AnswerEditText answerEditText = (AnswerEditText) editTextToMatch;
         if (errorLabel != null) {
-            if (!isNull()) {
+            if (!isNull())
                 errorLabel.setVisibility(View.VISIBLE);
-            }
-            if (!answerEditText.isValid()) {
+            if (!(answerEditText.isValid())) {
                 if (answerEditText.isNull() && !isNull()) {
                     errorLabel.setVisibility(View.VISIBLE);
                 } else {

@@ -6,25 +6,22 @@ import java.util.TimeZone;
 import android.content.Context;
 import android.os.Handler;
 
-import com.discover.mobile.card.R;
-import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.common.net.service.WSProxy;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.R;
+import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.login.register.EnterNewPasswordActivity;
 import com.discover.mobile.card.login.register.ForgotOrRegisterFinalStep;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.whatsnew.WhatsNewActivity;
 
 /**
- * 
- * ©2013 Discover Bank
- * 
- * * This class will hold page timeout related logic and will also be shared by
+ * This class will hold page timeout related logic and will also be shared by
  * phonegap view
  * 
- * @author CTS
+ * @author
  * 
- * @version 1.0
  */
 public final class PageTimeOutUtil {
 
@@ -130,21 +127,27 @@ public final class PageTimeOutUtil {
      */
     public void logoutUserOnTimerExpire() {
         Utils.log(TAG, "inside logoutUserOnTimerExpire().....");
-        // DEFECT 96936
-        if (mContext instanceof CardNavigationRootActivity) {
+      //DEFECT 96936
+        if (mContext instanceof CardNavigationRootActivity)
+        {
             ((CardNavigationRootActivity) mContext).idealTimeoutLogout();
-        } else if (mContext instanceof ForgotOrRegisterFinalStep) {
+        }
+        else if(mContext instanceof ForgotOrRegisterFinalStep)
+        {
             ((ForgotOrRegisterFinalStep) mContext).idealTimeoutLogout();
-        } else if (mContext instanceof EnterNewPasswordActivity) {
+        }
+        else if(mContext instanceof EnterNewPasswordActivity)
+        {
             ((EnterNewPasswordActivity) mContext).idealTimeoutLogout();
         }
-        // DEFECT 96936
-        /* 13.4 changes start */
-        else if (mContext instanceof StrongAuthEnterInfoActivity) {
+      //DEFECT 96936
+        /*13.4 changes start*/
+        else if(mContext instanceof StrongAuthEnterInfoActivity)
+        {
             ((StrongAuthEnterInfoActivity) mContext).idealTimeoutLogout();
-        } else if (mContext instanceof WhatsNewActivity) {
+        }else if(mContext instanceof WhatsNewActivity){
             ((WhatsNewActivity) mContext).idealTimeoutLogout();
         }
-        /* 13.4 changes End */
+        /*13.4 changes End*/
     }
 }

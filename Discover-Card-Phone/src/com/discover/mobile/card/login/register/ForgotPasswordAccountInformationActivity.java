@@ -10,6 +10,7 @@ import com.discover.mobile.card.common.uiwidget.HeaderProgressIndicator;
 import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
+import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.utils.CommonUtils;
 
@@ -64,14 +65,14 @@ public class ForgotPasswordAccountInformationActivity extends
         details.userId = value;
     }
 
-    /* 13.4 Code CleanUp */
-    /*
-     * @Override protected NetworkServiceCall<?> createServiceCall( final
-     * AsyncCallback<Object> callback, final AccountInformationDetails details)
-     * {
-     * 
-     * return new ForgotPasswordCall(this, callback, details); }
-     */
+    /*  13.4 Code CleanUp*/
+  /*  @Override
+    protected NetworkServiceCall<?> createServiceCall(
+            final AsyncCallback<Object> callback,
+            final AccountInformationDetails details) {
+
+        return new ForgotPasswordCall(this, callback, details);
+    }*/
 
     /**
      * Returns the activity class that will be the launched activity after this,
@@ -121,12 +122,8 @@ public class ForgotPasswordAccountInformationActivity extends
     }
 
     @Override
-    protected boolean isForgotFlow() {
-        return false;
-    }
-
-    @Override
     public void onClick(final View v) {
+        // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             if (accountIdentifierField.isUsernameField()) {
                 Utils.createProvideFeedbackDialog(
@@ -139,16 +136,20 @@ public class ForgotPasswordAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
-            // Defect id 95853
-        } else if (v.getId() == R.id.privacy_terms) {
-            // Changes for 13.4 start
-            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(
-                    ForgotPasswordAccountInformationActivity.this,
-                    PrivacyTermsLanding.class);
-            startActivity(privacyTerms);
-            // Changes for 13.4 end
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //Changes for 13.4 start
+//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+          Intent privacyTerms = new Intent(ForgotPasswordAccountInformationActivity.this , PrivacyTermsLanding.class);
+          startActivity(privacyTerms);
+          //Changes for 13.4 end
         }
-        // Defect id 95853
+        //Defect id 95853
     }
+
+	@Override
+	protected String getScreenType() {
+		return IntentExtraKey.SCREEN_FORGOT_PASS;
+	}
 }

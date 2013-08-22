@@ -6,16 +6,6 @@ import com.discover.mobile.common.nav.section.FragmentComponentInfo;
 
 import com.discover.mobile.card.R;
 
-/**
- * 
- * ©2013 Discover Bank
- * 
- * Home Section group menu item
- * 
- * @author CTS
- * 
- * @version 1.0
- */
 public class HomeSectionInfo extends FragmentComponentInfo {
 
     public HomeSectionInfo() {

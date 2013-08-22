@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <com.discover.mobile.card.common.uiwidget.HeaderThreeStepProgressIndicator
+    <com.discover.mobile.card.common.uiwidget.HeaderTwoStepProgressIndicator
         android:id="@+id/header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -23,17 +23,6 @@
             android:paddingBottom="18dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp" >
-
-            <TextView
-                android:id="@+id/forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:text="@string/forgot_password_text"
-                android:textColor="#293033"
-                android:textSize="14sp"
-                android:paddingTop="18dp"
-                android:textStyle="normal" />
 
             <TextView
                 android:id="@+id/account_info_label_one_label"
@@ -263,42 +252,19 @@
                 android:textSize="18sp"
                 android:textStyle="normal" />
 
-            <RelativeLayout
-                android:id="@+id/footer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/account_info_cancel_label"
-                android:layout_marginTop="48dp" >
-
-                <include layout="@layout/old_general_need_help_footer" />
-            </RelativeLayout>
             <!-- Defect id 95853 -->
 
             <RelativeLayout
                 android:id="@+id/provide_feedback_footer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/footer" >
+                android:layout_below="@+id/account_info_cancel_label"
+                >
 
                 <include
                     android:id="@+id/home_footer"
                     layout="@layout/card_fragment_footer" />
             </RelativeLayout>
-            <!--
-                  <TextView
-                android:id="@+id/provide_feedback_button"
-                style="@style/blue_hyperlink_small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/footer"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="38dp"
-                android:includeFontPadding="false"
-                android:paddingBottom="4dp"
-                android:paddingTop="4dp"
-                android:text="@string/feedback_text"
-                android:textSize="14dp" />
-            -->
         </RelativeLayout>
         <!-- Defect id 95853 -->
     </ScrollView>

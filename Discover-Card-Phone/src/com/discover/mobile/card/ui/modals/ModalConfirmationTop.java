@@ -48,6 +48,8 @@ public class ModalConfirmationTop extends RelativeLayout implements
 
     /** Button to close the modal */
     private final Button home;
+    
+    private final TextView noteLabel;
 
     /**
      * Constructor for the view
@@ -62,8 +64,7 @@ public class ModalConfirmationTop extends RelativeLayout implements
 
         final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(
                 context).inflate(R.layout.register_confirm, null);
-        final TextView noteLabel = (TextView) mainView
-                .findViewById(R.id.account_info_confirm_note_label);
+        noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
 
         res = context.getResources();
         userIdLabel = (TextView) mainView
@@ -126,28 +127,6 @@ public class ModalConfirmationTop extends RelativeLayout implements
      * @param screenType
      *            - screen type to show
      */
-    /*
-     * public void setScreenType(final String screenType){
-     * if(IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)){
-     * firstParagraph.setText(res.getString(R.string.forgot_both_changed_text));
-     * } else if(IntentExtraKey.SCREEN_FORGOT_PASS.equals(screenType)){
-     * firstParagraph
-     * .setText(res.getString(R.string.password_confirmation_changed_text)); }
-     * else if(IntentExtraKey.SCREEN_FOROGT_USER.equals(screenType)){
-     * firstParagraph
-     * .setText(res.getString(R.string.user_confirmation_changed_text)); } else
-     * if(IntentExtraKey.SCREEN_REGISTRATION.equals(screenType)){
-     * firstParagraph.
-     * setText(res.getString(R.string.account_info_confirm_first_paragraph_text
-     * )); } }
-     */
-
-    /**
-     * Set the screenType based on what is passed in
-     * 
-     * @param screenType
-     *            - screen type to show
-     */
     public void setDialog(final String screenType) {
         if (IntentExtraKey.SCREEN_FORGOT_BOTH.equals(screenType)) {
             dialogTitle.setText("Success!");
@@ -187,8 +166,16 @@ public class ModalConfirmationTop extends RelativeLayout implements
                     .getString(R.string.second_paragraph_information));
             securityLabelAbove.setVisibility(View.GONE);
             securityLabelBelow.setVisibility(View.VISIBLE);
+        } else if(IntentExtraKey.SCREEN_ACCOUNT_UNLOCK.equals(screenType)){
+            dialogTitle.setText("Success!");
+            dialogTitle.setTextColor(res.getColor(R.color.orange_link_idicator));
+            firstParagraph.setVisibility(View.VISIBLE);
+            secondParagraph.setVisibility(View.GONE);
+            firstParagraph.setText(res.getString(R.string.unlock_confirmation_text));
+            securityLabelAbove.setVisibility(View.GONE);
+            securityLabelBelow.setVisibility(View.GONE);
+            noteLabel.setVisibility(View.GONE);
         }
-
     }
 
     /**
