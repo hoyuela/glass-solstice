@@ -73,12 +73,5 @@ public interface CardFacade {
 	 * Returns the card information used to populate the Account Toggle widget.
 	 */
 	public CardInfoForToggle getCardInfoForToggle(Context context);
-	
-	 //16/Aug/2013---Observation Fixed
-	   /**
-     * Navigates to the privacy terms 
-     * @param callingActivity
-     */
-	public void navToPrivacyTerms(Context context);
 
 }
