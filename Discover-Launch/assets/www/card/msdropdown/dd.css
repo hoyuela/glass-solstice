@@ -51,12 +51,12 @@ img.fnone{float:none !important}
 .dd .ddTitle .ddTitleText{height:24px;}
 #paymentStep1-pg .dd .ddTitle .ddTitleText {height:inherit;}
 .dd .ddTitle .ddTitleText .ddTitleText{padding:0;}
-.dd .ddTitle .ddTitleText .ddlabel{color: #383838;font-size:18px; word-wrap: break-word;} /* 13.3 Change 16-08-13*/
+.dd .ddTitle .ddTitleText .ddlabel{color: #383838;font-size:18px;}
 .dd .ddTitle .ddTitleText .description{color: #777;font-size:14px;}
 .dd .ddTitle .description{font-size:12px; color:#666}
 .dd .ddTitle .ddTitleText img{padding-right:5px;}
 .dd .ddChild{border:1px solid #c3c3c3; background-color:#fff; left:-1px;}
-.dd .ddChild li{padding:18px 11px; background-color:#fff; border-bottom:1px solid #c3c3c3; word-wrap: break-word;} /* 13.3 Change 16-08-13*/
+.dd .ddChild li{padding:18px 11px; background-color:#fff; border-bottom:1px solid #c3c3c3;}
 .dd .ddChild li .description{color:#777777;font-size:14px;}
 .dd .ddChild li .ddlabel{color: #383838;font-size:20px;}
 .dd .ddChild li.hover{background-color:#f2f2f2 !important;}
