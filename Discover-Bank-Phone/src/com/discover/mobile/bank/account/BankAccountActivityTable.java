@@ -125,6 +125,11 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		getLoadMoreFooter().showDone();
 		final ListActivityDetail list = (ListActivityDetail) bundle.getSerializable(BankExtraKeys.PRIMARY_LIST);
 
+		//If the item was deleted clear out the scheduled list
+		if(bundle.containsKey(BankExtraKeys.CONFIRM_DELETE)){
+			scheduled = null;
+		}
+
 		// Toggle between scheduled/posted if incoming list type does not match view
 		if (list.type == ActivityDetailType.Posted && !header.isPosted()
 				|| list.type == ActivityDetailType.Scheduled && header.isPosted()) {
@@ -421,7 +426,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 			posted = other;
 		}
 		header.setSortOrder(bundle.getInt(BankExtraKeys.SORT_ORDER, BankExtraKeys.SORT_DATE_DESC));
-		
+
 		/** Verify if header was expanded before rotation */
 		final boolean expandHeader = bundle.getBoolean(BankExtraKeys.TITLE_EXPANDED, false);
 		header.post(new Runnable() {
@@ -435,7 +440,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 			}
 
 		});
-		
+
 		if(null != current){
 			updateAdapter(current);
 
@@ -531,7 +536,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		final String rawText = getResources().getString(R.string.account_activity_scheduled_transfer_deleted);
 		StringBuilder transfer = new StringBuilder(getResources().getString(R.string.transfer));
 		String messageToDisplay = StringUtility.EMPTY;
-		
+
 		//Pluralizes the transfer type.
 		switch(deletionType) {
 		case DELETE_ALL_TRANSFERS:
@@ -540,7 +545,7 @@ public class BankAccountActivityTable extends BaseTable implements BankUserListe
 		default:
 			break;
 		}
-		
+
 		messageToDisplay = String.format(rawText, transfer.toString());
 		header.showStatusMessage(messageToDisplay);
 	}
