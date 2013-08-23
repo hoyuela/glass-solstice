@@ -1,0 +1,2 @@
+This directory will contain all screenshots taken by the calabash automated UI smoke testing.
+
