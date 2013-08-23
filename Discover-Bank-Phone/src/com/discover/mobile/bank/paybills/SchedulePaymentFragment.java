@@ -161,6 +161,9 @@ public class SchedulePaymentFragment extends BaseFragment
 			.compile("(\\d{4})-(\\d{2})-(\\d{2})T((\\d{2}):"
 					+ "(\\d{2}):(\\d{2}))((\\+|-)(\\d{4}))");
 	
+	/** Last selected view */
+	private View lastSelectedView;
+	
 	//A runnable that will dismiss the calendar fragment.
 	private final Runnable closeCalendarRunnable = new Runnable() {
 		@Override
@@ -289,7 +292,7 @@ public class SchedulePaymentFragment extends BaseFragment
 
 		outState.putInt(PAY_FROM_ACCOUNT_ID, paymentAccountSpinner.getSelectedItemPosition());
 		outState.putString(AMOUNT, amountEdit.getText().toString());
-		final String[] datesToSave = dateText.getText().toString().split("/");
+		final String[] datesToSave = dateText.getText().toString().split(StringUtility.SLASH);
 		outState.putString(DATE_DAY, datesToSave[1]);
 		outState.putString(DATE_MONTH, datesToSave[0]);
 		outState.putString(DATE_YEAR, datesToSave[2]);
@@ -302,7 +305,7 @@ public class SchedulePaymentFragment extends BaseFragment
 			outState.putString(FOCUS, MEMO);
 		} else {
 			/**Set to empty string to clear focus on rotation if none of the text editable fields had focus*/
-			outState.putString(FOCUS, "");
+			outState.putString(FOCUS, StringUtility.EMPTY);
 		}
 
 		/**Set to true so that keyboard is not closed in onPause*/
@@ -437,6 +440,16 @@ public class SchedulePaymentFragment extends BaseFragment
 		paymentAccountSpinner.setAdapter(accountAdapter);
 	}
 	
+	private void setSpinnerSelectedAccountByAccountId(final String accountId) {
+		// Parse all items in the Adapter and determine if one matches the requested Account.
+		for (int x=0; x<paymentAccountSpinner.getAdapter().getCount(); ++x) {
+			if (((Account)paymentAccountSpinner.getItemAtPosition(x)).id.equals(accountId)) {
+				paymentAccountSpinner.setSelection(x);
+				return;
+			}
+		}
+	}
+	
 	/**
 	 * Selects a specific Account from the IcsSpinner if found.
 	 * Otherwise, does not alter the current selection.
@@ -463,7 +476,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		if (payee != null) {
 			dateText.setText(getPaymentDate(payee.paymentDate));
 			payeeText.setText(payee.nickName);
-
+			
 			setSpinnerSelectedAccount(getDefaultAccount());
 			setSelectedAccountTitle(BankUser.instance().getAccount(accountId));
 		}
@@ -471,7 +484,7 @@ public class SchedulePaymentFragment extends BaseFragment
 		else if( paymentDetail != null ) {
 			dateText.setText(getPaymentDate(paymentDetail.deliverBy));
 			payeeText.setText(paymentDetail.payee.nickName);
-			amountEdit.setText(paymentDetail.amount.formatted.replace("$", ""));
+			amountEdit.setText(paymentDetail.amount.formatted.replace("$", StringUtility.EMPTY));
 			memoEdit.setText(paymentDetail.memo);
 
 			accountId = paymentDetail.paymentAccount.id;
@@ -518,6 +531,7 @@ public class SchedulePaymentFragment extends BaseFragment
 				return a;
 			}
 		}
+		
 		return null;
 	}
 

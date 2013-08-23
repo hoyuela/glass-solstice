@@ -53,7 +53,6 @@ public class FAQListItem extends RelativeLayout implements Serializable {
 		final TextView bodyLabel = (TextView)findViewById(R.id.faq_section_detail);
 
 		if(bodyLabel != null){ 
-			bodyLabel.setText(bodyText);
 			bodyLabel.setText(Html.fromHtml(bodyText));
 			bodyLabel.setMovementMethod(LinkMovementMethod.getInstance());
 		}

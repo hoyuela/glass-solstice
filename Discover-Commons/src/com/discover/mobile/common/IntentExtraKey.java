@@ -24,6 +24,8 @@ public final class IntentExtraKey {
 	
 	/**Intent extra used to let the confirmation modal to display the correct text associated with forgot password*/
 	public static final String SCREEN_FORGOT_PASS = "Forgot-Pass-Screen-Type";
+
+	public static final String SCREEN_ACCOUNT_UNLOCK = "Account-Unlock-Screen-Type";
 	
 	/**Intent extra used to let the confirmation modal to display the correct text associated with forgot userID*/
 	public static final String SCREEN_FOROGT_USER = "Forgot-User-Screen-Type";

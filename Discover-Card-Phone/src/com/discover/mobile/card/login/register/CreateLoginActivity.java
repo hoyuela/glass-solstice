@@ -60,15 +60,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  * 
  */
 public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
-        CardErrorHandlerUi, OnClickListener {
+        CardErrorHandlerUi, OnClickListener { 
     private final String TAG = ForgotOrRegisterFinalStep.class.getSimpleName();
 
     private CreateLoginDetails formDataTwo;
 
     private static final String UPDATE_PASS_CONFIRM_STATE = "a";
     private static final String UPDATE_ID_CONFIRM_STATE = "b";
-    private static final String UPDATE_EMAIL = "c";
-
+    private static final String UPDATE_EMAIL = "c";   
+    
     private static final String ERROR_2 = "f";
     private static final String ERROR_STRING_2 = "g";
     private static final String SERVER_ERROR = "h";
@@ -80,10 +80,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     // TEXT LABELS
     private TextView provideFeedback;
-    private TextView privacy_terms;
+    private TextView privacy_terms ;
 
     // ERROR LABELS
-
+    
     private TextView mainErrorMessageLabelTwo;
     private TextView errorMessageLabel;
     private TextView idConfirmErrorLabel;
@@ -103,7 +103,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     private boolean idIsError = false;
     private boolean isPassError = false;
-    private boolean isEmailError = false;
+    private boolean isEmailError = false;    
     private boolean isError2 = false;
     private boolean isServerError = false;
 
@@ -133,17 +133,10 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         provideFeedback.setOnClickListener(this);
         privacy_terms.setOnClickListener(this);
         restoreState(savedInstanceState);
-
-        /*
-         * Utils.log("PageTimeOutUtil.getInstance","in side CreateLoginActivity")
-         * ; PageTimeOutUtil.getInstance(this.getContext()).startPageTimer();
-         */
-
     }
 
     protected void getPreviousScreenType() {
-        isForgotFlow = getIntent().getBooleanExtra(
-                IntentExtraKey.SCREEN_FORGOT_BOTH, false);
+    	screenType = getIntent().getStringExtra(IntentExtraKey.SCREEN_TYPE);
     }
 
     /**
@@ -169,12 +162,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         } else {
             passConfirmField.setupDefaultAppearance();
         }
-        // Defect id 95719
-        /*
-         * if (isError1) { mainErrorMessageLabel.setVisibility(View.VISIBLE); }
-         */
-        // Defect id 95719
-        if (isError2) {
+        //Defect id 95719
+        /*if (isError1) {
+            mainErrorMessageLabel.setVisibility(View.VISIBLE);
+        }*/
+        //Defect id 95719
+        if (isError2 ) {
             mainErrorMessageLabelTwo.setVisibility(View.VISIBLE);
             errorIcon.setVisibility(View.VISIBLE);
         }
@@ -197,13 +190,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         outState.putBoolean(UPDATE_PASSWORD_STATE, passField.isInDefaultState);
         outState.putBoolean(UPDATE_PASS_CONFIRM_STATE,
                 passConfirmField.isInErrorState);
-        // Defect id 95719
-        /*
-         * if (mainErrorMessageLabel.getVisibility() == View.VISIBLE) {
-         * outState.putBoolean(ERROR_1, true); outState.putString(EROR_STRING_1,
-         * mainErrorMessageLabel.getText() .toString()); }
-         */
-        // Defect id 95719
+        //Defect id 95719
+      /*  if (mainErrorMessageLabel.getVisibility() == View.VISIBLE) {
+            outState.putBoolean(ERROR_1, true);
+            outState.putString(EROR_STRING_1, mainErrorMessageLabel.getText()
+                    .toString());
+        }*/
+        //Defect id 95719
         if (mainErrorMessageLabelTwo.getVisibility() == View.VISIBLE) {
             outState.putBoolean(ERROR_2, true);
             outState.putBoolean(ERROR_ICON, true);
@@ -234,15 +227,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                     false);
             isPassError = savedInstanceState.getBoolean(
                     UPDATE_PASS_CONFIRM_STATE, false);
-            isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);
+            isEmailError = savedInstanceState.getBoolean(UPDATE_EMAIL, false);            
             isError2 = savedInstanceState.getBoolean(ERROR_2, false);
             isServerError = savedInstanceState.getBoolean(SERVER_ERROR, false);
-            // Defect id 95719
-            /*
-             * mainErrorMessageLabel.setText(savedInstanceState
-             * .getString(EROR_STRING_1));
-             */
-            // Defect id 95719
+            //Defect id 95719
+           /* mainErrorMessageLabel.setText(savedInstanceState
+                    .getString(EROR_STRING_1));*/
+            //Defect id 95719
             mainErrorMessageLabelTwo.setText(savedInstanceState
                     .getString(ERROR_STRING_2));
             errorMessageLabel.setText(savedInstanceState
@@ -284,8 +275,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         mainErrorMessageLabelTwo = (TextView) findViewById(R.id.account_info_error_label_two);
         errorIcon = (ImageView) findViewById(R.id.icon);
         errorMessageLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
-        // mainErrorMessageLabel = (TextView)
-        // findViewById(R.id.account_info_main_error_label);
+        //mainErrorMessageLabel = (TextView) findViewById(R.id.account_info_main_error_label);
         idConfirmErrorLabel = (TextView) findViewById(R.id.account_info_id_confirm_error_label);
         emailErrorLabel = (TextView) findViewById(R.id.account_info_email_error_label);
         passConfirmErrorLabel = (TextView) findViewById(R.id.account_info_pass_two_confirm_error_label);
@@ -294,7 +284,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
         headerProgressIndicator = (HeaderProgressIndicator) findViewById(R.id.header);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
-        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
+        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
+       
 
     }
 
@@ -357,11 +348,11 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
      * @param v
      */
     public void checkInputsThenSubmit(final View v) {
-        // Defect id 95719
+        //Defect id 95719
         CommonUtils.setViewGone(mainErrorMessageLabelTwo);
         CommonUtils.setViewGone(errorIcon);
-        // Defect id 95719
-
+        //Defect id 95719
+        
         emailField.updateAppearanceForInput();
         passField.updateAppearanceForInput();
         idField.updateAppearanceForInput();
@@ -377,19 +368,17 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
             submitFormInfo();
         } else {
             mainScrollView.smoothScrollTo(0, 0);
-            // Defect id 95719
-            /* 13.4 Defect id 95859 */
-            if (!(idField.isNull() && idConfirmField.isNull()
-                    && passField.isNull() && passConfirmField.isNull() && emailField
-                        .isNull())) {
-                CommonUtils.showLabelWithStringResource(
-                        mainErrorMessageLabelTwo,
-                        R.string.account_info_bad_input_error_text,
-                        currentActivity);
-                CommonUtils.setViewVisible(errorIcon);
+            //Defect id 95719
+            /* 13.4 Defect id 95859*/
+            if(!(idField.isNull() && idConfirmField.isNull() && passField.isNull() && passConfirmField.isNull() && emailField.isNull())){
+            	 CommonUtils
+                 .showLabelWithStringResource(mainErrorMessageLabelTwo,
+                         R.string.account_info_bad_input_error_text,
+                         currentActivity);
+            	 CommonUtils.setViewVisible(errorIcon);
             }
-
-            // Defect id 95719
+           
+            //Defect id 95719
         }
 
     }
@@ -405,13 +394,14 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
             @Override
             public void onSuccess(final Object data) {
-
+                // TODO Auto-generated method stub
                 final RegistrationConfirmationDetails registrationConfirmationDetails = (RegistrationConfirmationDetails) data;
                 retrieveAccountDetailsFromServer(registrationConfirmationDetails);
             }
 
             @Override
             public void OnError(final Object data) {
+                // TODO Auto-generated method stub
 
                 final String errorCode = ((CardErrorBean) data).getErrorCode();
                 final String[] errorMsgSplit = errorCode.split("_");
@@ -421,13 +411,12 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
                 case REG_AUTHENTICATION_PROBLEM_SECOND:
                 case REG_AUTHENTICATION_PROBLEM: // Provided information was
                                                  // incorrect.
-                    // Defect id 95719
-                    CommonUtils.showLabelWithStringResource(
-                            mainErrorMessageLabelTwo,
+                    //Defect id 95719
+                    CommonUtils.showLabelWithStringResource(mainErrorMessageLabelTwo,
                             R.string.account_info_bad_input_error_text,
                             currentActivity);
                     CommonUtils.setViewVisible(errorIcon);
-                    // Defect id 95719
+                    //Defect id 95719
                     break;
                 case ID_AND_PASS_EQUAL:
 
@@ -483,10 +472,13 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         try {
             JacksonObjectMapperHolder.getMapper().writeValue(baos, formDataTwo);
         } catch (final JsonGenerationException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final JsonMappingException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -498,6 +490,8 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
         serviceCall.execute(request);
     }
 
+    
+  
     /*
      * (non-Javadoc)
      * 
@@ -506,36 +500,36 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
      */
     @Override
     public CardErrHandler getCardErrorHandler() {
-
+        // TODO Auto-generated method stub
         return CardErrorUIWrapper.getInstance();
     }
 
     @Override
     public void onClick(final View v) {
-
+        // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(CreateLoginActivity.this, REFERER);
-            // Defect id 95853
-        } else if (v.getId() == R.id.privacy_terms) {
-            // Changes for 13.4 start
-            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-            Intent privacyTerms = new Intent(CreateLoginActivity.this,
-                    PrivacyTermsLanding.class);
-            startActivity(privacyTerms);
-            // Changes for 13.4 end
+            //Defect id 95853
+        }else if(v.getId() == R.id.privacy_terms)
+        {
+            //Changes for 13.4 start
+//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+           Intent privacyTerms = new Intent(CreateLoginActivity.this , PrivacyTermsLanding.class);
+           startActivity(privacyTerms);
+         //Changes for 13.4 end
         }
-        // Defect id 95853
+        //Defect id 95853
     }
 
     @Override
     public TextView getErrorLabel() {
-
+        // TODO Auto-generated method stub
         return mainErrorMessageLabelTwo;
     }
 
     @Override
     public List<EditText> getInputFields() {
-
+        // TODO Auto-generated method stub
         final List<EditText> inputFields = new ArrayList<EditText>();
         inputFields.add(idField);
         inputFields.add(passField);
@@ -544,7 +538,7 @@ public class CreateLoginActivity extends ForgotOrRegisterFinalStep implements
 
     @Override
     public Context getContext() {
-
+        // TODO Auto-generated method stub
         return this;
     }
 

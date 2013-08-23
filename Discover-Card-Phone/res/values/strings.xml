@@ -138,4 +138,7 @@
     <string name="no_thank">No Thanks</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="unlock_account">Unlock Account</string>
+    <string name="call_now">Call Now</string>
+    <string name="phone_customer_service_locked">1-877-742-7822</string>
 </resources>

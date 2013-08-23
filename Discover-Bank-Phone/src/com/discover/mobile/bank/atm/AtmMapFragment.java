@@ -209,6 +209,9 @@ CustomProgressDialog, OnPreProcessListener {
 	 * Holds reference to layout that displays Google Logo and Terms of Use Link
 	 */
 	private RelativeLayout googleTerms;
+	
+	/** true when user is touching the screen. */
+	private boolean isTouching = false;
 
 	/*
 	 * This boolean determines whether the custom map dialog should be shown
@@ -291,6 +294,19 @@ CustomProgressDialog, OnPreProcessListener {
 		
 		
 		return view;
+	}
+	
+	/** @return Runnable to run once timeout has been reached while searching for location. */
+	private Runnable getTimeOutRunnable() {
+		return new Runnable() {
+			@Override
+			public void run() {
+				if (getLocationStatus() != LocationFragment.LOCKED_ON) {
+					// We did not find a location in the allotted time
+					handleTimeOut();
+				}
+			}
+		};
 	}
 
 	/**
@@ -1310,7 +1326,12 @@ CustomProgressDialog, OnPreProcessListener {
 				if (event.getRawX() > locationOfLink) {
 					showTerms();
 				}
-			} 
+			} else if(mapWrapper.getMap() != null) {
+				// Disable camera change listener for markers when touch starts, re-enable when touch ends.
+				//	=> Used to prevent clustering + any other marker events from occurring until action is complete.
+				isTouching = event.getAction() == MotionEvent.ACTION_DOWN;
+				mapWrapper.enableCameraListener(!isTouching);
+			}
 			
 		} else {
 			overlay.dismissCoach();

@@ -55,17 +55,6 @@ import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.SlidingMenu.OnCloseListener;
 import com.slidingmenu.lib.SlidingMenu.OnOpenListener;
 
-/**
- * 
- * ©2013 Discover Bank
- * 
- * FastcheckFragment is Quickview display Fragment
- * 
- * @author CTS
- * 
- * @version 1.0
- * 
- */
 public class FastcheckFragment extends BaseFragment implements
         CardEventListener, OnOpenListener, OnCloseListener, OnClickListener {
 
@@ -128,7 +117,8 @@ public class FastcheckFragment extends BaseFragment implements
                         Utils.hideSpinner();
                     }
                 });
-        gestureDetector = new GestureDetector(getActivity(),
+        gestureDetector = new GestureDetector(
+                (NavigationRootActivity) getActivity(),
                 new SwipeGestureDetector());
         gestureListener = new OnTouchListener() {
             @Override
@@ -144,8 +134,8 @@ public class FastcheckFragment extends BaseFragment implements
 
     @Override
     public void onOpen() {
-        boolean isFastcheckHidden = ((NavigationRootActivity) getActivity())
-                .getSlidingMenu().getTouchModeAbove() == SlidingMenu.TOUCHMODE_NONE;
+        boolean isFastcheckHidden = (((NavigationRootActivity) getActivity())
+                .getSlidingMenu().getTouchModeAbove() == SlidingMenu.TOUCHMODE_NONE);
         if (!isFastcheckHidden) {
             TrackingHelper.trackPageView(AnalyticsPage.QUICKVIEW_VIEW);
             getFastcheckData(false);
@@ -154,9 +144,8 @@ public class FastcheckFragment extends BaseFragment implements
 
     @Override
     public void onClose() {
-        if (resultPage == NO_FASTCHECK_TOKEN_RESULT_PAGE) {
+        if (resultPage == NO_FASTCHECK_TOKEN_RESULT_PAGE)
             ((LoginActivityInterface) getActivity()).hideFastcheck();
-        }
 
     }
 
@@ -175,8 +164,7 @@ public class FastcheckFragment extends BaseFragment implements
         return -1;
     }
 
-    private boolean timeToMakeAnotherCall(final Context context,
-            final Resources res) {
+    private boolean timeToMakeAnotherCall(Context context, Resources res) {
         long lastUpdateMs = 0L;
         if (lastUpdateTimeCal == null) {
             CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -184,27 +172,25 @@ public class FastcheckFragment extends BaseFragment implements
             Long cachedLastUpdateTimeInMS = (Long) cardShareDataStoreObj
                     .getValueOfAppCache(res
                             .getString(R.string.fast_check_last_retrieval_time_in_ms));
-            if (cachedLastUpdateTimeInMS == null) {
+            if (cachedLastUpdateTimeInMS == null)
                 return true;
-            } else {
+            else {
                 lastUpdateMs = cachedLastUpdateTimeInMS.longValue();
                 lastUpdateTimeCal = Calendar.getInstance();
                 lastUpdateTimeCal.setTimeInMillis(lastUpdateMs);
             }
-        } else {
+        } else
             lastUpdateMs = lastUpdateTimeCal.getTimeInMillis();
-        }
         long currentMs = Calendar.getInstance().getTimeInMillis();
 
-        if (currentMs - lastUpdateMs <= explicitRefreshInterval
-                && currentMs - lastUpdateMs >= 0) {
+        if ((currentMs - lastUpdateMs) <= explicitRefreshInterval
+                && (currentMs - lastUpdateMs) >= 0)
             return false;
-        } else {
+        else
             return true;
-        }
     }
 
-    private void getFastcheckData(final boolean spinOnNoFetch) {
+    private void getFastcheckData(boolean spinOnNoFetch) {
         Context context = getActivity().getApplicationContext();
         final Resources res = context.getResources();
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -216,16 +202,14 @@ public class FastcheckFragment extends BaseFragment implements
                         res.getString(R.string.fast_check_spinner_msg_part2));
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
-                    @Override
                     public void run() {
                         Utils.hideSpinner();
                     }
                 }, 500);
             }
             // orientation change fix
-            if (resultPage == INITIAL_RESULT_PAGE) {
+            if (resultPage == INITIAL_RESULT_PAGE)
                 checkOrientationChange(res, cardShareDataStoreObj);
-            }
 
             showPreviousPage(res);
             return;
@@ -237,11 +221,10 @@ public class FastcheckFragment extends BaseFragment implements
         try {
             deviceToken = FastcheckUtil.decrypt(encryptedDeviceToken);
         } catch (Exception e) {
-            if (Log.isLoggable(TAG, Log.ERROR)) {
+            if (Log.isLoggable(TAG, Log.ERROR))
                 Log.e(TAG,
                         "getFastcheckData() gets Exception during FastcheckUtil.decrypt()"
                                 + e.getMessage());
-            }
             resultPage = TECH_DIFF_RESULT_PAGE;
             FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify
                                                                     // invalid
@@ -252,20 +235,18 @@ public class FastcheckFragment extends BaseFragment implements
         }
 
         if (deviceToken == null || deviceToken.length() != 88) {
-            if (Log.isLoggable(TAG, Log.ERROR)) {
+            if (Log.isLoggable(TAG, Log.ERROR))
                 Log.e(TAG,
                         "getFastcheckData(), token is NULL or length is not proper");
-            }
-            if (deviceToken != null) {
+            if (deviceToken != null)
                 FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify
-            }
-            // invalid
-            // token
-            // that
-            // is
-            // not
-            // long
-            // in 88
+                                                                        // invalid
+                                                                        // token
+                                                                        // that
+                                                                        // is
+                                                                        // not
+                                                                        // long
+                                                                        // in 88
             showFastcheckErrorPage(res
                     .getString(R.string.fast_check_error_tech_diff));
             return;
@@ -289,29 +270,26 @@ public class FastcheckFragment extends BaseFragment implements
             JacksonObjectMapperHolder.getMapper().writeValue(baos,
                     new FastcheckToken(deviceToken));
         } catch (JsonGenerationException e) {
-            if (Log.isLoggable(TAG, Log.ERROR)) {
+            if (Log.isLoggable(TAG, Log.ERROR))
                 Log.e(TAG, "getFastcheckData() gets JsonGenerationException "
                         + e.getMessage());
-            }
             resultPage = TECH_DIFF_RESULT_PAGE;
             showFastcheckErrorPage(res
                     .getString(R.string.fast_check_error_tech_diff));
             return;
         } catch (JsonMappingException e) {
-            if (Log.isLoggable(TAG, Log.ERROR)) {
+            if (Log.isLoggable(TAG, Log.ERROR))
                 Log.e(TAG,
                         "getFastcheckData() gets JsonMappingException "
                                 + e.getMessage());
-            }
             resultPage = TECH_DIFF_RESULT_PAGE;
             showFastcheckErrorPage(res
                     .getString(R.string.fast_check_error_tech_diff));
             return;
         } catch (IOException e) {
-            if (Log.isLoggable(TAG, Log.ERROR)) {
+            if (Log.isLoggable(TAG, Log.ERROR))
                 Log.e(TAG,
                         "getFastcheckData() gets IOException " + e.getMessage());
-            }
             resultPage = TECH_DIFF_RESULT_PAGE;
             showFastcheckErrorPage(res
                     .getString(R.string.fast_check_error_tech_diff));
@@ -355,20 +333,18 @@ public class FastcheckFragment extends BaseFragment implements
     private String formatSalutation(final Context context) {
         final Resources res = context.getResources();
         StringBuffer sb = new StringBuffer();
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12) {
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12)
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_morning));
-        } else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
+        else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18)
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_afternoon));
-        } else {
+        else
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_evening));
-        }
         String tmp = fastcheckDetail.getCardmemberFirstName();
-        if (tmp != null) {
+        if (tmp != null)
             tmp = tmp.substring(0, 1) + tmp.substring(1).toLowerCase(Locale.US);
-        }
         sb.append(" ");
         sb.append(tmp);
         return sb.toString();
@@ -384,14 +360,14 @@ public class FastcheckFragment extends BaseFragment implements
         item.hideAction();
         item.getBackButton().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View arg0) {
+            public void onClick(View arg0) {
                 ((NavigationRootActivity) getActivity()).getSlidingMenu()
                         .toggle();
             }
         });
         item.getRefreshButton().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View arg0) {
+            public void onClick(View arg0) {
                 getFastcheckData(true);
             }
         });
@@ -409,12 +385,11 @@ public class FastcheckFragment extends BaseFragment implements
         return item;
     }
 
-    private void showFastcheckErrorPage(final String errorMsg) {
+    private void showFastcheckErrorPage(String errorMsg) {
         showFastcheckErrorPage(errorMsg, false);
     }
 
-    private void showFastcheckErrorPage(final String errorMsg,
-            final boolean processLink) {
+    private void showFastcheckErrorPage(String errorMsg, boolean processLink) {
         Context context = getActivity();
         fastcheckList = (LinearLayout) view.findViewById(R.id.fastcheck_list);
         RelativeLayout layout = (RelativeLayout) LayoutInflater.from(context)
@@ -433,7 +408,7 @@ public class FastcheckFragment extends BaseFragment implements
                 .findViewById(R.id.fastcheck_display_back_button);
         backButtonOnTechDiff.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View arg0) {
+            public void onClick(View arg0) {
                 ((NavigationRootActivity) getActivity()).getSlidingMenu()
                         .toggle();
             }
@@ -442,20 +417,20 @@ public class FastcheckFragment extends BaseFragment implements
         fastcheckList.addView(layout);
     }
 
-    private String formatMoney(final String aString) {
+    private String formatMoney(String aString) {
         double money = Double.parseDouble(aString);
         DecimalFormat df = new DecimalFormat(CASH_REWARDS_FORMAT);
         return "$" + df.format(money);
     }
 
-    private String formatMile(final String aString) {
+    private String formatMile(String aString) {
         double mile = Double.parseDouble(aString);
         DecimalFormat df = new DecimalFormat(MILE_REWARDS_FORMAT);
         return df.format(mile);
     }
 
-    private void updateCacheAndTimestamp(
-            final FastcheckDetail aFastcheckDetail, final String aMsg) {
+    private void updateCacheAndTimestamp(FastcheckDetail aFastcheckDetail,
+            String aMsg) {
         Context context = getActivity().getApplicationContext();
         final Resources res = context.getResources();
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -498,47 +473,44 @@ public class FastcheckFragment extends BaseFragment implements
                 formatMoney(fastcheckDetail.getAvailableCredit())));
 
         if (fastcheckDetail.isAcLiteOutageMode()
-                || fastcheckDetail.isRewardsOutage()) {
+                || fastcheckDetail.isRewardsOutage())
             fastcheckList.addView(createFastcheckRewardListItem(context));
-        } else if (CASH_BACK_CODE
-                .equals(fastcheckDetail.getIncentiveTypeCode())
+        else if (CASH_BACK_CODE.equals(fastcheckDetail.getIncentiveTypeCode())
                 || DBC_CASH_BACK_CODE.equals(fastcheckDetail
                         .getIncentiveTypeCode())) {
             SimpleListItem cbbList = SimpleListItemFactory.createItem(context,
                     Html.fromHtml(res
-                            .getString(R.string.fast_check_cashback_bonus)),
+                            .getString((R.string.fast_check_cashback_bonus))),
                     formatMoney(fastcheckDetail.getEarnRewardAmount()));
             // cbbList.getLabel().setTypeface(null, Typeface.ITALIC);
             fastcheckList.addView(cbbList);
         } else if (MILES_CODE.equals(fastcheckDetail.getIncentiveTypeCode())
                 || DBC_MILES_CODE
-                        .equals(fastcheckDetail.getIncentiveTypeCode())) {
+                        .equals(fastcheckDetail.getIncentiveTypeCode()))
             fastcheckList.addView(SimpleListItemFactory.createItem(context,
                     res.getString(R.string.account_summary_miles_bonus),
                     formatMile(fastcheckDetail.getEarnRewardAmount())));
-        }
 
     }
 
-    private void checkOrientationChange(final Resources res,
-            final CardShareDataStore cardShareDataStoreObj) {
+    private void checkOrientationChange(Resources res,
+            CardShareDataStore cardShareDataStoreObj) {
         fastcheckDetail = (FastcheckDetail) cardShareDataStoreObj
                 .getValueOfAppCache(res
                         .getString(R.string.fast_check_detail_databean));
         fastcheckMaintenanceMsg = (String) cardShareDataStoreObj
                 .getValueOfAppCache(res
                         .getString(R.string.fast_check_maintenance_msg));
-        if (fastcheckDetail != null) {
+        if (fastcheckDetail != null)
             resultPage = NORMAL_RESULT_PAGE;
-        } else if (fastcheckMaintenanceMsg != null) {
+        else if (fastcheckMaintenanceMsg != null)
             resultPage = MAINTENANCE_RESULT_PAGE;
-        } else {
+        else
             resultPage = TECH_DIFF_RESULT_PAGE;
-        }
     }
 
     @Override
-    public void onSuccess(final Object data) {
+    public void onSuccess(Object data) {
         resultPage = NORMAL_RESULT_PAGE;
         updateCacheAndTimestamp((FastcheckDetail) data, null);
         cardArtHelper.updateCardImage(((FastcheckDetail) data).cardImage,
@@ -546,15 +518,14 @@ public class FastcheckFragment extends BaseFragment implements
                 ((FastcheckDetail) data).incentiveCode);
     }
 
-    private void showPreviousPage(final Resources res) {
+    private void showPreviousPage(Resources res) {
         switch (resultPage) {
         case NORMAL_RESULT_PAGE:
-            if (fastcheckDetail != null) {
+            if (fastcheckDetail != null)
                 populateList();
-            } else {
+            else
                 showFastcheckErrorPage(res
                         .getString(R.string.fast_check_error_tech_diff));
-            }
             break;
         case CANNOT_ACCESS_RESULT_PAGE:
             showFastcheckErrorPage(
@@ -562,12 +533,11 @@ public class FastcheckFragment extends BaseFragment implements
                     true);
             break;
         case MAINTENANCE_RESULT_PAGE:
-            if (fastcheckMaintenanceMsg != null) {
+            if (fastcheckMaintenanceMsg != null)
                 showFastcheckErrorPage(fastcheckMaintenanceMsg, true);
-            } else {
+            else
                 showFastcheckErrorPage(res
                         .getString(R.string.fast_check_error_tech_diff));
-            }
             break;
         case TECH_DIFF_RESULT_PAGE:
             showFastcheckErrorPage(res
@@ -577,7 +547,7 @@ public class FastcheckFragment extends BaseFragment implements
     }
 
     @Override
-    public void OnError(final Object data) {
+    public void OnError(Object data) {
         Context context = getActivity().getApplicationContext();
         final Resources res = context.getResources();
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
@@ -606,14 +576,13 @@ public class FastcheckFragment extends BaseFragment implements
                     true);
         } else if (cardErrorBean.getErrorCode().startsWith("429")) {
             // orientation change fix begin
-            if (resultPage == INITIAL_RESULT_PAGE) {
+            if (resultPage == INITIAL_RESULT_PAGE)
                 checkOrientationChange(res, cardShareDataStoreObj);
-            }
             showPreviousPage(res);
         } else if (cardErrorBean.getErrorCode().startsWith("401")
-                || cardErrorBean.getErrorMessage() != null
-                && cardErrorBean.getErrorMessage().indexOf(
-                        "Received authentication challenge is null") >= 0) {
+                || (cardErrorBean.getErrorMessage() != null && cardErrorBean
+                        .getErrorMessage().indexOf(
+                                "Received authentication challenge is null") >= 0)) {
             resultPage = NO_FASTCHECK_TOKEN_RESULT_PAGE;
             FastcheckUtil.storeFastcheckToken(getActivity(), null); // nullify
                                                                     // invalid
@@ -652,9 +621,8 @@ public class FastcheckFragment extends BaseFragment implements
                 final float diffAbs = Math.abs(e1.getY() - e2.getY());
                 final float diff = e1.getX() - e2.getX();
 
-                if (diffAbs > SWIPE_MAX_OFF_PATH) {
+                if (diffAbs > SWIPE_MAX_OFF_PATH)
                     return false;
-                }
 
                 // Left swipe
                 if (diff > SWIPE_MIN_DISTANCE
@@ -667,9 +635,8 @@ public class FastcheckFragment extends BaseFragment implements
                     onRightSwipe();
                 }
             } catch (final Exception e) {
-                if (Log.isLoggable(TAG, Log.ERROR)) {
+                if (Log.isLoggable(TAG, Log.ERROR))
                     Log.e(TAG, "onFling() Error on gestures");
-                }
             }
             return false;
         }

@@ -25,7 +25,10 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.BaseFragment;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -38,6 +41,8 @@ import com.discover.mobile.card.common.ui.modals.ModalTopView;
 import com.discover.mobile.card.common.uiwidget.AnswerEditText;
 import com.discover.mobile.card.common.uiwidget.ConfirmationAnswerEditText;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
@@ -45,12 +50,12 @@ import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUserDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthReviewQueAnsDetails;
 import com.discover.mobile.card.services.auth.strong.StrongAuthUpdateUser;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
+
 /***
- * Strong Auth Enrollment. On Login if user has not done strong auth enrollment
+ * Strong Auth Enrollment. On Login if user has not done strong auth enrollment 
  * .User will be navigated to this activity for enrollment
  * 
  * 
@@ -122,13 +127,15 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     private List<String> sQListfirstId, sQListSecondId, sQListThirdID;
     private StrongAuthReviewQueAnsDetails strongAuthReviewQueAnsDetails = new StrongAuthReviewQueAnsDetails();
     // Error label
-
+    private TextView securityQuestionOneError;
     private TextView answerOneError;
     private TextView confirmAnswerOneError;
 
+    private TextView securityQuestionSecondError;
     private TextView answerSecondError;
     private TextView confirmAnswerSecondError;
 
+    private TextView securityQuestionThirdError;
     private TextView answerThirdError;
     private TextView confirmAnswerThirdError;
 
@@ -146,7 +153,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
-
+        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.strong_auth_enter_info);
         /*
@@ -172,13 +179,13 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     @Override
     public void onResume() {
-
+        // TODO Auto-generated method stub
         super.onResume();
         showFieldsAsPerLastState();
     }
 
     private void showFieldsAsPerLastState() {
-
+        // TODO Auto-generated method stub
         if (answerFirstIsInError) {
             firstAnswer.setErrorLabelText(answerFirstErrorText);
             firstAnswer.setErrors();
@@ -223,7 +230,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void restoreState(final Bundle savedInstanceState) {
-
+        // TODO Auto-generated method stub
         if (savedInstanceState != null) {
 
             firstAnswer.setText(savedInstanceState
@@ -270,7 +277,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     @Override
     protected void onSaveInstanceState(final Bundle outState) {
-
+        // TODO Auto-generated method stub
         super.onSaveInstanceState(outState);
         outState.putBoolean(UPDATE_FIRST_ANSWER_ERROR_STATE,
                 firstAnswer.isInErrorState);
@@ -314,7 +321,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void attachErrorLabelsToFields() {
-
+        // TODO Auto-generated method stub
         firstAnswer.attachErrorLabel(answerOneError);
         secondAnswer.attachErrorLabel(answerSecondError);
         thirdAnswer.attachErrorLabel(answerThirdError);
@@ -336,7 +343,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     @Override
                     public void onCheckedChanged(final RadioGroup group,
                             final int checkedId) {
-
+                        // TODO Auto-generated method stub
                         final RadioButton checkedRadioButton = (RadioButton) group
                                 .findViewById(checkedId);
                         if (checkedRadioButton.equals(radioButtonOne)) {
@@ -352,7 +359,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void setlabelValues() {
-
+        // TODO Auto-generated method stub
         firstQuestionLabel.setText(R.string.sa_security_question);
         secondQuestionLabel.setText(R.string.sa_security_question_second);
         thirdQuestionLabel.setText(R.string.sa_security_question_third);
@@ -360,7 +367,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void handlingClickEvents() {
-
+        // TODO Auto-generated method stub
         submit.setOnClickListener(this);
         privacyTerms.setOnClickListener(this);
         provideFeedback.setOnClickListener(this);
@@ -368,6 +375,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void populateQuestions() {
+        // TODO Auto-generated method stub
 
         final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                 .getInstance(StrongAuthEnterInfoActivity.this);
@@ -380,8 +388,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         sQListfirstId = new ArrayList<String>();
         sQListSecondId = new ArrayList<String>();
         sQListThirdID = new ArrayList<String>();
-
-        // 13.4 Code CleanUp Changes start
+        
+        //13.4 Code CleanUp Changes start
         Iterator<String> listFirstFieldNames = strongAuthCreateUserDetails.saQuestion1
                 .fieldNames();
         while (listFirstFieldNames.hasNext()) {
@@ -392,7 +400,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
             sQListfirst.add(value);
             sQListfirstId.add(fieldName);
         }
-
+        
+        
         Iterator<String> listSecondFieldNames = strongAuthCreateUserDetails.saQuestion2
                 .fieldNames();
         while (listSecondFieldNames.hasNext()) {
@@ -403,7 +412,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
             sQListSecond.add(value);
             sQListSecondId.add(fieldName);
         }
-
+        
         Iterator<String> listThirdFieldNames = strongAuthCreateUserDetails.saQuestion3
                 .fieldNames();
         while (listThirdFieldNames.hasNext()) {
@@ -414,8 +423,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
             sQListThird.add(value);
             sQListThirdID.add(fieldName);
         }
-
-        // 13.4 Code CleanUp Changes end
+        
+        //13.4 Code CleanUp Changes end
     }
 
     /** Added for spinner */
@@ -512,7 +521,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     @Override
                     public void onFocusChange(final View v,
                             final boolean hasFocus) {
-
+                        // TODO Auto-generated method stub
                         if (hasFocus) {
                             OpenSecurityQuestions1();
                             securityQuestion1Spinner
@@ -530,7 +539,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     @Override
                     public void onFocusChange(final View v,
                             final boolean hasFocus) {
-
+                        // TODO Auto-generated method stub
                         if (hasFocus) {
                             OpenSecurityQuestions2();
                             securityQuestion2Spinner
@@ -548,7 +557,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                     @Override
                     public void onFocusChange(final View v,
                             final boolean hasFocus) {
-
+                        // TODO Auto-generated method stub
                         if (hasFocus) {
                             OpenSecurityQuestions3();
                             securityQuestion3Spinner
@@ -563,7 +572,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void intializeViews() {
-
+        // TODO Auto-generated method stub
         errorMessage = (TextView) findViewById(R.id.strongauth_security_server_error);
         securityBlock1 = (LinearLayout) findViewById(R.id.security_block1);
         securityBlock2 = (LinearLayout) findViewById(R.id.security_block2);
@@ -603,16 +612,22 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         radioButtonTwo = (RadioButton) securityRadioGroup
                 .findViewById(R.id.account_security_choice_two_radio);
 
+        securityQuestionOneError = (TextView) securityBlock1
+                .findViewById(R.id.security_question_error_label);
         answerOneError = (TextView) securityBlock1
                 .findViewById(R.id.answer_error_label);
         confirmAnswerOneError = (TextView) securityBlock1
                 .findViewById(R.id.confirm_answer_error_label);
 
+        securityQuestionSecondError = (TextView) securityBlock2
+                .findViewById(R.id.security_question_error_label);
         answerSecondError = (TextView) securityBlock2
                 .findViewById(R.id.answer_error_label);
         confirmAnswerSecondError = (TextView) securityBlock2
                 .findViewById(R.id.confirm_answer_error_label);
 
+        securityQuestionThirdError = (TextView) securityBlock3
+                .findViewById(R.id.security_question_error_label);
         answerThirdError = (TextView) securityBlock3
                 .findViewById(R.id.answer_error_label);
         confirmAnswerThirdError = (TextView) securityBlock3
@@ -622,7 +637,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
         privacyTerms = (TextView) findViewById(R.id.privacy_terms);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         logout = (Button) findViewById(R.id.logout_button);
-
+        
         logout.setVisibility(View.INVISIBLE);
 
     }
@@ -638,25 +653,33 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     @Override
     public TextView getErrorLabel() {
-
+        // TODO Auto-generated method stub
         return errorMessage;
     }
 
+    /*
+     * @Override public List<EditText> getInputFields() { // TODO Auto-generated
+     * method stub return super.getInputFields(); }
+     * 
+     * @Override public void goBack() { // TODO Auto-generated method stub
+     * super.goBack(); }
+     */
+
     @Override
     public void onBackPressed() {
-
-        super.onBackPressed();
+        // TODO Auto-generated method stub
+        // super.onBackPressed();
     }
 
     @Override
     public CardErrHandler getCardErrorHandler() {
-
+        // TODO Auto-generated method stub
         return CardErrorUIWrapper.getInstance();
     }
 
     @Override
     public void onClick(final View v) {
-
+        // TODO Auto-generated method stub
         if (v.getId() == R.id.account_info_submit_button) {
 
             validateAndUpdate();
@@ -677,6 +700,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private void validateAndUpdate() {
+        // TODO Auto-generated method stub
 
         question1 = securityQuestion1Spinner.getText().toString();
         question2 = securityQuestion2Spinner.getText().toString();
@@ -734,7 +758,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
                         @Override
                         public void onSuccess(final Object data) {
-
+                            // TODO Auto-generated method stub
                             final SuccessModalConfirmationTop top = new SuccessModalConfirmationTop(
                                     StrongAuthEnterInfoActivity.this, null);
                             final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(
@@ -748,6 +772,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                                                 @Override
                                                 public void onSuccess(
                                                         final Object data) {
+                                                    // TODO Auto-generated
+                                                    // method stub
                                                     final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                                                             .getInstance(StrongAuthEnterInfoActivity.this);
                                                     final SessionCookieManager sessionCookieManagerObj = cardShareDataStoreObj
@@ -770,7 +796,8 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                                                 @Override
                                                 public void OnError(
                                                         final Object data) {
-
+                                                    // TODO Auto-generated
+                                                    // method stub
                                                     final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                                             StrongAuthEnterInfoActivity.this);
                                                     cardErrorResHandler
@@ -792,7 +819,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
                         @Override
                         public void OnError(final Object data) {
-
+                            // TODO Auto-generated method stub
                             CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                     StrongAuthEnterInfoActivity.this);
                             cardErrorResHandler
@@ -804,6 +831,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     }
 
     private Boolean isEnterInfoValid() {
+        // TODO Auto-generated method stub
 
         Boolean formValid = false;
 
@@ -811,9 +839,9 @@ public class StrongAuthEnterInfoActivity extends Activity implements
                 && thirdAnswer.isValid() && confirmFirstAnswer.isValid()
                 && confirmSecondAnswer.isValid()
                 && confirmThirdAnswer.isValid()
-                && !question1.equalsIgnoreCase("")
-                && !question2.equalsIgnoreCase("")
-                && !question3.equalsIgnoreCase("")) {
+                && !(question1.equalsIgnoreCase(""))
+                && !(question2.equalsIgnoreCase(""))
+                && !(question3.equalsIgnoreCase(""))) {
             formValid = true;
         }
 
@@ -846,21 +874,25 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
         @Override
         public void setTitle(final int resource) {
+            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void setTitle(final String text) {
+            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void setContent(final int resouce) {
+            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void setContent(final String content) {
+            // TODO Auto-generated method stub
 
         }
 
@@ -868,41 +900,45 @@ public class StrongAuthEnterInfoActivity extends Activity implements
 
     @Override
     public void showCustomAlert(final AlertDialog alert) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showOneButtonAlert(final int title, final int content,
             final int buttonText) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showDynamicOneButtonAlert(final int title,
             final String content, final int buttonText) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Context getContext() {
-
+        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void setLastError(final int errorCode) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public int getLastError() {
-
+        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public List<EditText> getInputFields() {
-
+        // TODO Auto-generated method stub
         final List<EditText> inputFields = new ArrayList<EditText>();
         inputFields.add(firstAnswer);
         inputFields.add(secondAnswer);
@@ -913,7 +949,7 @@ public class StrongAuthEnterInfoActivity extends Activity implements
     @Override
     protected void onActivityResult(final int requestCode,
             final int resultCode, final Intent data) {
-
+        // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (requestCode == 1) { // REQUEST_CODE

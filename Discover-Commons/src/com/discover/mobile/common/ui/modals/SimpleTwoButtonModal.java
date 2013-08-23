@@ -23,7 +23,7 @@ import com.discover.mobile.common.ui.help.NeedHelpFooter;
 public class SimpleTwoButtonModal extends ModalAlertWithTwoButtons implements ModalTopView, ModalBottomTwoButtonView{
 
 	/**View of the modal*/
-	private final View view;
+	protected final View view;
 
 	/** View that holds the footer text */
 	private final NeedHelpFooter helpFooter;

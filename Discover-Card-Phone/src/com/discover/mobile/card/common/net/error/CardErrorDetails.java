@@ -7,8 +7,8 @@ import android.content.res.Resources.NotFoundException;
 import com.discover.mobile.card.common.utils.Utils;
 
 /**
- * This class is used to get specific error message from error xml for
- * respective error code
+ * This class is used to get specific error message from erro xml for respective
+ * error code
  * 
  * @author cts
  * 

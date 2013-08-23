@@ -105,6 +105,13 @@ public final class TrackingHelper {
 	}
 
 	/**
+	 * Track a page with extra data
+	 */
+	public static void trackCardPage(final String pageName, final Map<String, Object> extras){
+		trackPageView(pageName, APP_NAME, extras, CARD_TRACKING_RSID);
+	}
+	
+	/**
 	 * Used to track each page view in the app
 	 * 
 	 * @param pageName - supply the page name according to the specification from Discover

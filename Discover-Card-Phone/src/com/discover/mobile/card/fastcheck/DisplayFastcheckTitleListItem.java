@@ -13,15 +13,6 @@ import android.widget.TextView;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.account.summary.SimpleListItem;
 
-/**
- * ©2013 Discover Bank
- * 
- * Fast check listview title item
- * 
- * @author CTS
- * 
- * @version 1.0
- */
 public class DisplayFastcheckTitleListItem extends SimpleListItem {
     private Button backButton;
     private ImageButton refreshButton;
@@ -30,7 +21,7 @@ public class DisplayFastcheckTitleListItem extends SimpleListItem {
         return refreshButton;
     }
 
-    public void setRefreshButton(final ImageButton refreshButton) {
+    public void setRefreshButton(ImageButton refreshButton) {
         this.refreshButton = refreshButton;
     }
 
@@ -38,11 +29,11 @@ public class DisplayFastcheckTitleListItem extends SimpleListItem {
         return backButton;
     }
 
-    public void setBackButton(final Button backButton) {
+    public void setBackButton(Button backButton) {
         this.backButton = backButton;
     }
 
-    public void setCardArtImage(final Bitmap bitmap) {
+    public void setCardArtImage(Bitmap bitmap) {
         card_art.setImageBitmap(bitmap);
     }
 
