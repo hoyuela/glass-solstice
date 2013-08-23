@@ -166,7 +166,6 @@ dfs.crd.pymt.populatePaymentSummaryPageDivs = function(payDataObj, pageId){
 			if(dfs.crd.pymt.afterMakePayFlag){
 				inLineError.css("display", "block");
 				inLineError.html(dfs.crd.pymt.messageAftrmakePay);
-				dfs.crd.pymt.afterMakePayFlag = false;
 			}
 		}
 
@@ -592,11 +591,11 @@ function paymentStep1Load()
 				var pendignPaymentEditData = getDataFromCache("pendingPageDetailData");
 				if(!isEmpty(pendignPaymentEditData)){
 					if(pendignPaymentEditData.SELECTEDINDEX == "choice-1"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Minimum Due");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("MinimumDue");
 					}else if(pendignPaymentEditData.SELECTEDINDEX == "choice-2"){
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Last Statement Balance");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("LastStatement");
 					}else{
-						dfs.crd.sct.onClickEligibleForEditReviewEditPage("Other Amount");
+						dfs.crd.sct.onClickEligibleForEditReviewEditPage("OtherBalance");
 					}
 				}
 			}
@@ -623,15 +622,6 @@ function paymentStep1Load()
 				});
 				
 				$(".wraper2").show(); 
-				/*defect#105911 13.3 global change 14/8/2013- starts here*/
-				$("table.ui-datepicker-calendar").each(function(){
-					$(this).find("tr:last-child td").each(function(index){
-						if(index == 0 && $(this).hasClass("ui-datepicker-other-month")){
-							$(this).parent("tr").css("display","none");
-						}
-					});
-				});
-				/*defect#105911 13.3 global change 14/8/2013- ends here*/
 				var currentpageback=$.mobile.activePage.find("#back-btn a");
 				currentpageback.removeAttr("data-rel");
 
@@ -738,7 +728,6 @@ function paymentStep1Load()
 //						minPayStepOne.parent(".wrapperSpan").addClass('errormsg');
 						$("#minpaystepone_other").val('');
 						$('#minpaystepone_other').attr("placeholder", '0.00');
-						dfs.crd.sct.pageErrorTrackingSiteCat(errorCodeMap["1207"]);
 						return;
 					}
 					else if (!isEmpty(payAmount) && !dfs.crd.pymt.checkCurrency(payAmount)) 
@@ -1564,7 +1553,6 @@ dfs.crd.pymt.bankSelected = function()
 						$.mobile.activePage.find("#makePaymentOneContinue")
 						.attr("disabled", "true").parent().addClass(
 						"ui-disabled");
-						dfs.crd.sct.pageErrorTrackingSiteCat(errorCodeMap["NoDates_for_Bank"]);
 						return false;
 						// otherwise enable button & remove error
 					}else {          
@@ -1831,26 +1819,23 @@ dfs.crd.pymt.continuePaymentStep1ToStep2 = function()
 						commonErrorMap1.html(errorCodeMap["Update_HighLighted"]);
 						var errorMessage = errorCodeMap["1209"];
 						var payDetail = [];
-						var parseContentText = "";
 						var pendingPaymentsList = getDataFromCache("PENDINGPAYMENTS");
 						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.pendingPayments.length == 1)){
 							var errorMessage = errorCodeMap["1208"];
 							payDetail["currentBalance"] = value;
 							parseContentText = parseContent(errorMessage, payDetail);
-							dfs.crd.sct.pageErrorTrackingSiteCat(parseContentText);
 						}else{
 							payDetail["outstandingBalance"] = outStandingBalance;
-							parseContentText = parseContent(errorMessage, payDetail);
-							dfs.crd.sct.pageErrorTrackingSiteCat(parseContentText);
+							var parseContentText = parseContent(errorMessage, payDetail);
 						}
 						
 
 						
-				/*		if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.length == 1)){
+						if(!isEmpty(pendingPaymentsList) &&  (pendingPaymentsList.length == 1)){
 							var errorMessage = errorCodeMap["1208"];
 							payDetail["currentBalance"] = value;
 							parseContentText = parseContent(errorMessage, payDetail);
-						}*/
+						}
 						$("#errorPaymentAmountExceed").text(
 								parseContent(parseContentText, curntValue));
 						$("#minpaystepone_other").parent(".wrapperSpan").addClass("inputOnError");
@@ -2134,9 +2119,6 @@ dfs.crd.pymt.getPaymentVerifErrorHandler = function(jqXHR){
 		hideSpinner();
 		cpEvent.preventDefault();
 		var code = getResponseStatusCode(jqXHR);
-		if(code == "1203"){
-			dfs.crd.sct.bankAccountDeletedModal();
-		}
 		errorHandler(code, "", "paymentStep2");
 	}catch (err) {
 		showSysException(err);
@@ -2635,18 +2617,6 @@ dfs.crd.pymt.payStep3ConfirmErrorHandler = function(jqXHR){
 			var errorMessage = errorCodeMap["1257"];
 			if(projectBeyondCard)
 				errorMessage = errorCodeMap["1257_PB"];
-			dfs.crd.sct.pageErrorTrackingSiteCat(errorMessage);
-			if (!isEmpty(errorMessage))
-				errorHandler(code, errorMessage,
-				"paymentStep1");
-			else
-				errorHandler(code, "", "paymentStep1");
-
-			break;
-		case "1203":
-			var errorMsgData = getResponsErrorData(jqXHR);
-			var errorMessage = errorCodeMap["1203"];
-			dfs.crd.sct.bankAccountDeletedModal();
 			if (!isEmpty(errorMessage))
 				errorHandler(code, errorMessage,
 				"paymentStep1");
@@ -3066,9 +3036,6 @@ try{
 		hideSpinner();
 		cpEvent.preventDefault();
 		var code = getResponseStatusCode(jqXHR);
-		if(code == "1203"){
-			dfs.crd.sct.bankAccountDeletedModal();
-		}
 		errorHandler(code, "", "pendingPayment");
 	} catch (err) {
 		showSysException(err);
@@ -3316,9 +3283,6 @@ dfs.crd.pymt.populateCancelPayment1ErrorDivs = function(jqXHR){
 			cpEvent.preventDefault();
 			navigation("../payments/pendingPayments");
 		}else{
-			if(code == "1203"){
-				dfs.crd.sct.bankAccountDeletedModal();
-			}
 			cpEvent.preventDefault();
 			errorHandler(code, "", "cancelPayment1");
 		}
@@ -3408,15 +3372,11 @@ dfs.crd.pymt.populatePostConfirmCancelErrorDivs = function(jqXHR){
 				navigation("../payments/pendingPayments");
 		}else if(code == "1256"){
 			var errorMessage = errorCodeMap["1256"];
-						if(projectBeyondCard){
+			if(projectBeyondCard){
 				errorMessage = errorCodeMap["1256_PB"];
 			}
-			dfs.crd.sct.pageErrorTrackingSiteCat(errorMessage);
 			errorHandler(code,errorMessage, "confirmCancelPayment");
 		}else{
-			if(code == "1203"){
-				dfs.crd.sct.bankAccountDeletedModal();
-			}
 			errorHandler(code, "", "confirmCancelPayment");
 		} 
 	}catch (err) {

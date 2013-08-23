@@ -16,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -61,7 +60,6 @@ import com.discover.mobile.common.analytics.TrackingHelper;
  * 
  * @author sgoff0
  */
-@SuppressLint("SetJavaScriptEnabled")
 public class StatementActivity extends DroidGap {
 
     private static final String LOG_TAG = "StatementActivity";
@@ -115,7 +113,7 @@ public class StatementActivity extends DroidGap {
             processBundle();
         } catch (JSONException e) {
             Utils.log(LOG_TAG, "Error reading input");
-
+            // TODO show error that input couldn't be read properly
             finish();
         }
 
@@ -161,7 +159,7 @@ public class StatementActivity extends DroidGap {
             Log.v(TAG, "CardErrorBean: " + cardErrorBean.toString());
             Log.v(TAG,
                     "CardErrorBean Error code: " + cardErrorBean.getErrorCode());
-
+            // TODO get status code out of data
             if (cardErrorBean.getErrorCode() == null) {
                 // cannot connect to URL, probably no internet
                 alertCloseActivity(getText(R.string.common_noInternetConnection_message));
@@ -302,6 +300,7 @@ public class StatementActivity extends DroidGap {
         String statements = b.getString("statements");
         sJsonArray = new JSONArray(statements);
         if (sJsonArray.length() == 0) {
+            // TODO no content, define proper error
             alertCloseActivity(getText(R.string.statement_invalidData_message));
         }
         sBaseUrl = b.getString("baseUrl");
@@ -309,7 +308,6 @@ public class StatementActivity extends DroidGap {
         mStatementInfo.setIndex(b.getInt("index"));
     }
 
-    @SuppressWarnings("deprecation")
     private StatementInfo getStatementDataAtIndex(int index) {
         if (!isValidIndex(index)) {
             Utils.log(LOG_TAG, "Invalid index: " + index);
@@ -374,20 +372,19 @@ public class StatementActivity extends DroidGap {
             }
         } catch (JSONException e) {
             Utils.log("JSON Exception", e.getMessage());
-
+            // TODO handle error
         } catch (NumberFormatException nfe) {
             Utils.log("NumberFormatException", nfe.getMessage());
-
+            // TODO handle error
         }
 
         return statementInfo;
     }
 
-    @SuppressWarnings("deprecation")
     private void loadWebView(final StatementInfo statementInfo) {
         // performServiceHealthCheck();
         if (statementInfo == null) {
-
+            // TODO handle error
             return;
         }
 
@@ -674,7 +671,6 @@ public class StatementActivity extends DroidGap {
             startToast.show();
         }
 
-        @SuppressWarnings("deprecation")
         @Override
         protected void onPostExecute(final PDFObject result) {
             super.onPostExecute(result);

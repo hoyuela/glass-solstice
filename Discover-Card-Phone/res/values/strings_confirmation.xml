@@ -44,6 +44,11 @@
 	<string name="password_confirmation_changed_text">
 	    Your password has been changed and a confirmation email has been sent. You are logged in and ready to go.
 	</string>
+
+	<!-- Unlock -->
+	<string name="unlock_confirmation_text">
+	    Your account is unlocked and your password has been updated. 
+	</string>
 	
 <!--  User ID Change Confirmation Strings -->
 	<string name="user_confirmation_changed_text">

@@ -1,5 +1,6 @@
 package com.discover.mobile.card.common.net.error;
 
+
 /**
  * 
  * ©2013 Discover Bank
@@ -22,6 +23,7 @@ public final class CardErrorBean {
     private boolean isSSOUidDLinkable = false;
     private boolean isSSOUser = false;
     private boolean isSSNMatched = false;
+    private boolean isTempLocked = false;
 
     // private static CardErrorBean errorHolder;
 
@@ -33,16 +35,23 @@ public final class CardErrorBean {
      * @param errCode
      * @param isAppError
      */
-    public CardErrorBean(final String errTitle, final String errMessage,
-            final String errCode, final boolean isAppError,
-            final String footerStatus) {
+    public CardErrorBean(final String errorTitle, final String errorMessage,
+            final String errorCode, final boolean isAppError,
+            final String footerStatus,
+            final boolean isTempLocked) {
 
-        errorCode = errCode;
-        errorMessage = errMessage;
-        errorTitle = errTitle;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+        this.errorTitle = errorTitle;
         this.isAppError = isAppError;
         this.footerStatus = footerStatus;
+        this.isTempLocked = isTempLocked;
+    }
 
+    public CardErrorBean(final String errorTitle, final String errorMessage,
+            final String errorCode, final boolean isAppError,
+            final String footerStatus) {
+    	this(errorTitle, errorMessage, errorCode, isAppError, footerStatus, false);
     }
 
     /**
@@ -166,4 +175,13 @@ public final class CardErrorBean {
     public void setFooterStatus(final String status) {
         footerStatus = status;
     }
+
+	public boolean isTempLocked() {
+		return isTempLocked;
+	}
+
+	public void setTempLocked(boolean isTempLocked) {
+		this.isTempLocked = isTempLocked;
+	}
+    
 }

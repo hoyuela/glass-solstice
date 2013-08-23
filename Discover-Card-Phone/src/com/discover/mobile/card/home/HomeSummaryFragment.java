@@ -44,18 +44,6 @@ import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 
-/***
- * ©2013 Discover Bank
- * 
- * HomeSummaryFragment landing Fragment after login. Contatins gerral card
- * specific menu
- * 
- * @author CTS
- * 
- * @version 1.0
- */
-
-@SuppressLint("DefaultLocale")
 public class HomeSummaryFragment extends BaseFragment implements
         OnClickListener {
 
@@ -193,10 +181,8 @@ public class HomeSummaryFragment extends BaseFragment implements
     /**
      * To fetch the account name from the account details object
      */
-
-    @SuppressLint("DefaultLocale")
     private void setAccountName() {
-
+        // TODO Auto-generated method stub
         final StringBuilder defaultHiText = new StringBuilder(
                 formatSalutation(getActivity()));
         if (null != accountDetails) {
@@ -232,16 +218,15 @@ public class HomeSummaryFragment extends BaseFragment implements
     private String formatSalutation(final Context context) {
         final Resources res = context.getResources();
         StringBuffer sb = new StringBuffer();
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12) {
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 12)
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_morning));
-        } else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18) {
+        else if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) < 18)
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_afternoon));
-        } else {
+        else
             sb.append(res
                     .getString(R.string.fast_check_salutation_good_evening));
-        }
         return sb.toString();
     }
 
@@ -252,7 +237,7 @@ public class HomeSummaryFragment extends BaseFragment implements
      *            Will set the text in Hi TextView
      */
     private void setStatusBarText(final String text) {
-
+        // TODO Auto-generated method stub
         accountName.setText(text);
     }
 
@@ -262,12 +247,12 @@ public class HomeSummaryFragment extends BaseFragment implements
      * 
      */
     private void updateAccountDetailsEventListener() {
-
+        // TODO Auto-generated method stub
         cardEventListener = new CardEventListener() {
 
             @Override
             public void onSuccess(final Object data) {
-
+                // TODO Auto-generated method stub
                 final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                         .getInstance(callingActivity);
                 cardShareDataStoreObj.addToAppCache(
@@ -283,7 +268,7 @@ public class HomeSummaryFragment extends BaseFragment implements
 
             @Override
             public void OnError(final Object data) {
-
+                // TODO Auto-generated method stub
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         (CardErrorHandlerUi) callingActivity);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -306,7 +291,7 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public void onAttach(final Activity activity) {
-
+        // TODO Auto-generated method stub
         super.onAttach(activity);
         callingActivity = activity;
     }
@@ -378,6 +363,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     // This method will populate the rewardsOffer with combinations of
     // incentiveCode and incentiveTypeCode
     private void populateRewardsOffer() {
+        // TODO Auto-generated method stub
 
         rewardsOffer.put("rewards_offer_CBB_000001", "cashBack Bonus Offer");
         rewardsOffer.put("rewards_offer_CBB_000011", "cashBack Bonus Offer");
@@ -398,6 +384,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     // This method will populate the rewardsInfo with combinations of
     // incentiveCode and incentiveTypeCode
     private void populateRewardsInfo() {
+        // TODO Auto-generated method stub
 
         rewardsInfo.put("rewards_info_CBB_000001", "redeem");
         rewardsInfo.put("rewards_info_CBB_000011", "redeem");
@@ -441,9 +428,10 @@ public class HomeSummaryFragment extends BaseFragment implements
         currentBalance = (LinearLayout) view
                 .findViewById(R.id.home_current_balance);
 
-        View thickLine = currentBalance
+        View thickLine = (View) currentBalance
                 .findViewById(R.id.achome_separator_thick);
-        View thinLine = currentBalance.findViewById(R.id.achome_separator);
+        View thinLine = (View) currentBalance
+                .findViewById(R.id.achome_separator);
 
         thickLine.setVisibility(View.VISIBLE);
         thinLine.setVisibility(View.GONE);
@@ -644,7 +632,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     @Override
     public int getActionBarTitle() {
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                (CardNavigationRootActivity) getActivity());
+                ((CardNavigationRootActivity) getActivity()));
         return barMenuTitleUtil.getActionBarTitle();
     }
 
@@ -655,7 +643,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     public int getGroupMenuLocation() {
         Utils.log(TAG, "inside getGroupMenuLocation ");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                (CardNavigationRootActivity) getActivity());
+                ((CardNavigationRootActivity) getActivity()));
         return barMenuTitleUtil
                 .getGroupMenuLocation(R.string.section_title_home);
     }
@@ -667,7 +655,7 @@ public class HomeSummaryFragment extends BaseFragment implements
     public int getSectionMenuLocation() {
         Utils.log(TAG, "inside getSectionMenuLocation");
         FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                (CardNavigationRootActivity) getActivity());
+                ((CardNavigationRootActivity) getActivity()));
         return barMenuTitleUtil
                 .getSectionMenuLocation(R.string.section_title_home);
     }
@@ -679,6 +667,7 @@ public class HomeSummaryFragment extends BaseFragment implements
      */
     @Override
     public void onClick(final View v) {
+        // TODO Auto-generated method stub
 
         if (v.getId() == R.id.home_current_balance) {
             ((CardMenuInterface) callingActivity)
