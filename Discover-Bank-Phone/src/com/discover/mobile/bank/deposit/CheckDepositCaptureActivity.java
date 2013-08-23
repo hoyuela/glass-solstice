@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
@@ -45,8 +46,8 @@ import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.Animator;
 import com.discover.mobile.common.BaseActivity;
-import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.error.ErrorHandler;
 
 public class CheckDepositCaptureActivity extends BaseActivity implements SurfaceHolder.Callback, AnimationListener {
@@ -103,6 +104,9 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	private final int ANIMATIONDURATION = 1000;
 
 	private int count = THREE;
+
+	private boolean shouldResizeImage = false;
+	private Size bestCameraSize;
 
 	private boolean cameraConfigured = false;
 	private boolean isPaused = false;
@@ -676,7 +680,16 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 			if(lastPicture != null) {
 				final int fullQuality = 100;
 				final FileOutputStream fos = getFileOutputStream();
-				lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				if(shouldResizeImage){
+					final int maxImageWidth = 
+							Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+					final int newHeight = 
+							MCDUtils.getAdjustedImageHeight(bestCameraSize.height, bestCameraSize.width, maxImageWidth);
+					Bitmap.createScaledBitmap(lastPicture, maxImageWidth, newHeight, true)
+					.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}else{
+					lastPicture.compress(Bitmap.CompressFormat.JPEG, fullQuality, fos);
+				}
 				fos.close();
 			}
 		} catch (final FileNotFoundException e) {
@@ -809,20 +822,23 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 	 * Setup the parameters for the camera that might be useful.
 	 */
 	private void setupCameraParameters() {
-		final Camera.Parameters parameters = camera.getParameters();
 		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
+		final int maxJpegQuality = 100;
+		final Camera.Parameters parameters = camera.getParameters();
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		//Set the best image size
+		bestCameraSize = MCDUtils.getBestImageSize(sizes, maxImageWidth);
 
-		Size smallCaptureSize = null;
-
-		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
-				smallCaptureSize = size;
-			}
+		//If the image is larger than 1600 set the boolean shouldResize to true
+		if(bestCameraSize.width > maxImageWidth){
+			shouldResizeImage = true;
+		}else{
+			shouldResizeImage = false;
 		}
 
-		if(smallCaptureSize != null) {
-			parameters.setPictureSize(smallCaptureSize.width, smallCaptureSize.height);
+		//Set the camera parameters
+		if(bestCameraSize != null) {
+			parameters.setPictureSize(bestCameraSize.width, bestCameraSize.height);
 		}
 
 		/**
@@ -833,10 +849,15 @@ public class CheckDepositCaptureActivity extends BaseActivity implements Surface
 		 * Add a check to see if supportFlashModes returns null.  
 		 * -Julian
 		 */
-		if (null != parameters.getSupportedFlashModes() 
-				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+		if (null != parameters.getSupportedFlashModes()
+				&& parameters.getSupportedFlashModes().contains(Camera.Parameters.FLASH_MODE_AUTO)){
 			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		}
+
+		//Setup the picture quality
+		parameters.setPictureFormat(ImageFormat.JPEG);
+		parameters.setJpegQuality(maxJpegQuality);
+
 		camera.setParameters(parameters);
 	}
 

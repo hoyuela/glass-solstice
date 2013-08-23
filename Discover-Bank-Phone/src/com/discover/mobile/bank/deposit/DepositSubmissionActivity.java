@@ -35,6 +35,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.CompletionLis
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.base.Strings;
 
 
@@ -66,10 +67,6 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	/**Conversion to decimal for the compression*/
 	private static final long PERCENTAGE_CONVERSION = 100;
 
-	/**Thresh hold value that the check needs to be for compression*/
-	private static final int HEIGHT_THRESH = 1600;
-	private static final int WIDTH_THRESH = 1200;
-
 	/**Analytics values*/
 	private int frontImageHeight = 0;
 	private int frontImageWidth = 0;
@@ -84,10 +81,21 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.deposit_submission);
 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.main_layout));
+		setImageParams();
+
+		/**
+		 * Get the data for the service call.  
+		 * 
+		 * **NOTE: 	This must be done before setting the calling activity.
+		 * 			If it is set after, the baseline devices will have memory issues
+		 * 			trying to load the images and compress them.
+		 * 
+		 */
+		final DepositDetail data = getDepositDetails();
 		callingActivity = DiscoverActivityManager.getActiveActivity();
 		DiscoverActivityManager.setActiveActivity(this);
 		BankTrackingHelper.forceTrackPage(R.string.bank_capture_sending);
-		submit();
+		submit(data);
 	}
 
 	/**
@@ -109,10 +117,9 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 	/**
 	 * Submit the check images and the information about the checks and what account to deposit to.
+	 * @param data - deposit data to submit
 	 */
-	private void submit() {
-		setImageParams();
-		final DepositDetail data = getDepositDetails();
+	private void submit( final DepositDetail data) {
 		final SubmitCheckDepositCall call = BankServiceCallFactory.createSubmitCheckDepositCall(data, this);
 		final Bundle bundle = new Bundle();
 		bundle.putInt(BankTrackingHelper.TRACKING_IMAGE_HEIGHT, frontImageHeight);
@@ -139,26 +146,23 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 		final Camera.Parameters parameters = camera.getParameters();
 		final int maxImageWidth = Integer.valueOf(DiscoverActivityManager.getString(R.string.bank_deposit_maximum_width));
 		final List<Size> sizes = parameters.getSupportedPictureSizes();
+		final Size smallCaptureSize = MCDUtils.getBestImageSize(sizes, maxImageWidth);
 
-		Size smallCaptureSize = null;
-
-		for(final Size size : sizes) {
-			if(size.width <= maxImageWidth && smallCaptureSize == null) {
-				smallCaptureSize = size;
-			}
-		}
-
-		frontImageHeight = smallCaptureSize.height;
-		frontImageWidth = smallCaptureSize.width;
-
-		if(frontImageHeight < HEIGHT_THRESH && frontImageWidth < WIDTH_THRESH){
-			isEqualOrAboveThresh = false;
-		}else{
+		if(smallCaptureSize.width >= maxImageWidth){ 
+			frontImageHeight = 
+					MCDUtils.getAdjustedImageHeight(smallCaptureSize.height, smallCaptureSize.width, maxImageWidth);
+			frontImageWidth = maxImageWidth; 
 			isEqualOrAboveThresh = true;
+		}else{
+			frontImageHeight = smallCaptureSize.height;
+			frontImageWidth = smallCaptureSize.width;
+			isEqualOrAboveThresh = false;
 		}
 
 		camera.release();
 	}
+
+
 
 	/**
 	 * Get the deposit details that will be sent to the server
@@ -195,7 +199,7 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 	 * @return a base64 encoded image that has been JPEG encoded and compressed.
 	 */
 	private String getCompressedImageFromPath(final String path) {
-		final StringBuilder base64Image = new StringBuilder();
+		String base64Image = StringUtility.EMPTY;
 
 		if(!Strings.isNullOrEmpty(path)) {
 			final ByteArrayOutputStream imageBitStream = new ByteArrayOutputStream();
@@ -211,24 +215,25 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 			if(decodedImage != null) {
 				compression = isEqualOrAboveThresh ? COMPRESSION : MAX_COMPRESSION;
-				decodedImage.compress(Bitmap.CompressFormat.JPEG, compression, imageBitStream);
+				decodedImage.compress(Bitmap.CompressFormat.JPEG, compression, imageBitStream);				
+				//Set the decoded image to null since its already in the bit stream.
+				//This helps save memory on lower end devices.
+				decodedImage.recycle();
+
 			} else{
 				Log.e(TAG, "Error : Could not compress decoded image!");
 			}
 
+			base64Image = Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP);
+
 			//If this was the front check get the size of the image
 			if(path.equals(CheckDepositCaptureActivity.FRONT_PICTURE)){
-				frontImageCompressedSize = imageBitStream.toByteArray().length;
+				frontImageCompressedSize = base64Image.length();
 			}
 
-			base64Image.append(Base64.encodeToString(imageBitStream.toByteArray(), Base64.NO_WRAP));
-
-			if(Strings.isNullOrEmpty(base64Image.toString())) {
-				Log.e(TAG, "Error : Compressed Image is Empty!");
-			}
 		}
 
-		return base64Image.toString();
+		return base64Image;
 	}
 
 	//Start the animator task.
