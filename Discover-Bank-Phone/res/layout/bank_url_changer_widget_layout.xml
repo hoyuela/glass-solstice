@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:background="@color/abs__background_holo_light">
     
     <ListView 
         android:id="@+id/url_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"/>
-    
-    <Button 
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/manage_urls"
+        android:divider="@drawable/gray_line"/>
+
+    <Button
         android:id="@+id/manage_urls"
+        style="@style/common_call_to_action_theme_orange"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:text="Add New Url"
-        android:layout_weight="1"/>
-</LinearLayout>
+        android:textSize="@dimen/small_copy_min"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

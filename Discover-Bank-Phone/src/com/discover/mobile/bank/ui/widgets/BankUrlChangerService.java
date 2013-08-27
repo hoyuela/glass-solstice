@@ -3,7 +3,6 @@ package com.discover.mobile.bank.ui.widgets;
 import java.util.List;
 
 import android.annotation.SuppressLint;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
@@ -11,26 +10,51 @@ import android.widget.RemoteViewsService;
 
 import com.discover.mobile.bank.R;
 
+/**
+ * Service used to be associated with the remote views
+ * @author jthornton
+ *
+ */
 @SuppressLint("NewApi")
 public class BankUrlChangerService extends RemoteViewsService{
 
+	/**String used get the new url from the intent when the receiver gets the intent*/
+	public static final String NEW_BASE_URL = "NEW_BASE_URL";
+
+	/**String used to send the intent  to the url changer*/
+	public static final String CHANGE_URL_INTENT = "com.discover.mobile.CHANGE_URL_BROADCAST_INTENT";
+
+	/**
+	 * Called when the widget needs to populate itself
+	 * @param intent - intent used to launch the widget
+	 */
 	@Override
 	public RemoteViewsFactory onGetViewFactory(final Intent intent) {
-		return new BankUrlChangerViewsFactory(getApplicationContext(), BankUrlChangerPreferences.getSites(), intent);
+		return new BankUrlChangerViewsFactory(getApplicationContext(), BankUrlChangerPreferences.getSites());
 	}
 
+	/**
+	 * Factory used to create the remote views that will display in the home screen widget
+	 * 
+	 * @author jthornton
+	 *
+	 */
 	private class BankUrlChangerViewsFactory implements RemoteViewsFactory{
 
+		/**List of sites that will populate the widget*/
 		private final List<BankUrlSite> sites;
 
+		/**Context used to display the data*/
 		private final Context context;
 
-		private final int appWidgetId;
-
-		public BankUrlChangerViewsFactory(final Context context, final List<BankUrlSite> sites, final Intent intent){
+		/**
+		 * Constrtor for the class
+		 * @param context - context used to create the widget
+		 * @param sites - list of sites that will be displayed
+		 */
+		public BankUrlChangerViewsFactory(final Context context, final List<BankUrlSite> sites){
 			this.sites = sites;
 			this.context = context;
-			appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 		}
 
 		@Override
@@ -51,9 +75,6 @@ public class BankUrlChangerService extends RemoteViewsService{
 
 		@Override
 		public RemoteViews getViewAt(final int position) {
-
-			final String NEW_BASE_URL = "NEW_BASE_URL";
-			final String CHANGE_URL_INTENT = "com.discover.mobile.CHANGE_URL_BROADCAST_INTENT";
 			final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bank_url_changer_list_item);
 			final BankUrlSite site = sites.get(position);
 			if(null != site){

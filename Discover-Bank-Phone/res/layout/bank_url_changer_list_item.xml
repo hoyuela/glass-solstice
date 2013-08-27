@@ -2,6 +2,6 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/url_name"
     android:layout_width="fill_parent"
-    android:layout_height="25dp"
-    android:background="@drawable/list_item_default_background"
+    android:layout_height="50dp"
+    android:background="@drawable/common_table_list_item_gray"
     android:textColor="@color/title" />

@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.discover.mobile.bank.login.LoginActivity;
 import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.ui.widgets.BankUrlChangerService;
 import com.google.common.base.Strings;
 
 /**
@@ -18,6 +19,8 @@ import com.google.common.base.Strings;
  *
  */
 public final class BankUrlChanger extends BroadcastReceiver {
+
+	/**Tag used for debugging*/
 	private static final String TAG = BankUrlChanger.class.getSimpleName();
 
 	@Override
@@ -25,12 +28,11 @@ public final class BankUrlChanger extends BroadcastReceiver {
 
 		//Check to see if the app has been configured for url changing. 
 		if ("true".equalsIgnoreCase(arg0.getString(R.string.bank_url_changer_enabled))) {
-			/**Key used to read new base url from Bundle passed via INTENT*/
-			final String NEW_BASE_URL = "NEW_BASE_URL";
 
 			/**Read new base url from bundle*/
-			final String newUrl = arg1.getStringExtra(NEW_BASE_URL);
+			final String newUrl = arg1.getStringExtra(BankUrlChangerService.NEW_BASE_URL);
 
+			/**Show that the url changed*/
 			Toast.makeText(arg0, newUrl, Toast.LENGTH_SHORT).show();
 
 			if( !Strings.isNullOrEmpty(newUrl) ) {
