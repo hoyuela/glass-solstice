@@ -24,6 +24,7 @@ import com.discover.mobile.analytics.BankTrackingHelper;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
+import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.deposit.DepositDetail;
 import com.discover.mobile.bank.services.deposit.SubmitCheckDepositCall;
@@ -332,6 +333,12 @@ public class DepositSubmissionActivity extends BaseActivity implements Completio
 
 		final Bundle extras = getIntent().getExtras();
 		final Account account = (Account)extras.getSerializable(BankExtraKeys.DATA_LIST_ITEM);
+
+		//Clear out the user accounts limits in case it doesn't finish on time
+		final Account userAccount = BankUser.instance().getAccount(account.id);
+		if(null != userAccount){
+			userAccount.limits = null;
+		}
 		BankServiceCallFactory.createGetAccountLimits(account, true).submit();
 	}
 
