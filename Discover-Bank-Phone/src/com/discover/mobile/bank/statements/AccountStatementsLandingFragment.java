@@ -3,15 +3,21 @@ package com.discover.mobile.bank.statements;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.internal.widget.IcsAdapterView;
 import com.actionbarsherlock.internal.widget.IcsAdapterView.OnItemSelectedListener;
@@ -19,11 +25,14 @@ import com.actionbarsherlock.internal.widget.IcsSpinner;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.paybills.SimpleChooseListItem;
+import com.discover.mobile.bank.services.BankUrlManager;
+import com.discover.mobile.bank.services.auth.BankSchema;
 import com.discover.mobile.bank.ui.fragments.BankOneButtonFragment;
 import com.discover.mobile.bank.ui.table.ViewPagerListItem;
 import com.discover.mobile.common.BaseFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.DiscoverModalManager;
+import com.discover.mobile.common.net.SessionTokenManager;
 import com.discover.mobile.common.utils.StringUtility;
 import com.google.common.primitives.Ints;
 
@@ -49,6 +58,11 @@ public class AccountStatementsLandingFragment extends BaseFragment {
 	public static final String ACCOUNT_ID_KEY = "ACCOUNT_ID";
 	/**static string for the options list*/
 	private static final String PAST_SIX_MONTHS = "Past 6 Months";
+	/**String to use for title of download in Notification drawer*/
+	private static final String NOTIFICATION_TITLE = "Discover Bank Account Statement";
+	/**Prompt to show user when statement has started to download*/
+	private static final String TOAST_TEXT = "Download has started.";
+	
 	
 	@Override
 	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
@@ -91,6 +105,7 @@ public class AccountStatementsLandingFragment extends BaseFragment {
 		super.onSaveInstanceState(outState);
 		IcsSpinner dropDown = (IcsSpinner) getView().findViewById(R.id.date_range_spinner);
 		int index = dropDown.getSelectedItemPosition();
+		Log.d("julian", "currently selected "+index);
 		outState.putInt(SPINNER_INDEX, index);
 	}
 	
@@ -142,6 +157,7 @@ public class AccountStatementsLandingFragment extends BaseFragment {
 																s,
 																s.name
 																	);
+			sView.setOnClickListener(simpleChooseListener);
 			//need to set onclick listener to download the statement
 			contentLayout.addView(sView);
 		}
@@ -178,7 +194,39 @@ public class AccountStatementsLandingFragment extends BaseFragment {
 		
 	};
 	
-
+	/**
+	 * Anonymous click listener for the statements list
+	 */
+	private final OnClickListener simpleChooseListener = new OnClickListener(){
+		@Override
+		public void onClick(final View v) {
+			//retrieve the staement so that we can pull in the url for download
+			Statement s = (Statement) ((SimpleChooseListItem) v).getItem();
+			String pdfUrl = s.getPdfUrl();
+			if (null != pdfUrl) {
+				downloadPdf(pdfUrl);
+			}
+		}
+	};
+	
+	private void downloadPdf (String pdfUrl) {
+		StringBuilder strBuild = new StringBuilder();
+		String baseUrl = BankUrlManager.getBaseUrl();
+		strBuild.append((!baseUrl.endsWith(StringUtility.SLASH)) ? baseUrl : baseUrl.substring(0, baseUrl.length() - 1));
+		strBuild.append(pdfUrl);
+		String downloadUrl = strBuild.toString();
+		DownloadManager dm = (DownloadManager) DiscoverActivityManager.getActiveActivity().getSystemService(Activity.DOWNLOAD_SERVICE);
+		Request req = new Request(Uri.parse(downloadUrl));
+		req.addRequestHeader(BankSchema.BANKBASIC, SessionTokenManager.getToken());
+		req.setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+		req.setTitle(NOTIFICATION_TITLE);
+		dm.enqueue(req);
+		//show toast
+		Toast.makeText(DiscoverActivityManager.getActiveActivity(),
+						TOAST_TEXT,
+						Toast.LENGTH_LONG).show();
+	}
+	
 	/**
 	 * filters the statement list to show only the past six months of statements
 	 * and adds those statements to the list to display to the user
