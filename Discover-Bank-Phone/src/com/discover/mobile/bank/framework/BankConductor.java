@@ -1178,6 +1178,10 @@ public final class BankConductor  extends Conductor {
 
 		/**Verify that the user is logged in and the BankNavigationRootActivity is the active activity*/
 		if( activity instanceof BankNavigationRootActivity ) {
+			final Fragment fragment = ((BankNavigationRootActivity) activity).getCurrentContentFragment();
+			if(null != fragment.getArguments()){
+				fragment.getArguments().putBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, true);
+			}
 			final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 			final Bundle currentArgs = navActivity.getCurrentContentFragment().getArguments();
 			final Fragment nextVisibleFragment = new BankTransferConfirmationFragment();
@@ -1637,7 +1641,7 @@ public final class BankConductor  extends Conductor {
 
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
-//				activity.finish();
+				//				activity.finish();
 			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {

@@ -22,6 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.error.BankErrorHandlerDelegate;
 import com.discover.mobile.bank.framework.BankUser;
@@ -54,7 +55,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	private static final int AMOUNT = 3;
 	private static final int MAX_TRANSFERS_ALLOWED = 3;
 
-	
+
 	/**Selected Radio Index*/
 	private int index;
 
@@ -93,7 +94,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 
 	/** Fragment used to select a payment date*/
 	private CalendarFragment calendarFragment;
-	
+
 	/**There is a short delay between when showCalendar() is called and when the calendar actually appears on screen. This boolean is used to ensure
 	 * that the user does not inadvertently open multiple calendars by tapping on "Date" multiple times during this delay.*/
 	private boolean calendarIsOpening = false;
@@ -121,15 +122,15 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		view.findViewById(R.id.dollar_layout).setOnClickListener(getLayoutListener(AMOUNT));
 
 		dollarAmount.enableBankAmountTextWatcher(true);
-		
+
 		transactionAmount.setMaxInputLength(MAX_TRANSFERS_ALLOWED);
 		earliestPaymentDate = Calendar.getInstance();
 		earliestPaymentDate.add(Calendar.DAY_OF_MONTH, 1);
 		chosenPaymentDate = Calendar.getInstance();
-		
+
 		//calendar should display highlighting 2 business days ahead by default
 		CalendarFragment.addBusinessDays(chosenPaymentDate, 2, BankUser.instance().getHolidays());
-		
+
 		dollarAmount.setClickable(false);
 		addView(view);
 	}
@@ -183,7 +184,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			new Handler().postDelayed(enableCellRunnable(bundle), 1000);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return a runnable that enables the proper radio button cell when resuming state. This runnable gets postDelayed because
@@ -191,7 +192,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private Runnable enableCellRunnable(final Bundle bundle) {
 		return new Runnable() {
-			
+
 			@Override
 			public void run() {
 				enableCell(index, bundle);
@@ -206,21 +207,21 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	public String getDurationType(){
 		String duration;
 		switch(index){
-			case CANCELLED:
-				duration = TransferDetail.UNTIL_CANCELLED;
-				break;
-			case DATE:
-				duration = TransferDetail.UNTIL_DATE;
-				break;
-			case TRANSACTION:
-				duration = TransferDetail.UNTIL_COUNT;
-				break;
-			case AMOUNT:
-				duration = TransferDetail.UNTIL_AMOUNT;
-				break;
-			default:
-				duration = TransferDetail.UNTIL_CANCELLED;
-				break;
+		case CANCELLED:
+			duration = TransferDetail.UNTIL_CANCELLED;
+			break;
+		case DATE:
+			duration = TransferDetail.UNTIL_DATE;
+			break;
+		case TRANSACTION:
+			duration = TransferDetail.UNTIL_COUNT;
+			break;
+		case AMOUNT:
+			duration = TransferDetail.UNTIL_AMOUNT;
+			break;
+		default:
+			duration = TransferDetail.UNTIL_CANCELLED;
+			break;
 		}
 		return duration;
 	}
@@ -232,23 +233,23 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	public String getDurationValue(){
 		final String value;
 		switch(index){
-			case DATE:
-				value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString(),false);
-				break;
-			case TRANSACTION:
-				value = transactionAmount.getText().toString();
-				break;
-			case AMOUNT:
-				value = dollarAmount.getText().toString().
-												replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
-				break;
-			default:
-				value = StringUtility.EMPTY;
-				break;
+		case DATE:
+			value = BankStringFormatter.convertToISO8601Date(dateValue.getText().toString(),false);
+			break;
+		case TRANSACTION:
+			value = transactionAmount.getText().toString();
+			break;
+		case AMOUNT:
+			value = dollarAmount.getText().toString().
+			replaceAll(StringUtility.NON_NUMBER_CHARACTERS, StringUtility.EMPTY);
+			break;
+		default:
+			value = StringUtility.EMPTY;
+			break;
 		}
 		return value;
 	}
-	
+
 	private void enableCell(final int selection) {
 		enableCell(selection, null);
 	}
@@ -258,7 +259,8 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 * @param selected - radio button selected
 	 */
 	private void enableCell(final int selected, final Bundle bundle) {
-		switch(selected){
+		if(bundle == null || !bundle.getBoolean(BankExtraKeys.SHOULD_NAVIGATE_BACK, false)){
+			switch(selected){
 			case CANCELLED:
 				enableCancelled();
 				disableDate();
@@ -291,10 +293,10 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				break;
 			default:
 				break;
+			}
 		}
-
 	}
-	
+
 	/**
 	 * Determines if a new calendar should be created if there are no existing calendars that can
 	 * be used in the Fragment manager.
@@ -304,12 +306,12 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	 */
 	private boolean shouldCreateNewCalendar(final Bundle bundle) {
 		boolean shouldCreate = true;
-		
+
 		if(bundle != null) {
 			final Fragment fragment = ((NavigationRootActivity) DiscoverActivityManager.getActiveActivity())
 					.getSupportFragmentManager()
 					.findFragmentByTag(CalendarFragment.TAG);
-			
+
 			if(fragment instanceof CalendarFragment) {
 				calendarFragment = (CalendarFragment)fragment;
 				calendarFragment.setCalendarListener(createCalendarListener());
@@ -340,7 +342,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		clearErrorLabel(R.id.date_error_label);
 		((TextView)view.findViewById(R.id.date_value)).setText(getResources().getString(R.string.transfer_selected_date));
 	}
-	
+
 	private void clearErrorLabel(final int labelResId) {
 		final TextView errorLabel = (TextView)findViewById(labelResId);
 		if(errorLabel != null) {
@@ -350,7 +352,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 			Log.e(BankFrequencyDetailView.class.getSimpleName(), "Could not hide error label, Resource ID not found");
 		}
 	}
-	
+
 	/**
 	 * Disable the transaction cell
 	 */
@@ -427,18 +429,10 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	}
 
 	/**
-	 * Show the keyboard
-	 */
-	private void showKeyboard(){
-		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-	}
-
-	/**
 	 * Hide the keyboard
 	 */
 	private void hideKeyboard(){
-		final InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+		final InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(view.getWindowToken(),0); 
 	}
 
@@ -451,30 +445,30 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 
 		/** The calendar will appear with the month and year in this Calendar instance */
 		Calendar displayedDate = Calendar.getInstance();
-		
-		
+
+
 		/** Convert stored in text field into chosen date, this will avoid issue on rotation */
 		try {
 			final String[] date = dateValue.getText().toString().split("[\\/]+");
 
 			/** The Calendar will appear with the date specified by this calendar instance selected */
 			chosenPaymentDate.set(Integer.parseInt(date[2]), Integer.parseInt(date[0]) - 1, Integer.parseInt(date[1]));
-			
+
 			/** Check if restoring calendar selection date, -1 means it is initializing */
 			displayedDate = chosenPaymentDate;
 
 		} catch (final Exception ex) {
 			chosenPaymentDate.set(earliestPaymentDate.get(Calendar.YEAR), chosenPaymentDate.get(Calendar.MONTH),
 					chosenPaymentDate.get(Calendar.DAY_OF_MONTH));
-			
+
 			displayedDate = chosenPaymentDate;
 		}
-		
+
 		/** Show calendar as a dialog */
 		calendarFragment.show(((NavigationRootActivity) DiscoverActivityManager.getActiveActivity()).getSupportFragmentManager(), res
 				.getString(R.string.select_transfer_date), displayedDate, chosenPaymentDate, earliestPaymentDate, BankUser.instance()
 				.getHolidays(), createCalendarListener());
-		
+
 	}
 
 	/**
@@ -484,7 +478,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		// Setup listener
 		final CalendarListener calendarListener = new CalendarListener(calendarFragment) {
 			private static final long serialVersionUID = -5277452816704679940L;
-			
+
 			@Override
 			public void onSelectDate(final Date date, final View view) {
 				super.onSelectDate(date, view);
@@ -492,7 +486,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				final Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
 				setChosenPaymentDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE));
-				
+
 				//Delay closing of calendar to be able to see the selection change
 				new Handler().postDelayed(getCalendarDissmissRunnable(), halfSecondDelay);
 				calendarIsOpening = false;
@@ -507,14 +501,14 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 		};
 		return calendarListener;
 	}
-	
+
 	/**
 	 * 
 	 * @return a runnable, which when, is run, dismisses the calendar fragment
 	 */
 	private Runnable getCalendarDissmissRunnable() {
 		return new Runnable() {
-			
+
 			@Override
 			public void run() {
 				if(calendarFragment != null){
@@ -550,23 +544,23 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 	@Override
 	public boolean handleError(final BankErrorResponse msgErrResponse) {
 		boolean isHandled = false;
-		
+
 		for(final BankError error : msgErrResponse.errors) {
 			final String errorFieldName = error.name;
-			
+
 			if(TransferDetail.DURATION_VALUE.equalsIgnoreCase(errorFieldName)){
 				TextView errorLabel = null;
 				isHandled = true;
 				final String durationType = getDurationType();
-				
+
 				if(TransferDetail.UNTIL_AMOUNT.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.dollar_error_label);
+					errorLabel = (TextView)findViewById(R.id.dollar_error_label);
 					errorLabel.setText(error.message);
 				} else if (TransferDetail.UNTIL_DATE.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.date_error_label);
+					errorLabel = (TextView)findViewById(R.id.date_error_label);
 					errorLabel.setText(error.message);
 				} else if (TransferDetail.UNTIL_COUNT.equalsIgnoreCase(durationType)) {
-					errorLabel = (TextView)this.findViewById(R.id.transactions_error_label);
+					errorLabel = (TextView)findViewById(R.id.transactions_error_label);
 					errorLabel.setText(error.message);
 				} else{
 					isHandled = false;
@@ -574,7 +568,7 @@ public class BankFrequencyDetailView extends RelativeLayout implements BankError
 				if(isHandled) {
 					errorLabel.setVisibility(View.VISIBLE);
 				}
-				
+
 			}
 		}
 		return isHandled;
