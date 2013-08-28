@@ -14,14 +14,16 @@ public final class StringUtility {
 	public static final String NEW_LINE = "\n";
 	public static final String NON_NUMBER_CHARACTERS = "[^0-9]";
 	public static final String DASH = "-";
+	public static final String UNDERSCORE = "_";
 	public static final String HASH = "#";
 	public static final String QUESTION_MARK = "?";
 	public static final String SLASH = "/";
 	public static final String PERIOD = ".";
 	public static final String COLON = ":";
-	
+	public static final String PLUS = "+";
+
 	private StringUtility() {
 		throw new AssertionError();
 	}
-	
+
 }
