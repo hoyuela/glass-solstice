@@ -1628,7 +1628,6 @@ public final class BankConductor  extends Conductor {
 
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
-				//				activity.finish();
 			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
