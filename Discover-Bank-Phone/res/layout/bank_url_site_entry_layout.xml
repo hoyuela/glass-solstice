@@ -2,39 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
-    
+    android:orientation="vertical" 
+    android:background="@drawable/list_item_default_background">
+
+    <ImageView
+        android:id="@+id/delete_box"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/black_gradient_square"
+        android:layout_marginRight="@dimen/forms_inner_padding"/>
+
     <TextView
-         android:id="@+id/title"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:paddingLeft="20dp"
-         android:paddingRight="10dp"
-         android:paddingTop="10dp"
-         android:text="Title"
-         android:textSize="30dp" 
-         style="bold">
+        android:id="@+id/title"
+        style="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:text="Title"
+        android:textSize="30dp" >
     </TextView>
 
-   	<TextView
-         android:id="@+id/link"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_below="@+id/title"
-         android:paddingLeft="20dp"
-         android:paddingRight="10dp"
-         android:paddingBottom="10dp"
-         android:text="http://www.google.com"
-         android:textSize="20dp" >
+    <TextView
+        android:id="@+id/link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:text="http://www.google.com"
+        android:textSize="20dp" >
     </TextView>
-    
-   	<View
-        android:id="@+id/check"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginRight="20dp"
-       	android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/checkmark_green"
-        android:visibility="gone"/>
+
 </RelativeLayout>
