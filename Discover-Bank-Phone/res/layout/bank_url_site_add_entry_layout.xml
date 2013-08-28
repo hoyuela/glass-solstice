@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/titleLbl"
+        style="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingRight="10dp"
+         android:textColor="@android:color/white"
+        android:text="Title:"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/titleAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/titleLbl"
+        android:paddingLeft="10dp"
+        android:textSize="20dp"
+        android:text="My Site" />
+
+    <TextView
+        android:id="@+id/urlLbl"
+        style="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/titleLbl"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:paddingRight="10dp"
+        android:textColor="@android:color/white"
+        android:text="URL:"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/urlAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/urlLbl"
+        android:layout_marginRight="20dp"
+        android:layout_toRightOf="@+id/urlLbl"
+        android:paddingLeft="10dp"
+        android:textSize="20dp" 
+        android:text="http://" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/urlAdd"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:text="Save" />
+    </LinearLayout>
+
+</RelativeLayout>
