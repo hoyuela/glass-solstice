@@ -457,6 +457,13 @@ public final class BankUrlManager  {
 	}
 
 	/**
+	 * @return the getAtmAddressToLocationSignitureUrl
+	 */
+	public static String getAtmAddressToLocationSignitureUrl() {
+		return DiscoverActivityManager.getString(R.string.atm_address_to_location_signiture_url);
+	}
+
+	/**
 	 * @return the atmAddressToLocationBaseUrl
 	 */
 	public static String getAtmAddressToLocationBaseUrl() {
