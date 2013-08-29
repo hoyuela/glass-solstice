@@ -14,10 +14,13 @@ import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.FastcheckUtil;
 import com.discover.mobile.card.common.utils.Utils;
+
+import com.discover.mobile.card.auth.strong.StrongAuthEnterInfoActivity;
 import com.discover.mobile.card.error.CardErrorHandler;
 import com.discover.mobile.card.login.register.ForgotCredentialsActivity;
 import com.discover.mobile.card.login.register.RegistrationAccountInformationActivity;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
+import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
 import com.discover.mobile.card.services.CardUrlManager;
 import com.discover.mobile.card.services.auth.AccountDetails;
 import com.discover.mobile.common.AccountType;
@@ -166,6 +169,15 @@ public class CardFacadeImpl implements CardFacade {
         Utils.createProvideFeedbackDialog(callingActivity, "cardLogin-pg");
     }
   //Defect id 97126
+    
+    //16/Aug/2013---Observation Fixed
+    public void navToPrivacyTerms(Context context){
+        
+        Intent privacyTerms = new Intent(context,
+                PrivacyTermsLanding.class);
+        context.startActivity(privacyTerms);
+    }
+    
     
     @Override
 	public boolean fastcheckTokenExists(final NavigationRootActivity callingActivity) {

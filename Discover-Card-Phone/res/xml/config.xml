@@ -35,7 +35,6 @@
     
     <preference name="useBrowserHistory" value="true" />
     <preference name="exit-on-suspend" value="false" />
-    <preference name="loadUrlTimeoutValue" value="60000" />
     
 <plugins>
     <plugin name="App" value="org.apache.cordova.App"/>

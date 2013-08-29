@@ -4,6 +4,7 @@
     <string name="account_info_dob_text">Primary Cardmember\'s Birthday</string>
     <string name="card_expiration_date_text">Card Expiration Date</string>
 	<string name="account_info_ssn_info_text">Primary Cardmember\'s Social Security Number (Last 4 Digits)</string>
+	<string name="account_unlock_ssn_info_text">Primary Cardmember\'s Social Security Number</string>
 	<string name="account_info_bad_input_error_text">
 	    You have entered invalid information.
 	     Carefully review your information and please try again.
@@ -36,6 +37,7 @@
 	<string name="account_info_two_passwords_dont_match_text">Passwords don\'t match</string>
 	<string name="account_info_two_ids_must_match_text">User id\'s dont match</string>
 	<string name="account_info_two_new_pass_confirm_text">Confirm New Password</string>
+	<string name="account_unlock_two_new_pass_confirm_text">Confirm Password</string>
 	<string name="strength_text">Strength</string>
 
 	<!-- Choose Activity Period Strings -->

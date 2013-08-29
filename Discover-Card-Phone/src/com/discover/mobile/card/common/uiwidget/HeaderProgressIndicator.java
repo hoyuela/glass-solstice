@@ -2,21 +2,18 @@ package com.discover.mobile.card.common.uiwidget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 
-
 /**
- * Custom view for displaying the header navigation. This is used to display to the user what
- * position they are at in the process.
+ * Custom view for displaying the header navigation. This is used to display to
+ * the user what position they are at in the process.
  * 
  * @author ajleeds
- *
+ * 
  */
 public abstract class HeaderProgressIndicator extends RelativeLayout {
 
@@ -28,8 +25,11 @@ public abstract class HeaderProgressIndicator extends RelativeLayout {
 	protected ImageView indicator1;
 	protected ImageView indicator2;
 	protected ImageView indicator3;
-
-
+	
+	protected abstract void inflateHeader();
+	public abstract void setPosition(int position);
+	public abstract void setTitle(int str1, int str2, int str3);
+	
 	public HeaderProgressIndicator(final Context context) {
 		super(context);
 	}
@@ -51,8 +51,4 @@ public abstract class HeaderProgressIndicator extends RelativeLayout {
 		setTitle(R.string.enter_info, R.string.create_password,R.string.confirm);
 		setPosition(position);
 	}
-	
-	protected abstract void inflateHeader();
-	public abstract void setPosition(int position);
-	public abstract void setTitle(int str1, int str2, int str3);
 }

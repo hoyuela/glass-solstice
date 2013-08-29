@@ -3,7 +3,6 @@ package com.discover.mobile.card.passcode.enable;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.request.CreateBindingRequest;
@@ -30,13 +30,11 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "onCreate");
 	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
-		Log.v(TAG, "onCreateView");
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		setHeaderText(R.string.passcode_enable_step2_header);
 		return view;
@@ -85,7 +83,7 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		@Override
 		public void OnError(Object data) {
 			CardErrorBean cardErrorBean = (CardErrorBean) data;
-			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+			Utils.log(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
 
 			if (cardErrorBean.getErrorCode().contains("4002105")) {
 				//fringe case when passcode is removed prior to user finising enable flow
@@ -112,7 +110,7 @@ public class PasscodeEnableStep2Fragment extends PasscodeBaseFragment {
 		@Override
 		public void OnError(Object data) {
 			CardErrorBean cardErrorBean = (CardErrorBean) data;
-			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+			Utils.log(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
 
 			if (cardErrorBean.getErrorCode().contains("4002105")) {
 				//fringe case when passcode is removed prior to user finising enable flow

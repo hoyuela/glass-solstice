@@ -95,7 +95,6 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_id_title_label"
-                    style="@style/confirmation_info_header_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_summary_label"
@@ -108,11 +107,9 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_id_label"
-                    style="@style/confirmation_info_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_id_title_label"
-                    android:layout_marginTop="14dp"
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_id_placeholder_text"
                     android:textColor="#293033"
@@ -121,7 +118,6 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_email_title_label"
-                    style="@style/confirmation_info_header_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_id_label"
@@ -134,11 +130,9 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_email_label"
-                    style="@style/confirmation_info_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_email_title_label"
-                    android:layout_marginTop="14dp"
                     android:includeFontPadding="false"
                     android:maxLines="@integer/MAX_INPUT_LINES"
                     android:text="@string/email_placeholder"
@@ -148,7 +142,6 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_account_title_label"
-                    style="@style/confirmation_info_header_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_email_label"
@@ -161,11 +154,9 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_account_label"
-                    style="@style/confirmation_info_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_account_title_label"
-                    android:layout_marginTop="14dp"
                     android:layout_toRightOf="@+id/account_info_confirm_account_stars_label"
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_account_text"
@@ -175,15 +166,16 @@
 
                 <TextView
                     android:id="@+id/account_info_confirm_account_stars_label"
-                    style="@style/confirmation_info_value_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/account_info_confirm_account_title_label"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="14dp"
                     android:includeFontPadding="false"
                     android:text="@string/account_info_confirm_account_stars_text"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" 
+                    android:textColor="#293033"
+                    android:textSize="18dp"
+                    android:textStyle="normal"
+                    />
 
                 <TextView
                     android:id="@+id/account_info_confirm_note_label"

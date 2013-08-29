@@ -12,7 +12,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
@@ -47,11 +47,11 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
-		Log.v(TAG, "onCreate");
+		Utils.log(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		pUtils = new PasscodeUtils(this.getActivity().getApplicationContext());
 		if (!this.isStopping()) {
-			Log.v(TAG, "Not stopping activity, fire tag for: " + getPageName());
+			Utils.log(TAG, "Not stopping activity, fire tag for: " + getPageName());
 			TrackingHelper.trackPageView(getPageName());
 		}
 	}
@@ -61,7 +61,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		Log.v(TAG, "onConfigurationChanged");
+		Utils.log(TAG, "onConfigurationChanged");
 		
 		int passcodeGuidelinesVisibility = passcodeGuidelinesTV.getVisibility();
 
@@ -76,16 +76,21 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		rootView.addView(newView);
 	}
 	
+	public void onDestroy() {
+		super.onDestroy();
+		Utils.log(TAG, "onDestroy");
+	}
+	
 	public void onStop() {
 		super.onStop();
-		Log.v(TAG, "Stop");
+		Utils.log(TAG, "onStop");
 		this.isStopping = true;
 	}
 	
 	public void onResume() {
 		super.onResume();
 		this.isStopping = false;
-		Log.v(TAG, "onResume");
+		Utils.log(TAG, "onResume");
 		// this also helps when back button navigates to resume previous activity
 		clearAllFields();
 		forceSoftKeyboardShown(0);
@@ -96,7 +101,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
-		Log.v(TAG, "onCreateView");
+		Utils.log(TAG, "onCreateView");
 		final View view = inflater.inflate(R.layout.passcode_base_activity,
 				null);
 		setupUI(view);
@@ -124,35 +129,24 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		}
 
 		//Stops the problem of double submit on removing fragment from back stack
-		if (!isStopping) {
-			setupAllFields();
-			clearAllFields();
-		}
+		//call clearfields first so it doesn't trigger submit
+		setupAllFields();
+		clearAllFields();
 	}
 	
 	@Override
 	public int getActionBarTitle() {
-	    FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
-        return barMenuTitleUtil.getActionBarTitle();
+        return R.string.sub_section_title_passcode;
 	}
 
 	@Override
 	public int getGroupMenuLocation() {
-	    Utils.log(TAG, "inside getGroupMenuLocation ");
-        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
-        return barMenuTitleUtil
-                .getGroupMenuLocation(R.string.sub_section_title_passcode);
+		return CardMenuItemLocationIndex.PROFILE_AND_SETTINGS_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-	    Utils.log(TAG, "inside getSectionMenuLocation");
-        FragmentActionBarMenuTitleUtil barMenuTitleUtil = new FragmentActionBarMenuTitleUtil(
-                ((CardNavigationRootActivity) getActivity()));
-        return barMenuTitleUtil
-                .getSectionMenuLocation(R.string.sub_section_title_passcode);
+		return CardMenuItemLocationIndex.PASSCODE_SECTION;
 	}
 	
 	public void printFragmentsInBackStack() {
@@ -161,7 +155,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		if (fragCount > 0) {
 			for (int i = 0; i < fragCount; i++) {
 				if (null != fragManager.getBackStackEntryAt(i).getName())
-					Log.v(TAG, fragManager
+					Utils.log(TAG, fragManager
 							.getBackStackEntryAt(i).getName());
 			}
 		}
@@ -205,7 +199,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 
 	protected void passcodeResponse(boolean isSuccess) {
-		Log.v(TAG, "PasscodeResponse");
+		Utils.log(TAG, "PasscodeResponse");
 		if (isSuccess) {
 			guiValidationSuccess();
 			new Handler().postDelayed(new Runnable() {
@@ -229,7 +223,7 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 	}
 	
 	private void setupSubmit() {
-		Log.v(TAG, "Setup Submit");
+		Utils.log(TAG, "Setup Submit");
 		int fieldInt = 3;
 		TextView localTextView = fieldTVs[fieldInt];
 		// for hardware keys
@@ -240,12 +234,12 @@ OnPasscodeSubmitEventListener, OnPasscodeSuccessEventListener {
 		localTextView.addTextChangedListener(new TextWatcher() {
 			// Logic to mask input and go to next item
 			public void afterTextChanged(Editable paramAnonymousEditable) {
-				Log.v(TAG, "Submit action fired");
-
-				// ensure this field passed validation (i.e. not comma or bad haracter)
+				// ensure this field passed validation (i.e. not comma or bad haracter or blank (due to clearing input))
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
+
+				Utils.log(TAG, "Submit action fired");
 				
 				fieldTVs[0].requestFocus();
 

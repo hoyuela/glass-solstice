@@ -8,7 +8,7 @@
     <!-- <a href=\'intent:#Intent;action=com.discover.mobile.card.FORGOT_PASSWORD;end\'>Forgot Password?</a> -->
     <string name="E_4011103">
         <![CDATA[
-        To protect your security, you have one login attempt remaining.
+        To protect your security, you have one attempt remaining.
         <br/><a href="com.discover.mobile.card.login.register.ForgotCredentialsActivity://navigate">Forgot Password?</a>
         ]]>
     </string>
@@ -29,7 +29,7 @@
 	</string>
     <string name="E_4031101_PERM">
         <![CDATA[
-        You have exceeded the maximum number of login attempts. Your Passcode has been disabled.
+        You have exceeded the maximum number of login attempts. 
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>
@@ -41,7 +41,7 @@
 	</string>
     <string name="E_4032112_PERM">
         <![CDATA[
-        You have exceeded the maximum number of login attempts.
+        You have exceeded the maximum number of login attempts. Your Passcode has been disabled.
         <br/><br/>Please contact Customer Service at 1-877-742-7822 for assistance.
 		]]>
 	</string>

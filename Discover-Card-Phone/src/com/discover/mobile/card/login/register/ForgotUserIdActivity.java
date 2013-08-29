@@ -1,5 +1,6 @@
 package com.discover.mobile.card.login.register;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.List;
@@ -16,15 +17,7 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.common.Globals;
-import com.discover.mobile.common.IntentExtraKey;
-import com.discover.mobile.common.analytics.AnalyticsPage;
-import com.discover.mobile.common.analytics.TrackingHelper;
-import com.discover.mobile.common.facade.FacadeFactory;
-
-import com.discover.mobile.card.auth.strong.StrongAuthUtil;
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
@@ -40,13 +33,18 @@ import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
 import com.discover.mobile.card.common.uiwidget.NonEmptyEditText;
 import com.discover.mobile.card.common.uiwidget.UsernameOrAccountNumberEditText;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrHandler;
-import com.discover.mobile.card.facade.CardLoginFacadeImpl;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.privacyterms.PrivacyTermsLanding;
+import com.discover.mobile.card.services.auth.forgot.ForgotUserId;
 import com.discover.mobile.card.services.auth.registration.RegistrationConfirmationDetails;
+import com.discover.mobile.common.Globals;
+import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.google.common.base.Strings;
 
 /**
  * This class handles the forgot user ID flow. If a user successfully completes
@@ -103,6 +101,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
     private ScrollView mainScrollView;
 
     protected final Activity currentContext = this;
+	/*    13.5  Changes */
+    private  String[] data = null ;
+	/*    13.5  Changes */
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -314,7 +315,9 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         {
 
             // new ForgotUserIdPassword().execute();
-            final String[] data = new String[2];
+        	/*    13.5  Changes */
+            data = new String[2];
+        	/*    13.5  Changes */
             data[0] = cardNumField.getText().toString().replace(" ", "");
             data[1] = passField.getText().toString();
 
@@ -344,25 +347,22 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
      *            username and password passed as a string array.
      */
     private void callForgotUserID(final String[] data) {
-        final WSRequest request = new WSRequest();
-        final String authString = NetworkUtility.getAuthorizationString(
-                data[0], data[1]);
-
-        // Setting the headers available for the service
-        final HashMap<String, String> headers = request.getHeaderValues();
-        headers.put("Authorization", authString);
-        headers.put("X-Override-UID", "true");
-
-        final String url = NetworkUtility.getWebServiceUrl(this,
-                R.string.forgotUserID_url);
-
-        request.setUrl(url);
-        request.setHeaderValues(headers);
-
-        final WSAsyncCallTask serviceCall = new WSAsyncCallTask(this,
-                new RegistrationConfirmationDetails(), "Discover",
-                "Loading...", this);
-        serviceCall.execute(request);
+    	/*    13.5  Changes */
+        ForgotUserId forgotUserId = new ForgotUserId(ForgotUserIdActivity.this);
+        try {
+            forgotUserId.sendRequest(data);
+        } catch (JsonGenerationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        /*    13.5  Changes */
     }
 
     private void displayOnMainErrorLabel(final String text) {
@@ -385,7 +385,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
             @Override
             public void onSuccess(final Object data) {
-                // TODO Auto-generated method stub
+
                 Globals.setLoggedIn(true);
                 final CardShareDataStore cardShareDataStoreObj = CardShareDataStore
                         .getInstance(ForgotUserIdActivity.this);
@@ -400,7 +400,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
             @Override
             public void OnError(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotUserIdActivity.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -464,7 +464,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
 
@@ -482,96 +482,18 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     }
 
+	/*    13.5  Changes */
     @Override
     public void onSuccess(final Object data) {
-        getDataFromAsync((RegistrationConfirmationDetails) data);
+        
     }
 
     @Override
     public void OnError(final Object data) {
 
-        // Changed for handling SSO USERs
-        final CardErrorBean cardErrBean = (CardErrorBean) data;
-        // 13.4 Defect 105407 Fix Start
-        CardShareDataStore cardShareDataStore = CardShareDataStore
-                .getInstance(ForgotUserIdActivity.this);
-        String cache = (String) cardShareDataStore
-                .getValueOfAppCache("WWW-Authenticate");
-        // 13.4 Defect 105407 Fix End
-        if (cardErrBean.getIsSSOUser()) {
-            cardErrBean.setFooterStatus("101");
-            final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                    this);
-            cardErrorResHandler.handleCardError(cardErrBean,
-                    new CardErrorCallbackListener() {
-
-                        @Override
-                        public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
-
-                        }
-
-                        @Override
-                        public void onButton1Pressed() {
-                            // Calling Registration Activity
-                            final Intent registrationActivity = new Intent(
-                                    ForgotUserIdActivity.this,
-                                    RegistrationAccountInformationActivity.class);
-                            startActivity(registrationActivity);
-                            finish();
-
-                        }
-                    });
-            // 13.4 Defect 105407 Fix Start
-        } else if (cardErrBean.getErrorCode().contains(
-                "" + HttpURLConnection.HTTP_UNAUTHORIZED)
-                && cache != null && cache.contains("createuser")) {
-
-            /*
-             * StrongAuthUtil strongAuthUtil = new
-             * StrongAuthUtil(ForgotUserIdActivity.this);
-             * strongAuthUtil.createUser(ForgotUserIdActivity.this);
-             */
-
-            CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                    ForgotUserIdActivity.this);
-            CardErrorUtil forgotcardErrorUtil = new CardErrorUtil(this);
-            CardErrorBean modifiedData = new CardErrorBean(
-                    forgotcardErrorUtil
-                            .getTitleforErrorCode("4031401_NOTENROLLED"),
-                    forgotcardErrorUtil
-                            .getMessageforErrorCode("4031401_NOTENROLLED"),
-                    "4031401_NOTENROLLED", false, "1");
-
-            cardErrorResHandler.handleCardError((CardErrorBean) modifiedData,
-                    new CardErrorCallbackListener() {
-
-                        @Override
-                        public void onButton2Pressed() {
-                            // TODO Auto-generated method stub
-
-                        }
-
-                        @Override
-                        public void onButton1Pressed() {
-                            // Go to Big Browser
-                            Utils.hideSpinner();
-                            Intent browserIntent = new Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.discovercard.com/cardmembersvcs/loginlogout/app/ac_main?ICMPGN=MBL_WEB_LP_FTR_FULL_SITE_TXT"));
-                            startActivity(browserIntent);
-                        }
-                    });
-            // 13.4 Defect 105407 Fix End
-        } else {
-
-            final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
-                    this);
-            cardErrorResHandler.handleCardError((CardErrorBean) data);
-        }
-
     }
 
+	/*    13.5  Changes */
     @Override
     public CardErrHandler getCardErrorHandler() {
         return CardErrorUIWrapper.getInstance();
@@ -579,7 +501,7 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(ForgotUserIdActivity.this,
                     REFERER);
@@ -594,5 +516,11 @@ public class ForgotUserIdActivity extends CardNotLoggedInCommonActivity
         }
         // Defect id 95853
     }
+    
+    /*    13.5  Changes */
+    public String[] getUserDetails(){
+        return data;
+    }
+    /*    13.5  Changes */
 
 }

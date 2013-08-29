@@ -379,7 +379,7 @@ border-radius: 0;
 }
 .amt-btn .chk{ float:left; margin-top:3px !Important;}
 .amt-btn a span.chk{ float:left; /*margin-top:3px !Important;*/}
-#pills.r5-buttons section{float:left !important;}
+#pills.r5-buttons section{ display:inline-block !important; /*float:left !important;*/}/*r13.3 global change 19/08/2013*/
 .chk{ width:0px; height:15px; margin:0 !Important;}
 .rd-page .margin-none{ margin:0 !important;}
 .rd-page .drkgry-wht-btn{
@@ -408,8 +408,8 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	color:#3d484d;
 }
 /*R13.3 Global Change end*/
-.detl-view-content{		/*R13.3 Global Change*/
-	padding:13px 18px 15px 22px; 
+.detl-view-content{ /*R13.3 Global Change*/
+	padding:13px 18px 15px 13px; 
 	border-bottom:1px solid #e8eced;
 }
 /*R13.3 Global Change start*/
@@ -483,6 +483,14 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	display: inline-block;
 }
 .rd-page .disabled-btn{ background:url(../images/disabled-bg.png) no-repeat; -webkit-background-size:127px 34px; /*width:80px; height:24px;*/ display:inline-block;}
+
+/* 13.3 Change 16-08-13 to fix button alignment */
+.rd-page section .disabled-btn {
+	width: 132px;
+	height: 36px;
+}
+/* 13.3 Change 16-08-13 */
+
 .rd-page .yellow-bg span, .rd-page .disabled-btn span{ /*padding:0px 8px 5px 0px;*/ float:left; font-weight:normal; text-shadow:none;}
 
 /*R13.3 Global Change start*/
@@ -533,8 +541,10 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 /*R13.3 global Change start*/
 #redeem-dtlview .stepperContainer p.counter {
 	height:35px;
-	-webkit-box-shadow: 1px 1px rgba(0,0,0,0.5);
-	padding-right:1px;   /* 13.3 Global change 08/08/2013 */  
+	padding-right:1px;   /* 13.3 Global change 08/08/2013 */
+	/*-webkit-box-shadow: 1px 1px rgba(0,0,0,0.5);*/ /*13.3 global change 19/08/2013*/
+     border-bottom:1px solid #a2a8ab;
+     border-right:1px solid #a2a8ab;  
 }
 
 #redeem-dtlview .dec.ui-corner-left,#redeem-dtlview .dec.ui-corner-right {
@@ -543,6 +553,7 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	border-right:0;
 	border-bottom:0;
 	-webkit-border-radius:0 !important;
+	width: 32% !important;/*13.3 global change 19/08/2013*/
 }
 #redeem-dtlview .dec.ui-corner-left .ui-btn-inner {
 	padding:8px 16px !important;
@@ -577,9 +588,13 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	border-right:1px solid #a2a8ab;
 	background: #eeeff0 !important;
 	margin: 0 0 0 6px;
+	width: 20% !important;/*13.3 global change 19/08/2013*/
 }
 .details-section-container .detl-view-content .r5-buttons section 
 .yellow-bg.blk-wht-btn, .yellow-bg.drkgry-wht-btn {border:0px}
+#redeem-dtlview .yellow-bg.drkgry-wht-btn {		/*border radius issue*/
+	-webkit-border-radius: 0;
+}
 /*R13.3 Global Change start*/
 .yellow-bg.blk-wht-btn {
 	background: url(../images/btn-bkground-pill-selected.png) no-repeat;
@@ -696,9 +711,9 @@ line-height: 17px;
 }
 .rd-page .ecert-info2 .orange-p{color:#ff6600;/*margin-bottom:5px;*/font-size:14px;padding-top:5px;}		/*R13.3 Global Change*/
 .rd-page .ecert-info3{border-bottom:1px solid #c0c8cc;/* margin-bottom:14px;*/padding:14px 22px 14px 35px;}		/*R13.3 Global Change*/
-#ecart-save-pin .ecert-info3 {	/*R13.3 Global Change*/
+#ecart-save-pin .ecert-info3 {	/*R13.3 Global Change*/		/*BUG_110149 21/08/2013*/
 	border-bottom:0;
-	padding:14px 23px 18px 23px;
+	padding:14px 10px 18px 16px;
 }
 .rd-page .partner-img{
 	width:71px;
@@ -782,10 +797,10 @@ line-height: 17px;
 /*redeem-ecart-savetophotes css starts here*/
 
 
-.rd-page .ecert-code-savetophotos{width:62%;margin-left:18px;margin-top:18px;float:left;border-right:1px solid #c0c8cc;}		/*R13.3 global Change*/
+.rd-page .ecert-code-savetophotos{width:68%;margin-left:10px;margin-top:18px;float:left;border-right:1px solid #c0c8cc;}		/*BUG_110149 21/08/2013*/	/*R13.3 global Change*/
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-lbl{margin:0;padding:0;color:#000;font-size:14px;font-weight:500;}
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-num{margin:0;padding:0;font-weight:900;font-size:1em;}
-.rd-page .ecert-amnt-cnfrm-savetophotos{float:left;margin-top:43px;width: 31%;}		/*R13.3 global Change*/
+.rd-page .ecert-amnt-cnfrm-savetophotos{float:left;margin-top:43px;width: 28%;}		/*BUG_110149 21/08/2013*/		/*R13.3 global Change*/
 .rd-page .ecert-amnt-cnfrm-savetophotos span{font-size:30px;color:#ff6600;font-weight:bold; text-align:center;display: block;}
 .rd-page .ui-content-internalpages .partner-img-info-savetophotos .partner-details-savetophotos{font-size:17px;font-weight:bold;font-family:Arial, Helvetica, sans-serif;color:#3d484d;}		/*R13.3 global Change*/
 /*R13.3 global Change start*/
@@ -807,8 +822,8 @@ line-height: 17px;
 	margin-top:0;
 	margin-bottom:0;
 }
-#ecart-save-pin .partner-img-info-savetophotos {
-	width:68%;
+#ecart-save-pin .partner-img-info-savetophotos {		/*BUG_110149 21/08/2013*/
+	width:66%;
 }
 #ecart-save-pin .ecert-info {
 	padding-bottom:0;
@@ -818,7 +833,7 @@ line-height: 17px;
 /*R13.3 global Change end*/
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-lbl-savetophotos:first-child{margin-top:0;}	/*R13.3 Global Change*/
 .rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-lbl-savetophotos{margin:0;margin-top: 16px;padding:0;color:#8a9499;font-size:14px;/*font-weight:500;*/}	/*R13.3 Global Change*/
-.rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-num-savetophotos{margin:0;padding:0;font-weight:normal;font-size:18px;color:#293033;margin-top: 3px;}		/*R13.3 Global Change*/
+.rd-page .ui-content-internalpages .ecert-code-savetophotos .ecert-code-num-savetophotos{margin:0;padding:0;font-weight:normal;font-size:18px;color:#293033;margin-top: 3px;word-break:break-word;}	/*BUG_110149 21/08/2013*/		/*R13.3 Global Change*/
 
 /*redeem-ecart-savetophotes css ends here*/
 
@@ -888,7 +903,10 @@ line-height: 17px;
 	font-weight:normal !important;
 	text-align: left !important;
 }
-#best-value .partner-list .giftName{ margin-left: 20%; padding-top:0px; color:#3d484d;}
+/*13.3 Global Changes - 16-Aug-2013 - Start */
+/*#best-value .partner-list .giftName{ margin-left: 20%; padding-top:0px; color:#3d484d;}*/
+#best-value .partner-list .giftName{ margin-left: 15%; padding-top:0px; color:#3d484d;}
+/*13.3 Global Changes - 16-Aug-2013 - End */
 /*13.3 global change*/
 /*#best-value .rd-page .partner-list{margin:20px 0px 0px 10px !important;}*/
 .rd-page .giftName-subttl{font-weight:normal; font-size:12px; color:#838383; display:block; /*padding:0 10px;*/ text-align: left !important; float: none;}
@@ -1554,6 +1572,11 @@ line-height: 20px;
 .disabledTxt{
 	float:left; padding:8px 0 0 0;color:#b2b2b2 !important;font-size:10px !important; font-weight:bold !important;line-height:12px; display:inline-block; width:100%; white-space:normal;word-wrap:break-word;
 }
+/* 13.3 global changes - 16-Aug-2013 - Start */
+#best-value .disabledTxt{
+	margin-left:15% !important;
+}
+/* 13.3 global changes - 16-Aug-2013 - End */
 #purchase-agreement-list{ padding:0;}
 #purchase-agreement-list li{ list-style:none; padding:10px 0 0 0; margin:0;}
 .lnk-make-black{
@@ -1659,7 +1682,7 @@ background: -webkit-linear-gradient(top, #fb4c0d 0%, #fa9333 41%, #fa9333 57%, #
 #cashbackBonusSignup_promotionList .ui-block-b .signin , #milesSignup1_promotionList  .ui-block-b .signin,
 #cashbackBonusSignup_promotionList .ui-block-b .ui-btn-up-c, #milesSignup1_promotionList .ui-block-b .ui-btn-up-c
  {margin-top:43px;}
-#cashbackBonusSignup_promotionList .ui-block-a {width:54%}
+#cashbackBonusSignup_promotionList .ui-block-a {width:51%;}/*R13.3 global change 20/08/2013 Defect-> 20130819_104610*/
 /* global change*/
 #redemption-landing ul.whitebg-list-view li{
 padding:0px !important; 
@@ -1878,6 +1901,14 @@ border-bottom: 5px solid #ff6601;
 #ecart-save-pin .ui-content {
 	padding:107px 16px 10px 16px;
 }
+
+/* Added below media query to fix  #110918 23-08-13 */
+@media all and (orientation:landscape) {
+	#ecart-save-pin .ui-content {
+		padding:5px 16px 10px 16px;
+	}
+}
+
 #ecart-save-pin a#cancelSave,#ecart-save-pin a#savePhoto {
 	width:54px;
 	-webkit-box-shadow: 1px 1px rgba(0,0,0,0.4) !important; 

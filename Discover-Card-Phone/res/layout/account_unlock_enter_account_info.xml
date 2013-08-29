@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <com.discover.mobile.card.common.uiwidget.HeaderTwoStepProgressIndicator
@@ -31,7 +31,7 @@
                 android:layout_below="@+id/account_info_error_label_layout"
                 android:layout_marginTop="18dp"
                 android:includeFontPadding="false"
-                android:text="@string/account_info_label_one"
+                android:text="@string/account_unlock_label_one"
                 android:textColor="#8a9499"
                 android:textSize="14sp"
                 android:textStyle="normal" />
@@ -122,7 +122,7 @@
                 android:layout_below="@+id/account_info_expiration_date_error_label"
                 android:layout_marginTop="18dp"
                 android:includeFontPadding="false"
-                android:text="@string/account_info_ssn_info_text"
+                android:text="@string/account_unlock_ssn_info_text"
                 android:textColor="#8a9499"
                 android:textSize="14sp"
                 android:textStyle="normal" />

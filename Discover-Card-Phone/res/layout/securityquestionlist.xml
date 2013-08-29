@@ -16,12 +16,12 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:maxLines="1"
-            android:paddingRight="64dp"
             android:text="@string/sa_title"
             android:textColor="@color/blue_grey"
             android:textSize="18dp"
             android:textStyle="normal" />
-
+        <!-- 	Defect ID: 110817 13.4 --> 
+<!-- 
         <Button
             android:id="@+id/logout_button"
             style="@style/logout_actionbar_button"
@@ -32,7 +32,7 @@
             android:background="@drawable/card_logout_button"
             android:text="@string/log_out"
             android:textSize="12dp" />
-
+ -->
         <ImageView
             android:id="@+id/gradient_line"
             android:layout_width="fill_parent"

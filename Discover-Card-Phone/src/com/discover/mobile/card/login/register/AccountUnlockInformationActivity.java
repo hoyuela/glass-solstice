@@ -44,7 +44,7 @@ public class AccountUnlockInformationActivity extends ForgotOrRegisterFirstStep 
 	 * Initiates the proper analytics services call.
 	 */
 	public AccountUnlockInformationActivity() {
-		super(AnalyticsPage.FORGOT_PASSWORD_STEP1);
+		super(AnalyticsPage.ACCOUNT_UNLOCK_STEP1);
 	}
 
 	/**
@@ -54,7 +54,6 @@ public class AccountUnlockInformationActivity extends ForgotOrRegisterFirstStep 
 	@Override
 	protected void doCustomUiSetup() {
 		CommonUtils.setViewGone(accountIdentifierFieldRestrictionsLabel);
-		accountIdentifierFieldLabel.setText(R.string.user_id);
 		accountIdentifierField.setFieldUsername();
 	}
 
@@ -133,12 +132,7 @@ public class AccountUnlockInformationActivity extends ForgotOrRegisterFirstStep 
 						FORGOTPASSWORDREFERER);
 			}
 		} else if (v.getId() == R.id.account_info_cancel_label) {
-			final Intent forgotCredentialsActivity = new Intent(this,
-					ForgotCredentialsActivity.class);
-			startActivity(forgotCredentialsActivity);
-
 			finish();
-			// Defect id 95853
 		} else if (v.getId() == R.id.privacy_terms) {
 			// Changes for 13.4 start
 			// FacadeFactory.getBankFacade().navToCardPrivacyTerms();

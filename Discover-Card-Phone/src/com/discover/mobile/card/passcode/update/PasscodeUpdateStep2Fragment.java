@@ -1,13 +1,13 @@
 package com.discover.mobile.card.passcode.update;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.model.json.VerifySyntax;
 import com.discover.mobile.card.passcode.request.GetSyntaxValidityRequest;
@@ -60,7 +60,7 @@ public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 	private final class SyntaxValidityRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode validity");
+			Utils.log(TAG, "ERROR fetching passcode validity");
 			//TODO show error page
 			passcodeResponse(false);
 		}
@@ -68,7 +68,6 @@ public class PasscodeUpdateStep2Fragment extends PasscodeBaseFragment {
 		@Override
 		public void onSuccess(Object data) {
 			VerifySyntax vs = (VerifySyntax) data;
-			Log.v(TAG, vs.toString());
 			onPasscodeSuccessEvent();
 		}
 	};

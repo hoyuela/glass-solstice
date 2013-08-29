@@ -15,6 +15,8 @@ public final class IntentExtraKey {
 	
 	/**Intent extra for user ID used to send the users user id to the confirmation modal*/
 	public static final String UID = "User-ID";
+	
+	public static final String IS_ACCOUNT_UNLOCK = "isAccountUnlock";
 
 	/**Intent extra for account last 4 digits used to send the users last four to the confirmation modal*/
 	public static final String ACCOUNT_LAST4 = "Account-Last4";

@@ -20,8 +20,9 @@
                         </div>
                         <!-- body text area star -->
 						<!--<div class="faqWraper"><a href="#" onclick= "dfs.crd.sct.globalFaqLinks();navigation('../pushNotification/faqDeviceAlerts');" class="i_icon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></div>-->
-                        <!--<div id='global-errors'></div>-->
-                        <div id="phonenumber-block">
+                        <div id='global-errors' class="innerWrapper"></div> <!-- R13.3 global change 21/08/2013 20130820_173927 -->
+                        <!--R13.3 global change 20/08/2013 defect 20130819_142804 -> innerWrapper class added-->
+                        <div id="phonenumber-block" class="innerWrapper">
                             <p class="changenumber">
                                 <span>Text Alerts are sent to: <br/></span>
                                 <span id="phonenumber"></span>&nbsp;
@@ -72,8 +73,9 @@
 								</div>
 							</div>
                          </div>
-                        <div id="doubleoptin-error" style="display: none">
-                            <p class="redtext">This number is not verified. From this number text "YES" and the last four of your acct # to 347268 to verify.
+                         <!--R13.3 global change 20/08/2013 defect 20130819_142804 innerWrapper class added -->
+                        <div id="doubleoptin-error" style="display:none" class="innerWrapper"> 
+                          <p class="redtext">This number is not verified. From this number text "YES" and the last four of your acct # to 347268 to verify.
                             </p>
                         </div>
                         <div id="slider">
@@ -269,8 +271,8 @@
 																<br>
 																<span class="dollarSign">$</span>
 																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
-																	<!--R13.3 Global Change-->
-																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="tel" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
+																	<!--R13.3 Global Change 20/08/2013-->
+																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="number" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
 																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
                                                                 </span>
 																
@@ -302,7 +304,8 @@
 															<br/>
 																<span class="dollarSign">$</span>
 																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
-																	<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt  textbox_alertspage textInput" type="tel" name='balaDefAmt' placeholder="500.00" data-inline="true" maxlength="5" />
+                                                                <!--R13.3 Global Change 20/08/2013-->
+																	<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt  textbox_alertspage textInput" type="number" name='balaDefAmt' placeholder="500.00" data-inline="true" maxlength="5" />
 																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
                                                                 </span>
 																																<!--R13.3 Global Change-->
@@ -419,7 +422,8 @@
 																<br/>
 																<span class="dollarSign">$</span>
 																<span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
-																	<input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt textInput" type="tel" placeholder="100.00" data-inline="true" name='mrrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
+                                                                <!--R13.3 Global Change 20/08/2013-->
+																	<input id="VALUE" class="textbox_alertspage cls-ma-fld-cashback-amt textInput" type="number" placeholder="100.00" data-inline="true" name='mrrwDefAmt' onfocus="blank(this)" onblur="unblank(this)" maxlength="5" />
 																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
                                                                 </span><!--R13.3 Global Change-->
 															</p>
@@ -448,8 +452,8 @@
                                        <!-- 13.3 global change 06/08/13 (defect 108013) -->                         
                                                                 
                                                                 <span class="boldtext wrapperSpan inputOnBlur smallInputWrapper">
-																	<!--R13.3 Global Change-->
-																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="tel" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
+																	<!--R13.3 Global Change 20/08/2013-->
+																		<input id="VALUE" onfocus="blank(this)" onblur="unblank(this)" class="cls-ma-fld-exceed-amt textbox_alertspage textInput" type="number" name="tamtDefAmt" placeholder="300" data-inline="true" maxlength="5" />
 																<img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
                                                                 </span>
                                                                 
@@ -494,7 +498,10 @@
 										<div class="floatright">
                                             <div class="at-rate">
 											<span class="at_align">@&nbsp;</span>
-											<input id="custom-carrier" type="email" placeholder="" class="dot-com"/>
+											<span class="wrapperSpan">
+											<input id="custom-carrier" type="email" placeholder="" class="dot-com textInput numberInput"/>
+                                            <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText crossAlignRight' />
+                                            </span>
                                             <span class="eg-msg floatleft">(e.g.,messaging.nextel.com)</span>
                                             </div>
                                         </div>

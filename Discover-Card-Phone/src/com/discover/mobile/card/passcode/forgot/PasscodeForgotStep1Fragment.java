@@ -2,7 +2,6 @@ package com.discover.mobile.card.passcode.forgot;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.home.HomeSummaryFragment;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeLandingFragment;
@@ -23,7 +23,6 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 	@Override
 	public boolean onKey(View paramView, int keyCode, KeyEvent event) {
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
-			Log.v(TAG, "Action Down");
 			return false;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK ) {
@@ -84,7 +83,7 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 	private final class SyntaxValidityRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode validity");
+			Utils.log(TAG, "ERROR fetching passcode validity");
 			//TODO show error page
 			passcodeResponse(false);
 		}
@@ -92,7 +91,6 @@ public class PasscodeForgotStep1Fragment extends PasscodeBaseFragment {
 		@Override
 		public void onSuccess(Object data) {
 			VerifySyntax vs = (VerifySyntax) data;
-			Log.v(TAG, vs.toString());
 			onPasscodeSuccessEvent();
 		}
 	};

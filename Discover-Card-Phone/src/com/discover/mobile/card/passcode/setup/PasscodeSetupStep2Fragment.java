@@ -3,7 +3,6 @@ package com.discover.mobile.card.passcode.setup;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.passcode.PasscodeBaseFragment;
 import com.discover.mobile.card.passcode.PasscodeRouter;
 import com.discover.mobile.card.passcode.request.CreatePasscodeRequest;
@@ -28,7 +28,6 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 	public void onCreate(Bundle paramBundle) {
 		super.onCreate(paramBundle);
 		mStep1Answer = getArguments().getString("passcode");
-		Log.v(TAG, "Step 1 answer: " + mStep1Answer);
 	}
 
 	@Override
@@ -97,9 +96,9 @@ public class PasscodeSetupStep2Fragment extends PasscodeBaseFragment {
 		
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode validity");
+			Utils.log(TAG, "ERROR fetching passcode validity");
 			CardErrorBean cardErrorBean = (CardErrorBean) data;
-			Log.e(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
+			Utils.log(TAG, "Errorcode: " + cardErrorBean.getErrorCode());
 			
 			//if Account is already registered
 			if (cardErrorBean.getErrorCode().contains("4092103")) {

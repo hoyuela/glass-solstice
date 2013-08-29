@@ -1,7 +1,6 @@
 package com.discover.mobile.card.common.net.json;
 
 import com.discover.mobile.common.net.json.JsonResponseMappingNetworkServiceCall;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.DeserializationFeature;

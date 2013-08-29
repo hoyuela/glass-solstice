@@ -50,6 +50,8 @@ public class ModalConfirmationTop extends RelativeLayout implements
     private final Button home;
     
     private final TextView noteLabel;
+    
+    private final TextView summaryLabel;
 
     /**
      * Constructor for the view
@@ -64,7 +66,9 @@ public class ModalConfirmationTop extends RelativeLayout implements
 
         final RelativeLayout mainView = (RelativeLayout) LayoutInflater.from(
                 context).inflate(R.layout.register_confirm, null);
+
         noteLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_note_label);
+        summaryLabel = (TextView) mainView.findViewById(R.id.account_info_confirm_summary_label);
 
         res = context.getResources();
         userIdLabel = (TextView) mainView
@@ -171,10 +175,23 @@ public class ModalConfirmationTop extends RelativeLayout implements
             dialogTitle.setTextColor(res.getColor(R.color.orange_link_idicator));
             firstParagraph.setVisibility(View.VISIBLE);
             secondParagraph.setVisibility(View.GONE);
-            firstParagraph.setText(res.getString(R.string.unlock_confirmation_text));
+            firstParagraph.setText(Html.fromHtml(res.getString(R.string.unlock_confirmation_text)));
             securityLabelAbove.setVisibility(View.GONE);
             securityLabelBelow.setVisibility(View.GONE);
             noteLabel.setVisibility(View.GONE);
+            
+            summaryLabel.setText(getResources().getString(R.string.account_unlock_confirm_summary_text));
+        	
+        	//Add more padding for account unlock view
+        	int pL = firstParagraph.getPaddingLeft();
+        	int pR = firstParagraph.getPaddingRight();
+        	int pT = firstParagraph.getPaddingTop();
+        	int pB = firstParagraph.getPaddingBottom();    	
+        	final float SCALE = getContext().getResources().getDisplayMetrics().density;
+        	// Convert dips to pixels
+        	float valueDips = 14.0f;
+        	int valuePixels = (int)(valueDips * SCALE + 0.5f); // 0.5f for rounding
+        	firstParagraph.setPadding(pL, pT, pR, pB + valuePixels);
         }
     }
 

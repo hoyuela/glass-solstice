@@ -18,6 +18,7 @@ import com.discover.mobile.card.common.utils.Utils;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
+import com.discover.mobile.card.login.register.ForgotUserIdActivity;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUser;
 import com.discover.mobile.card.services.auth.strong.StrongAuthCreateUserDetails;
 
@@ -162,6 +163,12 @@ public class StrongAuthUtil {
                         cardShareDataStoreObj.addToAppCache(context
                                 .getString(R.string.sa_question_answer_list),
                                 createUserDetails);
+                        /*    13.5  Changes */
+                        if(context instanceof ForgotUserIdActivity){
+                            strongAuthEnterInfoActivity.putExtra("ForgotUserIdFlow", true);
+                            strongAuthEnterInfoActivity.putExtra("ForgotDetails", ((ForgotUserIdActivity) context).getUserDetails());
+                        }
+                        /*    13.5  Changes */
                         context.startActivity(strongAuthEnterInfoActivity);
                     }
 

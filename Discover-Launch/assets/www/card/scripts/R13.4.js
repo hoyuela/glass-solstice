@@ -1,9 +1,31 @@
 /******R13.3 js starts here******/
+
+/* 13.3 global change starts 21-08-13 */	 
+	 $(".textbox_alertspage").live("keypress",function(event) {
+			var controlKeys = [8, 9, 13, 35, 36, 37, 39];
+			var isControlKey = controlKeys.join(",").match(new RegExp(event.which));
+			if (!event.which || (49 <= event.which && event.which <= 57) || 
+			(48 == event.which && $(this).attr("value")) ||  isControlKey) { 
+				if($(this).parent().hasClass('inputOnError')) {
+			 		$(this).parent().removeClass("inputOnError");
+				}
+				return;
+			} else {
+				 $(this).parent().addClass("inputOnError");
+				 event.preventDefault();
+			}                                            
+	});  
+/* 13.3 global change ends 21-08-13 */
+
 $("div[data-role='page']").live("pageshow",function(){
 
 /* fix for white background on focus of input starts (13.3 global changes 29/07/13) */
-	$("input[type='text'],input[type='number'],input[type='tel'],input[type='password']").bind('focus', function() {
-	   $(this).css('-webkit-user-modify', 'read-write-plaintext-only !important');
+	$("input[type='number'],input[type='tel']").bind('focus', function() {
+	   //$(this).css('-webkit-user-modify', 'read-write-plaintext-only !important');
+	   /*13.3 global changes 20/08/2013*/
+	   if(!$(this).hasClass("textbox_alertspage")) {
+		  $(this).addClass("textbox_alertspage");
+	   }
 	});	
 	/* fix for white background on focus of input ends (13.3 global changes 29/07/13) */
 	/*script for new textbox*/

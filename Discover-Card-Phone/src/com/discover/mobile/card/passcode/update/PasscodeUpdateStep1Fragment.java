@@ -24,7 +24,6 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "onCreate");
 	}
 
 	@Override
@@ -42,7 +41,6 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeSubmitEvent() {
-		Log.v(TAG, "SUBMIT EVENT");
 		boolean isValid = this.isPasscodeValidLocally(getPasscodeString());
 		if (isValid) {
 			new GetMatchRequest(this.getActivity(), getPasscodeString()).loadDataFromNetwork(new VerifyPasscodeMatchRequestListener());
@@ -53,13 +51,11 @@ public class PasscodeUpdateStep1Fragment extends PasscodeBaseFragment {
 	
 	@Override
 	public void onPasscodeErrorEvent() {
-		Log.v(TAG, "ERROR EVENT");
 		clearAllFields();
 	}
 
 	@Override
 	public void onPasscodeSuccessEvent() {
-		Log.v(TAG, "Success EVENT");
 		if (isAdded()){
 			makeFragmentVisible(new PasscodeUpdateStep2Fragment(), false);
 		}

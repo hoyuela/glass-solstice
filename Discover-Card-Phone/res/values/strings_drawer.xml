@@ -63,4 +63,11 @@
     <string name="provide_feedback_title">Provide Feedback</string>
     
     
+       <!-- 13.5  Changes -->
+    <string name="sub_section_title_pay_with_cashback_bonus_hidearray">PAYWITHCBB</string>
+    <string name="sub_section_title_signup_for_2_hidearray">CBBPROMOS</string>
+    <string name="sub_section_title_refer_a_friend_hidearray">RAF</string>
+    <string name="sub_section_title_faq_hidearray">FAQ</string>
+    <!-- 13.5  Changes -->
+    
 </resources>

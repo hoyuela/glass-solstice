@@ -72,7 +72,6 @@ public class PasscodeMenuFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "onCreate");
 		if (!this.isStopping) {
 			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_MENU);
 		}
@@ -99,8 +98,6 @@ public class PasscodeMenuFragment extends BaseFragment {
 		      @Override
 		      public void onItemClick(AdapterView<?> parent, final View view,
 		          int position, long id) {
-		    	  Log.v(TAG, "Position: " + position);
-		    	  Log.v(TAG, "id: " + id);
 		    	  if (id == 0) {
 		    		  final StrongAuthHandler authHandler = new StrongAuthHandler(
 		    				  PasscodeMenuFragment.this.getActivity(),
@@ -113,8 +110,7 @@ public class PasscodeMenuFragment extends BaseFragment {
 		    				  R.string.passcode_dialog_disable_are_you_sure_content, 
 		    				  R.string.yes,
 		    				  R.string.no,
-		    				  new DisableCompleteAction(),
-		    				  new NavigateACHomeAction());
+		    				  new DisableCompleteAction(), null);
 		    		  modal.hideNeedHelpFooter();
 		    		  ((NavigationRootActivity)context).showCustomAlert(modal);
 		    	  }

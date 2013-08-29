@@ -1,11 +1,11 @@
 package com.discover.mobile.card.statement;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.utils.Utils;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class GetHealthCheck {
     }
 
     public void loadDataFromNetwork(final CardEventListener cel) {
-        Log.v(TAG, "Performing health check");
+        Utils.log(TAG, "Performing health check");
         WSRequest request = new WSRequest();
         request.setUrl(url);
         WSAsyncCallTask serviceCall = new WSAsyncCallTask(activity,

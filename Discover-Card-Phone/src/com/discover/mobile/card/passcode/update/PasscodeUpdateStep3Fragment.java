@@ -3,7 +3,6 @@ package com.discover.mobile.card.passcode.update;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,6 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeErrorEvent() {
-		Log.v(TAG, "Firing error event");
 		//TODO on error go back to step 2 of 3
 		makeFragmentVisible(new PasscodeUpdateStep2Fragment(), false);
 		clearAllFields();
@@ -80,15 +78,11 @@ public class PasscodeUpdateStep3Fragment extends PasscodeBaseFragment {
 	private final class UpdatePasscodeRequestListener implements CardEventListener {
 		@Override
 		public void OnError(Object data) {
-			// TODO Auto-generated method stub
-			Log.v(TAG, "Error");
 			passcodeResponse(false);
 		}
 
 		@Override
 		public void onSuccess(Object data) {
-			//TODO make this result accurate from the service call
-			Log.v(TAG, "Success!");
 			storeFirstName();
 			getActivity().getSupportFragmentManager().popBackStack(PasscodeUpdateStep1Fragment.class.getSimpleName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 			passcodeResponse(true);

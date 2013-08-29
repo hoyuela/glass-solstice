@@ -99,7 +99,7 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
 
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
+    public static void setListViewHeightBasedOnChildren(final ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             // pre-condition
@@ -114,8 +114,8 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight
-                + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        params.height = totalHeight + listView.getDividerHeight()
+                * (listAdapter.getCount() - 1);
         listView.setLayoutParams(params);
     }
 
@@ -174,13 +174,14 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
         }
     }
 
-// DEFECT 106929 - overriding back button to nav to login doesn't respect passcode vs UID login,
-// let this be handled by a normal back flow.
-//    @Override
-//    public void onBackPressed() {
-//    	super.onBackPressed();
-//        goBack();
-//    }
+    // DEFECT 106929 - overriding back button to nav to login doesn't respect
+    // passcode vs UID login,
+    // let this be handled by a normal back flow.
+    // @Override
+    // public void onBackPressed() {
+    // super.onBackPressed();
+    // goBack();
+    // }
 
     @Override
     public void goBack() {
@@ -190,51 +191,47 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
 
     @Override
     public TextView getErrorLabel() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public List<EditText> getInputFields() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public void showCustomAlert(final AlertDialog alert) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showOneButtonAlert(final int title, final int content,
             final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void showDynamicOneButtonAlert(final int title,
             final String content, final int buttonText) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return null;
     }
 
     @Override
     public void setLastError(final int errorCode) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public int getLastError() {
-        // TODO Auto-generated method stub
+
         return 0;
     }
 
@@ -245,14 +242,16 @@ public class ForgotCredentialsActivity extends NotLoggedInRoboActivity
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
+
         if (v.getId() == R.id.provide_feedback_button) {
-        	
+
             Utils.createProvideFeedbackDialog(ForgotCredentialsActivity.this,
                     REFERER);
-            
-           /*  Intent newsampel = new Intent(ForgotCredentialsActivity.this ,
-             CreateLoginActivity.class ); startActivity(newsampel);*/
+
+            /*
+             * Intent newsampel = new Intent(ForgotCredentialsActivity.this ,
+             * CreateLoginActivity.class ); startActivity(newsampel);
+             */
 
             // Defect id 95853
         } else if (v.getId() == R.id.privacy_terms) {

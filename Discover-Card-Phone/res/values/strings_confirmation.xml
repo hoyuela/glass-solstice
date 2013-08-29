@@ -13,6 +13,9 @@
 	<string name="account_info_confirm_security_precaution_text">
 	   As a security precaution your password and the first 12 digits of your account number are not shown.  
 	</string>
+	<string name="account_unlock_confirm_summary_text">
+	    Your Account Information
+	</string>
 	<string name="account_info_confirm_summary_text">
 	    Your Online Account Information
 	</string>
@@ -47,7 +50,7 @@
 
 	<!-- Unlock -->
 	<string name="unlock_confirmation_text">
-	    Your account is unlocked and your password has been updated. 
+	    <![CDATA[Your account is unlocked and your password has been updated. <br/>]]>
 	</string>
 	
 <!--  User ID Change Confirmation Strings -->

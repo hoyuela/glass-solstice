@@ -862,7 +862,7 @@ line-height: 1.1;
 	padding: 7px 0px 7px 0px!important;*/
 	font-size: 18px!important;
 	/*font-weight: bold;*/
-	width: 92%;
+	width: 91% !important; /*13.3 global change 19/08/2013*/
 }
 /*footnotes*/
 #register-link {
@@ -3930,16 +3930,19 @@ float: right;
 	text-transform: uppercase;
 }
 .latePayWarnTbl li.col1 {
-	float: left;
-	width: 29%;
+    float: left;
+    width: 27%;/*Defect:104712*/
+    padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col2 {
 	float: left;
-	width: 27%;
+	width: 27%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.col3 {
 	float: left;
-	width: 33%;/*Defect:104712*/
+	width: 42%;/*Defect:104712*/
+	padding: 2px 2px !important;/*Defect:104712*/
 }
 .latePayWarnTbl li.row {
 	border-bottom: 1px solid #dce1e4
@@ -4337,7 +4340,7 @@ border-bottom: none !important;
 	border-bottom: 2px solid #d0d0d0 !important;
 }*/
 #statementLanding .ui-content {
-	overflow-x: none !important;
+	overflow: visible !important;
 }
 #statementLanding .ui-btn-up-d, #statementLanding .ui-btn-hover-d {
 	background-image: none !important
@@ -4367,6 +4370,13 @@ input.textInput, input.numInput {
 	width: 100%;
 	position:relative;
 }
+
+/* Global Changes - 19-Aug-2013 - Email text input - Start */
+#manageAlerts-pg .ui-grid-b .wrapperSpan{
+	width:75%;
+}
+/* Global Changes - 19-Aug-2013 - Email text input - End */
+
 .wrapperSpanDate {
 	width: 85px !important;
 }
@@ -4448,6 +4458,7 @@ font-weight: normal;
 } 13.3 global changes */
 /* radio button 13.3 global changes*/
 #paymentStep1-pg .white-form .ui-radio-on .ui-icon, #strongAuthFirstQues-pg .white-form .ui-radio-on .ui-icon{
+	background:#ff6600 !important;
 	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(44%, rgba(255, 102, 0, 1)), color-stop(47%, rgba(71, 33, 8, 1)), color-stop(48%, rgba(10, 10, 10, 0.67)), color-stop(50%, rgba(255, 255, 255, 0))) !important;
 	background: -webkit-radial-gradient(center, ellipse cover, rgba(255, 102, 0, 1) 44%, rgba(71, 33, 8, 1) 47%, rgba(10, 10, 10, 0.67) 48%, rgba(255, 255, 255, 0) 50%) !important;
 	background: radial-gradient(ellipse at center, rgba(255, 102, 0, 1) 44%, rgba(71, 33, 8, 1) 47%, rgba(10, 10, 10, 0.8) 48%, rgba(255, 255, 255, 0) 52%);
@@ -4574,10 +4585,11 @@ margin: 0px 3px 0px 3px !important;
 #statementCredit1-pg .ui-content {
 	overflow:visible !important;
 }
+/*
 #directDeposit1-pg .ui-content {
 	overflow-y:visible !important;
 	overflow-x:hidden !important;
-}
+}*/
 /* 13.3 global change  */
 
 /*----------------------- toggle ON/OFF ---------------------*/
@@ -4705,6 +4717,9 @@ margin: 0px 3px 0px 3px !important;
 }
 #personalizeCashPin1-pg .pinCashEnter .col .wrapperSpanOther {
 	width:124px ;
+}
+#personalizeCashPin1-pg #enterPin , #personalizeCashPin1-pg #confirmPin{		/*13.3  global Change 19/08/2013*/
+	width:77% !important;
 }
  /* End : 13.3 Global Change */
 /*----------------------- toggle ON/OFF ---------------------*/

@@ -18,9 +18,12 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
+import android.text.Spannable;
+import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.URLSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -115,7 +118,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private static final long HALF_SECOND = 500;
 	private static final int THREE_FIFTY = 350;
 	private static final long SIX_SECONDS = 6000;
-	
+
 	/**
 	 * These are string values used when passing extras to the saved instance
 	 * state bundle for restoring the state of the screen upon orientation
@@ -138,7 +141,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * A state flag so that we don't run this twice.
 	 */
 	private static boolean phoneGapInitComplete = false;
-	
+
 	/**The number of pixels that is between the left and center positions of the Discover logo */
 	private static int cachedLogoOffset = 0;
 
@@ -152,10 +155,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private Button customerServiceButton;
 	private Button provideFeedbackButton;
 	private DiscoverToggleSwitch saveUserIdToggleSwitch;
-		
+
 	private RelativeLayout goToBankButton;
 	private RelativeLayout goToCardButton;
-	
+
 	// Fastcheck Buttons
 	private Button gotoFastcheckButton;
 	private Button fcPrivacyTermButton;
@@ -171,7 +174,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private TextView passcodeForgot;
 	private TextView passcodeUserIDLogin;
 	private boolean isUserIDLogin;
-	
+
 	private ViewGroup vLogin;
 	private ViewGroup vPasscode;
 	private ViewGroup vLoginLinks;
@@ -179,7 +182,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private TextView vPasscodeLink3;
 	private boolean isExclamationVisible;
 	private boolean	exclamationColorRed;
-	
+
 	//View Group layouts
 	ViewGroup toolbar;
 	ViewGroup loginPane;
@@ -220,19 +223,19 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private boolean restoreError = false;
 
 	private static final int LOGOUT_TEXT_COLOR = R.color.body_copy;
-	
+
 	private View activityRootView;
-	
+
 
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preventDuplicateLoginScreens();
-		
+
 		setContentView(R.layout.login_start);
 		setupUI(findViewById(R.id.login_table));
 		loadResources();
-	    setupTextSwitcher();
+		setupTextSwitcher();
 
 		// **Activity manager has to be set before using Track Helper*/
 		DiscoverActivityManager.setActiveActivity(this);
@@ -248,30 +251,25 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		KeepAlive.setCardAuthenticated(false);
 
 		DiscoverActivityManager.setActiveActivity(this);
-		
+
 		setupPasswordField();
-		
+
 		if (isPasscodeLogin()) {
 			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_LOGIN);
 		}
 
-		TrackingHelper.trackPageView(AnalyticsPage.ACCOUNT_UNLOCK_CREATE_PASSWORD);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("my.prop10", "AccountUnlock_FailedLogin|error someas dfjasdf");
-		TrackingHelper.trackCardPage(AnalyticsPage.ACCOUNT_UNLOCK_CREATE_PASSWORD, map);
-		
 		//detect keyboard and hide footer when visible
 		activityRootView = findViewById(R.id.login_start_layout);
 		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ShowHideKeyboardListener());
-	 }
-	
+	}
+
 	private void setupPasswordField() {
 		//You must set the IME Option in java so that the "GO" appears on the keyboard -julian
 		passField.setImeOptions(EditorInfo.IME_ACTION_GO | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
 		passField.setTypeface(Typeface.DEFAULT);
 		passField.setTransformationMethod(new PasswordTransformationMethod());
-	 }
-	
+	}
+
 	/**
 	 * This method fixes an issue where, in a signed build, when the app
 	 * is resumed, LoginActivity can be re-created when not needed, and
@@ -283,12 +281,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 */
 	private void preventDuplicateLoginScreens() {
 		if (!isTaskRoot()) {
-		    final Intent intent = getIntent();
-		    final String intentAction = intent.getAction();
-		    if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
-		            intentAction != null && intentAction.equals(Intent.ACTION_MAIN)) {
-		        finish();
-		    }
+			final Intent intent = getIntent();
+			final String intentAction = intent.getAction();
+			if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
+					intentAction != null && intentAction.equals(Intent.ACTION_MAIN)) {
+				finish();
+			}
 		}
 	}
 
@@ -297,9 +295,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final SlidingMenu slidingMenu = getSlidingMenu();
 		slidingMenu.setMode(SlidingMenu.RIGHT);
 	}
-	
 
-	
+
+
 	/**
 	 * This method is being called to prevent onResume calls for rotation
 	 * change. When not implemented (also from the manifest) then onResume is
@@ -316,7 +314,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void loadResources() {
 		final int maxIdLength = 16;
 		final int maxPasswordLength = 32;
-		
+
 		final InputFilter[] filters = new InputFilter[1];
 		filters[0] = new InvalidCharacterFilter();
 		idField = (NonEmptyEditText) findViewById(R.id.username_field);
@@ -346,11 +344,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		bankCheckMark = (ImageView) findViewById(R.id.bank_check_mark);
 		saveUserIdToggleSwitch = (DiscoverToggleSwitch) findViewById(R.id.remember_user_id_toggle);
 		splashProgress = (ProgressBar) findViewById(R.id.splash_progress);
-		
+
 		gotoFastcheckButton = (Button)findViewById(R.id.gotoFastcheck);
 		fcPrivacyTermButton = (Button)findViewById(R.id.fastcheck_privacy_terms_button);
 		fcProvideFeedbackButton = (Button)findViewById(R.id.fastcheck_provide_feedback_button);
-		
+
 		loginPane = (ViewGroup) findViewById(R.id.login_pane);
 		toolbar = (ViewGroup)findViewById(R.id.login_bottom_button_row);
 
@@ -361,7 +359,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		vLoginLinks = (ViewGroup) this.findViewById(R.id.card_forgot_and_privacy_section);
 		vPasscodeLinks = (ViewGroup) this.findViewById(R.id.passcode_links);
 		vPasscodeLink3 = (TextView) this.findViewById(R.id.passcode_privacy_and_security_button_card);
-		
+
 		//passcode
 		splashLogo = ((ImageView) findViewById(R.id.splash_logo));
 		validationIV = ((ImageView) findViewById(R.id.validation));
@@ -375,8 +373,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		passcodeUserIDLogin = (TextView) findViewById(R.id.passcode_user_id_login);
 		setupPasscode();
 	}
-	
-	
+
+
 	/**
 	 * Sets up the text switcher which will allow the register now / atm locator button to fade between text
 	 * when the Bank and Card login button is toggled.
@@ -384,18 +382,18 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void setupTextSwitcher() {
 		final AlphaAnimation inAnimation = new AlphaAnimation(0.0f, 1.0f);
 		inAnimation.setDuration(HALF_SECOND);
-		
+
 		final AlphaAnimation outAnimation = new AlphaAnimation(1.0f, 0.0f);
 		outAnimation.setDuration(HALF_SECOND);
-		
+
 		registerOrAtmButton.setInAnimation(inAnimation);
 		registerOrAtmButton.setOutAnimation(outAnimation);
-		
+
 		registerOrAtmButton.addView(getButtonBarTextView());
 		registerOrAtmButton.addView(getButtonBarTextView());
 
 	}
-	
+
 	/**
 	 * 
 	 * @return a TextView that has the same style as the other TextViews that are used in the bottom button bar.
@@ -451,7 +449,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();
 
-		Log.v(TAG, "MaybeShowError");
 		/**
 		 * Verify error text is not shown already and intent has a bundle with
 		 * the specified message to display
@@ -461,7 +458,6 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 					.getString(IntentExtraKey.SHOW_ERROR_MESSAGE);
 			final String errorCode = extras
 					.getString(IntentExtraKey.ERROR_CODE);
-			Log.v(TAG, "ErrorCode: " + errorCode);
 			if (!Strings.isNullOrEmpty(errorCode)) {
 				showErrorMessage(errorCode, errorMessage);
 			} else if (!Strings.isNullOrEmpty(errorMessage)) {
@@ -471,21 +467,23 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		}
 	}
-	
+
 	/**
 	 * Display the error message provided in the argument list in red text.
 	 *
 	 * @param errorMessage Reference to error message that is to be displayed.
 	 */
 	public void showErrorMessage(final String errorMessage) {
-		Log.v(TAG, "Setting error message.");
 		hideExclamation();
 		if (isPasscodeLogin()) {
 			getErrorHandler().showErrorsOnScreen(this, errorMessage);
 			errorTextView.setTextColor(getResources().getColor(R.color.black));
 			welcomeTV.setVisibility(View.GONE);
-			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
+			startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS + HALF_SECOND);
 			guiValidationError();
+		} else if (isCardLogin()) {
+			showRedExclamation();
+			getErrorHandler().showErrorsOnScreen(this, errorMessage);
 		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
@@ -498,8 +496,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void showErrorMessage(final String errorCode, final String errorMessage) {
 		// Need to show a unique message for invalid login attempt when on
 		// passcode, can't determine from CardErrorResponseHandler
-		Log.v(TAG, "Error Code: " + errorCode);
-		
+
+		if (isCardLogin()) {
+			HashMap<String, Object> extras = new HashMap<String, Object>();
+			extras.putAll(TrackingHelper.getProp10Error(AnalyticsPage.FAILED_LOGIN, errorMessage));
+			TrackingHelper.trackCardPage(null, extras);
+		}
 		if (isCardLogin() && !isUserIDLogin && !pUtils.doesDeviceTokenExist()) {
 			//if passcode was disabled but user interface not yet in sync
 			displayActiveLoginMode();
@@ -511,6 +513,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			guiValidationError();
 			if ("401".equals(errorCode)) {
 				showErrorMessage(errorMessage);
+				showRedExclamation();
 			} else if ("4011103".equals(errorCode) ) {
 				showErrorMessage(errorMessage);
 				showRedExclamation();
@@ -525,20 +528,47 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				//show error message				
 				errorTextView.setMovementMethod(LinkMovementMethod.getInstance());
 				errorTextView.setText(Html.fromHtml(errorMessage));
+				stripUnderlines(errorTextView);
 				errorTextView.setVisibility(View.VISIBLE);
 			} else if (errorMessage != null) {
 				showErrorMessage(errorMessage);
 			}
 		}
 	}
+	
+	private void stripUnderlines(TextView textView) {
+		if (!(textView.getText() instanceof Spannable)) {
+			return;
+		}
+        Spannable s = (Spannable)textView.getText();
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+	
+	private class URLSpanNoUnderline extends URLSpan {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+        @Override public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
 
 	/**
 	 * Display session expired message
 	 */
 	public void showSessionExpired() {
 		final SimpleContentModal sessionExpired = new SimpleContentModal(getContext(), R.string.session_expired_header, 
-				  																 	   R.string.session_expired_body, 
-				  																       R.string.session_expired_button);
+				R.string.session_expired_body, 
+				R.string.session_expired_button);
 		sessionExpired.getHelpFooter().setToDialNumberOnClick(getString(R.string.bank_need_help_number_text));
 		sessionExpired.getButton().setOnClickListener(new OnClickListener() {
 			@Override
@@ -546,7 +576,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				sessionExpired.dismiss();
 			}
 		});
-		
+
 		this.showCustomAlert(sessionExpired);
 	}
 
@@ -557,23 +587,23 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		errorTextView.setText(getString(R.string.logout_sucess));
 		errorTextView.setTextColor(getResources().getColor(LOGOUT_TEXT_COLOR));
 		errorTextView.setVisibility(View.VISIBLE);
-		
+
 		// Logout message fades out after six seconds
 		startDefaultErrorFadeOut();
-		startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS);
+		startFadeInAnimationForView(welcomeTV, HALF_SECOND, SIX_SECONDS + HALF_SECOND);
 	}
-	
+
 	/** Starts the fade out animation on the error text view after six seconds. */
 	private void startDefaultErrorFadeOut() {
 		startFadeOutAnimationForView(errorTextView, HALF_SECOND, View.GONE, SIX_SECONDS);
 	}
-	
+
 	private void startFadeOutAnimationForView(final View viewToFade,
-											  final long duration) {
+			final long duration) {
 		viewToFade.invalidate(); // Ensure View has been drawn to the state needed prior to Animation (needed for Samsung devices)
 		startFadeOutAimationForView(viewToFade, duration, viewToFade.getVisibility());
 	}
-	
+
 	/**
 	 * Convenience method for the longer version of this.
 	 * @param viewToFade the view to apply the fade to.
@@ -582,12 +612,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @return
 	 */
 	private void startFadeOutAimationForView(final View viewToFade, 
-											 final long duration, 
-											 final int endVisibility){
-		
+			final long duration, 
+			final int endVisibility){
+
 		startFadeOutAnimationForView(viewToFade, duration, endVisibility, 0);
 	}
-	
+
 	/**
 	 * Starts a fade out animation on a given View with the passed parameters.
 	 * @param viewToFade the view to apply the fade to.
@@ -596,65 +626,71 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param animationDelay the number of miliseconds that will elapse before the animation begins.
 	 */
 	private void startFadeOutAnimationForView(final View viewToFade, 
-														final long duration, 
-														final int endVisibility, 
-														final long animationDelay) {
+			final long duration, 
+			final int endVisibility, 
+			final long animationDelay) {
 		if(viewToFade != null) {
 			final AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-			
+
 			fadeOut.setDuration(duration);
 			fadeOut.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(final Animation animation) {
 					viewToFade.setVisibility(View.VISIBLE);
 				}
-				
+
 				@Override
 				public void onAnimationRepeat(final Animation animation) {				
 				}
-				
+
 				@Override
 				public void onAnimationEnd(final Animation animation) {
 					viewToFade.setVisibility(endVisibility);
 				}
 			});
 			fadeOut.setStartOffset(animationDelay);
-			
+
 			viewToFade.startAnimation(fadeOut);
 		}
 	}
 
 	private void startFadeInAnimationForView(final View viewToFade, 
-														final long duration, 
-														final long animationDelay) {
+			final long duration, 
+			final long animationDelay) {
 		if(viewToFade != null) {
 			final AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-			
+
 			fadeIn.setDuration(duration);
 			fadeIn.setAnimationListener(new AnimationListener() {
-				
+
 				@Override
 				public void onAnimationStart(final Animation animation) {
 					viewToFade.setVisibility(View.GONE);
+					new Handler().postDelayed(new Runnable() {
+					  @Override
+					  public void run() {
+						  viewToFade.setVisibility(View.INVISIBLE);
+					  }
+					}, animationDelay);
 				}
-				
+
 				@Override
 				public void onAnimationRepeat(final Animation animation) {				
 				}
-				
+
 				@Override
 				public void onAnimationEnd(final Animation animation) {
 					viewToFade.setVisibility(View.VISIBLE);
 				}
 			});
 			fadeIn.setStartOffset(animationDelay);
-			
+
 			viewToFade.startAnimation(fadeIn);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Called as a result of the activity's being brought to the front when
 	 * using the Intent flag FLAG_ACTIVITY_REORDER_TO_FRONT.
@@ -665,7 +701,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		setIntent(intent);
 	}
-
+	
 	/**
 	 * Resume the activity
 	 */
@@ -721,7 +757,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			restoreToggle = NO_TOGGLE_TO_RESTORE;
 		}
 
-		
+
 
 		/*
 		 * Check to see if pre-auth request is required; should be done at
@@ -779,12 +815,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		getSlidingMenu().showContent();
 	}
 
-		
+
+	private boolean isRestoreInstance = false;
 	@Override
 	public void onRestoreInstanceState(final Bundle bundle) {
+		isRestoreInstance = true;
 		super.onRestoreInstanceState(bundle);
-
 		restoreState(bundle);
+		isRestoreInstance = false;
 	}
 
 	/**
@@ -927,7 +965,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		} catch (final Exception e) {
 			Log.e(TAG, "Unable to cache last attempted login");
 		}
-		
+
 		final InputMethodManager mngr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		mngr.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		//Clear the last error that occurred
@@ -949,7 +987,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				toggleSaveUserIdSwitch(buttonView, true);
 			}
 		});
-				
+
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
@@ -987,7 +1025,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 				//Check if registerOrAtm button is displaying text for Card or Bank
 				if(isCardLogin()) {
-				 	FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
+					FacadeFactory.getCardFacade().navToRegister(LoginActivity.this);
 				} else {
 					openAtmLocator();
 				}
@@ -1009,7 +1047,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				TrackingHelper.trackPageView(AnalyticsPage.FORGOT_PASSCODE);
 				// set exclamation
 				showGrayExclamation();
-				
+
 				//make sure uid and pass fields aren't highlighted red
 				setInputFieldsDrawablesToDefault();
 
@@ -1046,7 +1084,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+				//16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+				FacadeFactory.getCardFacade().navToPrivacyTerms(
+						LoginActivity.this);
 			}
 		});
 
@@ -1054,31 +1095,42 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+				//16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+				FacadeFactory.getCardFacade().navToPrivacyTerms(
+						LoginActivity.this);
 			}
 		});
 		gotoFastcheckButton.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(final View v) {
+			public void onClick(final View v) {				
 				getSlidingMenu().toggle();
+
+				//DEFECT 109862 - passcode salutation doesn't update
+				if (isPasscodeLogin()) {
+					welcomeTV.setText(pUtils.getWelcomeMessage());
+				}
 			}
 		});
-		
+
 		fcPrivacyTermButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				BankConductor.navigateToCardPrivacyAndTermsLanding();
+				//16/Aug/2013---Observation Fixed
+				//BankConductor.navigateToCardPrivacyAndTermsLanding();
+				FacadeFactory.getCardFacade().navToPrivacyTerms(
+						LoginActivity.this);
 			}
 		});
-		
+
 		fcProvideFeedbackButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View v) {
 				FacadeFactory.getCardFacade().navToProvideFeedback(
-                        LoginActivity.this);
+						LoginActivity.this);
 			}
 		});
-	
+
 		//set up the ime option for the 
 		passField.setOnEditorActionListener(new EditText.OnEditorActionListener(){
 			@Override
@@ -1101,7 +1153,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @return True if in the Card login page, false otherwise.
 	 */
 	public boolean isCardLogin() {
-	   return View.VISIBLE == cardCheckMark.getVisibility();
+		return View.VISIBLE == cardCheckMark.getVisibility();
 	}
 
 	/**
@@ -1235,14 +1287,14 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			saveUserIdToggleSwitch.toggle();
 		}
 		saveUserId = saveUserIdToggleSwitch.isChecked();
-		
+
 		//Check whether to save change in persistent storage
 		if(cache) {
 			Globals.setRememberId(saveUserId);
 		}
 	}
 
-	
+
 
 	/**
 	 * Updates the view based on the application account selected by the user. Called by application at start-up.
@@ -1326,7 +1378,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);	
 		alignLogoLeft(false);
 	}
-	
+
 	/**
 	 * Returns the distance in pixels that the given view needs to move in order to be centered in the screen.
 	 * 
@@ -1337,23 +1389,23 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		int xDelta = 0;
 		final int[] coords = new int[] {0, 0};
 		view.getLocationInWindow(coords);
-		
+
 		final int viewWidth = view.getMeasuredWidth() / 2;	
-		
+
 		xDelta = getDisplayWidth() / 2;
 		xDelta -= viewWidth;
 		xDelta -= coords[0];
-		
+
 		return xDelta;
 	}
-	
+
 	/**
 	 * 
 	 * @return the width in pixels of the screen.
 	 */
 	private int getDisplayWidth() {
 		final DisplayMetrics dm = new DisplayMetrics();
-		
+
 		this.getWindowManager().getDefaultDisplay().getMetrics(dm);
 
 		return dm.widthPixels;
@@ -1367,19 +1419,19 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final View logo = findViewById(R.id.discoverLogo);
 		final int[] coords = new int[] {0, 0};
 		logo.getLocationInWindow(coords);
-		
+
 		TranslateAnimation translation = null;
 		if(isCardLogin()) {
 			translation = new TranslateAnimation(coords[0] - cachedLogoOffset, 0, 0, 0);
 		}else{
 			translation = new TranslateAnimation(-getXDistanceToCenterForView(logo), 0, 0, 0);
 		}
-					
+
 		translation.setDuration(HALF_SECOND);
 
 		logo.startAnimation(translation);
 	}
-	
+
 	private void showFastcheckOnCondition() {
 		if (fastcheckTokenExists()) {
 			gotoFastcheckButton.setVisibility(View.VISIBLE);
@@ -1421,7 +1473,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-		registerOrAtmButton.setText(getResources().getString(R.string.register_now));
+			registerOrAtmButton.setText(getResources().getString(R.string.register_now));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.register_now));
 		}
@@ -1431,13 +1483,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 		// Load Card Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.CARD_ACCOUNT);
-		
+
 		alignLogoLeft(true);
 
 		showFastcheckOnCondition();
 		displayActiveLoginMode();
 	}
-	
+
 	/**
 	 * Aligns the Discover logo on the login screen to it's parent left alignment if given 'true' as its parameter.
 	 * If 'false', it will align to center horizontal.
@@ -1446,9 +1498,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void alignLogoLeft(final boolean alignLeft) {
 		final View logo = findViewById(R.id.discoverLogo);
 		final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)logo.getLayoutParams();
-		
+
 		if(alignLeft) {
-	 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
 			params.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 1);
 		}else {
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL, 1);
@@ -1457,10 +1509,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			logo.getLocationOnScreen(location);
 			cachedLogoOffset = location[0];
 		}
-		
+
 		logo.setLayoutParams(params);
 	}
-	
+
 	/**
 	 * Animates the login screen into the card login state.
 	 */
@@ -1470,10 +1522,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		forgotUserIdOrPassText.startAnimation(fadeIn);
 		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
 		cardPrivacyLink.startAnimation(AnimationUtils.loadAnimation(getContext(), 
-									   R.anim.to_center_from_left_of_center));
+				R.anim.to_center_from_left_of_center));
 		animateFastCheckIfNeeded();
 	}
-	
+
 	/**
 	 * If the fastcheck button should be visible, then this method will animate the discover logo sliding to 
 	 * the left and the button fading in.
@@ -1490,7 +1542,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				startFadeOutAnimationForView(gotoFastcheckButton, THREE_FIFTY);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -1518,7 +1570,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				(int) getResources().getDimension(R.dimen.top_pad));
 
 		if(wasToggling) {
-		registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
+			registerOrAtmButton.setText(getResources().getString(R.string.atm_locator));
 		} else {
 			registerOrAtmButton.setCurrentText(getResources().getString(R.string.atm_locator));
 		}
@@ -1530,13 +1582,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		alignLogoLeft(false);
 
 		forgotUserIdOrPassText.setVisibility(View.VISIBLE);
-		
+
 		// Load Bank Account Preferences for refreshing UI only
 		Globals.loadPreferences(this, AccountType.BANK_ACCOUNT);
-		
+
 		hideFastcheck();
 	}
-	
+
 	/**
 	 * Perform animations that will transition the login screen into a Bank state.
 	 */
@@ -1544,7 +1596,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		animatePrivacyAndTermsSlideToBank();
 		animateFastCheckIfNeeded();
 	}
-	
+
 	/**
 	 * Animates the privacy and terms link for bank into the center of its row and fades out the
 	 * forgot password link.
@@ -1556,16 +1608,16 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final View forgotLink = cardForgotAndPrivacySection.findViewById(R.id.forgot_uid_or_pass_text);
 		final Animation translate = AnimationUtils.loadAnimation(getContext(), R.anim.slide_to_center);
 		translate.setAnimationListener(new AnimationListener() {
-			
+
 			@Override
 			public void onAnimationStart(final Animation animation) {
 				startFadeOutAimationForView(forgotLink, THREE_FIFTY, View.INVISIBLE);
 			}
-			
+
 			@Override
 			public void onAnimationRepeat(final Animation animation) {
 			}
-			
+
 			@Override
 			public void onAnimationEnd(final Animation animation) {
 				forgotLink.setVisibility(View.VISIBLE);
@@ -1574,7 +1626,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 				privacySecOrTermButtonBank.setVisibility(View.VISIBLE);
 			}
 		});
-		
+
 		cardPrivacyLink.startAnimation(translate);
 	}
 
@@ -1602,9 +1654,9 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}else if (!shouldBeChecked && saveUserIdToggleSwitch.isChecked()) {
 			saveUserIdToggleSwitch.toggle();
 		}
-		
+
 		saveUserId = shouldBeChecked;
-		
+
 		//Check whether to save change in persistent storage
 		if(cached) {
 			Globals.setRememberId(saveUserId);
@@ -1644,7 +1696,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void forgotIdAndOrPass() {
 		FacadeFactory.getCardFacade().navToForgot(this);
 	}
-	
+
 	private boolean fastcheckTokenExists() {
 		return FacadeFactory.getCardFacade().fastcheckTokenExists(this);
 	}
@@ -1752,7 +1804,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 					final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fadein);
 					animationFadeIn.setAnimationListener(new AnimationListener() {
-						
+
 						@Override
 						public void onAnimationStart(final Animation anim) {
 							final Animation translate = 
@@ -1767,7 +1819,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 						public void onAnimationEnd(final Animation anim) {
 						};
 					});
-					
+
 					loginPane.startAnimation(animationFadeIn);
 				} else {
 					if( Log.isLoggable(TAG, Log.WARN)) {
@@ -1792,14 +1844,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		displayActiveLoginMode();
 	}
 
-	
+
 	/**
 	 * Shows passcode login hiding regular login when passcode login is active.
 	 * Shows regular login hiding passcode login when regular login is active.
 	 */
 	private void displayActiveLoginMode() {
-		Log.v(TAG, "DisplayActiveLoginMode");
-		Log.v(TAG, "isForgot? " + pUtils.isForgotPasscode());
 		if(isPasscodeLogin()) {
 			clearPasscodeFields();
 			showPasscodeLogin();
@@ -1812,13 +1862,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			splashLogo.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	private void guiValidationError() {
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundResource(R.drawable.rectangle_red);
 		}
 		validationIV.setVisibility(View.VISIBLE);
-		
+
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -1827,7 +1877,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		}, 1500);
 	}
-	
+
 	private void guiValidationReset(){
 		for (int i = 0; i < 4; i++) {
 			fieldTVs[i].setBackgroundResource(R.drawable.rectangle);
@@ -1839,12 +1889,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		vLogin.setVisibility(View.VISIBLE);
 		vLoginLinks.setVisibility(View.VISIBLE);
 	}
-	
+
 	private void hideUIDLogin() {
 		vLogin.setVisibility(View.GONE);
 		vLoginLinks.setVisibility(View.GONE);
 	}
-	
+
 	private void hidePasscodeLogin() {
 		vPasscode.setVisibility(View.INVISIBLE);
 		vPasscodeLinks.setVisibility(View.INVISIBLE);
@@ -1853,11 +1903,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		final ViewGroup layout = (ViewGroup)findViewById(R.id.login_table);
 		final LayoutParams params = layout.getLayoutParams();
 		params.height = LayoutParams.WRAP_CONTENT;
-		
+
 		//TODO restore padding
 		setToggleBelow(R.id.regular_login);
 	}
-	
+
 	private void setToggleBelow(final int id) {
 		final RelativeLayout at = (RelativeLayout)findViewById(R.id.account_toggle); 
 		final RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -1866,13 +1916,13 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		p.setMargins(0, topMargin, 0, 0);
 		at.setLayoutParams(p);
 	}
-	
+
 	private void showRedExclamation() {
 		exclamationColorRed = true;
 		errorTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.exclamation_red_img, 0, 0, 0);
 		showExclamation();
 	}
-	
+
 	private void showGrayExclamation() {
 		exclamationColorRed = false;
 		errorTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.exclamation_gray_img, 0, 0, 0);
@@ -1882,10 +1932,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private void showExclamation() {
 		isExclamationVisible = true;
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+		errorTextView.setTextColor(getResources().getColor(R.color.black));
 		errorTextView.setCompoundDrawablePadding(px);
 		errorTextView.setGravity(Gravity.LEFT);
 	}
-	
+
 	private void hideExclamation() {
 		isExclamationVisible = false;
 		errorTextView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
@@ -1904,7 +1955,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	private boolean isPasscodeLogin() {
 		return isCardLogin() && pUtils.doesDeviceTokenExist() && !isUserIDLogin;
 	}
-	
+
 	protected void forceSoftKeyboardShown(final int inputId) {
 		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.showSoftInput(fieldTVs[inputId], InputMethodManager.SHOW_IMPLICIT);
@@ -1920,11 +1971,11 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 		}
 	}
-	
+
 	private void setupPasscode(){
-	    if (pUtils == null) {
+		if (pUtils == null) {
 	    	pUtils = new PasscodeUtils(this.getApplicationContext());
-	    }
+		}
 		pUtils.setForgotPasscode(false);
 		welcomeTV.setText(pUtils.getWelcomeMessage());
 		setupPasscodeField(0);
@@ -1932,7 +1983,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		setupPasscodeField(2);
 		setupSubmit();
 	}
-	
+
 	private void clearField(final TextView paramTextView) {
 		paramTextView.setText("");
 	}
@@ -1966,7 +2017,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			return fieldTVs[fieldTVs.length - 1];
 		}
 	}
-	
+
 	private boolean validatePasscodeField(final int paramInt, final Editable paramEditable) {
 		final EditText et = fieldTVs[paramInt];
 		// validate input is exactly 1 character and 0-9
@@ -1982,7 +2033,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			return false;
 		}
 	}
-	
+
 	private int getNextInput() {
 		for (int i = 0; i < fieldTVs.length; i++) {
 			if (fieldTVs[i].length() == 0) {
@@ -1991,7 +2042,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 		return 0;
 	}
-	
+
 	private class PasscodeTouchListner implements View.OnTouchListener {
 
 		private final int fieldInt;
@@ -2012,7 +2063,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 			return false;
 		}
-		
+
 	}
 	private void setupPasscodeField(final int fieldInt) {
 		final EditText et = fieldTVs[fieldInt];
@@ -2040,7 +2091,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		});
 	}
-	
+
 	private class MyPasscodeKeyListener implements View.OnKeyListener {
 		public static final int KEY_DELETE = 67;
 		@Override
@@ -2073,6 +2124,10 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		et.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(final Editable paramAnonymousEditable) {
+				if (isRestoreInstance) {
+					//DEFECT 110796 - don't fire login request during onRestoreInstanceState, this will result in duplicate request often during device rotation
+					return;
+				}
 				if (!validatePasscodeField(3, paramAnonymousEditable)) {
 					return;
 				}
@@ -2119,7 +2174,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 
 			phoneGapInitComplete = true;
 		}
-		
+
 		// Only need to reset login views if splash screen was visible
 		// (=> Login views already visible, don't reset any previous errors)
 		if (findViewById(R.id.login_pane).getVisibility() != View.VISIBLE) {
@@ -2226,30 +2281,30 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 
-	
+
 	@Override
-    public int getBehindContentView() {
-        return R.layout.fastcheck_frame;
-    }
-	
+	public int getBehindContentView() {
+		return R.layout.fastcheck_frame;
+	}
+
 	@Override
 	public void showActionBar(){
 		setBehindContentView(getBehindContentView());
 	}
-	
+
 	@Override
 	protected void showActionBarLogo(final boolean show) {}
-	
+
 	@Override
 	public void setActionBarTitle(final String title) {}
-	
+
 	@Override
 	public String getActionBarTitle() {
 		return StringUtility.EMPTY;
 	}
-	
-		
-	
+
+
+
 	@Override
 	public void onBackPressed() {
 		// Clear globals cache
@@ -2273,7 +2328,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		//call setupButtons to attach on click listeners.
 		setupButtons();
 	}
-	
+
 	/*
 	 * Remove onclick listeners from all ui buttons and clickable elements
 	 * This keeps the user from navigating to another screen during the login process.
@@ -2313,33 +2368,31 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	 * @param view
 	 */
 	public void setupUI(final View view) {
-	    //Set up touch listener for non-text box views to hide keyboard.
-	    if(!(view instanceof EditText)) {
-	        view.setOnTouchListener(new View.OnTouchListener() {
-	            @Override
+		//Set up touch listener for non-text box views to hide keyboard.
+		if(!(view instanceof EditText)) {
+			view.setOnTouchListener(new View.OnTouchListener() {
+				@Override
 				public boolean onTouch(final View v, final MotionEvent event) {
-	                hideSoftKeyboard(LoginActivity.this);
-	                return false;
-	            }
-	        });
-	    }
-	    //If a layout container, iterate over children and seed recursion.
-	    if (view instanceof ViewGroup) {
-	        for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-	            final View innerView = ((ViewGroup) view).getChildAt(i);
-	            setupUI(innerView);
-	        }
-	    }
+					hideSoftKeyboard(LoginActivity.this);
+					return false;
+				}
+			});
+		}
+		//If a layout container, iterate over children and seed recursion.
+		if (view instanceof ViewGroup) {
+			for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+				final View innerView = ((ViewGroup) view).getChildAt(i);
+				setupUI(innerView);
+			}
+		}
 	}
 	/**
 	 * Handles back nav for passcode specific scenarios
 	 */
-	
+
 	@Override
 	public boolean onKeyDown(final int keyCode, final KeyEvent event) {
-		//TODO - sgoff0 currently navigates all the way back to passcode every time even if on policy & terms
 		if (keyCode == KeyEvent.KEYCODE_BACK && isTaskRoot()) {
-			Log.v(TAG, "back pressed");
 			if (pUtils.isForgotPasscode()) {
 				pUtils.setForgotPasscode(false);
 				errorTextView.setVisibility(View.GONE);
@@ -2372,4 +2425,4 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 		}
 	}
 }	
-	
+
