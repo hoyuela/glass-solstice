@@ -1,81 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_table_corners_shape" >
 
     <TextView
-        android:id="@+id/titleLbl"
+        android:id="@+id/title"
         style="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:paddingRight="10dp"
-         android:textColor="@android:color/white"
+        android:layout_marginTop="@dimen/groups_of_elements_padding"
+        android:paddingBottom="@dimen/between_related_elements_padding"
+        android:paddingRight="15dp"
         android:text="Title:"
-        android:textSize="20dp" />
+        android:textColor="@color/title"
+        android:textSize="10dp" />
 
     <EditText
-        android:id="@+id/titleAdd"
+        android:id="@+id/name"
+        style="@style/common_edittext_grey_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/title"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/titleLbl"
+        android:layout_toRightOf="@+id/title"
         android:paddingLeft="10dp"
-        android:textSize="20dp"
-        android:text="My Site" />
+        android:text="My Site"
+        android:textColor="@color/title"
+        android:textSize="10dp" />
 
     <TextView
-        android:id="@+id/urlLbl"
+        android:id="@+id/url_label"
         style="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/titleLbl"
+        android:layout_below="@+id/title"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
-        android:paddingRight="10dp"
-        android:textColor="@android:color/white"
+        android:paddingBottom="@dimen/between_related_elements_padding"
+        android:paddingRight="15dp"
         android:text="URL:"
-        android:textSize="20dp" />
+        android:textColor="@color/title"
+        android:textSize="10dp" />
 
     <EditText
-        android:id="@+id/urlAdd"
+        android:id="@+id/url"
+        style="@style/common_edittext_grey_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/title"
+        android:layout_alignBottom="@+id/url_label"
+        android:layout_alignLeft="@+id/name"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/urlLbl"
         android:layout_marginRight="20dp"
-        android:layout_toRightOf="@+id/urlLbl"
+        android:layout_toRightOf="@+id/url_label"
         android:paddingLeft="10dp"
-        android:textSize="20dp" 
-        android:text="http://" />
+        android:text="http://"
+        android:textColor="@color/title"
+        android:textSize="10dp" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/urlAdd"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/light_gray_bkgrd"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/cancelBtn"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/forms_inner_padding"
             android:layout_weight="1.0"
-            android:text="Cancel" />
+            android:background="@drawable/common_atm_button_selector"
+            android:text="Cancel"
+            android:textColor="@color/title"
+            android:onClick="close" />
 
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="0.0dip"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/forms_inner_padding"
             android:layout_weight="1.0"
-            android:text="Save" />
+            android:background="@drawable/common_atm_button_selector"
+            android:text="Save"
+            android:textColor="@color/title" 
+            android:onClick="addUrl"/>
     </LinearLayout>
 
 </RelativeLayout>

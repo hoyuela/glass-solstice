@@ -78,10 +78,11 @@ public class BankUrlChangerService extends RemoteViewsService{
 			final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.bank_url_changer_list_item);
 			final BankUrlSite site = sites.get(position);
 			if(null != site){
-				views.setTextViewText(R.id.url_name, site.title);
+				views.setTextViewText(R.id.title, site.title);
+				views.setTextViewText(R.id.link, site.link);
 				final Intent intent = new Intent(CHANGE_URL_INTENT);
 				intent.putExtra(NEW_BASE_URL, site.link);
-				views.setOnClickFillInIntent(R.id.url_name, intent);
+				views.setOnClickFillInIntent(R.id.bank_url_layout, intent);
 			}
 			return views;
 		}

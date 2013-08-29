@@ -273,6 +273,9 @@
         	android:permission="android.permission.BIND_REMOTEVIEWS"/>
         
         <activity android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerActivity"  android:theme="@style/AppTheme.NoTitleBar" />
+        <activity android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerModifySiteActivity" android:theme="@style/AppTheme.NoTitleBar"/>
+        
+        
         <activity android:name="com.discover.mobile.bank.whatsnew.WhatsNewActivity"  android:theme="@style/AppTheme.NoTitleBar" />
     </application>
 

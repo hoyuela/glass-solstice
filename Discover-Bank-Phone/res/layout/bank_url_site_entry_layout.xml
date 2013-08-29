@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    android:background="@drawable/list_item_default_background">
+    android:background="@drawable/common_atm_button_selector"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/delete_box"
@@ -11,8 +11,9 @@
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/forms_inner_padding"
         android:background="@drawable/black_gradient_square"
-        android:layout_marginRight="@dimen/forms_inner_padding"/>
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/title"
@@ -23,7 +24,8 @@
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         android:text="Title"
-        android:textSize="30dp" >
+        android:textColor="@color/title"
+        android:textSize="15dp" >
     </TextView>
 
     <TextView
@@ -35,7 +37,8 @@
         android:paddingLeft="20dp"
         android:paddingRight="10dp"
         android:text="http://www.google.com"
-        android:textSize="20dp" >
+        android:textColor="@color/title"
+        android:textSize="10dp" >
     </TextView>
 
 </RelativeLayout>
