@@ -10,13 +10,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.util.Base64;
 
-import com.discover.mobile.common.net.HttpHeaders;
-
+import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.SessionCookieManager;
 import com.discover.mobile.card.common.sharedata.CardShareDataStore;
 import com.discover.mobile.card.common.utils.Utils;
-
-import com.discover.mobile.card.R;
+import com.discover.mobile.common.net.HttpHeaders;
 
 /**
  * This class will hold the utility functions related to web service connection
@@ -73,16 +71,18 @@ public final class NetworkUtility {
                 + Base64.encodeToString(concatenatedCreds.getBytes(),
                         Base64.NO_WRAP);
     }
-    
+
     /**
-     * Creates the authorization string (used in Authorization header) using the 
+     * Creates the authorization string (used in Authorization header) using the
      * passcode scheme and device token and passcode as credentials.
+     * 
      * @param deviceToken
-     * @param passcode Authorization string
+     * @param passcode
+     *            Authorization string
      * @return
      */
-    public static String getPasscodeAuthorizationString(final String deviceToken,
-            final String passcode) {
+    public static String getPasscodeAuthorizationString(
+            final String deviceToken, final String passcode) {
         final String concatenatedCreds = deviceToken + ": :" + passcode;
         return "DCRDPasscode "
                 + Base64.encodeToString(concatenatedCreds.getBytes(),

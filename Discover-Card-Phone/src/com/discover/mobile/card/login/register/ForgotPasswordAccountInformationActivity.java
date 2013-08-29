@@ -65,14 +65,14 @@ public class ForgotPasswordAccountInformationActivity extends
         details.userId = value;
     }
 
-    /*  13.4 Code CleanUp*/
-  /*  @Override
-    protected NetworkServiceCall<?> createServiceCall(
-            final AsyncCallback<Object> callback,
-            final AccountInformationDetails details) {
-
-        return new ForgotPasswordCall(this, callback, details);
-    }*/
+    /* 13.4 Code CleanUp */
+    /*
+     * @Override protected NetworkServiceCall<?> createServiceCall( final
+     * AsyncCallback<Object> callback, final AccountInformationDetails details)
+     * {
+     * 
+     * return new ForgotPasswordCall(this, callback, details); }
+     */
 
     /**
      * Returns the activity class that will be the launched activity after this,
@@ -123,7 +123,6 @@ public class ForgotPasswordAccountInformationActivity extends
 
     @Override
     public void onClick(final View v) {
-        // TODO Auto-generated method stub
         if (v.getId() == R.id.provide_feedback_button) {
             if (accountIdentifierField.isUsernameField()) {
                 Utils.createProvideFeedbackDialog(
@@ -136,16 +135,17 @@ public class ForgotPasswordAccountInformationActivity extends
             startActivity(forgotCredentialsActivity);
 
             finish();
-            //Defect id 95853
-        }else if(v.getId() == R.id.privacy_terms)
-        {
-            //Changes for 13.4 start
-//          FacadeFactory.getBankFacade().navToCardPrivacyTerms();
-          Intent privacyTerms = new Intent(ForgotPasswordAccountInformationActivity.this , PrivacyTermsLanding.class);
-          startActivity(privacyTerms);
-          //Changes for 13.4 end
+            // Defect id 95853
+        } else if (v.getId() == R.id.privacy_terms) {
+            // Changes for 13.4 start
+            // FacadeFactory.getBankFacade().navToCardPrivacyTerms();
+            Intent privacyTerms = new Intent(
+                    ForgotPasswordAccountInformationActivity.this,
+                    PrivacyTermsLanding.class);
+            startActivity(privacyTerms);
+            // Changes for 13.4 end
         }
-        //Defect id 95853
+        // Defect id 95853
     }
 
 	@Override

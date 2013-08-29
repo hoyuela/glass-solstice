@@ -4,12 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.CardEventListener;
 import com.discover.mobile.card.common.net.service.WSAsyncCallTask;
 import com.discover.mobile.card.common.net.service.WSRequest;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.passcode.model.json.Status;
 
 public class GetStatusRequest implements PasscodeRequest {
@@ -36,7 +36,7 @@ public class GetStatusRequest implements PasscodeRequest {
 			try {
 				urlEncodedToken = URLEncoder.encode(this.token, "utf-8");
 			} catch (UnsupportedEncodingException e) {
-				Log.e(TAG, "Cannot URL encode device token");
+				Utils.log(TAG, "Cannot URL encode device token");
 			}
 			this.url += "?deviceToken=" + urlEncodedToken;
 		}

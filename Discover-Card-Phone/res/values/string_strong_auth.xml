@@ -29,6 +29,9 @@
     <!-- Confirm dialog text -->
     <string name="sa_success_title">Success!</string>
     <string name="sa_confirm_text">Your security questions and answers have been successfully set.</string>
+    <!-- 	 13.5 Changes  -->
+    <string name="sa_confirm_text_forgot_user">Your security questions have been saved.</string>
+    <!-- 	 13.5 Changes  -->
     <string name="sa_confirm_done">Done</string>
     
     <string name="sa_question_answer_list">questionanswers</string>

@@ -1,7 +1,6 @@
 package com.discover.mobile.card.passcode;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.discover.mobile.card.CardMenuItemLocationIndex;
 import com.discover.mobile.card.R;
@@ -20,7 +19,6 @@ public class PasscodeLandingFragment extends BaseFragment {
 	@Override
 	public void onCreate(final Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-        Log.v(TAG, "onCreate");
         new PasscodeRouter(this).getStatusAndRoute();
 	}
 

@@ -1,7 +1,6 @@
 package com.discover.mobile.card.passcode.enable;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.v(TAG, "onCreate");
 		if (!this.isStopping) {
 			TrackingHelper.trackPageView(AnalyticsPage.PASSCODE_ENABLE_STEP1);
 		}
@@ -34,7 +32,6 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState) {
 		//If you return a View from here, you will later be called in onDestroyView() when the view is being released.
-		Log.v(TAG, "onCreateView");
 		final View view = inflater.inflate(R.layout.passcode_enable_step_1,
 				null);
 
@@ -80,7 +77,6 @@ public class PasscodeEnableStep1Fragment extends BaseFragment  {
 	private final class EnablePasscodeStrongAuthFlow extends StrongAuthDefaultResponseHandler{
 		@Override
 		public void onStrongAuthSucess(Object data) {
-			Log.v(TAG, "Success");
 			makeFragmentVisible(new PasscodeEnableStep2Fragment());
 		}
 	}

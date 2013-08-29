@@ -1,6 +1,7 @@
 package com.discover.mobile.card.services.auth;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import com.discover.mobile.common.Struct;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -50,6 +51,11 @@ public class AccountDetails implements Serializable {
     public boolean smcOutageMode;
     public boolean isSSNMatched;
     public boolean isSSOUser;
+    
+    /*    13.5  Changes */
+    @JsonProperty("hideScreens")
+    public ArrayList<String> hideScreens;
+    /*    13.5  Changes */
 
     @Struct
     public static class PrimaryCardMember {

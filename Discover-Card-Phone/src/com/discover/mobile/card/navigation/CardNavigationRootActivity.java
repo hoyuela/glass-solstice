@@ -77,7 +77,7 @@ import com.discover.mobile.common.IntentExtraKey;
 import com.discover.mobile.common.error.ErrorHandler;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.nav.NavigationRootActivity;
-
+import com.discover.mobile.common.nav.StatusBarFragment;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.slidingmenu.lib.SlidingMenu;
@@ -404,7 +404,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
             final String email = extras.getString(IntentExtraKey.EMAIL);
             final String lastFour = extras
                     .getString(IntentExtraKey.ACCOUNT_LAST4);
-            showConfirmationModal(screenType, userId, email, lastFour);
+            final boolean isAccountUnlock = extras.getBoolean(IntentExtraKey.IS_ACCOUNT_UNLOCK);
+            showConfirmationModal(screenType, userId, email, lastFour, isAccountUnlock);
         }
 
     }
@@ -422,7 +423,8 @@ public class CardNavigationRootActivity extends NavigationRootActivity
      *            - last four account number digits to place in the modal
      */
     protected void showConfirmationModal(final String screenType,
-            final String userId, final String email, final String lastFour) {
+            final String userId, final String email, final String lastFour,
+            final boolean isAccountUnlock) {
 
         final ModalConfirmationTop top = new ModalConfirmationTop(this, null);
         final ModalAlertWithOneButton modal = new ModalAlertWithOneButton(this,
@@ -862,7 +864,6 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         Utils.log("CardNavigationRootActivity", "frag count is " + fragCount);
 
         String TAG = "CardnavigationRootActivity";
-        Log.v(TAG, "Frag Count: " + fragCount);
         if (fragCount > 2) {
             String fragTag = fragManager.getBackStackEntryAt(fragCount - 2)
                     .getName();

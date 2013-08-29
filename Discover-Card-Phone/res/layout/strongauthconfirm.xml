@@ -1,37 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@drawable/card_popup_whitebg"
-    >
-
-    <TextView
-        android:id="@+id/sa_success"
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_popup_whitebg" >
+<!-- 	/* 13.5 Changes */ -->
+    <ScrollView
+        android:id="@+id/registerconfirmscroll"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginTop="18dp"
-        android:includeFontPadding="false"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="@string/sa_success_title"
-        android:textColor="#ff6600"
-        android:textSize="24dp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="56dp" >
 
-    <TextView
-        android:id="@+id/sa_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sa_success"
-        android:layout_marginTop="14dp"
-        android:includeFontPadding="false"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="@string/sa_confirm_text"
-        android:textColor="@color/darkgray"
-        android:textSize="18dp"
-        android:textStyle="normal" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           >
+
+            <TextView
+                android:id="@+id/sa_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:includeFontPadding="false"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/sa_success_title"
+                android:textColor="#ff6600"
+                android:textSize="26dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sa_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sa_success"
+                android:layout_marginTop="14dp"
+                android:includeFontPadding="false"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/sa_confirm_text"
+                android:textColor="@color/darkgray"
+                android:textSize="18dp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/account_info_confirm_security_precaution_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sa_message"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="14dp"
+                android:includeFontPadding="false"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:text="@string/account_info_confirm_security_precaution_text"
+                android:textColor="@color/darkgray"
+                android:textSize="18dp"
+                android:textStyle="normal" 
+                android:visibility="gone"
+                />
+
+            <RelativeLayout
+                android:id="@+id/account_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/account_info_confirm_security_precaution_label"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp" 
+                android:visibility="gone"
+                >
+
+                <View
+                    android:id="@+id/top_separator_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#d0d0d0" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_summary_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/top_separator_line"
+                    android:layout_marginTop="8dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_unlock_confirm_summary_text"
+                    android:textColor="#3d484d"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_id_title_label"
+                    style="@style/confirmation_info_header_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_summary_label"
+                    android:layout_marginTop="14dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_id_title_text"
+                    android:textColor="#8a9499"
+                    android:textSize="14dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_id_label"
+                    style="@style/confirmation_info_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_id_title_label"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_id_placeholder_text"
+                    android:textColor="#293033"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_email_title_label"
+                    style="@style/confirmation_info_header_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_id_label"
+                    android:layout_marginTop="14dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_email_title_text"
+                    android:textColor="#8a9499"
+                    android:textSize="14dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_email_label"
+                    style="@style/confirmation_info_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_email_title_label"
+                    android:includeFontPadding="false"
+                    android:maxLines="@integer/MAX_INPUT_LINES"
+                    android:text="@string/email_placeholder"
+                    android:textColor="#293033"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_account_title_label"
+                    style="@style/confirmation_info_header_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_email_label"
+                    android:layout_marginTop="14dp"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_account_title_text"
+                    android:textColor="#8a9499"
+                    android:textSize="14dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_account_label"
+                    style="@style/confirmation_info_value_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_account_title_label"
+                    android:layout_toRightOf="@+id/account_info_confirm_account_stars_label"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_account_text"
+                    android:textColor="#293033"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/account_info_confirm_account_stars_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/account_info_confirm_account_title_label"
+                    android:includeFontPadding="false"
+                    android:text="@string/account_info_confirm_account_stars_text"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="#293033"
+                    android:textSize="18dp"
+                    android:textStyle="normal" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    	<!-- /* 13.5 Changes */ -->
 
     <Button
         android:id="@+id/sa_done"

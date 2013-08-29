@@ -9,11 +9,9 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.google.common.base.Strings;
-
-import com.discover.mobile.card.common.utils.Utils;
-
 import com.discover.mobile.card.R;
+import com.discover.mobile.card.common.utils.Utils;
+import com.google.common.base.Strings;
 
 /**
  * Custom edit text field for the manage push alerts edit text items

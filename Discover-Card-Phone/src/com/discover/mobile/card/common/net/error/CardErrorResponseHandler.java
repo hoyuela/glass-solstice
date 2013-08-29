@@ -1,6 +1,7 @@
 package com.discover.mobile.card.common.net.error;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,9 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
-import android.widget.EditText;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
@@ -21,8 +20,11 @@ import com.discover.mobile.card.error.CardErrHandler;
 import com.discover.mobile.card.error.CardErrorHandlerUi;
 import com.discover.mobile.card.facade.CardLoginFacadeImpl;
 import com.discover.mobile.card.login.register.AccountUnlockInformationActivity;
+import com.discover.mobile.card.login.register.ForgotUserIdActivity;
 import com.discover.mobile.common.DiscoverActivityManager;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
+import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.facade.FacadeFactory;
 import com.discover.mobile.common.facade.LoginActivityFacade;
 import com.discover.mobile.common.utils.PasscodeUtils;
@@ -75,24 +77,37 @@ public final class CardErrorResponseHandler {
     
     //invalid external status
     public static final int INVALID_EXTERNAL_STATUS = 4031102;
-    
-    //show 1 more attempt
+
+    // show 1 more attempt
     public static final int ULR_LAST_ATTEMPT = 4011103;
     public static final int ULR_LAST_ATTEMPT_PASSCODE_LAST_ATTEMPT = 4012109;
-    public static final int ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT = 4012113; //should I show no message?
-    
-    // BAU lockout (user has 3 failed login attempt has is locked out from the app - regardless of whether those attempts were with passcode or uid/pwd)
+    public static final int ULR_ATTEMPTS_PASSCODE_LAST_ATTEMPT = 4012113; // should
+                                                                          // I
+                                                                          // show
+                                                                          // no
+                                                                          // message?
+
+    // BAU lockout (user has 3 failed login attempt has is locked out from the
+    // app - regardless of whether those attempts were with passcode or uid/pwd)
     public static final int ULR_LOCK = 4031101;
     public static final int ULR_LOCK_PASSCODE_LAST_ATTEMPT = 4032110;
-    
-    //User has 5 failed attempts with passcode in a row and their passcode is now disabled. However, they still have attempts remaining with their uid/pwd so they're not locked out from the app. The title of this modal in the comps is confusing.
-    public static final int ULR_ATTEMPTS_PASSCODE_DELTED = 4032114; //delete passcode
-    public static final int ULR_LAST_ATTEMPT_PASSCODE_DELTED = 4032111; //delete passcode
-    
-    //The user has 5 failed attempts with passcode in a row so their passcode is disabled AND they do not have any more login attempts remaining so they are locked out from the app. 
-    public static final int ULR_LOCKED_PASSCODE_DELTED = 4032112; // delete passcode
 
-    //show passcode not bound message
+    // User has 5 failed attempts with passcode in a row and their passcode is
+    // now disabled. However, they still have attempts remaining with their
+    // uid/pwd so they're not locked out from the app. The title of this modal
+    // in the comps is confusing.
+    public static final int ULR_ATTEMPTS_PASSCODE_DELTED = 4032114; // delete
+                                                                    // passcode
+    public static final int ULR_LAST_ATTEMPT_PASSCODE_DELTED = 4032111; // delete
+                                                                        // passcode
+
+    // The user has 5 failed attempts with passcode in a row so their passcode
+    // is disabled AND they do not have any more login attempts remaining so
+    // they are locked out from the app.
+    public static final int ULR_LOCKED_PASSCODE_DELTED = 4032112; // delete
+                                                                  // passcode
+
+    // show passcode not bound message
     public static final int PASSCODE_NOT_BOUND = 4012107;
 
     public static final int USER_ACCOUNT_LOCKED = 403;
@@ -119,13 +134,13 @@ public final class CardErrorResponseHandler {
     }
 
     public CardErrorResponseHandler(final CardErrorHandlerUi errorHandlerUi,
-    		boolean isPasscodeLogin) {
+            final boolean isPasscodeLogin) {
         this.errorHandlerUi = errorHandlerUi;
         this.isPasscodeLogin = isPasscodeLogin;
     }
 
     public CardErrorResponseHandler() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**
@@ -138,8 +153,13 @@ public final class CardErrorResponseHandler {
     }
 
     private boolean isCardLoginError() {
-    	return CardLoginFacadeImpl.class.isInstance(errorHandlerUi);
+        return CardLoginFacadeImpl.class.isInstance(errorHandlerUi);
     }
+
+    private boolean isForgotUserIdError() {
+    	return ForgotUserIdActivity.class.isInstance(errorHandlerUi);
+    }
+
     /**
      * Handle Card error
      * 
@@ -157,39 +177,50 @@ public final class CardErrorResponseHandler {
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
             final Context context = DiscoverActivityManager.getActiveActivity();
 
-            ///non-card login related
-            if (!isCardLoginError()) {
-            	handleGenericError(cardErrorHold.getErrorTitle(),
+            // /non-card login related
+            //forgotUserId lockout should not be handled by genericError
+            if (!isCardLoginError() && !(isForgotUserIdError() && lockoutErrors.contains(errorCodeNumber))) {
+                handleGenericError(cardErrorHold.getErrorTitle(),
                         cardErrorHold.getErrorMessage(),
                         cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-            	return;
-            } 
+                return;
+            }
 
-            //anything below is card login specific
-            
+            // anything below is card login specific
+
             final Bundle bundle = new Bundle();
             bundle.putString(IntentExtraKey.ERROR_CODE, cardErrorHold.getErrorCode());
             bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, cardErrorHold.getErrorMessage());
 
             PasscodeUtils pUtils = new PasscodeUtils(context);
             if (passcodeDisabledErrors.contains(errorCodeNumber)) {
-            	pUtils.deletePasscodeToken();
+                pUtils.deletePasscodeToken();
             }
-            
-            final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
-            if (INVALID_EXTERNAL_STATUS == errorCodeNumber && pUtils.isPasscodeToken()) {
+
+            final LoginActivityFacade loginFacade = FacadeFactory
+                    .getLoginFacade();
+            if (INVALID_EXTERNAL_STATUS == errorCodeNumber
+                    && pUtils.isPasscodeToken()) {
             	pUtils.deletePasscodeToken();
-            	EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(context, R.string.E_T_4031102_passcode, R.string.E_4031102_passcode, R.string.ok);
-            	modalUIDAndPasscodeLockout.hideNeedHelpFooter();
-            	showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
+                EnhancedContentModal modalUIDAndPasscodeLockout = new EnhancedContentModal(
+                        context, R.string.E_T_4031102_passcode,
+                        R.string.E_4031102_passcode, R.string.ok);
+                modalUIDAndPasscodeLockout.hideNeedHelpFooter();
+                showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
             	if (cardErrorHold.isTempLocked()) {
+            		TrackingHelper.trackBankPage(AnalyticsPage.LOCKOUT_TEMP);
             		//You have exceeded the maximum number of login attempts. <br> Tap below to unlock your account.
             		int errorTitle = context.getResources().getIdentifier("E_T_" + errorCodeNumber, "string", context.getPackageName());
             		int errorMessage = context.getResources().getIdentifier("E_" + errorCodeNumber + "_TEMP", "string", context.getPackageName());
             		Runnable unlockAccontAction = new Runnable(){
 						@Override
 						public void run() {
+							HashMap<String, Object> extras = new HashMap<String, Object>();
+							extras.put("my.prop1", AnalyticsPage.ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_prop1);
+							extras.put("pe", AnalyticsPage.ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_pe);
+							extras.put("pev1", AnalyticsPage.ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_pev1);
+							TrackingHelper.trackCardPage(null, extras);
 							final Intent callIntent = new Intent(context, AccountUnlockInformationActivity.class);
 		                    context.startActivity(callIntent);
 						}
@@ -199,12 +230,17 @@ public final class CardErrorResponseHandler {
             		modalLockout.showErrorIcon();
             		showAlertNavToLogin(modalLockout, bundle);
             	} else {
+            		TrackingHelper.trackBankPage(AnalyticsPage.LOCKOUT_PERM);
             		int errorTitle = context.getResources().getIdentifier("E_T_" + errorCodeNumber, "string", context.getPackageName());
             		int errorMessage = context.getResources().getIdentifier("E_" + errorCodeNumber + "_PERM", "string", context.getPackageName());
             		Runnable callNowAction = new Runnable(){
 						@Override
 						public void run() {
-//							Intent callIntent = new Intent(Intent.ACTION_CALL);
+							HashMap<String, Object> extras = new HashMap<String, Object>();
+							extras.put("my.prop1", AnalyticsPage.ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_prop1);
+							extras.put("pe", AnalyticsPage.ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_pe);
+							extras.put("pev1", AnalyticsPage.ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_pev1);
+							TrackingHelper.trackCardPage(null, extras);
 							Intent callIntent = new Intent(Intent.ACTION_DIAL);
 							callIntent.setData(Uri.parse("tel:"+context.getResources().getString(R.string.phone_customer_service_locked)));
 		                    context.startActivity(callIntent);
@@ -258,15 +294,6 @@ public final class CardErrorResponseHandler {
     	}
     }
 
-    private void handleInlineError(String errorMessage) {
-    	setErrorText(errorMessage);
-        // setInputFieldsDrawableToRed();
-        getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(
-                getErrorFieldUi(), errorMessage);
-        clearInputs();
-		
-	}
-
 	/**
      * Handle generic error
      * 
@@ -312,39 +339,7 @@ public final class CardErrorResponseHandler {
     public void handleAppError(final String errorTitle, final String errorText) {
         showNativeAlert(errorTitle, errorText);
     }
-
-    /**
-     * Clears the activity edit texts in the getFieldsToClearAfterError()
-     * interface method
-     */
-    private void clearInputs() {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
-            for (final EditText text : errorHandlerUi.getInputFields()) {
-                text.setText("");
-            }
-        }
-    }
-
-    /**
-     * A common method to display an error message on the error field and make
-     * the error label visible.
-     * 
-     * The activity needs to implement ErrorFieldActivity for this functionality
-     * to work.
-     * 
-     * @param text
-     * @param errorText
-     */
-    private void setErrorText(final String errorText) {
-        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
-        if (errorHandlerUi != null) {
-            errorHandlerUi.getErrorLabel().setText(errorText);
-            errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
-            
-        }
-    }
-
+    
     /**
      * If an error field activity, we can do more .. like display error text
      * highlight fields red, etc.

@@ -35,7 +35,6 @@ public class StrongAuthQuestionList extends ListActivity implements
         OnClickListener {
 
     private int lastselectedQuestion1;
-    private Button logout;
     private TextView privacyTerms, provideFeedback;
     private Boolean isQuestionSelected = false;
     private Intent strongAuthEnterInfoActivity;
@@ -51,7 +50,8 @@ public class StrongAuthQuestionList extends ListActivity implements
          */
 
         final ListView listView = getListView();
-        logout = (Button) findViewById(R.id.logout_button);
+    	/*Defect ID: 110817 13.4 */
+        //logout = (Button) findViewById(R.id.logout_button);
         privacyTerms = (TextView) findViewById(R.id.privacy_terms);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         handlingClickEvents();
@@ -129,7 +129,8 @@ public class StrongAuthQuestionList extends ListActivity implements
 
     private void handlingClickEvents() {
         // TODO Auto-generated method stub
-        logout.setOnClickListener(this);
+    	/*Defect ID: 110817 13.4 */
+        //logout.setOnClickListener(this);
         privacyTerms.setOnClickListener(this);
         provideFeedback.setOnClickListener(this);
     }
@@ -155,12 +156,13 @@ public class StrongAuthQuestionList extends ListActivity implements
             startActivity(privacyTerms);
         } else if (v.getId() == R.id.provide_feedback_button) {
             Utils.createProvideFeedbackDialog(this, "strongAuthEnroll-pg");
-        } else if (v.getId() == R.id.logout_button) {
+        	/*Defect ID: 110817 13.4 */
+        } /*else if (v.getId() == R.id.logout_button) {
 
             // Changes for 13.4 start
             Utils.logoutUser(this, false);
 
-        }
+        }*/
     }
 
     class SecurityQuestions1SpinnerAdapter extends ArrayAdapter<String> {

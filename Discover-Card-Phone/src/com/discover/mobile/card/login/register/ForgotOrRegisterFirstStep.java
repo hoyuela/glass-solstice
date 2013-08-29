@@ -12,13 +12,14 @@ import static com.discover.mobile.card.common.net.error.RegistrationErrorCodes.R
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -36,6 +37,7 @@ import com.discover.mobile.card.common.net.error.CardErrorBean;
 import com.discover.mobile.card.common.net.error.CardErrorResponseHandler;
 import com.discover.mobile.card.common.net.error.CardErrorUIWrapper;
 import com.discover.mobile.card.common.ui.CardNotLoggedInCommonActivity;
+import com.discover.mobile.card.common.ui.modals.EnhancedTwoButtonModal;
 import com.discover.mobile.card.common.uiwidget.CardExpirationDateEditText;
 import com.discover.mobile.card.common.uiwidget.CustomDatePickerDialog;
 import com.discover.mobile.card.common.uiwidget.DatePickerEditText;
@@ -47,6 +49,7 @@ import com.discover.mobile.card.services.auth.forgot.ForgotBoth;
 import com.discover.mobile.card.services.auth.forgot.ForgotPassword;
 import com.discover.mobile.card.services.auth.registration.AccountInformationDetails;
 import com.discover.mobile.common.IntentExtraKey;
+import com.discover.mobile.common.analytics.AnalyticsPage;
 import com.discover.mobile.common.analytics.TrackingHelper;
 import com.discover.mobile.common.utils.CommonUtils;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -120,9 +123,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     protected TextView helpNumber;
     protected TextView provideFeedback;
     protected TextView welcomeHeading;
-  //Defect id 95853
-    protected TextView privacy_terms ;
-  //Defect id 95853
+    // Defect id 95853
+    protected TextView privacy_terms;
+    // Defect id 95853
     protected TextView cancel;
 
     // INPUT FIELDS
@@ -160,10 +163,12 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             AccountInformationDetails details, String value);
 
     protected abstract Class<?> getSuccessfulStrongAuthIntentClass();
-    
-    /*  13.4 Code CleanUp*/
-/*    protected abstract NetworkServiceCall<?> createServiceCall(
-            AsyncCallback<Object> callback, AccountInformationDetails details);*/
+
+    /* 13.4 Code CleanUp */
+    /*
+     * protected abstract NetworkServiceCall<?> createServiceCall(
+     * AsyncCallback<Object> callback, AccountInformationDetails details);
+     */
 
     protected ForgotOrRegisterFirstStep(final String analyticsPageIdentifier) {
         ANALYTICS_PAGE_IDENTIFIER = analyticsPageIdentifier;
@@ -209,9 +214,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         progress.initChangePasswordHeader(0);
 
         loadAllViews();
-  /*      13.4 chnages start*/
+        /* 13.4 chnages start */
         setSpinnerStyle();
-        /*      13.4 chnages End*/
+        /* 13.4 chnages End */
         setupFieldsAndLabels();
         setupCustomTextChangedListeners();
         provideFeedback.setOnClickListener(this);
@@ -227,19 +232,19 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthSucess(final Object data) {
-                // TODO Auto-generated method stub
+
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthSkipped(final Object data) {
-                // TODO Auto-generated method stub
+
                 navToNextScreenWithDetails(accountInformationDetails);
             }
 
             @Override
             public void onStrongAuthNotEnrolled(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -247,7 +252,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthError(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -255,7 +260,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
             @Override
             public void onStrongAuthCardLock(final Object data) {
-                // TODO Auto-generated method stub
+
                 final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                         ForgotOrRegisterFirstStep.this);
                 cardErrorResHandler.handleCardError((CardErrorBean) data);
@@ -263,21 +268,23 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         };
     }
 
-    /*      13.4 chnages start*/
+    /* 13.4 chnages start */
     private void setSpinnerStyle() {
-		// TODO Auto-generated method stub
-    	cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo , R.drawable.card_spinner_invalid_holo_light);
-    	birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo, R.drawable.card_spinner_invalid_holo_light);
-    	cardExpDatePicker.setupDefaultAppearance();
-    	birthDatePicker.setupDefaultAppearance();
-	}
 
-    /*      13.4 chnages End*/
-	/**
+        cardExpDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
+                R.drawable.card_spinner_invalid_holo_light);
+        birthDatePicker.setUpSpinnerStyle(R.drawable.card_spinner_holo,
+                R.drawable.card_spinner_invalid_holo_light);
+        cardExpDatePicker.setupDefaultAppearance();
+        birthDatePicker.setupDefaultAppearance();
+    }
+
+    /* 13.4 chnages End */
+    /**
      * Initialize the member variables that will reference UI elements.
      */
     public void loadAllViews() {
-        welcomeHeading = (TextView)findViewById(R.id.forgot_password);
+        welcomeHeading = (TextView) findViewById(R.id.forgot_password);
         accountIdentifierFieldLabel = (TextView) findViewById(R.id.account_info_label_one_label);
         accountIdentifierFieldRestrictionsLabel = (TextView) findViewById(R.id.account_information_input_info_label);
         accountIdentifierField = (UsernameOrAccountNumberEditText) findViewById(R.id.account_info_main_input_field);
@@ -295,9 +302,9 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         continueButton = (Button) findViewById(R.id.account_info_continue_button);
         provideFeedback = (TextView) findViewById(R.id.provide_feedback_button);
         cancel = (TextView) findViewById(R.id.account_info_cancel_label);
-      //Defect id 95853
-        privacy_terms= (TextView)findViewById(R.id.privacy_terms);
-      //Defect id 95853
+        // Defect id 95853
+        privacy_terms = (TextView) findViewById(R.id.privacy_terms);
+        // Defect id 95853
     }
 
     /**
@@ -527,11 +534,12 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             // submitFormInfo();
             submit();
         } else {
-        	/*Defect id 95859*/
-        	if(!(accountIdentifierField.isNull()&& ssnField.isNull() && birthDatePicker.isNull() && cardExpDatePicker.isNull())){
-        		showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-        	}
-            
+            /* Defect id 95859 */
+            if (!(accountIdentifierField.isNull() && ssnField.isNull()
+                    && birthDatePicker.isNull() && cardExpDatePicker.isNull())) {
+                showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+            }
+
             resetScrollPosition();
         }
 
@@ -596,7 +604,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
      * @param v
      *            the calling View
      */
-    public void goBack(@SuppressWarnings("unused") final View v) {
+    public void goBack(final View v) {
         goBack();
     }
 
@@ -707,30 +715,40 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                                         .split("_");
                                 final int errorCodeNumber = Integer
                                         .parseInt(errorMsgSplit[0]);
-                                switch (errorCodeNumber) {
+                                String errorMessage = null;
 
-                                case REG_AUTHENTICATION_PROBLEM_SECOND:
-                                case REG_AUTHENTICATION_PROBLEM:
+                                if (errorCodeNumber == REG_AUTHENTICATION_PROBLEM_SECOND || 
+                                		errorCodeNumber == REG_AUTHENTICATION_PROBLEM) {
+                                	errorMessage = getString(R.string.account_info_bad_input_error_text);
                                     showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-                                    break;
-                                case FINAL_LOGIN_ATTEMPT:
+                                } else if (errorCodeNumber == FINAL_LOGIN_ATTEMPT) {
+                                	errorMessage = getString(R.string.login_attempt_warning);
                                     showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-                                    break;
-                                case FAILED_SECURITY:
+                                } else if (errorCodeNumber == FAILED_SECURITY) {
+                                	errorMessage = getString(R.string.account_info_bad_input_error_text);
                                     showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-                                    break;
-                                case BAD_ACCOUNT_STATUS:
-                                case MAX_LOGIN_ATTEMPTS:
-                                case INVALID_EXTERNAL_STATUS:
-                                case ONLINE_STATUS_PROHIBITED:
-                                case INVALID_ONLINE_STATUS:
-                                default:
+                                } else if (errorCodeNumber == MAX_LOGIN_ATTEMPTS) {
+                                	//13.5 handle with new perm lockout modal
+                                	errorMessage = getString(R.string.E_4031101_PERM);
+                                	showPermanentLockoutModal();
+                                } else if (errorCodeNumber == BAD_ACCOUNT_STATUS ||
+                                		errorCodeNumber == INVALID_EXTERNAL_STATUS ||
+                                		errorCodeNumber == ONLINE_STATUS_PROHIBITED ||
+                                		errorCodeNumber == INVALID_ONLINE_STATUS) {
+                                	errorMessage = errorCodeNumber + "";
                                     final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                             ForgotOrRegisterFirstStep.this);
-                                    cardErrorResHandler
-                                            .handleCardError((CardErrorBean) data);
+                                    cardErrorResHandler.handleCardError((CardErrorBean) data);
+                                } else {
+                                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                            ForgotOrRegisterFirstStep.this);
+                                    cardErrorResHandler.handleCardError((CardErrorBean) data);
                                 }
-
+                                if (isAccountUnlock() && errorMessage != null) {
+                                	HashMap<String, Object> extras = new HashMap<String, Object>();
+                                	extras.putAll(TrackingHelper.getProp10Error(AnalyticsPage.ACCOUNT_UNLOCK_STEP1_ERROR, errorMessage));
+                                	TrackingHelper.trackCardPage(null, extras);
+                                }
                             }
                         }, accountInformationDetails);
                 forgotPassword.sendRequest();
@@ -757,30 +775,31 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
                                         .split("_");
                                 final int errorCodeNumber = Integer
                                         .parseInt(errorMsgSplit[0]);
-                                switch (errorCodeNumber) {
-
-                                case REG_AUTHENTICATION_PROBLEM_SECOND:
-                                case REG_AUTHENTICATION_PROBLEM:
-                                    showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-                                    break;
-                                case FINAL_LOGIN_ATTEMPT:
+                                
+                                if (errorCodeNumber == REG_AUTHENTICATION_PROBLEM_SECOND || 
+                                		errorCodeNumber == REG_AUTHENTICATION_PROBLEM) {
+                                	showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
+                                } else if (errorCodeNumber == FINAL_LOGIN_ATTEMPT) {
                                     showMainErrorLabelWithText(getString(R.string.login_attempt_warning));
-                                    break;
-                                case FAILED_SECURITY:
+                                } else if (errorCodeNumber == FAILED_SECURITY) {
                                     showMainErrorLabelWithText(getString(R.string.account_info_bad_input_error_text));
-                                    break;
-                                case BAD_ACCOUNT_STATUS:
-                                case MAX_LOGIN_ATTEMPTS:
-                                case INVALID_EXTERNAL_STATUS:
-                                case ONLINE_STATUS_PROHIBITED:
-                                case INVALID_ONLINE_STATUS:
-                                default:
-                                    final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                } else if (errorCodeNumber == MAX_LOGIN_ATTEMPTS) {
+                                	//13.5 handle with new perm lockout modal
+                                	showPermanentLockoutModal();
+                                } else if (errorCodeNumber == BAD_ACCOUNT_STATUS ||
+                                		errorCodeNumber == INVALID_EXTERNAL_STATUS ||
+                                		errorCodeNumber == ONLINE_STATUS_PROHIBITED ||
+                                		errorCodeNumber == INVALID_ONLINE_STATUS) {
+                                	final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+                                            ForgotOrRegisterFirstStep.this);
+                                    cardErrorResHandler
+                                            .handleCardError((CardErrorBean) data);
+                                } else {
+                                	final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
                                             ForgotOrRegisterFirstStep.this);
                                     cardErrorResHandler
                                             .handleCardError((CardErrorBean) data);
                                 }
-
                             }
                         }, accountInformationDetails);
                 forgotBoth.sendRequest();
@@ -793,7 +812,27 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
             handleError(e);
         }
     }
+    
+    private void showPermanentLockoutModal() {
+    	int errorTitle = R.string.E_T_4031101;
+    	int errorMessage = R.string.E_4031101_PERM;
+    	Runnable callNowAction = new Runnable(){
+    		@Override
+    		public void run() {
+    			Intent callIntent = new Intent(Intent.ACTION_DIAL);
+    			callIntent.setData(Uri.parse("tel:"+getContext().getResources().getString(R.string.phone_customer_service_locked)));
+    			getContext().startActivity(callIntent);
+    		}
+    	};
+    	EnhancedTwoButtonModal modalLockout = new EnhancedTwoButtonModal(getContext(), errorTitle, errorMessage, R.string.call_now, R.string.close_text, callNowAction, null);
+    	modalLockout.hideNeedHelpFooter();
+    	modalLockout.showErrorIcon();
 
+    	final CardErrorResponseHandler cardErrorResHandler = new CardErrorResponseHandler(
+    			ForgotOrRegisterFirstStep.this);
+    	cardErrorResHandler.showCustomAlert(modalLockout);
+    }
+    
     /**
      * This method application error if any occurs
      * 
@@ -815,13 +854,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public void onSuccess(final Object data) {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void OnError(final Object data) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -832,7 +869,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
 
     @Override
     public Context getContext() {
-        // TODO Auto-generated method stub
+
         return this;
     }
 

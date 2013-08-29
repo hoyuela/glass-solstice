@@ -1,11 +1,11 @@
 package com.discover.mobile.card.passcode;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.discover.mobile.card.auth.strong.StrongAuthDefaultResponseHandler;
 import com.discover.mobile.card.auth.strong.StrongAuthHandler;
 import com.discover.mobile.card.common.CardEventListener;
+import com.discover.mobile.card.common.utils.Utils;
 import com.discover.mobile.card.navigation.CardNavigationRootActivity;
 import com.discover.mobile.card.passcode.enable.PasscodeEnableStep1Fragment;
 import com.discover.mobile.card.passcode.forgot.PasscodeForgotStep1Fragment;
@@ -77,7 +77,7 @@ public class PasscodeRouter {
 	}
 	
 	private void navigateForgot(){
-		Log.v(TAG, "Navigate Forgot");
+		Utils.log(TAG, "Navigate Forgot");
 		final StrongAuthHandler authHandler = new StrongAuthHandler(
         		activity,
         		new PasscodeStrongAuthFlow(new PasscodeForgotStep1Fragment(), this), 
@@ -86,7 +86,7 @@ public class PasscodeRouter {
 	}
 
 	private void navigateSetup(){
-		Log.v(TAG, "Navigate Setup");
+		Utils.log(TAG, "Navigate Setup");
 		final StrongAuthHandler authHandler = new StrongAuthHandler(
         		activity,
         		new PasscodeStrongAuthFlow(new PasscodeSetupStep1Fragment(), this), false);
@@ -94,17 +94,17 @@ public class PasscodeRouter {
 	}
 	
 	private void navigateEnable(){
-		Log.v(TAG, "Navigate Enable");
+		Utils.log(TAG, "Navigate Enable");
 		makeFragmentVisible(new PasscodeEnableStep1Fragment());
 	}
 	
 	private void navigateRemove() {
-		Log.v(TAG, "Navigate Remove");
+		Utils.log(TAG, "Navigate Remove");
 		makeFragmentVisible(new PasscodeRemoveFragment());
 	}
 	
 	private void navigateMenu() {
-		Log.v(TAG, "Navigate Menu");
+		Utils.log(TAG, "Navigate Menu");
 		makeFragmentVisible(new PasscodeMenuFragment());
 	}
 	
@@ -112,14 +112,13 @@ public class PasscodeRouter {
 
 		@Override
 		public void OnError(Object data) {
-			Log.e(TAG, "ERROR fetching passcode status");
-			//TODO error fetching passcode status
+			Utils.log(TAG, "ERROR fetching passcode status");
 		}
 
 		@Override
 		public void onSuccess(Object data) {
 			Status status = (Status) data;
-			Log.v(TAG, status.toString());
+			Utils.log(TAG, status.toString());
 			doesAccountHavePasscode = status.isAccountHasPasscode();
 			isDevicePasscodeTokenMine = status.isDeviceBoundToThisAccount();
 			route();
@@ -137,7 +136,7 @@ public class PasscodeRouter {
 
 		@Override
 		public void onStrongAuthSucess(Object data) {
-			Log.v(TAG, "StrongAuth success: about to make fragment visible");
+			Utils.log(TAG, "StrongAuth success: about to make fragment visible");
 			if (frag != null) {
 				pr.makeFragmentVisible(frag);
 			}

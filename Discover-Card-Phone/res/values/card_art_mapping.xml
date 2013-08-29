@@ -16,8 +16,8 @@
     <string name="CARD_IMAGE_MI2">card_miles</string>
     <string name="CARD_IMAGE_MIL">card_miles</string>
     <string name="CARD_IMAGE_SML">card_sml_miles</string>
-    <string name="MISSING_CARD_IMAGE_NOR_000001">native-corporate-card.png</string>
-    <string name="MISSING_CARD_IMAGE_NOR_000002">native-essential-card.png</string>
+    <string name="CARD_IMAGE_NOR_000001">card_more</string>
+    <string name="CARD_IMAGE_NOR_000002">card_more</string>
     <string name="CARD_IMAGE_SBC">card_default</string>
     <string name="CARD_IMAGE_CBB_000016">card_img</string>
     <string name="CARD_IMAGE">card_img</string>

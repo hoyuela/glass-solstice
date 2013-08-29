@@ -162,6 +162,20 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                         R.string.account_details));
 
         if (null != accData) {
+        	
+        	/*    13.5  Changes */  
+            
+            Utils.hideScreensDetails(accData.hideScreens,context); 
+            PaymentsSectionInfo.setComponentList(false);
+            AccountSectionInfo.setComponentList();
+            CustomerServiceContactInfo.setComponentList();
+            EarnCashbackBonusInfo.setComponentList();
+            RedeemCashbackBonusInfo.setComponentList();
+            MilesForESCCards.setComponentList();
+            MilesInfo.setComponentList();
+            ProfileAndSettingsSectionInfo.setComponentList();
+
+            /*    13.5  Changes */
 
             Utils.log("MenuFragment", "acc data : incentiveTypeCode :"
                     + accData.incentiveTypeCode + " incentiveCode "
@@ -218,6 +232,7 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
 
             }
 
+            /*    13.5  Changes */
             /* 13.3 Changes start */
             if (null == CARD_SECTION_LIST) {
                 // Added for the Other Card Types like Essential etc
@@ -237,24 +252,21 @@ public class CardNavigationMenuFragment extends NavigationMenuFragment {
                                         .getString(R.string.card_product_group_code_essential_without_fee))) {
                     // Change Left Nav in case of Corporate card
 
-                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                            .add(new HomeSectionInfo(true, countClickListenre))
-                            .add(new AccountSectionInfo())
-                            .add(new PaymentsSectionInfo(true))
-                            .add(new ProfileAndSettingsSectionInfo())
-                            .add(new CustomerServiceContactInfo()).build();
-
+                    PaymentsSectionInfo.setComponentList(true);
                 } else {
-                    CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
-                            .add(new HomeSectionInfo(true, countClickListenre))
-                            .add(new AccountSectionInfo())
-                            .add(new PaymentsSectionInfo())
-                            .add(new ProfileAndSettingsSectionInfo())
-                            .add(new CustomerServiceContactInfo()).build();
+                    PaymentsSectionInfo.setComponentList(false);
                 }
+                
+                CARD_SECTION_LIST = ImmutableList.<ComponentInfo> builder()
+                        .add(new HomeSectionInfo(true, countClickListenre))
+                        .add(new AccountSectionInfo())
+                        .add(new PaymentsSectionInfo())
+                        .add(new ProfileAndSettingsSectionInfo())
+                        .add(new CustomerServiceContactInfo()).build();
             }
         }
         /* 13.3 Changes end */
+        /*    13.5  Changes */
 
     }
 

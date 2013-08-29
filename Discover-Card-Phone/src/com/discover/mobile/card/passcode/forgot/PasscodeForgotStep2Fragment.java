@@ -42,7 +42,6 @@ public class PasscodeForgotStep2Fragment extends PasscodeBaseFragment {
 
 	@Override
 	public void onPasscodeErrorEvent() {
-		Log.v(TAG, "Firing error event");
 		//TODO on step2 error go back to step 1
 		clearAllFields();
 	}
