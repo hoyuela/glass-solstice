@@ -35,12 +35,20 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 		inflater = LayoutInflater.from(context);
 	}
 
+	/**
+	 * must overide this in order for getview to be called
+	 */
 	@Override
 	public int getCount(){
 		if(null == data) return 0;
 		return data.size();
 	}
 	
+	/**
+	 * Allows user to swtich the data in the list.
+	 * Used for switching between inbox and sent box
+	 * @param data
+	 */
 	public void setData(List<MessageListItem> data){
 		this.data = data;
 	}
@@ -48,7 +56,10 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
 		ItemViewHolder holder = null;
+		//retrieve the message details for this list item
 		final MessageListItem item = data.get(position);
+		//check to see if the view is being recylced, if not create
+		//a new view and view holder
 		if(null == view || !(view.getTag() instanceof ItemViewHolder)){
 			view = inflater.inflate(R.layout.bank_smc_list_item, null);
 			holder = new ItemViewHolder();
@@ -56,6 +67,7 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 			holder.accountView = (TextView)view.findViewById(R.id.message_account);
 			holder.dateView = (TextView)view.findViewById(R.id.message_date);
 		} else {
+			//retrieve holder from recycled view
 			holder  = (ItemViewHolder) view.getTag();
 		}
 		//set the fields
@@ -73,7 +85,11 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 		return view;
 	}
 	
-	
+	/**
+	 * Convert the server date (UTC) to simple dd/MM format
+	 * @param date
+	 * @return
+	 */
 	private String convertDate(final String date) {
 		final SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		final SimpleDateFormat listFormat = new SimpleDateFormat("dd/MM", Locale.US);
@@ -84,6 +100,12 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 		}
 	}
 	
+	/**
+	 * Prive inclass that holder references to ui elements
+	 * for each list item.
+	 * @author juliandale
+	 *
+	 */
 	private static class ItemViewHolder {
 		 private TextView titleView;
 		 private TextView accountView;
