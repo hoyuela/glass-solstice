@@ -71,6 +71,7 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.smc.GetMessageListServerCall;
 import com.discover.mobile.bank.services.statements.GetAccountStatementsServerCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
@@ -98,6 +99,7 @@ import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.smc.SMCLandingPage;
 import com.google.common.base.Strings;
 
 /**
@@ -716,7 +718,12 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankConductor.navigateToAccountStatements(account);
 		} else if (sender instanceof GetPreferredAccountsServerCall) {
 			BankUser.instance().setPreferredAccounts((PreferredAccounts)result);
-			
+		} else if (sender instanceof GetMessageListServerCall){
+			//save message list into bundle
+			Bundle args = new Bundle();
+			args.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			//navigate to the smc landing page.
+			BankConductor.navigateToSMCLanding(args);
 		// Ignore success
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {
