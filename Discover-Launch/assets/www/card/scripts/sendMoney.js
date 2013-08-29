@@ -383,6 +383,8 @@ dfs.crd.p2p.postUpdateEmailAddress = function() {
 				});
 			} else {
 				emailRequiredDOM.html(errorCodeMap["1708"]);
+				// R13.3 global change 21/08/2013 -> Applying red border after entering invalid emailId in updateEmail.html page
+				$("#updateEmail").parent(".wrapperSpan").addClass("inputOnError");
 				emailRequiredDOM.focus();
 			}
 		} else {

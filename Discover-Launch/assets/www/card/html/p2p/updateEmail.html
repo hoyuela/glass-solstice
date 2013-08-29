@@ -16,11 +16,16 @@
 		<!-- content start -->
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper">
-				<div class="floatleft" id="name">
-					<!--<h1>Send Money:</h1>-->
+            <div class="subHeader"><!-- R13.3 global change 19/08/2013 starts -->
+                  <div class="text">MONEY MESSENGER</div>
+                  <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                  <div class="smallText">POWERED BY</div>
+               </div>  <!-- R13.3 global change 19/08/2013 ends -->
+				<!--<div class="floatleft" id="name">
+					
 				</div>
 				<div class="floatright pay-pal-logo"> </div>
-				<div class="clearboth"></div>
+				<div class="clearboth"></div>-->
 				<div id="card-info">
 					<!-- PayPal image required here -->
 				</div>
@@ -32,10 +37,13 @@
 				</div>
 
 				<div class="whitebg-list-view">
-					<div><h3>Your Email Address:</h3>
+					<div><p class="textForm">Your Email Address<p> <!-- R13.3 global change 21/08/2013  -->
 					<div id='updateEmailErrorMsg' style="color:red;"></div>
+                    <span class="wrapperSpan">
 								<input type="text" name="name" id="updateEmail" onKeyup="dfs.crd.p2p.enableEmailBtn(this);"
-								placeholder="E-mail Address" />
+								 class="textInput numberInput" /> <!-- R13.3 global change 19/08/2013 -->
+                                <img src="../../images/emptyTextBox.png" width='15' height='15' alt='empty' class='emptyText' />
+                     </span>
 								
 					<div>
 				<!-- ul  data-theme="d" class="rd-faq-question-list">

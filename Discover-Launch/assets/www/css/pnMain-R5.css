@@ -394,13 +394,13 @@ background-repeat: no-repeat;
     width:100%;*/
     display:none;
     /*float:left;*/
-	padding:10px 16px;
+	padding:10px 0px;
 }
 .pn-page #changenumber .ui-grid-a,.pn-page #changenumber .ui-grid-b, .pn-page #addnumber .ui-grid-a{		/*R13.3 Global Change*/
 	overflow:visible;
 }
 .pn-page #changenumber .ui-grid-a .ui-block-a, .pn-page #addnumber .ui-grid-a .ui-block-a {	/*R13.3 Global Change*/
-	width:46%;
+	width:50%;		/*13.3 Global Change 19/02/2013*/
 	padding-top: 10px;
 	position:relative;
 }
@@ -430,6 +430,9 @@ background-repeat: no-repeat;
     width:80% !important;
     border-radius:8px !important;*/
 }
+.pn-page #changenumber #txt-change-phone-number {		/*13.3 Global Change 19/08/2013*/
+	width:95%;
+}
 .pn-page #changenumber select, .pn-page #addnumber select {
     float:left;
     display:block !important;
@@ -452,7 +455,7 @@ background-repeat: no-repeat;
 .pn-page #changenumber .ui-grid-b .ui-block-b{
     width:54% !important;
     height:100%;
-	margin-right:4%;
+	/*margin-right:4%;*/
 }
 .pn-page #changenumber .ui-grid-b .at-rate .ui-block-b{
 	margin-right:0px;
@@ -461,11 +464,11 @@ background-repeat: no-repeat;
 /* 13.3 global change ends */
 
 
-
-
-
-
-
+/* 13.3 global change starts 19-Aug-2013 - for the eg.com text input for OTHER phone selection */
+#manageAlerts-pg .ui-grid-b{
+	float:right !important;	
+}
+/* 13.3 global change ends  19-Aug-2013 - for the eg.com text input for OTHER phone selection*/
 /*
 *Css changed for the page manage-alerts-confimation fot he number field and select box
 */
@@ -729,6 +732,13 @@ background-repeat: no-repeat;
 .pn-page #notifsettings .ui-input-text{		/*R13.3 global Change*/
    /* border-radius:8px !important;
     background:white !important*/
+}
+#manageAlerts-pg #VALUE {	/*13.3 Global change 19/08/2013*/
+	width:70%;
+}
+#manageAlerts-pg #addnumber #txt-phone-number {	/*13.3 Global change 19/08/2013*/
+	width:84%;
+	margin: 0 0 0 1px;
 }
 /*#notifsettings .ui-shadow-inset{box-shadow:0 0 0;}*/
 .pn-page .greentext{

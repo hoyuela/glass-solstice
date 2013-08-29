@@ -170,7 +170,7 @@ dfs.crd.push.manage.CachePageData = function()
         for (var i=0;i<checkedElements.length;i++)
         {
             var alertType = $(checkedElements[i]).attr('id');
-            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().attr('id');
+            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().parent().attr('id');
             if (alertType == "SMRM")
             {
                 dfs.crd.push.manage.smsCheckedCached.push(alertName);               
@@ -435,13 +435,20 @@ if($.trim($('.pn-page #addnumber select').find(":selected").text()) == 'Other'){
 			{
 				$('#global-errors').html(errOtherCustomCarrier).addClass('redtext boldtext').show();
 				$('body').animate({scrollTop:0}, 'slow');
-				$("#addnumber #custom-carrier").addClass("input_hightlight_error");
+				/* Global Change 13.3 - 19-Aug-2013 - Email text input error - start */
+				/*$("#addnumber #custom-carrier").addClass("input_hightlight_error");*/
+				$("#addnumber #custom-carrier").parent().addClass("inputOnError");
+				/* Global Change 13.3 - 19-Aug-2013 - Email text input error - end */
 				return false;
 			}
 			else
 			{
-				if($('#addnumber #custom-carrier').hasClass('input_hightlight_error'))
-					$('#addnumber #custom-carrier').removeClass("input_hightlight_error");
+				/* Global Change 13.3 - 19-Aug-2013 - Email text input error - start */
+				/*if($('#addnumber #custom-carrier').hasClass('input_hightlight_error'))
+					$('#addnumber #custom-carrier').removeClass("input_hightlight_error");*/
+				if($('#addnumber #custom-carrier').hasClass('inputOnError'))
+					$("#addnumber #custom-carrier").parent().removeClass("inputOnError");
+					/* Global Change 13.3 - 19-Aug-2013 - Email text input error - end */
 			}
 		}
     if(dfs.crd.push.manage.validateTextNumber)
@@ -1320,7 +1327,7 @@ dfs.crd.push.manage.postPushPreferenceData = function()
             var alertType = $(checkedElements[i]).attr('id');
             // get the alert Name Statement(STMT) etc from the ID of Li containing the above check box 
             //var alertName = $(checkedElements[i]).parent().parent().parent().parent().attr('id');
-            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().attr('id');
+            var alertName = $(checkedElements[i]).parent().parent().parent().parent().parent().parent().attr('id');
             // get the value (if exists) of the above check box 
             // save the current preference for SMS and Push 
             if (alertType == "SMRM")
@@ -1827,7 +1834,7 @@ $("#manageAlerts-pg").live("pageshow",function(event){
 		$(".hidden-element").hide();
 		$(".pn-plus").css("background-position","top left");
 	$(".hideLiMain").toggle(function(){
-		$(this).children(".pn-plus").css("background-position","0px -24px");
+		$(this).children(".pn-plus").css("background-position","0px -30px");
 		$(this).parents().children(".hidden-element").show();
 	
 	},function(){

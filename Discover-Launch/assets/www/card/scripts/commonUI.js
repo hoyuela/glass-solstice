@@ -550,6 +550,10 @@ $("div[data-role='page']").live("pageshow",function(){
 		var parentVar = $(this).parent(".wrapperSpan");
 		e.preventDefault();
 		$(this).siblings(".textInput,.numInput").val("");	
+		/* R13.3 global change 19/08/2013 starts -> Enabling and disabling button on 'X' click */
+		if(e.srcElement.id == "updateEmail"){
+			dfs.crd.p2p.enableEmailBtn(e.srcElement);	
+		} /* R13.3 global change 19/08/2013 ends */	
 		$(this).siblings(".errormsg").hide();
 		parentVar.children(".textInput,.numInput").focus();
 		$(this).css({"visibility": "hidden"});

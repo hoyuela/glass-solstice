@@ -988,7 +988,7 @@ try{
 }
 
 //"Features Unavailable" page
-function featuresUnavailableSCVariables(){
+function manageBankAccHaModePostSC(){
 try{
 	s.pageName="/ManageBankAccount/FeaturesUnavailable";
 	}catch(err){
@@ -1027,7 +1027,7 @@ try{
 }
 
 //We're sorry" page when maximum number of banks have been added
-function maximumBanksReachedSCVariables(){
+function manageBankAccMaxAcctLimitModePostSC(){
 try{
 	s.pageName="/ManageBankAccount/Accounts/Sorry";
 	}catch(err){
@@ -1279,7 +1279,26 @@ dfs.crd.sct.onClickEligibleForEditReviewEditPage = function(selectedPayMode) {
 
 dfs.crd.sct.onClickEligibleForEditVerifyPage = function(amountSelected) {
 	 try{
-		 s.eVar59=amountSelected;
+		 s.eVar60=amountSelected;
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
+
+dfs.crd.sct.pageErrorTrackingSiteCat = function(errMessage) {
+	 try{
+		 s.prop10=errMessage;
+		s.tl(this,'o','Inline Errors');
+		s.manageVars("clearVars"); 
+		 
+	 }catch(err){
+	     //showSysException(err);
+	 }
+}
+
+dfs.crd.sct.bankAccountDeletedModal = function(errMessage) {
+	 try{
+		 s.pageName="/ManagePayments/AccountDeleted";
 	 }catch(err){
 	     //showSysException(err);
 	 }
