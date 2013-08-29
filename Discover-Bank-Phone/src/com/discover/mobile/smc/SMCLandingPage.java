@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.ui.table.BaseTable;
@@ -131,12 +132,12 @@ public class SMCLandingPage extends BaseTable {
 
 	@Override
 	public int getGroupMenuLocation() {
-		return 5;
+		return BankMenuItemLocationIndex.CUSTOMER_SERVICE_GROUP;
 	}
 
 	@Override
 	public int getSectionMenuLocation() {
-		return 3;
+		return BankMenuItemLocationIndex.SECURE_MEASSAGE_CENTER;
 	}
 
 

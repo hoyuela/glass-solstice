@@ -31,6 +31,10 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 	/**handler for the service call*/
 	private final TypedReferenceHandler<MessageList> handler;
 
+	/**End of the url to append to the base url*/
+	private static final String URL_END = "messages?view=";
+	/**Tag used for logging information*/
+	private static final String TAG = "GetMessageListServerCall";
 	public GetMessageListServerCall(Context context, final AsyncCallback<MessageList> callback, final String mailbox){
 		super(context, new GetCallParams(generateUrl(mailbox)) {
 			{
@@ -64,8 +68,7 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 	 * of selected box
 	 */
 	private static String generateUrl(final String mailbox) {
-		String url = BankUrlManager.getApiUrl() + "messages?view="+mailbox;
-		return url;
+		return BankUrlManager.getApiUrl() + URL_END +mailbox;
 	}
 
 
@@ -82,7 +85,7 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 		try {
 			messageList.messages = super.parseUnamedList(body);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.d(TAG, e.getMessage());
 		}
 		return messageList;
 	}

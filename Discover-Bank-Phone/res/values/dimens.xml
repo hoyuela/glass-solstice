@@ -3,11 +3,11 @@
     
     <dimen name="light_text_size">12sp</dimen>
     <dimen name="very_light_text_size">10sp</dimen>
-    
+    <dimen name="small_button_text_size">14sp</dimen>
     
     <dimen name="small_margin">5dp</dimen>
     <dimen name="large_margin">30dp</dimen>
-    
+    <dimen name="medium_margin">12dp</dimen>
    <dimen name="atm_zoom_padding">80dp</dimen>
     
     <!--  Login Bottom Buttons -->

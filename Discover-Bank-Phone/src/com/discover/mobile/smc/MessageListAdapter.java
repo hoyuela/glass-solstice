@@ -75,7 +75,7 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 		holder.accountView.setText(item.account.nickname);
 		holder.dateView.setText(convertDate(item.messageDate));
 		//update the background depending on if the message was read or not
-		if(!item.readMessageStatus.equals("opened")){
+		if(!item.readMessageStatus.equals(MessageListItem.OPENED)){
 			view.setBackgroundColor(Color.WHITE);
 		} else {
 			view.setBackgroundColor(Color.GRAY);

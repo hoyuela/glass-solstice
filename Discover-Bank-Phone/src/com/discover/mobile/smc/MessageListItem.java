@@ -21,6 +21,9 @@ public class MessageListItem implements Serializable {
 	 */
 	private static final long serialVersionUID = 8831726419764354855L;
 
+	/**String used for comparison to determine whether message has been opened or not*/
+	public static final String OPENED = "opened";
+	
 	/**id of the message - used for retrieving the details*/
 	@JsonProperty("id")
 	public String id;
