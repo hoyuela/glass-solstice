@@ -441,14 +441,14 @@ public final class BankConductor  extends Conductor {
 							BankServiceCallFactory.createBankGetTransfersCall(transferType, transferWasDeleted).submit();
 						} else if (!isCurrentFragmentReviewTransfers()) {
 							final ListTransferDetail defaultList = (ListTransferDetail) 
-																	BankUser.instance().getCachedListForKey(transferType);
+									BankUser.instance().getCachedListForKey(transferType);
 
 							final Bundle args = new Bundle();
 							args.putSerializable(BankExtraKeys.CACHE_KEY, transferType);
 							args.putSerializable(BankExtraKeys.PRIMARY_LIST, defaultList);
 							// Navigate to a new review transfers fragemnt on top of the stack.
 							final BaseFragmentActivity navActivity = (BaseFragmentActivity) 
-																	  DiscoverActivityManager.getActiveActivity();
+									DiscoverActivityManager.getActiveActivity();
 							final BankReviewTransfersFragment nextVisibleFragment = new BankReviewTransfersFragment();
 							args.putBoolean(BankExtraKeys.CONFIRM_DELETE, transferWasDeleted);
 							nextVisibleFragment.setArguments(args);
@@ -457,7 +457,7 @@ public final class BankConductor  extends Conductor {
 						} else {
 							final BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
 							final BankReviewTransfersFragment currentFragment = (BankReviewTransfersFragment) 
-																				 navActivity.getCurrentContentFragment();
+									navActivity.getCurrentContentFragment();
 							currentFragment.refreshTableAdapterForType(transferType);
 							DiscoverModalManager.clearActiveModal();
 						}
@@ -1641,7 +1641,6 @@ public final class BankConductor  extends Conductor {
 
 				intent.putExtras(bundle);
 				activity.startActivity(intent);
-				//				activity.finish();
 			}
 			/**Verify that the user is logged in and the NavigationRootActivity is the active activity*/
 			else if( activity instanceof NavigationRootActivity ) {
@@ -1945,7 +1944,7 @@ public final class BankConductor  extends Conductor {
 			}
 		}
 	}
-	
+
 	/*
 	 * This method is called when a user selects "view statements" on from the navigation menu
 	 * This method checks to see if there is more than one account.  If so, the user
@@ -1968,7 +1967,7 @@ public final class BankConductor  extends Conductor {
 			navigateToAccountStatements(account);
 		}
 	}
-	
+
 	/*
 	 * This method directs the user to the statement landing page for a particular account
 	 * If the statements for the particular are not cached, the function will execute a service 
