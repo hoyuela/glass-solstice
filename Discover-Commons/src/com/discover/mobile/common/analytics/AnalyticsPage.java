@@ -6,7 +6,7 @@ public interface AnalyticsPage {
 	static final String STARTING = "login-pg";
 	
 	static final String CARD_LOGIN = "cardLogin-pg";
-	static final String PASSCODE_LOGIN = "passcodeLogin-pg";
+	static final String PASSCODE_LOGIN = "Passcode_Login-pg";
 	static final String LOGIN_ERROR = "loginErrorPage-Pg";
 	static final String FORGOT_PASSWORD_MENU = "forgot-uid-or-password-menu-pg";
 	static final String FORGOT_BOTH_STEP1 = "forgot-both-step1-pg";
@@ -17,11 +17,25 @@ public interface AnalyticsPage {
 	static final String FORGOT_PASSWORD_CONFIRMATION = "forgot-password-confirmation-pg";
 	static final String FORGOT_UID = "forgot-uid-pg";
 	static final String FOROGT_UID_CONFIRMATION = "forgot-uid-confirmation-pg";
-	static final String FORGOT_PASSCODE = "forgot-passcode-pg";
+	static final String FORGOT_PASSCODE = "Forgot_passcode-pg";
+	
+	static final String FAILED_LOGIN = "FailedLogin";
 
 	//Account Unlock
-	static final String LOCKOUT_TEMP = "AccountUnlock_Login_TempLock-pg-Overlay";
-	static final String LOCKOUT_PERM = "AccountUnlock_Login_PermLock-pg-Overlay";
+	static final String LOCKOUT_TEMP = "Login_TempLock-pg-Overlay";
+	static final String LOCKOUT_PERM = "Login_PermLock-pg-Overlay";
+	static final String ACCOUNT_UNLOCK_STEP1 = "AccountUnlock_EnterInfo-pg";
+	static final String ACCOUNT_UNLOCK_STEP1_ERROR = "AccountUnlock_EnterInfo";
+	static final String ACCOUNT_UNLOCK_STEP2 = "AccountUnlock_CreatePassword-pg";
+	static final String ACCOUNT_UNLOCK_CONFIRMATION = "AccountUnlock_Unlocked_Success-pg-Overlay";
+	static final String ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_prop1 = "ACCT_UNLOCK_TEMP_LOCK_UNLOCK_ACCOUNT_BTN";
+	static final String ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_pe = "lnk_o";
+	static final String ACCOUNT_UNLOCK_TEMP_LOCK_OK_BUTTON_pev1 = "Account Unlock-Temp Lock-UnlockAcc Button";
+	static final String ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_prop1 = "ACCT_UNLOCK_PERM_LOCK_CALL_NOW_BTN";
+	static final String ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_pe = "lnk_o";
+	static final String ACCOUNT_UNLOCK_PERM_LOCK_OK_BUTTON_pev1 = "Account Unlock-Perm Lock-CallNow Button";
+	
+
 	static final String ACCOUNT_UNLOCK_CREATE_PASSWORD = "AccountUnlock_Login_CreatePassword-pg";
 	static final String ACCOUNT_UNLOCKED_MODAL = "AccountUnlock_Unlocked_Success-pg-Overlay";
 
@@ -81,31 +95,30 @@ public interface AnalyticsPage {
 	static final String CORPORATE_DBCL = "corporateDBCL-pg";
 	
 	//passcode pages
-	static final String PASSCODE_MENU = "passcode-menu-pg";
-	static final String PASSCODE_SETUP_STEP1 = "passcode-setup-step1-pg";
-	static final String PASSCODE_SETUP_STEP2 = "passcode-setup-step2-pg";
-	static final String PASSCODE_SETUP_OVERLAY = "PasscodeSetupOverlay";
+	static final String PASSCODE_MENU = "passcode_menu-pg";
+	static final String PASSCODE_SETUP_STEP1 = "passcode_setup_step1-pg";
+	static final String PASSCODE_SETUP_STEP2 = "passcode_setup_step2-pg";
+	static final String PASSCODE_SETUP_OVERLAY = "Passcode_Setup_Confirmation-pg-Overlay";
 
-	static final String PASSCODE_UPDATE_STEP1 = "passcode-update-step1-pg";
-	static final String PASSCODE_UPDATE_STEP2 = "passcode-update-step2-pg";
-	static final String PASSCODE_UPDATE_STEP3 = "passcode-update-step3-pg";
-	static final String PASSCODE_UPDATE_OVERLAY = "PasscodeUpdatedOverlay";
+	static final String PASSCODE_UPDATE_STEP1 = "passcode_update_step1-pg";
+	static final String PASSCODE_UPDATE_STEP2 = "passcode_update_step2-pg";
+	static final String PASSCODE_UPDATE_STEP3 = "passcode_update_step3-pg";
+	static final String PASSCODE_UPDATE_OVERLAY = "Passcode_Updated_Confirmation-pg-Overlay";
 	
-	static final String PASSCODE_REMOVE = "passcode-remove-pg";
-	static final String PASSCODE_DISABLE = "passcode-disable-pg";
-	static final String PASSCODE_DISABLE_OVERLAY = "PasscodeDisabledOverlay";
+	static final String PASSCODE_REMOVE = "passcode_remove-pg";
+	static final String PASSCODE_DISABLE_OVERLAY = "Passcode_Disabled-pg-Overlay";
 	
-	static final String PASSCODE_ENABLE_STEP1 = "passcode-enable-step1-pg";
-	static final String PASSCODE_ENABLE_STEP2 = "passcode-enable-step2-pg";
-	static final String PASSCODE_ENABLE_OVERLAY = "PasscodeEnabledOverlay";
+	static final String PASSCODE_ENABLE_STEP1 = "passcode_enable_step1-pg";
+	static final String PASSCODE_ENABLE_STEP2 = "passcode_enable_step2-pg";
+	static final String PASSCODE_ENABLE_OVERLAY = "Passcode_Enabled_Confirmation-pg-Overlay";
 	
-	static final String PASSCODE_FORGOT_STEP1 = "passcode-forgot-step1-pg";
-	static final String PASSCODE_FORGOT_STEP2 = "passcode-forgot-step2-pg";
-	static final String PASSCODE_FORGOT_OVERLAY = "PasscodeForgotOverlay";
+	static final String PASSCODE_FORGOT_STEP1 = "passcode_forgot_step1-pg";
+	static final String PASSCODE_FORGOT_STEP2 = "passcode_forgot_step2-pg";
+	static final String PASSCODE_FORGOT_OVERLAY = "Passcode_Forgot_Confirmation-pg-Overlay";
 	
-	static final String PASSCODE_RED_X = "passcode-red-x";
-	static final String PASSCODE_GREEN_CHECK = "passcode-green-check";
-	static final String PASSCODE_OVERLAY = "passcode-overlay";
+	static final String PASSCODE_RED_X = "passcode_RedCheck-pg";
+	static final String PASSCODE_GREEN_CHECK = "passcode_GreenCheck-pg";
+	static final String PASSCODE_OVERLAY = "passcode_guidelines-pg-overlay";
 
 	//Strong Auth Enroll pages
 	

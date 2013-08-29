@@ -1,7 +1,9 @@
 package com.discover.mobile.common.analytics;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.app.Activity;
 
@@ -146,7 +148,9 @@ public final class TrackingHelper {
 			contextData.putAll(extras);
 		}
 
-		contextData.put(CONTEXT_PAGE_NAME, pageName);
+		if (pageName != null) {
+			contextData.put(CONTEXT_PAGE_NAME, pageName);
+		}
 		contextData.put(CONTEXT_RSID, rsid);
 
 
@@ -160,6 +164,19 @@ public final class TrackingHelper {
 	 */
 	private TrackingHelper() {
 		throw new UnsupportedOperationException("This class is non-instantiable"); //$NON-NLS-1$
+	}
+	
+	public static HashMap<String, Object> getProp10Error(String title, String errorMessage) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("my.prop10", title + "|" + getFirstXCharacters(errorMessage, 60));
+		return map;
+	}
+	
+	private static String getFirstXCharacters(String message, int length) {
+		if (message != null && message.length() >= length) {
+			return message.substring(0, length);
+		}
+		return message;
 	}
 
 }
