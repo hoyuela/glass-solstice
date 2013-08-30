@@ -40,14 +40,7 @@
 	    Use our ATM Locator to find a nearby ATM, including free Allpoint&#174; and  MoneyPass&#174; ATMs.
 	</string>
 	
-	<string name="surcharge_free_title">
-	    How do I find a surcharge-free ATM?
-	</string>
-	<string name="surcharge_free_body">
-	    To display only surcharge-free ATMs on your search, enable the “Display only Surcharge-Free ATMs” button. 
-	    Surcharge-free ATMs are represented by orange icons in map and list view.
-	</string>
-	
+
 	<string name="lost_or_stolen_title">
 	    What happens if my debit card is lost or stolen?
 	</string>
@@ -87,7 +80,7 @@
 	    How do I find a surcharge-free ATM?
 	</string>
 	<string name="surcharge_free_body">
-	    To display only surcharge-free ATMs on your search, enable the "Display only Surcharge-Free ATMs" toggle. Surcharge-free ATMs are represented by orange icons in map and list view.
+	    To display only surcharge-free ATMs on your search, enable the \"Display only Surcharge-Free ATMs\" toggle. Surcharge-free ATMs are represented by orange icons in map and list view.
 	</string>
 	
 	<string name="outside_us_use_title">
