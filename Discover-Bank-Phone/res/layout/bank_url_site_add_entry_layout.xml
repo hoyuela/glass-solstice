@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_table_corners_shape" >
+    android:background="@drawable/light_gray_bkgrd" >
 
     <TextView
         android:id="@+id/title"
@@ -15,9 +15,9 @@
         android:layout_marginTop="@dimen/groups_of_elements_padding"
         android:paddingBottom="@dimen/between_related_elements_padding"
         android:paddingRight="15dp"
-        android:text="Title:"
+        android:text="@string/bank_url_changer_title"
         android:textColor="@color/title"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/name"
@@ -29,10 +29,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/title"
+        android:hint="@string/bank_url_changer_title_hint"
         android:paddingLeft="10dp"
-        android:text="My Site"
         android:textColor="@color/title"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/url_label"
@@ -45,9 +45,9 @@
         android:layout_marginTop="30dp"
         android:paddingBottom="@dimen/between_related_elements_padding"
         android:paddingRight="15dp"
-        android:text="URL:"
+        android:text="@string/bank_url_changer_url"
         android:textColor="@color/title"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/url"
@@ -59,39 +59,42 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"
         android:layout_toRightOf="@+id/url_label"
+        android:hint="@string/bank_url_changer_url_hint"
         android:paddingLeft="10dp"
-        android:text="http://"
         android:textColor="@color/title"
-        android:textSize="10dp" />
+        android:textSize="12sp" />
 
     <LinearLayout
+        android:id="@+id/buttons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:background="@drawable/light_gray_bkgrd"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:weightSum="2" >
 
         <Button
             android:id="@+id/cancelBtn"
-            android:layout_width="0.0dip"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/forms_inner_padding"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:background="@drawable/common_atm_button_selector"
-            android:text="Cancel"
-            android:textColor="@color/title"
-            android:onClick="close" />
+            android:onClick="close"
+            android:text="@string/bank_url_changer_cancel"
+            android:textColor="@color/title" />
 
         <Button
             android:id="@+id/saveBtn"
-            android:layout_width="0.0dip"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/forms_inner_padding"
-            android:layout_weight="1.0"
+            android:layout_weight="1"
             android:background="@drawable/common_atm_button_selector"
-            android:text="Save"
-            android:textColor="@color/title" 
-            android:onClick="addUrl"/>
+            android:onClick="addUrl"
+            android:text="@string/bank_url_changer_save"
+            android:textColor="@color/title" />
     </LinearLayout>
 
 </RelativeLayout>

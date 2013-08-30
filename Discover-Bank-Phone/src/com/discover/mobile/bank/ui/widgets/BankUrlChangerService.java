@@ -30,7 +30,8 @@ public class BankUrlChangerService extends RemoteViewsService{
 	 */
 	@Override
 	public RemoteViewsFactory onGetViewFactory(final Intent intent) {
-		return new BankUrlChangerViewsFactory(getApplicationContext(), BankUrlChangerPreferences.getSites());
+		return new BankUrlChangerViewsFactory(getApplicationContext(), 
+				BankUrlChangerPreferences.getSites(getApplicationContext()));
 	}
 
 	/**
@@ -69,7 +70,6 @@ public class BankUrlChangerService extends RemoteViewsService{
 
 		@Override
 		public RemoteViews getLoadingView() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

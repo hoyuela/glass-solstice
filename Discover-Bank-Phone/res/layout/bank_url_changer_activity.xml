@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ListView
-        android:id="@+id/urlSiteList"
+        android:id="@+id/url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/buttons"
@@ -25,13 +25,13 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/addUrlButton"
+            android:id="@+id/add"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/forms_inner_padding"
             android:layout_weight="1"
             android:background="@drawable/common_atm_button_selector"
-            android:text="Add"
+            android:text="@string/bank_url_changer_add"
             android:textColor="@color/title" />
 
         <Button
@@ -41,7 +41,7 @@
             android:layout_margin="@dimen/forms_inner_padding"
             android:layout_weight="1"
             android:background="@drawable/common_atm_button_selector"
-            android:text="Delete"
+            android:text="@string/bank_url_changer_delete"
             android:textColor="@color/title" />
     </LinearLayout>
 

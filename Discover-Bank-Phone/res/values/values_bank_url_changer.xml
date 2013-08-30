@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="bank_url_changer_add">Add</string>
+    <string name="bank_url_changer_delete">Delete</string>
+    <string name="bank_url_changer_cancel">Cancel</string>
+    <string name="bank_url_changer_add">Add</string>
+    <string name="bank_url_changer_url">URL</string>
+    <string name="bank_url_changer_title">Title:</string>
+    <string name="bank_url_changer_url_hint">http://</string>
+    <string name="bank_url_changer_title_hint">Site Name</string>
+    <string name="bank_url_changer_save">Save</string>
+    <string name="bank_url_changer_manage">Manage URLs</string>
+</resources>

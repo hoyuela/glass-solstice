@@ -17,8 +17,20 @@ import com.discover.mobile.bank.R;
  */
 public class BankUrlChangerWidget extends AppWidgetProvider{
 
+	/**Key Used to trigger an update*/
+	public static final String UPDATE_DISPLAY = "com.discover.mobile.bank.UPDATE_DISPLAY";
+
 	@Override
 	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+		showItems(context, appWidgetManager, appWidgetIds);
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+	}
+
+	/**
+	 * Show the items on the home screen
+	 * @param context - context used to show the items
+	 */
+	private void showItems(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds){
 		final int n = appWidgetIds.length;
 
 		for (int i=0; i<n; i++) {
@@ -41,10 +53,9 @@ public class BankUrlChangerWidget extends AppWidgetProvider{
 			final Intent manageIntent = new Intent(context, BankUrlChangerActivity.class);
 			views.setOnClickPendingIntent(R.id.manage_urls, 
 					PendingIntent.getActivity(context, 0, manageIntent, PendingIntent.FLAG_UPDATE_CURRENT));
-
+			appWidgetManager.updateAppWidget(appWidgetIds[i], null);
 			appWidgetManager.updateAppWidget(appWidgetIds[i], views);
 		}
 
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 }

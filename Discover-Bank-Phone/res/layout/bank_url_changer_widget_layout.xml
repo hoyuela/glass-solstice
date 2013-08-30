@@ -10,18 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/manage_urls"
+        android:layout_alignParentTop="true"
         android:divider="@drawable/gray_line" />
 
     <Button
         android:id="@+id/manage_urls"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/common_atm_button_selector"
-        android:text="Manage Urls"
-        android:textColor="@color/title"
-        android:layout_alignRight="@+id/url_list"
         android:layout_alignLeft="@+id/url_list"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/url_list"
+        android:background="@drawable/common_atm_button_selector"
+        android:text="@string/bank_url_changer_manage"
+        android:textColor="@color/title"
         android:textSize="@dimen/small_copy_min" />
 
 </RelativeLayout>
