@@ -55,4 +55,6 @@
     <dimen name="bank_gray_circle_margin">5dp</dimen>
     <dimen name="bank_whats_new_action_bar_height">60dp</dimen>
 	<dimen name="bank_whats_new_footer_height">40dp</dimen>
+	
+    <dimen name="bank_nav_menu_offset">75dp</dimen>
 </resources>
