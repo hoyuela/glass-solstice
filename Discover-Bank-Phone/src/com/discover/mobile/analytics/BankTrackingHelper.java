@@ -25,6 +25,7 @@ import com.discover.mobile.bank.paybills.BankPayConfirmFragment;
 import com.discover.mobile.bank.paybills.BankSelectPayee;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.AccountList;
+import com.discover.mobile.bank.services.customer.Customer;
 import com.discover.mobile.bank.transfer.BankTransferConfirmationFragment;
 import com.discover.mobile.bank.transfer.BankTransferStepOneFragment;
 import com.discover.mobile.common.DiscoverActivityManager;
@@ -120,6 +121,21 @@ public final class BankTrackingHelper {
 		if(BankUser.instance().isSsoUser()){
 			map.put(TrackingHelper.SSO_TAG, TrackingHelper.SINGLE_SIGN_ON_VALUE);
 		}
+		
+		final Customer customer = BankUser.instance().getCustomerInfo();
+		if(null != customer){
+			map.put(TrackingHelper.CONTEXT_EDS_PROP, customer.id);
+			map.put(TrackingHelper.CONTEXT_EDS_VAR, customer.id);
+			map.put(TrackingHelper.CONTEXT_USER_PROP, TrackingHelper.CUSTOMER);
+			map.put(TrackingHelper.CONTEXT_USER_VAR, TrackingHelper.CUSTOMER);
+			map.put(TrackingHelper.CONTEXT_VSTR_ID_PROP, TrackingHelper.CUSTOMER);
+			map.put(TrackingHelper.CONTEXT_VSTR_ID_VAR, TrackingHelper.CUSTOMER);
+		}else{
+			map.put(TrackingHelper.CONTEXT_USER_PROP, TrackingHelper.PROSPECT);
+			map.put(TrackingHelper.CONTEXT_USER_VAR, TrackingHelper.PROSPECT);
+			map.put(TrackingHelper.CONTEXT_VSTR_ID_PROP, TrackingHelper.PROSPECT);
+			map.put(TrackingHelper.CONTEXT_VSTR_ID_VAR, TrackingHelper.PROSPECT);
+		}
 
 		return map;
 	}
@@ -165,7 +181,8 @@ public final class BankTrackingHelper {
 	 * @param trackingString - resource id of the string that should be used to track the page
 	 */
 	public static void forceTrackPage(final int trackingString){
-		TrackingHelper.trackBankPage(DiscoverActivityManager.getActiveActivity().getString(trackingString));
+		final String className = DiscoverActivityManager.getString(trackingString);
+		TrackingHelper.trackBankPage(className, getExtras(className));
 	}
 
 	/**

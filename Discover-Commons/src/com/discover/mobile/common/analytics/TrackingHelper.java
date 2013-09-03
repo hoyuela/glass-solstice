@@ -56,16 +56,19 @@ public final class TrackingHelper {
 		measurement.stopActivity();
 	}
 
+	/** Public tracking values */
 	public static final String CONTEXT_EDS_PROP = DiscoverActivityManager.getString(R.string.context_eds_prop);
 	public static final String CONTEXT_EDS_VAR = DiscoverActivityManager.getString(R.string.context_eds_var);
-	private static final String CONTEXT_USER_PROP = DiscoverActivityManager.getString(R.string.context_user_prop);
-	private static final String CONTEXT_USER_VAR = DiscoverActivityManager.getString(R.string.context_user_var);
-	private static final String CONTEXT_VSTR_ID_PROP = DiscoverActivityManager.getString(R.string.context_vstr_id_prop); 
-	private static final String CONTEXT_VSTR_ID_VAR = DiscoverActivityManager.getString(R.string.context_vstr_id_var); 
+	public static final String CONTEXT_USER_PROP = DiscoverActivityManager.getString(R.string.context_user_prop);
+	public static final String CONTEXT_USER_VAR = DiscoverActivityManager.getString(R.string.context_user_var);
+	public static final String CUSTOMER = DiscoverActivityManager.getString(R.string.customer);
+	public static final String PROSPECT = DiscoverActivityManager.getString(R.string.prospect);
+	public static final String CONTEXT_VSTR_ID_PROP = DiscoverActivityManager.getString(R.string.context_vstr_id_prop); 
+	public static final String CONTEXT_VSTR_ID_VAR = DiscoverActivityManager.getString(R.string.context_vstr_id_var); 
+	
+	/**Private tracking values*/
 	private static final String CONTEXT_PAGE_NAME = DiscoverActivityManager.getString(R.string.context_page_name);
 	private static final String CONTEXT_RSID = DiscoverActivityManager.getString(R.string.context_rsid);	
-	private static final String CUSTOMER = DiscoverActivityManager.getString(R.string.customer);
-	private static final String PROSPECT = DiscoverActivityManager.getString(R.string.prospect);
 	private static final String CONTEXT_APP_NAME = DiscoverActivityManager.getString(R.string.context_app_name);
 	private static final String APP_NAME =  DiscoverActivityManager.getString(R.string.discover_app_name);
 
@@ -128,18 +131,9 @@ public final class TrackingHelper {
 			contextData.put(CONTEXT_EDS_VAR, ServiceCallSessionManager.getEDSKey());
 			contextData.put(CONTEXT_USER_PROP,CUSTOMER);
 			contextData.put(CONTEXT_USER_VAR,CUSTOMER);
-		}else{ 
+		}else if(appName == APP_NAME){ 
 			contextData.put(CONTEXT_USER_PROP,PROSPECT);
 			contextData.put(CONTEXT_USER_VAR,PROSPECT);
-		}
-
-		//Bank specific variables
-		if(BANK_APP_NAME.equals(appName) && ServiceCallSessionManager.getEDSKey() != null){
-			contextData.put(CONTEXT_VSTR_ID_PROP,CUSTOMER);
-			contextData.put(CONTEXT_VSTR_ID_VAR,CUSTOMER);
-		}else if(BANK_APP_NAME.equals(appName)){
-			contextData.put(CONTEXT_VSTR_ID_PROP,PROSPECT);
-			contextData.put(CONTEXT_VSTR_ID_VAR,PROSPECT);
 		}
 
 		if(null != extras){
