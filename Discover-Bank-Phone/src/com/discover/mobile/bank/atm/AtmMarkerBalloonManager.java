@@ -115,26 +115,11 @@ public class AtmMarkerBalloonManager{
 		final AtmDetail atm = retrieveAtm(marker.getPosition());
 		//Means it was the current location that was clicked.
 		if(null == atm){
-			return getCurrentLocationView();
+			//Return null so that a balloon is not shown.
+			return null;
 		}else{
 			return getMarkerView(atm);
 		}
-	}
-
-	/**
-	 * Get the view that will be associated with the current location
-	 * @return the view that will be associated with the current location
-	 */
-	private View getCurrentLocationView() {
-		final View view = LayoutInflater.from(context).inflate(R.layout.bank_atm_current_locaiton, null);
-		final TextView addressBox = (TextView) view.findViewById(R.id.address);
-		final TextView city = (TextView) view.findViewById(R.id.city);
-
-		if(null != address){
-			addressBox.setText(address.getAddressLine(0));
-			city.setText(address.getLocality() +", " + address.getAdminArea());
-		} 
-		return view;
 	}
 
 	/**

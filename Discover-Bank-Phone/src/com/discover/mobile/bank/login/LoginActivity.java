@@ -709,6 +709,8 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 	public void onResume(){
 		super.onResume();
 
+		//Clear the inputs if the user is coming back from another screen. (DE8024, QC# 111853)
+		clearInputs();
 
 		//Check if the login activity was launched because of a logout
 		maybeShowUserLoggedOut();
