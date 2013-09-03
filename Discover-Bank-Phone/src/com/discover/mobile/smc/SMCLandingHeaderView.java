@@ -44,12 +44,14 @@ public class SMCLandingHeaderView extends RelativeLayout {
 		group.addObserver(observer);
 	}
 
-	/**Returns a the inbox button*/
+	/**Returns a the inbox button
+	 * @return inbox button*/
 	public TableHeaderButton getInboxButton() {
 		return group.getButton(INBOX_BUTTON);
 	}
 	
-	/**Returns the sentbox button*/
+	/**Returns the sentbox button
+	 * @return sent button*/
 	public TableHeaderButton getSentBoxButton() {
 		return group.getButton(SENTBOX_BUTTON);
 	}

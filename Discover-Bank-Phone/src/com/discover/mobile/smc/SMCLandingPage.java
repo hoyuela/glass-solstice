@@ -48,8 +48,7 @@ implements OnClickListener {
 	
 	/**following are keys to allow saving the state on rotation*/
 	public static final String CURRENT_LIST = "current_list";
-	
-	private TextView footer;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		View view = super.onCreateView(inflater, container, savedInstanceState);
