@@ -647,12 +647,14 @@ public final class BankConductor  extends Conductor {
 
 			//Handle the case where loading more data
 			if(navActivity.isFragmentLoadingMore() && !isGoingBack){
+				bundle.remove(BankExtraKeys.CONFIRM_DELETE);
 				navActivity.addDataToDynamicDataFragment(bundle);
 			}
 			//Handle the case where switch between different types of activity posted and scheduled
 			else if( navActivity.getCurrentContentFragment() instanceof BankAccountActivityTable) {
 				final BankAccountActivityTable revPmtFrag =
 						(BankAccountActivityTable)navActivity.getCurrentContentFragment();
+				bundle.remove(BankExtraKeys.CONFIRM_DELETE);
 				bundle.putBoolean(BankExtraKeys.IS_TOGGLING_ACTIVITY, true);
 				revPmtFrag.handleReceivedData(bundle);
 

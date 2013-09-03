@@ -1,28 +1,14 @@
 package com.discover.mobile.bank.paybills;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import com.discover.mobile.BankMenuItemLocationIndex;
 import com.discover.mobile.bank.BankExtraKeys;
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.framework.BankServiceCallFactory;
 import com.discover.mobile.bank.framework.BankUser;
-import com.discover.mobile.bank.services.BankUrlManager;
 import com.discover.mobile.bank.services.customer.Eligibility;
-import com.discover.mobile.common.BaseFragment;
-import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.bank.ui.fragments.TermsConditionsFragment;
 
 /**
  * The terms and conditions page for Pay Bills or Mange Payees.
@@ -31,31 +17,16 @@ import com.discover.mobile.common.DiscoverActivityManager;
  * The content is loaded from a URL into a web view and allows the user to review and accept
  * the terms and conditions, or cancel and go back if they please.
  * 
- * @author scottseward
+ * @author scottseward, jthornton
  *
  */
-public class BankPayTerms extends BaseFragment{
-	/**We need an api call that is available in API11+ so this is defined to check against version numbers*/
-	private static final int API_ELEVEN = 11;
+public class BankPayTerms extends TermsConditionsFragment{
 
 	/**The default title text that will be used if for some reason one is not passed in the Bundle */
 	private int titleText = R.string.pay_a_bill_title;
 
 	/**The String resource that is used for the title in the Action bar*/
 	private int titleStringResource;
-
-	/**The ProgressBar that is shown while the web view loads its content */
-	private ProgressBar loadingSpinner;
-
-	/**The button that the user needs to press to accept the terms and conditions */
-	private Button acceptButton;
-
-	/**The web view that displays the content for the terms of service to the user */
-	private WebView termsWebView;
-	
-	/**The container that holds the WebView*/
-	private FrameLayout webContainer;
-
 	/**
 	 * Get the title text that was passed in by the previous Fragment.
 	 */
@@ -75,108 +46,7 @@ public class BankPayTerms extends BaseFragment{
 			titleText = titleStringResource;
 		}
 	}
-	
-	/**
-	 * Inflates the view and loads needed resources from the layout.
-	 * Also sets up the web view and starts loading the content.
-	 * @param inflater - inflater to inflate the layout
-	 * @param container - container holding the group
-	 * @param savedInstanceState - state of the fragment
-	 */
-	@Override
-	public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
-			final Bundle savedInstanceState) {
 
-		final View mainView = inflater.inflate(R.layout.payment_terms_and_conditions, null);
-		loadResources(mainView);
-		
-		// Create the Web View
-		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
-		webContainer.addView(termsWebView);
-		
-		setupWebView(); // Handle URL loading tasks
-		setupAcceptButton();
-
-		return mainView;
-	}
-
-	/**
-	 * Get all of the interface elements that we need to access.
-	 * @param mainView
-	 */
-	private void loadResources(final View mainView) {
-		webContainer = (FrameLayout)mainView.findViewById(R.id.agreement_web_view);
-		termsWebView = new WebView(DiscoverActivityManager.getActiveActivity().getApplicationContext());
-		webContainer.addView(termsWebView);
-		acceptButton = (Button)mainView.findViewById(R.id.accept_button);
-		loadingSpinner = (ProgressBar)mainView.findViewById(R.id.progress_bar);
-	}
-
-	/**
-	 * Setup the web view to load the terms and conditions URL,
-	 * set the background of it to be transparent so we can see the normal app background
-	 * behind the terms text,
-	 * Then set the web view's WebViewClient to hide the loading spinner
-	 * upon completing loading of the terms content.
-	 */
-	@SuppressLint("NewApi")
-	private void setupWebView() {
-		termsWebView.setBackgroundColor(Color.TRANSPARENT);
-		termsWebView.setWebViewClient(new WebViewClient() {
-			@Override
-			public void onPageFinished(final WebView view, final String url) {
-				super.onPageFinished(view, url);
-				loadingSpinner.setVisibility(View.GONE);
-				webContainer.setVisibility(View.VISIBLE);
-				loadingSpinner.clearAnimation();
-				acceptButton.setEnabled(true);
-			}
-		});
-
-		termsWebView.loadUrl(BankUrlManager.getPayBillsTermsUrl());
-		
-		//Disable hardware accelerated scrolling for the web view if the current API is 11 or higher.
-		//this allows the background of the web view to be transparent and not buggy on API 11+ devices.
-		if(Build.VERSION.SDK_INT >= API_ELEVEN) {
-			termsWebView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
-		}
-	}
-
-	/**
-	 * Set the onClickListener for the accept button to submit the accept
-	 * service call.
-	 */
-	private void setupAcceptButton() {
-		acceptButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(final View v) {
-				final Eligibility eligibility = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
-				BankServiceCallFactory.createAcceptTermsRequest(eligibility).submit();				
-			}
-		});
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		webContainer.removeAllViews();
-		termsWebView.destroy();
-	};
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		webContainer.removeAllViews();
-		termsWebView.destroy();
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-	}
-	
 	/**
 	 * Set the title in the action bar.
 	 */
@@ -193,5 +63,21 @@ public class BankPayTerms extends BaseFragment{
 	@Override
 	public int getSectionMenuLocation() {
 		return BankMenuItemLocationIndex.PAY_BILLS_SECTION;
+	}
+
+	@Override
+	public String getTermsUrl() {
+		return BankUser.instance().getCustomerInfo().getPaymentsEligibility().getTermsUrl();
+	}
+
+	@Override
+	public void onAcceptClicked() {
+		final Eligibility eligibility = BankUser.instance().getCustomerInfo().getPaymentsEligibility();
+		BankServiceCallFactory.createAcceptTermsRequest(eligibility).submit();
+	}
+
+	@Override
+	public int getPageTitle() {
+		return titleText;
 	}
 }

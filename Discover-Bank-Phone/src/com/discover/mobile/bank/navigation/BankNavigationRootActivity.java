@@ -109,9 +109,9 @@ implements OnPaymentCanceledListener {
 		} else {
 			super.makeFragmentVisible(fragment, addToHistory);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Set up the first visible fragment
 	 */
@@ -125,7 +125,7 @@ implements OnPaymentCanceledListener {
 		setContentView(R.layout.bank_content_view);
 		final RelativeLayout mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
 		mainLayout.requestTransparentRegion(mainLayout);
- 		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
+		CommonUtils.fixBackgroundRepeat(findViewById(R.id.navigation_content));
 	}
 
 	/**
@@ -201,16 +201,26 @@ implements OnPaymentCanceledListener {
 		 */
 		outState.putLong(BANK_PREV_TIME, Globals.getOldTouchTimeInMillis());
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		if (this.getCurrentContentFragment() instanceof CustomProgressDialog) {
 			((CustomProgressDialog)this.getCurrentContentFragment()).stopProgressDialog();
 		}
 	}
-	
+
+	/**
+	 * Set up and style the sliding menu
+	 */
+	@Override
+	protected void setupSlidingMenu() {
+		super.setupSlidingMenu();
+		final SlidingMenu slidingMenu = getSlidingMenu();
+		slidingMenu.setBehindOffsetRes(R.dimen.bank_nav_menu_offset);
+	}
+
 	/**
 	 * Used to handle user interaction across the application.
 	 * 
@@ -225,10 +235,10 @@ implements OnPaymentCanceledListener {
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			compareLastTouchTimeAndUpdateSession();
 		}
-		
+
 		if (this.getCurrentContentFragment() instanceof OnTouchListener) {
 			final OnTouchListener listener = (OnTouchListener)this.getCurrentContentFragment();
-			
+
 			listener.onTouch(this.getCurrentContentFragment().getView(), ev);
 		}
 
@@ -285,7 +295,7 @@ implements OnPaymentCanceledListener {
 		Globals.setCurrentAccount(AccountType.BANK_ACCOUNT);
 		super.logout();
 	}
-	
+
 	@Override
 	public int getBehindContentView() {
 		// TODO Auto-generated method stub
@@ -479,7 +489,7 @@ implements OnPaymentCanceledListener {
 		this.getInputMethodManager().hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
 			}
 
-		//Clear the focus from the view
+			//Clear the focus from the view
 		this.getCurrentFocus().clearFocus();
 		}
 		//Toggle the menu
@@ -528,7 +538,7 @@ implements OnPaymentCanceledListener {
 				super.startProgressDialog(isProgressDialogCancelable);
 			}
 		}
-		
+
 	}
 	/*
 	 * Overriding closeDialog so that the BankNavigationRoot
@@ -543,7 +553,7 @@ implements OnPaymentCanceledListener {
 		}
 		super.closeDialog();
 	}
-	
+
 	@Override
 	public void onCancelProgressDialog() {
 		BankNetworkServiceCallManager.getInstance().cancelServiceCall();
