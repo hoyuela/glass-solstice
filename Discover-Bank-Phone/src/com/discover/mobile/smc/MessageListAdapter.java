@@ -42,15 +42,21 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	}
 
 	/**
-	 * must overide this in order for getview to be called
+	 * must overide this in order for getview to be called.
+	 * Returns the data size + 1.  This is used to trick the 
+	 * adapter into adding one more element.  The added element is the 
+	 * disclaimer at the bottom of the list.
 	 */
 	@Override
 	public int getCount(){
 		if(null == data) {
 			return 0;
 		} else if(data.size() > 0){
+			//if there is at least one item in the 
+			//list return size + 1
 			return data.size() + 1;
 		} else {
+			//data size is zero, return it.
 			return data.size();
 		}
 	}
@@ -66,9 +72,11 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
+		//check to see if were are out side of the index range for the data.
+		//if so, return a text view with the disclaimner.
 		if(position == data.size()) {
 			TextView disclaimer = new TextView(DiscoverActivityManager.getActiveActivity());
-			disclaimer.setText("All messages will be deleted after 30 days");
+			disclaimer.setText(res.getString(R.string.smc_disclaimer));
 			disclaimer.setGravity(Gravity.CENTER_HORIZONTAL);
 			return disclaimer;
 		}

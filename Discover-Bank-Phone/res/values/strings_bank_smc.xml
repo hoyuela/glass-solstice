@@ -7,4 +7,5 @@
         <item>Sent Messages</item>
     </string-array>
     <string name="compose_button_description">Compose New Message</string>
+    <string name="smc_disclaimer">All messages will be deleted after 30 days</string>
 </resources>

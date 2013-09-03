@@ -135,7 +135,6 @@ implements OnClickListener {
 		//save the current state
 		Bundle args = new Bundle();
 		String selected = (header.getInboxSelected()) ? INBOX: SENTBOX;
-		Log.d("Julian", "current list: "+selected);
 		args.putString(LIST_BOX_TYPE, selected);
 		MessageList inbox = new MessageList();
 		inbox.messages = inboxList;
