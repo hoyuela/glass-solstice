@@ -17,6 +17,13 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
 import com.discover.mobile.common.ui.widgets.DynamicMultiImageViewLayout;
 
+/**
+ * Creates a list item specific to the View Check Images feature.
+ * 
+ * @author stephenfarr
+ *
+ */
+
 public class BankCheckImagesListItem extends ViewPagerListItem implements StartListener, CompletionListener, 
 																		  ErrorResponseHandler{
 	
@@ -38,6 +45,12 @@ public class BankCheckImagesListItem extends ViewPagerListItem implements StartL
 	}
 
 	//------------------------------ ViewPagerListItem Overridden Methods ------------------------------
+	
+	/**
+	 * Returns the BankCheckImagesListItem layout
+	 * 
+	 * @return layout for BankCheckImagesListItem
+	 */
 	@Override
 	protected RelativeLayout getInflatedLayout() {
 		
@@ -46,6 +59,12 @@ public class BankCheckImagesListItem extends ViewPagerListItem implements StartL
 	}
 
 	//------------------------------ Private Helper Methods ------------------------------
+	
+	/**
+	 * Click Listener to hide the view check button and show the orange spinner.
+	 * 
+	 * @return
+	 */
 	private OnClickListener hideViewCheckButton() {
 		return new OnClickListener() {
 			
@@ -60,23 +79,40 @@ public class BankCheckImagesListItem extends ViewPagerListItem implements StartL
 	}
 
 	//------------------------------ Start Listener Overridden Methods ------------------------------
+	
+	/**
+	 * Code to run at service call start
+	 */
 	@Override
 	public void start(NetworkServiceCall<?> sender) {
-
+		//Place holder for when the service call is implemented
 	}
 
+	/**
+	 * Returns the priority of the call back.
+	 * 
+	 * @return Callback priority
+	 */
 	@Override
 	public CallbackPriority getCallbackPriority() {
 		return CallbackPriority.FIRST;
 	}
 	
 	//------------------------------ Completion Listener Overridden Methods ------------------------------
+	
+	/**
+	 * Handles service call completion
+	 */
 	@Override
 	public void complete(NetworkServiceCall<?> sender, Object result) {
 		orangeSpinner.stopAnimation();
 	}
 
 	//------------------------------ Error Response Handler Overridden Methods ------------------------------
+	
+	/**
+	 * Handles the service call failure
+	 */
 	@Override
 	public boolean handleFailure(NetworkServiceCall<?> sender, ErrorResponse<?> errorResponse) {
 		// TODO Auto-generated method stub
