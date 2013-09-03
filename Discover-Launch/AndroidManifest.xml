@@ -260,6 +260,22 @@
                 <action android:name="com.discover.mobile.CHANGE_URL_BROADCAST_INTENT" />
             </intent-filter>
         </receiver>
+        
+        <!-- Broadcast Receiver for the changing of the Base URL in a widget -->
+        <receiver android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerWidget" >
+    		<intent-filter>
+        		<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+    		</intent-filter>
+    		<meta-data android:name="android.appwidget.provider"
+               	android:resource="@xml/bank_url_changer_widget" />
+		</receiver>
+		<service android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerService"
+        	android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        
+        <activity android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerActivity"  android:theme="@style/AppTheme.NoTitleBar" />
+        <activity android:name="com.discover.mobile.bank.ui.widgets.BankUrlChangerModifySiteActivity" android:theme="@style/AppTheme.NoTitleBar"/>
+        
+        
         <activity android:name="com.discover.mobile.bank.whatsnew.WhatsNewActivity"  android:theme="@style/AppTheme.NoTitleBar" />
     </application>
 
