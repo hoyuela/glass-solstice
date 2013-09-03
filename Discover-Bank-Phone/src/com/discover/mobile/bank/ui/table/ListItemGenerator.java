@@ -572,9 +572,9 @@ public class ListItemGenerator {
 		items.add(getAmountCell(item.amount.formatted));
 		items.add(getDateCell(item.getTableDisplayDate()));
 		
-		//if (ActivityDetail.POSTED.equals(item.status)) {
+		if (ActivityDetail.POSTED.equals(item.status)) {
 			items.add(getCheckImageViewCell());
-		//}
+		}
 
 		hideDivider(items);
 		return items;

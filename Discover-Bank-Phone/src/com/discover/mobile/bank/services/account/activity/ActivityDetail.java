@@ -226,9 +226,6 @@ public class ActivityDetail implements Serializable{
 	}
 	
 	public ArrayList<String> getImageLinks() {	
-		imageLinks.add("");
-		imageLinks.add("");
-		
 		return imageLinks;
 	}
 
