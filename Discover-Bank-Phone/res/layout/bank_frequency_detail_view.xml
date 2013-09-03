@@ -201,7 +201,7 @@
 
         <com.discover.mobile.common.ui.widgets.PositiveIntegerEditText
             android:id="@+id/transaction_amount"
-            android:layout_width="145dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:clickable="false"
@@ -284,7 +284,7 @@
         <com.discover.mobile.bank.ui.widgets.AmountValidatedEditField
             android:id="@+id/amount_edit"
             style="@style/pmt_amount_style"
-            android:layout_width="145dp"
+            android:layout_width="135dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:clickable="false"
