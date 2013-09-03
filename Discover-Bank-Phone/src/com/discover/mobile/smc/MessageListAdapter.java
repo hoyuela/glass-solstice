@@ -6,8 +6,11 @@ import java.util.Locale;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.discover.mobile.bank.R;
 import com.discover.mobile.bank.R.color;
+import com.discover.mobile.common.DiscoverActivityManager;
 
 /**
  * Adapter used to show the list of messages
@@ -28,11 +32,13 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	private List<MessageListItem> data;
 	/**inflater used to create the list_item layout*/
 	private LayoutInflater inflater; 
-	
+	/**reference to resource file to obtain colors for list items*/
+	private Resources res;
 	public MessageListAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
 		this.data = new ArrayList<MessageListItem>();
 		inflater = LayoutInflater.from(context);
+		this.res = context.getResources();
 	}
 
 	/**
@@ -40,8 +46,13 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	 */
 	@Override
 	public int getCount(){
-		if(null == data) return 0;
-		return data.size();
+		if(null == data) {
+			return 0;
+		} else if(data.size() > 0){
+			return data.size() + 1;
+		} else {
+			return data.size();
+		}
 	}
 	
 	/**
@@ -55,6 +66,13 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 	
 	@Override
 	public View getView(final int position, View view, final ViewGroup parent){
+		if(position == data.size()) {
+			TextView disclaimer = new TextView(DiscoverActivityManager.getActiveActivity());
+			disclaimer.setText("All messages will be deleted after 30 days");
+			disclaimer.setGravity(Gravity.CENTER_HORIZONTAL);
+			return disclaimer;
+		}
+		
 		ItemViewHolder holder = null;
 		//retrieve the message details for this list item
 		final MessageListItem item = data.get(position);
@@ -76,9 +94,11 @@ public class MessageListAdapter extends ArrayAdapter<List<MessageListItem>>{
 		holder.dateView.setText(convertDate(item.messageDate));
 		//update the background depending on if the message was read or not
 		if(!item.readMessageStatus.equals(MessageListItem.OPENED)){
-			view.setBackgroundColor(Color.WHITE);
+			view.setBackgroundColor(res.getColor(R.color.white));
+			holder.titleView.setTypeface(null, Typeface.BOLD);
 		} else {
-			view.setBackgroundColor(Color.GRAY);
+			view.setBackgroundResource(R.drawable.common_table_list_item_gray);
+			holder.titleView.setTypeface(Typeface.DEFAULT);
 		}
 		//set the tag 
 		view.setTag(holder);

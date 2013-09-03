@@ -2033,9 +2033,20 @@ public final class BankConductor  extends Conductor {
 	 * @param args - bundle of the messsage list.
 	 */
 	public static void navigateToSMCLanding(final Bundle args) {
-		SMCLandingPage fragment = new SMCLandingPage();
-		fragment.setArguments(args);
-		((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		if(activity instanceof BankNavigationRootActivity){
+			BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			if(navActivity.getCurrentContentFragment() instanceof SMCLandingPage){
+				//handle the received data
+				((SMCLandingPage) navActivity.getCurrentContentFragment()).handleReceivedData(args);
+			} else {
+				//first time navigating to the smc landing page, create new fragment
+				SMCLandingPage fragment = new SMCLandingPage();
+				fragment.setArguments(args);
+				((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+			}
+		}
+		
 	}
 }
 

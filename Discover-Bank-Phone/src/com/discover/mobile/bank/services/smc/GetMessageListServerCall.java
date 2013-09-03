@@ -35,6 +35,9 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 	private static final String URL_END = "messages?view=";
 	/**Tag used for logging information*/
 	private static final String TAG = "GetMessageListServerCall";
+	
+	private String mailboxType;
+	
 	public GetMessageListServerCall(Context context, final AsyncCallback<MessageList> callback, final String mailbox){
 		super(context, new GetCallParams(generateUrl(mailbox)) {
 			{
@@ -59,6 +62,7 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 		}, MessageList.class, MessageListItem.class);
 		
 		handler = new SimpleReferenceHandler<MessageList>(callback);
+		this.mailboxType = mailbox;
 	}
 	
 	/**
@@ -71,7 +75,11 @@ extends BankUnamedListJsonResponseMappingNetworkServiceCall<MessageList, Message
 		return BankUrlManager.getApiUrl() + URL_END +mailbox;
 	}
 
-
+	/**return which mailbox was queried*/
+	public String getMailBoxType() {
+		return mailboxType;
+	}
+	
 	@Override
 	protected TypedReferenceHandler<MessageList> getHandler() {
 		return handler;

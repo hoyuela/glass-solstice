@@ -24,6 +24,7 @@ public class MessageListItem implements Serializable {
 	/**String used for comparison to determine whether message has been opened or not*/
 	public static final String OPENED = "opened";
 	
+	
 	/**id of the message - used for retrieving the details*/
 	@JsonProperty("id")
 	public String id;

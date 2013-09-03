@@ -6,5 +6,5 @@
         <item>Inbox</item>
         <item>Sent Messages</item>
     </string-array>
-    <string name="compose_button_text">Compose</string>
+    <string name="compose_button_description">Compose New Message</string>
 </resources>

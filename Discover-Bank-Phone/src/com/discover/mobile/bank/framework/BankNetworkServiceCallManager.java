@@ -86,6 +86,7 @@ import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -720,8 +721,18 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankUser.instance().setPreferredAccounts((PreferredAccounts)result);
 		} else if (sender instanceof GetMessageListServerCall){
 			//save message list into bundle
-			Bundle args = new Bundle();
-			args.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			Bundle args = new Bundle();		
+			//determine whether the list is sent messages of inbox
+			String mailbox = ((GetMessageListServerCall) sender).getMailBoxType();
+			if(mailbox.equals(SMCLandingPage.INBOX)) {
+				args.putString(SMCLandingPage.LIST_BOX_TYPE, SMCLandingPage.INBOX);
+				args.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			} else {
+				args.putString(SMCLandingPage.LIST_BOX_TYPE, SMCLandingPage.SENTBOX);
+				args.putSerializable(BankExtraKeys.SECOND_DATA_LIST, result);
+			}
+			//why do i have to manually close the modal?
+			DiscoverModalManager.clearActiveModal();
 			//navigate to the smc landing page.
 			BankConductor.navigateToSMCLanding(args);
 		// Ignore success
