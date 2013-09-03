@@ -1,6 +1,7 @@
 package com.discover.mobile.bank.services.account.activity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,6 +198,11 @@ public class ActivityDetail implements Serializable{
 	 */
 	@JsonProperty("links")
 	public Map<String, ReceivedUrl> links = new HashMap<String, ReceivedUrl>();
+	
+	public ArrayList<String> imageLinks = new ArrayList<String>();
+	
+	/** List of Check Images */
+	public HashMap<String, byte[]> checkImages;
 
 	/**
 	 * Return the date that needs to be shown in the table
@@ -209,6 +215,18 @@ public class ActivityDetail implements Serializable{
 			date = activityDate;
 		}
 		return date;
+	}
+	
+	public byte[] getImageForKey(final String key) {
+		return checkImages.get(key);
+	}
+	
+	public String getImageLink(final int position) {
+		return imageLinks.get(position);
+	}
+	
+	public ArrayList<String> getImageLinks() {	
+		return imageLinks;
 	}
 
 	/**

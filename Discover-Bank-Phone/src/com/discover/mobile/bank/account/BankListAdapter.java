@@ -80,7 +80,7 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 				holder.desc = (TextView) view.findViewById(R.id.description);
 				holder.amount = (TextView) view.findViewById(R.id.amount);
 				holder.pos = position;
-				holder.repeating = (ImageView) view.findViewById(R.id.reocurring);
+				holder.transactionImage = (ImageView) view.findViewById(R.id.reocurring);
 			}
 			/**Else reuse the old one*/
 		}else{
@@ -136,17 +136,33 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 			/** Loan transactions should not be clickable */
 			view.setClickable(true);
 		} else {
-			view.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_white : R.drawable.common_table_list_item_gray);
+			view.setBackgroundResource(holder.pos % 2 == 0 ? R.drawable.common_table_list_item_white : 
+				                                             R.drawable.common_table_list_item_gray);
 
 		}
 
 		/**Show the reocurring icon if it needs to be shown*/
 		if(null != detail.frequency && !detail.frequency.equals(ActivityDetail.FREQUENCY_ONE_TIME_TRANSFER)){
-			holder.repeating.setVisibility(View.VISIBLE);
+			holder.transactionImage.setVisibility(View.VISIBLE);
+			holder.transactionImage.setBackgroundResource(R.drawable.recurring_icon);
 		}else{
-			holder.repeating.setVisibility(View.GONE);
+			holder.transactionImage.setVisibility(View.GONE);
+		}
+		
+		if (null != detail.getImageLinks()) {
+			if (detail.getImageLinks().size() == 1) {
+				holder.transactionImage.setBackgroundResource(R.drawable.single_check);
+				holder.transactionImage.setVisibility(View.VISIBLE);
+			} else if (detail.getImageLinks().size() > 1) {
+				holder.transactionImage.setBackgroundResource(R.drawable.multiple_checks);
+				holder.transactionImage.setVisibility(View.VISIBLE);
+			} else {
+				holder.transactionImage.setVisibility(View.GONE);
+			}
 		}
 
+		view.setTag(holder);
+		
 		return view;
 	}
 
@@ -211,6 +227,6 @@ public class BankListAdapter extends ArrayAdapter<List<ActivityDetail>>{
 		private TextView desc;
 		private TextView amount;
 		private int pos;
-		private ImageView repeating;
+		private ImageView transactionImage;
 	}
 }

@@ -44,6 +44,9 @@
     <string name="delete_next_transfer_in_series_content_description">Delete the next transfer in the series</string>
     <string name="delete_entire_transfer_series_content_description">Delete the entire series of transfers</string>
     
+    <string name="view_check_images_button_title">View Checks</string>
+    <string name="view_check_images_label_title">Check Image(s)</string>
+    
     <!-- String array contianing all the labels of the button that will be in the accoutn activity table -->
     <string-array name="account_activity_buttons">
         <item>Activity</item>

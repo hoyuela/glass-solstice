@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+	<View
+        android:id="@+id/divider_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/table_solid_line" />
+    
+    <Button
+    	style="@style/common_call_to_action_theme_orange"
+    	android:id="@+id/view_checks_button"
+    	android:text="@string/view_check_images_button_title"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="@dimen/next_button_margin"
+    	android:layout_marginBottom="@dimen/next_button_margin"
+    	android:layout_centerInParent="true"
+        />
+    
+    <com.discover.mobile.bank.ui.DiscoverOrangeSpinner
+        android:id="@+id/load_images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/next_button_margin"
+        android:layout_marginTop="@dimen/next_button_margin"
+        android:visibility="gone" />
+    
+	<TextView 
+	    android:id="@+id/check_images_text_view"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/view_check_images_label_title"
+	    android:textSize="@dimen/small_copy_mid"
+	    android:textColor="@color/field_copy"
+	    android:visibility="gone"
+	    android:layout_margin="@dimen/forms_inner_padding"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentLeft="true"
+	    />
+    
+    <com.discover.mobile.common.ui.widgets.DynamicMultiImageViewLayout 
+        android:id="@+id/dynamic_image_widget" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/next_button_margin"
+        android:layout_marginTop="@dimen/next_button_margin"
+        android:layout_below="@+id/check_images_text_view"
+        android:visibility="gone"
+        />
+        
+</RelativeLayout>

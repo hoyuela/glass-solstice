@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.discover.mobile.bank.R;
+import com.discover.mobile.bank.account.BankCheckImagesListItem;
 import com.discover.mobile.bank.framework.BankUser;
 import com.discover.mobile.bank.services.account.Account;
 import com.discover.mobile.bank.services.account.activity.ActivityDetail;
@@ -548,11 +549,21 @@ public class ListItemGenerator {
 		
 		return listItem;
 	}
+	
+	/**
+	 * Generates a list item for containing check images.  The list item is capable of handling a dynamic number of check 
+	 * images.
+	 * 
+	 * @return a ViewPagerListItem containing the ability to view check images.
+	 */
+	private ViewPagerListItem getCheckImageViewCell() {
+		return new BankCheckImagesListItem(context);
+	}
 
 	/**
 	 * Generates a list of items that can be inserted into a layout at runtime.
 	 * 
-	 * @param item an ActivityDetail item that contains information related to a schedueld transfer.
+	 * @param item an ActivityDetail item that contains information related to a scheduled transfer.
 	 * @return a list of items which display the information in the ActivityDetail item.
 	 */
 	public List<ViewPagerListItem> getScheduledDepositList(final ActivityDetail item) {
@@ -560,6 +571,10 @@ public class ListItemGenerator {
 
 		items.add(getAmountCell(item.amount.formatted));
 		items.add(getDateCell(item.getTableDisplayDate()));
+		
+		if (ActivityDetail.POSTED.equals(item.status)) {
+			items.add(getCheckImageViewCell());
+		}
 
 		hideDivider(items);
 		return items;
