@@ -123,14 +123,18 @@ public final class BankTrackingHelper {
 		}
 		
 		final Customer customer = BankUser.instance().getCustomerInfo();
+		//If the customer value is not equal to null add these values (meaning that the user is logged in)
 		if(null != customer){
+			//Set these variables for the customer id
 			map.put(TrackingHelper.CONTEXT_EDS_PROP, customer.id);
 			map.put(TrackingHelper.CONTEXT_EDS_VAR, customer.id);
+			//Set these variables so that the analytics knows its a customer
 			map.put(TrackingHelper.CONTEXT_USER_PROP, TrackingHelper.CUSTOMER);
 			map.put(TrackingHelper.CONTEXT_USER_VAR, TrackingHelper.CUSTOMER);
 			map.put(TrackingHelper.CONTEXT_VSTR_ID_PROP, TrackingHelper.CUSTOMER);
 			map.put(TrackingHelper.CONTEXT_VSTR_ID_VAR, TrackingHelper.CUSTOMER);
 		}else{
+			//Set these variables so that the analytics knows the user has not logged in
 			map.put(TrackingHelper.CONTEXT_USER_PROP, TrackingHelper.PROSPECT);
 			map.put(TrackingHelper.CONTEXT_USER_VAR, TrackingHelper.PROSPECT);
 			map.put(TrackingHelper.CONTEXT_VSTR_ID_PROP, TrackingHelper.PROSPECT);
