@@ -483,7 +483,7 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			guiValidationError();
 		} else if (isCardLogin()) {
 			showRedExclamation();
-			getErrorHandler().showErrorsOnScreen(this, errorMessage);
+			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);    
 		}else {
 			BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);
 		}
@@ -525,9 +525,12 @@ public class LoginActivity extends NavigationRootActivity implements LoginActivi
 			}
 		} else {
 			if ("4011103".equals(errorCode)) {
+				//handle the proper highlighting
+				BankErrorHandler.getInstance().showErrorsOnScreen(this, errorMessage);    
 				//show error message				
 				errorTextView.setMovementMethod(LinkMovementMethod.getInstance());
 				errorTextView.setText(Html.fromHtml(errorMessage));
+				errorTextView.setTextColor(getResources().getColor(R.color.black));
 				stripUnderlines(errorTextView);
 				errorTextView.setVisibility(View.VISIBLE);
 			} else if (errorMessage != null) {
