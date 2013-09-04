@@ -16,8 +16,8 @@ public final class BankCustomerServiceSectionInfo extends GroupComponentInfo {
 		super(R.string.section_title_customer_service,
 				new ClickComponentInfo(R.string.sub_section_title_contact_us, false, onContactUsClick() ),
 				new ClickComponentInfo(R.string.sub_section_title_faq, false, onFaqClick()),
-				new ClickComponentInfo(R.string.sub_section_title_secure_message,true, 
-						externalLink(BankUrlManager.getStatementsUrl())),
+				new ClickComponentInfo(R.string.sub_section_title_secure_message,false, 
+						onSecureMessageCenterClick()),
 						new ClickComponentInfo(R.string.sub_section_title_user_profile,true, 
 								externalLink(BankUrlManager.getStatementsUrl())));
 	}
@@ -55,4 +55,19 @@ public final class BankCustomerServiceSectionInfo extends GroupComponentInfo {
 			}
 		};
 	}
+	
+	/**
+	 * @return click listener that will navigate user to 
+	 * the secure message center landing page.
+	 */
+	private static OnClickListener onSecureMessageCenterClick() {
+		return new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				//ADD CHECK FOR IF YOU ARE ALREADY AT THE SECURE MESSAGE CENTER
+				BankConductor.navigateToSMCLanding();
+			}
+		};
+	}
+	
 }

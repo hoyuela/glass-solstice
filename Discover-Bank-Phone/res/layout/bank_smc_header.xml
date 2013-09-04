@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.discover.mobile.common"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="4"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/groups_of_elements_padding" 
+   >
+    <com.discover.mobile.common.ui.table.TableButtonGroup
+        android:id="@+id/header_buttons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        custom:resourceArry="@array/smc_header_buttons"
+        android:layout_weight="3"
+        />
+    <ImageButton 
+        android:id="@+id/compose_button"
+        android:layout_height="fill_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textSize="@dimen/small_button_text_size"
+        android:padding="5dp"
+        android:layout_marginBottom="@dimen/table_inner_padding"
+        android:src="@drawable/common_smc_compose"
+        android:contentDescription="@string/compose_button_description"
+        android:background="@android:color/transparent"/>
+
+</LinearLayout>

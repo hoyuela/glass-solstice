@@ -68,6 +68,7 @@ import com.discover.mobile.bank.services.payment.ListPaymentDetail;
 import com.discover.mobile.bank.services.payment.PayBillsTermsAndConditionsDetail;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.smc.GetMessageListServerCall;
 import com.discover.mobile.bank.services.statements.GetAccountStatementsServerCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
@@ -84,6 +85,7 @@ import com.discover.mobile.common.callback.GenericCallbackListener.CompletionLis
 import com.discover.mobile.common.error.ErrorHandlerUi;
 import com.discover.mobile.common.framework.ServiceCallFactory;
 import com.discover.mobile.common.net.NetworkServiceCall;
+import com.discover.mobile.smc.MessageList;
 
 /**
  * Utility class used to construct NetworkServiceCall<> objects used for invoking Bank related web-service API.
@@ -133,6 +135,20 @@ public class BankServiceCallFactory  implements ServiceCallFactory {
 		return new GetAccountStatementsServerCall(activity, callback, account);
 	}
 
+	/**
+	 * create a service call to request a list of messages
+	 * @param mailbox - string either inbox or sentbox to represent whether
+	 * received or sent messages are being requested.
+	 */
+	public static GetMessageListServerCall createMessageListCall(final String mailbox) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		final AsyncCallback<MessageList> callback =
+				BankPhoneAsyncCallbackBuilder.createDefaultCallbackBuilder(MessageList.class, 
+						activity,
+						(ErrorHandlerUi) activity).build();
+		return new GetMessageListServerCall(activity, callback, mailbox);
+	}
+	
 	/**
 	 * Used to construct a CreateBankLoginCall object for invoking the Bank - Authentication Service API found at
 	 * ./api/auth/token. The callee will only have to call submit on the constructed object to trigger the

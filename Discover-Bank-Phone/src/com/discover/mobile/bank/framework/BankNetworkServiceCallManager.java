@@ -71,6 +71,7 @@ import com.discover.mobile.bank.services.payment.GetPaymentsServiceCall;
 import com.discover.mobile.bank.services.payment.PaymentDetail;
 import com.discover.mobile.bank.services.payment.PaymentQueryType;
 import com.discover.mobile.bank.services.payment.UpdatePaymentCall;
+import com.discover.mobile.bank.services.smc.GetMessageListServerCall;
 import com.discover.mobile.bank.services.statements.GetAccountStatementsServerCall;
 import com.discover.mobile.bank.services.transfer.DeleteTransferServiceCall;
 import com.discover.mobile.bank.services.transfer.GetExternalTransferAccountsCall;
@@ -85,6 +86,7 @@ import com.discover.mobile.bank.ui.table.BaseTable;
 import com.discover.mobile.common.AccountType;
 import com.discover.mobile.common.AlertDialogParent;
 import com.discover.mobile.common.DiscoverActivityManager;
+import com.discover.mobile.common.DiscoverModalManager;
 import com.discover.mobile.common.Globals;
 import com.discover.mobile.common.SyncedActivity;
 import com.discover.mobile.common.auth.KeepAlive;
@@ -98,6 +100,7 @@ import com.discover.mobile.common.framework.NetworkServiceCallManager;
 import com.discover.mobile.common.net.HttpHeaders;
 import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.net.error.ErrorResponse;
+import com.discover.mobile.smc.SMCLandingPage;
 import com.google.common.base.Strings;
 
 /**
@@ -716,7 +719,22 @@ ErrorResponseHandler, ExceptionFailureHandler, CompletionListener, Observer {
 			BankConductor.navigateToAccountStatements(account);
 		} else if (sender instanceof GetPreferredAccountsServerCall) {
 			BankUser.instance().setPreferredAccounts((PreferredAccounts)result);
-			
+		} else if (sender instanceof GetMessageListServerCall){
+			//save message list into bundle
+			Bundle args = new Bundle();		
+			//determine whether the list is sent messages of inbox
+			String mailbox = ((GetMessageListServerCall) sender).getMailBoxType();
+			if(mailbox.equals(SMCLandingPage.INBOX)) {
+				args.putString(SMCLandingPage.LIST_BOX_TYPE, SMCLandingPage.INBOX);
+				args.putSerializable(BankExtraKeys.PRIMARY_LIST, result);
+			} else {
+				args.putString(SMCLandingPage.LIST_BOX_TYPE, SMCLandingPage.SENTBOX);
+				args.putSerializable(BankExtraKeys.SECOND_DATA_LIST, result);
+			}
+			//why do i have to manually close the modal?
+			DiscoverModalManager.clearActiveModal();
+			//navigate to the smc landing page.
+			BankConductor.navigateToSMCLanding(args);
 		// Ignore success
 		} else {
 			if( Log.isLoggable(TAG, Log.WARN)) {

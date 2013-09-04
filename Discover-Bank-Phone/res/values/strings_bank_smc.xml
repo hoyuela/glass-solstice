@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="smc_nav_title">Secure Message Center</string>
+    <string name="list_item_delete_description">Delete</string>
+    <string-array name="smc_header_buttons">
+        <item>Inbox</item>
+        <item>Sent Messages</item>
+    </string-array>
+    <string name="compose_button_description">Compose New Message</string>
+    <string name="smc_disclaimer">All messages will be deleted after 30 days</string>
+</resources>

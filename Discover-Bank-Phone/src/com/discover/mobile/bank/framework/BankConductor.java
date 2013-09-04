@@ -124,6 +124,7 @@ import com.discover.mobile.common.net.NetworkServiceCall;
 import com.discover.mobile.common.ui.modals.SimpleContentModal;
 import com.discover.mobile.common.ui.modals.SimpleTwoButtonModal;
 import com.discover.mobile.common.utils.CommonUtils;
+import com.discover.mobile.smc.SMCLandingPage;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.common.base.Strings;
 
@@ -2020,6 +2021,34 @@ public final class BankConductor  extends Conductor {
 			payeeService.getExtras().putAll(bundle);
 			payeeService.submit();
 		}
+	}
+	/**
+	 * Navigates to the landing page for SMC.  If no bundle is supplied,
+	 * service call to retrieve the messages must be executed first.
+	 */
+	public static void navigateToSMCLanding() {
+		BankServiceCallFactory.createMessageListCall(SMCLandingPage.INBOX).submit();
+	}
+
+	/**
+	 * This function is called after service  call to retrieve messages is made.
+	 * @param args - bundle of the messsage list.
+	 */
+	public static void navigateToSMCLanding(final Bundle args) {
+		final Activity activity = DiscoverActivityManager.getActiveActivity();
+		if(activity instanceof BankNavigationRootActivity){
+			BankNavigationRootActivity navActivity = (BankNavigationRootActivity) activity;
+			if(navActivity.getCurrentContentFragment() instanceof SMCLandingPage){
+				//handle the received data
+				((SMCLandingPage) navActivity.getCurrentContentFragment()).handleReceivedData(args);
+			} else {
+				//first time navigating to the smc landing page, create new fragment
+				SMCLandingPage fragment = new SMCLandingPage();
+				fragment.setArguments(args);
+				((BankNavigationRootActivity) DiscoverActivityManager.getActiveActivity()).makeFragmentVisible(fragment);
+			}
+		}
+		
 	}
 }
 
