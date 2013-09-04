@@ -13,8 +13,8 @@
             android:layout_height="wrap_content"
             android:text="@string/need_help_text"
             android:layout_centerHorizontal="true"
+            android:textStyle="bold"
             android:textColor="#293033"
-            android:textStyle="normal"
             android:textSize="14sp"
             />
 

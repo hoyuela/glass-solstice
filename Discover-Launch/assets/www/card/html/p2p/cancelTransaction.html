@@ -19,19 +19,29 @@
 		<div data-role="content" class="ui-content-internalpages">
 			<div class="wraper"> 				
 				<!-- body text area star -->
-				<div class="floatleft" id="name">
+				
+				<!--<div class="floatright pay-pal-logo"> </div>
+				<div class="clearboth"></div>-->
+                <!-- 13.3 global change 27/08/2013 starts --> 
+				<div class="subHeader">
+                  <div class="text">MONEY MESSENGER</div>
+                  <div><img src="../../images/payPal1.png" class="payPalImg"></div>
+                  <div class="smallText">POWERED BY</div>
+               </div>  
+               
+               <div class="floatleft" id="name">
 					<h1>Cancel Transaction</h1>
 				</div>
-				<div class="floatright pay-pal-logo"> </div>
-				<div class="clearboth"></div>
+            	<div class="clearboth"></div>
+                <!-- 13.3 global change 27/08/2013 ends -->
 				<h3>Are you sure you want to cancel this transaction?</h3>				
 				<p>Tap "Yes, Cancel" to cancel this transaction. Tap "No" to return
 					to previous page.</p>
 
-				<div class="txtcenteraln">
+				<div class="txtcenteraln r3matchbtn">
 					<a class="small_btn" data-role="button" href="#" onclick="killDataFromCache('SM1_DATA');navigation('../p2p/confirmCancelTransaction',false)" style="width:160px" >Yes, Cancel </a>
 				</div>
-				<div class="txtcenteraln">
+				<div class="txtcenteraln r3matchbtn">
 					<a class="small_btn" data-role="button" href="#"  onclick="dfs.crd.p2p.noCancelTransaction();"  style="width:160px">No</a>
 				</div>
 			</div>

@@ -199,7 +199,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     private boolean isForgotPassword() {
     	return IntentExtraKey.SCREEN_FORGOT_PASS.equals(getScreenType());
     }
-
+    private Context context;
     @Override
     public void onCreate(final Bundle savedInstanceState) {
 
@@ -214,6 +214,7 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
         progress.initChangePasswordHeader(0);
 
         loadAllViews();
+        context = this;
         /* 13.4 chnages start */
         setSpinnerStyle();
         /* 13.4 chnages End */
@@ -820,11 +821,11 @@ abstract class ForgotOrRegisterFirstStep extends CardNotLoggedInCommonActivity
     		@Override
     		public void run() {
     			Intent callIntent = new Intent(Intent.ACTION_DIAL);
-    			callIntent.setData(Uri.parse("tel:"+getContext().getResources().getString(R.string.phone_customer_service_locked)));
-    			getContext().startActivity(callIntent);
+    			callIntent.setData(Uri.parse("tel:"+context.getResources().getString(R.string.phone_customer_service_locked)));
+    			context.startActivity(callIntent);
     		}
     	};
-    	EnhancedTwoButtonModal modalLockout = new EnhancedTwoButtonModal(getContext(), errorTitle, errorMessage, R.string.call_now, R.string.close_text, callNowAction, null);
+    	EnhancedTwoButtonModal modalLockout = new EnhancedTwoButtonModal(context, errorTitle, errorMessage, R.string.call_now, R.string.close_text, callNowAction, null);
     	modalLockout.hideNeedHelpFooter();
     	modalLockout.showErrorIcon();
 

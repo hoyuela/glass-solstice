@@ -96,7 +96,7 @@
                     android:layout_alignTop="@+id/icon"
                     android:layout_toRightOf="@+id/icon"
                     android:includeFontPadding="false"
-                    android:textColor="@color/error_indicator"
+                    android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="normal"
                     android:visibility="gone" />
@@ -215,6 +215,7 @@
                 android:layout_below="@+id/account_info_continue_button"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="48dp"
                 android:clickable="true"
                 android:includeFontPadding="false"
                 android:text="@string/cancel_text"

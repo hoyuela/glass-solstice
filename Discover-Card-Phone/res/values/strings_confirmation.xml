@@ -27,7 +27,7 @@
 	    Account Number
 	</string>
 	<string name="account_info_confirm_account_stars_text">
-	    **** **** **** 
+	    **** **** ****&#160;
 	</string>
 	<string name="account_info_confirm_account_text">1337</string>
 	<string name="account_info_confirm_id_placeholder_text">

@@ -440,8 +440,10 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 .rd-page .redeem-description .collapsible {	
 	border:none;
 	margin:0 !important;
-	float: left;
-	display: inline-block;
+	/*R13.3 global change 29/08/2013 -> Defect 111526*/
+	/*float: left;
+	display: inline-block;*/
+
 }
 .rd-page .redeem-description #pmodeDesc {
 	margin-top: 20px;
@@ -553,7 +555,7 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	border-right:0;
 	border-bottom:0;
 	-webkit-border-radius:0 !important;
-	width: 32% !important;/*13.3 global change 19/08/2013*/
+	/*width: 32% !important;13.3 global change 19/08/2013*/
 }
 #redeem-dtlview .dec.ui-corner-left .ui-btn-inner {
 	padding:8px 16px !important;
@@ -588,7 +590,7 @@ background-image: -webkit-gradient( linear, left top, left bottom, color-stop(0%
 	border-right:1px solid #a2a8ab;
 	background: #eeeff0 !important;
 	margin: 0 0 0 6px;
-	width: 20% !important;/*13.3 global change 19/08/2013*/
+	width: 19% !important;/*13.3 global change 19/08/2013*/
 }
 .details-section-container .detl-view-content .r5-buttons section 
 .yellow-bg.blk-wht-btn, .yellow-bg.drkgry-wht-btn {border:0px}

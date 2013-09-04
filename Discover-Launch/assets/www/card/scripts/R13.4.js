@@ -4,8 +4,7 @@
 	 $(".textbox_alertspage").live("keypress",function(event) {
 			var controlKeys = [8, 9, 13, 35, 36, 37, 39];
 			var isControlKey = controlKeys.join(",").match(new RegExp(event.which));
-			if (!event.which || (49 <= event.which && event.which <= 57) || 
-			(48 == event.which && $(this).attr("value")) ||  isControlKey) { 
+			if (!event.which || (48 <= event.which && event.which <= 57) || isControlKey) { 
 				if($(this).parent().hasClass('inputOnError')) {
 			 		$(this).parent().removeClass("inputOnError");
 				}

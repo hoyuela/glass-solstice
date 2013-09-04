@@ -827,7 +827,9 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
         	if (dfs.crd.push.manage.userOverride == true)
 			{
 				textglobalStatus = "<h3 class='redtext'>Previous account settings will be removed once your preferences are saved. </h3>";
-				$("#alertsetting").attr('disabled', false);				
+				//$("#alertsetting").attr('disabled', false);     //13.3 global change (Defect_111522_New)               
+                $("#alertsetting").removeClass('slideDisable');   //13.3 global change (Defect_111522_New)
+
 				/*13.3 Global Change : Starts*/ //$("#alertsetting").val('on').slider('refresh'); 
 				$('.slider-button').addClass('on').html('ON');
 				$(document).jqmData("flipval",'yes');/*13.3 Global Change : Ends*/
@@ -836,7 +838,9 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
 			else if (dfs.crd.push.manage.userOverride == false)
 			{
 				textglobalStatus = "<h3 class='redtext boldtext'>Another account is registered for this device. Override previous account to enable push alerts.</h3>";
-				$("#alertsetting").attr('disabled', true);
+				//$("#alertsetting").attr('disabled', true);     //13.3 global change (Defect_111522_New)                
+                $("#alertsetting").addClass('slideDisable');     //13.3 global change (Defect_111522_New)
+
 				/*13.3 Global Change : Starts*/ //$("#alertsetting").val('off').slider('refresh');
 				$('.slider-button').removeClass('on').html('OFF');
 				$(document).jqmData("flipval",'no');/*13.3 Global Change : Ends*/			
@@ -1079,7 +1083,7 @@ dfs.crd.push.manage.populateManageNotificationPageDivs = function(responseData, 
                                                         dfs.crd.push.manage.isChangeMade = true;
                                                         var controlKeys = [8, 9, 13, 35, 36, 37, 39];
                                                         var isControlKey = controlKeys.join(",").match(new RegExp(event.which));
-                                                        if (!event.which || (49 <= event.which && event.which <= 57) || (48 == event.which && $(this).attr("value")) ||  isControlKey) { 
+                                                        if (!event.which || (48 <= event.which && event.which <= 57) || isControlKey) { 
 
 
                                                         if($(this).parent().hasClass('inputOnError')) {

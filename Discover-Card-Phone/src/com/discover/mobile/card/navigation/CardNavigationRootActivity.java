@@ -36,6 +36,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -1014,9 +1016,23 @@ public class CardNavigationRootActivity extends NavigationRootActivity
         }
 
     }
+    
+    protected void forceSoftKeyboardHidden() {
+		Activity activity = getActivity();
+		if (activity == null) {
+			return;
+		}
+
+		View currentFocus = activity.getCurrentFocus();
+		if (currentFocus != null){
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+		}
+	}
 
     @Override
     public String getActionBarTitle() {
+    	forceSoftKeyboardHidden();
         return (String) mCardStoreData.getValueOfAppCache("currentPageTitle");
     }
 

@@ -2350,3 +2350,25 @@ try{
         showSysException(err);
 	}
 }
+/**********Customer Service Code added for 13.5 FAQ**************/
+function getContentHtml(fileName){
+    try{
+        var contentHtml = new Object();
+        var file = fileName+".html";
+            $.ajax({
+                   type : "GET",
+                   url : file,
+                   dataType : 'html',
+                   async: false,
+                   success : function(response, status, jqXHR) {
+                   contentHtml=response;
+                   },
+                   error : function(jqXHR, textStatus, errorThrown) {
+                   // handleError(jqXHR,textStatus,errorThrown);
+                   }
+                   });
+        return contentHtml;
+    }catch(err){
+    //showSysException(err)
+    }
+}

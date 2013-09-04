@@ -9,8 +9,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.URLSpan;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.discover.mobile.card.R;
 import com.discover.mobile.card.common.ui.modals.EnhancedContentModal;
@@ -177,28 +185,31 @@ public final class CardErrorResponseHandler {
             final int errorCodeNumber = Integer.parseInt(errorMsgSplit[0]);
             final Context context = DiscoverActivityManager.getActiveActivity();
 
-            // /non-card login related
-            //forgotUserId lockout should not be handled by genericError
-            if (!isCardLoginError() && !(isForgotUserIdError() && lockoutErrors.contains(errorCodeNumber))) {
-                handleGenericError(cardErrorHold.getErrorTitle(),
-                        cardErrorHold.getErrorMessage(),
-                        cardErrorHold.getNeedHelpFooter(), errorClickCallback);
-                return;
-            }
-
-            // anything below is card login specific
-
             final Bundle bundle = new Bundle();
             bundle.putString(IntentExtraKey.ERROR_CODE, cardErrorHold.getErrorCode());
             bundle.putString(IntentExtraKey.SHOW_ERROR_MESSAGE, cardErrorHold.getErrorMessage());
+            final LoginActivityFacade loginFacade = FacadeFactory.getLoginFacade();
+            
+            // if not login flow and not a lockout on reg related flow
+            if (!isCardLoginError() && !(isForgotUserIdError() && lockoutErrors.contains(errorCodeNumber))) {
+            	if (INCORRECT_USERID_PASSWORD == errorCodeNumber) {
+            		handleInlineError(cardErrorHold.getErrorMessage());
+            	} else if (ULR_LAST_ATTEMPT == errorCodeNumber) {
+            		handleAdvancedInlineError(cardErrorHold.getErrorMessage(), context);
+            	} else {
+            		handleGenericError(cardErrorHold.getErrorTitle(),
+                            cardErrorHold.getErrorMessage(),
+                            cardErrorHold.getNeedHelpFooter(), errorClickCallback);
+            	}
+                return;
+            }
 
+            // anything below is card login specific (or a lockout error)
             PasscodeUtils pUtils = new PasscodeUtils(context);
             if (passcodeDisabledErrors.contains(errorCodeNumber)) {
                 pUtils.deletePasscodeToken();
             }
 
-            final LoginActivityFacade loginFacade = FacadeFactory
-                    .getLoginFacade();
             if (INVALID_EXTERNAL_STATUS == errorCodeNumber
                     && pUtils.isPasscodeToken()) {
             	pUtils.deletePasscodeToken();
@@ -209,7 +220,7 @@ public final class CardErrorResponseHandler {
                 showAlertNavToLogin(modalUIDAndPasscodeLockout, bundle);
             } else if (lockoutErrors.contains(errorCodeNumber)) {
             	if (cardErrorHold.isTempLocked()) {
-            		TrackingHelper.trackBankPage(AnalyticsPage.LOCKOUT_TEMP);
+            		TrackingHelper.trackCardPage(AnalyticsPage.LOCKOUT_TEMP, null);
             		//You have exceeded the maximum number of login attempts. <br> Tap below to unlock your account.
             		int errorTitle = context.getResources().getIdentifier("E_T_" + errorCodeNumber, "string", context.getPackageName());
             		int errorMessage = context.getResources().getIdentifier("E_" + errorCodeNumber + "_TEMP", "string", context.getPackageName());
@@ -230,7 +241,7 @@ public final class CardErrorResponseHandler {
             		modalLockout.showErrorIcon();
             		showAlertNavToLogin(modalLockout, bundle);
             	} else {
-            		TrackingHelper.trackBankPage(AnalyticsPage.LOCKOUT_PERM);
+            		TrackingHelper.trackCardPage(AnalyticsPage.LOCKOUT_PERM, null);
             		int errorTitle = context.getResources().getIdentifier("E_T_" + errorCodeNumber, "string", context.getPackageName());
             		int errorMessage = context.getResources().getIdentifier("E_" + errorCodeNumber + "_PERM", "string", context.getPackageName());
             		Runnable callNowAction = new Runnable(){
@@ -283,6 +294,82 @@ public final class CardErrorResponseHandler {
             		loginFacade.navToLoginWithMessage(DiscoverActivityManager.getActiveActivity(), new Bundle());
             	}
             }
+        }
+    }
+    
+    private void handleInlineError(String errorMessage) {
+    	setErrorText(errorMessage);
+        // setInputFieldsDrawableToRed();
+        getErrorFieldUi().getCardErrorHandler().showErrorsOnScreen(
+                getErrorFieldUi(), errorMessage);
+        clearInputs();
+	}
+    
+    private void handleAdvancedInlineError(String errorMessage, Context context) {
+    	if (errorHandlerUi != null) {
+            errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
+            errorHandlerUi.getErrorLabel().setMovementMethod(LinkMovementMethod.getInstance());
+			errorHandlerUi.getErrorLabel().setText(Html.fromHtml(errorMessage));
+			stripUnderlines(errorHandlerUi.getErrorLabel());
+			errorHandlerUi.getErrorLabel().setTextColor(context.getResources().getColor(R.color.black));
+
+        }
+        clearInputs();
+	}
+
+	private void stripUnderlines(TextView textView) {
+		if (!(textView.getText() instanceof Spannable)) {
+			return;
+		}
+        Spannable s = (Spannable)textView.getText();
+        URLSpan[] spans = s.getSpans(0, s.length(), URLSpan.class);
+        for (URLSpan span: spans) {
+            int start = s.getSpanStart(span);
+            int end = s.getSpanEnd(span);
+            s.removeSpan(span);
+            span = new URLSpanNoUnderline(span.getURL());
+            s.setSpan(span, start, end, 0);
+        }
+        textView.setText(s);
+    }
+	
+	private class URLSpanNoUnderline extends URLSpan {
+        public URLSpanNoUnderline(String url) {
+            super(url);
+        }
+        @Override public void updateDrawState(TextPaint ds) {
+            super.updateDrawState(ds);
+            ds.setUnderlineText(false);
+        }
+    }
+    /**
+     * Clears the activity edit texts in the getFieldsToClearAfterError()
+     * interface method
+     */
+    private void clearInputs() {
+        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+        if (errorHandlerUi != null && errorHandlerUi.getInputFields() != null) {
+            for (final EditText text : errorHandlerUi.getInputFields()) {
+                text.setText("");
+            }
+        }
+    }
+
+    /**
+     * A common method to display an error message on the error field and make
+     * the error label visible.
+     * 
+     * The activity needs to implement ErrorFieldActivity for this functionality
+     * to work.
+     * 
+     * @param text
+     * @param errorText
+     */
+    private void setErrorText(final String errorText) {
+        final CardErrorHandlerUi errorHandlerUi = getErrorFieldUi();
+        if (errorHandlerUi != null) {
+            errorHandlerUi.getErrorLabel().setText(errorText);
+            errorHandlerUi.getErrorLabel().setVisibility(View.VISIBLE);
         }
     }
     
