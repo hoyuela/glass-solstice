@@ -13,9 +13,16 @@ function recentActivity()
 }
 
 function searchTransactions()
-{
+{ 
 	preventBack = false;
-	navigation('../statements/searchTrans');	
+	navigation('../statements/searchTrans');
+	 try
+  {
+   setTimeout(function(){
+   $('.wraper.js-calHideWrap').hide(); },50);
+   }
+   catch (err) {
+  }	
 }
 
 function statements()
@@ -49,6 +56,13 @@ function makeaPayment()
 	populateGlobalCache();
 	isLhnNavigation  = true;
 	navigation('../payments/paymentStep1');
+	 try
+     {	
+     	setTimeout(function(){
+	  		$('.wraper2').hide();
+	  	},50)
+	  }
+	  catch (err){}
 }
 
 function managePayments()

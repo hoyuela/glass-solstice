@@ -1761,3 +1761,4 @@ text-align: right;}
 	margin-top:12px;
 }
 /*Check Box Styling Ends Here*/
+.pn-page .slideDisable{pointer-events:none;}  /* 13.3 global change 29/08/13 (Defect_111522_New) */

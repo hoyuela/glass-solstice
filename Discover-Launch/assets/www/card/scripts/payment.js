@@ -722,6 +722,7 @@ function paymentStep1Load()
 						valueOfText = valueOfText.substring(0,(valueOfText.indexOf('.')+3));
 					}
 					payAmount = valueOfText;
+					if(payAmount == '0.00'){payAmount = ''}
 					if (isEmpty(payAmount)) 
 					{
 						minPayStepOne.attr("placeholder","0.00");
