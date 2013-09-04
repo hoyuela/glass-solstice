@@ -8,7 +8,6 @@
     
     Used to set variables in class com.discover.mobile.common.net.ServiceCallParams
     -->
-    <string name="timeout_connect_default">30</string>
-    <string name="timeout_read_default">30</string>
-    
+    <string name="timeout_connect_default">300</string><!-- 5 minutes -->
+    <string name="timeout_read_default">300</string>
 </resources>
